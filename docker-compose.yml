@@ -1,0 +1,20 @@
+# Local development services. Start with: docker compose up -d
+services:
+  db:
+    # Official Postgres image with the pgvector extension pre-installed
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: sweep
+      POSTGRES_PASSWORD: sweep   # local dev only — never reuse in a real environment
+      POSTGRES_DB: sweep
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sweep"]
+      interval: 5s
+      retries: 10
+
+volumes:
+  db-data:

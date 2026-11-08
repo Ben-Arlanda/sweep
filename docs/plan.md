@@ -69,7 +69,7 @@ Separate from the product: `services/mcp` (MCP server over the same services) an
 
 | Decision | Choice | Notes |
 |---|---|---|
-| SDK | Latest stable Expo SDK at scaffold time | SDK 56 released May 2026, ⚠️ newer may exist. The New Architecture is the default. Expo Router no longer depends on React Navigation as of SDK 56. |
+| SDK | **Expo SDK 58** (React Native 0.88, React 19.3), installed Nov 2026 | The New Architecture is the default. Expo Router no longer depends on React Navigation (since SDK 56). `Stack` is imported from `expo-router/stack`. App lives in `apps/client/`, API in `services/api/`. |
 | Routing | Expo Router (file-based) | Like Next.js App Router: files become routes. Web gets real URLs. |
 | Server state | TanStack Query | Caching, refetch on change notices, optimistic updates, persisted mutation retry queue |
 | Local UI state | React state; Zustand only if it's genuinely needed | Avoid a global store by default |
