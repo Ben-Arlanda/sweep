@@ -24,6 +24,23 @@ jobs:
 
   api:
     runs-on: ubuntu-latest
+    # A real Postgres (same image as docker-compose) for integration tests.
+    services:
+      db:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: sweep
+          POSTGRES_PASSWORD: sweep
+          POSTGRES_DB: sweep_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U sweep"
+          --health-interval 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://sweep:sweep@localhost:5432/sweep_test
+      TEST_DATABASE_URL: postgresql://sweep:sweep@localhost:5432/sweep_test
     defaults:
       run:
         working-directory: services/api
@@ -35,3 +52,6 @@ jobs:
       - run: uv run ruff format --check .
       - run: uv run mypy
       - run: uv run pytest
+      # Fails if a model changed without a matching migration.
+      # (pytest has just migrated the database to head.)
+      - run: uv run alembic check

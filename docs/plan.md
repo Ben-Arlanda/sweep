@@ -1,6 +1,6 @@
 # Sweep — Architecture & Implementation Plan
 
-Status: planning complete, pending the open items in §15. No code yet.
+Status: slice 0 merged; slice 1 backend (Households, invites, token checking, account deletion) built. Clerk + client screens next.
 Language follows [`CONTEXT.md`](../CONTEXT.md). Big decisions live in [`docs/adr/`](adr/).
 ⚠️ = unverified, check before relying on it.
 
@@ -91,7 +91,7 @@ Separate from the product: `services/mcp` (MCP server over the same services) an
 - **Our database owns Households, membership and authorisation**, not the auth provider. Auth answers "who is this?", and our services answer "what may they touch?"
 - Sign-in (MVP): **email code only**. No social logins, so Sign in with Apple isn't required (Apple only requires it alongside other third-party social logins ⚠️). Add Apple/Google sign-in later, together, once there's an Apple Developer membership.
 - One Household per Member (MVP). Roles: Owner, Member. Invite by link or code, expiring after 7 days.
-- **In-app account deletion is required** by Apple (App Store guideline 5.1.1(v)). Deleting the last Member deletes the Household.
+- **In-app account deletion is required** by Apple (App Store guideline 5.1.1(v)). It's a hard delete (no `deleted_at`), because deletion should remove personal data. Deleting the last Member deletes the Household. If the Owner leaves, the longest-standing Member becomes Owner. The client must also delete the Clerk user.
 - Every service function takes `(member, household)` from the request context, and every query filters by `household_id`. Tests prove a Member can't read or write another Household.
 
 ---
@@ -99,7 +99,8 @@ Separate from the product: `services/mcp` (MCP server over the same services) an
 ## 6. Data model (first cut)
 
 ```
-members(id, auth_subject, household_id, role, deleted_at)
+members(id, auth_issuer, auth_subject, household_id, role, display_name, joined_at)
+                                                      -- (issuer, subject) unique = one Household per Member
 households(id, name, created_at)
 household_invites(code, household_id, expires_at, used_by)
 
