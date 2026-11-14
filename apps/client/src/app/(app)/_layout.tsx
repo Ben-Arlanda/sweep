@@ -54,6 +54,8 @@ function SignedIn() {
         <Stack.Screen name="index" options={{ title: 'Home', headerShown: false }} />
         <Stack.Screen name="lists/[id]" options={{ title: '' }} />
         <Stack.Screen name="cabinet" options={{ title: '' }} />
+        <Stack.Screen name="recipes/index" options={{ title: '' }} />
+        <Stack.Screen name="recipes/[id]" options={{ title: '' }} />
         <Stack.Screen name="design" options={{ title: 'Design system' }} />
       </Stack>
     </ToastProvider>

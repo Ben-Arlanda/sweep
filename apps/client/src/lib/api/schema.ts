@@ -266,6 +266,44 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/recipes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Or Search
+         * @description With `q`: recipes closest in meaning, best first. Without: all, by title, a page
+         *     at a time (`offset`). Search has no pages: past the top results, matches get weak.
+         */
+        get: operations["list_or_search_recipes_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/recipes/{recipe_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Recipe */
+        get: operations["get_recipe_recipes__recipe_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/health": {
         parameters: {
             query?: never;
@@ -481,6 +519,81 @@ export interface components {
              * Format: date-time
              */
             joined_at: string;
+        };
+        /** RecipeIngredientOut */
+        RecipeIngredientOut: {
+            /** Raw Text */
+            raw_text: string;
+            ingredient: components["schemas"]["IngredientOut"] | null;
+            /** Quantity */
+            quantity: string | null;
+            /** Unit */
+            unit: string | null;
+            /** Base Quantity */
+            base_quantity: string | null;
+            /** Note */
+            note: string | null;
+            /** Optional */
+            optional: boolean;
+            /** Needs Review */
+            needs_review: boolean;
+        };
+        /**
+         * RecipeKind
+         * @enum {string}
+         */
+        RecipeKind: "seed" | "imported";
+        /** RecipeOut */
+        RecipeOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            kind: components["schemas"]["RecipeKind"];
+            /** Title */
+            title: string;
+            /** Summary */
+            summary: string;
+            /** Cuisine */
+            cuisine: string | null;
+            /** Servings */
+            servings: number;
+            /** Total Minutes */
+            total_minutes: number | null;
+            /** Score */
+            score?: number | null;
+            /** Ingredients */
+            ingredients: components["schemas"]["RecipeIngredientOut"][];
+            /** Method */
+            method: string[] | null;
+            /** Source Url */
+            source_url: string | null;
+            /** Licence */
+            licence: string;
+            /** Attribution */
+            attribution: string;
+        };
+        /** RecipeSummaryOut */
+        RecipeSummaryOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            kind: components["schemas"]["RecipeKind"];
+            /** Title */
+            title: string;
+            /** Summary */
+            summary: string;
+            /** Cuisine */
+            cuisine: string | null;
+            /** Servings */
+            servings: number;
+            /** Total Minutes */
+            total_minutes: number | null;
+            /** Score */
+            score?: number | null;
         };
         /**
          * Role
@@ -1221,6 +1334,75 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["IngredientOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_or_search_recipes_get: {
+        parameters: {
+            query?: {
+                /** @description What you feel like */
+                q?: string | null;
+                cuisine?: string | null;
+                max_minutes?: number | null;
+                exclude_ingredient?: string[];
+                limit?: number;
+                /** @description Browsing only */
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecipeSummaryOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_recipe_recipes__recipe_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                recipe_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecipeOut"];
                 };
             };
             /** @description Validation Error */

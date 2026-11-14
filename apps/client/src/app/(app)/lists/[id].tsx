@@ -22,6 +22,8 @@ import { shoppingOrder } from '@/features/lists/listCache';
 import type { Item, MemberOut } from '@/lib/api/client';
 import { useIsOnline, useList, useListActions, usePendingListChanges } from '@/lib/api/lists';
 import { tintFor } from '@/theme/tint';
+import { FoodThumb } from '@/components/FoodThumb';
+import { ingredientEmoji } from '@/theme/foodEmoji';
 import { useTheme } from '@/theme/useTheme';
 
 /**
@@ -197,22 +199,7 @@ function ItemRow({
             opacity: pressed ? 0.75 : 1,
           })}
         >
-          {/* Thumbnail: the item's own pastel and initial. Decorative, so hidden from screen readers. */}
-          <View
-            aria-hidden
-            style={{
-              width: 40,
-              height: 40,
-              borderRadius: t.radius.sm + 4,
-              backgroundColor: t.tints[tint].bg,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Text variant="heading" style={{ color: t.tints[tint].text }}>
-              {(item.ingredient?.name ?? item.text).charAt(0).toUpperCase()}
-            </Text>
-          </View>
+          <FoodThumb emoji={ingredientEmoji(item.ingredient)} tint={tint} />
           <View style={{ flex: 1, gap: 2 }}>
             <Text
               variant="label"

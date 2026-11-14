@@ -8,6 +8,7 @@ import { router } from 'expo-router';
 import { Avatar, AvatarStack } from '@/components/Avatar';
 import { Button, Card, ErrorText, Highlight, SectionLabel, Text } from '@/components/ui';
 import { CabinetTile } from '@/features/cabinet/CabinetTile';
+import { RecipesTile } from '@/features/recipes/RecipesTile';
 import { ListTiles, NewList } from '@/features/lists/ListTiles';
 import type { MeOut } from '@/lib/api/client';
 import {
@@ -60,6 +61,7 @@ export function HouseholdView({ me }: { me: MeOut }) {
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.md }}>
         <ListTiles />
         <CabinetTile />
+        <RecipesTile />
       </View>
       <NewList />
 

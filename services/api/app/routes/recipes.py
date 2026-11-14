@@ -25,13 +25,15 @@ async def list_or_search(
     max_minutes: Annotated[int | None, Query(gt=0, le=1440)] = None,
     exclude_ingredient: Annotated[list[uuid.UUID], Query(max_length=50)] = [],  # noqa: B006
     limit: Annotated[int, Query(gt=0, le=50)] = SEARCH_LIMIT,
+    offset: Annotated[int, Query(ge=0, le=10_000, description="Browsing only")] = 0,
 ) -> list[RecipeSummaryOut]:
-    """With `q`: recipes closest in meaning, best first. Without: all, by title."""
+    """With `q`: recipes closest in meaning, best first. Without: all, by title, a page
+    at a time (`offset`). Search has no pages: past the top results, matches get weak."""
     filters = RecipeFilters(max_minutes, cuisine, exclude_ingredient)
     household_id = ctx.household.id
     query = (q or "").strip()
     if not query:
-        rows = await recipes.list_recipes(session, household_id, filters, limit)
+        rows = await recipes.list_recipes(session, household_id, filters, limit, offset)
         return [RecipeSummaryOut.model_validate(r) for r in rows]
 
     embedder = cast(Embedder | None, request.app.state.embedder)

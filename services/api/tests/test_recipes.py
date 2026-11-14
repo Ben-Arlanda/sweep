@@ -173,6 +173,20 @@ async def test_browsing_without_a_query_lists_by_title(
     assert all(r["score"] is None for r in response.json())
 
 
+async def test_browsing_pages_through_with_offset(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, load: Loader
+) -> None:
+    await load([PASTA, CURRY, STIR_FRY])
+    await create_household(client, fake_issuer, "ana")
+    first = await get(client, fake_issuer, "/recipes", limit=2)
+    rest = await get(client, fake_issuer, "/recipes", limit=2, offset=2)
+    assert [r["title"] for r in first.json()] == [
+        "Beef and broccoli stir-fry",
+        "Chicken and chickpea curry",
+    ]
+    assert [r["title"] for r in rest.json()] == ["Quick tomato pasta"]
+
+
 async def test_reads_one_recipe_with_its_understood_ingredients(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer, load: Loader
 ) -> None:
