@@ -29,6 +29,8 @@ class Settings(BaseSettings):
     voyage_api_key: SecretStr | None = None
     # Small, fast model for reading ingredient lines the rules couldn't (plan §8).
     parsing_model: str = "claude-haiku-5-5"
+    # Reviews draft Seed Recipes (slice 4c). Start small; the eval decides if it's enough.
+    review_model: str = "claude-haiku-5-5"
     embedding_model: str = "voyage-3.5"
 
 

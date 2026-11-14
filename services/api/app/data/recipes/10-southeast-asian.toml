@@ -1,0 +1,666 @@
+# Thai, Vietnamese, Malaysian, Indonesian and Filipino. Written for Sweep (licence: Sweep original).
+
+[[recipe]]
+slug = "thai-larb-chicken"
+title = "Thai chicken larb"
+cuisine = "thai"
+servings = 4
+minutes = 20
+summary = "Zesty minced chicken salad with lime, fish sauce, chilli and lots of fresh herbs."
+ingredients = [
+  "500 g chicken mince",
+  "1 tbsp vegetable oil",
+  "2 shallots, thinly sliced",
+  "1 red chilli, finely chopped",
+  "3 tbsp fish sauce",
+  "2 limes, juiced",
+  "1 tsp brown sugar",
+  "1 bunch mint, leaves picked",
+  "1 bunch coriander, chopped",
+  "1 lettuce, leaves separated",
+  "1 cup rice",
+]
+method = [
+  "Cook the rice.",
+  "Fry the chicken mince in the oil over high heat for 6 minutes, breaking it up, until cooked through.",
+  "Off the heat, stir in the shallots, chilli, fish sauce, lime juice and sugar, then the mint and coriander.",
+  "Spoon into lettuce cups and serve with the rice.",
+]
+
+[[recipe]]
+slug = "thai-red-pumpkin-curry"
+title = "Thai red pumpkin and chickpea curry"
+cuisine = "thai"
+servings = 4
+minutes = 35
+summary = "Pumpkin and chickpeas simmered in coconut red curry with green beans. Meat-free; many curry pastes contain shrimp, so check the label if you're vegetarian."
+ingredients = [
+  "1 tbsp vegetable oil",
+  "3 tbsp red curry paste",
+  "400 ml coconut milk",
+  "250 ml vegetable stock",
+  "800 g pumpkin, cut into chunks",
+  "400 g can chickpeas, drained",
+  "150 g green beans, trimmed",
+  "1 tbsp soy sauce",
+  "1 lime, juiced",
+  "1 bunch basil, leaves picked",
+  "1 1/2 cups rice",
+]
+method = [
+  "Cook the rice.",
+  "Fry the curry paste in the oil for 1 minute until fragrant.",
+  "Add the coconut milk, stock and pumpkin and simmer for 15 minutes until the pumpkin is tender.",
+  "Add the chickpeas and green beans for 4 minutes. Season with the soy sauce and lime juice, scatter with basil and serve with the rice.",
+]
+
+[[recipe]]
+slug = "tom-kha-gai"
+title = "Tom kha gai (coconut chicken soup)"
+cuisine = "thai"
+servings = 4
+minutes = 30
+summary = "Silky coconut soup with chicken, mushrooms, lemongrass and lime."
+ingredients = [
+  "500 g chicken thigh, thinly sliced",
+  "400 ml coconut milk",
+  "500 ml chicken stock",
+  "2 stalks lemongrass, bruised and cut into lengths",
+  "4 kaffir lime leaves, torn",
+  "20 g ginger, sliced",
+  "200 g mushrooms, sliced",
+  "3 tbsp fish sauce",
+  "2 limes, juiced",
+  "1 tsp brown sugar",
+  "1 bunch coriander, chopped",
+]
+method = [
+  "Simmer the coconut milk, stock, lemongrass, lime leaves and ginger for 5 minutes.",
+  "Add the chicken and mushrooms and simmer gently for 10 minutes until the chicken is cooked through.",
+  "Stir in the fish sauce, lime juice and sugar. Serve topped with coriander (the lemongrass and ginger aren't for eating).",
+]
+
+[[recipe]]
+slug = "thai-beef-salad"
+title = "Thai beef salad"
+cuisine = "thai"
+servings = 4
+minutes = 25
+summary = "Seared steak sliced over cucumber, tomato and herbs with a sharp lime dressing."
+ingredients = [
+  "600 g beef steak",
+  "1 tbsp vegetable oil",
+  "1 cucumber, sliced",
+  "250 g cherry tomatoes, halved",
+  "1 red onion, thinly sliced",
+  "1 bunch mint, leaves picked",
+  "1 bunch coriander, leaves picked",
+  "3 tbsp fish sauce",
+  "2 limes, juiced",
+  "1 tsp brown sugar",
+  "1 red chilli, finely chopped",
+  "2 tbsp peanuts, chopped",
+]
+method = [
+  "Rub the steak with the oil and sear over high heat for 3 minutes each side for medium. Rest for 5 minutes, then slice thinly.",
+  "Mix the fish sauce, lime juice, sugar and chilli.",
+  "Toss the cucumber, tomatoes, onion, mint and coriander with the beef and dressing. Top with peanuts.",
+]
+
+[[recipe]]
+slug = "pad-see-ew"
+title = "Pad see ew"
+cuisine = "thai"
+servings = 4
+minutes = 25
+summary = "Wide rice noodles stir-fried with chicken, broccolini and egg in a sweet soy sauce."
+ingredients = [
+  "400 g rice noodles",
+  "400 g chicken thigh, thinly sliced",
+  "2 tbsp vegetable oil",
+  "3 cloves garlic, crushed",
+  "1 bunch broccolini, cut into lengths",
+  "2 eggs",
+  "2 tbsp kecap manis",
+  "2 tbsp oyster sauce",
+  "1 tbsp soy sauce",
+]
+method = [
+  "Soak the noodles in hot water until soft, then drain.",
+  "Stir-fry the chicken in the oil for 5 minutes until cooked through. Add the garlic and broccolini for 2 minutes.",
+  "Push to one side, scramble the eggs, then add the noodles and sauces and toss over high heat for 2 minutes until a little charred.",
+]
+
+[[recipe]]
+slug = "thai-fish-cakes"
+title = "Thai fish cakes"
+cuisine = "thai"
+servings = 4
+minutes = 30
+summary = "Bouncy red curry fish cakes with green beans, served with sweet chilli sauce."
+ingredients = [
+  "500 g white fish fillets, roughly chopped",
+  "2 tbsp red curry paste",
+  "1 egg",
+  "1 tbsp fish sauce",
+  "100 g green beans, finely sliced",
+  "3 kaffir lime leaves, very finely shredded",
+  "3 tbsp vegetable oil",
+  "125 ml sweet chilli sauce",
+  "1 cucumber, sliced",
+]
+method = [
+  "Blitz the fish, curry paste, egg and fish sauce in a food processor to a sticky paste. Stir in the beans and lime leaves.",
+  "With wet hands, shape into 16 small patties.",
+  "Fry in the oil in batches for 2–3 minutes each side until golden and cooked through. Serve with sweet chilli sauce and cucumber.",
+]
+
+[[recipe]]
+slug = "thai-cashew-chicken"
+title = "Thai cashew chicken"
+cuisine = "thai"
+servings = 4
+minutes = 25
+summary = "Chicken stir-fried with cashews, capsicum and spring onion in a savoury glaze."
+ingredients = [
+  "500 g chicken thigh, cut into bite-sized pieces",
+  "1 tbsp cornflour",
+  "2 tbsp vegetable oil",
+  "3 cloves garlic, crushed",
+  "1 onion, cut into wedges",
+  "1 capsicum, sliced",
+  "80 g cashews",
+  "2 tbsp oyster sauce",
+  "1 tbsp soy sauce",
+  "1 tsp brown sugar",
+  "3 spring onions, cut into lengths",
+  "1 1/2 cups rice",
+]
+method = [
+  "Cook the rice. Toss the chicken in the cornflour.",
+  "Stir-fry the chicken in the oil for 5 minutes until golden and cooked through. Remove.",
+  "Stir-fry the garlic, onion and capsicum for 2 minutes. Return the chicken with the cashews, sauces, sugar and spring onions and toss for 1 minute. Serve with the rice.",
+]
+
+[[recipe]]
+slug = "pineapple-fried-rice"
+title = "Pineapple fried rice"
+cuisine = "thai"
+servings = 4
+minutes = 20
+summary = "Day-old rice fried with prawns, pineapple, cashews and curry powder."
+ingredients = [
+  "600 g cooked rice",
+  "300 g prawns, peeled",
+  "2 tbsp vegetable oil",
+  "2 eggs, beaten",
+  "1 onion, diced",
+  "1 tsp curry powder",
+  "200 g canned pineapple, drained and chopped",
+  "150 g frozen peas",
+  "50 g cashews",
+  "2 tbsp fish sauce",
+  "3 spring onions, sliced",
+]
+method = [
+  "Scramble the eggs in half the oil and remove.",
+  "Fry the onion in the rest of the oil for 2 minutes, then the prawns for 2 minutes until pink.",
+  "Add the curry powder, rice, pineapple and peas and fry for 5 minutes until hot. Stir in the egg, cashews, fish sauce and spring onions.",
+]
+
+[[recipe]]
+slug = "green-curry-tofu-vegetables"
+title = "Green curry with tofu and vegetables"
+cuisine = "thai"
+servings = 4
+minutes = 25
+summary = "Tofu, zucchini and snow peas in a fragrant green coconut curry. Meat-free; many curry pastes contain shrimp, so check the label if you're vegetarian."
+ingredients = [
+  "1 tbsp vegetable oil",
+  "3 tbsp green curry paste",
+  "400 ml coconut milk",
+  "125 ml vegetable stock",
+  "300 g tofu, cubed",
+  "2 zucchini, sliced",
+  "150 g snow peas",
+  "1 tbsp soy sauce",
+  "1 lime, juiced",
+  "1 bunch basil, leaves picked",
+  "1 1/2 cups rice",
+]
+method = [
+  "Cook the rice.",
+  "Fry the curry paste in the oil for 1 minute, then add the coconut milk and stock and bring to a simmer.",
+  "Add the tofu and zucchini for 6 minutes, then the snow peas for 2 minutes. Season with the soy sauce and lime and scatter with basil. Serve with the rice.",
+]
+
+[[recipe]]
+slug = "vietnamese-bun-cha"
+title = "Bun cha (pork patties with noodles)"
+cuisine = "vietnamese"
+servings = 4
+minutes = 35
+summary = "Charred lemongrass pork patties with rice vermicelli, herbs and a sweet-sour dipping sauce."
+ingredients = [
+  "500 g pork mince",
+  "1 stalk lemongrass, finely chopped",
+  "2 cloves garlic, crushed",
+  "4 tbsp fish sauce",
+  "2 tbsp brown sugar",
+  "1 tbsp vegetable oil",
+  "250 g rice vermicelli",
+  "2 limes, juiced",
+  "1 red chilli, sliced",
+  "125 ml water",
+  "1 lettuce, leaves separated",
+  "1 bunch mint, leaves picked",
+  "1 cucumber, cut into batons",
+]
+method = [
+  "Mix the pork, lemongrass, garlic, 1 tbsp fish sauce and 1 tbsp sugar. Shape into 12 small patties.",
+  "Fry or grill the patties in the oil for 4 minutes each side until charred and cooked through.",
+  "Soak the vermicelli in boiling water for 5 minutes, then drain and rinse.",
+  "For the dipping sauce, mix the rest of the fish sauce and sugar with the lime juice, chilli and water. Serve the patties with the noodles, lettuce, mint, cucumber and sauce.",
+]
+
+[[recipe]]
+slug = "banh-mi"
+title = "Banh mi with lemongrass pork"
+cuisine = "vietnamese"
+servings = 4
+minutes = 30
+summary = "Crusty rolls stuffed with caramelised pork, quick-pickled carrot, cucumber and coriander."
+ingredients = [
+  "500 g pork mince",
+  "1 stalk lemongrass, finely chopped",
+  "2 tbsp fish sauce",
+  "1 tbsp brown sugar",
+  "1 tbsp vegetable oil",
+  "2 carrots, cut into matchsticks",
+  "60 ml rice vinegar",
+  "1 tsp white sugar",
+  "4 bread rolls",
+  "3 tbsp mayonnaise",
+  "1 cucumber, cut into batons",
+  "1 bunch coriander, leaves picked",
+  "1 red chilli, sliced",
+]
+method = [
+  "Toss the carrots with the rice vinegar and white sugar and leave while you cook.",
+  "Fry the pork with the lemongrass in the oil for 6 minutes until browned and cooked through. Add the fish sauce and brown sugar and cook for 1 minute until sticky.",
+  "Split the rolls, spread with mayonnaise and fill with the pork, drained carrot, cucumber, coriander and chilli.",
+]
+
+[[recipe]]
+slug = "vietnamese-chicken-salad"
+title = "Vietnamese chicken and cabbage salad"
+cuisine = "vietnamese"
+servings = 4
+minutes = 30
+summary = "Poached chicken tossed through crunchy wombok, carrot and herbs with a lime dressing."
+ingredients = [
+  "2 chicken breasts",
+  "1/2 wombok, finely shredded",
+  "2 carrots, grated",
+  "1 red onion, thinly sliced",
+  "1 bunch mint, leaves picked",
+  "1 bunch coriander, leaves picked",
+  "3 tbsp fish sauce",
+  "2 limes, juiced",
+  "1 tbsp white sugar",
+  "1 red chilli, finely chopped",
+  "50 g peanuts, chopped",
+]
+method = [
+  "Poach the chicken in simmering water for 15 minutes until cooked through. Cool and shred.",
+  "Mix the fish sauce, lime juice, sugar and chilli until the sugar dissolves.",
+  "Toss the chicken with the wombok, carrot, onion, mint, coriander and dressing. Top with peanuts.",
+]
+
+[[recipe]]
+slug = "vietnamese-lemongrass-chicken"
+title = "Vietnamese lemongrass chicken"
+cuisine = "vietnamese"
+servings = 4
+minutes = 40
+summary = "Chicken thighs marinated with lemongrass, garlic and fish sauce, then pan-fried until sticky."
+ingredients = [
+  "800 g chicken thigh",
+  "2 stalks lemongrass, finely chopped",
+  "3 cloves garlic, crushed",
+  "3 tbsp fish sauce",
+  "2 tbsp brown sugar",
+  "1 tbsp vegetable oil",
+  "1 1/2 cups rice",
+  "1 cucumber, sliced",
+  "3 spring onions, sliced",
+]
+method = [
+  "Mix the lemongrass, garlic, fish sauce and sugar and coat the chicken. Marinate for 15 minutes while you cook the rice.",
+  "Fry the chicken in the oil over medium heat for 6–7 minutes each side until caramelised and cooked through.",
+  "Slice and serve over the rice with cucumber and spring onions.",
+]
+
+[[recipe]]
+slug = "shaking-beef"
+title = "Shaking beef (bo luc lac)"
+cuisine = "vietnamese"
+servings = 4
+minutes = 25
+summary = "Cubes of seared steak tossed in a garlicky soy glaze over watercress-style salad."
+ingredients = [
+  "600 g beef steak, cut into 3 cm cubes",
+  "2 tbsp vegetable oil",
+  "4 cloves garlic, crushed",
+  "2 tbsp oyster sauce",
+  "1 tbsp soy sauce",
+  "1 tsp brown sugar",
+  "1 red onion, cut into wedges",
+  "100 g rocket",
+  "250 g cherry tomatoes, halved",
+  "1 lime, cut into wedges",
+  "1 1/2 cups rice",
+]
+method = [
+  "Cook the rice.",
+  "Sear the beef in the oil over very high heat in batches for 2 minutes, shaking the pan, until browned.",
+  "Add the onion and garlic for 1 minute, then the oyster sauce, soy and sugar and toss until glossy.",
+  "Serve on the rocket and tomatoes with lime wedges and the rice.",
+]
+
+[[recipe]]
+slug = "vermicelli-prawn-bowls"
+title = "Vermicelli bowls with garlic prawns"
+cuisine = "vietnamese"
+servings = 4
+minutes = 25
+summary = "Cool rice noodles with garlic prawns, crunchy vegetables, herbs and nuoc cham."
+ingredients = [
+  "250 g rice vermicelli",
+  "500 g prawns, peeled",
+  "1 tbsp vegetable oil",
+  "3 cloves garlic, crushed",
+  "1 carrot, cut into matchsticks",
+  "1 cucumber, cut into matchsticks",
+  "100 g bean sprouts",
+  "1 bunch mint, leaves picked",
+  "3 tbsp fish sauce",
+  "2 limes, juiced",
+  "1 tbsp white sugar",
+  "60 ml water",
+  "40 g peanuts, chopped",
+]
+method = [
+  "Soak the vermicelli in boiling water for 5 minutes, drain and rinse under cold water.",
+  "Fry the prawns and garlic in the oil for 3 minutes until pink.",
+  "Mix the fish sauce, lime juice, sugar and water for the dressing.",
+  "Divide the noodles, carrot, cucumber, bean sprouts and mint between bowls, top with the prawns and peanuts and pour over the dressing.",
+]
+
+[[recipe]]
+slug = "caramel-pork"
+title = "Vietnamese caramel pork"
+cuisine = "vietnamese"
+servings = 4
+minutes = 75
+summary = "Pork shoulder braised in a dark caramel with fish sauce until sticky and tender."
+ingredients = [
+  "1 kg pork shoulder, cut into 3 cm pieces",
+  "60 g brown sugar",
+  "3 tbsp fish sauce",
+  "1 onion, sliced",
+  "3 cloves garlic, crushed",
+  "250 ml water",
+  "4 eggs",
+  "3 spring onions, sliced",
+  "1 1/2 cups rice",
+]
+method = [
+  "Hard-boil the eggs for 8 minutes, cool and peel.",
+  "Melt the sugar in a heavy pot over medium heat, without stirring, for 4 minutes until dark amber.",
+  "Carefully add the pork, onion and garlic and stir for 5 minutes until coated and browned. Add the fish sauce and water.",
+  "Cover and simmer for 45 minutes until tender, adding the eggs for the last 10 minutes. Serve with rice and spring onions.",
+]
+
+[[recipe]]
+slug = "nasi-lemak"
+title = "Nasi lemak"
+cuisine = "malaysian"
+servings = 4
+minutes = 40
+summary = "Coconut rice with a sweet chilli sambal, boiled eggs, cucumber and roasted peanuts."
+ingredients = [
+  "1 1/2 cups rice",
+  "400 ml coconut milk",
+  "125 ml water",
+  "20 g ginger, sliced",
+  "1/2 tsp salt",
+  "4 eggs",
+  "1 tbsp vegetable oil",
+  "1 onion, finely diced",
+  "2 tsp chilli flakes",
+  "2 tbsp tamarind paste",
+  "2 tbsp brown sugar",
+  "1 cucumber, sliced",
+  "80 g peanuts",
+]
+method = [
+  "Rinse the rice and cook with the coconut milk, water, ginger and salt, covered, on low for 15 minutes. Rest for 5 minutes.",
+  "Boil the eggs for 8 minutes, cool and halve.",
+  "For the sambal, fry the onion in the oil for 5 minutes, then add the chilli flakes, tamarind and sugar with a splash of water and simmer for 3 minutes until jammy.",
+  "Toast the peanuts in a dry pan for 3 minutes. Serve the rice with the eggs, cucumber, peanuts and sambal.",
+]
+
+[[recipe]]
+slug = "mee-goreng"
+title = "Mee goreng"
+cuisine = "malaysian"
+servings = 4
+minutes = 25
+summary = "Spicy-sweet fried hokkien noodles with chicken, bok choy, egg and lime."
+ingredients = [
+  "450 g hokkien noodles",
+  "400 g chicken thigh, thinly sliced",
+  "2 tbsp vegetable oil",
+  "3 cloves garlic, crushed",
+  "1 onion, sliced",
+  "2 bok choy, chopped",
+  "2 eggs",
+  "3 tbsp kecap manis",
+  "2 tbsp tomato sauce",
+  "1 tbsp soy sauce",
+  "1 tsp chilli flakes",
+  "100 g bean sprouts",
+  "1 lime, cut into wedges",
+]
+method = [
+  "Loosen the noodles in hot water and drain.",
+  "Stir-fry the chicken in the oil for 5 minutes until cooked through. Add the garlic, onion and bok choy for 2 minutes.",
+  "Push aside and scramble the eggs, then add the noodles, kecap manis, tomato sauce, soy and chilli and toss for 2 minutes. Add the bean sprouts and serve with lime.",
+]
+
+[[recipe]]
+slug = "beef-rendang"
+title = "Beef rendang"
+cuisine = "malaysian"
+servings = 6
+minutes = 180
+summary = "Chuck steak slow-cooked in spiced coconut until the sauce clings and the beef falls apart."
+ingredients = [
+  "1.2 kg beef chuck steak, cut into large chunks",
+  "2 tbsp vegetable oil",
+  "4 tbsp red curry paste",
+  "2 stalks lemongrass, bruised",
+  "4 kaffir lime leaves",
+  "1 cinnamon stick",
+  "400 ml coconut milk",
+  "250 ml water",
+  "40 g desiccated coconut",
+  "2 tbsp tamarind paste",
+  "1 tbsp brown sugar",
+  "1 tsp salt",
+  "2 cups rice",
+]
+method = [
+  "Fry the curry paste in the oil for 2 minutes. Add the beef and stir for 5 minutes until coated and browned.",
+  "Add the lemongrass, lime leaves, cinnamon, coconut milk and water. Simmer uncovered for 2 hours, stirring more often near the end, until thick and the beef is tender.",
+  "Toast the coconut in a dry pan for 3 minutes until golden. Stir it in with the tamarind, sugar and salt and cook for 10 minutes more until dark and almost dry. Serve with rice.",
+]
+
+[[recipe]]
+slug = "char-kway-teow"
+title = "Char kway teow"
+cuisine = "malaysian"
+servings = 4
+minutes = 25
+summary = "Smoky wok-fried flat rice noodles with prawns, egg, bean sprouts and chives."
+ingredients = [
+  "400 g rice noodles",
+  "300 g prawns, peeled",
+  "2 tbsp vegetable oil",
+  "3 cloves garlic, crushed",
+  "2 eggs",
+  "2 tbsp kecap manis",
+  "2 tbsp soy sauce",
+  "1 tbsp oyster sauce",
+  "1 tsp chilli flakes",
+  "150 g bean sprouts",
+  "1 bunch chives, cut into lengths",
+]
+method = [
+  "Soak the noodles in hot water until soft and drain.",
+  "Stir-fry the prawns and garlic in the oil over very high heat for 2 minutes until pink.",
+  "Push aside and scramble the eggs, then add the noodles, sauces and chilli and toss for 2 minutes until charred in spots. Toss through the bean sprouts and chives.",
+]
+
+[[recipe]]
+slug = "gado-gado"
+title = "Gado gado"
+cuisine = "indonesian"
+servings = 4
+minutes = 35
+summary = "Potatoes, green beans, eggs, tofu and crunchy vegetables with a rich peanut sauce. Vegetarian."
+ingredients = [
+  "500 g potatoes, cut into chunks",
+  "200 g green beans, trimmed",
+  "4 eggs",
+  "300 g tofu, cubed",
+  "1 tbsp vegetable oil",
+  "1 cucumber, sliced",
+  "100 g bean sprouts",
+  "125 g peanut butter",
+  "2 tbsp kecap manis",
+  "1 tbsp soy sauce",
+  "1 lime, juiced",
+  "1 tsp chilli flakes",
+  "125 ml water",
+]
+method = [
+  "Boil the potatoes for 12 minutes until tender, adding the beans for the last 3 minutes. Drain.",
+  "Boil the eggs for 8 minutes, cool and halve. Fry the tofu in the oil for 6 minutes until golden.",
+  "Warm the peanut butter, kecap manis, soy, lime juice, chilli and water, whisking, until smooth.",
+  "Arrange everything with the cucumber and bean sprouts and pour over the sauce.",
+]
+
+[[recipe]]
+slug = "soto-ayam"
+title = "Soto ayam (turmeric chicken soup)"
+cuisine = "indonesian"
+servings = 4
+minutes = 45
+summary = "Golden turmeric and lemongrass chicken broth with noodles, egg and bean sprouts."
+ingredients = [
+  "600 g chicken thigh",
+  "1.5 litres chicken stock",
+  "2 stalks lemongrass, bruised",
+  "20 g ginger, sliced",
+  "3 cloves garlic, crushed",
+  "1 tsp ground turmeric",
+  "4 kaffir lime leaves",
+  "150 g rice vermicelli",
+  "4 eggs",
+  "100 g bean sprouts",
+  "3 spring onions, sliced",
+  "1 lime, cut into wedges",
+]
+method = [
+  "Simmer the chicken in the stock with the lemongrass, ginger, garlic, turmeric and lime leaves for 25 minutes until cooked through. Lift out the chicken and shred.",
+  "Boil the eggs for 8 minutes, cool and halve. Soak the vermicelli in boiling water for 5 minutes and drain.",
+  "Divide the noodles, chicken and bean sprouts between bowls, ladle over the hot broth and top with egg, spring onions and lime.",
+]
+
+[[recipe]]
+slug = "indonesian-chicken-satay-noodles"
+title = "Satay chicken noodles"
+cuisine = "indonesian"
+servings = 4
+minutes = 25
+summary = "Hokkien noodles tossed with chicken, broccoli and a peanut-kecap sauce."
+ingredients = [
+  "450 g hokkien noodles",
+  "500 g chicken breast, thinly sliced",
+  "1 tbsp vegetable oil",
+  "1 broccoli, cut into small florets",
+  "1 capsicum, sliced",
+  "90 g peanut butter",
+  "2 tbsp kecap manis",
+  "1 tbsp soy sauce",
+  "1 lime, juiced",
+  "125 ml water",
+  "2 tbsp peanuts, chopped",
+]
+method = [
+  "Loosen the noodles in hot water and drain.",
+  "Stir-fry the chicken in the oil for 5 minutes until cooked through. Add the broccoli and capsicum for 3 minutes.",
+  "Whisk the peanut butter, kecap manis, soy, lime juice and water, add with the noodles and toss for 2 minutes until coated. Top with peanuts.",
+]
+
+[[recipe]]
+slug = "chicken-adobo"
+title = "Chicken adobo"
+cuisine = "filipino"
+servings = 4
+minutes = 50
+summary = "Chicken braised in soy, vinegar, garlic and bay until tender and glossy."
+ingredients = [
+  "1 kg chicken thigh",
+  "1 tbsp vegetable oil",
+  "6 cloves garlic, crushed",
+  "125 ml soy sauce",
+  "125 ml white vinegar",
+  "125 ml water",
+  "3 bay leaves",
+  "1 tsp black pepper",
+  "1 tbsp brown sugar",
+  "1 1/2 cups rice",
+]
+method = [
+  "Brown the chicken in the oil for 4 minutes each side. Add the garlic for 1 minute.",
+  "Add the soy sauce, vinegar, water, bay leaves, pepper and sugar. Simmer, covered, for 25 minutes until the chicken is cooked through.",
+  "Uncover and simmer for 10 minutes more until the sauce reduces. Serve with rice.",
+]
+
+[[recipe]]
+slug = "pancit"
+title = "Pancit (Filipino fried noodles)"
+cuisine = "filipino"
+servings = 4
+minutes = 30
+summary = "Rice vermicelli stir-fried with chicken, cabbage, carrot and soy, finished with lemon."
+ingredients = [
+  "250 g rice vermicelli",
+  "400 g chicken thigh, thinly sliced",
+  "1 tbsp vegetable oil",
+  "1 onion, sliced",
+  "3 cloves garlic, crushed",
+  "1/4 cabbage, shredded",
+  "2 carrots, cut into matchsticks",
+  "250 ml chicken stock",
+  "3 tbsp soy sauce",
+  "1 lemon, cut into wedges",
+]
+method = [
+  "Soak the vermicelli in warm water for 10 minutes and drain.",
+  "Stir-fry the chicken in the oil for 5 minutes until cooked through. Add the onion and garlic for 2 minutes, then the cabbage and carrot for 3 minutes.",
+  "Add the stock, soy sauce and noodles and toss for 3 minutes until the liquid is absorbed. Serve with lemon wedges.",
+]

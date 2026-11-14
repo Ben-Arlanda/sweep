@@ -1,0 +1,729 @@
+# Soups and salads. Written for Sweep (licence: Sweep original).
+
+[[recipe]]
+slug = "broccoli-cheddar-soup"
+title = "Broccoli and cheddar soup"
+cuisine = "american"
+servings = 4
+minutes = 35
+summary = "Thick, creamy broccoli soup with sharp melted cheddar. Vegetarian if made with vegetable stock."
+ingredients = [
+  "40 g butter",
+  "1 onion, diced",
+  "2 carrots, grated",
+  "40 g plain flour",
+  "750 ml vegetable stock",
+  "250 ml milk",
+  "2 broccoli, chopped into small florets",
+  "200 g cheddar cheese, grated",
+  "1/2 tsp black pepper",
+  "1 baguette",
+]
+method = [
+  "Soften the onion and carrot in the butter for 6 minutes. Stir in the flour for 1 minute.",
+  "Whisk in the stock and milk, add the broccoli and simmer for 15 minutes until tender.",
+  "Blend half the soup, stir it back in, then add the cheddar and pepper until melted. Serve with the baguette.",
+]
+
+[[recipe]]
+slug = "sweet-potato-lentil-soup"
+title = "Spiced sweet potato and red lentil soup"
+cuisine = "australian"
+servings = 6
+minutes = 40
+summary = "A smooth, warming soup of sweet potato, red lentils, cumin and coconut. Vegan."
+ingredients = [
+  "2 tbsp olive oil",
+  "1 onion, diced",
+  "2 cloves garlic, crushed",
+  "1 tbsp ginger, grated",
+  "2 tsp ground cumin",
+  "1 tsp ground turmeric",
+  "800 g sweet potato, diced",
+  "150 g red lentils",
+  "1.5 litres vegetable stock",
+  "200 ml coconut milk",
+  "1 lime, juiced",
+  "1 bunch coriander, chopped",
+]
+method = [
+  "Soften the onion, garlic and ginger in the oil for 5 minutes. Add the spices for 1 minute.",
+  "Add the sweet potato, lentils and stock and simmer for 25 minutes until soft.",
+  "Blend until smooth, stir in the coconut milk and lime juice, and top with coriander.",
+]
+
+[[recipe]]
+slug = "italian-wedding-soup"
+title = "Italian wedding soup"
+cuisine = "italian"
+servings = 6
+minutes = 45
+summary = "Little beef and parmesan meatballs in chicken broth with tiny pasta and spinach."
+ingredients = [
+  "400 g beef mince",
+  "30 g breadcrumbs",
+  "1 egg",
+  "40 g parmesan, grated",
+  "1 tbsp olive oil",
+  "1 onion, diced",
+  "2 carrots, diced",
+  "2 stalks celery, diced",
+  "2 litres chicken stock",
+  "150 g pasta",
+  "150 g baby spinach",
+]
+method = [
+  "Mix the mince, breadcrumbs, egg and half the parmesan and roll into small balls.",
+  "Soften the onion, carrot and celery in the oil for 6 minutes. Add the stock and bring to a simmer.",
+  "Drop in the meatballs and pasta and simmer for 12 minutes until the meatballs are cooked through and the pasta tender.",
+  "Stir in the spinach and serve with the rest of the parmesan.",
+]
+
+[[recipe]]
+slug = "black-bean-soup"
+title = "Smoky black bean soup"
+cuisine = "mexican"
+servings = 4
+minutes = 35
+summary = "A thick, smoky soup of black beans and tomato, topped with avocado, sour cream and lime. Vegetarian."
+ingredients = [
+  "2 tbsp olive oil",
+  "1 onion, diced",
+  "1 capsicum, diced",
+  "3 cloves garlic, crushed",
+  "2 tsp ground cumin",
+  "2 tsp paprika",
+  "3 x 400 g cans black beans, drained",
+  "400 g can canned tomatoes",
+  "750 ml vegetable stock",
+  "1 avocado, diced",
+  "100 g sour cream",
+  "1 lime, cut into wedges",
+]
+method = [
+  "Soften the onion, capsicum and garlic in the oil for 8 minutes. Add the spices for 1 minute.",
+  "Add the beans, tomatoes and stock and simmer for 15 minutes.",
+  "Blend about half the soup and stir it back in. Serve topped with avocado, sour cream and lime.",
+]
+
+[[recipe]]
+slug = "roast-tomato-soup-grilled-cheese"
+title = "Roast tomato soup with grilled cheese"
+cuisine = "american"
+servings = 4
+minutes = 50
+summary = "Sweet roasted tomato and garlic soup with crisp cheddar toasties for dunking. Vegetarian."
+ingredients = [
+  "1.2 kg tomatoes, halved",
+  "1 onion, quartered",
+  "4 cloves garlic, peeled",
+  "3 tbsp olive oil",
+  "500 ml vegetable stock",
+  "1 tsp white sugar",
+  "1 bunch basil, leaves picked",
+  "8 slices bread",
+  "40 g butter, softened",
+  "150 g cheddar cheese, grated",
+]
+method = [
+  "Heat the oven to 200°C. Roast the tomatoes, onion and garlic with the oil for 35 minutes until soft and charred.",
+  "Blend with the stock, sugar and most of the basil until smooth, then warm through.",
+  "Butter the outside of the bread, fill with cheddar and fry for 3 minutes each side until golden and melted. Serve with the soup.",
+]
+
+[[recipe]]
+slug = "potato-bacon-soup"
+title = "Creamy potato and bacon soup"
+cuisine = "australian"
+servings = 4
+minutes = 40
+summary = "A thick, comforting soup of potato, onion and smoky bacon, topped with chives."
+ingredients = [
+  "4 rashers bacon, diced",
+  "20 g butter",
+  "1 onion, diced",
+  "2 stalks celery, diced",
+  "1 kg potatoes, diced",
+  "1.25 litres chicken stock",
+  "125 ml thickened cream",
+  "1 bunch chives, snipped",
+]
+method = [
+  "Fry the bacon in the butter for 5 minutes until crisp. Remove half for the top.",
+  "Add the onion and celery for 5 minutes, then the potatoes and stock. Simmer for 20 minutes until soft.",
+  "Blend until smooth, stir in the cream and serve topped with the reserved bacon and chives.",
+]
+
+[[recipe]]
+slug = "chicken-tortilla-soup"
+title = "Chicken tortilla soup"
+cuisine = "mexican"
+servings = 4
+minutes = 40
+summary = "A spicy tomato and chicken broth with corn and beans, topped with crispy tortilla strips."
+ingredients = [
+  "500 g chicken thigh",
+  "1 tbsp olive oil",
+  "1 onion, diced",
+  "2 cloves garlic, crushed",
+  "2 tsp ground cumin",
+  "1 tsp chilli powder",
+  "400 g can canned tomatoes",
+  "1.25 litres chicken stock",
+  "125 g corn kernels",
+  "400 g can black beans, drained",
+  "3 tortillas, cut into strips",
+  "1 avocado, diced",
+  "1 lime, cut into wedges",
+]
+method = [
+  "Soften the onion and garlic in half the oil for 5 minutes. Add the spices, tomatoes, stock and chicken and simmer for 20 minutes until the chicken is cooked through. Shred the chicken.",
+  "Add the corn and beans for 5 minutes.",
+  "Toss the tortilla strips in the rest of the oil and bake at 200°C for 8 minutes until crisp.",
+  "Serve the soup topped with tortilla strips, avocado and lime.",
+]
+
+[[recipe]]
+slug = "carrot-ginger-soup"
+title = "Carrot and ginger soup"
+cuisine = "australian"
+servings = 4
+minutes = 35
+summary = "Silky, bright carrot soup with fresh ginger and a swirl of yoghurt. Vegetarian."
+ingredients = [
+  "1 tbsp olive oil",
+  "1 onion, diced",
+  "2 tbsp ginger, grated",
+  "1 kg carrots, sliced",
+  "1.25 litres vegetable stock",
+  "1 lemon, juiced",
+  "100 g greek yoghurt",
+]
+method = [
+  "Soften the onion and ginger in the oil for 5 minutes.",
+  "Add the carrots and stock and simmer for 20 minutes until very soft.",
+  "Blend until smooth, stir in the lemon juice and serve with a swirl of yoghurt.",
+]
+
+[[recipe]]
+slug = "creamy-mushroom-soup"
+title = "Creamy mushroom soup"
+cuisine = "french"
+servings = 4
+minutes = 35
+summary = "Earthy mushrooms blended with thyme and a little cream. Vegetarian if made with vegetable stock."
+ingredients = [
+  "40 g butter",
+  "1 onion, diced",
+  "2 cloves garlic, crushed",
+  "750 g mushrooms, sliced",
+  "1 bunch thyme, leaves picked",
+  "2 tbsp plain flour",
+  "1 litre vegetable stock",
+  "125 ml thickened cream",
+  "1 baguette",
+]
+method = [
+  "Soften the onion and garlic in the butter for 5 minutes. Add the mushrooms and thyme and cook for 10 minutes until golden.",
+  "Stir in the flour, then the stock, and simmer for 10 minutes.",
+  "Blend until smooth, stir in the cream and serve with the baguette.",
+]
+
+[[recipe]]
+slug = "pea-ham-soup"
+title = "Pea and ham soup"
+cuisine = "british"
+servings = 4
+minutes = 30
+summary = "A quick, vivid green pea soup with chunks of ham and mint."
+ingredients = [
+  "20 g butter",
+  "1 onion, diced",
+  "1 potato, diced",
+  "1 litre chicken stock",
+  "750 g frozen peas",
+  "200 g ham, chopped",
+  "1 bunch mint, chopped",
+  "1/2 tsp black pepper",
+]
+method = [
+  "Soften the onion in the butter for 5 minutes. Add the potato and stock and simmer for 12 minutes.",
+  "Add the peas for 4 minutes, then blend with most of the mint until smooth.",
+  "Stir in the ham, warm through and serve with the rest of the mint and pepper.",
+]
+
+[[recipe]]
+slug = "beef-barley-soup"
+title = "Beef and barley soup"
+cuisine = "australian"
+servings = 6
+minutes = 120
+summary = "A hearty, slow-simmered soup of beef, pearl barley and root vegetables."
+ingredients = [
+  "600 g beef chuck steak, diced",
+  "1 tbsp olive oil",
+  "1 onion, diced",
+  "2 carrots, diced",
+  "2 stalks celery, diced",
+  "2 tbsp tomato paste",
+  "150 g pearl barley, rinsed",
+  "2 litres beef stock",
+  "1 bunch thyme",
+  "1 bunch parsley, chopped",
+]
+method = [
+  "Brown the beef in the oil for 5 minutes. Add the onion, carrot and celery for 5 minutes, then the tomato paste.",
+  "Add the barley, stock and thyme and simmer, partly covered, for 1½ hours until the beef is tender and cooked through.",
+  "Stir in the parsley.",
+]
+
+[[recipe]]
+slug = "ribollita"
+title = "Ribollita (Tuscan bread and bean soup)"
+cuisine = "italian"
+servings = 6
+minutes = 55
+summary = "A thick vegetable, cabbage and bean soup, thickened with bread and finished with olive oil. Vegan."
+ingredients = [
+  "4 tbsp olive oil",
+  "1 onion, diced",
+  "2 carrots, diced",
+  "2 stalks celery, diced",
+  "3 cloves garlic, crushed",
+  "400 g can canned tomatoes",
+  "2 x 400 g cans cannellini beans, drained",
+  "1/2 cabbage, shredded",
+  "1.5 litres vegetable stock",
+  "4 slices bread, torn",
+  "1/2 tsp salt",
+]
+method = [
+  "Soften the onion, carrot, celery and garlic in 2 tbsp oil for 10 minutes.",
+  "Add the tomatoes, beans, cabbage and stock and simmer for 30 minutes.",
+  "Stir in the bread and salt and simmer for 5 minutes until thick. Serve drizzled with the rest of the oil.",
+]
+
+[[recipe]]
+slug = "wonton-soup"
+title = "Wonton soup"
+cuisine = "chinese"
+servings = 4
+minutes = 45
+summary = "Silky pork and ginger wontons in a clear broth with bok choy."
+ingredients = [
+  "300 g pork mince",
+  "1 tbsp ginger, grated",
+  "2 spring onions, finely sliced",
+  "2 tbsp soy sauce",
+  "1 tsp sesame oil",
+  "30 dumpling wrappers",
+  "1.5 litres chicken stock",
+  "2 bok choy, quartered",
+]
+method = [
+  "Mix the pork, ginger, spring onions, 1 tbsp soy and the sesame oil.",
+  "Put a teaspoon of filling in each wrapper, wet the edges and fold into a parcel.",
+  "Bring the stock and the rest of the soy to a simmer. Add the wontons and simmer for 5 minutes until they float and the filling is cooked through, adding the bok choy for the last 2 minutes.",
+]
+
+[[recipe]]
+slug = "roast-cauliflower-soup"
+title = "Roast cauliflower soup"
+cuisine = "australian"
+servings = 4
+minutes = 45
+summary = "Nutty roasted cauliflower blended into a velvety soup with garlic and parmesan. Vegetarian if made with vegetable stock."
+ingredients = [
+  "1 cauliflower, cut into florets",
+  "1 onion, quartered",
+  "4 cloves garlic, peeled",
+  "3 tbsp olive oil",
+  "1 litre vegetable stock",
+  "125 ml milk",
+  "40 g parmesan, grated",
+  "1 bunch chives, snipped",
+]
+method = [
+  "Heat the oven to 220°C. Roast the cauliflower, onion and garlic with the oil for 25 minutes until golden.",
+  "Blend with the stock and milk until smooth, then warm through.",
+  "Serve topped with parmesan and chives.",
+]
+
+[[recipe]]
+slug = "sausage-bean-soup"
+title = "Spicy sausage and white bean soup"
+cuisine = "italian"
+servings = 4
+minutes = 35
+summary = "Crumbled sausage, cannellini beans, tomato and spinach in a hearty broth."
+ingredients = [
+  "4 sausages, skins removed",
+  "1 tbsp olive oil",
+  "1 onion, diced",
+  "2 cloves garlic, crushed",
+  "1/2 tsp chilli flakes",
+  "400 g can canned tomatoes",
+  "2 x 400 g cans cannellini beans, drained",
+  "1 litre chicken stock",
+  "150 g baby spinach",
+  "40 g parmesan, grated",
+]
+method = [
+  "Fry the sausage meat in the oil for 8 minutes, breaking it up, until browned and cooked through.",
+  "Add the onion, garlic and chilli for 5 minutes, then the tomatoes, beans and stock. Simmer for 15 minutes.",
+  "Stir in the spinach until wilted and serve with parmesan.",
+]
+
+[[recipe]]
+slug = "caprese-salad"
+title = "Caprese salad"
+cuisine = "italian"
+servings = 4
+minutes = 10
+summary = "Ripe tomatoes, torn mozzarella and basil with olive oil and balsamic. Vegetarian."
+ingredients = [
+  "4 tomatoes, sliced",
+  "250 g mozzarella, torn",
+  "1 bunch basil, leaves picked",
+  "3 tbsp olive oil",
+  "1 tbsp balsamic vinegar",
+  "1/2 tsp salt",
+  "1/2 tsp black pepper",
+]
+method = [
+  "Arrange the tomatoes and mozzarella on a plate and scatter with basil.",
+  "Drizzle with the oil and balsamic and season with the salt and pepper.",
+]
+
+[[recipe]]
+slug = "nicoise-salad"
+title = "Salade nicoise"
+cuisine = "french"
+servings = 4
+minutes = 30
+summary = "Tuna, potatoes, green beans, eggs, tomatoes and olives with a mustard dressing."
+ingredients = [
+  "500 g potatoes, halved",
+  "200 g green beans, trimmed",
+  "4 eggs",
+  "2 x 185 g cans canned tuna, drained",
+  "250 g cherry tomatoes, halved",
+  "60 g kalamata olives",
+  "1 lettuce, torn",
+  "3 tbsp olive oil",
+  "1 tbsp red wine vinegar",
+  "1 tsp dijon mustard",
+]
+method = [
+  "Boil the potatoes for 15 minutes until tender, adding the beans for the last 3 minutes. Drain and cool.",
+  "Boil the eggs for 8 minutes, cool and quarter.",
+  "Whisk the oil, vinegar and mustard.",
+  "Arrange the lettuce, potatoes, beans, tomatoes, olives, tuna and eggs and pour over the dressing.",
+]
+
+[[recipe]]
+slug = "waldorf-salad"
+title = "Waldorf salad"
+cuisine = "american"
+servings = 4
+minutes = 15
+summary = "Crisp apple, celery and toasted walnuts in a light lemony mayonnaise. Vegetarian."
+ingredients = [
+  "2 apples, diced",
+  "3 stalks celery, sliced",
+  "80 g walnuts",
+  "60 g sultanas",
+  "4 tbsp mayonnaise",
+  "100 g greek yoghurt",
+  "1 lemon, juiced",
+  "1 lettuce, leaves separated",
+]
+method = [
+  "Toast the walnuts in a dry pan for 4 minutes and roughly chop.",
+  "Toss the apple with the lemon juice, then mix with the celery, walnuts, sultanas, mayonnaise and yoghurt.",
+  "Serve on the lettuce leaves.",
+]
+
+[[recipe]]
+slug = "chicken-mango-salad"
+title = "Chicken and mango salad"
+cuisine = "australian"
+servings = 4
+minutes = 25
+summary = "Grilled chicken, sweet mango, avocado and rocket with a lime and sweet chilli dressing."
+ingredients = [
+  "600 g chicken breast",
+  "1 tbsp olive oil",
+  "2 mangoes, sliced",
+  "1 avocado, sliced",
+  "100 g rocket",
+  "1/2 red onion, thinly sliced",
+  "3 tbsp sweet chilli sauce",
+  "1 lime, juiced",
+  "1 bunch coriander, chopped",
+]
+method = [
+  "Rub the chicken with the oil and grill for 6–7 minutes each side until cooked through. Rest, then slice.",
+  "Mix the sweet chilli sauce and lime juice.",
+  "Toss the rocket, mango, avocado, onion and coriander, top with the chicken and drizzle with the dressing.",
+]
+
+[[recipe]]
+slug = "asian-slaw"
+title = "Crunchy Asian slaw"
+cuisine = "chinese"
+servings = 6
+minutes = 15
+summary = "Shredded cabbage, carrot and herbs with a sesame-lime dressing and peanuts. Vegan."
+ingredients = [
+  "1/4 cabbage, finely shredded",
+  "1/4 red cabbage, finely shredded",
+  "2 carrots, grated",
+  "4 spring onions, sliced",
+  "1 bunch coriander, chopped",
+  "1 bunch mint, chopped",
+  "3 tbsp rice vinegar",
+  "2 tbsp soy sauce",
+  "1 tbsp sesame oil",
+  "1 tbsp maple syrup",
+  "1 lime, juiced",
+  "50 g peanuts, chopped",
+]
+method = [
+  "Whisk the rice vinegar, soy, sesame oil, maple syrup and lime juice.",
+  "Toss with the cabbages, carrot, spring onions and herbs, and top with peanuts.",
+]
+
+[[recipe]]
+slug = "beetroot-feta-salad"
+title = "Beetroot, feta and walnut salad"
+cuisine = "australian"
+servings = 4
+minutes = 10
+summary = "Sweet beetroot with salty feta, toasted walnuts and rocket. Vegetarian."
+ingredients = [
+  "450 g can canned beetroot, drained and halved",
+  "100 g feta, crumbled",
+  "60 g walnuts",
+  "100 g rocket",
+  "2 tbsp olive oil",
+  "1 tbsp balsamic vinegar",
+]
+method = [
+  "Toast the walnuts in a dry pan for 4 minutes.",
+  "Toss the rocket with the oil and balsamic, then top with the beetroot, feta and walnuts.",
+]
+
+[[recipe]]
+slug = "warm-lentil-salad"
+title = "Warm lentil, feta and spinach salad"
+cuisine = "french"
+servings = 4
+minutes = 30
+summary = "Brown lentils dressed while warm with mustard vinaigrette, spinach, feta and red onion. Vegetarian."
+ingredients = [
+  "250 g brown lentils, rinsed",
+  "3 tbsp olive oil",
+  "1 tbsp red wine vinegar",
+  "1 tsp dijon mustard",
+  "1/2 red onion, finely diced",
+  "100 g baby spinach",
+  "150 g feta, crumbled",
+  "1 bunch parsley, chopped",
+]
+method = [
+  "Simmer the lentils in plenty of water for 20 minutes until just tender. Drain.",
+  "Whisk the oil, vinegar and mustard and toss through the warm lentils with the onion.",
+  "Fold in the spinach, feta and parsley.",
+]
+
+[[recipe]]
+slug = "italian-pasta-salad"
+title = "Italian pasta salad"
+cuisine = "italian"
+servings = 6
+minutes = 25
+summary = "Pasta with cherry tomatoes, olives, capsicum, mozzarella and basil in a red wine vinaigrette. Vegetarian."
+ingredients = [
+  "400 g pasta",
+  "250 g cherry tomatoes, halved",
+  "80 g kalamata olives, halved",
+  "1 capsicum, diced",
+  "1/2 red onion, finely diced",
+  "200 g mozzarella, diced",
+  "1 bunch basil, leaves picked",
+  "4 tbsp olive oil",
+  "2 tbsp red wine vinegar",
+  "1 tsp dried oregano",
+]
+method = [
+  "Cook the pasta, rinse under cold water and drain well.",
+  "Whisk the oil, vinegar and oregano.",
+  "Toss everything together.",
+]
+
+[[recipe]]
+slug = "aussie-rice-salad"
+title = "Classic Aussie rice salad"
+cuisine = "australian"
+servings = 6
+minutes = 30
+summary = "The barbecue favourite: rice with capsicum, corn, peas, spring onion and a soy-curry dressing. Vegan."
+ingredients = [
+  "1 1/2 cups rice",
+  "1 capsicum, diced",
+  "125 g corn kernels",
+  "150 g frozen peas",
+  "4 spring onions, sliced",
+  "60 g sultanas",
+  "3 tbsp vegetable oil",
+  "2 tbsp soy sauce",
+  "1 tbsp white vinegar",
+  "1 tsp curry powder",
+  "50 g almonds, toasted",
+]
+method = [
+  "Cook the rice, adding the peas for the last 2 minutes. Spread out to cool.",
+  "Whisk the oil, soy, vinegar and curry powder.",
+  "Toss the rice and peas with the capsicum, corn, spring onions, sultanas, almonds and dressing.",
+]
+
+[[recipe]]
+slug = "sweet-potato-chickpea-salad"
+title = "Roast sweet potato and crispy chickpea salad"
+cuisine = "middle-eastern"
+servings = 4
+minutes = 40
+summary = "Roasted sweet potato and crunchy spiced chickpeas over spinach with a tahini dressing. Vegan."
+ingredients = [
+  "2 sweet potatoes, diced",
+  "400 g can chickpeas, drained",
+  "3 tbsp olive oil",
+  "2 tsp ground cumin",
+  "1 tsp paprika",
+  "100 g baby spinach",
+  "3 tbsp tahini",
+  "1 lemon, juiced",
+  "3 tbsp water",
+  "2 tbsp pepitas",
+]
+method = [
+  "Heat the oven to 220°C. Toss the sweet potato and chickpeas with the oil and spices and roast for 30 minutes until the chickpeas are crisp.",
+  "Whisk the tahini, lemon juice and water.",
+  "Toss the spinach with the sweet potato and chickpeas, drizzle with the dressing and scatter with pepitas.",
+]
+
+[[recipe]]
+slug = "steak-blue-cheese-salad"
+title = "Steak salad with blue cheese and pear"
+cuisine = "american"
+servings = 4
+minutes = 25
+summary = "Sliced seared steak over rocket with pear, walnuts and crumbled blue cheese."
+ingredients = [
+  "600 g beef steak",
+  "1 tbsp olive oil",
+  "1/2 tsp salt",
+  "100 g rocket",
+  "2 pears, sliced",
+  "60 g walnuts",
+  "100 g blue cheese, crumbled",
+  "2 tbsp olive oil, extra",
+  "1 tbsp balsamic vinegar",
+]
+method = [
+  "Season the steak with the salt, rub with 1 tbsp oil and sear for 3 minutes each side for medium. Rest for 5 minutes, then slice.",
+  "Toast the walnuts in a dry pan for 4 minutes.",
+  "Toss the rocket with the extra oil and balsamic, then top with the pear, steak, walnuts and blue cheese.",
+]
+
+[[recipe]]
+slug = "crunchy-broccoli-salad"
+title = "Crunchy broccoli salad"
+cuisine = "american"
+servings = 6
+minutes = 20
+summary = "Raw broccoli, crispy bacon, red onion, sultanas and seeds in a creamy dressing."
+ingredients = [
+  "2 broccoli, cut into small florets",
+  "4 rashers bacon, diced",
+  "1/2 red onion, finely diced",
+  "60 g sultanas",
+  "3 tbsp pepitas",
+  "4 tbsp mayonnaise",
+  "100 g greek yoghurt",
+  "1 tbsp white vinegar",
+  "1 tsp honey",
+]
+method = [
+  "Fry the bacon in a dry pan for 6 minutes until crisp.",
+  "Whisk the mayonnaise, yoghurt, vinegar and honey.",
+  "Toss the broccoli, onion, sultanas, pepitas and bacon with the dressing.",
+]
+
+[[recipe]]
+slug = "esquites"
+title = "Mexican street corn salad (esquites)"
+cuisine = "mexican"
+servings = 4
+minutes = 15
+summary = "Charred corn tossed with lime, chilli, coriander, feta and a little mayonnaise. Vegetarian."
+ingredients = [
+  "500 g corn kernels",
+  "1 tbsp vegetable oil",
+  "2 tbsp mayonnaise",
+  "1 lime, juiced",
+  "1/2 tsp chilli powder",
+  "80 g feta, crumbled",
+  "1 bunch coriander, chopped",
+  "2 spring onions, sliced",
+]
+method = [
+  "Fry the corn in the oil over high heat for 6 minutes until charred in spots.",
+  "Toss with the mayonnaise, lime juice, chilli powder, feta, coriander and spring onions.",
+]
+
+[[recipe]]
+slug = "pear-walnut-blue-cheese-salad"
+title = "Pear, walnut and blue cheese salad"
+cuisine = "french"
+servings = 4
+minutes = 10
+summary = "A simple side of sweet pear, bitter rocket, toasted walnuts and blue cheese. Vegetarian."
+ingredients = [
+  "2 pears, thinly sliced",
+  "100 g rocket",
+  "60 g walnuts",
+  "80 g blue cheese, crumbled",
+  "2 tbsp olive oil",
+  "1 tbsp red wine vinegar",
+  "1 tsp honey",
+]
+method = [
+  "Toast the walnuts in a dry pan for 4 minutes.",
+  "Whisk the oil, vinegar and honey and toss with the rocket and pear. Top with the walnuts and blue cheese.",
+]
+
+[[recipe]]
+slug = "potato-bean-salad-mustard"
+title = "Potato and green bean salad with mustard dressing"
+cuisine = "french"
+servings = 6
+minutes = 25
+summary = "Warm potatoes and green beans in a sharp mustard, shallot and herb dressing. Vegan."
+ingredients = [
+  "1 kg potatoes, halved",
+  "250 g green beans, trimmed",
+  "2 shallots, finely diced",
+  "4 tbsp olive oil",
+  "2 tbsp red wine vinegar",
+  "1 tbsp dijon mustard",
+  "1 bunch parsley, chopped",
+  "1 bunch chives, snipped",
+  "1/2 tsp salt",
+]
+method = [
+  "Boil the potatoes for 15 minutes until tender, adding the beans for the last 3 minutes. Drain.",
+  "Whisk the oil, vinegar, mustard, shallots and salt.",
+  "Toss the warm potatoes and beans with the dressing and herbs.",
+]

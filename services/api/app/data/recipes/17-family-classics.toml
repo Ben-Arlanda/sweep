@@ -1,0 +1,783 @@
+# Family classics from Australia, Britain, America and Europe. Written for Sweep (licence: Sweep original).
+
+[[recipe]]
+slug = "chicken-mushroom-pie"
+title = "Chicken and mushroom pie"
+cuisine = "british"
+servings = 6
+minutes = 75
+summary = "Chicken and mushrooms in a creamy thyme sauce under golden puff pastry."
+ingredients = [
+  "800 g chicken thigh, diced",
+  "40 g butter",
+  "1 onion, diced",
+  "300 g mushrooms, sliced",
+  "40 g plain flour",
+  "375 ml chicken stock",
+  "125 ml thickened cream",
+  "1 bunch thyme, leaves picked",
+  "1 sheet puff pastry",
+  "1 egg, beaten",
+]
+method = [
+  "Brown the chicken in the butter for 6 minutes. Add the onion and mushrooms and cook for 6 minutes.",
+  "Stir in the flour, then the stock, cream and thyme, and simmer for 15 minutes until thick and the chicken is cooked through. Cool for 10 minutes.",
+  "Heat the oven to 200°C. Spoon into a pie dish, top with the pastry, brush with egg and cut a slit in the top.",
+  "Bake for 30 minutes until puffed and golden.",
+]
+
+[[recipe]]
+slug = "aussie-meat-pie"
+title = "Aussie beef pies"
+cuisine = "australian"
+servings = 6
+minutes = 120
+summary = "Rich minced beef and gravy in shortcrust with a flaky puff lid. Serve with tomato sauce."
+ingredients = [
+  "1 tbsp vegetable oil",
+  "1 onion, finely diced",
+  "750 g beef mince",
+  "2 tbsp plain flour",
+  "375 ml beef stock",
+  "2 tbsp tomato sauce",
+  "1 tbsp worcestershire sauce",
+  "2 sheets shortcrust pastry",
+  "2 sheets puff pastry",
+  "1 egg, beaten",
+  "125 ml tomato sauce, to serve",
+]
+method = [
+  "Fry the onion and mince in the oil for 10 minutes until browned and cooked through. Stir in the flour, then the stock, tomato sauce and worcestershire. Simmer for 20 minutes until thick. Cool completely, about 30 minutes.",
+  "Heat the oven to 200°C. Line 6 pie tins with the shortcrust and fill with the mince.",
+  "Top with circles of puff pastry, press the edges to seal and brush with egg.",
+  "Bake for 30 minutes until golden. Serve with tomato sauce.",
+]
+
+[[recipe]]
+slug = "roast-pork-apple-sauce"
+title = "Roast pork with crackling and apple sauce"
+cuisine = "australian"
+servings = 6
+minutes = 110
+summary = "Pork loin with crisp crackling, roast potatoes and a quick homemade apple sauce."
+ingredients = [
+  "1.5 kg pork loin, skin scored",
+  "1 tbsp olive oil",
+  "2 tsp salt",
+  "1 kg potatoes, cut into chunks",
+  "2 tbsp vegetable oil",
+  "3 apples, peeled and chopped",
+  "1 tbsp white sugar",
+  "60 ml water",
+  "300 g green beans, trimmed",
+]
+method = [
+  "Heat the oven to 240°C. Pat the pork skin very dry, rub with the olive oil and salt and roast for 25 minutes until the skin bubbles.",
+  "Lower the oven to 180°C. Toss the potatoes in the vegetable oil, add to the tray and roast for 60 minutes more until the pork is cooked through. Rest the pork for 15 minutes.",
+  "Simmer the apples with the sugar and water for 10 minutes until soft, then mash.",
+  "Steam the beans for 4 minutes and serve with the sliced pork, crackling, potatoes and apple sauce.",
+]
+
+[[recipe]]
+slug = "rissoles-gravy"
+title = "Rissoles with onion gravy"
+cuisine = "australian"
+servings = 4
+minutes = 40
+summary = "Old-school beef rissoles with grated carrot, smothered in onion gravy with mash and peas."
+ingredients = [
+  "500 g beef mince",
+  "1 carrot, grated",
+  "1 onion, grated",
+  "40 g breadcrumbs",
+  "1 egg",
+  "1 tbsp worcestershire sauce",
+  "2 tbsp vegetable oil",
+  "1 onion, sliced",
+  "1 tbsp plain flour",
+  "375 ml beef stock",
+  "800 g potatoes, peeled and chopped",
+  "40 g butter",
+  "60 ml milk",
+  "200 g frozen peas",
+]
+method = [
+  "Mix the mince, carrot, grated onion, breadcrumbs, egg and worcestershire. Shape into 8 patties.",
+  "Fry the rissoles in the oil for 5 minutes each side until cooked through. Remove.",
+  "Fry the sliced onion in the same pan for 6 minutes, stir in the flour, then the stock, and simmer for 3 minutes until thick. Return the rissoles to warm through.",
+  "Boil the potatoes for 15 minutes and mash with the butter and milk. Cook the peas for 3 minutes. Serve together.",
+]
+
+[[recipe]]
+slug = "chicken-kiev"
+title = "Chicken kiev"
+cuisine = "russian"
+servings = 4
+minutes = 50
+summary = "Crumbed chicken breasts with a molten garlic and parsley butter centre."
+ingredients = [
+  "4 chicken breasts",
+  "80 g butter, softened",
+  "3 cloves garlic, crushed",
+  "1 bunch parsley, finely chopped",
+  "60 g plain flour",
+  "2 eggs, beaten",
+  "120 g panko breadcrumbs",
+  "3 tbsp vegetable oil",
+  "500 g potatoes, cut into wedges",
+]
+method = [
+  "Mix the butter, garlic and parsley and chill for 10 minutes.",
+  "Cut a deep pocket in each chicken breast and fill with the butter. Dust with flour, dip in egg and coat in panko.",
+  "Heat the oven to 200°C. Toss the potatoes in 1 tbsp oil and roast for 35 minutes.",
+  "Brown the chicken in the rest of the oil for 2 minutes each side, then bake for 20 minutes until cooked through.",
+]
+
+[[recipe]]
+slug = "beef-pot-roast"
+title = "Beef pot roast"
+cuisine = "american"
+servings = 6
+minutes = 210
+summary = "Chuck steak braised low and slow with potatoes, carrots and onions in a rich gravy."
+ingredients = [
+  "1.5 kg beef chuck steak, in large pieces",
+  "1 tsp salt",
+  "2 tbsp vegetable oil",
+  "2 onions, cut into wedges",
+  "3 cloves garlic, crushed",
+  "2 tbsp tomato paste",
+  "250 ml red wine",
+  "500 ml beef stock",
+  "1 bunch thyme",
+  "800 g potatoes, halved",
+  "4 carrots, cut into chunks",
+]
+method = [
+  "Heat the oven to 160°C. Season the beef with the salt and brown in the oil in a heavy pot for 8 minutes. Remove.",
+  "Soften the onions and garlic for 5 minutes, stir in the tomato paste, then the wine and stock.",
+  "Return the beef with the thyme, cover and bake for 2 hours. Add the potatoes and carrots and bake for 1 hour more until everything is tender and the beef is cooked through.",
+]
+
+[[recipe]]
+slug = "toad-in-the-hole"
+title = "Toad in the hole"
+cuisine = "british"
+servings = 4
+minutes = 50
+summary = "Sausages baked in a puffy golden batter, with onion gravy."
+ingredients = [
+  "8 sausages",
+  "2 tbsp vegetable oil",
+  "140 g plain flour",
+  "3 eggs",
+  "250 ml milk",
+  "1/2 tsp salt",
+  "1 onion, sliced",
+  "1 tbsp plain flour, extra",
+  "375 ml beef stock",
+]
+method = [
+  "Heat the oven to 220°C. Brown the sausages in the oil in a baking dish in the oven for 10 minutes.",
+  "Whisk the flour, eggs, milk and salt to a smooth batter.",
+  "Pour the batter around the hot sausages and bake for 25 minutes, without opening the oven, until puffed and golden and the sausages are cooked through.",
+  "For the gravy, cook the onion in a little of the sausage fat for 8 minutes, stir in the extra flour, then the stock and simmer until thick.",
+]
+
+[[recipe]]
+slug = "lancashire-hotpot"
+title = "Lancashire hotpot"
+cuisine = "british"
+servings = 6
+minutes = 150
+summary = "Lamb and onions slow-baked under a crisp roof of sliced potatoes."
+ingredients = [
+  "1 kg lamb shoulder, diced",
+  "2 tbsp plain flour",
+  "2 tbsp vegetable oil",
+  "2 onions, sliced",
+  "2 carrots, sliced",
+  "500 ml beef stock",
+  "1 tbsp worcestershire sauce",
+  "1 bunch thyme",
+  "1 kg potatoes, thinly sliced",
+  "40 g butter, melted",
+]
+method = [
+  "Heat the oven to 170°C. Toss the lamb in the flour and brown in the oil for 6 minutes. Add the onions and carrots for 5 minutes.",
+  "Add the stock, worcestershire and thyme and tip into a baking dish.",
+  "Layer the potatoes over the top and brush with butter. Cover and bake for 1½ hours.",
+  "Uncover and bake for 30 minutes more until the potatoes are golden and the lamb is tender and cooked through.",
+]
+
+[[recipe]]
+slug = "tuna-potato-fishcakes"
+title = "Tuna and potato fish cakes"
+cuisine = "british"
+servings = 4
+minutes = 40
+summary = "Budget-friendly fish cakes of tuna, mash, spring onion and lemon, crumbed and pan-fried."
+ingredients = [
+  "600 g potatoes, peeled and chopped",
+  "2 x 185 g cans canned tuna, drained",
+  "3 spring onions, sliced",
+  "1 lemon, zested",
+  "1 bunch parsley, chopped",
+  "1 egg, beaten",
+  "80 g breadcrumbs",
+  "3 tbsp vegetable oil",
+  "3 tbsp mayonnaise",
+  "1 lettuce, torn",
+]
+method = [
+  "Boil the potatoes for 15 minutes until tender, drain and mash. Cool for 10 minutes.",
+  "Mix in the tuna, spring onions, lemon zest and parsley, and shape into 8 cakes.",
+  "Dip in egg and coat in breadcrumbs. Fry in the oil for 3 minutes each side until golden and hot through.",
+  "Serve with mayonnaise and lettuce.",
+]
+
+[[recipe]]
+slug = "chicken-alfredo"
+title = "Chicken fettuccine alfredo"
+cuisine = "american"
+servings = 4
+minutes = 25
+summary = "Pasta in a rich parmesan cream sauce with pan-fried chicken and garlic."
+ingredients = [
+  "400 g pasta",
+  "500 g chicken breast, sliced",
+  "1 tbsp olive oil",
+  "40 g butter",
+  "2 cloves garlic, crushed",
+  "300 ml thickened cream",
+  "80 g parmesan, grated",
+  "1/2 tsp black pepper",
+  "1 bunch parsley, chopped",
+]
+method = [
+  "Cook the pasta, keeping a cup of the water.",
+  "Fry the chicken in the oil for 6 minutes until cooked through. Remove.",
+  "Melt the butter with the garlic for 30 seconds, add the cream and simmer for 3 minutes. Stir in the parmesan and pepper.",
+  "Toss with the pasta and chicken, loosening with pasta water. Scatter with parsley.",
+]
+
+[[recipe]]
+slug = "philly-cheesesteak"
+title = "Philly cheesesteak rolls"
+cuisine = "american"
+servings = 4
+minutes = 25
+summary = "Thinly sliced steak, onion and capsicum piled into rolls under melted cheese."
+ingredients = [
+  "500 g beef steak, very thinly sliced",
+  "2 tbsp vegetable oil",
+  "1 onion, sliced",
+  "1 capsicum, sliced",
+  "1/2 tsp salt",
+  "1/2 tsp black pepper",
+  "150 g cheddar cheese, sliced",
+  "4 bread rolls",
+]
+method = [
+  "Fry the onion and capsicum in 1 tbsp oil for 8 minutes until soft. Push aside.",
+  "Add the rest of the oil and the beef, season, and stir-fry over high heat for 3 minutes until browned.",
+  "Mix everything together, top with the cheddar and cover for 1 minute to melt. Pile into the rolls.",
+]
+
+[[recipe]]
+slug = "bbq-drumsticks-corn"
+title = "Barbecue chicken drumsticks with corn"
+cuisine = "american"
+servings = 4
+minutes = 55
+summary = "Sticky barbecue-glazed drumsticks baked until tender, with buttered corn cobs."
+ingredients = [
+  "1.2 kg chicken drumsticks",
+  "125 ml barbecue sauce",
+  "1 tbsp honey",
+  "1 tsp paprika",
+  "4 corn cobs",
+  "30 g butter",
+  "1/4 cabbage, shredded",
+  "3 tbsp mayonnaise",
+]
+method = [
+  "Heat the oven to 200°C. Mix the barbecue sauce, honey and paprika and toss with the drumsticks.",
+  "Bake for 45 minutes, basting halfway, until sticky and cooked through.",
+  "Boil the corn for 8 minutes and toss with the butter. Mix the cabbage with the mayonnaise. Serve together.",
+]
+
+[[recipe]]
+slug = "creamy-tuscan-chicken"
+title = "Creamy Tuscan chicken"
+cuisine = "italian"
+servings = 4
+minutes = 30
+summary = "Pan-fried chicken in a garlicky cream sauce with cherry tomatoes, spinach and parmesan."
+ingredients = [
+  "4 chicken breasts",
+  "1 tsp dried oregano",
+  "1/2 tsp salt",
+  "1 tbsp olive oil",
+  "3 cloves garlic, crushed",
+  "250 g cherry tomatoes, halved",
+  "250 ml thickened cream",
+  "40 g parmesan, grated",
+  "100 g baby spinach",
+  "400 g pasta",
+]
+method = [
+  "Cook the pasta.",
+  "Season the chicken with the oregano and salt and fry in the oil for 6–7 minutes each side until cooked through. Remove.",
+  "Fry the garlic and tomatoes for 3 minutes, add the cream and parmesan and simmer for 2 minutes. Stir in the spinach.",
+  "Return the chicken to the sauce and serve with the pasta.",
+]
+
+[[recipe]]
+slug = "jambalaya"
+title = "Jambalaya"
+cuisine = "american"
+servings = 6
+minutes = 50
+summary = "One-pot Cajun-style rice with chicken, chorizo and prawns, capsicum and celery."
+ingredients = [
+  "500 g chicken thigh, diced",
+  "150 g chorizo, sliced",
+  "1 tbsp vegetable oil",
+  "1 onion, diced",
+  "1 capsicum, diced",
+  "2 stalks celery, diced",
+  "3 cloves garlic, crushed",
+  "2 tsp paprika",
+  "1 tsp dried oregano",
+  "1/2 tsp chilli powder",
+  "1 1/2 cups rice",
+  "400 g can canned tomatoes",
+  "750 ml chicken stock",
+  "300 g prawns, peeled",
+  "3 spring onions, sliced",
+]
+method = [
+  "Brown the chicken and chorizo in the oil for 6 minutes. Add the onion, capsicum, celery and garlic for 5 minutes.",
+  "Stir in the spices and rice, then the tomatoes and stock. Cover and simmer for 18 minutes until the rice is nearly tender.",
+  "Push the prawns into the rice, cover and cook for 5 minutes until pink and the chicken is cooked through. Scatter with spring onions.",
+]
+
+[[recipe]]
+slug = "chicken-stew-dumplings"
+title = "Chicken stew with herb dumplings"
+cuisine = "british"
+servings = 6
+minutes = 75
+summary = "A thick chicken and vegetable stew topped with fluffy parsley dumplings."
+ingredients = [
+  "1 kg chicken thigh, diced",
+  "2 tbsp vegetable oil",
+  "1 onion, diced",
+  "3 carrots, sliced",
+  "2 stalks celery, sliced",
+  "3 tbsp plain flour",
+  "1 litre chicken stock",
+  "1 bunch thyme",
+  "200 g self-raising flour",
+  "80 g butter, cold and diced",
+  "1 bunch parsley, chopped",
+  "150 ml milk",
+]
+method = [
+  "Brown the chicken in the oil for 6 minutes. Add the onion, carrots and celery for 5 minutes, stir in the plain flour, then the stock and thyme. Simmer for 25 minutes.",
+  "Rub the butter into the self-raising flour, stir in the parsley and milk to a soft dough and shape into 12 balls.",
+  "Sit the dumplings on the stew, cover and simmer for 20 minutes until risen and cooked through, and the chicken is cooked through.",
+]
+
+[[recipe]]
+slug = "beef-goulash"
+title = "Hungarian beef goulash"
+cuisine = "hungarian"
+servings = 6
+minutes = 150
+summary = "Chuck steak slow-simmered with lots of paprika, capsicum and potatoes. Serve with sour cream."
+ingredients = [
+  "1.2 kg beef chuck steak, diced",
+  "2 tbsp vegetable oil",
+  "2 onions, diced",
+  "3 cloves garlic, crushed",
+  "3 tbsp paprika",
+  "1 tsp cumin seeds",
+  "2 tbsp tomato paste",
+  "1 litre beef stock",
+  "2 capsicums, diced",
+  "600 g potatoes, diced",
+  "150 g sour cream",
+  "1 bunch parsley, chopped",
+]
+method = [
+  "Brown the beef in the oil in batches for 6 minutes. Add the onions and garlic for 8 minutes.",
+  "Off the heat, stir in the paprika, cumin seeds and tomato paste, then the stock. Simmer, covered, for 1½ hours.",
+  "Add the capsicums and potatoes and simmer for 30 minutes more until the beef is tender and cooked through.",
+  "Serve with sour cream and parsley.",
+]
+
+[[recipe]]
+slug = "kasespatzle"
+title = "Cheese spaetzle with crispy onions"
+cuisine = "german"
+servings = 4
+minutes = 40
+summary = "Little homemade egg noodles layered with melted gruyere and topped with golden onions. Vegetarian."
+ingredients = [
+  "300 g plain flour",
+  "4 eggs",
+  "150 ml milk",
+  "1/2 tsp salt",
+  "2 onions, thinly sliced",
+  "50 g butter",
+  "200 g gruyere, grated",
+  "1 bunch chives, snipped",
+]
+method = [
+  "Beat the flour, eggs, milk and salt to a thick, sticky batter. Rest for 10 minutes.",
+  "Fry the onions in half the butter for 15 minutes until deep golden.",
+  "Push the batter through the holes of a colander into a pot of simmering salted water. Cook for 2 minutes until the spaetzle float, then drain.",
+  "Toss with the rest of the butter and the gruyere until melted, top with the onions and chives.",
+]
+
+[[recipe]]
+slug = "chicken-chasseur"
+title = "Chicken chasseur"
+cuisine = "french"
+servings = 4
+minutes = 55
+summary = "Chicken thighs braised with mushrooms, tomato, white wine and thyme."
+ingredients = [
+  "1 kg chicken thigh",
+  "1 tbsp olive oil",
+  "20 g butter",
+  "2 shallots, diced",
+  "250 g mushrooms, sliced",
+  "2 cloves garlic, crushed",
+  "1 tbsp plain flour",
+  "125 ml white wine",
+  "400 g can canned tomatoes",
+  "250 ml chicken stock",
+  "1 bunch thyme",
+  "1 baguette",
+]
+method = [
+  "Brown the chicken in the oil and butter for 4 minutes each side. Remove.",
+  "Cook the shallots, mushrooms and garlic for 6 minutes. Stir in the flour, then the wine, tomatoes, stock and thyme.",
+  "Return the chicken and simmer, covered, for 25 minutes until cooked through. Serve with the baguette.",
+]
+
+[[recipe]]
+slug = "lentils-sausages"
+title = "French lentils with sausages"
+cuisine = "french"
+servings = 4
+minutes = 45
+summary = "Browned sausages nestled into brown lentils simmered with carrot, thyme and a splash of wine."
+ingredients = [
+  "8 sausages",
+  "1 tbsp olive oil",
+  "1 onion, diced",
+  "2 carrots, diced",
+  "2 cloves garlic, crushed",
+  "250 g brown lentils, rinsed",
+  "125 ml red wine",
+  "750 ml chicken stock",
+  "1 bunch thyme",
+  "1 tsp dijon mustard",
+  "1 bunch parsley, chopped",
+]
+method = [
+  "Brown the sausages in the oil for 8 minutes. Remove.",
+  "Soften the onion, carrot and garlic for 6 minutes. Add the lentils, wine, stock and thyme.",
+  "Return the sausages and simmer, covered, for 25 minutes until the lentils are tender and the sausages are cooked through.",
+  "Stir in the mustard and parsley.",
+]
+
+[[recipe]]
+slug = "borscht"
+title = "Borscht"
+cuisine = "russian"
+servings = 6
+minutes = 60
+summary = "A vivid beetroot, cabbage and potato soup with dill and sour cream."
+ingredients = [
+  "2 tbsp vegetable oil",
+  "1 onion, diced",
+  "2 carrots, grated",
+  "450 g can canned beetroot, grated",
+  "2 potatoes, diced",
+  "1/4 cabbage, shredded",
+  "2 tbsp tomato paste",
+  "1.5 litres beef stock",
+  "1 tbsp white vinegar",
+  "1 tsp white sugar",
+  "150 g sour cream",
+  "1 bunch dill, chopped",
+]
+method = [
+  "Soften the onion and carrot in the oil for 6 minutes. Stir in the tomato paste.",
+  "Add the potatoes and stock and simmer for 15 minutes. Add the cabbage and beetroot and simmer for 15 minutes more.",
+  "Stir in the vinegar and sugar. Serve with sour cream and dill.",
+]
+
+[[recipe]]
+slug = "apricot-chicken"
+title = "Apricot chicken"
+cuisine = "australian"
+servings = 4
+minutes = 50
+summary = "The retro favourite: chicken thighs baked in a sweet, savoury apricot and onion sauce."
+ingredients = [
+  "1 kg chicken thigh",
+  "1 tbsp vegetable oil",
+  "1 onion, sliced",
+  "150 g dried apricots, chopped",
+  "375 ml chicken stock",
+  "2 tbsp soy sauce",
+  "1 tbsp brown sugar",
+  "1 tbsp cornflour",
+  "1 1/2 cups rice",
+  "200 g green beans",
+]
+method = [
+  "Brown the chicken in the oil for 4 minutes each side. Remove.",
+  "Soften the onion for 5 minutes. Add the apricots, stock, soy and sugar and bring to a simmer.",
+  "Return the chicken, cover and simmer for 25 minutes until cooked through. Thicken with the cornflour mixed with a splash of water.",
+  "Cook the rice, steam the beans for 4 minutes and serve.",
+]
+
+[[recipe]]
+slug = "curried-sausages"
+title = "Curried sausages"
+cuisine = "australian"
+servings = 4
+minutes = 40
+summary = "A homely mild curry of sliced sausages, potato, carrot and peas over rice."
+ingredients = [
+  "8 sausages",
+  "1 tbsp vegetable oil",
+  "1 onion, diced",
+  "1 apple, grated",
+  "2 tbsp curry powder",
+  "2 tbsp plain flour",
+  "500 ml chicken stock",
+  "2 potatoes, diced",
+  "2 carrots, diced",
+  "150 g frozen peas",
+  "1 1/2 cups rice",
+]
+method = [
+  "Brown the sausages in the oil for 8 minutes, then slice.",
+  "Soften the onion and apple for 5 minutes. Stir in the curry powder and flour, then the stock.",
+  "Add the sausages, potatoes and carrots and simmer for 20 minutes until tender and the sausages are cooked through. Add the peas for 3 minutes.",
+  "Serve with rice.",
+]
+
+[[recipe]]
+slug = "chili-mac"
+title = "Chilli mac"
+cuisine = "american"
+servings = 6
+minutes = 35
+summary = "Macaroni and beef chilli cooked together in one pot and topped with melted cheddar."
+ingredients = [
+  "500 g beef mince",
+  "1 tbsp vegetable oil",
+  "1 onion, diced",
+  "2 tsp ground cumin",
+  "2 tsp chilli powder",
+  "400 g can canned tomatoes",
+  "400 g can kidney beans, drained",
+  "750 ml beef stock",
+  "300 g pasta",
+  "150 g cheddar cheese, grated",
+]
+method = [
+  "Fry the mince and onion in the oil for 8 minutes until browned and cooked through. Stir in the spices.",
+  "Add the tomatoes, beans, stock and pasta. Simmer, stirring often, for 12 minutes until the pasta is tender.",
+  "Top with cheddar, cover for 2 minutes until melted.",
+]
+
+[[recipe]]
+slug = "baked-ziti"
+title = "Baked ziti"
+cuisine = "american"
+servings = 6
+minutes = 55
+summary = "Pasta tossed in beef and tomato sauce, layered with ricotta and baked under mozzarella."
+ingredients = [
+  "500 g pasta",
+  "500 g beef mince",
+  "1 tbsp olive oil",
+  "1 onion, diced",
+  "2 cloves garlic, crushed",
+  "700 g passata",
+  "1 tsp dried oregano",
+  "250 g ricotta",
+  "200 g mozzarella, grated",
+  "40 g parmesan, grated",
+]
+method = [
+  "Cook the pasta for 2 minutes less than the packet says and drain.",
+  "Fry the mince, onion and garlic in the oil for 8 minutes until browned and cooked through. Add the passata and oregano and simmer for 10 minutes.",
+  "Heat the oven to 200°C. Toss the pasta with the sauce. Layer half in a dish, dot with ricotta, then add the rest.",
+  "Top with mozzarella and parmesan and bake for 20 minutes until bubbling.",
+]
+
+[[recipe]]
+slug = "slow-roast-lamb-shoulder"
+title = "Slow-roast lamb shoulder with cumin and yoghurt"
+cuisine = "middle-eastern"
+servings = 6
+minutes = 260
+summary = "Lamb shoulder roasted low until it pulls apart, with minted yoghurt and warm flatbread."
+ingredients = [
+  "2 kg lamb shoulder",
+  "3 tbsp olive oil",
+  "3 cloves garlic, crushed",
+  "2 tsp ground cumin",
+  "2 tsp paprika",
+  "1 tsp salt",
+  "2 onions, cut into wedges",
+  "250 ml water",
+  "250 g greek yoghurt",
+  "1 lemon, juiced",
+  "1 bunch mint, chopped",
+  "6 pita bread",
+]
+method = [
+  "Heat the oven to 160°C. Mix the oil, garlic, spices and salt and rub all over the lamb.",
+  "Put the onions in a roasting dish with the water, sit the lamb on top, cover tightly and roast for 4 hours until it pulls apart and is cooked through.",
+  "Mix the yoghurt, lemon juice and mint. Shred the lamb and serve with the yoghurt and warm pita.",
+]
+
+[[recipe]]
+slug = "honey-mustard-chicken-traybake"
+title = "Honey mustard chicken traybake"
+cuisine = "australian"
+servings = 4
+minutes = 50
+summary = "Chicken thighs, potatoes and carrots roasted in one tray with a sticky honey mustard glaze."
+ingredients = [
+  "1 kg chicken thigh",
+  "800 g potatoes, cut into chunks",
+  "4 carrots, cut into chunks",
+  "2 tbsp olive oil",
+  "3 tbsp honey",
+  "2 tbsp dijon mustard",
+  "2 cloves garlic, crushed",
+  "1/2 tsp salt",
+  "2 bunches broccolini",
+]
+method = [
+  "Heat the oven to 200°C. Toss the potatoes and carrots in the oil and roast for 15 minutes.",
+  "Mix the honey, mustard, garlic and salt and coat the chicken. Add to the tray and roast for 30 minutes until golden and cooked through.",
+  "Add the broccolini for the last 8 minutes.",
+]
+
+[[recipe]]
+slug = "sausage-casserole"
+title = "Sausage and bean casserole"
+cuisine = "british"
+servings = 4
+minutes = 50
+summary = "Browned sausages simmered with beans, tomato, onion and a little paprika. Great with mash."
+ingredients = [
+  "8 sausages",
+  "1 tbsp vegetable oil",
+  "1 onion, sliced",
+  "2 carrots, sliced",
+  "2 cloves garlic, crushed",
+  "1 tsp paprika",
+  "400 g can canned tomatoes",
+  "400 g can cannellini beans, drained",
+  "250 ml beef stock",
+  "1 tbsp worcestershire sauce",
+  "800 g potatoes, peeled and chopped",
+  "40 g butter",
+]
+method = [
+  "Brown the sausages in the oil for 8 minutes. Remove.",
+  "Soften the onion, carrot and garlic for 6 minutes. Add the paprika, tomatoes, beans, stock and worcestershire.",
+  "Return the sausages and simmer for 25 minutes until thick and the sausages are cooked through.",
+  "Boil the potatoes for 15 minutes and mash with the butter. Serve with the casserole.",
+]
+
+[[recipe]]
+slug = "pork-chops-apple-mustard"
+title = "Pork chops with apples and mustard cream"
+cuisine = "french"
+servings = 4
+minutes = 30
+summary = "Golden pork loin steaks with sauteed apples and a creamy dijon sauce."
+ingredients = [
+  "4 pork loin steaks",
+  "1/2 tsp salt",
+  "1 tbsp olive oil",
+  "20 g butter",
+  "2 apples, cut into wedges",
+  "1 shallot, diced",
+  "125 ml chicken stock",
+  "125 ml thickened cream",
+  "1 tbsp dijon mustard",
+  "300 g green beans",
+]
+method = [
+  "Season the pork and fry in the oil for 4 minutes each side until cooked through. Rest.",
+  "Fry the apples in the butter for 4 minutes until golden. Add the shallot for 1 minute.",
+  "Add the stock and bubble for 2 minutes, then stir in the cream and mustard and simmer until saucy.",
+  "Steam the beans for 4 minutes and serve with the pork, apples and sauce.",
+]
+
+[[recipe]]
+slug = "homemade-chicken-nuggets"
+title = "Homemade chicken nuggets"
+cuisine = "american"
+servings = 4
+minutes = 35
+summary = "Crunchy oven-baked chicken nuggets the kids will love, with oven chips."
+ingredients = [
+  "600 g chicken breast, cut into nugget-sized pieces",
+  "60 g plain flour",
+  "2 eggs, beaten",
+  "100 g panko breadcrumbs",
+  "1 tsp paprika",
+  "2 tbsp vegetable oil",
+  "600 g potatoes, cut into chips",
+  "125 ml tomato sauce",
+]
+method = [
+  "Heat the oven to 220°C. Toss the potatoes in 1 tbsp oil and bake for 30 minutes until golden.",
+  "Mix the panko and paprika. Dust the chicken in flour, dip in egg and press into the panko.",
+  "Lay on an oiled tray, drizzle with the rest of the oil and bake for 18 minutes, turning once, until golden and cooked through.",
+  "Serve with the chips and tomato sauce.",
+]
+
+[[recipe]]
+slug = "hawaiian-pizza"
+title = "Homemade ham and pineapple pizza"
+cuisine = "australian"
+servings = 4
+minutes = 90
+summary = "A simple homemade dough topped with tomato, ham, pineapple and mozzarella."
+ingredients = [
+  "400 g plain flour",
+  "1 tsp dried yeast",
+  "1 tsp salt",
+  "250 ml warm water",
+  "2 tbsp olive oil",
+  "125 g tomato paste",
+  "1 tsp dried oregano",
+  "200 g ham, chopped",
+  "225 g canned pineapple, drained",
+  "250 g mozzarella, grated",
+]
+method = [
+  "Mix the flour, yeast, salt, water and oil and knead for 8 minutes until smooth. Cover and rest for 1 hour until doubled.",
+  "Heat the oven to 240°C. Halve the dough and stretch into 2 bases on oiled trays.",
+  "Spread with tomato paste, sprinkle with oregano and top with the ham, pineapple and mozzarella.",
+  "Bake for 12 minutes until the base is crisp and the cheese is bubbling.",
+]

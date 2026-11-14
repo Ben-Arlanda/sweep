@@ -6,7 +6,7 @@ title = "Beef lasagne"
 cuisine = "italian"
 servings = 8
 minutes = 110
-summary = "Layers of beef ragu, white sauce and pasta sheets, baked until golden and bubbling."
+summary = "Layers of beef ragu, white sauce and lasagne sheets, baked until golden and bubbling."
 ingredients = [
   "1 tbsp olive oil",
   "1 onion, diced",
@@ -24,7 +24,7 @@ ingredients = [
 method = [
   "Make the ragu: soften the onion and garlic in the oil, brown the mince, then add the passata and tomato paste. Simmer for 20 minutes.",
   "Make the white sauce: melt the butter, stir in the flour, then whisk in the milk until thick.",
-  "Layer ragu, pasta sheets and white sauce in a baking dish, three times. Top with the cheeses.",
+  "Layer ragu, lasagne sheets and white sauce in a baking dish, three times. Top with the cheeses.",
   "Bake at 180°C for 45 minutes. Rest for 10 minutes before cutting.",
 ]
 
@@ -134,7 +134,7 @@ ingredients = [
 ]
 method = [
   "Blend the basil, pine nuts, parmesan, garlic and oil to a rough paste. Season.",
-  "Cook the pasta, keeping a little water. Toss with the pesto, loosening with the water.",
+  "Cook the pasta, keeping a little water. Toss with the basil sauce, loosening with the water.",
 ]
 
 [[recipe]]
@@ -414,7 +414,7 @@ slug = "tiramisu"
 title = "Tiramisu"
 cuisine = "italian"
 servings = 8
-minutes = 30
+minutes = 270
 summary = "Coffee-soaked sponge fingers layered with mascarpone cream and cocoa. Make it ahead."
 ingredients = [
   "4 eggs, separated",

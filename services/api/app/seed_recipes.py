@@ -1,10 +1,14 @@
 """Load the Seed Recipes and embed anything new or changed: `uv run python -m app.seed_recipes`.
 
+`--no-embed` loads the recipes only (no API calls): they show up when browsing, and
+search finds them once a later run embeds them.
+
 Not run from migrations (unlike Ingredients): embedding calls a paid outside API, and
 migrations must work offline and in CI. Safe to run any number of times. Recipes whose
 text hasn't changed are not re-embedded, so a re-run costs nothing.
 """
 
+import argparse
 import asyncio
 import sys
 
@@ -16,7 +20,7 @@ from app.services import recipes
 from app.services.ingredient_lines import index_from_db
 
 
-async def main() -> int:
+async def main(embed: bool = True) -> int:
     engine = make_engine(settings.database_url)
     async with make_sessionmaker(engine)() as session:
         report = await recipes.upsert_seed_recipes(
@@ -30,7 +34,9 @@ async def main() -> int:
         # is resumable: the next run only embeds what's still missing.
         await session.commit()
 
-        if settings.voyage_api_key is None:
+        if not embed:
+            print("--no-embed: skipping embeddings (new recipes are browsable, not searchable)")
+        elif settings.voyage_api_key is None:
             print("VOYAGE_API_KEY not set: skipping embeddings (search stays off)")
         else:
             embedder = VoyageEmbedder(
@@ -53,4 +59,6 @@ async def main() -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(asyncio.run(main()))
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--no-embed", action="store_true", help="load recipes without embedding")
+    sys.exit(asyncio.run(main(embed=not parser.parse_args().no_embed)))

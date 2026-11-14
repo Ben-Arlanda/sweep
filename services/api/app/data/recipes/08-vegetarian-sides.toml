@@ -70,7 +70,7 @@ ingredients = [
 method = [
   "Roast the vegetables with the oil at 200°C for 25 minutes.",
   "Mix the ricotta and spinach.",
-  "Layer passata, pasta, vegetables and ricotta three times. Top with mozzarella and bake at 180°C for 45 minutes.",
+  "Layer passata, lasagne sheets, vegetables and ricotta three times. Top with mozzarella and bake at 180°C for 45 minutes.",
 ]
 
 [[recipe]]
@@ -325,6 +325,7 @@ ingredients = [
   "1 tsp sesame oil",
   "1/2 tsp chilli flakes",
   "1 tsp sesame seeds",
+  "1/2 tsp salt",
 ]
 method = [
   "Bash the cucumbers with a rolling pin, then cut into chunks. Salt lightly for 10 minutes and drain.",

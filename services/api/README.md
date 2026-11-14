@@ -12,6 +12,8 @@ uv run fastapi dev app/main.py        # dev server on http://localhost:8000
 uv run pytest                         # tests (rebuild sweep_test from the migrations)
 uv run ruff check . && uv run mypy    # lint + type check
 uv run python -m evals.ingredient_parsing --llm   # ingredient-line eval (one cheap Claude call)
+uv run python -m app.check_recipes                # check every Seed Recipe (free, also runs in CI)
+uv run python -m evals.recipe_review --llm        # measure the AI recipe reviewer (~14 Claude calls)
 ```
 
 AI keys (`ANTHROPIC_API_KEY`, `VOYAGE_API_KEY`) are optional: without them, search is off

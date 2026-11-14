@@ -1,0 +1,727 @@
+# Quick weeknight dinners, mostly 25 minutes or less. Written for Sweep (licence: Sweep original).
+
+[[recipe]]
+slug = "lemon-pepper-chicken-greens"
+title = "Lemon pepper chicken with greens"
+cuisine = "australian"
+servings = 4
+minutes = 25
+summary = "Butterflied chicken breasts with a peppery lemon crust, broccolini and smashed potatoes."
+ingredients = [
+  "4 chicken breasts, sliced in half horizontally",
+  "2 tsp black pepper, coarsely ground",
+  "1 lemon, zested and juiced",
+  "1/2 tsp salt",
+  "2 tbsp olive oil",
+  "500 g potatoes, cut into small chunks",
+  "2 bunches broccolini",
+  "20 g butter",
+]
+method = [
+  "Boil the potatoes for 12 minutes until tender. Drain and lightly crush with the butter.",
+  "Rub the chicken with the pepper, lemon zest and salt. Fry in the oil for 3–4 minutes each side until cooked through. Squeeze over the lemon juice.",
+  "Steam the broccolini for 3 minutes and serve with the chicken and potatoes.",
+]
+
+[[recipe]]
+slug = "tuna-puttanesca"
+title = "Tuna puttanesca"
+cuisine = "italian"
+servings = 4
+minutes = 20
+summary = "Spaghetti in a punchy tomato sauce with tuna, olives, garlic and chilli. Pantry-friendly."
+ingredients = [
+  "400 g pasta",
+  "2 tbsp olive oil",
+  "3 cloves garlic, sliced",
+  "1/2 tsp chilli flakes",
+  "700 g passata",
+  "80 g kalamata olives, halved",
+  "2 x 185 g cans canned tuna, drained",
+  "1 bunch parsley, chopped",
+]
+method = [
+  "Cook the pasta.",
+  "Soften the garlic and chilli in the oil for 1 minute. Add the passata and olives and simmer for 10 minutes.",
+  "Flake in the tuna, warm through and toss with the pasta and parsley.",
+]
+
+[[recipe]]
+slug = "steak-sandwiches"
+title = "Steak sandwiches with caramelised onion"
+cuisine = "australian"
+servings = 4
+minutes = 25
+summary = "Seared steak in toasted rolls with sweet onions, rocket, tomato and mustard mayo."
+ingredients = [
+  "500 g beef steak",
+  "2 tbsp olive oil",
+  "2 onions, thinly sliced",
+  "1 tbsp brown sugar",
+  "1 tbsp balsamic vinegar",
+  "4 bread rolls",
+  "3 tbsp mayonnaise",
+  "1 tbsp dijon mustard",
+  "50 g rocket",
+  "2 tomatoes, sliced",
+]
+method = [
+  "Cook the onions in 1 tbsp oil for 12 minutes until soft and golden. Add the sugar and vinegar for 2 minutes until sticky.",
+  "Rub the steak with the rest of the oil and sear for 3 minutes each side for medium. Rest for 5 minutes, then slice thinly.",
+  "Mix the mayonnaise and mustard. Toast the rolls and fill with the mayo, rocket, tomato, steak and onions.",
+]
+
+[[recipe]]
+slug = "chicken-quesadillas"
+title = "Chicken and corn quesadillas"
+cuisine = "mexican"
+servings = 4
+minutes = 20
+summary = "Crisp tortillas filled with spiced chicken, corn, beans and melted cheddar."
+ingredients = [
+  "400 g chicken breast, thinly sliced",
+  "1 tsp ground cumin",
+  "1 tsp paprika",
+  "1 tbsp olive oil",
+  "125 g corn kernels",
+  "400 g can black beans, drained",
+  "150 g cheddar cheese, grated",
+  "8 tortillas",
+  "100 g sour cream",
+  "100 g tomato salsa",
+]
+method = [
+  "Fry the chicken with the spices in the oil for 6 minutes until cooked through.",
+  "Top 4 tortillas with the chicken, corn, beans and cheddar, then the other tortillas.",
+  "Cook in a dry frying pan for 2–3 minutes each side until crisp and melted. Cut into wedges and serve with sour cream and salsa.",
+]
+
+[[recipe]]
+slug = "tuna-white-bean-salad"
+title = "Tuna, white bean and rocket salad"
+cuisine = "italian"
+servings = 4
+minutes = 10
+summary = "A no-cook salad of tuna, cannellini beans, red onion and lemon. Pantry-friendly."
+ingredients = [
+  "2 x 185 g cans canned tuna, drained",
+  "2 x 400 g cans cannellini beans, drained",
+  "1/2 red onion, thinly sliced",
+  "250 g cherry tomatoes, halved",
+  "100 g rocket",
+  "1 lemon, juiced",
+  "3 tbsp olive oil",
+  "1 bunch parsley, chopped",
+  "1/2 tsp salt",
+]
+method = [
+  "Whisk the lemon juice, oil and salt.",
+  "Toss the beans, onion, tomatoes, rocket and parsley with the dressing, then flake the tuna over the top.",
+]
+
+[[recipe]]
+slug = "honey-garlic-pork-chops"
+title = "Honey garlic pork chops"
+cuisine = "american"
+servings = 4
+minutes = 25
+summary = "Juicy pork loin steaks in a sticky honey, garlic and soy glaze with green beans."
+ingredients = [
+  "4 pork loin steaks",
+  "1/2 tsp salt",
+  "1 tbsp vegetable oil",
+  "4 cloves garlic, crushed",
+  "3 tbsp honey",
+  "2 tbsp soy sauce",
+  "1 tbsp white vinegar",
+  "300 g green beans, trimmed",
+  "1 1/2 cups rice",
+]
+method = [
+  "Cook the rice. Season the pork with the salt.",
+  "Fry the pork in the oil for 4 minutes each side until golden and cooked through.",
+  "Add the garlic for 30 seconds, then the honey, soy and vinegar, and bubble for 2 minutes, turning the pork until glazed.",
+  "Steam the beans for 4 minutes and serve with the pork and rice.",
+]
+
+[[recipe]]
+slug = "salmon-egg-fried-rice"
+title = "Salmon fried rice"
+cuisine = "japanese"
+servings = 4
+minutes = 20
+summary = "Flaked salmon, egg, edamame and spring onion fried with day-old rice."
+ingredients = [
+  "2 salmon fillets",
+  "2 tbsp vegetable oil",
+  "3 eggs, beaten",
+  "600 g cooked rice",
+  "150 g edamame",
+  "3 tbsp soy sauce",
+  "1 tsp sesame oil",
+  "4 spring onions, sliced",
+]
+method = [
+  "Fry the salmon in 1 tbsp oil for 4 minutes each side until it flakes easily. Flake into chunks.",
+  "Scramble the eggs in the rest of the oil and push aside.",
+  "Add the rice and edamame and fry for 5 minutes until hot. Fold through the salmon, soy, sesame oil and spring onions.",
+]
+
+[[recipe]]
+slug = "chorizo-potato-hash"
+title = "Chorizo and potato hash with eggs"
+cuisine = "spanish"
+servings = 4
+minutes = 30
+summary = "Crispy potatoes, chorizo and capsicum topped with fried eggs. Great for dinner or brunch."
+ingredients = [
+  "800 g potatoes, cut into small cubes",
+  "2 tbsp olive oil",
+  "150 g chorizo, diced",
+  "1 onion, diced",
+  "1 capsicum, diced",
+  "1 tsp paprika",
+  "4 eggs",
+  "1 bunch parsley, chopped",
+]
+method = [
+  "Microwave or boil the potatoes for 6 minutes until almost tender. Drain well.",
+  "Fry the potatoes in the oil for 10 minutes until crisp. Add the chorizo, onion, capsicum and paprika and cook for 5 minutes.",
+  "Make 4 hollows, crack in the eggs, cover and cook for 4 minutes until the whites are set. Scatter with parsley.",
+]
+
+[[recipe]]
+slug = "halloumi-couscous-bowls"
+title = "Halloumi and chickpea couscous bowls"
+cuisine = "middle-eastern"
+servings = 4
+minutes = 20
+summary = "Golden halloumi over lemony couscous with chickpeas, cucumber, tomato and mint. Vegetarian."
+ingredients = [
+  "250 g couscous",
+  "250 ml boiling water",
+  "250 g halloumi, sliced",
+  "1 tbsp olive oil",
+  "400 g can chickpeas, drained",
+  "1 cucumber, diced",
+  "250 g cherry tomatoes, halved",
+  "1 bunch mint, chopped",
+  "1 lemon, juiced",
+  "100 g greek yoghurt",
+]
+method = [
+  "Pour the boiling water over the couscous, cover for 5 minutes and fluff up. Stir in the lemon juice.",
+  "Fry the halloumi in the oil for 2 minutes each side until golden.",
+  "Divide the couscous between bowls with the chickpeas, cucumber, tomatoes and mint. Top with the halloumi and yoghurt.",
+]
+
+[[recipe]]
+slug = "sausage-broccoli-pasta"
+title = "Sausage and broccoli pasta"
+cuisine = "italian"
+servings = 4
+minutes = 25
+summary = "Crumbled sausage, broccoli, garlic and chilli tossed through pasta with parmesan."
+ingredients = [
+  "400 g pasta",
+  "4 sausages, skins removed",
+  "1 tbsp olive oil",
+  "1 broccoli, cut into small florets",
+  "3 cloves garlic, sliced",
+  "1/2 tsp chilli flakes",
+  "50 g parmesan, grated",
+  "1 lemon, juiced",
+]
+method = [
+  "Cook the pasta, adding the broccoli for the last 3 minutes. Keep a cup of the water.",
+  "Fry the sausage meat in the oil for 8 minutes, breaking it up, until browned and cooked through. Add the garlic and chilli for 1 minute.",
+  "Toss with the pasta, broccoli, parmesan, lemon juice and a splash of pasta water.",
+]
+
+[[recipe]]
+slug = "beef-taco-bowls"
+title = "Beef taco rice bowls"
+cuisine = "mexican"
+servings = 4
+minutes = 25
+summary = "Spiced beef mince over rice with beans, corn, avocado, salsa and sour cream."
+ingredients = [
+  "500 g beef mince",
+  "1 tbsp olive oil",
+  "2 tsp ground cumin",
+  "2 tsp paprika",
+  "1 tsp dried oregano",
+  "2 tbsp tomato paste",
+  "125 ml water",
+  "1 1/2 cups rice",
+  "400 g can black beans, drained",
+  "125 g corn kernels",
+  "1 avocado, diced",
+  "100 g tomato salsa",
+  "100 g sour cream",
+]
+method = [
+  "Cook the rice.",
+  "Fry the mince in the oil for 6 minutes until browned and cooked through. Add the spices, oregano, tomato paste and water and simmer for 3 minutes.",
+  "Warm the beans and corn. Build bowls with the rice, beef, beans, corn, avocado, salsa and sour cream.",
+]
+
+[[recipe]]
+slug = "garlic-butter-steak-bites"
+title = "Garlic butter steak bites"
+cuisine = "american"
+servings = 4
+minutes = 20
+summary = "Bite-sized seared steak tossed in garlic butter, with green beans and mash-style potatoes."
+ingredients = [
+  "700 g beef steak, cut into 3 cm cubes",
+  "1/2 tsp salt",
+  "1 tsp black pepper",
+  "1 tbsp vegetable oil",
+  "40 g butter",
+  "4 cloves garlic, crushed",
+  "1 bunch parsley, chopped",
+  "300 g green beans, trimmed",
+  "600 g potatoes, cut into chunks",
+]
+method = [
+  "Boil the potatoes for 12 minutes until tender, then drain and crush.",
+  "Season the steak and sear in the oil over very high heat in batches for 2 minutes until browned.",
+  "Lower the heat, add the butter and garlic for 1 minute and toss the steak through with the parsley.",
+  "Steam the beans for 4 minutes and serve with the steak and potatoes.",
+]
+
+[[recipe]]
+slug = "zucchini-pea-ricotta-pasta"
+title = "Zucchini, pea and ricotta pasta"
+cuisine = "italian"
+servings = 4
+minutes = 20
+summary = "A fresh, lemony pasta with grated zucchini, peas, ricotta and mint. Vegetarian."
+ingredients = [
+  "400 g pasta",
+  "2 tbsp olive oil",
+  "2 zucchini, grated",
+  "2 cloves garlic, crushed",
+  "200 g frozen peas",
+  "200 g ricotta",
+  "1 lemon, zested and juiced",
+  "40 g parmesan, grated",
+  "1 bunch mint, chopped",
+]
+method = [
+  "Cook the pasta, adding the peas for the last 2 minutes. Keep a cup of the water.",
+  "Fry the zucchini and garlic in the oil for 4 minutes until soft.",
+  "Toss the pasta and peas with the zucchini, ricotta, lemon, parmesan, mint and a splash of pasta water.",
+]
+
+[[recipe]]
+slug = "prawn-tacos-mango-salsa"
+title = "Prawn tacos with mango salsa"
+cuisine = "mexican"
+servings = 4
+minutes = 20
+summary = "Smoky paprika prawns in soft tortillas with mango, lime and avocado."
+ingredients = [
+  "500 g prawns, peeled",
+  "2 tsp paprika",
+  "1 tsp ground cumin",
+  "1 tbsp olive oil",
+  "1 mango, diced",
+  "1/2 red onion, finely diced",
+  "1 bunch coriander, chopped",
+  "2 limes, juiced",
+  "1 avocado, sliced",
+  "8 tortillas",
+  "1/4 red cabbage, finely shredded",
+]
+method = [
+  "Mix the mango, onion, coriander and half the lime juice.",
+  "Toss the prawns with the spices and fry in the oil for 3 minutes until pink. Squeeze over the rest of the lime.",
+  "Warm the tortillas and fill with the cabbage, prawns, avocado and the mango mix.",
+]
+
+[[recipe]]
+slug = "lemon-salmon-spinach-pasta"
+title = "Creamy lemon salmon pasta"
+cuisine = "italian"
+servings = 4
+minutes = 25
+summary = "Flaked salmon and spinach in a light lemon and cream sauce."
+ingredients = [
+  "400 g pasta",
+  "2 salmon fillets",
+  "1 tbsp olive oil",
+  "2 cloves garlic, crushed",
+  "200 ml thickened cream",
+  "1 lemon, zested and juiced",
+  "150 g baby spinach",
+  "40 g parmesan, grated",
+  "1 bunch dill, chopped",
+]
+method = [
+  "Cook the pasta, keeping a cup of the water.",
+  "Fry the salmon in the oil for 4 minutes each side until it flakes easily. Flake and set aside.",
+  "In the same pan, soften the garlic for 30 seconds, add the cream and lemon and simmer for 2 minutes. Stir in the spinach until wilted.",
+  "Toss with the pasta, salmon, parmesan and dill, loosening with pasta water.",
+]
+
+[[recipe]]
+slug = "red-curry-chicken-noodle-soup"
+title = "Red curry chicken noodle soup"
+cuisine = "thai"
+servings = 4
+minutes = 25
+summary = "A quick, warming coconut curry broth with chicken, rice noodles and greens."
+ingredients = [
+  "2 tbsp red curry paste",
+  "1 tbsp vegetable oil",
+  "400 ml coconut milk",
+  "1 litre chicken stock",
+  "500 g chicken thigh, thinly sliced",
+  "200 g rice noodles",
+  "2 bok choy, chopped",
+  "2 tbsp fish sauce",
+  "1 lime, juiced",
+  "1 bunch coriander, chopped",
+]
+method = [
+  "Fry the curry paste in the oil for 1 minute. Add the coconut milk and stock and bring to a simmer.",
+  "Add the chicken and simmer for 8 minutes until cooked through. Add the noodles and bok choy for 3 minutes.",
+  "Season with the fish sauce and lime juice and top with coriander.",
+]
+
+[[recipe]]
+slug = "bacon-egg-fried-rice"
+title = "Bacon and egg fried rice"
+cuisine = "australian"
+servings = 4
+minutes = 20
+summary = "Crispy bacon, egg, peas and corn fried with leftover rice. A fridge-clearing favourite."
+ingredients = [
+  "4 rashers bacon, chopped",
+  "1 tbsp vegetable oil",
+  "3 eggs, beaten",
+  "600 g cooked rice",
+  "150 g frozen peas",
+  "125 g corn kernels",
+  "3 tbsp soy sauce",
+  "3 spring onions, sliced",
+]
+method = [
+  "Fry the bacon in the oil for 5 minutes until crisp. Push aside and scramble the eggs.",
+  "Add the rice, peas and corn and fry for 5 minutes until hot.",
+  "Stir through the soy sauce and spring onions.",
+]
+
+[[recipe]]
+slug = "sausage-gnocchi-bake"
+title = "Sausage and cherry tomato gnocchi bake"
+cuisine = "italian"
+servings = 4
+minutes = 30
+summary = "Gnocchi baked with sausage, cherry tomatoes and mozzarella until bubbling."
+ingredients = [
+  "500 g potato gnocchi",
+  "4 sausages, cut into chunks",
+  "1 tbsp olive oil",
+  "500 g cherry tomatoes",
+  "2 cloves garlic, sliced",
+  "1 tsp dried oregano",
+  "125 g mozzarella, torn",
+  "1 bunch basil, leaves picked",
+]
+method = [
+  "Heat the oven to 220°C. Toss the gnocchi, sausage, tomatoes, garlic, oregano and oil in a baking dish.",
+  "Bake for 20 minutes until the sausage is cooked through and the tomatoes burst.",
+  "Top with mozzarella and bake for 5 minutes more. Scatter with basil.",
+]
+
+[[recipe]]
+slug = "mexican-beef-rice-skillet"
+title = "One-pan Mexican beef and rice"
+cuisine = "american"
+servings = 4
+minutes = 35
+summary = "Beef mince, rice, beans and tomato cooked together in one pan and topped with cheddar."
+ingredients = [
+  "500 g beef mince",
+  "1 tbsp olive oil",
+  "1 onion, diced",
+  "2 tsp ground cumin",
+  "2 tsp paprika",
+  "1 cup rice",
+  "400 g can canned tomatoes",
+  "500 ml beef stock",
+  "400 g can kidney beans, drained",
+  "100 g cheddar cheese, grated",
+  "1 bunch coriander, chopped",
+]
+method = [
+  "Fry the mince and onion in the oil for 8 minutes until browned and cooked through. Stir in the spices.",
+  "Add the rice, tomatoes and stock, cover and simmer on low for 18 minutes until the rice is tender.",
+  "Stir in the beans, top with cheddar, cover until melted and scatter with coriander.",
+]
+
+[[recipe]]
+slug = "crumbed-fish-smashed-peas"
+title = "Crumbed fish with smashed peas"
+cuisine = "british"
+servings = 4
+minutes = 25
+summary = "Panko-crumbed fish fillets with minty smashed peas and lemon."
+ingredients = [
+  "4 white fish fillets",
+  "40 g plain flour",
+  "1 egg, beaten",
+  "80 g panko breadcrumbs",
+  "3 tbsp vegetable oil",
+  "400 g frozen peas",
+  "20 g butter",
+  "1 bunch mint, chopped",
+  "1 lemon, cut into wedges",
+]
+method = [
+  "Dust the fish in flour, dip in egg, then press into the panko.",
+  "Fry in the oil for 3 minutes each side until golden and the fish flakes easily.",
+  "Cook the peas for 3 minutes, drain and roughly smash with the butter and mint. Serve with the fish and lemon.",
+]
+
+[[recipe]]
+slug = "pork-green-bean-stir-fry"
+title = "Pork mince and green bean stir-fry"
+cuisine = "chinese"
+servings = 4
+minutes = 20
+summary = "Crispy pork mince with blistered green beans, garlic and chilli."
+ingredients = [
+  "500 g pork mince",
+  "1 tbsp vegetable oil",
+  "400 g green beans, cut into short lengths",
+  "3 cloves garlic, crushed",
+  "1 red chilli, chopped",
+  "2 tbsp soy sauce",
+  "1 tbsp oyster sauce",
+  "1 tsp white sugar",
+  "1 1/2 cups rice",
+]
+method = [
+  "Cook the rice.",
+  "Fry the pork in the oil for 6 minutes until crisp and cooked through. Push aside.",
+  "Add the beans and stir-fry for 5 minutes until blistered. Add the garlic and chilli for 30 seconds, then the sauces and sugar. Serve with the rice.",
+]
+
+[[recipe]]
+slug = "huevos-rancheros"
+title = "Huevos rancheros"
+cuisine = "mexican"
+servings = 4
+minutes = 25
+summary = "Eggs poached in a spicy tomato and bean sauce, served on warm tortillas. Vegetarian."
+ingredients = [
+  "1 tbsp olive oil",
+  "1 onion, diced",
+  "2 cloves garlic, crushed",
+  "1 tsp ground cumin",
+  "1 tsp chilli powder",
+  "400 g can canned tomatoes",
+  "400 g can black beans, drained",
+  "4 eggs",
+  "4 tortillas",
+  "1 avocado, sliced",
+  "60 g feta, crumbled",
+  "1 bunch coriander, chopped",
+]
+method = [
+  "Soften the onion and garlic in the oil for 5 minutes. Add the spices, tomatoes and beans and simmer for 8 minutes.",
+  "Make 4 hollows, crack in the eggs, cover and cook for 5 minutes until the whites are set.",
+  "Serve on warm tortillas with avocado, feta and coriander.",
+]
+
+[[recipe]]
+slug = "pita-pizzas"
+title = "Pita bread pizzas"
+cuisine = "australian"
+servings = 4
+minutes = 15
+summary = "Quick crispy pizzas on pita with ham, capsicum, mushroom and mozzarella. Kids can build their own."
+ingredients = [
+  "4 pita bread",
+  "125 g tomato paste",
+  "1 tsp dried oregano",
+  "150 g ham, chopped",
+  "1 capsicum, sliced",
+  "100 g mushrooms, sliced",
+  "200 g mozzarella, grated",
+]
+method = [
+  "Heat the oven to 220°C.",
+  "Spread the pita with tomato paste and sprinkle with oregano. Top with the ham, capsicum, mushrooms and mozzarella.",
+  "Bake on trays for 10 minutes until the cheese is bubbling and the bases are crisp.",
+]
+
+[[recipe]]
+slug = "chilli-prawn-broccolini-noodles"
+title = "Chilli prawn and broccolini noodles"
+cuisine = "chinese"
+servings = 4
+minutes = 20
+summary = "Hokkien noodles with prawns, broccolini and a sweet chilli, garlic and soy sauce."
+ingredients = [
+  "450 g hokkien noodles",
+  "400 g prawns, peeled",
+  "1 tbsp vegetable oil",
+  "3 cloves garlic, crushed",
+  "1 tbsp ginger, grated",
+  "2 bunches broccolini, cut into lengths",
+  "3 tbsp sweet chilli sauce",
+  "2 tbsp soy sauce",
+  "1 tbsp oyster sauce",
+]
+method = [
+  "Loosen the noodles in hot water and drain.",
+  "Stir-fry the prawns, garlic and ginger in the oil for 3 minutes until pink. Remove.",
+  "Stir-fry the broccolini for 3 minutes, add the noodles, sauces and prawns, and toss for 2 minutes.",
+]
+
+[[recipe]]
+slug = "pasta-e-piselli"
+title = "Pasta with peas and bacon"
+cuisine = "italian"
+servings = 4
+minutes = 20
+summary = "Short pasta with sweet peas, crispy bacon, onion and parmesan in a silky sauce."
+ingredients = [
+  "400 g pasta",
+  "4 rashers bacon, diced",
+  "1 tbsp olive oil",
+  "1 onion, finely diced",
+  "300 g frozen peas",
+  "250 ml chicken stock",
+  "50 g parmesan, grated",
+  "1/2 tsp black pepper",
+]
+method = [
+  "Cook the pasta, keeping a cup of the water.",
+  "Fry the bacon in the oil for 5 minutes until crisp. Add the onion for 4 minutes.",
+  "Add the peas and stock and simmer for 3 minutes. Toss with the pasta, parmesan, pepper and a splash of pasta water.",
+]
+
+[[recipe]]
+slug = "lamb-cutlets-herb-couscous"
+title = "Lamb cutlets with herby couscous"
+cuisine = "australian"
+servings = 4
+minutes = 20
+summary = "Quick-seared lamb cutlets with couscous, herbs, feta and a minted yoghurt."
+ingredients = [
+  "12 lamb chops",
+  "1 tbsp olive oil",
+  "1 tsp ground cumin",
+  "1/2 tsp salt",
+  "250 g couscous",
+  "250 ml boiling water",
+  "1 bunch mint, chopped",
+  "1 bunch parsley, chopped",
+  "100 g feta, crumbled",
+  "1 lemon, juiced",
+  "150 g greek yoghurt",
+]
+method = [
+  "Pour the boiling water over the couscous, cover for 5 minutes and fluff up. Stir in most of the herbs, the feta and lemon juice.",
+  "Rub the lamb with the oil, cumin and salt and sear for 2–3 minutes each side for medium.",
+  "Mix the yoghurt with the rest of the mint and serve with the lamb and couscous.",
+]
+
+[[recipe]]
+slug = "black-bean-corn-tacos"
+title = "Black bean and corn tacos"
+cuisine = "mexican"
+servings = 4
+minutes = 15
+summary = "Smoky black beans and charred corn in tortillas with avocado and feta. Vegetarian."
+ingredients = [
+  "2 x 400 g cans black beans, drained",
+  "250 g corn kernels",
+  "1 tbsp olive oil",
+  "2 tsp ground cumin",
+  "1 tsp paprika",
+  "8 tortillas",
+  "1 avocado, sliced",
+  "60 g feta, crumbled",
+  "1/4 red cabbage, finely shredded",
+  "1 lime, cut into wedges",
+]
+method = [
+  "Fry the corn in the oil for 4 minutes until charred. Add the beans and spices with a splash of water and warm through, roughly mashing a few beans.",
+  "Warm the tortillas and fill with the beans, cabbage, avocado and feta. Serve with lime.",
+]
+
+[[recipe]]
+slug = "creamy-chicken-mushroom-gnocchi"
+title = "Creamy chicken and mushroom gnocchi"
+cuisine = "italian"
+servings = 4
+minutes = 25
+summary = "Pan-fried gnocchi with chicken, mushrooms and spinach in a garlicky cream sauce."
+ingredients = [
+  "500 g potato gnocchi",
+  "400 g chicken thigh, sliced",
+  "1 tbsp olive oil",
+  "200 g mushrooms, sliced",
+  "2 cloves garlic, crushed",
+  "200 ml thickened cream",
+  "100 g baby spinach",
+  "40 g parmesan, grated",
+]
+method = [
+  "Fry the gnocchi in half the oil for 5 minutes until golden. Remove.",
+  "Fry the chicken in the rest of the oil for 6 minutes until cooked through. Add the mushrooms and garlic for 3 minutes.",
+  "Add the cream and simmer for 2 minutes, then stir in the spinach, parmesan and gnocchi.",
+]
+
+[[recipe]]
+slug = "halloumi-wraps"
+title = "Halloumi and roast capsicum wraps"
+cuisine = "middle-eastern"
+servings = 4
+minutes = 15
+summary = "Squeaky halloumi with hummus, roasted capsicum, rocket and tomato in warm wraps. Vegetarian."
+ingredients = [
+  "250 g halloumi, sliced",
+  "1 tbsp olive oil",
+  "1 capsicum, sliced",
+  "4 tortillas",
+  "150 g greek yoghurt",
+  "1 clove garlic, crushed",
+  "50 g rocket",
+  "2 tomatoes, sliced",
+]
+method = [
+  "Fry the capsicum in the oil for 5 minutes until soft. Fry the halloumi for 2 minutes each side until golden.",
+  "Mix the yoghurt and garlic, spread over the tortillas and fill with rocket, tomato, capsicum and halloumi. Roll up.",
+]
+
+[[recipe]]
+slug = "chilli-garlic-prawns-rice"
+title = "Chilli garlic butter prawns"
+cuisine = "australian"
+servings = 4
+minutes = 20
+summary = "Prawns sizzled in garlic, chilli and butter with lemon, over rice with a green salad."
+ingredients = [
+  "600 g prawns, peeled",
+  "40 g butter",
+  "1 tbsp olive oil",
+  "5 cloves garlic, crushed",
+  "1 red chilli, chopped",
+  "1 lemon, juiced",
+  "1 bunch parsley, chopped",
+  "1 1/2 cups rice",
+  "1 lettuce, torn",
+]
+method = [
+  "Cook the rice.",
+  "Melt the butter with the oil, add the garlic and chilli for 30 seconds, then fry the prawns for 3 minutes until pink.",
+  "Squeeze over the lemon and scatter with parsley. Serve over the rice with lettuce.",
+]

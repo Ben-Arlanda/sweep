@@ -1,0 +1,632 @@
+# Middle Eastern, Turkish, Moroccan, Greek and Spanish. Written for Sweep (licence: Sweep original).
+
+[[recipe]]
+slug = "shish-tawook"
+title = "Shish tawook (garlic chicken skewers)"
+cuisine = "middle-eastern"
+servings = 4
+minutes = 40
+summary = "Chicken marinated in yoghurt, lemon, garlic and paprika, grilled and served in pita."
+ingredients = [
+  "800 g chicken breast, cut into cubes",
+  "200 g greek yoghurt",
+  "1 lemon, juiced",
+  "4 cloves garlic, crushed",
+  "2 tsp paprika",
+  "1 tsp ground cumin",
+  "1/2 tsp salt",
+  "1 tbsp olive oil",
+  "4 pita bread",
+  "2 tomatoes, sliced",
+  "1 lettuce, shredded",
+]
+method = [
+  "Mix the yoghurt, lemon juice, garlic, paprika, cumin, salt and oil, and coat the chicken. Marinate for 15 minutes.",
+  "Thread onto skewers and grill for 10–12 minutes, turning, until charred and cooked through.",
+  "Serve in warm pita with tomato and lettuce.",
+]
+
+[[recipe]]
+slug = "mujadara"
+title = "Mujadara (lentils and rice with crispy onions)"
+cuisine = "middle-eastern"
+servings = 4
+minutes = 50
+summary = "Lentils and rice cooked with cumin and topped with deeply golden onions. Vegan."
+ingredients = [
+  "200 g brown lentils, rinsed",
+  "1 cup rice",
+  "3 onions, thinly sliced",
+  "80 ml olive oil",
+  "2 tsp ground cumin",
+  "1 tsp ground cinnamon",
+  "1 tsp salt",
+  "750 ml water",
+  "1 bunch parsley, chopped",
+]
+method = [
+  "Boil the lentils in plenty of water for 15 minutes until just tender. Drain.",
+  "Fry the onions in the oil for 20 minutes, stirring often, until deep golden. Remove half.",
+  "Add the spices, rice, lentils, salt and the 750 ml water to the pan. Cover and cook on low for 15 minutes until the rice is tender.",
+  "Top with the reserved onions and parsley.",
+]
+
+[[recipe]]
+slug = "sumac-chicken-traybake"
+title = "Sumac chicken and onion traybake"
+cuisine = "middle-eastern"
+servings = 4
+minutes = 55
+summary = "Chicken thighs roasted on sumac-soaked onions, finished with pine nuts and parsley."
+ingredients = [
+  "1 kg chicken thigh",
+  "3 red onions, cut into wedges",
+  "2 tbsp sumac",
+  "1 tsp ground cinnamon",
+  "3 tbsp olive oil",
+  "1 lemon, juiced",
+  "1 tsp salt",
+  "40 g pine nuts",
+  "1 bunch parsley, chopped",
+  "4 pita bread",
+]
+method = [
+  "Heat the oven to 200°C. Toss the chicken and onions with the sumac, cinnamon, oil, lemon juice and salt.",
+  "Roast for 40 minutes until the chicken is golden and cooked through.",
+  "Toast the pine nuts in a dry pan for 3 minutes. Scatter over with the parsley and serve with warm pita.",
+]
+
+[[recipe]]
+slug = "chickpea-fatteh"
+title = "Chickpea fatteh"
+cuisine = "middle-eastern"
+servings = 4
+minutes = 25
+summary = "Crispy pita layered with warm chickpeas, garlicky tahini yoghurt and pine nuts. Vegetarian."
+ingredients = [
+  "3 pita bread, torn",
+  "3 tbsp olive oil",
+  "2 x 400 g cans chickpeas, drained",
+  "1 tsp ground cumin",
+  "300 g greek yoghurt",
+  "3 tbsp tahini",
+  "1 clove garlic, crushed",
+  "1 lemon, juiced",
+  "40 g pine nuts",
+  "1 tsp paprika",
+  "1 bunch parsley, chopped",
+]
+method = [
+  "Heat the oven to 200°C. Toss the pita with 2 tbsp oil and bake for 8 minutes until crisp.",
+  "Warm the chickpeas with the cumin and a splash of water for 5 minutes.",
+  "Mix the yoghurt, tahini, garlic and lemon juice. Fry the pine nuts and paprika in the last of the oil for 2 minutes.",
+  "Layer the pita, chickpeas and yoghurt, and top with the pine nuts and parsley.",
+]
+
+[[recipe]]
+slug = "muhammara"
+title = "Muhammara (roast capsicum and walnut dip)"
+cuisine = "middle-eastern"
+servings = 6
+minutes = 35
+summary = "A smoky, sweet-spicy dip of roasted capsicum, walnuts and breadcrumbs. Vegan."
+ingredients = [
+  "3 capsicums",
+  "100 g walnuts",
+  "40 g breadcrumbs",
+  "1 clove garlic",
+  "1 tsp ground cumin",
+  "1 tsp chilli flakes",
+  "1 tbsp tomato paste",
+  "1 lemon, juiced",
+  "3 tbsp olive oil",
+  "1/2 tsp salt",
+  "4 pita bread",
+]
+method = [
+  "Grill the capsicums for 15 minutes, turning, until blackened. Cover for 5 minutes, then peel and seed.",
+  "Toast the walnuts in a dry pan for 4 minutes.",
+  "Blitz everything except the pita to a coarse paste. Serve with warm pita.",
+]
+
+[[recipe]]
+slug = "lebanese-chicken-rice"
+title = "Lebanese chicken and spiced rice (hashweh)"
+cuisine = "middle-eastern"
+servings = 4
+minutes = 50
+summary = "Rice cooked with spiced beef mince, topped with roast chicken and toasted almonds."
+ingredients = [
+  "4 chicken breasts",
+  "2 tbsp olive oil",
+  "1 tsp paprika",
+  "250 g beef mince",
+  "1 onion, finely diced",
+  "1 tsp ground cinnamon",
+  "1 tsp ground cumin",
+  "1 1/2 cups rice",
+  "750 ml chicken stock",
+  "1/2 tsp salt",
+  "60 g almonds, flaked or chopped",
+  "1 bunch parsley, chopped",
+]
+method = [
+  "Heat the oven to 200°C. Rub the chicken with 1 tbsp oil and the paprika and roast for 22 minutes until cooked through. Rest, then slice.",
+  "Fry the mince and onion in the rest of the oil for 8 minutes until browned. Add the spices, rice, stock and salt. Cover and cook on low for 15 minutes.",
+  "Toast the almonds in a dry pan for 3 minutes. Pile the rice on a platter, top with the chicken, almonds and parsley.",
+]
+
+[[recipe]]
+slug = "cilbir"
+title = "Turkish eggs (cilbir)"
+cuisine = "turkish"
+servings = 2
+minutes = 15
+summary = "Poached eggs on garlicky yoghurt with sizzling chilli butter and dill. Vegetarian."
+ingredients = [
+  "4 eggs",
+  "250 g greek yoghurt",
+  "1 clove garlic, crushed",
+  "1 pinch salt",
+  "40 g butter",
+  "1 tsp chilli flakes",
+  "1 tsp paprika",
+  "1 bunch dill, chopped",
+  "4 slices bread, toasted",
+]
+method = [
+  "Mix the yoghurt, garlic and salt and spread on two plates.",
+  "Poach the eggs in barely simmering water for 3 minutes until the whites are set.",
+  "Melt the butter with the chilli flakes and paprika for 1 minute until sizzling.",
+  "Put the eggs on the yoghurt, spoon over the butter, scatter with dill and serve with the toast.",
+]
+
+[[recipe]]
+slug = "harira"
+title = "Harira (Moroccan lamb, lentil and chickpea soup)"
+cuisine = "moroccan"
+servings = 6
+minutes = 75
+summary = "A hearty spiced soup of lamb, lentils, chickpeas and tomato, finished with herbs and lemon."
+ingredients = [
+  "400 g lamb shoulder, cut into small cubes",
+  "2 tbsp olive oil",
+  "1 onion, diced",
+  "2 stalks celery, diced",
+  "2 tsp ras el hanout",
+  "1 tsp ground turmeric",
+  "400 g can canned tomatoes",
+  "150 g red lentils",
+  "400 g can chickpeas, drained",
+  "1.5 litres chicken stock",
+  "1 bunch coriander, chopped",
+  "1 bunch parsley, chopped",
+  "1 lemon, cut into wedges",
+]
+method = [
+  "Brown the lamb in the oil for 5 minutes. Add the onion and celery for 5 minutes, then the spices for 1 minute.",
+  "Add the tomatoes, lentils, chickpeas and stock and simmer, partly covered, for 50 minutes until the lamb is tender and cooked through.",
+  "Stir in the coriander and parsley and serve with lemon wedges.",
+]
+
+[[recipe]]
+slug = "chermoula-fish"
+title = "Chermoula baked fish"
+cuisine = "moroccan"
+servings = 4
+minutes = 30
+summary = "White fish baked under a zesty herb, garlic and spice paste with cherry tomatoes."
+ingredients = [
+  "4 white fish fillets",
+  "1 bunch coriander",
+  "1 bunch parsley",
+  "2 cloves garlic",
+  "2 tsp ground cumin",
+  "2 tsp paprika",
+  "1 lemon, juiced",
+  "4 tbsp olive oil",
+  "1/2 tsp salt",
+  "250 g cherry tomatoes",
+  "250 g couscous",
+  "250 ml boiling water",
+]
+method = [
+  "Heat the oven to 200°C. Blitz the coriander, parsley, garlic, spices, lemon juice, oil and salt to a paste.",
+  "Spread over the fish on a tray, scatter the tomatoes around and bake for 15 minutes until the fish flakes easily.",
+  "Pour the boiling water over the couscous, cover for 5 minutes and fluff up. Serve with the fish.",
+]
+
+[[recipe]]
+slug = "moroccan-carrot-salad"
+title = "Moroccan carrot salad"
+cuisine = "moroccan"
+servings = 4
+minutes = 20
+summary = "Tender carrots in a cumin, cinnamon and lemon dressing with parsley. Vegan."
+ingredients = [
+  "600 g carrots, sliced",
+  "3 tbsp olive oil",
+  "1 lemon, juiced",
+  "1 clove garlic, crushed",
+  "1 tsp ground cumin",
+  "1/2 tsp ground cinnamon",
+  "1 tsp maple syrup",
+  "1/2 tsp salt",
+  "1 bunch parsley, chopped",
+]
+method = [
+  "Boil the carrots for 6 minutes until just tender. Drain.",
+  "Whisk the oil, lemon juice, garlic, spices, maple syrup and salt, and toss with the warm carrots.",
+  "Cool a little and stir in the parsley.",
+]
+
+[[recipe]]
+slug = "moroccan-couscous-salad"
+title = "Moroccan couscous salad"
+cuisine = "moroccan"
+servings = 4
+minutes = 20
+summary = "Fluffy couscous with chickpeas, apricots, almonds, mint and a spiced lemon dressing. Vegan."
+ingredients = [
+  "250 g couscous",
+  "250 ml boiling water",
+  "400 g can chickpeas, drained",
+  "80 g dried apricots, chopped",
+  "50 g almonds, chopped",
+  "1 red onion, finely diced",
+  "1 bunch mint, chopped",
+  "1 lemon, juiced",
+  "3 tbsp olive oil",
+  "1 tsp ras el hanout",
+  "1/2 tsp salt",
+]
+method = [
+  "Pour the boiling water over the couscous, cover for 5 minutes and fluff up.",
+  "Whisk the lemon juice, oil, ras el hanout and salt.",
+  "Toss the couscous with the chickpeas, apricots, almonds, onion, mint and dressing.",
+]
+
+[[recipe]]
+slug = "chicken-gyros"
+title = "Chicken gyros"
+cuisine = "greek"
+servings = 4
+minutes = 40
+summary = "Oregano and lemon chicken in warm pita with tzatziki, tomato, onion and chips."
+ingredients = [
+  "800 g chicken thigh",
+  "2 tbsp olive oil",
+  "1 lemon, juiced",
+  "2 tsp dried oregano",
+  "1 tsp paprika",
+  "2 cloves garlic, crushed",
+  "200 g greek yoghurt",
+  "1/2 cucumber, grated and squeezed",
+  "4 pita bread",
+  "2 tomatoes, sliced",
+  "1 red onion, thinly sliced",
+  "500 g potatoes, cut into chips",
+]
+method = [
+  "Heat the oven to 220°C. Toss the chips with 1 tbsp oil and bake for 30 minutes until golden.",
+  "Mix the chicken with the rest of the oil, half the lemon juice, the oregano, paprika and half the garlic. Pan-fry for 6 minutes each side until cooked through, then slice.",
+  "For the tzatziki, mix the yoghurt, cucumber, the rest of the garlic and lemon juice.",
+  "Fill the warm pita with chicken, tzatziki, tomato, onion and a few chips.",
+]
+
+[[recipe]]
+slug = "lamb-kleftiko"
+title = "Lamb kleftiko"
+cuisine = "greek"
+servings = 6
+minutes = 240
+summary = "Lamb leg slow-baked in a sealed parcel with potatoes, lemon, garlic and oregano until it falls apart."
+ingredients = [
+  "2 kg lamb leg",
+  "6 cloves garlic, sliced",
+  "2 lemons, juiced",
+  "3 tsp dried oregano",
+  "3 tbsp olive oil",
+  "1 kg potatoes, cut into chunks",
+  "2 onions, cut into wedges",
+  "1 tsp salt",
+  "125 ml white wine",
+  "100 g feta, crumbled",
+]
+method = [
+  "Heat the oven to 160°C. Cut slits in the lamb and push in the garlic. Rub with the lemon juice, oregano, oil and salt.",
+  "Put the potatoes and onions in a roasting dish, sit the lamb on top and pour in the wine.",
+  "Cover tightly with baking paper and foil and bake for 3½ hours until the lamb is very tender and cooked through.",
+  "Uncover, crumble over the feta and bake for 15 minutes more until golden.",
+]
+
+[[recipe]]
+slug = "gigantes-plaki"
+title = "Baked beans in tomato and dill (gigantes plaki)"
+cuisine = "greek"
+servings = 4
+minutes = 50
+summary = "Creamy white beans baked in a rich tomato sauce with dill and feta. Vegetarian."
+ingredients = [
+  "2 x 400 g cans cannellini beans, drained",
+  "3 tbsp olive oil",
+  "1 onion, diced",
+  "2 cloves garlic, crushed",
+  "1 carrot, finely diced",
+  "700 g passata",
+  "1 tsp dried oregano",
+  "1 tsp honey",
+  "1 bunch dill, chopped",
+  "100 g feta, crumbled",
+  "1 baguette",
+]
+method = [
+  "Heat the oven to 190°C. Soften the onion, garlic and carrot in the oil for 8 minutes.",
+  "Add the passata, oregano, honey and beans and simmer for 5 minutes. Stir in most of the dill.",
+  "Tip into a baking dish, top with feta and bake for 30 minutes until bubbling. Scatter with the rest of the dill and serve with the baguette.",
+]
+
+[[recipe]]
+slug = "avgolemono"
+title = "Greek lemon chicken soup (avgolemono)"
+cuisine = "greek"
+servings = 4
+minutes = 45
+summary = "Chicken and rice soup made silky with egg and lemon."
+ingredients = [
+  "500 g chicken breast",
+  "1.5 litres chicken stock",
+  "1/2 cup rice",
+  "3 eggs",
+  "2 lemons, juiced",
+  "1 bunch dill, chopped",
+  "1/2 tsp black pepper",
+]
+method = [
+  "Simmer the chicken in the stock for 18 minutes until cooked through. Lift out and shred.",
+  "Add the rice to the stock and simmer for 15 minutes until tender.",
+  "Whisk the eggs and lemon juice. Slowly whisk in two ladles of hot stock, then stir the mixture back into the pot over low heat for 2 minutes until silky. Don't let it boil.",
+  "Return the chicken and serve with dill and pepper.",
+]
+
+[[recipe]]
+slug = "spanakorizo"
+title = "Spinach and herb rice (spanakorizo)"
+cuisine = "greek"
+servings = 4
+minutes = 35
+summary = "Rice simmered with lots of spinach, dill, spring onion and lemon, topped with feta. Vegetarian."
+ingredients = [
+  "3 tbsp olive oil",
+  "1 onion, diced",
+  "4 spring onions, sliced",
+  "1 cup rice",
+  "750 ml vegetable stock",
+  "400 g baby spinach",
+  "1 bunch dill, chopped",
+  "1 lemon, juiced",
+  "100 g feta, crumbled",
+]
+method = [
+  "Soften the onion and spring onions in the oil for 5 minutes. Stir in the rice for 1 minute.",
+  "Add the stock and simmer, covered, for 15 minutes.",
+  "Stir in the spinach and dill until wilted, cover for 5 minutes, then add the lemon juice. Serve with feta.",
+]
+
+[[recipe]]
+slug = "prawn-saganaki"
+title = "Prawn saganaki"
+cuisine = "greek"
+servings = 4
+minutes = 25
+summary = "Prawns baked in a garlicky tomato and oregano sauce under melting feta."
+ingredients = [
+  "600 g prawns, peeled",
+  "2 tbsp olive oil",
+  "1 onion, diced",
+  "3 cloves garlic, crushed",
+  "400 g can canned tomatoes",
+  "1 tsp dried oregano",
+  "1/2 tsp chilli flakes",
+  "150 g feta, crumbled",
+  "1 bunch parsley, chopped",
+  "1 baguette",
+]
+method = [
+  "Soften the onion and garlic in the oil for 5 minutes. Add the tomatoes, oregano and chilli and simmer for 8 minutes.",
+  "Add the prawns, scatter with feta and cook, covered, for 4 minutes until the prawns are pink.",
+  "Scatter with parsley and serve with the baguette.",
+]
+
+[[recipe]]
+slug = "pastitsio"
+title = "Pastitsio (Greek pasta bake)"
+cuisine = "greek"
+servings = 8
+minutes = 100
+summary = "Penne layered with cinnamon-spiced beef sauce under a thick, golden cheese sauce."
+ingredients = [
+  "500 g pasta",
+  "1 tbsp olive oil",
+  "1 onion, diced",
+  "750 g beef mince",
+  "1 tsp ground cinnamon",
+  "700 g passata",
+  "80 g butter",
+  "80 g plain flour",
+  "1 litre milk",
+  "2 eggs, beaten",
+  "100 g parmesan, grated",
+]
+method = [
+  "Cook the pasta for 2 minutes less than the packet says and drain.",
+  "Fry the onion and mince in the oil for 10 minutes until browned. Add the cinnamon and passata and simmer for 20 minutes.",
+  "Melt the butter, stir in the flour, then whisk in the milk until thick. Off the heat, whisk in the eggs and half the parmesan.",
+  "Heat the oven to 180°C. Layer the pasta, meat sauce and white sauce in a dish, top with the rest of the parmesan and bake for 45 minutes. Rest for 10 minutes.",
+]
+
+[[recipe]]
+slug = "tzatziki"
+title = "Tzatziki"
+cuisine = "greek"
+servings = 6
+minutes = 10
+summary = "Thick garlicky yoghurt with cucumber, dill and lemon. Vegetarian."
+ingredients = [
+  "400 g greek yoghurt",
+  "1 cucumber, grated and squeezed",
+  "1 clove garlic, crushed",
+  "1 bunch dill, chopped",
+  "1/2 lemon, juiced",
+  "1 tbsp olive oil",
+  "1 pinch salt",
+]
+method = [
+  "Mix everything together and chill until needed.",
+]
+
+[[recipe]]
+slug = "albondigas"
+title = "Albondigas (Spanish meatballs)"
+cuisine = "spanish"
+servings = 4
+minutes = 45
+summary = "Pork and beef meatballs simmered in a smoky paprika tomato sauce."
+ingredients = [
+  "250 g pork mince",
+  "250 g beef mince",
+  "40 g breadcrumbs",
+  "1 egg",
+  "2 cloves garlic, crushed",
+  "2 tsp paprika",
+  "2 tbsp olive oil",
+  "1 onion, diced",
+  "700 g passata",
+  "125 ml white wine",
+  "1 bunch parsley, chopped",
+  "1 baguette",
+]
+method = [
+  "Mix the minces, breadcrumbs, egg, half the garlic and 1 tsp paprika. Roll into 20 balls.",
+  "Brown the meatballs in the oil for 6 minutes. Remove.",
+  "Soften the onion and the rest of the garlic for 5 minutes, add the rest of the paprika, the wine and passata, and simmer for 5 minutes.",
+  "Return the meatballs and simmer for 15 minutes until cooked through. Scatter with parsley and serve with the baguette.",
+]
+
+[[recipe]]
+slug = "pan-con-tomate"
+title = "Pan con tomate"
+cuisine = "spanish"
+servings = 4
+minutes = 10
+summary = "Toasted bread rubbed with garlic and ripe tomato, finished with olive oil and salt. Vegan."
+ingredients = [
+  "8 slices bread",
+  "1 clove garlic, halved",
+  "3 tomatoes, halved",
+  "3 tbsp olive oil",
+  "1/2 tsp salt",
+]
+method = [
+  "Toast the bread.",
+  "Rub each slice with the cut garlic, then the cut tomato, squeezing so the pulp soaks in.",
+  "Drizzle with olive oil and sprinkle with salt.",
+]
+
+[[recipe]]
+slug = "espinacas-con-garbanzos"
+title = "Spinach and chickpeas (espinacas con garbanzos)"
+cuisine = "spanish"
+servings = 4
+minutes = 25
+summary = "Chickpeas and spinach in a smoky garlic, cumin and paprika sauce. Vegan."
+ingredients = [
+  "3 tbsp olive oil",
+  "2 slices bread, cubed",
+  "3 cloves garlic, sliced",
+  "2 tsp paprika",
+  "1 tsp ground cumin",
+  "1 tbsp red wine vinegar",
+  "2 x 400 g cans chickpeas, drained",
+  "125 ml vegetable stock",
+  "300 g baby spinach",
+  "1/2 tsp salt",
+]
+method = [
+  "Fry the bread and garlic in the oil for 4 minutes until golden. Blitz or mash with the spices and vinegar to a paste.",
+  "Warm the chickpeas in the stock for 5 minutes, stir in the paste, then the spinach until wilted. Season with the salt.",
+]
+
+[[recipe]]
+slug = "chicken-chorizo-stew"
+title = "Chicken, chorizo and bean stew"
+cuisine = "spanish"
+servings = 4
+minutes = 50
+summary = "Chicken thighs and chorizo simmered with white beans, capsicum and smoky tomato."
+ingredients = [
+  "800 g chicken thigh",
+  "150 g chorizo, sliced",
+  "1 tbsp olive oil",
+  "1 onion, sliced",
+  "1 capsicum, sliced",
+  "2 cloves garlic, crushed",
+  "2 tsp paprika",
+  "400 g can canned tomatoes",
+  "250 ml chicken stock",
+  "400 g can cannellini beans, drained",
+  "1 bunch parsley, chopped",
+  "1 baguette",
+]
+method = [
+  "Brown the chicken in the oil for 4 minutes each side. Remove. Fry the chorizo for 2 minutes.",
+  "Add the onion, capsicum and garlic for 5 minutes, then the paprika, tomatoes and stock.",
+  "Return the chicken and simmer, covered, for 25 minutes until cooked through. Add the beans for 5 minutes. Scatter with parsley and serve with the baguette.",
+]
+
+[[recipe]]
+slug = "sopa-de-ajo"
+title = "Spanish garlic soup (sopa de ajo)"
+cuisine = "spanish"
+servings = 4
+minutes = 25
+summary = "A rustic soup of garlic, paprika and toasted bread with softly set eggs."
+ingredients = [
+  "3 tbsp olive oil",
+  "8 cloves garlic, sliced",
+  "4 slices bread, cubed",
+  "2 tsp paprika",
+  "1.25 litres chicken stock",
+  "4 eggs",
+  "1 bunch parsley, chopped",
+]
+method = [
+  "Fry the garlic and bread in the oil for 4 minutes until golden. Stir in the paprika.",
+  "Add the stock and simmer for 10 minutes.",
+  "Crack in the eggs and simmer for 4 minutes until the whites are set. Scatter with parsley.",
+]
+
+[[recipe]]
+slug = "churros-chocolate"
+title = "Churros with chocolate sauce"
+cuisine = "spanish"
+servings = 6
+minutes = 35
+summary = "Crisp cinnamon-sugar churros with a thick dark chocolate dipping sauce."
+ingredients = [
+  "250 ml water",
+  "60 g butter",
+  "150 g plain flour",
+  "2 eggs",
+  "500 ml vegetable oil",
+  "100 g caster sugar",
+  "2 tsp ground cinnamon",
+  "150 g dark chocolate, chopped",
+  "200 ml thickened cream",
+]
+method = [
+  "Bring the water and butter to the boil, tip in the flour and beat for 1 minute until it forms a ball. Cool for 5 minutes, then beat in the eggs.",
+  "Pipe 10 cm lengths into the hot oil and fry for 3 minutes until golden. Drain.",
+  "Toss in the sugar and cinnamon.",
+  "Warm the cream, pour over the chocolate and stir until smooth. Serve for dipping.",
+]
