@@ -92,13 +92,10 @@ export default function SignInScreen() {
           />
           <Text variant="heading">Sweep</Text>
         </View>
-        <Text variant="display" accessibilityRole="header">
-          Cook what you&apos;ve got. <Highlight>Buy only what&apos;s missing.</Highlight>
+        <Text variant="title" accessibilityRole="header">
+          Let&apos;s get your kitchen <Highlight>sorted</Highlight>
         </Text>
-        <Text muted>
-          Sweep remembers what&apos;s in your kitchen as your household shops, and helps you
-          decide what to cook.
-        </Text>
+        <Text muted>Enter your email and we&apos;ll send you a code. No password needed.</Text>
       </View>
 
       <Card>
@@ -118,7 +115,7 @@ export default function SignInScreen() {
             <ErrorText message={error} />
             <Button title="Email me a code" onPress={sendCode} loading={busy} disabled={!email} />
             <Text variant="caption" muted>
-              No password needed. New here? The same code creates your account.
+              New here? The same code creates your account.
             </Text>
           </>
         ) : (

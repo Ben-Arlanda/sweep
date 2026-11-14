@@ -1,5 +1,6 @@
 import { useColorScheme } from 'react-native';
 
+import { useAppearance } from './appearance';
 import {
   colors,
   fonts,
@@ -13,9 +14,17 @@ import {
   type,
 } from './tokens';
 
-/** The current theme. Re-renders automatically when the device switches light/dark. */
+/** Light or dark, from the person's Appearance choice (dark unless they changed it). */
+export function useScheme(): 'light' | 'dark' {
+  const appearance = useAppearance();
+  const phone = useColorScheme(); // only used when they chose "match my phone"
+  if (appearance === 'system') return phone === 'light' ? 'light' : 'dark';
+  return appearance;
+}
+
+/** The current theme. Re-renders automatically when the scheme changes. */
 export function useTheme() {
-  const scheme = useColorScheme() === 'dark' ? 'dark' : 'light';
+  const scheme = useScheme();
   return {
     scheme,
     colors: colors[scheme],

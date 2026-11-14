@@ -6,10 +6,12 @@ import { Platform, Share, View } from 'react-native';
 import { router } from 'expo-router';
 
 import { Avatar, AvatarStack } from '@/components/Avatar';
+import { Hero, HeroLabel } from '@/components/Hero';
 import { Button, Card, ErrorText, Highlight, SectionLabel, Text } from '@/components/ui';
 import { CabinetTile } from '@/features/cabinet/CabinetTile';
 import { RecipesTile } from '@/features/recipes/RecipesTile';
-import { ListTiles, NewList } from '@/features/lists/ListTiles';
+import { ListTiles } from '@/features/lists/ListTiles';
+import { AppearanceCard } from '@/features/household/AppearanceCard';
 import type { MeOut } from '@/lib/api/client';
 import {
   useCreateInvite,
@@ -20,52 +22,50 @@ import {
 import { clerkErrorMessage } from '@/lib/clerkErrors';
 import { useTheme } from '@/theme/useTheme';
 
-export function HouseholdView({ me }: { me: MeOut }) {
+/** Home's hero: the Household and everyone in it, then the question. */
+export function HomeHero({ me }: { me: MeOut }) {
   const t = useTheme();
   const household = useHousehold(true);
-  const isOwner = me.member.role === 'owner';
-
   const firstName = me.member.display_name.split(' ')[0];
+  return (
+    <Hero
+      top={
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.md }}>
+          <AvatarStack members={household.data?.members ?? [me.member]} size={40} />
+          <HeroLabel label="Household" value={me.household.name} />
+        </View>
+      }
+      title={
+        <>
+          What&apos;s <Highlight>cooking</Highlight> tonight?
+        </>
+      }
+      subtitle={`Hi ${firstName}. Here's your kitchen at a glance.`}
+    />
+  );
+}
 
+/** The board: one pastel tile per list, plus the Cabinet and Recipes. */
+export function HouseholdView() {
+  const t = useTheme();
   return (
     <>
-      {/* Header: the Household as a chip, with everyone in it. */}
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          alignSelf: 'flex-start',
-          gap: t.space.sm,
-          backgroundColor: t.colors.surface,
-          borderRadius: t.radius.pill,
-          paddingVertical: 6,
-          paddingLeft: 6,
-          paddingRight: t.space.md,
-          boxShadow: t.shadow.card,
-        }}
-      >
-        <AvatarStack members={household.data?.members ?? [me.member]} size={26} />
-        <Text variant="label" style={{ fontFamily: t.fonts.displayBold }}>
-          {me.household.name}
-        </Text>
-      </View>
-
-      <View style={{ gap: t.space.xs }}>
-        <Text muted>Hi {firstName}</Text>
-        <Text variant="display" accessibilityRole="header">
-          What&apos;s <Highlight>cooking?</Highlight>
-        </Text>
-      </View>
-
-      {/* The board: one pastel tile per list, plus the Cabinet. */}
+      <SectionLabel>Your kitchen</SectionLabel>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.md }}>
         <ListTiles />
         <CabinetTile />
         <RecipesTile />
       </View>
-      <NewList />
+    </>
+  );
+}
 
-      <SectionLabel>Household</SectionLabel>
+/** The Household tab: who's in it, inviting someone, appearance and your account. */
+export function HouseholdSettings({ me }: { me: MeOut }) {
+  const household = useHousehold(true);
+  const isOwner = me.member.role === 'owner';
+  return (
+    <>
       <Card>
         <Text variant="heading">Members</Text>
         <ErrorText message={household.error?.message} />
@@ -82,6 +82,7 @@ export function HouseholdView({ me }: { me: MeOut }) {
       </Card>
 
       {isOwner ? <InviteCard /> : null}
+      <AppearanceCard />
       <AccountCard />
     </>
   );

@@ -1,6 +1,6 @@
 import { contrastRatio } from './contrast';
 import { initials, tintFor } from './tint';
-import { colors, statusColors, TINT_NAMES, tints } from './tokens';
+import { colors, hero, statusColors, TINT_NAMES, tints } from './tokens';
 
 const AA = 4.5;
 const schemes = ['light', 'dark'] as const;
@@ -31,6 +31,11 @@ describe.each(schemes)('%s theme meets WCAG AA for text', (scheme) => {
     ['danger on background', c.danger, c.background],
     ['danger on surface', c.danger, c.surface],
     ['danger on soft danger', c.danger, c.dangerSoft],
+    ['hero title', c.onHero, c.hero],
+    ['hero text', c.onHeroMuted, c.hero],
+    ['hero search text', c.onHero, c.heroField],
+    ['hero search placeholder', c.onHeroMuted, c.heroField],
+    ['lime highlight in the hero', c.onAction, c.action],
   ])('%s', (_, fg, bg) => {
     expect(contrastRatio(fg, bg)).toBeGreaterThanOrEqual(AA);
   });
@@ -46,6 +51,20 @@ describe.each(schemes)('%s theme meets WCAG AA for text', (scheme) => {
     // A transparent badge sits on the card surface.
     const bg = s.bg === 'transparent' ? c.surface : s.bg;
     expect(contrastRatio(s.fg, bg)).toBeGreaterThanOrEqual(AA);
+  });
+});
+
+describe('welcome hero meets WCAG AA', () => {
+  it.each([
+    ['headline', hero.text, hero.background],
+    ['body text', hero.textMuted, hero.background],
+    ['highlighted words', hero.onHighlight, hero.highlight],
+  ])('%s', (_, fg, bg) => {
+    expect(contrastRatio(fg, bg)).toBeGreaterThanOrEqual(AA);
+  });
+
+  it.each(TINT_NAMES)('%s card on the hero keeps its light pastel', (name) => {
+    expect(contrastRatio(tints.light[name].text, tints.light[name].bg)).toBeGreaterThanOrEqual(AA);
   });
 });
 

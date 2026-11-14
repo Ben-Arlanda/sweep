@@ -1,19 +1,22 @@
 import {
-  BricolageGrotesque_700Bold,
-  BricolageGrotesque_800ExtraBold,
-} from '@expo-google-fonts/bricolage-grotesque';
-import { DMSans_400Regular, DMSans_500Medium, DMSans_700Bold } from '@expo-google-fonts/dm-sans';
+  Urbanist_500Medium,
+  Urbanist_600SemiBold,
+  Urbanist_700Bold,
+} from '@expo-google-fonts/urbanist';
 import { ClerkProvider, useAuth } from '@clerk/expo';
 import { tokenCache } from '@clerk/expo/token-cache';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { useFonts } from 'expo-font';
 import { Slot } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState, type ReactNode } from 'react';
 
 import { setTokenGetter } from '@/lib/api/client';
 import { CLERK_PUBLISHABLE_KEY } from '@/lib/config';
 import { CACHE_BUSTER, CACHE_MAX_AGE, makeQueryClient, persister } from '@/lib/queryClient';
+import { loadAppearance } from '@/theme/appearance';
+import { useScheme } from '@/theme/useTheme';
 
 // Keep the splash screen up until the brand fonts are ready, so text never flashes
 // in the system font and then jumps.
@@ -35,13 +38,19 @@ export default function RootLayout() {
   // useState so the cache is created once, not on every render.
   const [queryClient] = useState(makeQueryClient);
   const [fontsLoaded, fontError] = useFonts({
-    BricolageGrotesque_700Bold,
-    BricolageGrotesque_800ExtraBold,
-    DMSans_400Regular,
-    DMSans_500Medium,
-    DMSans_700Bold,
+    Urbanist_500Medium,
+    Urbanist_600SemiBold,
+    Urbanist_700Bold,
   });
-  const ready = fontsLoaded || Boolean(fontError); // on a font error, carry on with system fonts
+  // Also wait for the saved Appearance (dark/light), so the first screen isn't drawn in
+  // the wrong theme and then flipped.
+  const [appearanceLoaded, setAppearanceLoaded] = useState(false);
+  useEffect(() => {
+    void loadAppearance().finally(() => setAppearanceLoaded(true));
+  }, []);
+  const scheme = useScheme();
+  const fontsReady = fontsLoaded || Boolean(fontError); // on a font error, carry on with system fonts
+  const ready = fontsReady && appearanceLoaded;
 
   useEffect(() => {
     if (ready) void SplashScreen.hideAsync();
@@ -51,6 +60,8 @@ export default function RootLayout() {
 
   return (
     <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY} tokenCache={tokenCache}>
+      {/* Clock and battery icons: light on our dark theme, dark on the light one. */}
+      <StatusBar style={scheme === 'dark' ? 'light' : 'dark'} />
       <TokenBridge>
         <PersistQueryClientProvider
           client={queryClient}
