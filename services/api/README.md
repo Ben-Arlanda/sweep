@@ -6,7 +6,7 @@ FastAPI backend. Run from this folder:
 docker compose up -d                  # Postgres on localhost:5433 (from the repo root)
 docker compose exec db createdb -U sweep sweep_test   # once, for the tests
 uv sync                               # install dependencies
-uv run alembic upgrade head           # apply database migrations
+uv run alembic upgrade head           # apply migrations (also loads the Ingredient list)
 uv run fastapi dev app/main.py        # dev server on http://localhost:8000
 uv run pytest                         # tests (rebuild sweep_test from the migrations)
 uv run ruff check . && uv run mypy    # lint + type check
@@ -27,6 +27,8 @@ app/
   errors.py      domain errors raised by services
   idempotency.py Idempotency-Key handling: retries replay, never repeat
   realtime.py    Postgres NOTIFY → listener → Hub → WebSockets (ADR 0004)
+  units.py       amount parsing and unit conversion (deterministic, ADR 0003)
+  seed.py        reference data loader; data/ingredients.py is the starter Ingredient list
 alembic/         database migrations
 ```
 

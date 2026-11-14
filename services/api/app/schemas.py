@@ -3,7 +3,7 @@
 import uuid
 from datetime import datetime
 from decimal import Decimal
-from typing import Annotated, Self
+from typing import Annotated, Literal, Self
 
 from pydantic import (
     BaseModel,
@@ -15,7 +15,7 @@ from pydantic import (
     model_validator,
 )
 
-from app.models import AddedBy, Role
+from app.models import AddedBy, ChangeSource, Role
 
 HouseholdName = Annotated[
     str, StringConstraints(strip_whitespace=True, min_length=1, max_length=100)
@@ -84,6 +84,15 @@ Quantity = Annotated[
 ]
 
 
+class IngredientOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: uuid.UUID
+    name: str
+    category: str
+    default_unit: str
+
+
 class ListNameIn(BaseModel):
     name: ListName
 
@@ -94,14 +103,18 @@ class AddItemIn(BaseModel):
     text: ItemText
     quantity: Quantity | None = None
     unit: Unit | None = None
+    # Usually left out: the server reads the amount off the text and finds the Ingredient.
+    ingredient_id: uuid.UUID | None = None
 
 
 class EditItemIn(BaseModel):
-    """Only the fields present are changed. Send `null` to clear quantity or unit."""
+    """Only the fields present are changed. Send `null` to clear quantity, unit or the
+    Ingredient link."""
 
     text: ItemText | None = None
     quantity: Quantity | None = None
     unit: Unit | None = None
+    ingredient_id: uuid.UUID | None = None
 
     @model_validator(mode="after")
     def text_cannot_be_cleared(self) -> Self:
@@ -126,6 +139,7 @@ class ItemOut(BaseModel):
     created_at: datetime
     checked_at: datetime | None
     checked_by: uuid.UUID | None
+    ingredient: IngredientOut | None
 
     @computed_field  # type: ignore[prop-decorator]
     @property
@@ -147,3 +161,36 @@ class ShoppingListSummaryOut(ShoppingListOut):
 
 class ShoppingListDetailOut(ShoppingListOut):
     items: list[ItemOut]
+
+
+# --- Cabinet -----------------------------------------------------------------------
+
+
+class SetQuantityIn(BaseModel):
+    """`null` means "we have some; amount not recorded"."""
+
+    quantity: Quantity | None
+
+
+class SetStapleIn(BaseModel):
+    have: bool
+
+
+class CabinetItemOut(BaseModel):
+    ingredient: IngredientOut
+    quantity: Quantity | None
+    unit: str  # always the Ingredient's own unit: g, ml or count
+    status: Literal["confirmed", "estimated", "unknown"]
+    last_change_source: ChangeSource
+    last_confirmed_at: datetime
+
+
+class StapleOut(BaseModel):
+    ingredient: IngredientOut
+    have: bool
+
+
+class CabinetOut(BaseModel):
+    version: int
+    tracked: list[CabinetItemOut]
+    staples: list[StapleOut]

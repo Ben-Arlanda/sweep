@@ -11,7 +11,7 @@ import uuid
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 
-from sqlalchemy import select
+from sqlalchemy import Uuid, insert, literal, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -24,7 +24,16 @@ from app.errors import (
     NotInHousehold,
     PermissionDenied,
 )
-from app.models import Household, HouseholdInvite, Member, Role, ShoppingList, utcnow
+from app.models import (
+    Household,
+    HouseholdInvite,
+    HouseholdStaple,
+    Ingredient,
+    Member,
+    Role,
+    ShoppingList,
+    utcnow,
+)
 
 INVITE_LIFETIME = timedelta(days=7)
 # No 0/O or 1/I/L: codes get read aloud and typed on phones.
@@ -98,6 +107,13 @@ async def create_household(
     member = await _add_member(session, identity, household, Role.OWNER, display_name)
     # Every Household starts with one list, so there's somewhere to add things straight away.
     session.add(ShoppingList(household_id=household.id, name=DEFAULT_LIST_NAME))
+    # ...and with the default Staples (salt, oil, spices), which Members can change.
+    await session.execute(
+        insert(HouseholdStaple).from_select(
+            ["household_id", "ingredient_id"],
+            select(literal(household.id, Uuid), Ingredient.id).where(Ingredient.is_default_staple),
+        )
+    )
     return MemberContext(member=member, household=household)
 
 
