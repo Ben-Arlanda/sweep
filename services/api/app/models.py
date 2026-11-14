@@ -6,6 +6,7 @@ from decimal import Decimal
 from enum import StrEnum
 
 from sqlalchemy import (
+    Boolean,
     CheckConstraint,
     DateTime,
     Enum,
@@ -20,7 +21,7 @@ from sqlalchemy import (
     func,
 )
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db import Base
 
@@ -32,6 +33,14 @@ def utcnow() -> datetime:
 class Role(StrEnum):
     OWNER = "owner"
     MEMBER = "member"
+
+
+class ChangeSource(StrEnum):
+    """What last changed a Cabinet quantity. Feeds the calculated status (ADR 0003)."""
+
+    PURCHASE = "purchase"  # ticked off a Shopping List
+    MANUAL = "manual"  # a Member set it
+    COOKED = "cooked"  # deducted by Mark as Cooked (slice 6)
 
 
 class AddedBy(StrEnum):
@@ -59,6 +68,8 @@ class Household(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utcnow, server_default=func.now()
     )
+    # Goes up on every Cabinet change; carried by change notices, like a list's version.
+    cabinet_version: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
 
 
 class Member(Base):
@@ -152,6 +163,15 @@ class ShoppingListItem(Base):
     checked_by: Mapped[uuid.UUID | None] = mapped_column(
         ForeignKey("members.id", ondelete="SET NULL")
     )
+    # Which Ingredient this line is, if we could tell. Only linked items reach the Cabinet.
+    ingredient_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("ingredients.id", ondelete="SET NULL")
+    )
+    # Loaded with the item every time (a JOIN), so reading it never needs an extra await.
+    ingredient: Mapped["Ingredient | None"] = relationship(lazy="joined")
+    # What ticking this item added to the Cabinet, so un-ticking can take it back out.
+    cabinet_applied: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false")
+    cabinet_added_quantity: Mapped[Decimal | None] = mapped_column(Numeric(12, 3))
 
 
 class IdempotencyKey(Base):
@@ -171,5 +191,83 @@ class IdempotencyKey(Base):
     status_code: Mapped[int] = mapped_column(SmallInteger)
     response: Mapped[dict[str, object] | None] = mapped_column(JSONB)
     created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utcnow, server_default=func.now()
+    )
+
+
+class Ingredient(Base):
+    """A canonical food item, shared by every Household (reference data, see app/seed.py)."""
+
+    __tablename__ = "ingredients"
+    __table_args__ = (
+        CheckConstraint("default_unit IN ('g', 'ml', 'count')", name="default_unit_known"),
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    name: Mapped[str] = mapped_column(String(80), unique=True)
+    category: Mapped[str] = mapped_column(String(30))
+    # The Cabinet stores this Ingredient's quantities in this unit only.
+    default_unit: Mapped[str] = mapped_column(String(10))
+    # Density, for turning millilitres into grams and back. Unknown for most things.
+    grams_per_ml: Mapped[Decimal | None] = mapped_column(Numeric(6, 3))
+    is_default_staple: Mapped[bool] = mapped_column(Boolean, default=False)
+
+
+class IngredientAlias(Base):
+    """Another name for an Ingredient: "all-purpose flour" → plain flour. Stored normalised."""
+
+    __tablename__ = "ingredient_aliases"
+
+    alias: Mapped[str] = mapped_column(String(80), primary_key=True)
+    ingredient_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("ingredients.id", ondelete="CASCADE"), index=True
+    )
+
+
+class HouseholdStaple(Base):
+    """An Ingredient this Household treats as a Staple: assumed present, no quantity.
+
+    New Households get a row for each default Staple. `ran_out_at` set = "we've run out".
+    """
+
+    __tablename__ = "household_staples"
+    __table_args__ = (PrimaryKeyConstraint("household_id", "ingredient_id"),)
+
+    household_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("households.id", ondelete="CASCADE"))
+    ingredient_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("ingredients.id", ondelete="CASCADE")
+    )
+    ingredient: Mapped[Ingredient] = relationship(lazy="joined")
+    ran_out_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+
+class CabinetItem(Base):
+    """A Tracked Ingredient the Household has. `quantity` is in the Ingredient's own unit;
+    None means "we have some, amount not recorded".
+
+    Confirmed / Estimated / Unknown is not stored: it's calculated when read from
+    `last_change_source` and `last_confirmed_at` (ADR 0003), so it can't go stale.
+    """
+
+    __tablename__ = "cabinet_items"
+    __table_args__ = (
+        UniqueConstraint("household_id", "ingredient_id"),
+        CheckConstraint("quantity >= 0", name="quantity_not_negative"),
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    household_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("households.id", ondelete="CASCADE"), index=True
+    )
+    ingredient_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("ingredients.id", ondelete="CASCADE")
+    )
+    ingredient: Mapped[Ingredient] = relationship(lazy="joined")
+    quantity: Mapped[Decimal | None] = mapped_column(Numeric(12, 3))
+    last_change_source: Mapped[ChangeSource] = mapped_column(
+        str_enum(ChangeSource, "cabinet_change_source")
+    )
+    last_confirmed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utcnow, server_default=func.now()
     )

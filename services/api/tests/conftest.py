@@ -27,6 +27,8 @@ from app.main import create_app
 
 API_DIR = Path(__file__).resolve().parent.parent
 TEST_ISSUER = "https://issuer.test"
+# Loaded by migrations and shared by every Household; tests must not empty them.
+REFERENCE_TABLES = {"ingredients", "ingredient_aliases"}
 
 
 @dataclass
@@ -85,7 +87,9 @@ def db(database_url: str) -> Iterator[Engine]:
     """A plain sync connection for arranging and checking data. Empties tables afterwards."""
     engine = create_engine(sqlalchemy_url(database_url))
     yield engine
-    tables = ", ".join(t.name for t in Base.metadata.sorted_tables)
+    tables = ", ".join(
+        t.name for t in Base.metadata.sorted_tables if t.name not in REFERENCE_TABLES
+    )
     with engine.begin() as conn:
         conn.execute(text(f"TRUNCATE {tables} CASCADE"))
     engine.dispose()

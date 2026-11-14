@@ -20,3 +20,11 @@ The brief asked for exact quantities, deductions and duplicate prevention for ev
 - Less "impressive" than gram-perfect tracking, but it survives real use.
 - Needs a per-Household setting for which Ingredients are Staples (with sensible defaults).
 - The brief listed recipe-based consumption as a later enhancement. We pull "mark as Cooked" into the MVP because it's cheap with this model and keeps Tracked quantities meaningful.
+
+## Implementation notes (slice 3, 2026-11-14)
+
+- **Thresholds:** Confirmed for 7 days after a purchase or manual edit, Estimated after that (and straight away after a Cooked deduction), Unknown after 14 days without confirmation. Constants in `app/services/cabinet.py`.
+- Quantities are stored only in the Ingredient's base unit (g, ml or count). `quantity = null` means "have some, amount not recorded". Conversions that would need a guess (a count to grams, or millilitres to grams without a known density) give null rather than a made-up number.
+- **Ticking a linked item** adds the converted amount as Confirmed. If the existing entry is Unknown, the purchase replaces it, because the old amount isn't trusted. Ticking a Staple marks it "have". **Unticking** takes back what that tick added (best effort). Relinking a ticked item moves its stock to the new Ingredient.
+- Ingredient matching is strict: exact name, alias, or a simple plural. Unmatched items stay off the Cabinet. Smarter matching is slice 4.
+- Ingredients are reference data loaded by migrations (`app/seed.py`). New Households copy the default Staples, and Members can change them.

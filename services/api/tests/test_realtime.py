@@ -191,3 +191,26 @@ def test_socket_rejects_a_first_message_that_is_not_auth(live: TestClient) -> No
         with pytest.raises(WebSocketDisconnect) as closed:
             ws.receive_json()
     assert closed.value.code == 4401
+
+
+def test_ticking_a_linked_item_also_announces_a_cabinet_change(
+    live: TestClient, fake_issuer: FakeIssuer
+) -> None:
+    list_id = setup_household(live, fake_issuer, "alice")
+    r = live.post(
+        f"/lists/{list_id}/items", json={"text": "1kg rice"}, headers=headers(fake_issuer, "alice")
+    )
+    item_id = r.json()["id"]
+
+    with live.websocket_connect("/ws") as alice:
+        alice.send_json({"type": "auth", "token": fake_issuer.token("alice")})
+        assert alice.receive_json() == {"type": "subscribed"}
+
+        live.put(
+            f"/lists/{list_id}/items/{item_id}/checked",
+            json={"checked": True},
+            headers=headers(fake_issuer, "alice"),
+        )
+
+        entities = {alice.receive_json()["entity"], alice.receive_json()["entity"]}
+        assert entities == {"shopping_list", "cabinet"}

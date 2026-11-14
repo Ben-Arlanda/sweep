@@ -19,9 +19,11 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.errors import Conflict, LimitReached, NotFound
-from app.models import ShoppingList, ShoppingListItem, utcnow
+from app.models import Ingredient, ShoppingList, ShoppingListItem, utcnow
 from app.realtime import notify_change
+from app.services import cabinet, ingredients
 from app.services.households import MemberContext
+from app.units import parse_item_text
 
 MAX_LISTS_PER_HOUSEHOLD = 20
 MAX_ITEMS_PER_LIST = 500
@@ -107,11 +109,24 @@ async def add_item(
     quantity: Decimal | None,
     unit: str | None,
     item_id: uuid.UUID | None = None,
+    ingredient_id: uuid.UUID | None = None,
 ) -> ShoppingListItem:
+    """Add a line. "500g pasta" becomes "Pasta", 500 g, linked to the pasta Ingredient."""
     lst = await _touch(session, ctx, list_id)
     count = await session.scalar(select(func.count()).where(ShoppingListItem.list_id == lst.id))
     if (count or 0) >= MAX_ITEMS_PER_LIST:
         raise LimitReached(f"A list can have at most {MAX_ITEMS_PER_LIST} items")
+
+    if quantity is None and unit is None:
+        name, quantity, unit = parse_item_text(text)
+        if quantity is not None:
+            text = name[:1].upper() + name[1:]
+    ingredient = (
+        await _ingredient(session, ingredient_id)
+        if ingredient_id is not None
+        else await ingredients.match(session, text)
+    )
+
     item = ShoppingListItem(
         id=item_id or uuid.uuid4(),
         list_id=lst.id,
@@ -119,6 +134,7 @@ async def add_item(
         quantity=quantity,
         unit=unit,
         added_by_member_id=ctx.member.id,
+        ingredient=ingredient,
     )
     session.add(item)
     try:
@@ -137,11 +153,23 @@ async def edit_item(
     text: str | Unset = UNSET,
     quantity: Decimal | None | Unset = UNSET,
     unit: str | None | Unset = UNSET,
+    ingredient_id: uuid.UUID | None | Unset = UNSET,
 ) -> ShoppingListItem:
     """Change only the fields that were sent. Two Members editing different fields of the
     same item at the same time both keep their change (last write wins *per field*)."""
+    if ingredient_id is not UNSET:
+        await cabinet.lock(session, ctx.household.id)  # relinking may move Cabinet stock
     lst = await _touch(session, ctx, list_id)
     item = await _find_item(session, lst, item_id)
+    if ingredient_id is not UNSET and ingredient_id != item.ingredient_id:
+        # Relinking a ticked item moves what it added to the Cabinet to the new Ingredient.
+        was_applied = item.cabinet_applied
+        await cabinet.undo_purchase(session, ctx.household.id, item)
+        item.ingredient = (
+            await _ingredient(session, ingredient_id) if ingredient_id is not None else None
+        )
+        if was_applied:
+            await cabinet.apply_purchase(session, ctx.household.id, item)
     if text is not UNSET:
         item.text = text
     if quantity is not UNSET:
@@ -158,15 +186,21 @@ async def set_checked(
     item_id: uuid.UUID,
     checked: bool,
 ) -> ShoppingListItem:
-    """Set, never toggle. Saying "checked" twice leaves it checked, credited to the first."""
+    """Set, never toggle. Saying "checked" twice leaves it checked, credited to the first.
+
+    Ticking a linked item puts it in the Cabinet as Confirmed; unticking takes it back.
+    """
+    await cabinet.lock(session, ctx.household.id)
     lst = await _touch(session, ctx, list_id)
     item = await _find_item(session, lst, item_id)
     if checked and item.checked_at is None:
         item.checked_at = utcnow()
         item.checked_by = ctx.member.id
-    elif not checked:
+        await cabinet.apply_purchase(session, ctx.household.id, item)
+    elif not checked and item.checked_at is not None:
         item.checked_at = None
         item.checked_by = None
+        await cabinet.undo_purchase(session, ctx.household.id, item)
     return item
 
 
@@ -229,3 +263,10 @@ async def _find_item(
     if item is None:
         raise NotFound("No such item on this list")
     return item
+
+
+async def _ingredient(session: AsyncSession, ingredient_id: uuid.UUID) -> Ingredient:
+    ingredient = await ingredients.get(session, ingredient_id)
+    if ingredient is None:
+        raise NotFound("No such Ingredient")
+    return ingredient

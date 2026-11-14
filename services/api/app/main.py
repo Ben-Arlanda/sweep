@@ -12,7 +12,7 @@ from app.auth import TokenVerifier
 from app.config import Settings, settings
 from app.db import make_engine, make_sessionmaker
 from app.realtime import Hub, listen
-from app.routes import households, realtime, shopping_lists
+from app.routes import cabinet, households, realtime, shopping_lists
 
 # The one place domain errors become HTTP status codes.
 ERROR_STATUS: dict[type[errors.DomainError], int] = {
@@ -73,6 +73,7 @@ def create_app(
     app.add_exception_handler(errors.DomainError, handle_domain_error)
     app.include_router(households.router)
     app.include_router(shopping_lists.router)
+    app.include_router(cabinet.router)
     app.include_router(realtime.router)
 
     @app.get("/health")

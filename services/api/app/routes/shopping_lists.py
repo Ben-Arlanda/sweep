@@ -5,15 +5,12 @@ replays the stored response for a retry instead of applying the change twice.
 """
 
 import uuid
-from collections.abc import Awaitable, Callable
 
 from fastapi import APIRouter, Request, Response, status
-from fastapi.responses import JSONResponse
-from pydantic import BaseModel
 
-from app import idempotency
 from app.deps import MemberDep, SessionDep
 from app.idempotency import IdempotencyKeyHeader
+from app.routes.common import idempotent
 from app.schemas import (
     AddItemIn,
     EditItemIn,
@@ -25,37 +22,9 @@ from app.schemas import (
     ShoppingListSummaryOut,
 )
 from app.services import shopping_lists as lists
-from app.services.households import MemberContext
 from app.services.shopping_lists import UNSET
 
 router = APIRouter(prefix="/lists", tags=["shopping-lists"])
-
-
-async def idempotent(
-    request: Request,
-    session: SessionDep,
-    ctx: MemberContext,
-    key: str,
-    work: Callable[[], Awaitable[BaseModel | None]],
-    status_code: int = status.HTTP_200_OK,
-) -> Response:
-    """Do `work` once per key: claim the key, run, store the response, commit together."""
-    print_ = idempotency.fingerprint(request, await request.body())
-    replay = await idempotency.claim(session, ctx.member.id, key, print_)
-    if replay is not None:
-        return _response(replay.status_code, replay.response)
-
-    result = await work()  # a DomainError here rolls back the claim too: nothing is stored
-    content = result.model_dump(mode="json") if result is not None else None
-    await idempotency.record(session, ctx.member.id, key, status_code, content)
-    await session.commit()  # the change, the stored response and the NOTIFY, all at once
-    return _response(status_code, content)
-
-
-def _response(status_code: int, content: object) -> Response:
-    if content is None:
-        return Response(status_code=status_code)
-    return JSONResponse(status_code=status_code, content=content)
 
 
 @router.get("")
@@ -135,7 +104,14 @@ async def add_item(
 ) -> Response:
     async def work() -> ItemOut:
         item = await lists.add_item(
-            session, ctx, list_id, body.text, body.quantity, body.unit, item_id=body.id
+            session,
+            ctx,
+            list_id,
+            body.text,
+            body.quantity,
+            body.unit,
+            item_id=body.id,
+            ingredient_id=body.ingredient_id,
         )
         return ItemOut.model_validate(item)
 
@@ -163,6 +139,7 @@ async def edit_item(
             text=body.text if "text" in sent and body.text is not None else UNSET,
             quantity=body.quantity if "quantity" in sent else UNSET,
             unit=body.unit if "unit" in sent else UNSET,
+            ingredient_id=body.ingredient_id if "ingredient_id" in sent else UNSET,
         )
         return ItemOut.model_validate(item)
 
