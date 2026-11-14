@@ -14,6 +14,7 @@ import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persi
 import { onlineManager, QueryClient } from '@tanstack/react-query';
 import { Platform } from 'react-native';
 
+import { registerCabinetMutations } from '@/lib/api/cabinet';
 import { registerListMutations } from '@/lib/api/lists';
 
 if (Platform.OS !== 'web') {
@@ -32,11 +33,12 @@ export function makeQueryClient() {
     },
   });
   registerListMutations(queryClient);
+  registerCabinetMutations(queryClient);
   return queryClient;
 }
 
 export const persister = createAsyncStoragePersister({ storage: AsyncStorage });
 
 /** Bump when cached shapes change, so old caches aren't restored into new code. */
-export const CACHE_BUSTER = 'slice-2';
+export const CACHE_BUSTER = 'slice-3';
 export const CACHE_MAX_AGE = DAY;

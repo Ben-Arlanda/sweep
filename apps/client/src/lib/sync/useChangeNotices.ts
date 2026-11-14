@@ -18,6 +18,7 @@ import { useEffect } from 'react';
 import { AppState } from 'react-native';
 
 import { isNewer } from '@/features/lists/listCache';
+import { cabinetKeys } from '@/lib/api/cabinet';
 import { getToken, type ListDetail } from '@/lib/api/client';
 import { listKeys } from '@/lib/api/lists';
 import { API_URL } from '@/lib/config';
@@ -31,6 +32,8 @@ type Notice =
   | { type: 'resync' }
   | { type: 'changed'; entity: string; id: string; version: number };
 
+type CabinetCache = { version: number };
+
 export function useChangeNotices(enabled: boolean) {
   const queryClient = useQueryClient();
 
@@ -42,15 +45,26 @@ export function useChangeNotices(enabled: boolean) {
     let delay = 1000;
     let stopped = false;
 
-    const refetchAll = () => queryClient.invalidateQueries({ queryKey: listKeys.all });
+    const refetchAll = () => {
+      void queryClient.invalidateQueries({ queryKey: listKeys.all });
+      void queryClient.invalidateQueries({ queryKey: cabinetKeys.all });
+    };
 
     function handle(notice: Notice) {
       if (notice.type === 'subscribed' || notice.type === 'resync') {
         delay = 1000;
-        void refetchAll();
+        refetchAll();
         return;
       }
-      if (notice.type !== 'changed' || notice.entity !== 'shopping_list') return;
+      if (notice.type !== 'changed') return;
+      if (notice.entity === 'cabinet') {
+        const cached = queryClient.getQueryData<CabinetCache>(cabinetKeys.all);
+        if (!cached || notice.version > cached.version) {
+          void queryClient.invalidateQueries({ queryKey: cabinetKeys.all });
+        }
+        return;
+      }
+      if (notice.entity !== 'shopping_list') return;
       // Our own queued changes will refetch when they finish (see `settle`). Refetching
       // now could briefly show the list without the ones still on their way.
       if (queryClient.isMutating({ mutationKey: listKeys.all }) > 0) return;

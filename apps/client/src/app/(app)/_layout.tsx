@@ -39,6 +39,7 @@ function SignedIn() {
     <Stack>
       <Stack.Screen name="index" options={{ title: 'Sweep' }} />
       <Stack.Screen name="lists/[id]" options={{ title: 'Shopping List' }} />
+      <Stack.Screen name="cabinet" options={{ title: 'Cabinet' }} />
     </Stack>
   );
 }

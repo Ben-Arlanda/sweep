@@ -26,6 +26,7 @@ export function newItem(fields: {
     checked_at: null,
     checked_by: null,
     checked: false,
+    ingredient: null, // the server links it; the refetch fills this in
   };
 }
 
