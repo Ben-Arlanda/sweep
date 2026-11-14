@@ -8,7 +8,8 @@ services:
       POSTGRES_PASSWORD: sweep   # local dev only — never reuse in a real environment
       POSTGRES_DB: sweep
     ports:
-      - "5432:5432"
+      # Host port 5433, not 5432: avoids clashing with a locally installed Postgres.
+      - "5433:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
     healthcheck:
