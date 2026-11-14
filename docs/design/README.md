@@ -1,6 +1,6 @@
 # Design direction
 
-Status: direction agreed 2026-11-14, design system not built yet. Built in a design-foundations slice (proposed as slice 3b, needs adding to plan §14).
+Status: **Zest + Kitchen Table** chosen 2026-11-14, with matched-tint pills. Built in slice 3b; the rules are in [ADR 0007](../adr/0007-design-system-zest-kitchen-table.md), and you can browse them at `/design` in a development build.
 
 ## Goal
 
@@ -36,7 +36,7 @@ Screenshots live in `references/` **on your machine only**. They're git-ignored 
 
 Animation is part of the brief: the motion should feel springy and alive, and respect "reduce motion".
 
-Directions drafted from these (Zest, Market Garden, Kitchen Table) are in the design-directions page shared on 2026-11-14. Recommendation: Zest's lime and ink as the brand, with Kitchen Table's pastels and "who ticked it" personality inside the app. **Not yet chosen.**
+Directions drafted from these (Zest, Market Garden, Kitchen Table) are in the design-directions page shared on 2026-11-14. **Chosen:** Zest's lime and ink as the brand, with Kitchen Table's pastels and "who ticked it" personality inside the app. Quantity pills use matched tint (option 3 of 8).
 
 ## Constraints the design must respect
 

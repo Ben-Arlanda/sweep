@@ -1,12 +1,23 @@
+import {
+  BricolageGrotesque_700Bold,
+  BricolageGrotesque_800ExtraBold,
+} from '@expo-google-fonts/bricolage-grotesque';
+import { DMSans_400Regular, DMSans_500Medium, DMSans_700Bold } from '@expo-google-fonts/dm-sans';
 import { ClerkProvider, useAuth } from '@clerk/expo';
 import { tokenCache } from '@clerk/expo/token-cache';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
+import { useFonts } from 'expo-font';
 import { Slot } from 'expo-router';
-import { useState, type ReactNode } from 'react';
+import * as SplashScreen from 'expo-splash-screen';
+import { useEffect, useState, type ReactNode } from 'react';
 
 import { setTokenGetter } from '@/lib/api/client';
 import { CLERK_PUBLISHABLE_KEY } from '@/lib/config';
 import { CACHE_BUSTER, CACHE_MAX_AGE, makeQueryClient, persister } from '@/lib/queryClient';
+
+// Keep the splash screen up until the brand fonts are ready, so text never flashes
+// in the system font and then jumps.
+void SplashScreen.preventAutoHideAsync();
 
 if (!CLERK_PUBLISHABLE_KEY) {
   throw new Error('Set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in apps/client/.env.local');
@@ -23,6 +34,20 @@ if (!CLERK_PUBLISHABLE_KEY) {
 export default function RootLayout() {
   // useState so the cache is created once, not on every render.
   const [queryClient] = useState(makeQueryClient);
+  const [fontsLoaded, fontError] = useFonts({
+    BricolageGrotesque_700Bold,
+    BricolageGrotesque_800ExtraBold,
+    DMSans_400Regular,
+    DMSans_500Medium,
+    DMSans_700Bold,
+  });
+  const ready = fontsLoaded || Boolean(fontError); // on a font error, carry on with system fonts
+
+  useEffect(() => {
+    if (ready) void SplashScreen.hideAsync();
+  }, [ready]);
+
+  if (!ready) return null;
 
   return (
     <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY} tokenCache={tokenCache}>

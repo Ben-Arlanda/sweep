@@ -3,9 +3,12 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Platform, Share, View } from 'react-native';
 
-import { Button, Card, ErrorText, Text } from '@/components/ui';
-import { CabinetCard } from '@/features/cabinet/CabinetCard';
-import { ListsCard } from '@/features/lists/ListsCard';
+import { router } from 'expo-router';
+
+import { Avatar, AvatarStack } from '@/components/Avatar';
+import { Button, Card, ErrorText, Highlight, SectionLabel, Text } from '@/components/ui';
+import { CabinetTile } from '@/features/cabinet/CabinetTile';
+import { ListTiles, NewList } from '@/features/lists/ListTiles';
 import type { MeOut } from '@/lib/api/client';
 import {
   useCreateInvite,
@@ -21,18 +24,46 @@ export function HouseholdView({ me }: { me: MeOut }) {
   const household = useHousehold(true);
   const isOwner = me.member.role === 'owner';
 
+  const firstName = me.member.display_name.split(' ')[0];
+
   return (
     <>
-      <View style={{ gap: t.space.xs }}>
-        <Text variant="caption" muted>
-          Your Household
+      {/* Header: the Household as a chip, with everyone in it. */}
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          alignSelf: 'flex-start',
+          gap: t.space.sm,
+          backgroundColor: t.colors.surface,
+          borderRadius: t.radius.pill,
+          paddingVertical: 6,
+          paddingLeft: 6,
+          paddingRight: t.space.md,
+          boxShadow: t.shadow.card,
+        }}
+      >
+        <AvatarStack members={household.data?.members ?? [me.member]} size={26} />
+        <Text variant="label" style={{ fontFamily: t.fonts.displayBold }}>
+          {me.household.name}
         </Text>
-        <Text variant="title">{me.household.name}</Text>
       </View>
 
-      <ListsCard />
-      <CabinetCard />
+      <View style={{ gap: t.space.xs }}>
+        <Text muted>Hi {firstName}</Text>
+        <Text variant="display" accessibilityRole="header">
+          What&apos;s <Highlight>cooking?</Highlight>
+        </Text>
+      </View>
 
+      {/* The board: one pastel tile per list, plus the Cabinet. */}
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.md }}>
+        <ListTiles />
+        <CabinetTile />
+      </View>
+      <NewList />
+
+      <SectionLabel>Household</SectionLabel>
       <Card>
         <Text variant="heading">Members</Text>
         <ErrorText message={household.error?.message} />
@@ -65,6 +96,7 @@ function MemberRow(props: {
   const remove = useRemoveMember();
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.md }}>
+      <Avatar id={props.memberId} name={props.name} size={36} />
       <View style={{ flex: 1 }}>
         <Text>
           {props.name}
@@ -77,7 +109,9 @@ function MemberRow(props: {
       {props.canRemove ? (
         <Button
           title="Remove"
+          accessibilityLabel={`Remove ${props.name} from the Household`}
           variant="danger"
+          compact
           loading={remove.isPending}
           onPress={() => remove.mutate(props.memberId)}
         />
@@ -162,6 +196,13 @@ function AccountCard() {
       <Text variant="caption" muted>
         Signed in as {user?.primaryEmailAddress?.emailAddress}
       </Text>
+      {__DEV__ ? (
+        <Button
+          title="Design system (dev only)"
+          variant="ghost"
+          onPress={() => router.push('/design')}
+        />
+      ) : null}
       <Button
         title="Sign out"
         variant="secondary"
@@ -185,7 +226,7 @@ function AccountCard() {
           <Button title="Cancel" variant="secondary" onPress={() => setConfirming(false)} />
         </>
       ) : (
-        <Button title="Delete account" variant="danger" onPress={() => setConfirming(true)} />
+        <Button title="Delete account" variant="ghost" onPress={() => setConfirming(true)} />
       )}
       <ErrorText message={error} />
     </Card>

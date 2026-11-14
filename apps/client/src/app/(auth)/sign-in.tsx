@@ -10,12 +10,14 @@ import { useSignIn, useSignUp } from '@clerk/expo';
 import { useState } from 'react';
 import { View } from 'react-native';
 
-import { Button, Card, ErrorText, Field, Screen, Text } from '@/components/ui';
+import { Button, Card, ErrorText, Field, Highlight, Screen, Text } from '@/components/ui';
 import { clerkErrorCodes, clerkErrorMessage } from '@/lib/clerkErrors';
+import { useTheme } from '@/theme/useTheme';
 
 type Mode = 'sign-in' | 'sign-up';
 
 export default function SignInScreen() {
+  const t = useTheme();
   const { signIn } = useSignIn();
   const { signUp } = useSignUp();
 
@@ -80,10 +82,23 @@ export default function SignInScreen() {
   }
 
   return (
-    <Screen>
-      <View style={{ gap: 4, marginTop: 24 }}>
-        <Text variant="title">Sweep</Text>
-        <Text muted>Plan the week, shop together.</Text>
+    <Screen edges={['top', 'bottom', 'left', 'right']}>
+      <View style={{ gap: t.space.md, marginTop: t.space.xl }}>
+        {/* Wordmark: a lime dot, then the name. */}
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.sm }}>
+          <View
+            aria-hidden
+            style={{ width: 14, height: 14, borderRadius: 7, backgroundColor: t.colors.action }}
+          />
+          <Text variant="heading">Sweep</Text>
+        </View>
+        <Text variant="display" accessibilityRole="header">
+          Cook what you&apos;ve got. <Highlight>Buy only what&apos;s missing.</Highlight>
+        </Text>
+        <Text muted>
+          Sweep remembers what&apos;s in your kitchen as your household shops, and helps you
+          decide what to cook.
+        </Text>
       </View>
 
       <Card>
@@ -124,7 +139,7 @@ export default function SignInScreen() {
             />
             <ErrorText message={error} />
             <Button title="Continue" onPress={verify} loading={busy} disabled={!code} />
-            <Button title="Use a different email" variant="secondary" onPress={startOver} />
+            <Button title="Use a different email" variant="ghost" onPress={startOver} />
           </>
         )}
       </Card>

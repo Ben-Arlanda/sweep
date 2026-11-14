@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Button, Card, ErrorText, Field, Text } from '@/components/ui';
+import { Button, Card, ErrorText, Field, Highlight, Text } from '@/components/ui';
 import { useAcceptInvite, useCreateHousehold } from '@/lib/api/households';
 
 /** Signed in, but not in a Household yet: start one, or join with an invite code. */
@@ -13,7 +13,10 @@ export function Onboarding({ suggestedName }: { suggestedName: string }) {
 
   return (
     <>
-      <Text variant="title">Welcome</Text>
+      <Text variant="display" accessibilityRole="header">
+        Welcome to <Highlight>Sweep</Highlight>
+      </Text>
+      <Text muted>Start a Household for your home, or join one with an invite code.</Text>
       <Field
         label="Your name"
         value={displayName}
@@ -22,7 +25,7 @@ export function Onboarding({ suggestedName }: { suggestedName: string }) {
         autoComplete="name"
       />
 
-      <Card>
+      <Card tint="butter">
         <Text variant="heading">Start a Household</Text>
         <Field
           label="Household name"

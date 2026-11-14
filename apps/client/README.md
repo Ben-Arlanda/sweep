@@ -13,6 +13,16 @@ npm test            # Jest (jest-expo)
 Add packages with `npx expo install <pkg>` (not `npm install`) so versions match the Expo SDK.
 See `AGENTS.md` for Expo-specific rules.
 
+## Design system and accessibility
+
+The look ("Zest + Kitchen Table") and its rules are in [ADR 0007](../../docs/adr/0007-design-system-zest-kitchen-table.md).
+
+- Build screens from `src/components/`, and take every colour, font, space and motion value from `useTheme()`. Never hard-code a colour.
+- Lime (`colors.action`) is for actions only, never for text. Give lists, people and items a pastel with `tintFor(id)`.
+- `src/theme/tokens.test.ts` checks WCAG AA contrast for every colour pair, so adding a colour that fails will fail CI.
+- Open `/design` (linked from Account in development builds) to see every component in the current theme. Check it in dark mode and with Reduce Motion on.
+- Before merging UI, run a Lighthouse accessibility audit on the screens you changed (aim for 100), in light and dark mode.
+
 ## Clerk (sign-in)
 
 1. Copy `.env.example` values into `apps/client/.env.local`, including `EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY` (Clerk Dashboard → API keys). It's public; the **secret** key never goes in the client.
