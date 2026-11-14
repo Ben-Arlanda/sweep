@@ -364,3 +364,21 @@ async def test_items_outlive_the_member_who_added_them(
     items = (await get_list(client, fake_issuer, "alice", list_id))["items"]
     assert len(items) == 1
     assert items[0]["added_by_member_id"] is None
+
+
+async def test_the_device_may_choose_the_new_items_id(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer
+) -> None:
+    # Lets a phone add an item and tick it before the add has reached the server.
+    list_id = await household_of_two(client, fake_issuer)
+    chosen = str(uuid.uuid4())
+
+    item = await add_item(client, fake_issuer, "alice", list_id, id=chosen)
+    clash = await client.post(
+        f"/lists/{list_id}/items",
+        json={"id": chosen, "text": "Other"},
+        headers=fake_issuer.headers("bob") | idem(),
+    )
+
+    assert item["id"] == chosen
+    assert clash.status_code == 409

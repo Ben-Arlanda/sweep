@@ -134,7 +134,9 @@ async def add_item(
     key: IdempotencyKeyHeader,
 ) -> Response:
     async def work() -> ItemOut:
-        item = await lists.add_item(session, ctx, list_id, body.text, body.quantity, body.unit)
+        item = await lists.add_item(
+            session, ctx, list_id, body.text, body.quantity, body.unit, item_id=body.id
+        )
         return ItemOut.model_validate(item)
 
     return await idempotent(request, session, ctx, key, work, status.HTTP_201_CREATED)

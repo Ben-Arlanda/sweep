@@ -2,7 +2,7 @@
  * The app's basic building blocks. Every screen is made from these, so the whole app
  * stays consistent and every colour/spacing value comes from the theme tokens.
  */
-import type { ReactNode } from 'react';
+import type { ReactNode, Ref } from 'react';
 import {
   ActivityIndicator,
   Pressable,
@@ -10,6 +10,7 @@ import {
   Text as RNText,
   TextInput,
   View,
+  type TextInputInstance,
   type TextInputProps,
   type TextProps,
 } from 'react-native';
@@ -127,13 +128,15 @@ export function Button({
 export function Field({
   label,
   error,
+  ref,
   ...props
-}: TextInputProps & { label: string; error?: string | null }) {
+}: TextInputProps & { label: string; error?: string | null; ref?: Ref<TextInputInstance> }) {
   const t = useTheme();
   return (
     <View style={{ gap: t.space.xs }}>
       <Text variant="label">{label}</Text>
       <TextInput
+        ref={ref}
         accessibilityLabel={label}
         placeholderTextColor={t.colors.textMuted}
         style={[

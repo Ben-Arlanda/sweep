@@ -7,6 +7,7 @@ npm install
 npx expo start      # w = web, scan the QR code with Expo Go on iPhone
 npm run typecheck
 npm run lint
+npm test            # Jest (jest-expo)
 ```
 
 Add packages with `npx expo install <pkg>` (not `npm install`) so versions match the Expo SDK.
@@ -23,3 +24,11 @@ Test sign-ins: `anything+clerk_test@example.com` with code `424242` (development
 ## API types
 
 `npm run api:types` regenerates `src/lib/api/schema.ts` from the FastAPI schema. Run it after any backend endpoint change.
+
+## Shared lists: how sync works
+
+- **Reads** go through TanStack Query (`src/lib/api/lists.ts`). **Writes** are mutations registered once with `setMutationDefaults`, so a change queued before an app restart can still run.
+- Each change gets its `Idempotency-Key` (and a new item gets its id) **when the Member taps**. Retries reuse both, so the server applies each change once.
+- Changes to one list share a mutation `scope`, so they're sent in order. Offline, they pause and are saved to storage. The screen updates straight away (optimistic) and shows "Offline. N changes will sync".
+- `useChangeNotices` keeps a WebSocket to `/ws`. A notice says "list X is at version N", and the app refetches that list if its copy is older (ADR 0004).
+- Known gap: a change that was **in flight** (not paused) when the app was killed isn't saved. TanStack only saves paused mutations.

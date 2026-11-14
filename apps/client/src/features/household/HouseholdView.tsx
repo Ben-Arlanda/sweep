@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Platform, Share, View } from 'react-native';
 
 import { Button, Card, ErrorText, Text } from '@/components/ui';
+import { ListsCard } from '@/features/lists/ListsCard';
 import type { MeOut } from '@/lib/api/client';
 import {
   useCreateInvite,
@@ -27,6 +28,8 @@ export function HouseholdView({ me }: { me: MeOut }) {
         </Text>
         <Text variant="title">{me.household.name}</Text>
       </View>
+
+      <ListsCard />
 
       <Card>
         <Text variant="heading">Members</Text>

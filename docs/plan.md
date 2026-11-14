@@ -1,6 +1,6 @@
 # Sweep — Architecture & Implementation Plan
 
-Status: slices 0 and 1 merged (foundations; Households, invites, Clerk email-code sign-in, account deletion). Next: slice 2 (shared Shopping List), already planned in §14 and ADR 0004.
+Status: slices 0–2 merged (foundations; Households, invites, Clerk email-code sign-in, account deletion; shared Shopping List with idempotent writes, live notices, optimistic UI and an offline retry queue). Next: slice 3 (Cabinet).
 Language follows [`CONTEXT.md`](../CONTEXT.md). Big decisions live in [`docs/adr/`](adr/).
 ⚠️ = unverified, check before relying on it.
 

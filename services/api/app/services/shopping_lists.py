@@ -15,9 +15,10 @@ from enum import Enum
 from typing import Final, Literal
 
 from sqlalchemy import func, select, update
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.errors import LimitReached, NotFound
+from app.errors import Conflict, LimitReached, NotFound
 from app.models import ShoppingList, ShoppingListItem, utcnow
 from app.realtime import notify_change
 from app.services.households import MemberContext
@@ -105,16 +106,25 @@ async def add_item(
     text: str,
     quantity: Decimal | None,
     unit: str | None,
+    item_id: uuid.UUID | None = None,
 ) -> ShoppingListItem:
     lst = await _touch(session, ctx, list_id)
     count = await session.scalar(select(func.count()).where(ShoppingListItem.list_id == lst.id))
     if (count or 0) >= MAX_ITEMS_PER_LIST:
         raise LimitReached(f"A list can have at most {MAX_ITEMS_PER_LIST} items")
     item = ShoppingListItem(
-        list_id=lst.id, text=text, quantity=quantity, unit=unit, added_by_member_id=ctx.member.id
+        id=item_id or uuid.uuid4(),
+        list_id=lst.id,
+        text=text,
+        quantity=quantity,
+        unit=unit,
+        added_by_member_id=ctx.member.id,
     )
     session.add(item)
-    await session.flush()
+    try:
+        await session.flush()
+    except IntegrityError as error:  # the request rolls back, so nothing is half-done
+        raise Conflict("An item with this id already exists") from error
     return item
 
 
