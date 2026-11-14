@@ -1,4 +1,13 @@
+from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class TrustedIssuer(BaseModel):
+    """A login provider whose tokens we accept (Clerk today; more can be added as config)."""
+
+    issuer: str  # must match the token's `iss` claim exactly
+    jwks_url: str  # where the issuer publishes its public signing keys
+    audience: str | None = None  # checked against `aud` when set
 
 
 class Settings(BaseSettings):
@@ -6,9 +15,13 @@ class Settings(BaseSettings):
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-    database_url: str = "postgresql://sweep:sweep@localhost:5432/sweep"
+    database_url: str = "postgresql://sweep:sweep@localhost:5433/sweep"
+    test_database_url: str = "postgresql://sweep:sweep@localhost:5433/sweep_test"
     # Origins allowed to call the API from a browser (Expo web dev server by default).
     cors_origins: list[str] = ["http://localhost:8081"]
+    # JSON list, e.g. AUTH_ISSUERS='[{"issuer": "https://x.clerk.accounts.dev",
+    #   "jwks_url": "https://x.clerk.accounts.dev/.well-known/jwks.json"}]'
+    auth_issuers: list[TrustedIssuer] = []
 
 
 settings = Settings()
