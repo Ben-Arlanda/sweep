@@ -1,3 +1,5 @@
+import asyncio
+import contextlib
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
@@ -9,7 +11,8 @@ from app import errors
 from app.auth import TokenVerifier
 from app.config import Settings, settings
 from app.db import make_engine, make_sessionmaker
-from app.routes import households
+from app.realtime import Hub, listen
+from app.routes import households, realtime, shopping_lists
 
 # The one place domain errors become HTTP status codes.
 ERROR_STATUS: dict[type[errors.DomainError], int] = {
@@ -19,6 +22,8 @@ ERROR_STATUS: dict[type[errors.DomainError], int] = {
     errors.InviteInvalid: 404,
     errors.AlreadyInHousehold: 409,
     errors.Conflict: 409,
+    errors.LimitReached: 409,
+    errors.IdempotencyKeyReused: 422,
 }
 
 
@@ -36,14 +41,23 @@ def create_app(
     # Creating an engine doesn't connect yet; the first query does.
     engine = make_engine(app_settings.database_url)
 
+    hub = Hub()
+
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+        # One background task per API instance holds a Postgres LISTEN connection and
+        # hands change notices to this instance's WebSockets.
+        listener = asyncio.create_task(listen(app_settings.database_url, hub))
         yield
+        listener.cancel()
+        with contextlib.suppress(asyncio.CancelledError):
+            await listener
         await engine.dispose()  # close pooled connections on shutdown
 
     app = FastAPI(title="Sweep API", lifespan=lifespan)
     app.state.engine = engine
     app.state.sessionmaker = make_sessionmaker(engine)
+    app.state.hub = hub
     app.state.token_verifier = token_verifier or TokenVerifier.from_settings(
         app_settings.auth_issuers
     )
@@ -58,6 +72,8 @@ def create_app(
     )
     app.add_exception_handler(errors.DomainError, handle_domain_error)
     app.include_router(households.router)
+    app.include_router(shopping_lists.router)
+    app.include_router(realtime.router)
 
     @app.get("/health")
     def health() -> dict[str, str]:

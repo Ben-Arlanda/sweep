@@ -25,6 +25,8 @@ app/
   models.py      SQLAlchemy tables
   schemas.py     Pydantic request/response shapes (→ OpenAPI → client types)
   errors.py      domain errors raised by services
+  idempotency.py Idempotency-Key handling: retries replay, never repeat
+  realtime.py    Postgres NOTIFY → listener → Hub → WebSockets (ADR 0004)
 alembic/         database migrations
 ```
 

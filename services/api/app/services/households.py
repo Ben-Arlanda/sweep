@@ -24,12 +24,13 @@ from app.errors import (
     NotInHousehold,
     PermissionDenied,
 )
-from app.models import Household, HouseholdInvite, Member, Role, utcnow
+from app.models import Household, HouseholdInvite, Member, Role, ShoppingList, utcnow
 
 INVITE_LIFETIME = timedelta(days=7)
 # No 0/O or 1/I/L: codes get read aloud and typed on phones.
 INVITE_ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"
 INVITE_LENGTH = 8
+DEFAULT_LIST_NAME = "Shopping List"
 
 
 @dataclass(frozen=True)
@@ -95,6 +96,8 @@ async def create_household(
     session.add(household)
     await session.flush()  # sends the INSERT so the member's foreign key has a row to point at
     member = await _add_member(session, identity, household, Role.OWNER, display_name)
+    # Every Household starts with one list, so there's somewhere to add things straight away.
+    session.add(ShoppingList(household_id=household.id, name=DEFAULT_LIST_NAME))
     return MemberContext(member=member, household=household)
 
 
