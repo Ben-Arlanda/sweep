@@ -11,8 +11,9 @@ from app import errors
 from app.auth import TokenVerifier
 from app.config import Settings, settings
 from app.db import make_engine, make_sessionmaker
+from app.embeddings import Embedder, VoyageEmbedder
 from app.realtime import Hub, listen
-from app.routes import cabinet, households, realtime, shopping_lists
+from app.routes import cabinet, households, realtime, recipes, shopping_lists
 
 # The one place domain errors become HTTP status codes.
 ERROR_STATUS: dict[type[errors.DomainError], int] = {
@@ -24,6 +25,7 @@ ERROR_STATUS: dict[type[errors.DomainError], int] = {
     errors.Conflict: 409,
     errors.LimitReached: 409,
     errors.IdempotencyKeyReused: 422,
+    errors.Unavailable: 503,
 }
 
 
@@ -33,10 +35,23 @@ async def handle_domain_error(request: Request, exc: Exception) -> JSONResponse:
     return JSONResponse(status_code=status_code, content={"code": exc.code, "detail": exc.message})
 
 
+def default_embedder(app_settings: Settings) -> Embedder | None:
+    key = app_settings.voyage_api_key
+    if key is None:
+        return None  # search is switched off; browsing still works
+    # Someone is waiting on a search: one quick retry, then a clear "unavailable".
+    return VoyageEmbedder(
+        key.get_secret_value(), app_settings.embedding_model, retries=1, backoff=1.0
+    )
+
+
 def create_app(
-    app_settings: Settings | None = None, token_verifier: TokenVerifier | None = None
+    app_settings: Settings | None = None,
+    token_verifier: TokenVerifier | None = None,
+    embedder: Embedder | None = None,
 ) -> FastAPI:
-    """Build the app. Tests pass their own settings and a verifier that trusts a test key."""
+    """Build the app. Tests pass their own settings, a verifier that trusts a test key,
+    and a fake embedder."""
     app_settings = app_settings or settings
     # Creating an engine doesn't connect yet; the first query does.
     engine = make_engine(app_settings.database_url)
@@ -61,6 +76,7 @@ def create_app(
     app.state.token_verifier = token_verifier or TokenVerifier.from_settings(
         app_settings.auth_issuers
     )
+    app.state.embedder = embedder or default_embedder(app_settings)
 
     # Browsers block cross-origin requests unless the server allows them.
     # Native iOS/Android apps aren't subject to CORS; this is for the web build.
@@ -74,6 +90,7 @@ def create_app(
     app.include_router(households.router)
     app.include_router(shopping_lists.router)
     app.include_router(cabinet.router)
+    app.include_router(recipes.router)
     app.include_router(realtime.router)
 
     @app.get("/health")

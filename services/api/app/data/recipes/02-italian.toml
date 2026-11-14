@@ -1,0 +1,453 @@
+# Italian. Written for Sweep (licence: Sweep original).
+
+[[recipe]]
+slug = "lasagne"
+title = "Beef lasagne"
+cuisine = "italian"
+servings = 8
+minutes = 110
+summary = "Layers of beef ragu, white sauce and pasta sheets, baked until golden and bubbling."
+ingredients = [
+  "1 tbsp olive oil",
+  "1 onion, diced",
+  "2 cloves garlic, crushed",
+  "750 g beef mince",
+  "700 g passata",
+  "2 tbsp tomato paste",
+  "60 g butter",
+  "60 g plain flour",
+  "750 ml milk",
+  "250 g lasagne sheets",
+  "150 g mozzarella, grated",
+  "40 g parmesan, grated",
+]
+method = [
+  "Make the ragu: soften the onion and garlic in the oil, brown the mince, then add the passata and tomato paste. Simmer for 20 minutes.",
+  "Make the white sauce: melt the butter, stir in the flour, then whisk in the milk until thick.",
+  "Layer ragu, pasta sheets and white sauce in a baking dish, three times. Top with the cheeses.",
+  "Bake at 180°C for 45 minutes. Rest for 10 minutes before cutting.",
+]
+
+[[recipe]]
+slug = "spaghetti-carbonara"
+title = "Spaghetti carbonara"
+cuisine = "italian"
+servings = 4
+minutes = 20
+summary = "Spaghetti tossed with crispy bacon, egg yolks and parmesan into a silky sauce. No cream."
+ingredients = [
+  "400 g pasta",
+  "200 g bacon, diced",
+  "4 eggs",
+  "60 g parmesan, finely grated",
+  "black pepper, to taste",
+]
+method = [
+  "Cook the pasta in salted water. Fry the bacon until crisp.",
+  "Whisk the eggs with the parmesan and plenty of pepper.",
+  "Drain the pasta, keeping a cup of the water. Off the heat, toss the pasta with the bacon, then the egg mix, adding splashes of water until glossy.",
+]
+
+[[recipe]]
+slug = "margherita-pizza"
+title = "Margherita pizza"
+cuisine = "italian"
+servings = 4
+minutes = 120
+summary = "Homemade pizza dough topped with tomato, mozzarella and fresh basil."
+ingredients = [
+  "500 g plain flour",
+  "7 g dried yeast",
+  "1 tsp salt",
+  "325 ml warm water",
+  "2 tbsp olive oil",
+  "250 g passata",
+  "250 g mozzarella, torn",
+  "1 bunch basil",
+]
+method = [
+  "Mix the flour, yeast, salt, water and half the oil. Knead for 8 minutes, then leave covered for 1 hour until doubled.",
+  "Heat the oven as hot as it goes. Divide the dough in two and stretch thinly on oiled trays.",
+  "Spread with passata, scatter the mozzarella, and bake for 10–12 minutes. Top with basil.",
+]
+
+[[recipe]]
+slug = "chicken-parmigiana"
+title = "Chicken parmigiana"
+cuisine = "italian"
+servings = 4
+minutes = 50
+summary = "The pub classic: crumbed chicken topped with tomato sauce, ham and melted cheese."
+ingredients = [
+  "2 chicken breasts, halved horizontally",
+  "50 g plain flour",
+  "2 eggs, beaten",
+  "150 g breadcrumbs",
+  "125 ml vegetable oil",
+  "250 g passata",
+  "4 slices ham",
+  "150 g mozzarella, grated",
+]
+method = [
+  "Crumb the chicken: flour, egg, then breadcrumbs. Shallow-fry until golden and cooked through.",
+  "Put on a tray, spread with passata, and top with ham and mozzarella.",
+  "Grill or bake at 220°C until the cheese melts and browns.",
+]
+
+[[recipe]]
+slug = "mushroom-risotto"
+title = "Mushroom risotto"
+cuisine = "italian"
+servings = 4
+minutes = 45
+summary = "Creamy arborio rice stirred with mushrooms, garlic, stock and parmesan."
+ingredients = [
+  "1 litre vegetable stock",
+  "40 g butter",
+  "1 onion, finely diced",
+  "2 cloves garlic, crushed",
+  "400 g mushrooms, sliced",
+  "300 g arborio rice",
+  "50 g parmesan, grated",
+  "1 bunch parsley, chopped",
+]
+method = [
+  "Keep the stock warm in a pot. Cook the onion, garlic and mushrooms in half the butter until golden.",
+  "Add the rice and stir for a minute. Add the stock a ladle at a time, stirring, for about 20 minutes until creamy.",
+  "Stir in the remaining butter, parmesan and parsley.",
+]
+
+[[recipe]]
+slug = "pesto-pasta"
+title = "Pasta with basil pesto"
+cuisine = "italian"
+servings = 4
+minutes = 15
+summary = "Fresh basil, pine nut and parmesan pesto tossed through hot pasta."
+ingredients = [
+  "400 g pasta",
+  "2 bunches basil, leaves picked",
+  "40 g pine nuts, toasted",
+  "50 g parmesan, grated",
+  "1 clove garlic",
+  "125 ml olive oil",
+]
+method = [
+  "Blend the basil, pine nuts, parmesan, garlic and oil to a rough paste. Season.",
+  "Cook the pasta, keeping a little water. Toss with the pesto, loosening with the water.",
+]
+
+[[recipe]]
+slug = "minestrone"
+title = "Minestrone soup"
+cuisine = "italian"
+servings = 6
+minutes = 50
+summary = "A hearty vegetable, bean and pasta soup in a tomato broth."
+ingredients = [
+  "2 tbsp olive oil",
+  "1 onion, diced",
+  "2 carrots, diced",
+  "2 sticks celery, diced",
+  "2 cloves garlic, crushed",
+  "400 g can canned tomatoes",
+  "1.5 litres vegetable stock",
+  "400 g can cannellini beans, drained",
+  "1 zucchini, diced",
+  "100 g pasta",
+  "40 g parmesan, grated",
+]
+method = [
+  "Soften the onion, carrot, celery and garlic in the oil for 8 minutes.",
+  "Add the tomatoes and stock and simmer for 15 minutes.",
+  "Add the beans, zucchini and pasta and cook for 10 minutes more. Serve with parmesan.",
+]
+
+[[recipe]]
+slug = "gnocchi-burnt-butter-sage"
+title = "Gnocchi with burnt butter and sage"
+cuisine = "italian"
+servings = 4
+minutes = 15
+summary = "Pillowy potato gnocchi in nutty brown butter with crispy sage leaves."
+ingredients = [
+  "1 kg potato gnocchi",
+  "80 g butter",
+  "1 bunch sage, leaves picked",
+  "40 g parmesan, grated",
+  "1 lemon, zested",
+]
+method = [
+  "Cook the gnocchi in boiling salted water until they float. Drain.",
+  "Melt the butter until it turns golden and smells nutty. Add the sage until crisp.",
+  "Toss the gnocchi in the butter and serve with parmesan and lemon zest.",
+]
+
+[[recipe]]
+slug = "chicken-cacciatore"
+title = "Chicken cacciatore"
+cuisine = "italian"
+servings = 4
+minutes = 60
+summary = "Chicken thighs braised with tomatoes, capsicum, olives and herbs."
+ingredients = [
+  "1 kg chicken thigh",
+  "2 tbsp olive oil",
+  "1 onion, sliced",
+  "1 capsicum, sliced",
+  "2 cloves garlic, crushed",
+  "400 g can canned tomatoes",
+  "125 ml chicken stock",
+  "80 g kalamata olives",
+  "1 tsp dried oregano",
+]
+method = [
+  "Brown the chicken in the oil and set aside.",
+  "Cook the onion, capsicum and garlic until soft. Add the tomatoes, stock, olives and oregano.",
+  "Return the chicken, cover and simmer for 35 minutes until tender.",
+]
+
+[[recipe]]
+slug = "penne-arrabbiata"
+title = "Penne arrabbiata"
+cuisine = "italian"
+servings = 4
+minutes = 25
+summary = "Penne in a fiery garlic, chilli and tomato sauce. Vegan and cheap."
+ingredients = [
+  "400 g pasta",
+  "3 tbsp olive oil",
+  "4 cloves garlic, sliced",
+  "1 tsp chilli flakes",
+  "2 x 400 g cans canned tomatoes",
+  "1 bunch parsley, chopped",
+]
+method = [
+  "Gently cook the garlic and chilli in the oil until fragrant.",
+  "Add the tomatoes and simmer for 15 minutes until thick. Season.",
+  "Toss through the cooked pasta with the parsley.",
+]
+
+[[recipe]]
+slug = "eggplant-parmigiana"
+title = "Eggplant parmigiana"
+cuisine = "italian"
+servings = 6
+minutes = 75
+summary = "Layers of golden eggplant, tomato sauce, mozzarella and parmesan, baked."
+ingredients = [
+  "3 eggplants, sliced lengthways",
+  "80 ml olive oil",
+  "700 g passata",
+  "2 cloves garlic, crushed",
+  "250 g mozzarella, sliced",
+  "60 g parmesan, grated",
+  "1 bunch basil",
+]
+method = [
+  "Brush the eggplant with oil and grill or bake until golden and soft.",
+  "Simmer the passata with the garlic for 10 minutes.",
+  "Layer eggplant, sauce, mozzarella, basil and parmesan in a dish. Bake at 190°C for 35 minutes.",
+]
+
+[[recipe]]
+slug = "prawn-linguine"
+title = "Garlic prawn linguine"
+cuisine = "italian"
+servings = 4
+minutes = 20
+summary = "Linguine with prawns, garlic, chilli, cherry tomatoes and lemon."
+ingredients = [
+  "400 g pasta",
+  "3 tbsp olive oil",
+  "500 g prawns, peeled",
+  "3 cloves garlic, sliced",
+  "1/2 tsp chilli flakes",
+  "250 g cherry tomatoes, halved",
+  "1 lemon, zested and juiced",
+  "1 bunch parsley, chopped",
+]
+method = [
+  "Cook the pasta. Meanwhile heat the oil and cook the garlic and chilli for 1 minute.",
+  "Add the prawns and tomatoes and cook for 3 minutes until the prawns turn pink.",
+  "Toss with the pasta, lemon and parsley.",
+]
+
+[[recipe]]
+slug = "italian-meatballs"
+title = "Italian meatballs in tomato sauce"
+cuisine = "italian"
+servings = 4
+minutes = 50
+summary = "Pork and beef meatballs simmered in a rich tomato sauce, served with spaghetti."
+ingredients = [
+  "250 g beef mince",
+  "250 g pork mince",
+  "50 g breadcrumbs",
+  "1 egg",
+  "30 g parmesan, grated",
+  "2 cloves garlic, crushed",
+  "2 tbsp olive oil",
+  "700 g passata",
+  "400 g pasta",
+]
+method = [
+  "Mix the minces, breadcrumbs, egg, parmesan and half the garlic. Roll into walnut-sized balls.",
+  "Brown the meatballs in the oil. Add the remaining garlic and the passata and simmer for 20 minutes.",
+  "Serve over cooked spaghetti.",
+]
+
+[[recipe]]
+slug = "pumpkin-ricotta-cannelloni"
+title = "Pumpkin and ricotta cannelloni"
+cuisine = "italian"
+servings = 6
+minutes = 80
+summary = "Pasta tubes stuffed with roast pumpkin, spinach and ricotta, baked in tomato sauce."
+ingredients = [
+  "600 g pumpkin, diced",
+  "1 tbsp olive oil",
+  "500 g ricotta",
+  "100 g baby spinach, chopped",
+  "40 g parmesan, grated",
+  "250 g cannelloni tubes",
+  "700 g passata",
+  "100 g mozzarella, grated",
+]
+method = [
+  "Roast the pumpkin with the oil at 200°C for 25 minutes. Mash and mix with the ricotta, spinach and parmesan.",
+  "Fill the cannelloni tubes. Spread half the passata in a dish, add the tubes, and cover with the rest.",
+  "Top with mozzarella and bake at 180°C for 35 minutes.",
+]
+
+[[recipe]]
+slug = "tomato-bruschetta"
+title = "Tomato bruschetta"
+cuisine = "italian"
+servings = 4
+minutes = 15
+summary = "Toasted bread rubbed with garlic and piled with chopped tomato and basil."
+ingredients = [
+  "8 slices bread",
+  "1 clove garlic, halved",
+  "4 tomatoes, diced",
+  "1/2 red onion, finely diced",
+  "1 bunch basil, torn",
+  "2 tbsp olive oil",
+]
+method = [
+  "Toast or grill the bread and rub with the cut garlic.",
+  "Mix the tomato, onion, basil and oil and season. Pile onto the toasts.",
+]
+
+[[recipe]]
+slug = "pasta-primavera"
+title = "Spring vegetable pasta"
+cuisine = "italian"
+servings = 4
+minutes = 25
+summary = "Pasta with asparagus, peas, zucchini, lemon and a little cream."
+ingredients = [
+  "400 g pasta",
+  "1 bunch asparagus, chopped",
+  "150 g frozen peas",
+  "1 zucchini, diced",
+  "20 g butter",
+  "125 ml thickened cream",
+  "1 lemon, zested",
+  "40 g parmesan, grated",
+]
+method = [
+  "Cook the pasta, adding the asparagus and peas for the last 3 minutes. Drain.",
+  "Cook the zucchini in the butter for 3 minutes, then add the cream and lemon zest.",
+  "Toss everything together with the parmesan.",
+]
+
+[[recipe]]
+slug = "osso-buco"
+title = "Osso buco"
+cuisine = "italian"
+servings = 4
+minutes = 150
+summary = "Veal shanks slow-braised with wine, tomato and vegetables until falling off the bone."
+ingredients = [
+  "4 veal shanks",
+  "2 tbsp plain flour",
+  "2 tbsp olive oil",
+  "1 onion, diced",
+  "1 carrot, diced",
+  "2 sticks celery, diced",
+  "250 ml white wine",
+  "400 g can canned tomatoes",
+  "250 ml beef stock",
+  "1 lemon, zested",
+]
+method = [
+  "Dust the shanks in flour and brown well in the oil. Set aside.",
+  "Soften the vegetables, add the wine and let it bubble for 2 minutes, then the tomatoes and stock.",
+  "Return the shanks, cover, and simmer gently or bake at 160°C for 2 hours. Serve sprinkled with lemon zest.",
+]
+
+[[recipe]]
+slug = "focaccia"
+title = "Rosemary focaccia"
+cuisine = "italian"
+servings = 8
+minutes = 150
+summary = "A dimpled, olive-oil-rich bread with rosemary and sea salt."
+ingredients = [
+  "500 g plain flour",
+  "7 g dried yeast",
+  "400 ml warm water",
+  "80 ml olive oil",
+  "2 sprigs rosemary",
+  "1 tsp salt",
+]
+method = [
+  "Mix the flour, yeast, water, salt and half the oil into a sticky dough. Cover and leave 1½ hours.",
+  "Tip into an oiled tin, dimple with your fingers, and scatter with rosemary and the rest of the oil.",
+  "Bake at 220°C for 25 minutes until golden.",
+]
+
+[[recipe]]
+slug = "tiramisu"
+title = "Tiramisu"
+cuisine = "italian"
+servings = 8
+minutes = 30
+summary = "Coffee-soaked sponge fingers layered with mascarpone cream and cocoa. Make it ahead."
+ingredients = [
+  "4 eggs, separated",
+  "100 g caster sugar",
+  "500 g mascarpone",
+  "250 ml strong coffee, cooled",
+  "250 g sponge finger biscuits",
+  "2 tbsp cocoa powder",
+]
+method = [
+  "Beat the yolks with the sugar until pale, then beat in the mascarpone. Whisk the whites to soft peaks and fold through.",
+  "Dip the biscuits briefly in the coffee and layer in a dish with the cream, twice.",
+  "Dust with cocoa and chill for at least 4 hours.",
+]
+
+[[recipe]]
+slug = "panzanella"
+title = "Panzanella bread salad"
+cuisine = "italian"
+servings = 4
+minutes = 20
+summary = "A summer salad of torn toasted bread, ripe tomatoes, cucumber, onion and basil."
+ingredients = [
+  "4 slices bread, torn",
+  "4 tablespoons olive oil",
+  "500 g tomatoes, chopped",
+  "1 cucumber, chopped",
+  "1/2 red onion, thinly sliced",
+  "2 tbsp red wine vinegar",
+  "1 bunch basil",
+]
+method = [
+  "Toss the bread in half the oil and bake at 200°C for 10 minutes until crisp.",
+  "Mix the tomatoes, cucumber and onion with the remaining oil and vinegar. Season.",
+  "Toss in the bread and basil and leave 5 minutes before serving.",
+]

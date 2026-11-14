@@ -23,6 +23,7 @@ from sqlalchemy import Engine, create_engine, text
 from app.auth import IssuerTrust, TokenVerifier
 from app.config import Settings
 from app.db import Base, sqlalchemy_url
+from app.embeddings import HashingEmbedder
 from app.main import create_app
 
 API_DIR = Path(__file__).resolve().parent.parent
@@ -104,7 +105,11 @@ def anyio_backend() -> str:
 async def client(
     database_url: str, db: Engine, fake_issuer: FakeIssuer
 ) -> AsyncIterator[httpx.AsyncClient]:
-    app = create_app(Settings(database_url=database_url), token_verifier=fake_issuer.verifier())
+    app = create_app(
+        Settings(database_url=database_url),
+        token_verifier=fake_issuer.verifier(),
+        embedder=HashingEmbedder(),
+    )
     transport = httpx.ASGITransport(app=app)
     async with httpx.AsyncClient(transport=transport, base_url="http://test") as http:
         yield http

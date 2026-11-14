@@ -5,12 +5,14 @@ from datetime import UTC, datetime
 from decimal import Decimal
 from enum import StrEnum
 
+from pgvector.sqlalchemy import Vector
 from sqlalchemy import (
     Boolean,
     CheckConstraint,
     DateTime,
     Enum,
     ForeignKey,
+    Index,
     Integer,
     LargeBinary,
     Numeric,
@@ -24,6 +26,7 @@ from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db import Base
+from app.embeddings import DIMENSIONS
 
 
 def utcnow() -> datetime:
@@ -269,5 +272,110 @@ class CabinetItem(Base):
     )
     last_confirmed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utcnow, server_default=func.now()
+    )
+
+
+class RecipeKind(StrEnum):
+    SEED = "seed"  # written for Sweep, shared by every Household
+    IMPORTED = "imported"  # saved from a URL by one Household (slice 4b)
+
+
+class ParseMethod(StrEnum):
+    RULE = "rule"
+    LLM = "llm"
+
+
+class Recipe(Base):
+    """A recipe in the Recipe Knowledge Base.
+
+    Seed Recipes have no Household (everyone sees them); Imported Recipes belong to one.
+    The CHECK keeps those two facts in step, so a query can't accidentally share an
+    Imported Recipe by forgetting a filter.
+    """
+
+    __tablename__ = "recipes"
+    __table_args__ = (
+        CheckConstraint("(kind = 'seed') = (household_id IS NULL)", name="seed_has_no_household"),
+        CheckConstraint("servings > 0", name="servings_positive"),
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    kind: Mapped[RecipeKind] = mapped_column(str_enum(RecipeKind, "recipe_kind"))
+    household_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("households.id", ondelete="CASCADE"), index=True
+    )
+    # Stable name for Seed Recipes, so reloading the seed updates rows instead of adding.
+    slug: Mapped[str | None] = mapped_column(String(100), unique=True)
+    title: Mapped[str] = mapped_column(String(200))
+    summary: Mapped[str] = mapped_column(String(500))
+    cuisine: Mapped[str | None] = mapped_column(String(40))
+    servings: Mapped[int] = mapped_column(SmallInteger)
+    total_minutes: Mapped[int | None] = mapped_column(SmallInteger)
+    # Steps, for recipes we're allowed to show in full. Imported Recipes link out instead.
+    method: Mapped[list[str] | None] = mapped_column(JSONB)
+    source_url: Mapped[str | None] = mapped_column(String(2048))
+    licence: Mapped[str] = mapped_column(String(100))
+    attribution: Mapped[str] = mapped_column(String(200))
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utcnow, server_default=func.now()
+    )
+    ingredients: Mapped[list["RecipeIngredient"]] = relationship(
+        order_by="RecipeIngredient.position",
+        cascade="all, delete-orphan",
+        lazy="selectin",  # one extra query for all ingredients of all loaded recipes
+    )
+
+
+class RecipeIngredient(Base):
+    """One ingredient line of a recipe: what was written, and what we understood."""
+
+    __tablename__ = "recipe_ingredients"
+    __table_args__ = (UniqueConstraint("recipe_id", "position"),)
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    recipe_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("recipes.id", ondelete="CASCADE"))
+    position: Mapped[int] = mapped_column(SmallInteger)
+    raw_text: Mapped[str] = mapped_column(String(300))
+    # SET NULL: deleting an Ingredient leaves the line, just unlinked.
+    ingredient_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("ingredients.id", ondelete="SET NULL"), index=True
+    )
+    ingredient: Mapped[Ingredient | None] = relationship(lazy="joined")
+    quantity: Mapped[Decimal | None] = mapped_column(Numeric(10, 3))
+    unit: Mapped[str | None] = mapped_column(String(20))  # as written: "tbsp", "clove"
+    # The same amount in the Ingredient's own unit (g / ml / count), when that's honest.
+    base_quantity: Mapped[Decimal | None] = mapped_column(Numeric(12, 3))
+    note: Mapped[str | None] = mapped_column(String(300))
+    optional: Mapped[bool] = mapped_column(Boolean, default=False)
+    parse_method: Mapped[ParseMethod] = mapped_column(str_enum(ParseMethod, "parse_method"))
+    # Set when nothing could match the line to an Ingredient (and it isn't just water).
+    needs_review: Mapped[bool] = mapped_column(Boolean, default=False)
+
+
+class RecipeEmbedding(Base):
+    """A recipe's search vector, per embedding model.
+
+    `content_hash` is a fingerprint of the text that was embedded. If the recipe's text
+    changes, the hash no longer matches and the vector is rebuilt.
+    """
+
+    __tablename__ = "recipe_embeddings"
+    __table_args__ = (
+        PrimaryKeyConstraint("recipe_id", "model"),
+        # HNSW: an index that finds the nearest vectors without comparing every row.
+        Index(
+            "ix_recipe_embeddings_embedding",
+            "embedding",
+            postgresql_using="hnsw",
+            postgresql_ops={"embedding": "vector_cosine_ops"},
+        ),
+    )
+
+    recipe_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("recipes.id", ondelete="CASCADE"))
+    model: Mapped[str] = mapped_column(String(60))
+    content_hash: Mapped[bytes] = mapped_column(LargeBinary(32))
+    embedding: Mapped[list[float]] = mapped_column(Vector(DIMENSIONS))
+    created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utcnow, server_default=func.now()
     )

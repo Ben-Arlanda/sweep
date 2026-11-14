@@ -1,0 +1,644 @@
+# Chinese, Japanese, Korean, Thai, Vietnamese, Malaysian. Written for Sweep (licence: Sweep original).
+
+[[recipe]]
+slug = "beef-and-broccoli-stir-fry"
+title = "Beef and broccoli stir-fry"
+cuisine = "chinese"
+servings = 4
+minutes = 25
+summary = "Tender strips of beef and broccoli in a glossy oyster sauce. Faster than takeaway."
+ingredients = [
+  "500 g beef steak, thinly sliced",
+  "1 tbsp cornflour",
+  "2 tbsp vegetable oil",
+  "1 broccoli, cut into florets",
+  "2 cloves garlic, crushed",
+  "1 tbsp ginger, grated",
+  "3 tbsp oyster sauce",
+  "1 tbsp soy sauce",
+  "1 cup rice",
+]
+method = [
+  "Cook the rice. Toss the beef with the cornflour.",
+  "Stir-fry the beef in half the oil over high heat in batches. Set aside.",
+  "Stir-fry the broccoli, garlic and ginger with a splash of water for 3 minutes. Return the beef with the sauces and toss.",
+]
+
+[[recipe]]
+slug = "fried-rice"
+title = "Egg fried rice"
+cuisine = "chinese"
+servings = 4
+minutes = 20
+summary = "Day-old rice fried with egg, bacon, peas, corn and spring onion. Uses up leftovers."
+ingredients = [
+  "2 tbsp vegetable oil",
+  "3 eggs, beaten",
+  "150 g bacon, diced",
+  "4 cups cooked rice",
+  "150 g frozen peas",
+  "125 g corn kernels",
+  "2 tbsp soy sauce",
+  "3 spring onions, sliced",
+]
+method = [
+  "Scramble the eggs in a little oil, then set aside. Fry the bacon until crisp.",
+  "Add the remaining oil and the rice and fry over high heat until hot. Add the peas and corn.",
+  "Stir in the soy sauce, egg and spring onion.",
+]
+
+[[recipe]]
+slug = "kung-pao-chicken"
+title = "Kung pao chicken"
+cuisine = "chinese"
+servings = 4
+minutes = 25
+summary = "Spicy Sichuan-style chicken with peanuts, chilli and a sweet-sour sauce."
+ingredients = [
+  "600 g chicken thigh, diced",
+  "1 tbsp cornflour",
+  "2 tbsp vegetable oil",
+  "4 dried chillies",
+  "2 cloves garlic, sliced",
+  "1 tbsp ginger, grated",
+  "2 tbsp soy sauce",
+  "1 tbsp rice vinegar",
+  "1 tbsp brown sugar",
+  "60 g peanuts",
+  "3 spring onions, chopped",
+]
+method = [
+  "Toss the chicken in the cornflour. Stir-fry in the oil until golden and cooked.",
+  "Add the chillies, garlic and ginger for 30 seconds.",
+  "Add the soy, vinegar and sugar, then toss through the peanuts and spring onion.",
+]
+
+[[recipe]]
+slug = "mapo-tofu"
+title = "Mapo tofu"
+cuisine = "chinese"
+servings = 4
+minutes = 25
+summary = "Silken tofu and pork mince in a spicy, numbing chilli bean sauce."
+ingredients = [
+  "1 tbsp vegetable oil",
+  "200 g pork mince",
+  "2 cloves garlic, crushed",
+  "1 tbsp ginger, grated",
+  "2 tbsp chilli bean paste",
+  "250 ml chicken stock",
+  "600 g silken tofu, cubed",
+  "1 tbsp cornflour",
+  "2 spring onions, sliced",
+  "1 cup rice",
+]
+method = [
+  "Fry the mince in the oil until browned. Add the garlic, ginger and chilli bean paste for a minute.",
+  "Add the stock and tofu and simmer gently for 5 minutes.",
+  "Thicken with the cornflour mixed with water. Serve with rice and spring onion.",
+]
+
+[[recipe]]
+slug = "pork-dumplings"
+title = "Pork and cabbage dumplings"
+cuisine = "chinese"
+servings = 4
+minutes = 60
+summary = "Homemade pan-fried dumplings filled with pork, cabbage, ginger and spring onion."
+ingredients = [
+  "400 g pork mince",
+  "200 g wombok, finely chopped",
+  "2 spring onions, finely chopped",
+  "1 tbsp ginger, grated",
+  "2 tbsp soy sauce",
+  "1 tsp sesame oil",
+  "40 dumpling wrappers",
+  "2 tbsp vegetable oil",
+]
+method = [
+  "Mix the pork, cabbage, spring onion, ginger, soy and sesame oil.",
+  "Put a teaspoon of filling in each wrapper, wet the edge, and fold to seal.",
+  "Fry in the oil until the bases are golden, then add 125 ml water, cover, and steam for 5 minutes.",
+]
+
+[[recipe]]
+slug = "chicken-katsu-curry"
+title = "Chicken katsu curry"
+cuisine = "japanese"
+servings = 4
+minutes = 45
+summary = "Crisp panko-crumbed chicken with a mild, sweet Japanese curry sauce and rice."
+ingredients = [
+  "2 chicken breasts, halved horizontally",
+  "50 g plain flour",
+  "2 eggs, beaten",
+  "100 g panko breadcrumbs",
+  "125 ml vegetable oil",
+  "1 onion, diced",
+  "2 carrots, diced",
+  "2 tbsp curry powder",
+  "500 ml chicken stock",
+  "1 tbsp honey",
+  "1 cup rice",
+]
+method = [
+  "Crumb the chicken (flour, egg, panko) and shallow-fry until golden and cooked. Slice.",
+  "Cook the onion and carrot in a little oil, stir in the curry powder and 1 tbsp flour, then the stock and honey. Simmer 15 minutes and blend.",
+  "Serve the chicken on rice with the sauce.",
+]
+
+[[recipe]]
+slug = "teriyaki-salmon"
+title = "Teriyaki salmon bowls"
+cuisine = "japanese"
+servings = 4
+minutes = 25
+summary = "Salmon glazed in homemade teriyaki sauce over rice with cucumber and avocado."
+ingredients = [
+  "4 salmon fillets",
+  "80 ml soy sauce",
+  "2 tbsp mirin",
+  "2 tbsp honey",
+  "1 cup rice",
+  "1 cucumber, sliced",
+  "1 avocado, sliced",
+  "1 tbsp sesame seeds",
+]
+method = [
+  "Cook the rice. Mix the soy, mirin and honey.",
+  "Pan-fry the salmon for 3 minutes each side, then pour in the sauce and let it bubble and glaze.",
+  "Serve on rice with cucumber and avocado, sprinkled with sesame seeds.",
+]
+
+[[recipe]]
+slug = "miso-soup"
+title = "Miso soup with tofu"
+cuisine = "japanese"
+servings = 4
+minutes = 10
+summary = "A light, savoury miso broth with silken tofu, wakame and spring onion."
+ingredients = [
+  "1 litre dashi stock",
+  "3 tbsp miso paste",
+  "300 g silken tofu, cubed",
+  "1 tbsp dried wakame",
+  "2 spring onions, sliced",
+]
+method = [
+  "Heat the dashi until just simmering. Soak the wakame in water for 5 minutes.",
+  "Whisk the miso into a ladle of the broth, then stir it back in. Don't let it boil.",
+  "Add the tofu, wakame and spring onion.",
+]
+
+[[recipe]]
+slug = "chicken-yakitori"
+title = "Chicken yakitori skewers"
+cuisine = "japanese"
+servings = 4
+minutes = 30
+summary = "Grilled chicken and spring onion skewers brushed with a sweet soy glaze."
+ingredients = [
+  "600 g chicken thigh, diced",
+  "6 spring onions, cut into lengths",
+  "60 ml soy sauce",
+  "2 tbsp mirin",
+  "1 tbsp brown sugar",
+  "1 cup rice",
+]
+method = [
+  "Simmer the soy, mirin and sugar for 3 minutes until syrupy.",
+  "Thread the chicken and spring onion onto skewers.",
+  "Grill for 10–12 minutes, turning and brushing with the glaze, until cooked. Serve with rice.",
+]
+
+[[recipe]]
+slug = "udon-noodle-soup"
+title = "Udon noodle soup"
+cuisine = "japanese"
+servings = 2
+minutes = 15
+summary = "Thick udon noodles in a soy-dashi broth with mushrooms, bok choy and a soft egg."
+ingredients = [
+  "800 ml dashi stock",
+  "2 tbsp soy sauce",
+  "1 tbsp mirin",
+  "400 g udon noodles",
+  "100 g mushrooms, sliced",
+  "1 bok choy, halved",
+  "2 eggs",
+]
+method = [
+  "Boil the eggs for 6½ minutes, then cool and peel.",
+  "Simmer the dashi, soy and mirin. Add the mushrooms and bok choy for 2 minutes.",
+  "Add the noodles to heat through. Serve with the halved eggs.",
+]
+
+[[recipe]]
+slug = "bibimbap"
+title = "Bibimbap"
+cuisine = "korean"
+servings = 4
+minutes = 40
+summary = "Rice topped with seasoned vegetables, beef, a fried egg and spicy gochujang sauce."
+ingredients = [
+  "1 cup rice",
+  "300 g beef mince",
+  "2 tbsp soy sauce",
+  "1 tbsp sesame oil",
+  "2 carrots, cut into matchsticks",
+  "200 g baby spinach",
+  "150 g bean sprouts",
+  "4 eggs",
+  "2 tbsp gochujang",
+]
+method = [
+  "Cook the rice. Fry the mince with the soy and half the sesame oil.",
+  "Quickly cook the carrot, spinach and bean sprouts separately with a little sesame oil.",
+  "Fry the eggs. Top bowls of rice with the vegetables, beef and egg, and serve with gochujang.",
+]
+
+[[recipe]]
+slug = "korean-fried-chicken"
+title = "Korean-style fried chicken"
+cuisine = "korean"
+servings = 4
+minutes = 45
+summary = "Extra-crunchy chicken pieces tossed in a sticky, spicy gochujang and honey glaze."
+ingredients = [
+  "1 kg chicken wings",
+  "100 g cornflour",
+  "500 ml vegetable oil",
+  "3 tbsp gochujang",
+  "3 tbsp honey",
+  "2 tbsp soy sauce",
+  "2 cloves garlic, crushed",
+  "1 tbsp sesame seeds",
+]
+method = [
+  "Toss the wings in the cornflour. Deep-fry at 170°C for 8 minutes, rest 5 minutes, then fry again for 4 minutes until crisp.",
+  "Simmer the gochujang, honey, soy and garlic for 2 minutes.",
+  "Toss the chicken in the glaze and sprinkle with sesame seeds.",
+]
+
+[[recipe]]
+slug = "kimchi-fried-rice"
+title = "Kimchi fried rice"
+cuisine = "korean"
+servings = 2
+minutes = 15
+summary = "Leftover rice fried with tangy kimchi and bacon, topped with a runny egg."
+ingredients = [
+  "1 tbsp vegetable oil",
+  "100 g bacon, diced",
+  "200 g kimchi, chopped",
+  "3 cups cooked rice",
+  "1 tbsp gochujang",
+  "1 tsp sesame oil",
+  "2 eggs",
+]
+method = [
+  "Fry the bacon in the oil, then add the kimchi for 2 minutes.",
+  "Add the rice and gochujang and fry until hot and slightly crispy. Stir in the sesame oil.",
+  "Top with fried eggs.",
+]
+
+[[recipe]]
+slug = "korean-beef-bulgogi"
+title = "Beef bulgogi"
+cuisine = "korean"
+servings = 4
+minutes = 30
+summary = "Thinly sliced beef in a sweet soy, garlic and pear marinade, quickly seared."
+ingredients = [
+  "600 g beef steak, very thinly sliced",
+  "60 ml soy sauce",
+  "2 tbsp brown sugar",
+  "1 pear, grated",
+  "3 cloves garlic, crushed",
+  "1 tbsp sesame oil",
+  "1 onion, sliced",
+  "1 cup rice",
+]
+method = [
+  "Mix the soy, sugar, pear, garlic and sesame oil. Marinate the beef for at least 15 minutes.",
+  "Sear the beef and onion in batches in a very hot pan.",
+  "Serve with rice.",
+]
+
+[[recipe]]
+slug = "thai-green-curry"
+title = "Thai green chicken curry"
+cuisine = "thai"
+servings = 4
+minutes = 30
+summary = "Chicken, beans and zucchini in a fragrant green curry and coconut milk sauce."
+ingredients = [
+  "1 tbsp vegetable oil",
+  "3 tbsp green curry paste",
+  "400 ml coconut milk",
+  "600 g chicken thigh, sliced",
+  "150 g green beans, trimmed",
+  "1 zucchini, sliced",
+  "1 tbsp fish sauce",
+  "1 tsp brown sugar",
+  "1 bunch basil",
+  "1 cup jasmine rice",
+]
+method = [
+  "Fry the curry paste in the oil for a minute. Add the coconut milk and bring to a simmer.",
+  "Add the chicken and simmer for 10 minutes, then the beans and zucchini for 5 minutes.",
+  "Season with fish sauce and sugar, stir through the basil, and serve with rice.",
+]
+
+[[recipe]]
+slug = "pad-thai"
+title = "Pad thai"
+cuisine = "thai"
+servings = 4
+minutes = 30
+summary = "Stir-fried rice noodles with prawns, egg, bean sprouts and peanuts in a tamarind sauce."
+ingredients = [
+  "250 g rice noodles",
+  "2 tbsp vegetable oil",
+  "300 g prawns, peeled",
+  "2 eggs, beaten",
+  "3 tbsp tamarind paste",
+  "2 tbsp fish sauce",
+  "2 tbsp brown sugar",
+  "150 g bean sprouts",
+  "3 spring onions, sliced",
+  "50 g peanuts, chopped",
+  "1 lime, cut into wedges",
+]
+method = [
+  "Soak the noodles in hot water until soft, then drain. Mix the tamarind, fish sauce and sugar.",
+  "Stir-fry the prawns in the oil until pink. Push aside and scramble the eggs.",
+  "Add the noodles and sauce and toss, then the sprouts and spring onion. Serve with peanuts and lime.",
+]
+
+[[recipe]]
+slug = "thai-red-beef-curry"
+title = "Thai red beef curry"
+cuisine = "thai"
+servings = 4
+minutes = 35
+summary = "Beef and pumpkin in a rich red curry with coconut milk and lime leaves."
+ingredients = [
+  "1 tbsp vegetable oil",
+  "3 tbsp red curry paste",
+  "400 ml coconut milk",
+  "500 g beef steak, sliced",
+  "400 g pumpkin, diced",
+  "4 kaffir lime leaves",
+  "1 tbsp fish sauce",
+  "1 cup jasmine rice",
+]
+method = [
+  "Fry the curry paste in the oil, then add the coconut milk and lime leaves.",
+  "Add the pumpkin and simmer for 12 minutes until tender.",
+  "Add the beef and cook for 3–4 minutes. Season with fish sauce and serve with rice.",
+]
+
+[[recipe]]
+slug = "tom-yum-soup"
+title = "Tom yum soup with prawns"
+cuisine = "thai"
+servings = 4
+minutes = 25
+summary = "A hot and sour Thai soup with prawns, mushrooms, lemongrass and lime."
+ingredients = [
+  "1 litre chicken stock",
+  "2 stalks lemongrass, bruised",
+  "4 kaffir lime leaves",
+  "2 tbsp tom yum paste",
+  "200 g mushrooms, sliced",
+  "400 g prawns, peeled",
+  "2 tbsp fish sauce",
+  "2 limes, juiced",
+  "1 bunch coriander",
+]
+method = [
+  "Simmer the stock with the lemongrass, lime leaves and paste for 10 minutes.",
+  "Add the mushrooms and prawns and cook for 3 minutes.",
+  "Season with fish sauce and lime juice, and serve topped with coriander.",
+]
+
+[[recipe]]
+slug = "thai-basil-chicken"
+title = "Thai basil chicken"
+cuisine = "thai"
+servings = 4
+minutes = 20
+summary = "Chicken mince stir-fried with chilli, garlic and basil, served with rice and a fried egg."
+ingredients = [
+  "2 tbsp vegetable oil",
+  "4 cloves garlic, chopped",
+  "2 red chillies, sliced",
+  "500 g chicken mince",
+  "2 tbsp oyster sauce",
+  "1 tbsp fish sauce",
+  "1 tsp brown sugar",
+  "1 bunch basil",
+  "4 eggs",
+  "1 cup jasmine rice",
+]
+method = [
+  "Stir-fry the garlic and chilli in the oil for 30 seconds. Add the mince and cook until browned.",
+  "Add the sauces and sugar, then the basil until wilted.",
+  "Serve on rice with fried eggs.",
+]
+
+[[recipe]]
+slug = "vietnamese-rice-paper-rolls"
+title = "Rice paper rolls"
+cuisine = "vietnamese"
+servings = 4
+minutes = 40
+summary = "Fresh rolls of prawns, vermicelli, herbs and crunchy vegetables with a peanut dipping sauce."
+ingredients = [
+  "100 g rice vermicelli",
+  "16 rice paper sheets",
+  "300 g cooked prawns, halved",
+  "1 lettuce, shredded",
+  "1 carrot, cut into matchsticks",
+  "1 cucumber, cut into matchsticks",
+  "1 bunch mint",
+  "3 tbsp peanut butter",
+  "2 tbsp hoisin sauce",
+]
+method = [
+  "Soak the vermicelli in hot water until soft, then drain.",
+  "Dip a rice paper sheet in warm water, lay it flat, and fill with prawns, noodles, vegetables and mint. Roll up tightly.",
+  "Mix the peanut butter, hoisin and a little warm water for dipping.",
+]
+
+[[recipe]]
+slug = "beef-pho"
+title = "Beef pho"
+cuisine = "vietnamese"
+servings = 4
+minutes = 60
+summary = "A fragrant spiced beef broth with rice noodles, thin raw beef, herbs and lime."
+ingredients = [
+  "2 litres beef stock",
+  "1 onion, halved",
+  "1 tbsp ginger, sliced",
+  "2 star anise",
+  "1 cinnamon stick",
+  "2 tbsp fish sauce",
+  "400 g rice noodles",
+  "300 g beef steak, very thinly sliced",
+  "150 g bean sprouts",
+  "1 bunch basil",
+  "2 limes, cut into wedges",
+]
+method = [
+  "Char the onion and ginger in a dry pan. Simmer in the stock with the star anise and cinnamon for 40 minutes, then strain. Add the fish sauce.",
+  "Cook the noodles and divide between bowls. Top with the raw beef.",
+  "Pour over the boiling broth to cook the beef. Serve with sprouts, basil and lime.",
+]
+
+[[recipe]]
+slug = "vietnamese-lemongrass-pork"
+title = "Lemongrass pork noodle salad"
+cuisine = "vietnamese"
+servings = 4
+minutes = 35
+summary = "Caramelised lemongrass pork over vermicelli with herbs, pickled carrot and nuoc cham."
+ingredients = [
+  "500 g pork loin, thinly sliced",
+  "2 stalks lemongrass, finely chopped",
+  "2 cloves garlic, crushed",
+  "3 tbsp fish sauce",
+  "2 tbsp brown sugar",
+  "200 g rice vermicelli",
+  "2 carrots, grated",
+  "1 lettuce, shredded",
+  "1 bunch mint",
+  "2 limes, juiced",
+]
+method = [
+  "Marinate the pork with the lemongrass, garlic, 1 tbsp fish sauce and 1 tbsp sugar for 15 minutes. Grill or pan-fry until caramelised.",
+  "Cook the noodles. Mix the lime juice with the remaining fish sauce and sugar for the dressing.",
+  "Serve the pork on noodles with lettuce, carrot and mint, and pour over the dressing.",
+]
+
+[[recipe]]
+slug = "nasi-goreng"
+title = "Nasi goreng"
+cuisine = "indonesian"
+servings = 4
+minutes = 25
+summary = "Indonesian fried rice with chicken, sweet soy sauce and a fried egg on top."
+ingredients = [
+  "2 tbsp vegetable oil",
+  "300 g chicken thigh, diced",
+  "1 onion, diced",
+  "2 cloves garlic, crushed",
+  "1 red chilli, chopped",
+  "4 cups cooked rice",
+  "3 tbsp kecap manis",
+  "4 eggs",
+  "1 cucumber, sliced",
+]
+method = [
+  "Fry the chicken in the oil until cooked. Add the onion, garlic and chilli for 3 minutes.",
+  "Add the rice and kecap manis and fry until hot.",
+  "Serve topped with fried eggs and cucumber on the side.",
+]
+
+[[recipe]]
+slug = "chicken-laksa"
+title = "Chicken laksa"
+cuisine = "malaysian"
+servings = 4
+minutes = 35
+summary = "A rich, spicy coconut noodle soup with chicken, tofu puffs and bean sprouts."
+ingredients = [
+  "1 tbsp vegetable oil",
+  "4 tbsp laksa paste",
+  "400 ml coconut milk",
+  "1 litre chicken stock",
+  "500 g chicken thigh, sliced",
+  "100 g tofu puffs, halved",
+  "250 g rice noodles",
+  "150 g bean sprouts",
+  "1 tbsp fish sauce",
+  "1 bunch coriander",
+  "1 lime, cut into wedges",
+]
+method = [
+  "Fry the laksa paste in the oil for 2 minutes. Add the coconut milk and stock and bring to a simmer.",
+  "Add the chicken and tofu puffs and simmer for 10 minutes. Season with fish sauce.",
+  "Cook the noodles and divide between bowls. Ladle over the soup and top with sprouts, coriander and lime.",
+]
+
+[[recipe]]
+slug = "satay-chicken-skewers"
+title = "Satay chicken skewers"
+cuisine = "malaysian"
+servings = 4
+minutes = 35
+summary = "Grilled chicken skewers with a creamy peanut and coconut satay sauce."
+ingredients = [
+  "600 g chicken thigh, diced",
+  "2 tbsp soy sauce",
+  "1 tsp ground turmeric",
+  "120 g peanut butter",
+  "200 ml coconut milk",
+  "1 tbsp sweet chilli sauce",
+  "1 lime, juiced",
+  "1 cup rice",
+]
+method = [
+  "Marinate the chicken with the soy and turmeric. Thread onto skewers.",
+  "Grill for 10–12 minutes, turning, until cooked.",
+  "Warm the peanut butter, coconut milk, sweet chilli and lime juice, stirring until smooth. Serve with rice.",
+]
+
+[[recipe]]
+slug = "hokkien-noodles"
+title = "Hokkien noodle stir-fry"
+cuisine = "chinese"
+servings = 4
+minutes = 20
+summary = "Thick egg noodles stir-fried with pork, bok choy and capsicum in a sweet soy sauce."
+ingredients = [
+  "450 g hokkien noodles",
+  "2 tbsp vegetable oil",
+  "400 g pork mince",
+  "1 capsicum, sliced",
+  "2 bok choy, chopped",
+  "3 tbsp hoisin sauce",
+  "2 tbsp soy sauce",
+]
+method = [
+  "Loosen the noodles in hot water and drain.",
+  "Brown the pork in the oil, then add the capsicum and bok choy for 2 minutes.",
+  "Add the noodles and sauces and toss until hot.",
+]
+
+[[recipe]]
+slug = "sesame-tofu-stir-fry"
+title = "Crispy sesame tofu stir-fry"
+cuisine = "chinese"
+servings = 4
+minutes = 30
+summary = "Crisp cubes of tofu with snow peas and capsicum in a sticky sesame glaze. Vegetarian."
+ingredients = [
+  "450 g tofu, cubed",
+  "2 tbsp cornflour",
+  "3 tbsp vegetable oil",
+  "200 g snow peas",
+  "1 capsicum, sliced",
+  "3 tbsp soy sauce",
+  "2 tbsp honey",
+  "1 tsp sesame oil",
+  "1 tbsp sesame seeds",
+  "1 cup rice",
+]
+method = [
+  "Toss the tofu in the cornflour and fry in the oil until golden on all sides. Set aside.",
+  "Stir-fry the snow peas and capsicum for 2 minutes.",
+  "Add the soy, honey and sesame oil, return the tofu and toss. Sprinkle with sesame seeds and serve with rice.",
+]

@@ -33,6 +33,18 @@ UNITS: dict[str, tuple[BaseUnit, Decimal]] = {
     "x": ("count", Decimal(1)),
     "pc": ("count", Decimal(1)),
     "pcs": ("count", Decimal(1)),
+    # Australian kitchen measures. Note the tablespoon: 20 ml here, 15 ml in the US and UK.
+    "cup": ("ml", Decimal(250)),
+    "tbsp": ("ml", Decimal(20)),
+    "tsp": ("ml", Decimal(5)),
+    # "1 bunch coriander", "1 head garlic": one of the thing itself.
+    "bunch": ("count", Decimal(1)),
+    "head": ("count", Decimal(1)),
+    "sheet": ("count", Decimal(1)),  # pastry is counted in sheets
+    # US weights, for imported recipes. "oz" is taken as weight; "fl oz" is volume and
+    # isn't supported yet, so those lines won't convert.
+    "lb": ("g", Decimal("453.592")),
+    "oz": ("g", Decimal("28.3495")),
 }
 
 # "500g pasta", "2 kg chicken", "1.5L milk", "6 eggs". The unit may touch the number.

@@ -1,0 +1,526 @@
+# Vegetarian mains, salads and sides. Written for Sweep (licence: Sweep original).
+
+[[recipe]]
+slug = "vegetable-stir-fry-noodles"
+title = "Vegetable noodle stir-fry"
+cuisine = "chinese"
+servings = 4
+minutes = 20
+summary = "Egg noodles tossed with crisp vegetables in a garlic, soy and oyster sauce."
+ingredients = [
+  "400 g egg noodles",
+  "2 tbsp vegetable oil",
+  "2 cloves garlic, crushed",
+  "1 broccoli, cut into florets",
+  "1 carrot, sliced",
+  "1 capsicum, sliced",
+  "150 g snow peas",
+  "3 tbsp soy sauce",
+  "2 tbsp oyster sauce",
+]
+method = [
+  "Cook the noodles and drain.",
+  "Stir-fry the garlic and vegetables in the oil for 4 minutes until just tender.",
+  "Add the noodles and sauces and toss until hot.",
+]
+
+[[recipe]]
+slug = "black-bean-burgers"
+title = "Black bean burgers"
+cuisine = "american"
+servings = 4
+minutes = 35
+summary = "Smoky black bean and corn patties in buns with avocado and salsa. Vegetarian."
+ingredients = [
+  "2 x 400 g cans black beans, drained",
+  "125 g corn kernels",
+  "60 g breadcrumbs",
+  "1 egg",
+  "1 tsp ground cumin",
+  "1 tsp paprika",
+  "2 tbsp vegetable oil",
+  "4 burger buns",
+  "1 avocado, sliced",
+  "100 g tomato salsa",
+]
+method = [
+  "Mash the beans roughly, then mix in the corn, breadcrumbs, egg and spices. Shape into 4 patties and chill 10 minutes.",
+  "Fry in the oil for 4 minutes each side until crisp.",
+  "Serve in buns with avocado and salsa.",
+]
+
+[[recipe]]
+slug = "vegetable-lasagne"
+title = "Roast vegetable lasagne"
+cuisine = "italian"
+servings = 8
+minutes = 100
+summary = "Roast pumpkin, zucchini and eggplant layered with ricotta, spinach and tomato."
+ingredients = [
+  "500 g pumpkin, sliced",
+  "2 zucchini, sliced",
+  "1 eggplant, sliced",
+  "3 tbsp olive oil",
+  "500 g ricotta",
+  "100 g baby spinach",
+  "700 g passata",
+  "250 g lasagne sheets",
+  "150 g mozzarella, grated",
+]
+method = [
+  "Roast the vegetables with the oil at 200°C for 25 minutes.",
+  "Mix the ricotta and spinach.",
+  "Layer passata, pasta, vegetables and ricotta three times. Top with mozzarella and bake at 180°C for 45 minutes.",
+]
+
+[[recipe]]
+slug = "stuffed-capsicums"
+title = "Rice and bean stuffed capsicums"
+cuisine = "mexican"
+servings = 4
+minutes = 55
+summary = "Capsicums filled with spiced rice, black beans, corn and cheese, baked until soft."
+ingredients = [
+  "4 capsicums, halved and seeded",
+  "2 cups cooked rice",
+  "400 g can black beans, drained",
+  "125 g corn kernels",
+  "300 g tomato salsa",
+  "1 tsp ground cumin",
+  "100 g cheddar cheese, grated",
+]
+method = [
+  "Mix the rice, beans, corn, salsa and cumin.",
+  "Fill the capsicum halves, top with cheese, and bake covered at 190°C for 30 minutes, then uncovered for 10.",
+]
+
+[[recipe]]
+slug = "mushroom-stroganoff"
+title = "Mushroom stroganoff"
+cuisine = "russian"
+servings = 4
+minutes = 25
+summary = "A creamy paprika mushroom stroganoff over rice or pasta. Vegetarian."
+ingredients = [
+  "2 tbsp olive oil",
+  "1 onion, sliced",
+  "750 g mushrooms, sliced",
+  "2 cloves garlic, crushed",
+  "1 tbsp paprika",
+  "250 ml vegetable stock",
+  "150 g sour cream",
+  "1 bunch parsley, chopped",
+  "1 cup rice",
+]
+method = [
+  "Cook the onion in the oil, then the mushrooms over high heat until golden. Add the garlic and paprika.",
+  "Add the stock and simmer for 5 minutes. Stir in the sour cream.",
+  "Serve over rice with parsley.",
+]
+
+[[recipe]]
+slug = "halloumi-salad"
+title = "Grilled halloumi and quinoa salad"
+cuisine = "middle-eastern"
+servings = 4
+minutes = 30
+summary = "Golden halloumi on quinoa with roast capsicum, cucumber, mint and lemon."
+ingredients = [
+  "200 g quinoa, rinsed",
+  "250 g halloumi, sliced",
+  "1 capsicum, sliced",
+  "1 cucumber, diced",
+  "1 bunch mint",
+  "3 tbsp olive oil",
+  "1 lemon, juiced",
+]
+method = [
+  "Simmer the quinoa in 500 ml water for 15 minutes. Drain and cool.",
+  "Grill the capsicum and halloumi until charred.",
+  "Toss the quinoa with the cucumber, mint, oil and lemon. Top with capsicum and halloumi.",
+]
+
+[[recipe]]
+slug = "sweet-potato-curry"
+title = "Sweet potato and chickpea curry"
+cuisine = "indian"
+servings = 4
+minutes = 40
+summary = "A mild, creamy coconut curry of sweet potato, chickpeas and spinach. Vegan."
+ingredients = [
+  "1 tbsp vegetable oil",
+  "1 onion, diced",
+  "2 cloves garlic, crushed",
+  "2 tbsp curry powder",
+  "600 g sweet potato, diced",
+  "400 g can chickpeas, drained",
+  "400 ml coconut milk",
+  "400 g can canned tomatoes",
+  "100 g baby spinach",
+  "1 cup basmati rice",
+]
+method = [
+  "Soften the onion and garlic in the oil. Add the curry powder.",
+  "Add the sweet potato, chickpeas, coconut milk and tomatoes. Simmer 25 minutes until the sweet potato is soft.",
+  "Stir in the spinach and serve with rice.",
+]
+
+[[recipe]]
+slug = "cauliflower-cheese"
+title = "Cauliflower cheese"
+cuisine = "british"
+servings = 6
+minutes = 40
+summary = "Tender cauliflower baked in a bubbling cheddar sauce."
+ingredients = [
+  "1 cauliflower, cut into florets",
+  "40 g butter",
+  "40 g plain flour",
+  "500 ml milk",
+  "150 g cheddar cheese, grated",
+  "1 tsp dijon mustard",
+]
+method = [
+  "Boil the cauliflower for 5 minutes and drain well.",
+  "Make a white sauce with the butter, flour and milk. Stir in most of the cheese and the mustard.",
+  "Pour over the cauliflower, top with the remaining cheese, and bake at 200°C for 20 minutes.",
+]
+
+[[recipe]]
+slug = "roast-vegetables"
+title = "Simple roast vegetables"
+cuisine = "australian"
+servings = 4
+minutes = 50
+summary = "Potatoes, pumpkin, carrots and red onion roasted until golden and crisp."
+ingredients = [
+  "600 g potatoes, cut into chunks",
+  "500 g pumpkin, cut into chunks",
+  "3 carrots, cut into chunks",
+  "1 red onion, cut into wedges",
+  "3 tbsp olive oil",
+  "2 sprigs rosemary",
+  "salt, to taste",
+]
+method = [
+  "Heat the oven to 200°C. Toss everything in the oil and salt on a large tray.",
+  "Roast for 40–45 minutes, turning once, until golden.",
+]
+
+[[recipe]]
+slug = "garlic-bread"
+title = "Garlic bread"
+cuisine = "italian"
+servings = 6
+minutes = 20
+summary = "A crusty loaf filled with garlic and parsley butter and baked until crisp."
+ingredients = [
+  "1 baguette",
+  "100 g butter, softened",
+  "3 cloves garlic, crushed",
+  "2 tbsp parsley, chopped",
+]
+method = [
+  "Mix the butter, garlic and parsley.",
+  "Slice the baguette without cutting all the way through and spread the butter between the slices.",
+  "Wrap in foil and bake at 200°C for 15 minutes.",
+]
+
+[[recipe]]
+slug = "coleslaw"
+title = "Creamy coleslaw"
+cuisine = "american"
+servings = 6
+minutes = 15
+summary = "Crunchy shredded cabbage and carrot in a tangy mayonnaise dressing."
+ingredients = [
+  "1/4 cabbage, finely shredded",
+  "1/4 red cabbage, finely shredded",
+  "2 carrots, grated",
+  "3 spring onions, sliced",
+  "125 g mayonnaise",
+  "1 tbsp white vinegar",
+  "1 tsp dijon mustard",
+]
+method = [
+  "Whisk the mayonnaise, vinegar and mustard.",
+  "Toss with the vegetables and season.",
+]
+
+[[recipe]]
+slug = "potato-salad"
+title = "Potato salad"
+cuisine = "australian"
+servings = 6
+minutes = 30
+summary = "Waxy potatoes with egg, spring onion and a creamy mustard dressing. A barbecue staple."
+ingredients = [
+  "1 kg potatoes, halved",
+  "4 eggs",
+  "4 spring onions, sliced",
+  "125 g mayonnaise",
+  "2 tbsp sour cream",
+  "1 tbsp dijon mustard",
+  "1 bunch parsley, chopped",
+]
+method = [
+  "Boil the potatoes until tender and cool. Boil the eggs for 9 minutes, cool and chop.",
+  "Mix the mayonnaise, sour cream and mustard.",
+  "Toss everything together.",
+]
+
+[[recipe]]
+slug = "rice-pilaf"
+title = "Herbed rice pilaf"
+cuisine = "middle-eastern"
+servings = 4
+minutes = 30
+summary = "Fluffy rice toasted in butter with onion and stock, finished with herbs and almonds."
+ingredients = [
+  "30 g butter",
+  "1 onion, finely diced",
+  "1 cup basmati rice",
+  "500 ml chicken stock",
+  "30 g flaked almonds, toasted",
+  "1 bunch parsley, chopped",
+]
+method = [
+  "Cook the onion in the butter until soft. Add the rice and stir for a minute.",
+  "Add the stock, cover, and cook on low for 15 minutes. Rest for 5 minutes.",
+  "Fluff with a fork and stir in the almonds and parsley.",
+]
+
+[[recipe]]
+slug = "green-salad"
+title = "Green salad with mustard dressing"
+cuisine = "french"
+servings = 4
+minutes = 10
+summary = "Crisp lettuce, cucumber and avocado with a sharp dijon vinaigrette."
+ingredients = [
+  "1 lettuce, leaves torn",
+  "1 cucumber, sliced",
+  "1 avocado, sliced",
+  "3 tbsp olive oil",
+  "1 tbsp white vinegar",
+  "1 tsp dijon mustard",
+]
+method = [
+  "Whisk the oil, vinegar and mustard and season.",
+  "Toss with the salad just before serving.",
+]
+
+[[recipe]]
+slug = "cucumber-salad-asian"
+title = "Smashed cucumber salad"
+cuisine = "chinese"
+servings = 4
+minutes = 15
+summary = "Bashed cucumber with garlic, soy, vinegar, sesame and chilli. Cool and punchy."
+ingredients = [
+  "2 cucumbers",
+  "1 clove garlic, crushed",
+  "1 tbsp soy sauce",
+  "1 tbsp rice vinegar",
+  "1 tsp sesame oil",
+  "1/2 tsp chilli flakes",
+  "1 tsp sesame seeds",
+]
+method = [
+  "Bash the cucumbers with a rolling pin, then cut into chunks. Salt lightly for 10 minutes and drain.",
+  "Toss with everything else.",
+]
+
+[[recipe]]
+slug = "corn-on-the-cob"
+title = "Barbecued corn with chilli lime butter"
+cuisine = "mexican"
+servings = 4
+minutes = 20
+summary = "Charred corn cobs brushed with butter, lime, chilli and a little feta."
+ingredients = [
+  "4 corn cobs",
+  "50 g butter, softened",
+  "1 lime, zested and juiced",
+  "1/2 tsp chilli flakes",
+  "40 g feta, crumbled",
+]
+method = [
+  "Grill the corn for 10–12 minutes, turning, until charred.",
+  "Mix the butter, lime and chilli and brush over the hot corn. Top with feta.",
+]
+
+[[recipe]]
+slug = "lentil-shepherds-pie"
+title = "Lentil shepherd's pie"
+cuisine = "british"
+servings = 6
+minutes = 70
+summary = "Brown lentils and vegetables in a rich gravy under sweet potato mash. Vegan."
+ingredients = [
+  "2 tbsp olive oil",
+  "1 onion, diced",
+  "2 carrots, diced",
+  "2 sticks celery, diced",
+  "2 x 400 g cans brown lentils, drained",
+  "2 tbsp tomato paste",
+  "500 ml vegetable stock",
+  "1 kg sweet potato, peeled and chopped",
+]
+method = [
+  "Soften the onion, carrot and celery in half the oil. Add the lentils, tomato paste and stock and simmer 20 minutes.",
+  "Boil and mash the sweet potato with the remaining oil.",
+  "Top the lentils with mash and bake at 200°C for 25 minutes.",
+]
+
+[[recipe]]
+slug = "tofu-poke-bowl"
+title = "Tofu poke bowls"
+cuisine = "japanese"
+servings = 4
+minutes = 30
+summary = "Rice bowls with soy-glazed tofu, edamame, cucumber, avocado and pickled ginger."
+ingredients = [
+  "1 cup rice",
+  "450 g tofu, cubed",
+  "3 tbsp soy sauce",
+  "1 tbsp honey",
+  "200 g edamame",
+  "1 cucumber, sliced",
+  "1 avocado, sliced",
+  "2 tbsp pickled ginger",
+  "1 tbsp sesame seeds",
+]
+method = [
+  "Cook the rice. Fry the tofu until golden, then toss with the soy and honey until glazed.",
+  "Cook the edamame.",
+  "Build bowls with rice, tofu and the vegetables. Top with ginger and sesame seeds.",
+]
+
+[[recipe]]
+slug = "chickpea-salad"
+title = "Mediterranean chickpea salad"
+cuisine = "greek"
+servings = 4
+minutes = 15
+summary = "Chickpeas with tomato, cucumber, red onion, feta and parsley in a lemon dressing."
+ingredients = [
+  "2 x 400 g cans chickpeas, drained",
+  "250 g cherry tomatoes, halved",
+  "1 cucumber, diced",
+  "1/2 red onion, finely diced",
+  "100 g feta, crumbled",
+  "1 bunch parsley, chopped",
+  "3 tbsp olive oil",
+  "1 lemon, juiced",
+]
+method = [
+  "Toss everything together and season.",
+]
+
+[[recipe]]
+slug = "minted-peas"
+title = "Buttered peas with mint"
+cuisine = "british"
+servings = 4
+minutes = 10
+summary = "Sweet peas with butter, mint and spring onion. A five-minute side."
+ingredients = [
+  "500 g frozen peas",
+  "20 g butter",
+  "2 spring onions, sliced",
+  "1 bunch mint, chopped",
+]
+method = [
+  "Cook the peas for 3 minutes and drain.",
+  "Toss with the butter, spring onion and mint.",
+]
+
+[[recipe]]
+slug = "roasted-broccoli"
+title = "Roast broccoli with parmesan and lemon"
+cuisine = "italian"
+servings = 4
+minutes = 25
+summary = "Crispy-edged roast broccoli with garlic, parmesan and lemon."
+ingredients = [
+  "2 broccoli, cut into florets",
+  "2 tbsp olive oil",
+  "2 cloves garlic, sliced",
+  "30 g parmesan, grated",
+  "1 lemon, zested",
+]
+method = [
+  "Toss the broccoli and garlic with the oil and roast at 220°C for 18 minutes.",
+  "Scatter with parmesan and lemon zest.",
+]
+
+[[recipe]]
+slug = "vegetable-soup"
+title = "Hearty vegetable soup"
+cuisine = "australian"
+servings = 6
+minutes = 50
+summary = "A big pot of vegetable, barley and tomato soup. Fills the freezer."
+ingredients = [
+  "2 tbsp olive oil",
+  "1 onion, diced",
+  "2 carrots, diced",
+  "2 sticks celery, diced",
+  "2 potatoes, diced",
+  "1 zucchini, diced",
+  "100 g pearl barley",
+  "400 g can canned tomatoes",
+  "2 litres vegetable stock",
+]
+method = [
+  "Soften the onion, carrot and celery in the oil.",
+  "Add everything else and simmer for 40 minutes until the barley is tender.",
+]
+
+[[recipe]]
+slug = "sweet-potato-fries"
+title = "Crispy sweet potato fries"
+cuisine = "american"
+servings = 4
+minutes = 40
+summary = "Oven-baked sweet potato chips with paprika and a lime yoghurt dip."
+ingredients = [
+  "800 g sweet potato, cut into chips",
+  "1 tbsp cornflour",
+  "2 tbsp olive oil",
+  "1 tsp paprika",
+  "150 g greek yoghurt",
+  "1 lime, juiced",
+]
+method = [
+  "Toss the chips with the cornflour, then the oil and paprika. Spread out on two trays.",
+  "Bake at 220°C for 30 minutes, turning once.",
+  "Mix the yoghurt and lime for dipping.",
+]
+
+[[recipe]]
+slug = "bean-nachos-bake"
+title = "Three-bean chilli"
+cuisine = "mexican"
+servings = 6
+minutes = 45
+summary = "A smoky vegetarian chilli of kidney beans, black beans and chickpeas with capsicum."
+ingredients = [
+  "2 tbsp olive oil",
+  "1 onion, diced",
+  "1 capsicum, diced",
+  "3 cloves garlic, crushed",
+  "2 tsp ground cumin",
+  "2 tsp paprika",
+  "400 g can kidney beans, drained",
+  "400 g can black beans, drained",
+  "400 g can chickpeas, drained",
+  "2 x 400 g cans canned tomatoes",
+  "1 cup rice",
+]
+method = [
+  "Soften the onion, capsicum and garlic in the oil. Add the spices.",
+  "Add the beans and tomatoes and simmer for 30 minutes until thick.",
+  "Serve with rice.",
+]

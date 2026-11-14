@@ -1,0 +1,466 @@
+# Greek, Spanish, French, British, German and other European. Written for Sweep (licence: Sweep original).
+
+[[recipe]]
+slug = "greek-lamb-souvlaki"
+title = "Lamb souvlaki with tzatziki"
+cuisine = "greek"
+servings = 4
+minutes = 40
+summary = "Lemon and oregano lamb skewers in warm pita with tzatziki, tomato and red onion."
+ingredients = [
+  "600 g lamb leg, diced",
+  "3 tbsp olive oil",
+  "1 lemon, juiced",
+  "2 tsp dried oregano",
+  "200 g greek yoghurt",
+  "1 cucumber, grated",
+  "1 clove garlic, crushed",
+  "4 pita breads",
+  "2 tomatoes, sliced",
+  "1 red onion, sliced",
+]
+method = [
+  "Marinate the lamb in the oil, lemon juice and oregano for at least 20 minutes. Thread onto skewers.",
+  "Squeeze the cucumber dry and mix with the yoghurt and garlic.",
+  "Grill the skewers for 8–10 minutes. Serve in pita with tzatziki, tomato and onion.",
+]
+
+[[recipe]]
+slug = "greek-salad"
+title = "Greek salad"
+cuisine = "greek"
+servings = 4
+minutes = 15
+summary = "Tomato, cucumber, capsicum, red onion, olives and feta with oregano and olive oil."
+ingredients = [
+  "4 tomatoes, cut into wedges",
+  "1 cucumber, chopped",
+  "1 capsicum, chopped",
+  "1/2 red onion, thinly sliced",
+  "80 g kalamata olives",
+  "200 g feta",
+  "1 tsp dried oregano",
+  "3 tbsp olive oil",
+  "1 tbsp red wine vinegar",
+]
+method = [
+  "Combine the vegetables and olives in a bowl.",
+  "Top with the feta in a slab, sprinkle with oregano, and drizzle with oil and vinegar.",
+]
+
+[[recipe]]
+slug = "moussaka"
+title = "Moussaka"
+cuisine = "greek"
+servings = 8
+minutes = 120
+summary = "Layers of eggplant and cinnamon-spiced lamb under a thick, golden white sauce."
+ingredients = [
+  "3 eggplants, sliced",
+  "80 ml olive oil",
+  "1 onion, diced",
+  "2 cloves garlic, crushed",
+  "750 g lamb mince",
+  "1 tsp ground cinnamon",
+  "400 g can canned tomatoes",
+  "60 g butter",
+  "60 g plain flour",
+  "750 ml milk",
+  "2 eggs",
+  "50 g parmesan, grated",
+]
+method = [
+  "Brush the eggplant with oil and bake at 200°C for 20 minutes until soft.",
+  "Brown the onion, garlic and lamb. Add the cinnamon and tomatoes and simmer for 20 minutes.",
+  "Make a white sauce with the butter, flour and milk. Off the heat, beat in the eggs and parmesan.",
+  "Layer eggplant and lamb in a dish, top with the sauce, and bake at 180°C for 45 minutes.",
+]
+
+[[recipe]]
+slug = "spanakopita"
+title = "Spanakopita"
+cuisine = "greek"
+servings = 8
+minutes = 75
+summary = "Crisp filo pie filled with spinach, feta, ricotta, dill and spring onion."
+ingredients = [
+  "500 g baby spinach",
+  "200 g feta, crumbled",
+  "250 g ricotta",
+  "3 eggs",
+  "4 spring onions, sliced",
+  "1 bunch dill, chopped",
+  "12 sheets filo pastry",
+  "80 g butter, melted",
+]
+method = [
+  "Wilt the spinach, squeeze out all the water, and chop. Mix with the cheeses, eggs, spring onion and dill.",
+  "Layer half the filo in a dish, brushing each sheet with butter. Add the filling and top with the remaining buttered sheets.",
+  "Score the top and bake at 180°C for 45 minutes until golden.",
+]
+
+[[recipe]]
+slug = "greek-lemon-chicken-potatoes"
+title = "Greek lemon chicken and potatoes"
+cuisine = "greek"
+servings = 4
+minutes = 70
+summary = "Chicken thighs and potatoes roasted in lemon, garlic and oregano until golden."
+ingredients = [
+  "1 kg chicken thigh",
+  "1 kg potatoes, cut into wedges",
+  "2 lemons, juiced",
+  "4 cloves garlic, crushed",
+  "2 tsp dried oregano",
+  "80 ml olive oil",
+  "250 ml chicken stock",
+]
+method = [
+  "Mix the lemon juice, garlic, oregano and oil. Toss the chicken and potatoes in it in a roasting tin.",
+  "Pour the stock around and roast at 200°C for 55 minutes, turning the potatoes once, until golden and cooked.",
+]
+
+[[recipe]]
+slug = "paella"
+title = "Chicken and chorizo paella"
+cuisine = "spanish"
+servings = 6
+minutes = 50
+summary = "Saffron rice cooked with chicken, chorizo, capsicum and peas in one wide pan."
+ingredients = [
+  "2 tbsp olive oil",
+  "500 g chicken thigh, diced",
+  "200 g chorizo, sliced",
+  "1 onion, diced",
+  "1 capsicum, diced",
+  "2 cloves garlic, crushed",
+  "1 tsp paprika",
+  "1 pinch saffron threads",
+  "300 g arborio rice",
+  "1 litre chicken stock",
+  "150 g frozen peas",
+  "1 lemon, cut into wedges",
+]
+method = [
+  "Brown the chicken and chorizo in the oil. Add the onion, capsicum and garlic and cook until soft.",
+  "Stir in the paprika, saffron and rice, then pour in the stock. Simmer without stirring for 20 minutes.",
+  "Scatter the peas over, cover for 5 minutes, and serve with lemon.",
+]
+
+[[recipe]]
+slug = "spanish-tortilla"
+title = "Spanish tortilla"
+cuisine = "spanish"
+servings = 6
+minutes = 45
+summary = "A thick omelette of slowly cooked potato and onion. Serve warm or at room temperature."
+ingredients = [
+  "125 ml olive oil",
+  "750 g potatoes, thinly sliced",
+  "1 onion, thinly sliced",
+  "6 eggs",
+  "salt, to taste",
+]
+method = [
+  "Gently cook the potato and onion in the oil for 20 minutes until soft but not brown. Drain, keeping 2 tbsp oil.",
+  "Beat the eggs with salt and stir in the potato.",
+  "Cook in the reserved oil over low heat for 8 minutes, flip using a plate, and cook 4 minutes more.",
+]
+
+[[recipe]]
+slug = "patatas-bravas"
+title = "Patatas bravas"
+cuisine = "spanish"
+servings = 4
+minutes = 45
+summary = "Crispy roast potatoes with a smoky tomato sauce and garlic aioli."
+ingredients = [
+  "1 kg potatoes, cut into cubes",
+  "3 tbsp olive oil",
+  "2 cloves garlic, crushed",
+  "2 tsp paprika",
+  "400 g can canned tomatoes",
+  "4 tbsp mayonnaise",
+]
+method = [
+  "Toss the potatoes in 2 tbsp oil and roast at 220°C for 35 minutes until crisp.",
+  "Cook half the garlic and the paprika in the remaining oil, add the tomatoes, and simmer 10 minutes.",
+  "Mix the remaining garlic into the mayonnaise. Serve the potatoes with both sauces.",
+]
+
+[[recipe]]
+slug = "gazpacho"
+title = "Gazpacho"
+cuisine = "spanish"
+servings = 4
+minutes = 15
+summary = "A chilled blended soup of ripe tomatoes, cucumber, capsicum and garlic."
+ingredients = [
+  "1 kg tomatoes, chopped",
+  "1 cucumber, chopped",
+  "1 capsicum, chopped",
+  "1 clove garlic",
+  "2 slices bread",
+  "3 tbsp olive oil",
+  "2 tbsp red wine vinegar",
+]
+method = [
+  "Blend everything until very smooth. Season well.",
+  "Chill for at least 1 hour before serving.",
+]
+
+[[recipe]]
+slug = "garlic-prawns-spanish"
+title = "Gambas al ajillo"
+cuisine = "spanish"
+servings = 4
+minutes = 15
+summary = "Prawns sizzled in olive oil with plenty of garlic and chilli. Serve with crusty bread."
+ingredients = [
+  "125 ml olive oil",
+  "6 cloves garlic, sliced",
+  "1/2 tsp chilli flakes",
+  "500 g prawns, peeled",
+  "1 bunch parsley, chopped",
+  "1 loaf crusty bread",
+]
+method = [
+  "Gently heat the oil with the garlic and chilli until the garlic just colours.",
+  "Add the prawns and cook for 2–3 minutes until pink. Stir in the parsley.",
+  "Serve sizzling with bread for the oil.",
+]
+
+[[recipe]]
+slug = "french-onion-soup"
+title = "French onion soup"
+cuisine = "french"
+servings = 4
+minutes = 80
+summary = "Deeply caramelised onions in beef broth, topped with cheesy toast."
+ingredients = [
+  "50 g butter",
+  "1.2 kg onions, thinly sliced",
+  "2 tbsp plain flour",
+  "1.5 litres beef stock",
+  "2 sprigs thyme",
+  "8 slices bread",
+  "120 g gruyere, grated",
+]
+method = [
+  "Cook the onions in the butter over low heat for 45 minutes, stirring often, until deep brown.",
+  "Stir in the flour, then the stock and thyme, and simmer for 20 minutes.",
+  "Ladle into bowls, top with bread and cheese, and grill until bubbling.",
+]
+
+[[recipe]]
+slug = "coq-au-vin"
+title = "Coq au vin"
+cuisine = "french"
+servings = 6
+minutes = 110
+summary = "Chicken braised in red wine with bacon, mushrooms and small onions."
+ingredients = [
+  "1.5 kg chicken thigh",
+  "200 g bacon, diced",
+  "2 tbsp plain flour",
+  "1 tbsp olive oil",
+  "12 shallots, peeled",
+  "300 g mushrooms, halved",
+  "2 cloves garlic, crushed",
+  "500 ml red wine",
+  "250 ml chicken stock",
+  "2 sprigs thyme",
+]
+method = [
+  "Fry the bacon in the oil and set aside. Dust the chicken in flour and brown it in the fat.",
+  "Brown the shallots and mushrooms, then add the garlic, wine, stock and thyme.",
+  "Return the chicken and bacon, cover, and simmer for 1 hour until tender.",
+]
+
+[[recipe]]
+slug = "ratatouille"
+title = "Ratatouille"
+cuisine = "french"
+servings = 6
+minutes = 60
+summary = "A slow stew of eggplant, zucchini, capsicum and tomato with herbs. Vegan."
+ingredients = [
+  "80 ml olive oil",
+  "1 onion, diced",
+  "3 cloves garlic, crushed",
+  "1 eggplant, diced",
+  "2 zucchini, diced",
+  "2 capsicums, diced",
+  "400 g can canned tomatoes",
+  "2 sprigs thyme",
+  "1 bunch basil",
+]
+method = [
+  "Cook the onion and garlic in half the oil. Add the eggplant and the rest of the oil and cook for 10 minutes.",
+  "Add the zucchini, capsicum, tomatoes and thyme. Simmer for 30 minutes, stirring now and then.",
+  "Stir through the basil.",
+]
+
+[[recipe]]
+slug = "quiche-lorraine"
+title = "Quiche lorraine"
+cuisine = "french"
+servings = 8
+minutes = 75
+summary = "A buttery pastry case filled with bacon, onion and a creamy egg custard."
+ingredients = [
+  "2 sheets shortcrust pastry",
+  "200 g bacon, diced",
+  "1 onion, diced",
+  "5 eggs",
+  "300 ml thickened cream",
+  "120 g gruyere, grated",
+]
+method = [
+  "Line a tart tin with the pastry and blind-bake at 190°C for 15 minutes.",
+  "Fry the bacon and onion until golden. Whisk the eggs and cream.",
+  "Scatter the bacon and cheese in the case, pour over the custard, and bake at 170°C for 35 minutes until just set.",
+]
+
+[[recipe]]
+slug = "croque-monsieur"
+title = "Croque monsieur"
+cuisine = "french"
+servings = 4
+minutes = 25
+summary = "The ultimate ham and cheese toastie, topped with white sauce and grilled."
+ingredients = [
+  "8 slices bread",
+  "8 slices ham",
+  "200 g gruyere, grated",
+  "20 g butter",
+  "1 tbsp plain flour",
+  "250 ml milk",
+  "1 tbsp dijon mustard",
+]
+method = [
+  "Make a thick white sauce with the butter, flour and milk.",
+  "Spread 4 slices of bread with mustard, top with ham and half the cheese, and close the sandwiches.",
+  "Spread the tops with sauce and the rest of the cheese. Bake at 200°C for 10 minutes, then grill until golden.",
+]
+
+[[recipe]]
+slug = "beef-bourguignon"
+title = "Beef bourguignon"
+cuisine = "french"
+servings = 6
+minutes = 180
+summary = "Beef slowly braised in red wine with bacon, mushrooms and carrots."
+ingredients = [
+  "1.2 kg beef chuck steak, diced",
+  "2 tbsp plain flour",
+  "2 tbsp olive oil",
+  "200 g bacon, diced",
+  "1 onion, diced",
+  "3 carrots, sliced",
+  "2 cloves garlic, crushed",
+  "2 tbsp tomato paste",
+  "750 ml red wine",
+  "250 ml beef stock",
+  "300 g mushrooms",
+]
+method = [
+  "Dust the beef in flour and brown in batches in the oil. Fry the bacon, onion and carrot.",
+  "Add the garlic and tomato paste, then the wine and stock, and return the beef.",
+  "Cover and cook at 160°C for 2½ hours, adding the mushrooms for the last 30 minutes.",
+]
+
+[[recipe]]
+slug = "bangers-and-mash"
+title = "Bangers and mash with onion gravy"
+cuisine = "british"
+servings = 4
+minutes = 40
+summary = "Pork sausages on buttery mash with a rich, sweet onion gravy."
+ingredients = [
+  "8 sausages",
+  "1 kg potatoes, peeled and chopped",
+  "50 g butter",
+  "125 ml milk",
+  "2 onions, sliced",
+  "1 tbsp plain flour",
+  "500 ml beef stock",
+]
+method = [
+  "Cook the sausages in a pan or oven until browned and cooked through.",
+  "Boil and mash the potatoes with half the butter and the milk.",
+  "Cook the onions in the remaining butter for 15 minutes until soft and golden. Stir in the flour, then the stock, and simmer until thick.",
+]
+
+[[recipe]]
+slug = "cottage-pie"
+title = "Cottage pie"
+cuisine = "british"
+servings = 6
+minutes = 75
+summary = "Beef mince and vegetables in gravy under a cheesy mashed potato topping."
+ingredients = [
+  "1 tbsp olive oil",
+  "1 onion, diced",
+  "2 carrots, diced",
+  "750 g beef mince",
+  "2 tbsp tomato paste",
+  "1 tbsp worcestershire sauce",
+  "500 ml beef stock",
+  "1.2 kg potatoes, peeled and chopped",
+  "50 g butter",
+  "80 g cheddar cheese, grated",
+]
+method = [
+  "Brown the onion, carrot and mince. Stir in the tomato paste, worcestershire and stock, and simmer 20 minutes.",
+  "Boil and mash the potatoes with the butter.",
+  "Top the mince with mash and cheese and bake at 200°C for 25 minutes.",
+]
+
+[[recipe]]
+slug = "fish-pie"
+title = "Fish pie"
+cuisine = "british"
+servings = 6
+minutes = 70
+summary = "White fish, salmon and prawns in a creamy parsley sauce under fluffy mash."
+ingredients = [
+  "1 kg potatoes, peeled and chopped",
+  "60 g butter",
+  "750 ml milk",
+  "400 g white fish fillets",
+  "200 g salmon fillet",
+  "200 g prawns, peeled",
+  "40 g plain flour",
+  "1 bunch parsley, chopped",
+]
+method = [
+  "Boil and mash the potatoes with 20 g butter and a splash of milk.",
+  "Poach the fish in the milk for 5 minutes. Lift out and flake into a dish with the prawns. Keep the milk.",
+  "Make a sauce with the remaining butter, the flour and the poaching milk. Add the parsley, pour over the fish, top with mash, and bake at 200°C for 30 minutes.",
+]
+
+[[recipe]]
+slug = "schnitzel-pork-german"
+title = "Pork schnitzel with potato salad"
+cuisine = "german"
+servings = 4
+minutes = 45
+summary = "Thin crumbed pork fried golden, with a warm potato and bacon salad."
+ingredients = [
+  "4 pork loin steaks",
+  "50 g plain flour",
+  "2 eggs, beaten",
+  "150 g breadcrumbs",
+  "125 ml vegetable oil",
+  "800 g potatoes",
+  "100 g bacon, diced",
+  "2 tbsp white vinegar",
+  "1 tbsp dijon mustard",
+  "1 lemon, cut into wedges",
+]
+method = [
+  "Boil the potatoes until tender, then slice. Fry the bacon and toss it with the warm potatoes, vinegar and mustard.",
+  "Pound the pork thin. Crumb in flour, egg and breadcrumbs.",
+  "Shallow-fry for 3 minutes each side until golden. Serve with the potato salad and lemon.",
+]

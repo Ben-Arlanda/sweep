@@ -1,0 +1,586 @@
+# Weeknight dinners: Australian home cooking. Written for Sweep (licence: Sweep original).
+
+[[recipe]]
+slug = "spaghetti-bolognese"
+title = "Spaghetti bolognese"
+cuisine = "italian"
+servings = 4
+minutes = 50
+summary = "The family-favourite beef mince and tomato sauce, simmered until rich, over spaghetti."
+ingredients = [
+  "1 tbsp olive oil",
+  "1 onion, finely diced",
+  "1 carrot, finely diced",
+  "2 cloves garlic, crushed",
+  "500 g beef mince",
+  "2 tbsp tomato paste",
+  "2 x 400 g cans canned tomatoes",
+  "1 tsp dried oregano",
+  "400 g pasta",
+  "30 g parmesan, grated",
+]
+method = [
+  "Heat the oil in a large pan over medium heat. Cook the onion and carrot for 5 minutes until soft, then add the garlic.",
+  "Add the mince and cook, breaking it up, until browned. Stir in the tomato paste for a minute.",
+  "Add the tomatoes and oregano, season, and simmer gently for 25–30 minutes until thick.",
+  "Cook the pasta in salted boiling water. Drain and serve topped with the sauce and parmesan.",
+]
+
+[[recipe]]
+slug = "sausage-and-veg-tray-bake"
+title = "Sausage and vegetable tray bake"
+cuisine = "australian"
+servings = 4
+minutes = 45
+summary = "Sausages roasted on one tray with potatoes, capsicum and red onion. Minimal washing up."
+ingredients = [
+  "8 sausages",
+  "750 g potatoes, cut into chunks",
+  "1 capsicum, cut into strips",
+  "2 red onions, cut into wedges",
+  "2 tbsp olive oil",
+  "1 tsp paprika",
+  "salt, to taste",
+]
+method = [
+  "Heat the oven to 200°C. Toss the potatoes, capsicum and onion with the oil, paprika and salt on a large tray.",
+  "Roast for 15 minutes, then add the sausages and roast for another 25 minutes, turning once, until cooked through.",
+]
+
+[[recipe]]
+slug = "honey-soy-chicken-drumsticks"
+title = "Honey soy chicken drumsticks"
+cuisine = "australian"
+servings = 4
+minutes = 55
+summary = "Sticky oven-baked drumsticks in a honey, soy and garlic glaze. Kids love them."
+ingredients = [
+  "1 kg chicken drumsticks",
+  "80 ml soy sauce",
+  "90 g honey",
+  "2 cloves garlic, crushed",
+  "1 tsp sesame oil",
+  "1 cup rice",
+  "1 broccoli, cut into florets",
+]
+method = [
+  "Mix the soy sauce, honey, garlic and sesame oil. Toss the drumsticks in it and marinate for at least 10 minutes.",
+  "Bake at 200°C for 40–45 minutes, basting twice, until sticky and cooked through.",
+  "Meanwhile cook the rice and steam the broccoli. Serve together.",
+]
+
+[[recipe]]
+slug = "beef-burgers"
+title = "Classic beef burgers"
+cuisine = "australian"
+servings = 4
+minutes = 30
+summary = "Juicy homemade beef patties in toasted buns with cheese, lettuce, tomato and beetroot."
+ingredients = [
+  "500 g beef mince",
+  "1 egg",
+  "50 g breadcrumbs",
+  "1 tsp worcestershire sauce",
+  "4 burger buns",
+  "4 slices cheddar cheese",
+  "1 lettuce, leaves separated",
+  "2 tomatoes, sliced",
+  "225 g can sliced beetroot, drained",
+  "2 tbsp tomato sauce",
+]
+method = [
+  "Mix the mince, egg, breadcrumbs and worcestershire sauce. Shape into 4 patties.",
+  "Cook on a hot grill or pan for 4–5 minutes each side, adding the cheese for the last minute.",
+  "Toast the buns and build the burgers with lettuce, tomato, beetroot and sauce.",
+]
+
+[[recipe]]
+slug = "lamb-chops-with-mash-and-peas"
+title = "Lamb chops with mash and peas"
+cuisine = "australian"
+servings = 4
+minutes = 35
+summary = "Pan-fried lamb chops with buttery mashed potato and minty peas."
+ingredients = [
+  "8 lamb chops",
+  "1 kg potatoes, peeled and chopped",
+  "40 g butter",
+  "100 ml milk",
+  "300 g frozen peas",
+  "1 bunch mint, leaves chopped",
+  "1 tbsp olive oil",
+  "salt, to taste",
+]
+method = [
+  "Boil the potatoes until tender, drain, and mash with the butter, milk and salt.",
+  "Season the chops and cook in the oil over high heat for 3–4 minutes each side. Rest for 5 minutes.",
+  "Cook the peas, drain, and toss with the mint. Serve everything together.",
+]
+
+[[recipe]]
+slug = "chicken-schnitzel"
+title = "Chicken schnitzel with slaw"
+cuisine = "australian"
+servings = 4
+minutes = 40
+summary = "Golden crumbed chicken breast with a crunchy cabbage and carrot slaw."
+ingredients = [
+  "2 chicken breasts, halved horizontally",
+  "50 g plain flour",
+  "2 eggs, beaten",
+  "150 g breadcrumbs",
+  "125 ml vegetable oil",
+  "1/4 cabbage, finely shredded",
+  "2 carrots, grated",
+  "3 tbsp mayonnaise",
+  "1 lemon, cut into wedges",
+]
+method = [
+  "Pound the chicken to an even thickness. Dust in flour, dip in egg, then press into the breadcrumbs.",
+  "Shallow-fry in the oil over medium heat for 3–4 minutes each side until golden and cooked through.",
+  "Toss the cabbage and carrot with the mayonnaise. Serve with the schnitzels and lemon wedges.",
+]
+
+[[recipe]]
+slug = "shepherds-pie"
+title = "Shepherd's pie"
+cuisine = "british"
+servings = 6
+minutes = 75
+summary = "Lamb mince and vegetables in gravy under a fluffy mashed potato lid, baked until golden."
+ingredients = [
+  "1 tbsp olive oil",
+  "1 onion, diced",
+  "2 carrots, diced",
+  "750 g lamb mince",
+  "2 tbsp tomato paste",
+  "1 tbsp worcestershire sauce",
+  "2 tbsp plain flour",
+  "500 ml beef stock",
+  "150 g frozen peas",
+  "1.2 kg potatoes, peeled and chopped",
+  "50 g butter",
+  "125 ml milk",
+]
+method = [
+  "Cook the onion and carrot in the oil until soft. Add the mince and brown well.",
+  "Stir in the tomato paste, worcestershire sauce and flour, then the stock. Simmer for 20 minutes, adding the peas at the end.",
+  "Boil and mash the potatoes with the butter and milk.",
+  "Spoon the filling into a baking dish, top with the mash, and bake at 200°C for 25 minutes until golden.",
+]
+
+[[recipe]]
+slug = "fish-and-chips-baked"
+title = "Oven-baked fish and chips"
+cuisine = "australian"
+servings = 4
+minutes = 45
+summary = "Crumbed white fish and crispy potato wedges, both done in the oven, with lemon and tartare."
+ingredients = [
+  "1 kg potatoes, cut into wedges",
+  "2 tbsp olive oil",
+  "600 g white fish fillets",
+  "1 egg, beaten",
+  "100 g breadcrumbs",
+  "1 lemon, cut into wedges",
+  "3 tbsp mayonnaise",
+  "salt, to taste",
+]
+method = [
+  "Heat the oven to 220°C. Toss the wedges in the oil and salt and roast for 35 minutes, turning once.",
+  "Dip the fish in egg, then breadcrumbs. Bake on a lined tray for the last 12–15 minutes until it flakes easily.",
+  "Serve with lemon wedges and mayonnaise.",
+]
+
+[[recipe]]
+slug = "beef-and-vegetable-stew"
+title = "Beef and vegetable stew"
+cuisine = "australian"
+servings = 6
+minutes = 150
+summary = "Slow-simmered chuck steak with potatoes, carrots and celery in a rich gravy."
+ingredients = [
+  "1 kg beef chuck steak, cut into chunks",
+  "2 tbsp plain flour",
+  "2 tbsp olive oil",
+  "1 onion, diced",
+  "2 sticks celery, sliced",
+  "3 carrots, chopped",
+  "500 g potatoes, chopped",
+  "2 tbsp tomato paste",
+  "750 ml beef stock",
+  "2 bay leaves",
+]
+method = [
+  "Toss the beef in the flour. Brown it in batches in the oil and set aside.",
+  "Soften the onion and celery in the same pot, then add the tomato paste.",
+  "Return the beef with the stock and bay leaves. Cover and simmer gently for 1½ hours.",
+  "Add the carrots and potatoes and simmer for 30–40 minutes more until everything is tender.",
+]
+
+[[recipe]]
+slug = "roast-chicken-and-vegetables"
+title = "Roast chicken with vegetables"
+cuisine = "australian"
+servings = 4
+minutes = 100
+summary = "A whole roast chicken with lemon and garlic, plus roast potatoes, pumpkin and carrots."
+ingredients = [
+  "1 whole chicken",
+  "1 lemon, halved",
+  "4 cloves garlic",
+  "2 tbsp olive oil",
+  "800 g potatoes, cut into chunks",
+  "500 g pumpkin, cut into chunks",
+  "3 carrots, halved",
+  "4 sprigs rosemary",
+  "salt, to taste",
+]
+method = [
+  "Heat the oven to 200°C. Put the lemon and garlic inside the chicken, rub with half the oil and season.",
+  "Toss the vegetables with the remaining oil, rosemary and salt around the chicken in a large roasting tin.",
+  "Roast for about 1 hour 20 minutes, until the juices run clear. Rest for 10 minutes before carving.",
+]
+
+[[recipe]]
+slug = "chicken-and-corn-soup"
+title = "Chicken and corn soup"
+cuisine = "chinese"
+servings = 4
+minutes = 25
+summary = "A quick, comforting soup of creamed corn, shredded chicken and egg ribbons."
+ingredients = [
+  "1 litre chicken stock",
+  "420 g can creamed corn",
+  "300 g chicken breast",
+  "1 tbsp soy sauce",
+  "2 tbsp cornflour",
+  "2 eggs, beaten",
+  "2 spring onions, sliced",
+]
+method = [
+  "Simmer the chicken in the stock for 10 minutes. Remove, shred, and return to the pot with the corn and soy sauce.",
+  "Mix the cornflour with a little water and stir in to thicken.",
+  "Slowly pour in the egg while stirring to make ribbons. Serve with spring onion.",
+]
+
+[[recipe]]
+slug = "pumpkin-soup"
+title = "Pumpkin soup"
+cuisine = "australian"
+servings = 4
+minutes = 40
+summary = "Silky roast-style pumpkin soup with onion and a swirl of cream. Freezes well."
+ingredients = [
+  "1 kg pumpkin, peeled and chopped",
+  "1 onion, diced",
+  "2 cloves garlic",
+  "1 tbsp olive oil",
+  "750 ml vegetable stock",
+  "60 ml thickened cream",
+  "1/2 tsp ground nutmeg",
+]
+method = [
+  "Soften the onion and garlic in the oil. Add the pumpkin and stock and simmer for 20 minutes until tender.",
+  "Blend until smooth, season, and stir in the nutmeg. Serve with a swirl of cream.",
+]
+
+[[recipe]]
+slug = "sweet-and-sour-pork"
+title = "Sweet and sour pork"
+cuisine = "chinese"
+servings = 4
+minutes = 35
+summary = "Crispy pork pieces with capsicum, onion and pineapple in a tangy sauce."
+ingredients = [
+  "500 g pork loin, cut into cubes",
+  "3 tbsp cornflour",
+  "3 tbsp vegetable oil",
+  "1 onion, cut into wedges",
+  "1 capsicum, chopped",
+  "440 g can pineapple pieces, juice reserved",
+  "3 tbsp tomato sauce",
+  "2 tbsp white vinegar",
+  "2 tbsp brown sugar",
+  "1 tbsp soy sauce",
+  "1 cup rice",
+]
+method = [
+  "Toss the pork in 2 tbsp cornflour and fry in the oil until golden and cooked. Set aside.",
+  "Stir-fry the onion and capsicum for 3 minutes. Add the pineapple and juice, sauce, vinegar, sugar and soy.",
+  "Thicken with the remaining cornflour mixed with water, return the pork, and serve with rice.",
+]
+
+[[recipe]]
+slug = "beef-stroganoff"
+title = "Beef stroganoff"
+cuisine = "russian"
+servings = 4
+minutes = 30
+summary = "Strips of steak and mushrooms in a creamy paprika sauce, served over pasta or rice."
+ingredients = [
+  "500 g beef steak, thinly sliced",
+  "2 tbsp olive oil",
+  "1 onion, sliced",
+  "250 g mushrooms, sliced",
+  "1 tbsp paprika",
+  "250 ml beef stock",
+  "150 g sour cream",
+  "1 tbsp dijon mustard",
+  "350 g pasta",
+]
+method = [
+  "Sear the beef in batches in half the oil over high heat. Set aside.",
+  "Cook the onion and mushrooms in the remaining oil until golden. Add the paprika and stock and simmer 5 minutes.",
+  "Stir in the sour cream and mustard, return the beef, and heat through. Serve over cooked pasta.",
+]
+
+[[recipe]]
+slug = "chicken-pasta-bake"
+title = "Creamy chicken pasta bake"
+cuisine = "australian"
+servings = 6
+minutes = 45
+summary = "Pasta, chicken, spinach and a creamy tomato sauce baked under melted cheese."
+ingredients = [
+  "400 g pasta",
+  "500 g chicken breast, diced",
+  "1 tbsp olive oil",
+  "2 cloves garlic, crushed",
+  "700 g passata",
+  "125 ml thickened cream",
+  "100 g baby spinach",
+  "150 g mozzarella, grated",
+]
+method = [
+  "Heat the oven to 200°C. Cook the pasta until just tender and drain.",
+  "Brown the chicken in the oil, add the garlic, passata and cream, and simmer 5 minutes. Stir in the spinach.",
+  "Mix with the pasta in a baking dish, top with mozzarella, and bake for 20 minutes until bubbling.",
+]
+
+[[recipe]]
+slug = "san-choy-bow"
+title = "San choy bow"
+cuisine = "chinese"
+servings = 4
+minutes = 20
+summary = "Savoury pork mince with water chestnuts, served in crisp lettuce cups."
+ingredients = [
+  "1 tbsp vegetable oil",
+  "500 g pork mince",
+  "2 cloves garlic, crushed",
+  "1 tbsp ginger, grated",
+  "225 g can water chestnuts, drained and chopped",
+  "2 tbsp oyster sauce",
+  "1 tbsp soy sauce",
+  "1 tsp sesame oil",
+  "3 spring onions, sliced",
+  "1 iceberg lettuce, leaves separated",
+]
+method = [
+  "Stir-fry the garlic and ginger in the oil, then add the mince and cook until browned.",
+  "Add the water chestnuts, oyster sauce, soy and sesame oil and toss for 2 minutes. Stir in the spring onion.",
+  "Spoon into lettuce cups to serve.",
+]
+
+[[recipe]]
+slug = "salmon-with-greens"
+title = "Pan-fried salmon with greens"
+cuisine = "australian"
+servings = 2
+minutes = 20
+summary = "Crispy-skinned salmon with garlicky green beans and broccolini and a squeeze of lemon."
+ingredients = [
+  "2 salmon fillets",
+  "1 tbsp olive oil",
+  "200 g green beans, trimmed",
+  "1 bunch broccolini",
+  "1 clove garlic, sliced",
+  "1 lemon, halved",
+]
+method = [
+  "Pat the salmon dry and season. Cook skin-side down in the oil over medium-high heat for 4 minutes, then flip for 2–3 minutes.",
+  "Blanch the beans and broccolini for 2 minutes, drain, and toss in the same pan with the garlic.",
+  "Serve with lemon squeezed over.",
+]
+
+[[recipe]]
+slug = "sausage-rolls"
+title = "Homemade sausage rolls"
+cuisine = "australian"
+servings = 6
+minutes = 50
+summary = "Pork mince, grated vegetables and herbs rolled in puff pastry. Great for lunchboxes."
+ingredients = [
+  "500 g pork mince",
+  "1 onion, grated",
+  "1 carrot, grated",
+  "1 zucchini, grated",
+  "40 g breadcrumbs",
+  "1 egg",
+  "3 sheets puff pastry",
+  "1 tbsp sesame seeds",
+]
+method = [
+  "Heat the oven to 200°C. Squeeze excess water from the grated vegetables and mix with the mince, breadcrumbs and half the egg.",
+  "Halve the pastry sheets, lay a line of filling along each, roll up and cut into pieces.",
+  "Brush with the remaining egg, sprinkle with sesame seeds, and bake for 25–30 minutes until golden.",
+]
+
+[[recipe]]
+slug = "meatloaf"
+title = "Glazed meatloaf"
+cuisine = "american"
+servings = 6
+minutes = 80
+summary = "A tender beef meatloaf with a sticky tomato and brown sugar glaze."
+ingredients = [
+  "750 g beef mince",
+  "1 onion, finely diced",
+  "60 g breadcrumbs",
+  "1 egg",
+  "60 ml milk",
+  "1 tbsp worcestershire sauce",
+  "80 ml tomato sauce",
+  "1 tbsp brown sugar",
+]
+method = [
+  "Heat the oven to 180°C. Mix the mince, onion, breadcrumbs, egg, milk and worcestershire sauce, and press into a loaf tin.",
+  "Mix the tomato sauce and sugar and spread on top.",
+  "Bake for 1 hour, then rest for 10 minutes before slicing.",
+]
+
+[[recipe]]
+slug = "chicken-caesar-salad"
+title = "Chicken caesar salad"
+cuisine = "american"
+servings = 4
+minutes = 25
+summary = "Cos lettuce, grilled chicken, crispy bacon, croutons and a creamy parmesan dressing."
+ingredients = [
+  "2 chicken breasts",
+  "1 tbsp olive oil",
+  "4 rashers bacon, chopped",
+  "2 slices bread, cubed",
+  "2 cos lettuce, leaves torn",
+  "40 g parmesan, shaved",
+  "4 tbsp mayonnaise",
+  "1 lemon, juiced",
+  "1 clove garlic, crushed",
+]
+method = [
+  "Season the chicken and cook in the oil for 5–6 minutes each side. Rest, then slice.",
+  "Fry the bacon until crisp, then toss the bread cubes in the fat until golden.",
+  "Whisk the mayonnaise, lemon juice and garlic. Toss with the lettuce and top with chicken, bacon, croutons and parmesan.",
+]
+
+[[recipe]]
+slug = "zucchini-slice"
+title = "Zucchini slice"
+cuisine = "australian"
+servings = 6
+minutes = 50
+summary = "A baked slice of zucchini, bacon, onion and cheese. Good warm or cold."
+ingredients = [
+  "3 zucchini, grated",
+  "1 onion, finely diced",
+  "200 g bacon, diced",
+  "120 g cheddar cheese, grated",
+  "150 g self-raising flour",
+  "5 eggs",
+  "60 ml vegetable oil",
+]
+method = [
+  "Heat the oven to 180°C and line a slice tin. Fry the bacon and onion until soft.",
+  "Whisk the eggs and oil, then stir in everything else.",
+  "Pour into the tin and bake for 35 minutes until set and golden.",
+]
+
+[[recipe]]
+slug = "steak-with-chips-and-salad"
+title = "Steak with chips and salad"
+cuisine = "australian"
+servings = 2
+minutes = 40
+summary = "Seared rump steak with oven chips and a simple tomato, cucumber and rocket salad."
+ingredients = [
+  "2 beef steaks",
+  "600 g potatoes, cut into chips",
+  "2 tbsp olive oil",
+  "1 tomato, chopped",
+  "1 cucumber, chopped",
+  "50 g rocket",
+  "1 tbsp white vinegar",
+]
+method = [
+  "Toss the chips in 1 tbsp oil and bake at 220°C for 30–35 minutes, turning once.",
+  "Cook the steaks in a very hot pan for 3–4 minutes each side for medium-rare. Rest for 5 minutes.",
+  "Toss the salad with the remaining oil and vinegar and serve alongside.",
+]
+
+[[recipe]]
+slug = "tuna-mornay"
+title = "Tuna mornay"
+cuisine = "australian"
+servings = 4
+minutes = 35
+summary = "A creamy, cheesy tuna and pea bake with a crunchy breadcrumb top. A pantry classic."
+ingredients = [
+  "40 g butter",
+  "3 tbsp plain flour",
+  "500 ml milk",
+  "100 g cheddar cheese, grated",
+  "2 x 185 g cans canned tuna, drained",
+  "150 g frozen peas",
+  "40 g breadcrumbs",
+  "250 g pasta",
+]
+method = [
+  "Cook the pasta and drain. Heat the oven to 200°C.",
+  "Melt the butter, stir in the flour, then whisk in the milk until thick. Add most of the cheese.",
+  "Fold in the tuna, peas and pasta. Tip into a dish, top with breadcrumbs and remaining cheese, and bake for 15 minutes.",
+]
+
+[[recipe]]
+slug = "lamb-roast"
+title = "Roast lamb with rosemary and garlic"
+cuisine = "australian"
+servings = 6
+minutes = 120
+summary = "A leg of lamb studded with garlic and rosemary, roasted with potatoes."
+ingredients = [
+  "2 kg lamb leg",
+  "4 cloves garlic, sliced",
+  "4 sprigs rosemary",
+  "2 tbsp olive oil",
+  "1.2 kg potatoes, halved",
+  "salt, to taste",
+]
+method = [
+  "Heat the oven to 200°C. Cut small slits in the lamb and push in the garlic and rosemary. Rub with oil and salt.",
+  "Roast on top of the potatoes for about 1 hour 30 minutes for medium.",
+  "Rest the lamb for 15 minutes, covered, before carving.",
+]
+
+[[recipe]]
+slug = "chicken-noodle-soup"
+title = "Chicken noodle soup"
+cuisine = "australian"
+servings = 4
+minutes = 40
+summary = "A gentle soup of chicken, carrot, celery and noodles. The one you want when you're unwell."
+ingredients = [
+  "1 tbsp olive oil",
+  "1 onion, diced",
+  "2 carrots, diced",
+  "2 sticks celery, diced",
+  "1.5 litres chicken stock",
+  "400 g chicken thigh",
+  "100 g egg noodles",
+  "1 bunch parsley, chopped",
+]
+method = [
+  "Soften the onion, carrot and celery in the oil for 5 minutes.",
+  "Add the stock and chicken and simmer for 20 minutes. Remove the chicken, shred it, and return it.",
+  "Add the noodles and cook for 4 minutes. Stir in the parsley.",
+]

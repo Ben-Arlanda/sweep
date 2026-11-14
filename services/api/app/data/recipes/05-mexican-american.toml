@@ -1,0 +1,417 @@
+# Mexican, Tex-Mex and American. Written for Sweep (licence: Sweep original).
+
+[[recipe]]
+slug = "beef-tacos"
+title = "Beef tacos"
+cuisine = "mexican"
+servings = 4
+minutes = 25
+summary = "Spiced beef mince in tortillas with lettuce, tomato, cheese and sour cream."
+ingredients = [
+  "1 tbsp vegetable oil",
+  "500 g beef mince",
+  "1 onion, diced",
+  "2 tsp ground cumin",
+  "2 tsp paprika",
+  "2 tbsp tomato paste",
+  "8 tortillas",
+  "1/2 lettuce, shredded",
+  "2 tomatoes, diced",
+  "100 g cheddar cheese, grated",
+  "100 g sour cream",
+]
+method = [
+  "Brown the mince with the onion in the oil. Add the spices, tomato paste and 125 ml water and simmer 5 minutes.",
+  "Warm the tortillas.",
+  "Fill with the beef, lettuce, tomato, cheese and sour cream.",
+]
+
+[[recipe]]
+slug = "chicken-fajitas"
+title = "Chicken fajitas"
+cuisine = "mexican"
+servings = 4
+minutes = 30
+summary = "Sizzling strips of spiced chicken, capsicum and onion wrapped in warm tortillas."
+ingredients = [
+  "600 g chicken breast, sliced",
+  "2 tbsp olive oil",
+  "2 tsp ground cumin",
+  "2 tsp paprika",
+  "1 tsp garlic powder",
+  "2 capsicums, sliced",
+  "1 red onion, sliced",
+  "8 tortillas",
+  "1 avocado, sliced",
+  "1 lime, cut into wedges",
+]
+method = [
+  "Toss the chicken in half the oil and the spices. Cook in a hot pan until cooked through. Set aside.",
+  "Cook the capsicum and onion in the remaining oil until charred and soft.",
+  "Serve in warm tortillas with avocado and lime.",
+]
+
+[[recipe]]
+slug = "chilli-con-carne"
+title = "Chilli con carne"
+cuisine = "mexican"
+servings = 6
+minutes = 60
+summary = "A smoky beef and kidney bean chilli. Even better the next day."
+ingredients = [
+  "1 tbsp olive oil",
+  "1 onion, diced",
+  "1 capsicum, diced",
+  "3 cloves garlic, crushed",
+  "750 g beef mince",
+  "2 tsp ground cumin",
+  "2 tsp paprika",
+  "1 tsp chilli powder",
+  "2 x 400 g cans canned tomatoes",
+  "400 g can kidney beans, drained",
+  "1 cup rice",
+  "100 g sour cream",
+]
+method = [
+  "Soften the onion, capsicum and garlic in the oil. Add the mince and brown.",
+  "Add the spices, tomatoes and beans. Simmer for 40 minutes until thick.",
+  "Serve with rice and sour cream.",
+]
+
+[[recipe]]
+slug = "burrito-bowls"
+title = "Chicken burrito bowls"
+cuisine = "mexican"
+servings = 4
+minutes = 35
+summary = "Rice bowls with spiced chicken, black beans, corn salsa, avocado and lime."
+ingredients = [
+  "1 cup rice",
+  "500 g chicken thigh",
+  "2 tsp ground cumin",
+  "1 tsp paprika",
+  "1 tbsp olive oil",
+  "400 g can black beans, drained",
+  "250 g corn kernels",
+  "2 tomatoes, diced",
+  "1 avocado, diced",
+  "1 lime, juiced",
+  "1 bunch coriander",
+]
+method = [
+  "Cook the rice. Rub the chicken with the spices and oil and pan-fry until cooked. Slice.",
+  "Warm the beans. Mix the corn, tomato, coriander and lime juice for a salsa.",
+  "Build bowls of rice, chicken, beans, salsa and avocado.",
+]
+
+[[recipe]]
+slug = "quesadillas"
+title = "Cheese and bean quesadillas"
+cuisine = "mexican"
+servings = 4
+minutes = 20
+summary = "Crispy tortillas filled with melted cheese, refried beans and spring onion. Vegetarian."
+ingredients = [
+  "8 tortillas",
+  "400 g can refried beans",
+  "200 g cheddar cheese, grated",
+  "3 spring onions, sliced",
+  "100 g sour cream",
+]
+method = [
+  "Spread 4 tortillas with beans, scatter with cheese and spring onion, and top with the others.",
+  "Cook in a dry pan for 2–3 minutes each side until crisp and melted.",
+  "Cut into wedges and serve with sour cream.",
+]
+
+[[recipe]]
+slug = "guacamole"
+title = "Guacamole"
+cuisine = "mexican"
+servings = 4
+minutes = 10
+summary = "Chunky avocado mashed with lime, red onion, tomato, chilli and coriander."
+ingredients = [
+  "3 avocados",
+  "1 lime, juiced",
+  "1/2 red onion, finely diced",
+  "1 tomato, diced",
+  "1 red chilli, finely chopped",
+  "1 bunch coriander, chopped",
+]
+method = [
+  "Mash the avocado with the lime juice.",
+  "Stir in everything else and season with salt.",
+]
+
+[[recipe]]
+slug = "fish-tacos"
+title = "Crispy fish tacos"
+cuisine = "mexican"
+servings = 4
+minutes = 30
+summary = "Spiced white fish in tortillas with a crunchy cabbage slaw and lime mayo."
+ingredients = [
+  "500 g white fish fillets",
+  "2 tsp paprika",
+  "1 tsp ground cumin",
+  "2 tbsp vegetable oil",
+  "8 tortillas",
+  "1/4 red cabbage, shredded",
+  "4 tbsp mayonnaise",
+  "2 limes",
+  "1 bunch coriander",
+]
+method = [
+  "Rub the fish with the spices and pan-fry in the oil for 3 minutes each side. Flake.",
+  "Mix the mayonnaise with the juice of 1 lime.",
+  "Fill the tortillas with cabbage, fish, lime mayo and coriander. Serve with lime wedges.",
+]
+
+[[recipe]]
+slug = "nachos"
+title = "Loaded nachos"
+cuisine = "mexican"
+servings = 4
+minutes = 25
+summary = "Corn chips baked with beans, salsa and cheese, topped with guacamole and sour cream."
+ingredients = [
+  "230 g corn chips",
+  "400 g can kidney beans, drained",
+  "300 g tomato salsa",
+  "200 g cheddar cheese, grated",
+  "2 avocados, mashed",
+  "100 g sour cream",
+]
+method = [
+  "Heat the oven to 200°C. Mix the beans with the salsa.",
+  "Layer the corn chips, bean mix and cheese in a baking dish. Bake for 10 minutes until melted.",
+  "Top with the avocado and sour cream.",
+]
+
+[[recipe]]
+slug = "enchiladas"
+title = "Chicken enchiladas"
+cuisine = "mexican"
+servings = 4
+minutes = 50
+summary = "Tortillas rolled around chicken and beans, baked in a smoky tomato sauce with cheese."
+ingredients = [
+  "500 g chicken breast",
+  "400 g can black beans, drained",
+  "700 g passata",
+  "2 tsp ground cumin",
+  "1 tsp chilli powder",
+  "8 tortillas",
+  "200 g cheddar cheese, grated",
+  "1 bunch coriander",
+]
+method = [
+  "Poach the chicken for 15 minutes, then shred. Mix the passata with the spices.",
+  "Mix the chicken, beans and a third of the sauce. Roll up in the tortillas and lay in a dish.",
+  "Pour over the remaining sauce, top with cheese, and bake at 190°C for 20 minutes. Scatter with coriander.",
+]
+
+[[recipe]]
+slug = "pulled-pork"
+title = "Pulled pork rolls"
+cuisine = "american"
+servings = 8
+minutes = 270
+summary = "Pork shoulder slow-cooked with a smoky barbecue rub, shredded into soft rolls with slaw."
+ingredients = [
+  "1.5 kg pork shoulder",
+  "2 tbsp brown sugar",
+  "2 tsp paprika",
+  "1 tsp garlic powder",
+  "250 ml barbecue sauce",
+  "8 bread rolls",
+  "1/4 cabbage, shredded",
+  "3 tbsp mayonnaise",
+]
+method = [
+  "Rub the pork with the sugar, paprika and garlic powder. Cook covered at 150°C for 4 hours until it pulls apart.",
+  "Shred with two forks and mix with the barbecue sauce.",
+  "Toss the cabbage with the mayonnaise and serve in the rolls with the pork.",
+]
+
+[[recipe]]
+slug = "mac-and-cheese"
+title = "Baked mac and cheese"
+cuisine = "american"
+servings = 6
+minutes = 40
+summary = "Macaroni in a rich cheddar sauce, baked with a crunchy breadcrumb top."
+ingredients = [
+  "400 g pasta",
+  "50 g butter",
+  "50 g plain flour",
+  "750 ml milk",
+  "250 g cheddar cheese, grated",
+  "1 tsp dijon mustard",
+  "40 g breadcrumbs",
+]
+method = [
+  "Cook the pasta until just tender and drain.",
+  "Melt the butter, stir in the flour, then whisk in the milk until thick. Stir in most of the cheese and the mustard.",
+  "Mix with the pasta, top with breadcrumbs and remaining cheese, and bake at 200°C for 20 minutes.",
+]
+
+[[recipe]]
+slug = "bbq-chicken-wings"
+title = "Barbecue chicken wings"
+cuisine = "american"
+servings = 4
+minutes = 50
+summary = "Oven-baked wings tossed in a sticky barbecue and honey glaze."
+ingredients = [
+  "1 kg chicken wings",
+  "1 tsp paprika",
+  "1 tsp garlic powder",
+  "125 ml barbecue sauce",
+  "2 tbsp honey",
+]
+method = [
+  "Toss the wings in the spices and bake on a rack at 220°C for 40 minutes, turning once.",
+  "Warm the barbecue sauce and honey and toss the wings in it.",
+]
+
+[[recipe]]
+slug = "clam-chowder-style-fish"
+title = "Creamy fish and corn chowder"
+cuisine = "american"
+servings = 4
+minutes = 40
+summary = "A thick, creamy soup of white fish, potato, corn and bacon."
+ingredients = [
+  "150 g bacon, diced",
+  "1 onion, diced",
+  "2 sticks celery, diced",
+  "500 g potatoes, diced",
+  "750 ml vegetable stock",
+  "250 g corn kernels",
+  "400 g white fish fillets, chunked",
+  "250 ml milk",
+  "125 ml thickened cream",
+]
+method = [
+  "Fry the bacon, onion and celery until soft.",
+  "Add the potatoes and stock and simmer for 15 minutes.",
+  "Add the corn, fish, milk and cream and simmer gently for 5 minutes until the fish is cooked.",
+]
+
+[[recipe]]
+slug = "sloppy-joes"
+title = "Sloppy joes"
+cuisine = "american"
+servings = 4
+minutes = 25
+summary = "Saucy beef mince in a tangy tomato sauce, piled into toasted buns."
+ingredients = [
+  "500 g beef mince",
+  "1 onion, diced",
+  "1 capsicum, diced",
+  "125 ml tomato sauce",
+  "1 tbsp worcestershire sauce",
+  "1 tbsp brown sugar",
+  "4 burger buns",
+]
+method = [
+  "Brown the mince with the onion and capsicum.",
+  "Add the sauces, sugar and 60 ml water and simmer for 10 minutes until thick.",
+  "Spoon into toasted buns.",
+]
+
+[[recipe]]
+slug = "cobb-salad"
+title = "Cobb salad"
+cuisine = "american"
+servings = 4
+minutes = 30
+summary = "Rows of chicken, bacon, egg, avocado, tomato and blue cheese on crisp lettuce."
+ingredients = [
+  "2 chicken breasts",
+  "6 rashers bacon",
+  "4 eggs",
+  "1 cos lettuce, chopped",
+  "2 avocados, diced",
+  "250 g cherry tomatoes, halved",
+  "80 g blue cheese, crumbled",
+  "3 tbsp olive oil",
+  "1 tbsp red wine vinegar",
+]
+method = [
+  "Grill the chicken and bacon, then chop. Boil the eggs for 9 minutes, cool and quarter.",
+  "Arrange everything in rows over the lettuce.",
+  "Whisk the oil and vinegar and drizzle over.",
+]
+
+[[recipe]]
+slug = "cornbread"
+title = "Cornbread"
+cuisine = "american"
+servings = 8
+minutes = 35
+summary = "A golden, slightly sweet cornmeal bread with crisp edges."
+ingredients = [
+  "150 g polenta",
+  "150 g plain flour",
+  "2 tsp baking powder",
+  "2 tbsp white sugar",
+  "2 eggs",
+  "250 ml milk",
+  "80 g butter, melted",
+]
+method = [
+  "Heat the oven to 200°C and grease a square tin.",
+  "Mix the dry ingredients, then stir in the eggs, milk and butter.",
+  "Pour into the tin and bake for 20–25 minutes until golden.",
+]
+
+[[recipe]]
+slug = "pancakes"
+title = "Fluffy pancakes"
+cuisine = "american"
+servings = 4
+minutes = 25
+summary = "Thick, fluffy pancakes for the weekend, with maple syrup and berries."
+ingredients = [
+  "225 g self-raising flour",
+  "2 tbsp caster sugar",
+  "2 eggs",
+  "300 ml milk",
+  "30 g butter, melted",
+  "60 ml maple syrup",
+  "150 g blueberries",
+]
+method = [
+  "Whisk the flour, sugar, eggs, milk and butter into a smooth batter.",
+  "Cook ladlefuls in a buttered pan over medium heat until bubbles appear, then flip.",
+  "Serve with maple syrup and blueberries.",
+]
+
+[[recipe]]
+slug = "chicken-pot-pie"
+title = "Chicken pot pie"
+cuisine = "american"
+servings = 6
+minutes = 70
+summary = "Chicken and vegetables in a creamy sauce under a golden puff pastry lid."
+ingredients = [
+  "40 g butter",
+  "1 onion, diced",
+  "2 carrots, diced",
+  "2 sticks celery, diced",
+  "40 g plain flour",
+  "500 ml chicken stock",
+  "125 ml thickened cream",
+  "600 g chicken thigh, diced",
+  "150 g frozen peas",
+  "2 sheets puff pastry",
+  "1 egg, beaten",
+]
+method = [
+  "Soften the onion, carrot and celery in the butter. Stir in the flour, then the stock and cream.",
+  "Add the chicken and simmer for 15 minutes. Stir in the peas and cool slightly.",
+  "Tip into a pie dish, cover with pastry, brush with egg, and bake at 200°C for 30 minutes.",
+]

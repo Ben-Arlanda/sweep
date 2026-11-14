@@ -1,0 +1,477 @@
+# Indian, Middle Eastern, North African. Written for Sweep (licence: Sweep original).
+
+[[recipe]]
+slug = "butter-chicken"
+title = "Butter chicken"
+cuisine = "indian"
+servings = 4
+minutes = 50
+summary = "Tender chicken in a mild, creamy tomato and butter sauce with garam masala."
+ingredients = [
+  "750 g chicken thigh, diced",
+  "150 g greek yoghurt",
+  "2 tsp garam masala",
+  "40 g butter",
+  "1 onion, diced",
+  "3 cloves garlic, crushed",
+  "1 tbsp ginger, grated",
+  "1 tsp ground turmeric",
+  "400 g can canned tomatoes",
+  "125 ml thickened cream",
+  "1 cup basmati rice",
+]
+method = [
+  "Marinate the chicken in the yoghurt and half the garam masala for 15 minutes or overnight.",
+  "Cook the onion, garlic and ginger in the butter until soft. Add the turmeric and remaining garam masala, then the tomatoes. Simmer 10 minutes and blend.",
+  "Add the chicken and simmer for 15 minutes until cooked. Stir in the cream and serve with rice.",
+]
+
+[[recipe]]
+slug = "red-lentil-dhal"
+title = "Red lentil dhal"
+cuisine = "indian"
+servings = 4
+minutes = 35
+summary = "Comforting spiced red lentils with tomato and spinach. Vegan, cheap and freezes well."
+ingredients = [
+  "1 tbsp vegetable oil",
+  "1 onion, diced",
+  "3 cloves garlic, crushed",
+  "1 tbsp ginger, grated",
+  "2 tsp ground cumin",
+  "1 tsp ground turmeric",
+  "300 g red lentils, rinsed",
+  "400 g can canned tomatoes",
+  "1 litre vegetable stock",
+  "100 g baby spinach",
+  "1 cup basmati rice",
+]
+method = [
+  "Soften the onion, garlic and ginger in the oil. Add the spices for a minute.",
+  "Add the lentils, tomatoes and stock. Simmer for 25 minutes, stirring often, until thick.",
+  "Stir in the spinach and serve with rice.",
+]
+
+[[recipe]]
+slug = "chickpea-curry"
+title = "Chickpea and spinach curry"
+cuisine = "indian"
+servings = 4
+minutes = 30
+summary = "Chana masala-style chickpeas in a spiced tomato and coconut sauce. Vegan."
+ingredients = [
+  "1 tbsp vegetable oil",
+  "1 onion, diced",
+  "2 cloves garlic, crushed",
+  "1 tbsp ginger, grated",
+  "2 tbsp curry powder",
+  "2 x 400 g cans chickpeas, drained",
+  "400 g can canned tomatoes",
+  "270 ml coconut cream",
+  "100 g baby spinach",
+  "1 bunch coriander",
+]
+method = [
+  "Cook the onion, garlic and ginger in the oil until soft. Add the curry powder.",
+  "Add the chickpeas, tomatoes and coconut cream and simmer for 15 minutes.",
+  "Stir in the spinach and top with coriander.",
+]
+
+[[recipe]]
+slug = "beef-madras"
+title = "Beef madras"
+cuisine = "indian"
+servings = 6
+minutes = 130
+summary = "A deep, hot South Indian-style beef curry, slow-cooked until tender."
+ingredients = [
+  "1 kg beef chuck steak, diced",
+  "2 tbsp vegetable oil",
+  "2 onions, diced",
+  "4 cloves garlic, crushed",
+  "1 tbsp ginger, grated",
+  "3 tbsp madras curry paste",
+  "400 g can canned tomatoes",
+  "250 ml beef stock",
+  "1 cup basmati rice",
+]
+method = [
+  "Brown the beef in batches in the oil. Set aside.",
+  "Cook the onion, garlic and ginger until golden, then add the curry paste for 2 minutes.",
+  "Return the beef with the tomatoes and stock. Cover and simmer for 1½–2 hours until tender. Serve with rice.",
+]
+
+[[recipe]]
+slug = "lamb-rogan-josh"
+title = "Lamb rogan josh"
+cuisine = "indian"
+servings = 6
+minutes = 120
+summary = "Lamb shoulder in an aromatic Kashmiri-style sauce with yoghurt and warm spices."
+ingredients = [
+  "1 kg lamb shoulder, diced",
+  "2 tbsp vegetable oil",
+  "2 onions, diced",
+  "3 cloves garlic, crushed",
+  "1 tbsp ginger, grated",
+  "3 tbsp rogan josh curry paste",
+  "400 g can canned tomatoes",
+  "150 g greek yoghurt",
+  "1 cup basmati rice",
+]
+method = [
+  "Brown the lamb in the oil and set aside. Soften the onion, garlic and ginger.",
+  "Add the paste for 2 minutes, then the lamb, tomatoes and 250 ml water.",
+  "Cover and simmer for 1½ hours. Stir in the yoghurt off the heat and serve with rice.",
+]
+
+[[recipe]]
+slug = "palak-paneer"
+title = "Palak paneer"
+cuisine = "indian"
+servings = 4
+minutes = 35
+summary = "Cubes of paneer cheese in a smooth, spiced spinach sauce. Vegetarian."
+ingredients = [
+  "500 g baby spinach",
+  "1 tbsp vegetable oil",
+  "1 onion, diced",
+  "2 cloves garlic, crushed",
+  "1 tbsp ginger, grated",
+  "1 tsp garam masala",
+  "1 tsp ground cumin",
+  "250 g paneer, cubed",
+  "60 ml thickened cream",
+]
+method = [
+  "Wilt the spinach in a pan, cool slightly, and blend smooth.",
+  "Cook the onion, garlic and ginger in the oil. Add the spices, then the spinach puree, and simmer 5 minutes.",
+  "Add the paneer and cream and heat through.",
+]
+
+[[recipe]]
+slug = "tandoori-chicken"
+title = "Tandoori chicken"
+cuisine = "indian"
+servings = 4
+minutes = 50
+summary = "Chicken marinated in yoghurt and tandoori spices, roasted until charred at the edges."
+ingredients = [
+  "1 kg chicken thigh",
+  "200 g greek yoghurt",
+  "3 tbsp tandoori paste",
+  "1 lemon, juiced",
+  "1 cucumber, grated",
+  "1 bunch mint, chopped",
+]
+method = [
+  "Mix 150 g yoghurt with the tandoori paste and lemon juice. Marinate the chicken for at least 30 minutes.",
+  "Roast at 220°C for 30–35 minutes until charred and cooked through.",
+  "Mix the remaining yoghurt with the cucumber and mint to serve.",
+]
+
+[[recipe]]
+slug = "vegetable-biryani"
+title = "Vegetable biryani"
+cuisine = "indian"
+servings = 6
+minutes = 60
+summary = "Fragrant layered basmati rice with spiced vegetables, fried onion and cashews."
+ingredients = [
+  "2 tbsp vegetable oil",
+  "2 onions, thinly sliced",
+  "2 cloves garlic, crushed",
+  "3 tbsp biryani curry paste",
+  "2 carrots, diced",
+  "200 g cauliflower, cut into florets",
+  "150 g frozen peas",
+  "2 cups basmati rice",
+  "1 litre vegetable stock",
+  "50 g cashews",
+  "1 bunch coriander",
+]
+method = [
+  "Fry the onions in the oil until deep golden. Remove half for topping.",
+  "Add the garlic and paste, then the vegetables, and cook for 5 minutes.",
+  "Stir in the rice and stock. Cover tightly and cook on low for 20 minutes. Top with the fried onion, cashews and coriander.",
+]
+
+[[recipe]]
+slug = "aloo-gobi"
+title = "Aloo gobi"
+cuisine = "indian"
+servings = 4
+minutes = 35
+summary = "Potato and cauliflower cooked dry with cumin, turmeric and ginger. Vegan."
+ingredients = [
+  "2 tbsp vegetable oil",
+  "1 tsp cumin seeds",
+  "1 onion, diced",
+  "1 tbsp ginger, grated",
+  "1 tsp ground turmeric",
+  "1 tsp garam masala",
+  "500 g potatoes, diced",
+  "1 cauliflower, cut into florets",
+  "1 bunch coriander",
+]
+method = [
+  "Fry the cumin seeds in the oil until they crackle. Add the onion and ginger for 5 minutes.",
+  "Add the spices, potato and cauliflower with a splash of water. Cover and cook on low for 20 minutes, stirring now and then.",
+  "Top with coriander.",
+]
+
+[[recipe]]
+slug = "naan-bread"
+title = "Easy garlic naan"
+cuisine = "indian"
+servings = 6
+minutes = 30
+summary = "Soft yoghurt flatbreads cooked in a hot pan and brushed with garlic butter. No yeast."
+ingredients = [
+  "300 g self-raising flour",
+  "250 g greek yoghurt",
+  "40 g butter, melted",
+  "2 cloves garlic, crushed",
+]
+method = [
+  "Mix the flour and yoghurt into a soft dough. Divide into 6 and roll out thinly.",
+  "Cook in a very hot dry pan for 1–2 minutes each side until puffed and charred.",
+  "Brush with the butter mixed with garlic.",
+]
+
+[[recipe]]
+slug = "shakshuka"
+title = "Shakshuka"
+cuisine = "middle-eastern"
+servings = 4
+minutes = 30
+summary = "Eggs poached in a spiced tomato and capsicum sauce. Brunch or dinner."
+ingredients = [
+  "2 tbsp olive oil",
+  "1 onion, diced",
+  "1 capsicum, diced",
+  "2 cloves garlic, crushed",
+  "1 tsp ground cumin",
+  "1 tsp paprika",
+  "2 x 400 g cans canned tomatoes",
+  "6 eggs",
+  "60 g feta, crumbled",
+  "4 slices bread",
+]
+method = [
+  "Soften the onion and capsicum in the oil. Add the garlic and spices, then the tomatoes, and simmer 10 minutes.",
+  "Make wells in the sauce and crack in the eggs. Cover and cook for 6–8 minutes until the whites are set.",
+  "Scatter with feta and serve with bread.",
+]
+
+[[recipe]]
+slug = "chicken-shawarma"
+title = "Chicken shawarma wraps"
+cuisine = "middle-eastern"
+servings = 4
+minutes = 40
+summary = "Spiced roast chicken in flatbreads with garlic yoghurt, tomato, cucumber and pickles."
+ingredients = [
+  "750 g chicken thigh",
+  "2 tbsp olive oil",
+  "2 tsp ground cumin",
+  "2 tsp paprika",
+  "1 tsp ground cinnamon",
+  "200 g greek yoghurt",
+  "1 clove garlic, crushed",
+  "4 pita breads",
+  "2 tomatoes, sliced",
+  "1 cucumber, sliced",
+]
+method = [
+  "Toss the chicken with the oil and spices. Roast at 220°C for 25 minutes, then slice.",
+  "Mix the yoghurt with the garlic.",
+  "Fill the pita with chicken, tomato, cucumber and garlic yoghurt.",
+]
+
+[[recipe]]
+slug = "falafel"
+title = "Baked falafel with tahini"
+cuisine = "middle-eastern"
+servings = 4
+minutes = 40
+summary = "Herby chickpea falafel baked until crisp, with a lemony tahini sauce. Vegan."
+ingredients = [
+  "2 x 400 g cans chickpeas, drained",
+  "1 onion, chopped",
+  "2 cloves garlic",
+  "1 bunch parsley",
+  "1 bunch coriander",
+  "2 tsp ground cumin",
+  "3 tbsp plain flour",
+  "3 tbsp olive oil",
+  "80 g tahini",
+  "1 lemon, juiced",
+]
+method = [
+  "Pulse the chickpeas, onion, garlic, herbs, cumin and flour in a processor until coarse. Shape into balls.",
+  "Brush with oil and bake at 200°C for 25 minutes, turning once.",
+  "Whisk the tahini with lemon juice and water until pourable.",
+]
+
+[[recipe]]
+slug = "hummus"
+title = "Hummus"
+cuisine = "middle-eastern"
+servings = 6
+minutes = 10
+summary = "Smooth, creamy hummus of chickpeas, tahini, lemon and garlic."
+ingredients = [
+  "400 g can chickpeas, drained",
+  "80 g tahini",
+  "1 lemon, juiced",
+  "1 clove garlic",
+  "3 tbsp olive oil",
+  "1/2 tsp ground cumin",
+]
+method = [
+  "Blend everything with 3 tbsp cold water until very smooth. Season.",
+  "Serve drizzled with extra oil.",
+]
+
+[[recipe]]
+slug = "lamb-kofta"
+title = "Lamb kofta with tabbouleh"
+cuisine = "middle-eastern"
+servings = 4
+minutes = 40
+summary = "Spiced lamb mince skewers with a fresh parsley, tomato and bulgur salad."
+ingredients = [
+  "500 g lamb mince",
+  "1 onion, grated",
+  "2 tsp ground cumin",
+  "1 tsp ground cinnamon",
+  "100 g bulgur",
+  "2 bunches parsley, finely chopped",
+  "3 tomatoes, diced",
+  "1 lemon, juiced",
+  "3 tbsp olive oil",
+]
+method = [
+  "Mix the lamb, onion and spices and shape around skewers. Grill for 8–10 minutes, turning.",
+  "Soak the bulgur in boiling water for 15 minutes, then drain well.",
+  "Mix the bulgur with parsley, tomato, lemon juice and oil.",
+]
+
+[[recipe]]
+slug = "moroccan-chicken-tagine"
+title = "Moroccan chicken tagine"
+cuisine = "moroccan"
+servings = 4
+minutes = 70
+summary = "Chicken braised with warm spices, apricots and chickpeas, served with couscous."
+ingredients = [
+  "1 kg chicken thigh",
+  "2 tbsp olive oil",
+  "1 onion, sliced",
+  "2 cloves garlic, crushed",
+  "2 tsp ground cumin",
+  "1 tsp ground cinnamon",
+  "1 tsp ground turmeric",
+  "400 g can canned tomatoes",
+  "400 g can chickpeas, drained",
+  "100 g dried apricots",
+  "250 ml chicken stock",
+  "250 g couscous",
+]
+method = [
+  "Brown the chicken in the oil and set aside. Soften the onion and garlic and add the spices.",
+  "Add the tomatoes, chickpeas, apricots, stock and chicken. Cover and simmer for 40 minutes.",
+  "Pour 250 ml boiling water over the couscous, cover for 5 minutes, then fluff with a fork. Serve together.",
+]
+
+[[recipe]]
+slug = "moroccan-lamb-tagine"
+title = "Lamb and sweet potato tagine"
+cuisine = "moroccan"
+servings = 6
+minutes = 140
+summary = "Slow-cooked lamb with sweet potato, dates and ras el hanout."
+ingredients = [
+  "1 kg lamb shoulder, diced",
+  "2 tbsp olive oil",
+  "1 onion, diced",
+  "2 tbsp ras el hanout",
+  "400 g can canned tomatoes",
+  "500 ml beef stock",
+  "600 g sweet potato, diced",
+  "100 g dates, pitted",
+  "250 g couscous",
+]
+method = [
+  "Brown the lamb in the oil. Add the onion and spice and cook for 3 minutes.",
+  "Add the tomatoes and stock. Cover and simmer for 1 hour.",
+  "Add the sweet potato and dates and cook 45 minutes more. Serve with couscous.",
+]
+
+[[recipe]]
+slug = "fattoush"
+title = "Fattoush salad"
+cuisine = "middle-eastern"
+servings = 4
+minutes = 20
+summary = "A crunchy Lebanese salad with toasted pita, tomato, cucumber, radish and sumac dressing."
+ingredients = [
+  "2 pita breads, torn",
+  "4 tbsp olive oil",
+  "1 cos lettuce, chopped",
+  "3 tomatoes, chopped",
+  "1 cucumber, chopped",
+  "4 radishes, sliced",
+  "1 bunch mint",
+  "1 lemon, juiced",
+  "2 tsp sumac",
+]
+method = [
+  "Toss the pita in half the oil and bake at 200°C for 8 minutes until crisp.",
+  "Whisk the remaining oil with lemon juice and sumac.",
+  "Toss everything together just before serving.",
+]
+
+[[recipe]]
+slug = "lentil-soup"
+title = "Lebanese lentil and lemon soup"
+cuisine = "middle-eastern"
+servings = 6
+minutes = 45
+summary = "A simple brown lentil soup with cumin, spinach and plenty of lemon."
+ingredients = [
+  "2 tbsp olive oil",
+  "1 onion, diced",
+  "2 carrots, diced",
+  "3 cloves garlic, crushed",
+  "2 tsp ground cumin",
+  "300 g brown lentils, rinsed",
+  "1.5 litres vegetable stock",
+  "100 g baby spinach",
+  "1 lemon, juiced",
+]
+method = [
+  "Soften the onion, carrot and garlic in the oil. Add the cumin.",
+  "Add the lentils and stock and simmer for 30 minutes until soft.",
+  "Stir in the spinach and lemon juice and season well.",
+]
+
+[[recipe]]
+slug = "baba-ganoush"
+title = "Baba ganoush"
+cuisine = "middle-eastern"
+servings = 6
+minutes = 50
+summary = "A smoky dip of charred eggplant, tahini, garlic and lemon."
+ingredients = [
+  "2 eggplants",
+  "60 g tahini",
+  "1 clove garlic, crushed",
+  "1 lemon, juiced",
+  "2 tbsp olive oil",
+]
+method = [
+  "Char the eggplants over a gas flame or under a hot grill until collapsed, about 25 minutes. Cool, then scoop out the flesh.",
+  "Mash with the tahini, garlic, lemon juice and oil. Season.",
+]

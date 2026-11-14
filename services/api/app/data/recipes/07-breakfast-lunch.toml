@@ -1,0 +1,469 @@
+# Breakfasts, brunches and lunches. Written for Sweep (licence: Sweep original).
+
+[[recipe]]
+slug = "smashed-avocado-toast"
+title = "Smashed avocado on toast"
+cuisine = "australian"
+servings = 2
+minutes = 10
+summary = "Sourdough toast piled with lemony smashed avocado, feta and chilli."
+ingredients = [
+  "4 slices bread",
+  "2 avocados",
+  "1/2 lemon, juiced",
+  "50 g feta, crumbled",
+  "1/2 tsp chilli flakes",
+]
+method = [
+  "Toast the bread. Mash the avocado with the lemon juice and season.",
+  "Pile onto the toast and top with feta and chilli flakes.",
+]
+
+[[recipe]]
+slug = "scrambled-eggs"
+title = "Creamy scrambled eggs"
+cuisine = "australian"
+servings = 2
+minutes = 10
+summary = "Soft, slow-cooked scrambled eggs on buttered toast with chives."
+ingredients = [
+  "5 eggs",
+  "20 g butter",
+  "2 tbsp milk",
+  "4 slices bread",
+  "1 bunch chives, snipped",
+]
+method = [
+  "Whisk the eggs with the milk and a pinch of salt.",
+  "Melt the butter over low heat, add the eggs, and stir gently until just set.",
+  "Serve on toast with chives.",
+]
+
+[[recipe]]
+slug = "bircher-muesli"
+title = "Bircher muesli"
+cuisine = "swiss"
+servings = 4
+minutes = 10
+summary = "Oats soaked overnight with apple, yoghurt and milk. Grab-and-go breakfast."
+ingredients = [
+  "200 g rolled oats",
+  "2 apples, grated",
+  "250 ml milk",
+  "200 g greek yoghurt",
+  "2 tbsp honey",
+  "40 g almonds, chopped",
+]
+method = [
+  "Mix the oats, apple, milk, yoghurt and honey. Cover and refrigerate overnight.",
+  "Serve topped with almonds.",
+]
+
+[[recipe]]
+slug = "porridge"
+title = "Banana and cinnamon porridge"
+cuisine = "australian"
+servings = 2
+minutes = 10
+summary = "Warm creamy oats with banana, cinnamon and a drizzle of honey."
+ingredients = [
+  "100 g rolled oats",
+  "500 ml milk",
+  "1 banana, sliced",
+  "1/2 tsp ground cinnamon",
+  "1 tbsp honey",
+]
+method = [
+  "Simmer the oats in the milk for 5 minutes, stirring, until creamy.",
+  "Top with banana, cinnamon and honey.",
+]
+
+[[recipe]]
+slug = "french-toast"
+title = "French toast with berries"
+cuisine = "french"
+servings = 4
+minutes = 20
+summary = "Thick bread soaked in cinnamon egg custard, fried in butter, with berries and maple."
+ingredients = [
+  "3 eggs",
+  "180 ml milk",
+  "1 tsp ground cinnamon",
+  "8 slices bread",
+  "30 g butter",
+  "150 g frozen mixed berries",
+  "60 ml maple syrup",
+]
+method = [
+  "Whisk the eggs, milk and cinnamon. Soak the bread briefly on both sides.",
+  "Fry in the butter for 2 minutes each side until golden.",
+  "Serve with berries and maple syrup.",
+]
+
+[[recipe]]
+slug = "big-breakfast"
+title = "Big breakfast fry-up"
+cuisine = "australian"
+servings = 2
+minutes = 25
+summary = "Bacon, eggs, mushrooms, tomato, spinach and toast. Weekend sorted."
+ingredients = [
+  "4 rashers bacon",
+  "4 eggs",
+  "150 g mushrooms, sliced",
+  "2 tomatoes, halved",
+  "100 g baby spinach",
+  "20 g butter",
+  "4 slices bread",
+]
+method = [
+  "Fry the bacon until crisp, then the mushrooms and tomatoes in the fat.",
+  "Wilt the spinach in the butter. Fry the eggs.",
+  "Serve everything with toast.",
+]
+
+[[recipe]]
+slug = "breakfast-burritos"
+title = "Breakfast burritos"
+cuisine = "mexican"
+servings = 4
+minutes = 25
+summary = "Tortillas wrapped around scrambled eggs, bacon, cheese, avocado and salsa."
+ingredients = [
+  "6 eggs",
+  "150 g bacon, diced",
+  "4 tortillas",
+  "100 g cheddar cheese, grated",
+  "1 avocado, sliced",
+  "150 g tomato salsa",
+]
+method = [
+  "Fry the bacon until crisp. Scramble the eggs.",
+  "Fill the tortillas with egg, bacon, cheese, avocado and salsa. Roll up and toast in a dry pan.",
+]
+
+[[recipe]]
+slug = "corn-fritters"
+title = "Corn fritters with smashed avocado"
+cuisine = "australian"
+servings = 4
+minutes = 30
+summary = "Crispy corn and spring onion fritters with avocado and a squeeze of lime."
+ingredients = [
+  "420 g can corn kernels, drained",
+  "150 g self-raising flour",
+  "2 eggs",
+  "125 ml milk",
+  "3 spring onions, sliced",
+  "2 tbsp vegetable oil",
+  "2 avocados",
+  "1 lime, juiced",
+]
+method = [
+  "Whisk the flour, eggs and milk into a thick batter. Stir in the corn and spring onion.",
+  "Fry spoonfuls in the oil for 2–3 minutes each side until golden.",
+  "Mash the avocado with the lime juice and serve alongside.",
+]
+
+[[recipe]]
+slug = "eggs-benedict"
+title = "Eggs benedict"
+cuisine = "american"
+servings = 2
+minutes = 25
+summary = "Poached eggs and ham on toasted English muffins with quick blender hollandaise."
+ingredients = [
+  "4 eggs",
+  "2 egg yolks",
+  "1 lemon, juiced",
+  "100 g butter, melted",
+  "2 english muffins, split",
+  "4 slices ham",
+]
+method = [
+  "Blend the yolks and lemon juice, then slowly pour in the hot butter until thick.",
+  "Poach the eggs in simmering water for 3 minutes. Toast the muffins.",
+  "Top the muffins with ham, eggs and hollandaise.",
+]
+
+[[recipe]]
+slug = "banana-smoothie"
+title = "Banana and peanut butter smoothie"
+cuisine = "american"
+servings = 2
+minutes = 5
+summary = "A thick, filling smoothie of banana, peanut butter, oats and milk."
+ingredients = [
+  "2 bananas",
+  "2 tbsp peanut butter",
+  "30 g rolled oats",
+  "500 ml milk",
+  "1 tbsp honey",
+]
+method = [
+  "Blend everything until smooth.",
+]
+
+[[recipe]]
+slug = "chicken-wraps"
+title = "Chicken, avocado and salad wraps"
+cuisine = "australian"
+servings = 4
+minutes = 15
+summary = "Quick lunch wraps with leftover chicken, avocado, lettuce, tomato and mayo."
+ingredients = [
+  "2 chicken breasts, cooked and shredded",
+  "4 tortillas",
+  "1 avocado, sliced",
+  "1/2 lettuce, shredded",
+  "2 tomatoes, sliced",
+  "3 tbsp mayonnaise",
+]
+method = [
+  "Spread the tortillas with mayonnaise.",
+  "Fill with chicken, avocado, lettuce and tomato, and roll up tightly.",
+]
+
+[[recipe]]
+slug = "ham-cheese-toastie"
+title = "Ham and cheese toastie"
+cuisine = "australian"
+servings = 2
+minutes = 10
+summary = "Crisp buttery toasted sandwiches of ham, cheese and a little mustard."
+ingredients = [
+  "4 slices bread",
+  "4 slices ham",
+  "100 g cheddar cheese, grated",
+  "20 g butter",
+  "1 tsp dijon mustard",
+]
+method = [
+  "Butter the outsides of the bread. Spread mustard inside and fill with ham and cheese.",
+  "Cook in a pan or press for 3 minutes each side until golden and melted.",
+]
+
+[[recipe]]
+slug = "tuna-salad-sandwich"
+title = "Tuna salad sandwiches"
+cuisine = "australian"
+servings = 2
+minutes = 10
+summary = "Tuna mixed with mayo, celery and lemon on bread with lettuce."
+ingredients = [
+  "185 g can canned tuna, drained",
+  "2 tbsp mayonnaise",
+  "1 stick celery, finely diced",
+  "1/2 lemon, juiced",
+  "4 slices bread",
+  "4 lettuce leaves",
+]
+method = [
+  "Mix the tuna, mayonnaise, celery and lemon juice and season.",
+  "Make sandwiches with the lettuce.",
+]
+
+[[recipe]]
+slug = "egg-salad-sandwich"
+title = "Egg and lettuce sandwiches"
+cuisine = "australian"
+servings = 2
+minutes = 20
+summary = "Creamy egg mayonnaise with chives and crisp lettuce on soft bread."
+ingredients = [
+  "4 eggs",
+  "2 tbsp mayonnaise",
+  "1 bunch chives, snipped",
+  "4 slices bread",
+  "4 lettuce leaves",
+]
+method = [
+  "Boil the eggs for 9 minutes, cool and peel.",
+  "Mash with the mayonnaise and chives and season.",
+  "Make sandwiches with the lettuce.",
+]
+
+[[recipe]]
+slug = "minestrone-quick-lunch-soup"
+title = "Quick tomato and lentil soup"
+cuisine = "australian"
+servings = 4
+minutes = 30
+summary = "A speedy soup of red lentils and tomato, ready in half an hour. Vegan."
+ingredients = [
+  "1 tbsp olive oil",
+  "1 onion, diced",
+  "2 cloves garlic, crushed",
+  "1 tsp ground cumin",
+  "200 g red lentils, rinsed",
+  "400 g can canned tomatoes",
+  "1 litre vegetable stock",
+]
+method = [
+  "Soften the onion and garlic in the oil. Add the cumin.",
+  "Add the lentils, tomatoes and stock and simmer 20 minutes. Blend if you like it smooth.",
+]
+
+[[recipe]]
+slug = "pumpkin-feta-salad"
+title = "Roast pumpkin, feta and rocket salad"
+cuisine = "australian"
+servings = 4
+minutes = 40
+summary = "Roast pumpkin with rocket, feta, toasted pepitas and a balsamic dressing."
+ingredients = [
+  "800 g pumpkin, cut into chunks",
+  "3 tbsp olive oil",
+  "100 g rocket",
+  "100 g feta, crumbled",
+  "40 g pepitas, toasted",
+  "1 tbsp balsamic vinegar",
+]
+method = [
+  "Toss the pumpkin with 1 tbsp oil and roast at 200°C for 30 minutes.",
+  "Whisk the remaining oil with the vinegar.",
+  "Toss the rocket with the pumpkin, feta, pepitas and dressing.",
+]
+
+[[recipe]]
+slug = "chicken-pasta-salad"
+title = "Chicken pesto pasta salad"
+cuisine = "italian"
+servings = 4
+minutes = 25
+summary = "Pasta, chicken, cherry tomatoes, spinach and pesto. Great for lunchboxes."
+ingredients = [
+  "300 g pasta",
+  "2 chicken breasts, cooked and shredded",
+  "250 g cherry tomatoes, halved",
+  "60 g baby spinach",
+  "100 g basil pesto",
+  "30 g parmesan, grated",
+]
+method = [
+  "Cook the pasta, drain, and cool under cold water.",
+  "Toss with everything else.",
+]
+
+[[recipe]]
+slug = "fried-egg-rice-bowl"
+title = "Soy egg rice bowl"
+cuisine = "japanese"
+servings = 1
+minutes = 10
+summary = "Hot rice with a crispy fried egg, soy, sesame and spring onion. Two-minute comfort."
+ingredients = [
+  "1 cup cooked rice",
+  "1 egg",
+  "1 tbsp vegetable oil",
+  "1 tbsp soy sauce",
+  "1/2 tsp sesame oil",
+  "1 spring onion, sliced",
+]
+method = [
+  "Fry the egg in hot oil until the edges are crisp.",
+  "Put it on the rice and drizzle with soy and sesame oil. Top with spring onion.",
+]
+
+[[recipe]]
+slug = "mushroom-omelette"
+title = "Mushroom and cheese omelette"
+cuisine = "french"
+servings = 1
+minutes = 10
+summary = "A soft folded omelette with garlicky mushrooms and melted cheese."
+ingredients = [
+  "3 eggs",
+  "15 g butter",
+  "80 g mushrooms, sliced",
+  "30 g cheddar cheese, grated",
+  "1 tsp chives, snipped",
+]
+method = [
+  "Cook the mushrooms in half the butter until golden. Set aside.",
+  "Beat the eggs. Melt the remaining butter, add the eggs, and stir until nearly set.",
+  "Add the mushrooms and cheese, fold, and top with chives.",
+]
+
+[[recipe]]
+slug = "acai-style-smoothie-bowl"
+title = "Berry smoothie bowl"
+cuisine = "australian"
+servings = 2
+minutes = 10
+summary = "A thick frozen berry and banana smoothie topped with granola and fresh fruit."
+ingredients = [
+  "300 g frozen mixed berries",
+  "2 bananas",
+  "125 ml milk",
+  "60 g granola",
+  "1 tbsp desiccated coconut",
+]
+method = [
+  "Blend the berries, 1 banana and milk until very thick.",
+  "Pour into bowls and top with the sliced remaining banana, granola and coconut.",
+]
+
+[[recipe]]
+slug = "baked-beans-toast"
+title = "Smoky homemade baked beans"
+cuisine = "british"
+servings = 4
+minutes = 30
+summary = "Cannellini beans in a smoky, slightly sweet tomato sauce on toast."
+ingredients = [
+  "1 tbsp olive oil",
+  "1 onion, diced",
+  "2 cloves garlic, crushed",
+  "1 tsp paprika",
+  "2 x 400 g cans cannellini beans, drained",
+  "400 g can canned tomatoes",
+  "1 tbsp brown sugar",
+  "1 tsp worcestershire sauce",
+  "8 slices bread",
+]
+method = [
+  "Soften the onion and garlic in the oil. Add the paprika.",
+  "Add the beans, tomatoes, sugar and worcestershire and simmer 15 minutes until thick.",
+  "Serve on toast.",
+]
+
+[[recipe]]
+slug = "greek-yoghurt-parfait"
+title = "Yoghurt, berry and granola cups"
+cuisine = "australian"
+servings = 2
+minutes = 5
+summary = "Layers of thick yoghurt, berries, granola and honey."
+ingredients = [
+  "300 g greek yoghurt",
+  "150 g frozen mixed berries, thawed",
+  "80 g granola",
+  "1 tbsp honey",
+]
+method = [
+  "Layer the yoghurt, berries and granola in glasses. Drizzle with honey.",
+]
+
+[[recipe]]
+slug = "vegetable-frittata"
+title = "Vegetable frittata"
+cuisine = "italian"
+servings = 6
+minutes = 40
+summary = "A thick oven-baked omelette of potato, spinach, capsicum and feta. Good cold too."
+ingredients = [
+  "1 tbsp olive oil",
+  "300 g potatoes, diced",
+  "1 onion, diced",
+  "1 capsicum, diced",
+  "100 g baby spinach",
+  "8 eggs",
+  "125 ml milk",
+  "100 g feta, crumbled",
+]
+method = [
+  "Cook the potato and onion in the oil in an ovenproof pan for 10 minutes. Add the capsicum and spinach.",
+  "Whisk the eggs and milk, pour over, and scatter with feta.",
+  "Cook on the stove for 5 minutes, then bake at 180°C for 15 minutes until set.",
+]
