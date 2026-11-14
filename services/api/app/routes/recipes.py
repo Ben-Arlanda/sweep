@@ -10,7 +10,7 @@ from app.deps import MemberDep, SessionDep
 from app.embeddings import Embedder, EmbeddingUnavailable
 from app.schemas import RecipeOut, RecipeSummaryOut
 from app.services import recipes
-from app.services.recipes import SEARCH_LIMIT, RecipeFilters
+from app.services.recipes import SEARCH_LIMIT
 
 router = APIRouter(prefix="/recipes", tags=["recipes"])
 
@@ -29,8 +29,10 @@ async def list_or_search(
 ) -> list[RecipeSummaryOut]:
     """With `q`: recipes closest in meaning, best first. Without: all, by title, a page
     at a time (`offset`). Search has no pages: past the top results, matches get weak."""
-    filters = RecipeFilters(max_minutes, cuisine, exclude_ingredient)
     household_id = ctx.household.id
+    filters = await recipes.filters_for(
+        session, household_id, max_minutes, cuisine, exclude_ingredient
+    )
     query = (q or "").strip()
     if not query:
         rows = await recipes.list_recipes(session, household_id, filters, limit, offset)

@@ -1,0 +1,299 @@
+"""The LangGraph agent (plan §7).
+
+    START → load_context → agent ⇄ tools
+                             │ (agent called propose_plan)
+                             ▼
+                          validate ─ problems, replans left ─→ agent
+                             │ ok, or out of replans (bad meals dropped)
+                             ▼
+                            END   (slice 6 adds: approve ← interrupt, then commit)
+
+The LLM chooses which tools to call and in what order: that's the "agent" part, and
+why "plan 5 dinners" and "we already have pasta" take different paths. Everything that
+must be right (which Household, Dietary Rules, recipe ids, limits) is plain code around
+it.
+"""
+
+import json
+from datetime import date
+from typing import Any
+
+from langgraph.graph import END, START, StateGraph
+from langgraph.graph.state import CompiledStateGraph
+from langgraph.runtime import Runtime
+from langgraph.types import Checkpointer
+from pydantic import ValidationError
+from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.agent import prompt, tools
+from app.agent.state import AgentState, Draft, empty_draft
+from app.agent.tools import AgentContext, Call, ToolError
+from app.agent.validate import build_proposal, validate_draft
+from app.models import AgentUsage
+from app.services import diet, recipes
+
+MAX_TOOL_CALLS = 15  # per turn: the agent should be done well before this
+MAX_REPLANS = 2  # times validate sends a plan back before showing the best attempt
+RECURSION_LIMIT = 2 * (MAX_TOOL_CALLS + MAX_REPLANS) + 10  # graph steps, a backstop
+
+Runtime_ = Runtime[AgentContext]
+
+
+def _write(runtime: Runtime_, event: dict[str, Any]) -> None:
+    """Send an event to whoever is streaming this run (the SSE route)."""
+    runtime.stream_writer(event)
+
+
+# --- load_context ------------------------------------------------------------------
+
+
+async def tokens_used_today(session: AsyncSession, household_id: Any, day: date) -> int:
+    row = await session.get(AgentUsage, (household_id, day))
+    return row.input_tokens + row.output_tokens if row else 0
+
+
+def _dangling_results(messages: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """If the last turn was cut off after Claude asked for tools (a timeout, a crash),
+    answer those calls now. The API rejects a history with unanswered tool calls."""
+    if not messages or messages[-1]["role"] != "assistant":
+        return []
+    return [
+        {
+            "type": "tool_result",
+            "tool_use_id": block["id"],
+            "content": "Not run: the previous turn was interrupted.",
+            "is_error": True,
+        }
+        for block in messages[-1]["content"]
+        if block.get("type") == "tool_use"
+    ]
+
+
+async def load_context(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
+    agent = runtime.context
+    reset: dict[str, Any] = {
+        "tool_calls": 0,
+        "replan_count": 0,
+        "proposal": None,
+        "pending_proposal": None,
+        "pending_results": [],
+        "stop": None,
+    }
+    async with agent.sessionmaker() as session:
+        used = await tokens_used_today(session, agent.household_id, agent.today)
+        if used >= agent.daily_token_budget:
+            _write(
+                runtime,
+                {
+                    "type": "text",
+                    "text": "You've reached today's planning limit. It resets tomorrow.",
+                },
+            )
+            return {**reset, "stop": "budget"}
+        draft = state.get("draft") or empty_draft()
+        context = await prompt.household_context(session, agent, draft)
+
+    messages = []
+    dangling = _dangling_results(state.get("messages", []))
+    if dangling:
+        messages.append({"role": "user", "content": dangling})
+    messages.append(prompt.user_message(context, state.get("user_text", "")))
+    return {**reset, "messages": messages, "draft": draft}
+
+
+# --- agent -------------------------------------------------------------------------
+
+
+async def agent(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
+    ctx = runtime.context
+    turn = await ctx.model.respond(
+        prompt.SYSTEM,
+        tools.specs(),
+        state["messages"],
+        on_text=lambda text: _write(runtime, {"type": "text", "text": text}),
+    )
+    async with ctx.sessionmaker() as session:
+        await session.execute(
+            insert(AgentUsage)
+            .values(
+                household_id=ctx.household_id,
+                day=ctx.today,
+                input_tokens=turn.input_tokens,
+                output_tokens=turn.output_tokens,
+            )
+            .on_conflict_do_update(
+                index_elements=["household_id", "day"],
+                set_={
+                    "input_tokens": AgentUsage.input_tokens + turn.input_tokens,
+                    "output_tokens": AgentUsage.output_tokens + turn.output_tokens,
+                },
+            )
+        )
+        await session.commit()
+
+    update: dict[str, Any] = {"messages": [{"role": "assistant", "content": turn.content}]}
+    if turn.stop_reason == "refusal":
+        _write(runtime, {"type": "text", "text": "Sorry, I can't help with that one."})
+        update["stop"] = "refusal"
+    elif turn.stop_reason == "max_tokens":
+        update["stop"] = "max_tokens"
+    return update
+
+
+def _tool_uses(state: AgentState) -> list[dict[str, Any]]:
+    last = state["messages"][-1]
+    if last["role"] != "assistant":
+        return []
+    return [b for b in last["content"] if b.get("type") == "tool_use"]
+
+
+def after_agent(state: AgentState) -> str:
+    if state.get("stop") or not _tool_uses(state):
+        return END
+    return "tools"
+
+
+# --- tools -------------------------------------------------------------------------
+
+
+def _result(tool_use_id: str, content: Any, *, error: bool = False) -> dict[str, Any]:
+    text = content if isinstance(content, str) else json.dumps(content, default=str)
+    block: dict[str, Any] = {"type": "tool_result", "tool_use_id": tool_use_id, "content": text}
+    if error:
+        block["is_error"] = True
+    return block
+
+
+async def run_tools(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
+    ctx = runtime.context
+    draft: Draft = state["draft"]
+    count = state.get("tool_calls", 0)
+    results: list[dict[str, Any]] = []
+    pending: dict[str, str] | None = None
+
+    for use in _tool_uses(state):
+        count += 1
+        name, use_id = use["name"], use["id"]
+        _write(runtime, {"type": "tool", "name": name})
+        if count > MAX_TOOL_CALLS:
+            results.append(
+                _result(
+                    use_id, "Tool limit reached for this turn. Propose or reply now.", error=True
+                )
+            )
+            continue
+        tool = tools.BY_NAME.get(name)
+        if tool is None:
+            results.append(_result(use_id, f"Unknown tool {name!r}", error=True))
+            continue
+        try:
+            args = tool.args.model_validate(use.get("input", {}))
+        except ValidationError as error:
+            # Tell the agent exactly what was wrong, so it can fix its call.
+            problems = "; ".join(
+                f"{'.'.join(map(str, e['loc'])) or 'input'}: {e['msg']}" for e in error.errors()
+            )
+            results.append(_result(use_id, f"Invalid arguments: {problems}", error=True))
+            continue
+        if tool.run is None:  # propose_plan: validate answers it
+            pending = {"tool_use_id": use_id, "summary": args.summary}  # type: ignore[attr-defined]
+            continue
+        async with ctx.sessionmaker() as session:
+            call = Call(session, await tools.member_context(session, ctx), ctx, draft)
+            try:
+                outcome = await tool.run(call, args)
+            except ToolError as error:
+                results.append(_result(use_id, str(error), error=True))
+                continue
+        if outcome.draft is not None:
+            draft = outcome.draft
+            _write(runtime, {"type": "draft", "draft": draft})
+        results.append(_result(use_id, outcome.result))
+
+    update: dict[str, Any] = {"tool_calls": count, "draft": draft}
+    if pending is not None:
+        update["pending_proposal"] = pending
+        update["pending_results"] = results
+    else:
+        update["messages"] = [{"role": "user", "content": results}]
+    # Well past the limit and still calling tools: stop the turn.
+    if count > MAX_TOOL_CALLS + 5:
+        update["stop"] = "tool_limit"
+    return update
+
+
+def after_tools(state: AgentState) -> str:
+    if state.get("pending_proposal"):
+        return "validate"
+    if state.get("stop"):
+        return END
+    return "agent"
+
+
+# --- validate ----------------------------------------------------------------------
+
+
+async def validate(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
+    ctx = runtime.context
+    pending = state.get("pending_proposal")
+    assert pending is not None
+    draft = state["draft"]
+    async with ctx.sessionmaker() as session:
+        ids = [m["recipe_id"] for m in draft["meals"].values()]
+        found = await recipes.get_many(session, ctx.household_id, ids)
+        rules = await diet.get_rules(session, ctx.household_id)
+    problems = validate_draft(draft, found, rules, ctx.today)
+    replans = state.get("replan_count", 0)
+    results = list(state.get("pending_results", []))
+    update: dict[str, Any] = {"pending_proposal": None, "pending_results": []}
+
+    if problems and replans < MAX_REPLANS:
+        # Send it back with a precise list, like a code review.
+        listed = "\n".join(f"- {p.message}" for p in problems)
+        results.append(
+            _result(
+                pending["tool_use_id"], f"Not shown yet. Fix these first:\n{listed}", error=True
+            )
+        )
+        _write(runtime, {"type": "replan", "problems": [p.message for p in problems]})
+        return {
+            **update,
+            "messages": [{"role": "user", "content": results}],
+            "replan_count": replans + 1,
+        }
+
+    if problems and all(p.kind == "empty" for p in problems):
+        results.append(
+            _result(pending["tool_use_id"], "Nothing to show: the plan is empty.", error=True)
+        )
+        return {**update, "messages": [{"role": "user", "content": results}], "stop": "empty"}
+
+    proposal = build_proposal(draft, found, rules, problems, pending["summary"])
+    results.append(_result(pending["tool_use_id"], "Shown to the Member. Wait for their reply."))
+    _write(runtime, {"type": "proposal", "proposal": proposal})
+    return {**update, "messages": [{"role": "user", "content": results}], "proposal": proposal}
+
+
+def after_validate(state: AgentState) -> str:
+    if state.get("proposal") is not None or state.get("stop"):
+        return END
+    return "agent"
+
+
+def after_load(state: AgentState) -> str:
+    return END if state.get("stop") else "agent"
+
+
+def build(checkpointer: Checkpointer) -> CompiledStateGraph[AgentState, AgentContext, Any, Any]:
+    graph = StateGraph(AgentState, context_schema=AgentContext)
+    graph.add_node("load_context", load_context)
+    graph.add_node("agent", agent)
+    graph.add_node("tools", run_tools)
+    graph.add_node("validate", validate)
+    graph.add_edge(START, "load_context")
+    graph.add_conditional_edges("load_context", after_load)
+    graph.add_conditional_edges("agent", after_agent)
+    graph.add_conditional_edges("tools", after_tools)
+    graph.add_conditional_edges("validate", after_validate)
+    return graph.compile(checkpointer=checkpointer)

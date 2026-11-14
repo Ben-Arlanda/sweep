@@ -22,9 +22,25 @@ target_metadata = Base.metadata
 url = config.get_main_option("sqlalchemy.url") or sqlalchemy_url(settings.database_url)
 
 
+# LangGraph's checkpointer creates and migrates its own tables (app/agent/checkpoints.py).
+# Leave them out of autogenerate, or `alembic check` would want to drop them.
+CHECKPOINT_TABLES = {
+    "checkpoints",
+    "checkpoint_blobs",
+    "checkpoint_writes",
+    "checkpoint_migrations",
+}
+
+
+def include_name(name: str | None, type_: str, parent_names: object) -> bool:
+    return not (type_ == "table" and name in CHECKPOINT_TABLES)
+
+
 def run_migrations_offline() -> None:
     """Print the SQL instead of running it (`alembic upgrade head --sql`)."""
-    context.configure(url=url, target_metadata=target_metadata, literal_binds=True)
+    context.configure(
+        url=url, target_metadata=target_metadata, literal_binds=True, include_name=include_name
+    )
     with context.begin_transaction():
         context.run_migrations()
 
@@ -32,7 +48,9 @@ def run_migrations_offline() -> None:
 def run_migrations_online() -> None:
     engine = create_engine(url, poolclass=pool.NullPool)
     with engine.connect() as connection:
-        context.configure(connection=connection, target_metadata=target_metadata)
+        context.configure(
+            connection=connection, target_metadata=target_metadata, include_name=include_name
+        )
         with context.begin_transaction():
             context.run_migrations()
     engine.dispose()

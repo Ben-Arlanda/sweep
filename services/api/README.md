@@ -16,8 +16,12 @@ uv run python -m app.check_recipes                # check every Seed Recipe (fre
 uv run python -m evals.recipe_review --llm        # measure the AI recipe reviewer (~14 Claude calls)
 ```
 
-AI keys (`ANTHROPIC_API_KEY`, `VOYAGE_API_KEY`) are optional: without them, search is off
-and parsing is rules-only. Tests use fakes and never call out.
+AI keys (`ANTHROPIC_API_KEY`, `VOYAGE_API_KEY`) are optional: without them, search and the
+agent are off and parsing is rules-only. Tests use fakes and never call out.
+
+The agent (`AGENT_MODEL`, default `claude-sonnet-5-5`) is limited to
+`AGENT_DAILY_TOKEN_BUDGET` tokens per Household per day (default 300,000). Its
+conversation state lives in LangGraph's checkpoint tables, created at app startup.
 
 ## Layout
 
@@ -28,7 +32,8 @@ app/
   auth.py        verifies login tokens (JWTs) → Identity
   deps.py        per-request wiring: session → Identity → MemberContext
   routes/        thin HTTP layer
-  services/      business rules and permissions (no HTTP; reused by the agent later)
+  services/      business rules and permissions (no HTTP; the agent's tools reuse them)
+  agent/         the LangGraph agent: graph, tools, validate, prompt, checkpoints
   models.py      SQLAlchemy tables
   schemas.py     Pydantic request/response shapes (→ OpenAPI → client types)
   errors.py      domain errors raised by services
@@ -37,7 +42,7 @@ app/
   units.py       amount parsing and unit conversion (deterministic, ADR 0003)
   seed.py        reference data loader; data/ingredients.py is the starter Ingredient list
   seed_recipes.py   loads data/recipes/*.toml (Seed Recipes) and embeds them
-  llm.py         the only module that calls an LLM (Claude), with structured outputs
+  llm.py         the only module that calls an LLM (Claude): the agent, parsing, reviews
   embeddings.py  the only module that calls Voyage; plus a fake for tests
 alembic/         database migrations
 evals/           labelled datasets + scripts that score AI behaviour

@@ -18,6 +18,7 @@ from app import errors
 from app.data.recipes import ATTRIBUTION, LICENCE, SeedRecipe
 from app.embeddings import Embedder
 from app.models import Ingredient, Recipe, RecipeEmbedding, RecipeIngredient, RecipeKind
+from app.services import diet
 from app.services.ingredient_lines import IngredientIndex, normalise_lines
 
 SEARCH_LIMIT = 20
@@ -156,6 +157,8 @@ class RecipeFilters:
     max_minutes: int | None = None
     cuisine: str | None = None
     exclude_ingredient_ids: Sequence[uuid.UUID] = ()
+    # Set when Dietary Rules apply: a line we couldn't match might break them (fail safe).
+    exclude_unmatched: bool = False
 
 
 def _visible_to(household_id: uuid.UUID) -> Select[Recipe]:
@@ -175,6 +178,12 @@ def _filtered(query: Select[Recipe], filters: RecipeFilters) -> Select[Recipe]:
             ~exists().where(
                 RecipeIngredient.recipe_id == Recipe.id,
                 RecipeIngredient.ingredient_id.in_(filters.exclude_ingredient_ids),
+            )
+        )
+    if filters.exclude_unmatched:
+        query = query.where(
+            ~exists().where(
+                RecipeIngredient.recipe_id == Recipe.id, RecipeIngredient.needs_review.is_(True)
             )
         )
     return query
@@ -233,3 +242,42 @@ async def get_recipe(
         # Same answer for "doesn't exist" and "another Household's": no existence leak.
         raise errors.NotFound("Recipe not found")
     return recipe
+
+
+async def filters_for(
+    session: AsyncSession,
+    household_id: uuid.UUID,
+    max_minutes: int | None = None,
+    cuisine: str | None = None,
+    exclude_ingredient_ids: Sequence[uuid.UUID] = (),
+) -> RecipeFilters:
+    """The caller's filters plus the Household's Dietary Rules, which always apply.
+
+    Every way of finding recipes (the Recipes tab, the agent's search tool) goes through
+    here, so no caller can forget the Rules.
+    """
+    rules = await diet.get_rules(session, household_id)
+    banned = await diet.banned_ingredient_ids(session, rules)
+    return RecipeFilters(
+        max_minutes=max_minutes,
+        cuisine=cuisine,
+        exclude_ingredient_ids=sorted(set(exclude_ingredient_ids) | banned),
+        exclude_unmatched=rules.active,
+    )
+
+
+async def get_many(
+    session: AsyncSession, household_id: uuid.UUID, recipe_ids: Sequence[str]
+) -> dict[str, Recipe]:
+    """The recipes this Household can see, by id (as strings). Unknown or another
+    Household's ids are simply missing from the result: that's what grounding checks."""
+    ids = set()
+    for raw in recipe_ids:
+        try:
+            ids.add(uuid.UUID(raw))
+        except ValueError:
+            continue  # an LLM-made-up id that isn't even a UUID
+    if not ids:
+        return {}
+    found = await session.execute(_visible_to(household_id).where(Recipe.id.in_(ids)))
+    return {str(r.id): r for r in found.scalars()}

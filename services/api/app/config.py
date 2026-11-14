@@ -32,6 +32,13 @@ class Settings(BaseSettings):
     # Reviews draft Seed Recipes (slice 4c). Start small; the eval decides if it's enough.
     review_model: str = "claude-haiku-5-5"
     embedding_model: str = "voyage-3.5"
+    # The planning agent (slice 5): multi-step tool use, so a stronger model than parsing.
+    agent_model: str = "claude-sonnet-5-5"
+    # How hard it thinks. "medium" is the suggested start for multi-step tool use on
+    # Sonnet 5.5; the agent evals (slice 8) decide whether to change it.
+    agent_effort: str = "medium"
+    # Tokens (in + out) one Household may use per day, so one user can't run up the bill.
+    agent_daily_token_budget: int = 300_000
 
 
 settings = Settings()

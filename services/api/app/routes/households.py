@@ -4,8 +4,9 @@ Routes stay thin: parse input, call a service, commit, shape the response.
 """
 
 import uuid
+from typing import cast
 
-from fastapi import APIRouter, Response, status
+from fastapi import APIRouter, Request, Response, status
 
 from app.deps import IdentityDep, MemberDep, SessionDep
 from app.schemas import (
@@ -18,6 +19,7 @@ from app.schemas import (
     MeOut,
 )
 from app.services import households
+from app.services.conversations import Agent
 from app.services.households import MemberContext
 
 router = APIRouter()
@@ -45,7 +47,10 @@ async def get_me(ctx: MemberDep) -> MeOut:
 
 
 @router.delete("/me", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_me(ctx: MemberDep, session: SessionDep) -> Response:
+async def delete_me(request: Request, ctx: MemberDep, session: SessionDep) -> Response:
+    agent = cast(Agent | None, request.app.state.agent)
+    if agent is not None:
+        await agent.forget_member(session, ctx.member.id)  # saved chats go too
     await households.delete_account(session, ctx)
     await session.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)

@@ -6,7 +6,7 @@
   app trusts that key. The real verification code runs; only the key source differs.
 """
 
-from collections.abc import AsyncIterator, Iterator
+from collections.abc import AsyncIterator, Awaitable, Callable, Iterator, Sequence
 from dataclasses import dataclass, field
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
@@ -18,13 +18,18 @@ import pytest
 from alembic import command
 from alembic.config import Config
 from cryptography.hazmat.primitives.asymmetric import rsa
+from langgraph.checkpoint.postgres import PostgresSaver
 from sqlalchemy import Engine, create_engine, text
 
 from app.auth import IssuerTrust, TokenVerifier
 from app.config import Settings
-from app.db import Base, sqlalchemy_url
+from app.data.recipes import SeedRecipe
+from app.db import Base, make_engine, make_sessionmaker, sqlalchemy_url
 from app.embeddings import HashingEmbedder
 from app.main import create_app
+from app.services import recipes
+from app.services.ingredient_lines import index_from_db
+from tests.fake_model import ScriptedModel
 
 API_DIR = Path(__file__).resolve().parent.parent
 TEST_ISSUER = "https://issuer.test"
@@ -80,6 +85,10 @@ def database_url() -> str:
     config.set_main_option("script_location", str(API_DIR / "alembic"))
     config.set_main_option("sqlalchemy.url", sqlalchemy_url(url))
     command.upgrade(config, "head")
+    # The app sets up LangGraph's checkpoint tables at startup, but test clients don't
+    # run startup, so do it here, once.
+    with PostgresSaver.from_conn_string(url) as saver:
+        saver.setup()
     return url
 
 
@@ -109,8 +118,28 @@ async def client(
         Settings(database_url=database_url),
         token_verifier=fake_issuer.verifier(),
         embedder=HashingEmbedder(),
+        # Never the real Claude (a local .env may hold a key). Any call fails the test.
+        agent_model=ScriptedModel(),
     )
     transport = httpx.ASGITransport(app=app)
     async with httpx.AsyncClient(transport=transport, base_url="http://test") as http:
         yield http
+    await app.state.agent.checkpoints.close()
     await app.state.engine.dispose()
+
+
+Loader = Callable[[Sequence[SeedRecipe]], Awaitable[recipes.SeedReport]]
+
+
+@pytest.fixture
+def load(database_url: str, db: Engine) -> Loader:
+    async def run(seeds: Sequence[SeedRecipe]) -> recipes.SeedReport:
+        engine = make_engine(database_url)
+        async with make_sessionmaker(engine)() as session:
+            report = await recipes.upsert_seed_recipes(session, seeds, await index_from_db(session))
+            await recipes.embed_missing(session, HashingEmbedder())
+            await session.commit()
+        await engine.dispose()
+        return report
+
+    return run

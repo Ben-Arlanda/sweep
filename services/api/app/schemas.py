@@ -15,6 +15,7 @@ from pydantic import (
     model_validator,
 )
 
+from app.data.diet import Diet
 from app.models import AddedBy, ChangeSource, RecipeKind, Role
 
 HouseholdName = Annotated[
@@ -235,3 +236,59 @@ class RecipeOut(RecipeSummaryOut):
     source_url: str | None
     licence: str
     attribution: str
+
+
+# --- Dietary Rules and Preferences ----------------------------------------------------
+
+Cuisine = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=40)]
+
+
+class DietaryRulesIn(BaseModel):
+    """The whole set (PUT replaces it). Unknown diets are rejected, not ignored."""
+
+    diets: list[Diet] = Field(default=[], max_length=len(Diet))
+    excluded_ingredient_ids: list[uuid.UUID] = Field(default=[], max_length=100)
+
+
+class DietaryRulesOut(BaseModel):
+    diets: list[Diet]
+    excluded_ingredients: list[IngredientOut]
+
+
+class PreferencesIn(BaseModel):
+    household_size: int | None = Field(default=None, ge=1, le=20)
+    cuisines: list[Cuisine] = Field(default=[], max_length=20)
+    weekly_budget: Decimal | None = Field(default=None, gt=0, le=10_000, decimal_places=2)
+
+
+class PreferencesOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    household_size: int | None
+    cuisines: list[str]
+    weekly_budget: Decimal | None
+
+
+# --- Conversations with the agent --------------------------------------------------
+
+
+class ConversationOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: uuid.UUID
+    created_at: datetime
+
+
+class ChatLine(BaseModel):
+    role: Literal["user", "assistant"]
+    text: str
+
+
+class ConversationDetailOut(ConversationOut):
+    messages: list[ChatLine]
+    draft: dict[str, object] | None
+    proposal: dict[str, object] | None
+
+
+class SendMessageIn(BaseModel):
+    text: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=2000)]

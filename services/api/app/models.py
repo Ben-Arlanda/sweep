@@ -1,7 +1,7 @@
 """Database tables. Names follow CONTEXT.md (Household, Member, Owner)."""
 
 import uuid
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime
 from decimal import Decimal
 from enum import StrEnum
 
@@ -9,6 +9,7 @@ from pgvector.sqlalchemy import Vector
 from sqlalchemy import (
     Boolean,
     CheckConstraint,
+    Date,
     DateTime,
     Enum,
     ForeignKey,
@@ -22,7 +23,7 @@ from sqlalchemy import (
     UniqueConstraint,
     func,
 )
-from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.dialects.postgresql import ARRAY, JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db import Base
@@ -276,6 +277,56 @@ class CabinetItem(Base):
     )
 
 
+class HouseholdDietaryRules(Base):
+    """The Household's diets (vegetarian, gluten free...). Hard: enforced by code.
+
+    No row means no diets. Excluded Ingredients ("no mushrooms") live in their own table
+    so each one is a real foreign key.
+    """
+
+    __tablename__ = "household_dietary_rules"
+    __table_args__ = (
+        CheckConstraint(
+            "diets <@ ARRAY['vegetarian', 'vegan', 'gluten_free', 'dairy_free']::varchar[]",
+            name="diets_known",
+        ),
+    )
+
+    household_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("households.id", ondelete="CASCADE"), primary_key=True
+    )
+    diets: Mapped[list[str]] = mapped_column(ARRAY(String(20)), default=list)
+
+
+class HouseholdExcludedIngredient(Base):
+    """An Ingredient the Household never eats: an allergy, or just "no mushrooms"."""
+
+    __tablename__ = "household_excluded_ingredients"
+    __table_args__ = (PrimaryKeyConstraint("household_id", "ingredient_id"),)
+
+    household_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("households.id", ondelete="CASCADE"))
+    ingredient_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("ingredients.id", ondelete="CASCADE")
+    )
+
+
+class HouseholdPreferences(Base):
+    """Soft tastes the agent leans towards. Can be traded off, unlike Dietary Rules."""
+
+    __tablename__ = "household_preferences"
+    __table_args__ = (
+        CheckConstraint("household_size BETWEEN 1 AND 20", name="household_size_sensible"),
+        CheckConstraint("weekly_budget > 0", name="weekly_budget_positive"),
+    )
+
+    household_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("households.id", ondelete="CASCADE"), primary_key=True
+    )
+    household_size: Mapped[int | None] = mapped_column(SmallInteger)
+    cuisines: Mapped[list[str]] = mapped_column(ARRAY(String(40)), default=list)
+    weekly_budget: Mapped[Decimal | None] = mapped_column(Numeric(8, 2))
+
+
 class RecipeKind(StrEnum):
     SEED = "seed"  # written for Sweep, shared by every Household
     IMPORTED = "imported"  # saved from a URL by one Household (slice 4b)
@@ -379,3 +430,36 @@ class RecipeEmbedding(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utcnow, server_default=func.now()
     )
+
+
+class Conversation(Base):
+    """A chat between one Member and the agent. Its id is also the LangGraph thread id:
+    the messages and Draft Plan live in the checkpointer's tables, keyed by it.
+
+    Only the Member who started it can read or continue it (checked on every request).
+    """
+
+    __tablename__ = "conversations"
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    household_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("households.id", ondelete="CASCADE"), index=True
+    )
+    member_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("members.id", ondelete="CASCADE"), index=True
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utcnow, server_default=func.now()
+    )
+
+
+class AgentUsage(Base):
+    """Tokens the agent used per Household per day, for the daily budget (plan §7)."""
+
+    __tablename__ = "agent_usage"
+    __table_args__ = (PrimaryKeyConstraint("household_id", "day"),)
+
+    household_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("households.id", ondelete="CASCADE"))
+    day: Mapped[date] = mapped_column(Date)
+    input_tokens: Mapped[int] = mapped_column(Integer, default=0)
+    output_tokens: Mapped[int] = mapped_column(Integer, default=0)
