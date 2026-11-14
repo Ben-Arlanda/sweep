@@ -193,7 +193,7 @@ slug = "gazpacho"
 title = "Gazpacho"
 cuisine = "spanish"
 servings = 4
-minutes = 15
+minutes = 75
 summary = "A chilled blended soup of ripe tomatoes, cucumber, capsicum and garlic."
 ingredients = [
   "1 kg tomatoes, chopped",

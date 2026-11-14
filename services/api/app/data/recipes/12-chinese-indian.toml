@@ -1,0 +1,665 @@
+# Chinese and Indian. Written for Sweep (licence: Sweep original).
+
+[[recipe]]
+slug = "chinese-lemon-chicken"
+title = "Lemon chicken"
+cuisine = "chinese"
+servings = 4
+minutes = 35
+summary = "Crispy chicken pieces in a bright, sweet lemon sauce."
+ingredients = [
+  "600 g chicken breast, cut into strips",
+  "1 egg, beaten",
+  "80 g cornflour",
+  "125 ml vegetable oil",
+  "2 lemons, juiced and zested",
+  "3 tbsp white sugar",
+  "125 ml chicken stock",
+  "1 tsp soy sauce",
+  "1 1/2 cups rice",
+]
+method = [
+  "Cook the rice.",
+  "Dip the chicken in egg, then toss in all but 1 tbsp of the cornflour.",
+  "Fry in the oil in batches for 4–5 minutes until golden and cooked through. Drain.",
+  "Simmer the lemon juice and zest, sugar, stock and soy with the remaining cornflour, stirring, for 2 minutes until thick. Pour over the chicken and serve with the rice.",
+]
+
+[[recipe]]
+slug = "mongolian-beef"
+title = "Mongolian beef"
+cuisine = "chinese"
+servings = 4
+minutes = 25
+summary = "Tender beef strips in a glossy, sweet soy and ginger sauce with spring onions."
+ingredients = [
+  "600 g beef steak, thinly sliced",
+  "2 tbsp cornflour",
+  "3 tbsp vegetable oil",
+  "3 cloves garlic, crushed",
+  "1 tbsp ginger, grated",
+  "4 tbsp soy sauce",
+  "3 tbsp brown sugar",
+  "60 ml water",
+  "1 bunch spring onions, cut into lengths",
+  "1 1/2 cups rice",
+]
+method = [
+  "Cook the rice. Toss the beef in the cornflour.",
+  "Fry the beef in the oil in batches over high heat for 2 minutes until browned. Remove.",
+  "Fry the garlic and ginger for 30 seconds, add the soy, sugar and water and bubble for 2 minutes until syrupy.",
+  "Return the beef with the spring onions and toss for 1 minute. Serve with the rice.",
+]
+
+[[recipe]]
+slug = "char-siu-pork"
+title = "Char siu-style roast pork"
+cuisine = "chinese"
+servings = 6
+minutes = 70
+summary = "Pork shoulder strips glazed with hoisin, honey and soy and roasted until sticky."
+ingredients = [
+  "1 kg pork shoulder, cut into thick strips",
+  "4 tbsp hoisin sauce",
+  "3 tbsp honey",
+  "2 tbsp soy sauce",
+  "2 cloves garlic, crushed",
+  "1 star anise, ground",
+  "2 bok choy, halved",
+  "2 cups rice",
+]
+method = [
+  "Mix the hoisin, honey, soy, garlic and star anise and coat the pork. Marinate for 15 minutes.",
+  "Heat the oven to 200°C. Roast the pork on a rack over a tray of water for 40 minutes, basting with the marinade twice, until charred at the edges and cooked through.",
+  "Cook the rice and steam the bok choy for 3 minutes. Slice the pork and serve.",
+]
+
+[[recipe]]
+slug = "chicken-chow-mein"
+title = "Chicken chow mein"
+cuisine = "chinese"
+servings = 4
+minutes = 25
+summary = "Egg noodles stir-fried with chicken, cabbage, carrot and bean sprouts."
+ingredients = [
+  "400 g egg noodles",
+  "400 g chicken thigh, thinly sliced",
+  "2 tbsp vegetable oil",
+  "2 cloves garlic, crushed",
+  "1/4 cabbage, shredded",
+  "1 carrot, cut into matchsticks",
+  "100 g bean sprouts",
+  "3 tbsp soy sauce",
+  "2 tbsp oyster sauce",
+  "1 tsp sesame oil",
+  "3 spring onions, sliced",
+]
+method = [
+  "Cook the noodles, drain and toss with the sesame oil.",
+  "Stir-fry the chicken in the vegetable oil for 5 minutes until cooked through. Add the garlic, cabbage and carrot for 3 minutes.",
+  "Add the noodles, soy and oyster sauce and toss over high heat for 2 minutes. Add the bean sprouts and spring onions.",
+]
+
+[[recipe]]
+slug = "hot-and-sour-soup"
+title = "Hot and sour soup"
+cuisine = "chinese"
+servings = 4
+minutes = 25
+summary = "Peppery, tangy soup with tofu, mushrooms and silky ribbons of egg."
+ingredients = [
+  "1.25 litres chicken stock",
+  "200 g mushrooms, sliced",
+  "300 g tofu, cut into strips",
+  "3 tbsp soy sauce",
+  "4 tbsp white vinegar",
+  "1 tsp black pepper",
+  "1 tsp chilli flakes",
+  "3 tbsp cornflour",
+  "2 eggs, beaten",
+  "1 tsp sesame oil",
+  "3 spring onions, sliced",
+]
+method = [
+  "Bring the stock to a simmer with the mushrooms for 5 minutes.",
+  "Add the tofu, soy, vinegar, pepper and chilli. Mix the cornflour with 4 tbsp water, stir it in and simmer for 2 minutes until thickened.",
+  "Slowly drizzle in the eggs while stirring so they form ribbons. Finish with sesame oil and spring onions.",
+]
+
+[[recipe]]
+slug = "steamed-fish-ginger-spring-onion"
+title = "Steamed fish with ginger and spring onion"
+cuisine = "chinese"
+servings = 4
+minutes = 20
+summary = "Delicate steamed fish fillets dressed with sizzling ginger, spring onion and soy."
+ingredients = [
+  "4 white fish fillets",
+  "2 tbsp ginger, cut into fine matchsticks",
+  "4 spring onions, finely shredded",
+  "3 tbsp soy sauce",
+  "1 tsp white sugar",
+  "3 tbsp vegetable oil",
+  "1 bunch coriander, leaves picked",
+  "1 1/2 cups rice",
+]
+method = [
+  "Cook the rice.",
+  "Put the fish on a plate in a steamer, scatter with half the ginger and steam for 8 minutes until it flakes easily.",
+  "Top with the rest of the ginger and the spring onions. Mix the soy and sugar and pour over.",
+  "Heat the oil until smoking and carefully pour it over the fish to sizzle. Scatter with coriander and serve with the rice.",
+]
+
+[[recipe]]
+slug = "dan-dan-noodles"
+title = "Dan dan noodles"
+cuisine = "chinese"
+servings = 4
+minutes = 25
+summary = "Noodles in a spicy, nutty sesame sauce topped with crispy pork and bok choy."
+ingredients = [
+  "400 g egg noodles",
+  "300 g pork mince",
+  "1 tbsp vegetable oil",
+  "1 tbsp chilli bean paste",
+  "2 tbsp hoisin sauce",
+  "3 tbsp tahini",
+  "3 tbsp soy sauce",
+  "1 tbsp white vinegar",
+  "1 tsp white sugar",
+  "125 ml chicken stock",
+  "2 bok choy, halved",
+  "2 tbsp peanuts, chopped",
+  "3 spring onions, sliced",
+]
+method = [
+  "Fry the pork in the oil for 6 minutes until crisp and cooked through. Stir in the chilli bean paste and hoisin for 1 minute.",
+  "Whisk the tahini, soy, vinegar, sugar and stock for the sauce.",
+  "Cook the noodles, adding the bok choy for the last 2 minutes. Drain.",
+  "Toss the noodles in the sauce, top with the pork, bok choy, peanuts and spring onions.",
+]
+
+[[recipe]]
+slug = "tomato-egg-stir-fry"
+title = "Tomato and egg stir-fry"
+cuisine = "chinese"
+servings = 4
+minutes = 15
+summary = "Fluffy scrambled egg folded through sweet-sour tomatoes. A homestyle favourite. Vegetarian."
+ingredients = [
+  "6 eggs",
+  "1/2 tsp salt",
+  "2 tbsp vegetable oil",
+  "4 tomatoes, cut into wedges",
+  "1 tbsp white sugar",
+  "1 tbsp tomato sauce",
+  "3 spring onions, sliced",
+  "1 1/2 cups rice",
+]
+method = [
+  "Cook the rice. Beat the eggs with the salt.",
+  "Scramble the eggs in half the oil until just set, then remove.",
+  "Fry the tomatoes in the rest of the oil for 4 minutes until soft and juicy. Add the sugar and tomato sauce.",
+  "Fold the egg back in with the spring onions and serve over the rice.",
+]
+
+[[recipe]]
+slug = "fish-fragrant-eggplant"
+title = "Sichuan-style eggplant with pork"
+cuisine = "chinese"
+servings = 4
+minutes = 30
+summary = "Silky eggplant and pork mince in a spicy, garlicky chilli bean sauce."
+ingredients = [
+  "2 eggplants, cut into batons",
+  "3 tbsp vegetable oil",
+  "250 g pork mince",
+  "3 cloves garlic, crushed",
+  "1 tbsp ginger, grated",
+  "2 tbsp chilli bean paste",
+  "2 tbsp soy sauce",
+  "1 tbsp white vinegar",
+  "1 tbsp white sugar",
+  "125 ml water",
+  "3 spring onions, sliced",
+  "1 1/2 cups rice",
+]
+method = [
+  "Cook the rice.",
+  "Fry the eggplant in 2 tbsp of the oil for 8 minutes until soft and golden. Remove.",
+  "Fry the pork in the rest of the oil for 5 minutes until cooked through. Add the garlic, ginger and chilli bean paste for 1 minute.",
+  "Add the soy, vinegar, sugar, water and eggplant and simmer for 3 minutes until saucy. Top with spring onions and serve with the rice.",
+]
+
+[[recipe]]
+slug = "black-pepper-beef"
+title = "Black pepper beef"
+cuisine = "chinese"
+servings = 4
+minutes = 25
+summary = "Beef, onion and capsicum stir-fried in a bold black pepper and oyster sauce."
+ingredients = [
+  "600 g beef steak, thinly sliced",
+  "1 tbsp cornflour",
+  "2 tbsp vegetable oil",
+  "1 onion, cut into wedges",
+  "1 capsicum, sliced",
+  "2 cloves garlic, crushed",
+  "3 tbsp oyster sauce",
+  "1 tbsp soy sauce",
+  "2 tsp black pepper, coarsely ground",
+  "60 ml water",
+  "1 1/2 cups rice",
+]
+method = [
+  "Cook the rice. Toss the beef in the cornflour.",
+  "Fry the beef in the oil over high heat in batches for 2 minutes until browned. Remove.",
+  "Stir-fry the onion, capsicum and garlic for 3 minutes. Add the oyster sauce, soy, pepper and water and bubble for 1 minute.",
+  "Return the beef and toss to coat. Serve with the rice.",
+]
+
+[[recipe]]
+slug = "chicken-congee"
+title = "Chicken and ginger congee"
+cuisine = "chinese"
+servings = 4
+minutes = 90
+summary = "Comforting rice porridge cooked slowly with chicken and ginger."
+ingredients = [
+  "1 cup rice",
+  "2 litres chicken stock",
+  "2 tbsp ginger, cut into fine matchsticks",
+  "500 g chicken thigh",
+  "2 tbsp soy sauce",
+  "1 tsp sesame oil",
+  "3 spring onions, sliced",
+  "1 bunch coriander, chopped",
+]
+method = [
+  "Simmer the rice, stock and half the ginger with the chicken, partly covered, for 30 minutes until the chicken is cooked through. Lift out the chicken and shred.",
+  "Keep simmering the rice for 45 minutes more, stirring often, until thick and creamy.",
+  "Stir the chicken back in. Serve topped with the soy, sesame oil, remaining ginger, spring onions and coriander.",
+]
+
+[[recipe]]
+slug = "garlic-green-beans"
+title = "Garlic stir-fried green beans"
+cuisine = "chinese"
+servings = 4
+minutes = 15
+summary = "Blistered green beans tossed with garlic and soy. A quick side. Vegetarian."
+ingredients = [
+  "400 g green beans, trimmed",
+  "1 tbsp vegetable oil",
+  "4 cloves garlic, crushed",
+  "1 tbsp soy sauce",
+  "1 tsp white sugar",
+  "1/2 tsp chilli flakes",
+]
+method = [
+  "Stir-fry the beans in the oil over high heat for 6 minutes until blistered and tender-crisp.",
+  "Add the garlic for 30 seconds, then the soy, sugar and chilli and toss.",
+]
+
+[[recipe]]
+slug = "chicken-tikka-masala"
+title = "Chicken tikka masala"
+cuisine = "indian"
+servings = 4
+minutes = 50
+summary = "Charred tandoori chicken in a creamy spiced tomato sauce."
+ingredients = [
+  "800 g chicken thigh, cut into chunks",
+  "3 tbsp tandoori paste",
+  "200 g greek yoghurt",
+  "1 tbsp vegetable oil",
+  "1 onion, diced",
+  "3 cloves garlic, crushed",
+  "1 tbsp ginger, grated",
+  "2 tsp garam masala",
+  "1 tsp ground cumin",
+  "400 g can canned tomatoes",
+  "125 ml thickened cream",
+  "1 bunch coriander, chopped",
+  "1 1/2 cups rice",
+]
+method = [
+  "Mix the chicken with the tandoori paste and half the yoghurt and marinate for 15 minutes.",
+  "Cook the rice. Grill the chicken on a hot tray for 10 minutes until charred and cooked through.",
+  "Soften the onion in the oil for 5 minutes, add the garlic, ginger and spices for 1 minute, then the tomatoes and simmer for 10 minutes.",
+  "Stir in the cream, the rest of the yoghurt and the chicken and warm through. Scatter with coriander and serve with the rice.",
+]
+
+[[recipe]]
+slug = "chana-masala"
+title = "Chana masala"
+cuisine = "indian"
+servings = 4
+minutes = 30
+summary = "Chickpeas simmered in a tangy, spiced onion and tomato gravy. Vegan."
+ingredients = [
+  "2 tbsp vegetable oil",
+  "1 tsp cumin seeds",
+  "1 onion, finely diced",
+  "3 cloves garlic, crushed",
+  "1 tbsp ginger, grated",
+  "1 red chilli, chopped",
+  "2 tsp garam masala",
+  "1 tsp ground turmeric",
+  "400 g can canned tomatoes",
+  "2 x 400 g cans chickpeas, drained",
+  "250 ml water",
+  "1 lemon, juiced",
+  "1 bunch coriander, chopped",
+  "1 1/2 cups rice",
+]
+method = [
+  "Cook the rice.",
+  "Fry the cumin seeds in the oil for 30 seconds, then the onion for 8 minutes until golden. Add the garlic, ginger, chilli and spices for 1 minute.",
+  "Add the tomatoes, chickpeas and water and simmer for 15 minutes, mashing a few chickpeas to thicken.",
+  "Stir in the lemon juice and coriander and serve with the rice.",
+]
+
+[[recipe]]
+slug = "dal-makhani"
+title = "Creamy black lentil dal"
+cuisine = "indian"
+servings = 6
+minutes = 70
+summary = "Lentils and kidney beans slow-simmered with butter, tomato and cream. Vegetarian."
+ingredients = [
+  "250 g brown lentils, rinsed",
+  "400 g can kidney beans, drained",
+  "1.25 litres water",
+  "60 g butter",
+  "1 onion, finely diced",
+  "3 cloves garlic, crushed",
+  "1 tbsp ginger, grated",
+  "2 tsp garam masala",
+  "1 tsp chilli powder",
+  "3 tbsp tomato paste",
+  "125 ml thickened cream",
+  "1 tsp salt",
+  "2 cups rice",
+]
+method = [
+  "Simmer the lentils in the water for 35 minutes until very soft.",
+  "Meanwhile, cook the onion in the butter for 8 minutes until golden. Add the garlic, ginger and spices for 1 minute, then the tomato paste.",
+  "Add the onion mix and kidney beans to the lentils and simmer for 20 minutes, stirring often, until thick. Stir in the cream and salt.",
+  "Serve with rice.",
+]
+
+[[recipe]]
+slug = "keema-matar"
+title = "Keema matar (spiced mince and peas)"
+cuisine = "indian"
+servings = 4
+minutes = 35
+summary = "Lamb mince cooked with onion, tomato, warm spices and sweet peas."
+ingredients = [
+  "500 g lamb mince",
+  "1 tbsp vegetable oil",
+  "1 onion, finely diced",
+  "3 cloves garlic, crushed",
+  "1 tbsp ginger, grated",
+  "2 tsp garam masala",
+  "1 tsp ground cumin",
+  "1 tsp ground turmeric",
+  "1/2 tsp chilli powder",
+  "400 g can canned tomatoes",
+  "200 g frozen peas",
+  "1 bunch coriander, chopped",
+  "1 1/2 cups rice",
+]
+method = [
+  "Cook the rice.",
+  "Soften the onion in the oil for 5 minutes. Add the mince and cook for 8 minutes, breaking it up, until browned and cooked through.",
+  "Add the garlic, ginger and spices for 1 minute, then the tomatoes and simmer for 10 minutes.",
+  "Add the peas for 3 minutes. Scatter with coriander and serve with the rice.",
+]
+
+[[recipe]]
+slug = "chicken-korma"
+title = "Chicken korma"
+cuisine = "indian"
+servings = 4
+minutes = 45
+summary = "A mild, creamy curry of chicken in a cashew, yoghurt and gently spiced sauce."
+ingredients = [
+  "800 g chicken thigh, cut into chunks",
+  "80 g cashews",
+  "250 ml water",
+  "2 tbsp butter",
+  "1 onion, finely diced",
+  "3 cloves garlic, crushed",
+  "1 tbsp ginger, grated",
+  "2 tsp garam masala",
+  "1 tsp ground turmeric",
+  "1 tsp ground cinnamon",
+  "200 g greek yoghurt",
+  "125 ml thickened cream",
+  "1 tsp salt",
+  "1 1/2 cups rice",
+]
+method = [
+  "Soak the cashews in the water for 10 minutes, then blend to a smooth paste.",
+  "Cook the rice. Soften the onion in the butter for 6 minutes, then add the garlic, ginger and spices for 1 minute.",
+  "Add the chicken and stir for 5 minutes. Add the cashew paste and simmer gently for 15 minutes until the chicken is cooked through.",
+  "Stir in the yoghurt, cream and salt and warm gently without boiling. Serve with the rice.",
+]
+
+[[recipe]]
+slug = "kerala-fish-curry"
+title = "Coconut fish curry"
+cuisine = "indian"
+servings = 4
+minutes = 30
+summary = "Firm white fish simmered in a tangy coconut, tamarind and turmeric sauce."
+ingredients = [
+  "600 g white fish fillets, cut into chunks",
+  "1 tbsp vegetable oil",
+  "1 onion, sliced",
+  "3 cloves garlic, crushed",
+  "1 tbsp ginger, grated",
+  "2 tsp curry powder",
+  "1 tsp ground turmeric",
+  "400 ml coconut milk",
+  "1 tbsp tamarind paste",
+  "2 tomatoes, chopped",
+  "1 bunch coriander, chopped",
+  "1 1/2 cups rice",
+]
+method = [
+  "Cook the rice.",
+  "Soften the onion in the oil for 5 minutes. Add the garlic, ginger and spices for 1 minute.",
+  "Add the coconut milk, tamarind and tomatoes and simmer for 8 minutes.",
+  "Add the fish and simmer gently for 6 minutes until it flakes easily. Scatter with coriander and serve with the rice.",
+]
+
+[[recipe]]
+slug = "saag-aloo"
+title = "Saag aloo (spinach and potato)"
+cuisine = "indian"
+servings = 4
+minutes = 35
+summary = "Potatoes fried with cumin and turmeric and folded through spiced spinach. Vegan."
+ingredients = [
+  "700 g potatoes, cut into chunks",
+  "2 tbsp vegetable oil",
+  "1 tsp cumin seeds",
+  "1 onion, diced",
+  "3 cloves garlic, crushed",
+  "1 tbsp ginger, grated",
+  "1 tsp ground turmeric",
+  "1 tsp garam masala",
+  "300 g baby spinach",
+  "1/2 tsp salt",
+]
+method = [
+  "Boil the potatoes for 10 minutes until just tender. Drain.",
+  "Fry the cumin seeds in the oil for 30 seconds, then the onion for 6 minutes. Add the garlic, ginger and spices for 1 minute.",
+  "Add the potatoes and fry for 5 minutes until golden at the edges. Stir in the spinach until wilted and season with the salt.",
+]
+
+[[recipe]]
+slug = "egg-curry"
+title = "Egg curry"
+cuisine = "indian"
+servings = 4
+minutes = 30
+summary = "Boiled eggs browned with turmeric, then simmered in a spiced onion and tomato gravy. Vegetarian."
+ingredients = [
+  "8 eggs",
+  "2 tbsp vegetable oil",
+  "1 tsp ground turmeric",
+  "1 onion, finely diced",
+  "3 cloves garlic, crushed",
+  "1 tbsp ginger, grated",
+  "2 tsp garam masala",
+  "1/2 tsp chilli powder",
+  "400 g can canned tomatoes",
+  "125 ml coconut milk",
+  "1 bunch coriander, chopped",
+  "1 1/2 cups rice",
+]
+method = [
+  "Boil the eggs for 9 minutes, cool and peel. Cook the rice.",
+  "Fry the eggs in the oil with the turmeric for 2 minutes until golden. Remove.",
+  "Cook the onion in the same oil for 6 minutes. Add the garlic, ginger and spices for 1 minute, then the tomatoes and simmer for 8 minutes.",
+  "Stir in the coconut milk and eggs and warm through. Scatter with coriander and serve with the rice.",
+]
+
+[[recipe]]
+slug = "jeera-rice"
+title = "Jeera rice (cumin rice)"
+cuisine = "indian"
+servings = 4
+minutes = 25
+summary = "Fluffy rice fragrant with toasted cumin seeds and bay. A simple side. Vegan."
+ingredients = [
+  "1 1/2 cups rice",
+  "1 tbsp vegetable oil",
+  "2 tsp cumin seeds",
+  "2 bay leaves",
+  "750 ml water",
+  "1/2 tsp salt",
+]
+method = [
+  "Rinse the rice until the water runs clear.",
+  "Fry the cumin seeds and bay leaves in the oil for 30 seconds. Add the rice and stir for 1 minute.",
+  "Add the water and salt, bring to the boil, then cover and cook on low for 12 minutes. Rest for 5 minutes and fluff up.",
+]
+
+[[recipe]]
+slug = "cucumber-raita"
+title = "Cucumber raita"
+cuisine = "indian"
+servings = 4
+minutes = 10
+summary = "Cooling yoghurt with grated cucumber, mint and toasted cumin. Vegetarian."
+ingredients = [
+  "300 g greek yoghurt",
+  "1 cucumber, grated and squeezed",
+  "1 bunch mint, chopped",
+  "1/2 tsp ground cumin",
+  "1 pinch salt",
+]
+method = [
+  "Toast the cumin in a dry pan for 30 seconds.",
+  "Mix everything together and chill until needed.",
+]
+
+[[recipe]]
+slug = "mango-lassi"
+title = "Mango lassi"
+cuisine = "indian"
+servings = 4
+minutes = 5
+summary = "A thick, cold mango and yoghurt drink. Vegetarian."
+ingredients = [
+  "2 mangoes, flesh chopped",
+  "400 g greek yoghurt",
+  "250 ml milk",
+  "2 tbsp honey",
+  "1 cup ice",
+]
+method = [
+  "Blend the mango, yoghurt, milk, honey and ice until smooth.",
+]
+
+[[recipe]]
+slug = "paneer-tikka"
+title = "Paneer tikka skewers"
+cuisine = "indian"
+servings = 4
+minutes = 35
+summary = "Paneer, capsicum and onion in a tandoori yoghurt marinade, grilled until charred. Vegetarian."
+ingredients = [
+  "400 g paneer, cut into cubes",
+  "3 tbsp tandoori paste",
+  "150 g greek yoghurt",
+  "1 capsicum, cut into squares",
+  "1 red onion, cut into wedges",
+  "1 tbsp vegetable oil",
+  "1 lemon, cut into wedges",
+]
+method = [
+  "Mix the tandoori paste and yoghurt and coat the paneer, capsicum and onion. Marinate for 15 minutes.",
+  "Thread onto skewers and brush with oil.",
+  "Grill for 10 minutes, turning, until charred at the edges. Serve with lemon.",
+]
+
+[[recipe]]
+slug = "chicken-biryani"
+title = "Chicken biryani"
+cuisine = "indian"
+servings = 6
+minutes = 80
+summary = "Layers of spiced chicken and rice baked together with fried onions."
+ingredients = [
+  "1 kg chicken thigh, cut into chunks",
+  "4 tbsp biryani curry paste",
+  "200 g greek yoghurt",
+  "2 onions, thinly sliced",
+  "3 tbsp vegetable oil",
+  "2 cups rice",
+  "1 cinnamon stick",
+  "2 bay leaves",
+  "1 tsp salt",
+  "750 ml chicken stock",
+  "1 bunch coriander, chopped",
+  "1 bunch mint, chopped",
+]
+method = [
+  "Mix the chicken with the curry paste and yoghurt and marinate for 15 minutes.",
+  "Fry the onions in the oil for 15 minutes until deep golden. Remove half for the top.",
+  "Add the chicken to the pan and cook for 10 minutes, stirring, until browned.",
+  "Heat the oven to 180°C. Stir in the rice, cinnamon, bay leaves, salt and stock, bring to the boil, then cover tightly and bake for 30 minutes until the rice is tender and the chicken is cooked through. Top with the reserved onions, coriander and mint.",
+]
+
+[[recipe]]
+slug = "matar-paneer"
+title = "Matar paneer"
+cuisine = "indian"
+servings = 4
+minutes = 35
+summary = "Golden paneer and peas in a spiced tomato and cream sauce. Vegetarian."
+ingredients = [
+  "400 g paneer, cubed",
+  "2 tbsp vegetable oil",
+  "1 onion, finely diced",
+  "3 cloves garlic, crushed",
+  "1 tbsp ginger, grated",
+  "2 tsp garam masala",
+  "1 tsp ground turmeric",
+  "400 g can canned tomatoes",
+  "250 g frozen peas",
+  "60 ml thickened cream",
+  "1 bunch coriander, chopped",
+  "1 1/2 cups rice",
+]
+method = [
+  "Cook the rice. Fry the paneer in the oil for 5 minutes until golden. Remove.",
+  "Cook the onion for 6 minutes. Add the garlic, ginger and spices for 1 minute, then the tomatoes and simmer for 10 minutes.",
+  "Add the peas and paneer for 5 minutes, then stir in the cream. Scatter with coriander and serve with the rice.",
+]

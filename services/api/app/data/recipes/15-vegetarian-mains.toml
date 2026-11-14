@@ -1,0 +1,786 @@
+# Vegetarian and vegan mains. Written for Sweep (licence: Sweep original).
+
+[[recipe]]
+slug = "lentil-bolognese"
+title = "Lentil bolognese"
+cuisine = "italian"
+servings = 6
+minutes = 50
+summary = "A rich, slow-simmered tomato and lentil sauce over spaghetti. Vegan without the parmesan."
+ingredients = [
+  "2 tbsp olive oil",
+  "1 onion, finely diced",
+  "2 carrots, finely diced",
+  "2 stalks celery, finely diced",
+  "3 cloves garlic, crushed",
+  "2 tbsp tomato paste",
+  "200 g red lentils",
+  "700 g passata",
+  "500 ml vegetable stock",
+  "1 tsp dried oregano",
+  "500 g pasta",
+  "40 g parmesan, grated",
+]
+method = [
+  "Soften the onion, carrot, celery and garlic in the oil for 10 minutes.",
+  "Stir in the tomato paste, then the lentils, passata, stock and oregano. Simmer for 25 minutes, stirring often, until thick.",
+  "Cook the pasta and serve with the sauce and parmesan.",
+]
+
+[[recipe]]
+slug = "cauliflower-steaks-tahini"
+title = "Roast cauliflower steaks with tahini"
+cuisine = "middle-eastern"
+servings = 4
+minutes = 40
+summary = "Thick cauliflower slices roasted with cumin, served with lemony tahini, chickpeas and herbs. Vegan."
+ingredients = [
+  "1 cauliflower, cut into 4 thick slices",
+  "3 tbsp olive oil",
+  "2 tsp ground cumin",
+  "1 tsp paprika",
+  "1/2 tsp salt",
+  "400 g can chickpeas, drained",
+  "4 tbsp tahini",
+  "1 lemon, juiced",
+  "4 tbsp water",
+  "1 bunch parsley, chopped",
+  "40 g pine nuts",
+]
+method = [
+  "Heat the oven to 220°C. Brush the cauliflower with 2 tbsp oil and sprinkle with the spices and salt. Roast for 25 minutes, turning once, until golden and tender.",
+  "Toss the chickpeas in the rest of the oil and roast alongside for the last 15 minutes.",
+  "Whisk the tahini, lemon juice and water until smooth. Toast the pine nuts in a dry pan for 3 minutes.",
+  "Drizzle the cauliflower with tahini and top with the chickpeas, pine nuts and parsley.",
+]
+
+[[recipe]]
+slug = "sweet-potato-bean-enchiladas"
+title = "Sweet potato and black bean enchiladas"
+cuisine = "mexican"
+servings = 4
+minutes = 55
+summary = "Tortillas rolled around roast sweet potato and black beans, baked in salsa under cheese. Vegetarian."
+ingredients = [
+  "2 sweet potatoes, diced",
+  "1 tbsp olive oil",
+  "2 tsp ground cumin",
+  "400 g can black beans, drained",
+  "125 g corn kernels",
+  "8 tortillas",
+  "400 g tomato salsa",
+  "150 g cheddar cheese, grated",
+  "100 g sour cream",
+  "1 bunch coriander, chopped",
+]
+method = [
+  "Heat the oven to 200°C. Toss the sweet potato with the oil and cumin and roast for 25 minutes until tender.",
+  "Mix the sweet potato with the beans and corn, divide between the tortillas and roll up.",
+  "Lay in a baking dish, pour over the salsa, top with cheddar and bake for 20 minutes until bubbling.",
+  "Serve with sour cream and coriander.",
+]
+
+[[recipe]]
+slug = "halloumi-veg-traybake"
+title = "Halloumi and roast vegetable traybake"
+cuisine = "australian"
+servings = 4
+minutes = 45
+summary = "Pumpkin, capsicum, zucchini and red onion roasted, then topped with golden halloumi. Vegetarian."
+ingredients = [
+  "600 g pumpkin, cut into chunks",
+  "2 capsicums, cut into chunks",
+  "2 zucchini, cut into chunks",
+  "2 red onions, cut into wedges",
+  "3 tbsp olive oil",
+  "1 tsp dried oregano",
+  "1/2 tsp salt",
+  "250 g halloumi, sliced",
+  "1 tbsp honey",
+  "50 g rocket",
+]
+method = [
+  "Heat the oven to 220°C. Toss the vegetables with the oil, oregano and salt and roast for 30 minutes.",
+  "Lay the halloumi on top, drizzle with honey and roast for 10 minutes more until golden.",
+  "Scatter with rocket.",
+]
+
+[[recipe]]
+slug = "tofu-satay-bowls"
+title = "Crispy tofu satay bowls"
+cuisine = "indonesian"
+servings = 4
+minutes = 30
+summary = "Crispy tofu over rice with crunchy vegetables and a lime peanut sauce. Vegan."
+ingredients = [
+  "450 g tofu, cubed",
+  "2 tbsp cornflour",
+  "2 tbsp vegetable oil",
+  "1 1/2 cups rice",
+  "1 cucumber, sliced",
+  "2 carrots, grated",
+  "100 g bean sprouts",
+  "90 g peanut butter",
+  "2 tbsp soy sauce",
+  "1 tbsp maple syrup",
+  "1 lime, juiced",
+  "125 ml water",
+]
+method = [
+  "Cook the rice.",
+  "Toss the tofu in the cornflour and fry in the oil for 8 minutes, turning, until crisp.",
+  "Warm the peanut butter, soy, maple syrup, lime juice and water, whisking, until smooth.",
+  "Serve the tofu over the rice with the cucumber, carrot and bean sprouts and pour over the sauce.",
+]
+
+[[recipe]]
+slug = "mushroom-bourguignon"
+title = "Mushroom bourguignon"
+cuisine = "french"
+servings = 4
+minutes = 50
+summary = "Mushrooms, carrots and onions braised in red wine and thyme, over creamy mash. Vegetarian."
+ingredients = [
+  "2 tbsp olive oil",
+  "800 g mushrooms, halved",
+  "1 onion, diced",
+  "2 carrots, sliced",
+  "3 cloves garlic, crushed",
+  "2 tbsp tomato paste",
+  "1 tbsp plain flour",
+  "250 ml red wine",
+  "250 ml vegetable stock",
+  "1 bunch thyme",
+  "1 kg potatoes, peeled and cut into chunks",
+  "40 g butter",
+  "125 ml milk",
+]
+method = [
+  "Brown the mushrooms in the oil in batches for 5 minutes. Remove.",
+  "Soften the onion, carrot and garlic for 6 minutes. Stir in the tomato paste and flour, then the wine, stock and thyme.",
+  "Return the mushrooms and simmer for 25 minutes until thick.",
+  "Meanwhile, boil the potatoes for 15 minutes until tender, then mash with the butter and milk. Serve the mushrooms over the mash.",
+]
+
+[[recipe]]
+slug = "chickpea-vegetable-tagine"
+title = "Chickpea and vegetable tagine"
+cuisine = "moroccan"
+servings = 4
+minutes = 45
+summary = "Sweet potato, carrot and chickpeas in a fragrant spiced tomato sauce with apricots, over couscous. Vegan."
+ingredients = [
+  "2 tbsp olive oil",
+  "1 onion, diced",
+  "2 cloves garlic, crushed",
+  "2 tsp ras el hanout",
+  "1 tsp ground cinnamon",
+  "1 sweet potato, cut into chunks",
+  "2 carrots, cut into chunks",
+  "400 g can canned tomatoes",
+  "400 g can chickpeas, drained",
+  "500 ml vegetable stock",
+  "80 g dried apricots, halved",
+  "250 g couscous",
+  "250 ml boiling water",
+  "1 bunch coriander, chopped",
+]
+method = [
+  "Soften the onion and garlic in the oil for 5 minutes. Add the spices for 1 minute.",
+  "Add the sweet potato, carrot, tomatoes, chickpeas, stock and apricots and simmer for 25 minutes until the vegetables are tender.",
+  "Pour the boiling water over the couscous, cover for 5 minutes and fluff up. Serve with the tagine and coriander.",
+]
+
+[[recipe]]
+slug = "quinoa-tabbouleh"
+title = "Quinoa tabbouleh"
+cuisine = "middle-eastern"
+servings = 4
+minutes = 25
+summary = "Lots of parsley and mint with quinoa, tomato, cucumber and a sharp lemon dressing. Vegan."
+ingredients = [
+  "150 g quinoa, rinsed",
+  "375 ml water",
+  "2 bunches parsley, finely chopped",
+  "1 bunch mint, finely chopped",
+  "3 tomatoes, diced",
+  "1 cucumber, diced",
+  "3 spring onions, sliced",
+  "2 lemons, juiced",
+  "60 ml olive oil",
+  "1/2 tsp salt",
+]
+method = [
+  "Simmer the quinoa in the water, covered, for 12 minutes until the water is absorbed. Spread out to cool.",
+  "Toss with the parsley, mint, tomatoes, cucumber and spring onions.",
+  "Dress with the lemon juice, oil and salt.",
+]
+
+[[recipe]]
+slug = "zucchini-feta-fritters"
+title = "Zucchini and feta fritters"
+cuisine = "greek"
+servings = 4
+minutes = 30
+summary = "Crisp grated zucchini fritters with feta, dill and spring onion, served with tzatziki-style yoghurt. Vegetarian."
+ingredients = [
+  "3 zucchini, grated",
+  "1/2 tsp salt",
+  "150 g feta, crumbled",
+  "3 spring onions, sliced",
+  "1 bunch dill, chopped",
+  "2 eggs",
+  "75 g plain flour",
+  "3 tbsp olive oil",
+  "200 g greek yoghurt",
+  "1 lemon, cut into wedges",
+]
+method = [
+  "Toss the zucchini with the salt for 10 minutes, then squeeze out as much liquid as you can.",
+  "Mix with the feta, spring onions, most of the dill, the eggs and flour.",
+  "Fry heaped spoonfuls in the oil for 3 minutes each side until golden and set.",
+  "Serve with the yoghurt, the rest of the dill and lemon.",
+]
+
+[[recipe]]
+slug = "pumpkin-risotto"
+title = "Roast pumpkin and sage risotto"
+cuisine = "italian"
+servings = 4
+minutes = 50
+summary = "Creamy risotto stirred through with sweet roast pumpkin, sage butter and parmesan. Vegetarian."
+ingredients = [
+  "800 g pumpkin, diced",
+  "2 tbsp olive oil",
+  "1 onion, finely diced",
+  "330 g arborio rice",
+  "125 ml white wine",
+  "1.25 litres vegetable stock",
+  "40 g butter",
+  "1 bunch sage, leaves picked",
+  "50 g parmesan, grated",
+]
+method = [
+  "Heat the oven to 200°C. Toss the pumpkin in 1 tbsp oil and roast for 25 minutes until golden.",
+  "Soften the onion in the rest of the oil for 5 minutes. Stir in the rice for 1 minute, then the wine.",
+  "Add the hot stock a ladle at a time, stirring, for 20 minutes until the rice is creamy and just tender.",
+  "Fry the sage in the butter for 1 minute until crisp. Stir the pumpkin and parmesan into the risotto and top with the sage butter.",
+]
+
+[[recipe]]
+slug = "caponata"
+title = "Caponata (sweet and sour eggplant)"
+cuisine = "italian"
+servings = 4
+minutes = 40
+summary = "Sicilian eggplant stew with tomato, olives and a sweet-sour finish. Lovely with crusty bread. Vegan."
+ingredients = [
+  "2 eggplants, cut into cubes",
+  "4 tbsp olive oil",
+  "1 onion, diced",
+  "2 stalks celery, sliced",
+  "400 g can canned tomatoes",
+  "60 g kalamata olives, halved",
+  "2 tbsp red wine vinegar",
+  "1 tbsp white sugar",
+  "30 g pine nuts",
+  "1 bunch basil, leaves picked",
+  "1 baguette",
+]
+method = [
+  "Fry the eggplant in 3 tbsp oil for 10 minutes until golden and soft. Remove.",
+  "Soften the onion and celery in the rest of the oil for 6 minutes. Add the tomatoes and simmer for 10 minutes.",
+  "Stir in the eggplant, olives, vinegar and sugar and simmer for 5 minutes. Toast the pine nuts in a dry pan for 3 minutes.",
+  "Scatter with pine nuts and basil and serve warm or at room temperature with the baguette.",
+]
+
+[[recipe]]
+slug = "rajma"
+title = "Rajma (kidney bean curry)"
+cuisine = "indian"
+servings = 4
+minutes = 35
+summary = "Kidney beans simmered in a thick, spiced onion and tomato gravy. Vegan."
+ingredients = [
+  "2 tbsp vegetable oil",
+  "1 tsp cumin seeds",
+  "1 onion, finely diced",
+  "3 cloves garlic, crushed",
+  "1 tbsp ginger, grated",
+  "2 tsp garam masala",
+  "1 tsp ground turmeric",
+  "1/2 tsp chilli powder",
+  "400 g can canned tomatoes",
+  "2 x 400 g cans kidney beans, drained",
+  "375 ml water",
+  "1 bunch coriander, chopped",
+  "1 1/2 cups rice",
+]
+method = [
+  "Cook the rice.",
+  "Fry the cumin seeds in the oil for 30 seconds, then the onion for 8 minutes until golden. Add the garlic, ginger and spices for 1 minute.",
+  "Add the tomatoes, beans and water and simmer for 20 minutes, mashing some beans to thicken. Scatter with coriander and serve with the rice.",
+]
+
+[[recipe]]
+slug = "crispy-mushroom-tacos"
+title = "Crispy mushroom tacos"
+cuisine = "mexican"
+servings = 4
+minutes = 25
+summary = "Smoky, crispy fried mushrooms in tortillas with avocado, cabbage and lime. Vegan."
+ingredients = [
+  "500 g mushrooms, sliced",
+  "3 tbsp olive oil",
+  "2 tsp paprika",
+  "1 tsp ground cumin",
+  "1/2 tsp salt",
+  "8 tortillas",
+  "1 avocado, sliced",
+  "1/4 red cabbage, finely shredded",
+  "1 bunch coriander, chopped",
+  "2 limes, cut into wedges",
+]
+method = [
+  "Fry the mushrooms in the oil over high heat for 10 minutes, without stirring too often, until crisp at the edges. Add the spices and salt for 1 minute.",
+  "Warm the tortillas and fill with the mushrooms, avocado, cabbage and coriander. Serve with lime.",
+]
+
+[[recipe]]
+slug = "kung-pao-cauliflower"
+title = "Kung pao cauliflower"
+cuisine = "chinese"
+servings = 4
+minutes = 35
+summary = "Crispy cauliflower tossed with peanuts, capsicum and a sticky sweet-spicy sauce. Vegan."
+ingredients = [
+  "1 cauliflower, cut into florets",
+  "3 tbsp cornflour",
+  "3 tbsp vegetable oil",
+  "1 capsicum, diced",
+  "3 cloves garlic, crushed",
+  "1 tsp chilli flakes",
+  "3 tbsp soy sauce",
+  "1 tbsp white vinegar",
+  "2 tbsp brown sugar",
+  "60 ml water",
+  "60 g peanuts",
+  "3 spring onions, sliced",
+  "1 1/2 cups rice",
+]
+method = [
+  "Cook the rice. Toss the cauliflower in 2 tbsp cornflour.",
+  "Fry the cauliflower in the oil for 10 minutes, turning, until golden and tender.",
+  "Add the capsicum, garlic and chilli for 2 minutes. Mix the soy, vinegar, sugar, water and the rest of the cornflour, add and toss for 1 minute until glossy.",
+  "Toss through the peanuts and spring onions and serve with the rice.",
+]
+
+[[recipe]]
+slug = "vegetable-paella"
+title = "Vegetable paella"
+cuisine = "spanish"
+servings = 4
+minutes = 45
+summary = "Saffron rice with capsicum, green beans, peas and tomatoes, finished with lemon. Vegan."
+ingredients = [
+  "3 tbsp olive oil",
+  "1 onion, diced",
+  "1 capsicum, sliced",
+  "3 cloves garlic, crushed",
+  "2 tsp paprika",
+  "1 pinch saffron threads",
+  "1 1/2 cups arborio rice",
+  "1 litre vegetable stock",
+  "200 g green beans, cut into lengths",
+  "150 g frozen peas",
+  "250 g cherry tomatoes, halved",
+  "1 lemon, cut into wedges",
+  "1 bunch parsley, chopped",
+]
+method = [
+  "Soften the onion, capsicum and garlic in the oil in a wide pan for 6 minutes. Stir in the paprika, saffron and rice.",
+  "Pour in the stock and simmer, without stirring, for 15 minutes.",
+  "Scatter over the beans, peas and tomatoes and cook for 8 minutes more until the rice is tender and the liquid absorbed.",
+  "Rest for 5 minutes, then serve with lemon and parsley.",
+]
+
+[[recipe]]
+slug = "peanut-noodle-salad"
+title = "Cold peanut noodle salad"
+cuisine = "thai"
+servings = 4
+minutes = 20
+summary = "Chilled noodles with crunchy vegetables, herbs and a lime peanut dressing. Vegan."
+ingredients = [
+  "250 g rice noodles",
+  "90 g peanut butter",
+  "3 tbsp soy sauce",
+  "2 limes, juiced",
+  "1 tbsp maple syrup",
+  "1 tsp ginger, grated",
+  "60 ml warm water",
+  "2 carrots, cut into matchsticks",
+  "1 capsicum, thinly sliced",
+  "1/4 red cabbage, finely shredded",
+  "1 bunch coriander, chopped",
+  "1 bunch mint, chopped",
+  "50 g peanuts, chopped",
+]
+method = [
+  "Soak the noodles in hot water until soft, then rinse under cold water and drain.",
+  "Whisk the peanut butter, soy, lime juice, maple syrup, ginger and water until smooth.",
+  "Toss the noodles with the vegetables, herbs and dressing and top with the peanuts.",
+]
+
+[[recipe]]
+slug = "baked-feta-pasta"
+title = "Baked feta and tomato pasta"
+cuisine = "greek"
+servings = 4
+minutes = 40
+summary = "A block of feta roasted with cherry tomatoes and garlic, then stirred into pasta. Vegetarian."
+ingredients = [
+  "200 g feta",
+  "500 g cherry tomatoes",
+  "4 cloves garlic, peeled",
+  "3 tbsp olive oil",
+  "1/2 tsp chilli flakes",
+  "400 g pasta",
+  "100 g baby spinach",
+  "1 bunch basil, leaves picked",
+]
+method = [
+  "Heat the oven to 200°C. Put the feta in a baking dish with the tomatoes and garlic around it, drizzle with oil and sprinkle with chilli. Bake for 30 minutes until the tomatoes burst.",
+  "Meanwhile, cook the pasta, keeping a cup of the water.",
+  "Mash the feta, tomatoes and garlic together, stir in the spinach, then the pasta and enough water to make it silky. Top with basil.",
+]
+
+[[recipe]]
+slug = "polenta-mushroom-ragu"
+title = "Soft polenta with mushroom ragu"
+cuisine = "italian"
+servings = 4
+minutes = 40
+summary = "Creamy parmesan polenta topped with a rich mushroom and tomato ragu. Vegetarian."
+ingredients = [
+  "2 tbsp olive oil",
+  "600 g mushrooms, sliced",
+  "1 onion, diced",
+  "3 cloves garlic, crushed",
+  "1 tsp dried oregano",
+  "400 g can canned tomatoes",
+  "125 ml red wine",
+  "1.25 litres vegetable stock",
+  "250 g polenta",
+  "40 g butter",
+  "60 g parmesan, grated",
+]
+method = [
+  "Fry the mushrooms in the oil for 8 minutes until browned. Add the onion and garlic for 5 minutes.",
+  "Add the oregano, tomatoes and wine and simmer for 15 minutes until thick.",
+  "Meanwhile, bring the stock to the boil, whisk in the polenta and cook on low, stirring, for 10 minutes until thick. Stir in the butter and parmesan.",
+  "Spoon the ragu over the polenta.",
+]
+
+[[recipe]]
+slug = "tuscan-white-bean-stew"
+title = "Tuscan white bean and tomato stew"
+cuisine = "italian"
+servings = 4
+minutes = 30
+summary = "Cannellini beans in a garlicky tomato broth with spinach, rosemary and parmesan. Vegetarian."
+ingredients = [
+  "3 tbsp olive oil",
+  "1 onion, diced",
+  "2 carrots, diced",
+  "3 cloves garlic, crushed",
+  "1 sprig rosemary, chopped",
+  "400 g can canned tomatoes",
+  "2 x 400 g cans cannellini beans, drained",
+  "500 ml vegetable stock",
+  "150 g baby spinach",
+  "40 g parmesan, grated",
+  "1 baguette",
+]
+method = [
+  "Soften the onion, carrot, garlic and rosemary in the oil for 8 minutes.",
+  "Add the tomatoes, beans and stock and simmer for 15 minutes, mashing a few beans to thicken.",
+  "Stir in the spinach until wilted. Serve with parmesan and the baguette.",
+]
+
+[[recipe]]
+slug = "green-shakshuka"
+title = "Green shakshuka"
+cuisine = "middle-eastern"
+servings = 4
+minutes = 25
+summary = "Eggs baked in a pan of spinach, zucchini, herbs and cumin, finished with feta. Vegetarian."
+ingredients = [
+  "2 tbsp olive oil",
+  "1 onion, diced",
+  "2 zucchini, diced",
+  "2 cloves garlic, crushed",
+  "1 tsp ground cumin",
+  "300 g baby spinach",
+  "1 bunch parsley, chopped",
+  "6 eggs",
+  "100 g feta, crumbled",
+  "4 pita bread",
+]
+method = [
+  "Soften the onion and zucchini in the oil for 6 minutes. Add the garlic and cumin for 1 minute.",
+  "Stir in the spinach and most of the parsley until wilted.",
+  "Make 6 hollows, crack in the eggs, cover and cook for 6 minutes until the whites are set.",
+  "Scatter with feta and the rest of the parsley and serve with warm pita.",
+]
+
+[[recipe]]
+slug = "japanese-vegetable-curry"
+title = "Japanese vegetable curry"
+cuisine = "japanese"
+servings = 4
+minutes = 45
+summary = "A thick, mild, slightly sweet curry of potato, carrot and pumpkin over rice. Vegetarian."
+ingredients = [
+  "2 tbsp butter",
+  "1 onion, sliced",
+  "2 potatoes, cut into chunks",
+  "2 carrots, cut into chunks",
+  "300 g pumpkin, cut into chunks",
+  "750 ml vegetable stock",
+  "3 tbsp plain flour",
+  "1 tbsp curry powder",
+  "2 tbsp soy sauce",
+  "1 tbsp honey",
+  "1 apple, grated",
+  "1 1/2 cups rice",
+]
+method = [
+  "Soften the onion in half the butter for 6 minutes. Add the potato, carrot, pumpkin and stock and simmer for 15 minutes until tender.",
+  "Cook the rice.",
+  "In a small pan, cook the flour and curry powder in the rest of the butter for 2 minutes to a paste. Whisk in a ladle of the stock, then stir it all back into the pot.",
+  "Add the soy, honey and apple and simmer for 5 minutes until thick. Serve over the rice.",
+]
+
+[[recipe]]
+slug = "braised-tofu-mushrooms"
+title = "Braised tofu with mushrooms"
+cuisine = "chinese"
+servings = 4
+minutes = 30
+summary = "Golden tofu and mushrooms in a savoury oyster-style soy sauce with bok choy. Vegetarian if made with vegetable stock."
+ingredients = [
+  "450 g tofu, cut into thick slices",
+  "2 tbsp vegetable oil",
+  "300 g mushrooms, sliced",
+  "3 cloves garlic, crushed",
+  "1 tbsp ginger, grated",
+  "3 tbsp soy sauce",
+  "1 tbsp hoisin sauce",
+  "250 ml vegetable stock",
+  "1 tsp cornflour",
+  "2 bok choy, halved",
+  "1 1/2 cups rice",
+]
+method = [
+  "Cook the rice.",
+  "Fry the tofu in the oil for 3 minutes each side until golden. Remove.",
+  "Fry the mushrooms for 5 minutes, add the garlic and ginger for 30 seconds, then the soy, hoisin and stock.",
+  "Return the tofu with the bok choy and simmer for 5 minutes. Thicken with the cornflour mixed with a splash of water. Serve with the rice.",
+]
+
+[[recipe]]
+slug = "pasta-alla-norma"
+title = "Pasta alla norma"
+cuisine = "italian"
+servings = 4
+minutes = 35
+summary = "Fried eggplant in a garlicky tomato sauce with pasta, basil and ricotta. Vegetarian."
+ingredients = [
+  "2 eggplants, cut into cubes",
+  "4 tbsp olive oil",
+  "3 cloves garlic, sliced",
+  "1/2 tsp chilli flakes",
+  "700 g passata",
+  "400 g pasta",
+  "1 bunch basil, leaves picked",
+  "150 g ricotta",
+]
+method = [
+  "Fry the eggplant in 3 tbsp oil for 10 minutes until golden and soft. Remove.",
+  "Soften the garlic and chilli in the rest of the oil for 1 minute, add the passata and simmer for 10 minutes. Stir in the eggplant.",
+  "Cook the pasta and toss with the sauce and basil. Top with spoonfuls of ricotta.",
+]
+
+[[recipe]]
+slug = "vegetable-dumplings"
+title = "Vegetable and tofu dumplings"
+cuisine = "chinese"
+servings = 4
+minutes = 50
+summary = "Pan-fried dumplings filled with wombok, mushroom, tofu and ginger. Vegan."
+ingredients = [
+  "200 g wombok, finely chopped",
+  "1/2 tsp salt",
+  "150 g mushrooms, finely chopped",
+  "200 g tofu, crumbled",
+  "3 spring onions, finely sliced",
+  "1 tbsp ginger, grated",
+  "2 tbsp soy sauce",
+  "1 tsp sesame oil",
+  "40 dumpling wrappers",
+  "2 tbsp vegetable oil",
+  "125 ml water",
+  "2 tbsp rice vinegar",
+]
+method = [
+  "Toss the wombok with the salt for 10 minutes, then squeeze dry. Mix with the mushrooms, tofu, spring onions, ginger, 1 tbsp soy and the sesame oil.",
+  "Put a teaspoon of filling in each wrapper, wet the edges and pinch closed.",
+  "Fry the dumplings in the vegetable oil for 2 minutes until the bottoms are golden. Add the water, cover and steam for 5 minutes until cooked through.",
+  "Mix the rest of the soy with the rice vinegar for dipping.",
+]
+
+[[recipe]]
+slug = "pumpkin-spinach-feta-tart"
+title = "Pumpkin, spinach and feta tart"
+cuisine = "australian"
+servings = 6
+minutes = 55
+summary = "Puff pastry filled with roast pumpkin, spinach, feta and a herby egg custard. Vegetarian."
+ingredients = [
+  "500 g pumpkin, diced",
+  "1 tbsp olive oil",
+  "2 sheets puff pastry",
+  "100 g baby spinach",
+  "150 g feta, crumbled",
+  "4 eggs",
+  "125 ml milk",
+  "1 bunch chives, snipped",
+  "1/2 tsp salt",
+]
+method = [
+  "Heat the oven to 200°C. Toss the pumpkin with the oil and roast for 20 minutes until tender.",
+  "Line a tart tin with the pastry. Scatter in the spinach, pumpkin and feta.",
+  "Whisk the eggs, milk, chives and salt and pour over. Bake for 30 minutes until the filling is set and the pastry golden.",
+]
+
+[[recipe]]
+slug = "halloumi-burgers"
+title = "Halloumi burgers"
+cuisine = "australian"
+servings = 4
+minutes = 20
+summary = "Thick slices of golden halloumi in buns with roast capsicum, rocket and sweet chilli mayo. Vegetarian."
+ingredients = [
+  "250 g halloumi, cut into 4 thick slices",
+  "1 tbsp olive oil",
+  "1 capsicum, cut into strips",
+  "4 burger buns",
+  "3 tbsp mayonnaise",
+  "1 tbsp sweet chilli sauce",
+  "50 g rocket",
+  "1 tomato, sliced",
+]
+method = [
+  "Fry the capsicum in the oil for 6 minutes until soft. Fry the halloumi for 2 minutes each side until golden.",
+  "Mix the mayonnaise and sweet chilli sauce.",
+  "Toast the buns and fill with the mayo, rocket, tomato, capsicum and halloumi.",
+]
+
+[[recipe]]
+slug = "cauliflower-chickpea-curry"
+title = "Cauliflower and chickpea coconut curry"
+cuisine = "indian"
+servings = 4
+minutes = 35
+summary = "Cauliflower and chickpeas simmered in a gently spiced coconut tomato sauce. Vegan if the curry paste is."
+ingredients = [
+  "2 tbsp vegetable oil",
+  "1 onion, diced",
+  "3 cloves garlic, crushed",
+  "1 tbsp ginger, grated",
+  "2 tbsp madras curry paste",
+  "1 cauliflower, cut into florets",
+  "400 g can chickpeas, drained",
+  "400 g can canned tomatoes",
+  "400 ml coconut milk",
+  "100 g baby spinach",
+  "1 1/2 cups rice",
+]
+method = [
+  "Cook the rice.",
+  "Soften the onion, garlic and ginger in the oil for 5 minutes. Add the curry paste for 1 minute.",
+  "Add the cauliflower, chickpeas, tomatoes and coconut milk and simmer for 20 minutes until the cauliflower is tender.",
+  "Stir in the spinach until wilted and serve with the rice.",
+]
+
+[[recipe]]
+slug = "vegetable-laksa"
+title = "Vegetable laksa"
+cuisine = "malaysian"
+servings = 4
+minutes = 30
+summary = "Spicy coconut laksa broth with tofu puffs, noodles, greens and bean sprouts. Meat-free; laksa paste usually contains shrimp, so check the label if you're vegetarian."
+ingredients = [
+  "3 tbsp laksa paste",
+  "1 tbsp vegetable oil",
+  "400 ml coconut milk",
+  "750 ml vegetable stock",
+  "150 g tofu puffs, halved",
+  "1 broccoli, cut into small florets",
+  "200 g rice vermicelli",
+  "100 g bean sprouts",
+  "1 lime, juiced",
+  "1 bunch coriander, chopped",
+]
+method = [
+  "Fry the laksa paste in the oil for 1 minute. Add the coconut milk and stock and simmer for 5 minutes.",
+  "Add the tofu puffs and broccoli and simmer for 5 minutes.",
+  "Soak the vermicelli in boiling water for 5 minutes and drain. Divide between bowls, ladle over the laksa and top with bean sprouts, lime juice and coriander.",
+]
+
+[[recipe]]
+slug = "pesto-gnocchi-peas"
+title = "Pesto gnocchi with peas and zucchini"
+cuisine = "italian"
+servings = 4
+minutes = 15
+summary = "Pan-crisped gnocchi tossed with basil pesto, peas, zucchini and parmesan. Vegetarian."
+ingredients = [
+  "500 g potato gnocchi",
+  "2 tbsp olive oil",
+  "2 zucchini, diced",
+  "200 g frozen peas",
+  "4 tbsp basil pesto",
+  "40 g parmesan, grated",
+  "1 lemon, juiced",
+]
+method = [
+  "Fry the gnocchi in the oil for 5 minutes until golden. Add the zucchini for 3 minutes, then the peas for 2 minutes.",
+  "Toss through the pesto, lemon juice and parmesan.",
+]
+
+[[recipe]]
+slug = "stuffed-sweet-potatoes"
+title = "Loaded sweet potatoes with black beans"
+cuisine = "mexican"
+servings = 4
+minutes = 50
+summary = "Baked sweet potatoes split and filled with spiced black beans, corn, avocado and sour cream. Vegetarian."
+ingredients = [
+  "4 sweet potatoes",
+  "1 tbsp olive oil",
+  "400 g can black beans, drained",
+  "125 g corn kernels",
+  "1 tsp ground cumin",
+  "1 tsp paprika",
+  "1 avocado, diced",
+  "100 g sour cream",
+  "1 lime, juiced",
+  "1 bunch coriander, chopped",
+]
+method = [
+  "Heat the oven to 200°C. Prick the sweet potatoes, rub with the oil and bake for 45 minutes until soft.",
+  "Warm the beans and corn with the spices and a splash of water for 5 minutes.",
+  "Split the sweet potatoes and fill with the beans, avocado, sour cream, lime juice and coriander.",
+]

@@ -68,3 +68,20 @@ crawlers, and taste.com.au prohibits automated collection without written permis
   the method or photos.
 - All imported text and images are untrusted data, never instructions.
 
+
+## Revision (2026-11-14): how the library grew to 500 (slice 4c)
+
+- **Drafting happened in a Claude Code session**, not through the API, so the 303 new
+  recipes cost nothing extra. The product owner chose this over a paid drafting script.
+- **Automatic checks gate every recipe in CI** (`app/services/recipe_checks.py`): every
+  line parses to an Ingredient; the method uses nothing unlisted; raw meat and seafood
+  have a cooking step with a time or doneness cue; no step is longer than the stated
+  total time (chilling counts); no duplicate titles or near-identical ingredient lists;
+  no "vegetarian"/"vegan" claim that an ingredient contradicts (curry pastes, fish sauce,
+  dashi count); no odd "X-free" phrases. Running them on the first 197 found real bugs:
+  three desserts said "ready in 25 min" but chill for hours, recipes seasoned with salt
+  they didn't list, and two used cooked chicken with no step to cook it.
+- **The LLM reviewer exists but is opt-in.** It's measured against labelled recipes with
+  planted mistakes (`evals/recipe_review.jsonl`) before anyone trusts it.
+- **Diet labels in summaries are prose, not rules.** The Dietary Rules check in slice 5
+  must work from Ingredients, not from what a summary says.

@@ -1,0 +1,624 @@
+# Japanese and Korean. Written for Sweep (licence: Sweep original).
+
+[[recipe]]
+slug = "chicken-teriyaki"
+title = "Chicken teriyaki"
+cuisine = "japanese"
+servings = 4
+minutes = 30
+summary = "Crisp-skinned chicken thighs glazed in a glossy soy, mirin and honey sauce."
+ingredients = [
+  "800 g chicken thigh",
+  "1 tbsp vegetable oil",
+  "4 tbsp soy sauce",
+  "3 tbsp mirin",
+  "1 tbsp honey",
+  "1 tsp ginger, grated",
+  "1 1/2 cups rice",
+  "1 broccoli, cut into florets",
+  "1 tsp sesame seeds",
+]
+method = [
+  "Cook the rice. Steam the broccoli for 4 minutes.",
+  "Fry the chicken in the oil over medium heat for 6–7 minutes each side until golden and cooked through.",
+  "Mix the soy, mirin, honey and ginger, pour into the pan and bubble for 2 minutes, turning the chicken until glazed.",
+  "Slice and serve over the rice with the broccoli, sprinkled with sesame seeds.",
+]
+
+[[recipe]]
+slug = "oyakodon"
+title = "Oyakodon (chicken and egg rice bowl)"
+cuisine = "japanese"
+servings = 4
+minutes = 25
+summary = "Chicken and onion simmered in sweet dashi, set with softly cooked egg over rice."
+ingredients = [
+  "500 g chicken thigh, cut into bite-sized pieces",
+  "1 onion, thinly sliced",
+  "250 ml dashi stock",
+  "3 tbsp soy sauce",
+  "2 tbsp mirin",
+  "1 tsp white sugar",
+  "5 eggs, lightly beaten",
+  "3 spring onions, sliced",
+  "1 1/2 cups rice",
+]
+method = [
+  "Cook the rice.",
+  "Simmer the dashi, soy, mirin and sugar with the onion for 3 minutes. Add the chicken and simmer for 8 minutes until cooked through.",
+  "Pour the eggs over, cover and cook on low for 2 minutes until just set.",
+  "Slide over bowls of rice and scatter with spring onions.",
+]
+
+[[recipe]]
+slug = "gyudon"
+title = "Gyudon (beef and onion rice bowl)"
+cuisine = "japanese"
+servings = 4
+minutes = 20
+summary = "Thinly sliced beef and onion simmered in sweet soy, served over rice with pickled ginger."
+ingredients = [
+  "500 g beef steak, very thinly sliced",
+  "1 onion, thinly sliced",
+  "250 ml dashi stock",
+  "3 tbsp soy sauce",
+  "2 tbsp mirin",
+  "1 tbsp white sugar",
+  "1 1/2 cups rice",
+  "3 spring onions, sliced",
+  "2 tbsp pickled ginger",
+]
+method = [
+  "Cook the rice.",
+  "Simmer the dashi, soy, mirin and sugar with the onion for 5 minutes until soft.",
+  "Add the beef and simmer for 3 minutes until just cooked.",
+  "Spoon over the rice with some of the sauce, and top with spring onions and pickled ginger.",
+]
+
+[[recipe]]
+slug = "tonkatsu"
+title = "Tonkatsu (crumbed pork cutlets)"
+cuisine = "japanese"
+servings = 4
+minutes = 35
+summary = "Panko-crumbed pork loin fried crisp, with shredded cabbage and a tangy sauce."
+ingredients = [
+  "4 pork loin steaks",
+  "60 g plain flour",
+  "2 eggs, beaten",
+  "100 g panko breadcrumbs",
+  "125 ml vegetable oil",
+  "1/4 cabbage, finely shredded",
+  "3 tbsp tomato sauce",
+  "2 tbsp worcestershire sauce",
+  "1 tsp soy sauce",
+  "1 1/2 cups rice",
+]
+method = [
+  "Cook the rice. Pound the pork to 1.5 cm thick.",
+  "Dust the pork in flour, dip in egg, then press into the panko.",
+  "Shallow-fry in the oil for 4 minutes each side until golden and cooked through. Drain and slice.",
+  "Mix the tomato sauce, worcestershire and soy. Serve the pork with the cabbage, rice and sauce.",
+]
+
+[[recipe]]
+slug = "okonomiyaki"
+title = "Okonomiyaki (cabbage pancakes)"
+cuisine = "japanese"
+servings = 4
+minutes = 30
+summary = "Savoury cabbage and bacon pancakes topped with sauce, mayonnaise and spring onion."
+ingredients = [
+  "150 g plain flour",
+  "125 ml dashi stock",
+  "3 eggs",
+  "1/2 cabbage, finely shredded",
+  "4 spring onions, sliced",
+  "6 rashers bacon",
+  "1 tbsp vegetable oil",
+  "3 tbsp tomato sauce",
+  "2 tbsp worcestershire sauce",
+  "3 tbsp mayonnaise",
+]
+method = [
+  "Whisk the flour, dashi and eggs to a batter. Fold in the cabbage and most of the spring onions.",
+  "Heat the oil in a frying pan, spoon in a quarter of the mixture and flatten to a thick pancake. Lay bacon on top.",
+  "Cook for 5 minutes, flip and cook for 5 minutes more until the bacon is crisp and the pancake is cooked through. Repeat.",
+  "Mix the tomato and worcestershire sauces, drizzle over with the mayonnaise and scatter with the rest of the spring onions.",
+]
+
+[[recipe]]
+slug = "nasu-dengaku"
+title = "Miso-glazed eggplant"
+cuisine = "japanese"
+servings = 4
+minutes = 30
+summary = "Eggplant halves roasted until creamy, then grilled with a sweet miso glaze. Vegetarian."
+ingredients = [
+  "2 eggplants, halved lengthways",
+  "2 tbsp vegetable oil",
+  "3 tbsp miso paste",
+  "2 tbsp mirin",
+  "1 tbsp white sugar",
+  "1 tsp sesame seeds",
+  "2 spring onions, sliced",
+  "1 1/2 cups rice",
+]
+method = [
+  "Heat the oven to 200°C. Score the eggplant flesh, brush with the oil and roast cut side up for 20 minutes until soft.",
+  "Cook the rice.",
+  "Mix the miso, mirin and sugar, spread over the eggplant and grill for 3 minutes until bubbling.",
+  "Scatter with sesame seeds and spring onions and serve with the rice.",
+]
+
+[[recipe]]
+slug = "chicken-karaage"
+title = "Chicken karaage"
+cuisine = "japanese"
+servings = 4
+minutes = 40
+summary = "Ginger-soy marinated chicken pieces, dusted in cornflour and fried until crunchy."
+ingredients = [
+  "700 g chicken thigh, cut into bite-sized pieces",
+  "3 tbsp soy sauce",
+  "1 tbsp mirin",
+  "2 tsp ginger, grated",
+  "2 cloves garlic, crushed",
+  "80 g cornflour",
+  "250 ml vegetable oil",
+  "3 tbsp mayonnaise",
+  "1 lemon, cut into wedges",
+  "1/4 cabbage, finely shredded",
+]
+method = [
+  "Mix the chicken with the soy, mirin, ginger and garlic and marinate for 15 minutes.",
+  "Toss the chicken in the cornflour.",
+  "Fry in the oil in batches for 5 minutes until deep golden and cooked through. Drain on paper towel.",
+  "Serve with mayonnaise, lemon wedges and the cabbage.",
+]
+
+[[recipe]]
+slug = "yaki-udon"
+title = "Yaki udon"
+cuisine = "japanese"
+servings = 4
+minutes = 20
+summary = "Thick udon noodles stir-fried with pork, cabbage and mushrooms in a savoury sauce."
+ingredients = [
+  "600 g udon noodles",
+  "300 g pork mince",
+  "1 tbsp vegetable oil",
+  "1/4 cabbage, shredded",
+  "150 g mushrooms, sliced",
+  "1 carrot, cut into matchsticks",
+  "3 tbsp soy sauce",
+  "2 tbsp oyster sauce",
+  "1 tbsp mirin",
+  "3 spring onions, sliced",
+]
+method = [
+  "Loosen the udon in hot water and drain.",
+  "Fry the pork in the oil for 5 minutes until browned and cooked through. Add the cabbage, mushrooms and carrot for 3 minutes.",
+  "Add the noodles, soy, oyster sauce and mirin and toss for 2 minutes. Scatter with spring onions.",
+]
+
+[[recipe]]
+slug = "agedashi-tofu"
+title = "Agedashi tofu"
+cuisine = "japanese"
+servings = 4
+minutes = 20
+summary = "Silken tofu dusted in cornflour, fried crisp and served in a light dashi broth."
+ingredients = [
+  "600 g silken tofu, cut into 8 blocks",
+  "50 g cornflour",
+  "125 ml vegetable oil",
+  "250 ml dashi stock",
+  "2 tbsp soy sauce",
+  "2 tbsp mirin",
+  "2 spring onions, sliced",
+  "1 tsp ginger, grated",
+]
+method = [
+  "Pat the tofu dry and gently roll in the cornflour.",
+  "Fry in the oil for 3 minutes, turning, until crisp. Drain.",
+  "Warm the dashi, soy and mirin. Pour into shallow bowls, add the tofu and top with spring onions and ginger.",
+]
+
+[[recipe]]
+slug = "pork-shogayaki"
+title = "Ginger pork (shogayaki)"
+cuisine = "japanese"
+servings = 4
+minutes = 20
+summary = "Thin pork slices fried with onion in a punchy ginger and soy sauce."
+ingredients = [
+  "600 g pork loin, very thinly sliced",
+  "1 tbsp vegetable oil",
+  "1 onion, sliced",
+  "1 tbsp ginger, grated",
+  "3 tbsp soy sauce",
+  "2 tbsp mirin",
+  "1 tsp white sugar",
+  "1/4 cabbage, finely shredded",
+  "1 1/2 cups rice",
+]
+method = [
+  "Cook the rice.",
+  "Fry the pork in the oil over high heat in batches for 2 minutes until browned and cooked through. Add the onion for 2 minutes.",
+  "Add the ginger, soy, mirin and sugar and toss for 1 minute until glossy. Serve with the cabbage and rice.",
+]
+
+[[recipe]]
+slug = "miso-ramen"
+title = "Miso noodle soup with pork and corn"
+cuisine = "japanese"
+servings = 4
+minutes = 30
+summary = "A quick ramen-style miso broth with pork mince, corn, bok choy and a soft egg."
+ingredients = [
+  "4 eggs",
+  "300 g pork mince",
+  "1 tbsp sesame oil",
+  "2 cloves garlic, crushed",
+  "1 tsp ginger, grated",
+  "1.5 litres chicken stock",
+  "4 tbsp miso paste",
+  "1 tbsp soy sauce",
+  "400 g egg noodles",
+  "2 bok choy, halved",
+  "125 g corn kernels",
+  "3 spring onions, sliced",
+]
+method = [
+  "Boil the eggs for 6½ minutes, cool in cold water and peel.",
+  "Fry the pork in the sesame oil for 5 minutes until cooked through. Add the garlic and ginger for 1 minute.",
+  "Add the stock and bring to a simmer. Whisk in the miso and soy.",
+  "Cook the noodles, adding the bok choy for the last 2 minutes. Divide between bowls, ladle over the broth and pork, and top with the corn, halved eggs and spring onions.",
+]
+
+[[recipe]]
+slug = "spinach-sesame-salad"
+title = "Spinach with sesame dressing (gomaae)"
+cuisine = "japanese"
+servings = 4
+minutes = 10
+summary = "Blanched spinach tossed in a nutty toasted sesame dressing. A quick side."
+ingredients = [
+  "300 g baby spinach",
+  "3 tbsp sesame seeds",
+  "1 tbsp soy sauce",
+  "1 tsp white sugar",
+  "1 tsp mirin",
+]
+method = [
+  "Toast the sesame seeds in a dry pan for 2 minutes, then crush roughly.",
+  "Blanch the spinach in boiling water for 30 seconds, cool under cold water and squeeze dry.",
+  "Mix the sesame, soy, sugar and mirin and toss through the spinach.",
+]
+
+[[recipe]]
+slug = "cucumber-wakame-salad"
+title = "Cucumber and wakame salad (sunomono)"
+cuisine = "japanese"
+servings = 4
+minutes = 15
+summary = "Thin cucumber and seaweed in a sweet rice vinegar dressing. Vegetarian."
+ingredients = [
+  "2 cucumbers, very thinly sliced",
+  "1/2 tsp salt",
+  "2 tbsp dried wakame",
+  "3 tbsp rice vinegar",
+  "1 tbsp white sugar",
+  "1 tsp soy sauce",
+  "1 tsp sesame seeds",
+]
+method = [
+  "Toss the cucumber with the salt for 5 minutes, then squeeze out the liquid.",
+  "Soak the wakame in cold water for 5 minutes and drain.",
+  "Mix the rice vinegar, sugar and soy, toss with the cucumber and wakame, and top with sesame seeds.",
+]
+
+[[recipe]]
+slug = "dakgalbi"
+title = "Dakgalbi (spicy gochujang chicken)"
+cuisine = "korean"
+servings = 4
+minutes = 35
+summary = "Chicken, cabbage and sweet potato stir-fried in a sticky gochujang sauce."
+ingredients = [
+  "700 g chicken thigh, cut into bite-sized pieces",
+  "3 tbsp gochujang",
+  "2 tbsp soy sauce",
+  "1 tbsp honey",
+  "3 cloves garlic, crushed",
+  "1 tsp ginger, grated",
+  "1 tbsp vegetable oil",
+  "1 sweet potato, cut into thin wedges",
+  "1/4 cabbage, roughly chopped",
+  "1 onion, sliced",
+  "3 spring onions, cut into lengths",
+  "1 1/2 cups rice",
+]
+method = [
+  "Mix the gochujang, soy, honey, garlic and ginger and coat the chicken.",
+  "Cook the rice.",
+  "Fry the sweet potato in the oil for 5 minutes. Add the chicken and onion and cook, stirring, for 10 minutes until the chicken is cooked through.",
+  "Add the cabbage and spring onions for 3 minutes until wilted. Serve with the rice.",
+]
+
+[[recipe]]
+slug = "kimchi-jjigae"
+title = "Kimchi jjigae (kimchi stew)"
+cuisine = "korean"
+servings = 4
+minutes = 35
+summary = "A bubbling, tangy stew of kimchi, pork and tofu."
+ingredients = [
+  "300 g pork shoulder, thinly sliced",
+  "1 tbsp sesame oil",
+  "300 g kimchi, chopped",
+  "1 onion, sliced",
+  "2 cloves garlic, crushed",
+  "1 tbsp gochujang",
+  "1 litre chicken stock",
+  "300 g tofu, sliced",
+  "3 spring onions, sliced",
+  "1 1/2 cups rice",
+]
+method = [
+  "Cook the rice.",
+  "Fry the pork in the sesame oil for 5 minutes until browned. Add the kimchi, onion and garlic for 3 minutes.",
+  "Stir in the gochujang and stock and simmer for 15 minutes until the pork is tender.",
+  "Add the tofu for 3 minutes, scatter with spring onions and serve with the rice.",
+]
+
+[[recipe]]
+slug = "sundubu-jjigae"
+title = "Sundubu jjigae (soft tofu stew)"
+cuisine = "korean"
+servings = 4
+minutes = 25
+summary = "Silky soft tofu in a spicy broth with mushrooms and prawns, finished with egg."
+ingredients = [
+  "1 tbsp sesame oil",
+  "1 onion, diced",
+  "2 cloves garlic, crushed",
+  "1 tbsp chilli powder",
+  "1 tbsp soy sauce",
+  "750 ml dashi stock",
+  "150 g mushrooms, sliced",
+  "250 g prawns, peeled",
+  "600 g silken tofu",
+  "4 eggs",
+  "2 spring onions, sliced",
+]
+method = [
+  "Soften the onion and garlic in the sesame oil for 3 minutes. Stir in the chilli powder for 30 seconds.",
+  "Add the soy, dashi and mushrooms and simmer for 5 minutes.",
+  "Add the prawns and spoon in the tofu in large pieces. Simmer for 3 minutes until the prawns are pink.",
+  "Crack in the eggs, cover and cook for 3 minutes until the whites are set. Scatter with spring onions.",
+]
+
+[[recipe]]
+slug = "korean-beef-mince-bowls"
+title = "Korean beef mince rice bowls"
+cuisine = "korean"
+servings = 4
+minutes = 20
+summary = "Sweet, garlicky soy beef mince over rice with quick cucumber and a fried egg."
+ingredients = [
+  "500 g beef mince",
+  "1 tbsp sesame oil",
+  "3 cloves garlic, crushed",
+  "1 tsp ginger, grated",
+  "3 tbsp soy sauce",
+  "2 tbsp brown sugar",
+  "1 tsp chilli flakes",
+  "4 eggs",
+  "1 tbsp vegetable oil",
+  "1 cucumber, sliced",
+  "1 tbsp rice vinegar",
+  "3 spring onions, sliced",
+  "1 1/2 cups rice",
+]
+method = [
+  "Cook the rice. Toss the cucumber with the rice vinegar.",
+  "Fry the mince in the sesame oil for 6 minutes until browned. Add the garlic, ginger, soy, sugar and chilli and cook for 2 minutes until sticky.",
+  "Fry the eggs in the vegetable oil for 3 minutes until the whites are set.",
+  "Serve the beef over rice with the cucumber, eggs and spring onions.",
+]
+
+[[recipe]]
+slug = "jeyuk-bokkeum"
+title = "Spicy gochujang pork stir-fry"
+cuisine = "korean"
+servings = 4
+minutes = 25
+summary = "Thin pork slices stir-fried with onion and carrot in a fiery-sweet gochujang sauce."
+ingredients = [
+  "600 g pork shoulder, very thinly sliced",
+  "3 tbsp gochujang",
+  "1 tbsp chilli flakes",
+  "2 tbsp soy sauce",
+  "1 tbsp brown sugar",
+  "3 cloves garlic, crushed",
+  "1 tbsp vegetable oil",
+  "1 onion, sliced",
+  "1 carrot, sliced",
+  "3 spring onions, cut into lengths",
+  "1 tsp sesame seeds",
+  "1 lettuce, leaves separated",
+  "1 1/2 cups rice",
+]
+method = [
+  "Mix the gochujang, chilli flakes, soy, sugar and garlic and coat the pork.",
+  "Cook the rice.",
+  "Stir-fry the pork in the oil over high heat for 6 minutes until cooked through. Add the onion and carrot for 3 minutes, then the spring onions.",
+  "Sprinkle with sesame seeds and serve with lettuce leaves for wrapping and the rice.",
+]
+
+[[recipe]]
+slug = "pajeon"
+title = "Pajeon (spring onion pancakes)"
+cuisine = "korean"
+servings = 4
+minutes = 25
+summary = "Crisp savoury pancakes packed with spring onions and prawns, with a soy dipping sauce."
+ingredients = [
+  "150 g plain flour",
+  "2 tbsp cornflour",
+  "250 ml water",
+  "1 egg",
+  "2 bunches spring onions, cut into lengths",
+  "200 g prawns, peeled and chopped",
+  "3 tbsp vegetable oil",
+  "3 tbsp soy sauce",
+  "1 tbsp rice vinegar",
+  "1/2 tsp chilli flakes",
+]
+method = [
+  "Whisk the flour, cornflour, water and egg to a smooth batter. Stir in the spring onions and prawns.",
+  "Heat a third of the oil in a frying pan, add a third of the batter and spread thin.",
+  "Cook for 3–4 minutes each side until golden and the prawns are cooked through. Repeat.",
+  "Mix the soy, rice vinegar and chilli flakes for dipping.",
+]
+
+[[recipe]]
+slug = "kimchi-pancakes"
+title = "Kimchi pancakes"
+cuisine = "korean"
+servings = 4
+minutes = 20
+summary = "Tangy, crispy-edged kimchi pancakes. Great with a fried egg. Vegetarian if the kimchi is."
+ingredients = [
+  "250 g kimchi, chopped, plus 3 tbsp of its juice",
+  "120 g plain flour",
+  "125 ml water",
+  "1 egg",
+  "2 spring onions, sliced",
+  "3 tbsp vegetable oil",
+  "2 tbsp soy sauce",
+]
+method = [
+  "Mix the kimchi and juice, flour, water, egg and spring onions to a thick batter.",
+  "Fry spoonfuls in the oil for 3 minutes each side until crisp and cooked through.",
+  "Serve with soy sauce for dipping.",
+]
+
+[[recipe]]
+slug = "gyeran-mari"
+title = "Korean rolled omelette (gyeran mari)"
+cuisine = "korean"
+servings = 2
+minutes = 15
+summary = "Layered rolled omelette with carrot and spring onion, sliced into pretty rounds."
+ingredients = [
+  "5 eggs",
+  "1 small carrot, finely diced",
+  "2 spring onions, finely sliced",
+  "1 pinch salt",
+  "1 tbsp vegetable oil",
+]
+method = [
+  "Beat the eggs with the carrot, spring onions and salt.",
+  "Oil a frying pan over low heat and pour in a thin layer of egg. When almost set, roll it up from one side.",
+  "Push the roll to the edge, pour in more egg and roll again. Repeat until all the egg is used, about 8 minutes in all, so it's cooked through.",
+  "Rest for 2 minutes, then slice.",
+]
+
+[[recipe]]
+slug = "gamja-jorim"
+title = "Soy-braised potatoes (gamja jorim)"
+cuisine = "korean"
+servings = 4
+minutes = 30
+summary = "Bite-sized potatoes braised in sweet soy until sticky. A classic side. Vegetarian."
+ingredients = [
+  "600 g potatoes, cut into 2 cm cubes",
+  "1 tbsp vegetable oil",
+  "3 tbsp soy sauce",
+  "2 tbsp honey",
+  "1 clove garlic, crushed",
+  "250 ml water",
+  "1 tsp sesame oil",
+  "1 tsp sesame seeds",
+]
+method = [
+  "Fry the potatoes in the oil for 5 minutes until lightly golden.",
+  "Add the soy, honey, garlic and water and simmer, stirring now and then, for 15 minutes until tender and the sauce is sticky.",
+  "Toss with the sesame oil and seeds.",
+]
+
+[[recipe]]
+slug = "oi-muchim"
+title = "Spicy Korean cucumber salad"
+cuisine = "korean"
+servings = 4
+minutes = 15
+summary = "Crunchy cucumber in a sweet-spicy chilli, garlic and sesame dressing. Vegetarian."
+ingredients = [
+  "2 cucumbers, sliced",
+  "1/2 tsp salt",
+  "1 clove garlic, crushed",
+  "1 tbsp chilli flakes",
+  "1 tbsp rice vinegar",
+  "1 tsp white sugar",
+  "1 tsp soy sauce",
+  "1 tsp sesame oil",
+  "1 tsp sesame seeds",
+]
+method = [
+  "Toss the cucumber with the salt for 10 minutes, then drain.",
+  "Mix in everything else and serve straight away.",
+]
+
+[[recipe]]
+slug = "gochujang-chicken-wings"
+title = "Sticky gochujang chicken wings"
+cuisine = "korean"
+servings = 4
+minutes = 55
+summary = "Oven-baked crispy wings tossed in a sweet, spicy and garlicky gochujang glaze."
+ingredients = [
+  "1.2 kg chicken wings",
+  "1 tbsp baking powder",
+  "1/2 tsp salt",
+  "3 tbsp gochujang",
+  "2 tbsp honey",
+  "1 tbsp soy sauce",
+  "2 cloves garlic, crushed",
+  "1 tsp sesame seeds",
+  "2 spring onions, sliced",
+]
+method = [
+  "Heat the oven to 220°C. Pat the wings dry and toss with the baking powder and salt.",
+  "Bake on a rack over a tray for 45 minutes, turning halfway, until crisp and cooked through.",
+  "Warm the gochujang, honey, soy and garlic for 2 minutes, toss with the wings and scatter with sesame seeds and spring onions.",
+]
+
+[[recipe]]
+slug = "bibim-guksu"
+title = "Cold spicy noodles (bibim guksu)"
+cuisine = "korean"
+servings = 4
+minutes = 20
+summary = "Chilled noodles in a sweet, tangy gochujang sauce with cucumber, kimchi and egg. Vegetarian if the kimchi is."
+ingredients = [
+  "400 g udon noodles",
+  "4 eggs",
+  "3 tbsp gochujang",
+  "2 tbsp rice vinegar",
+  "1 tbsp white sugar",
+  "1 tbsp soy sauce",
+  "1 tbsp sesame oil",
+  "1 cucumber, cut into matchsticks",
+  "100 g kimchi, chopped",
+  "1 tsp sesame seeds",
+]
+method = [
+  "Boil the eggs for 8 minutes, cool and halve.",
+  "Cook the noodles, then rinse under cold water until chilled and drain well.",
+  "Mix the gochujang, rice vinegar, sugar, soy and sesame oil and toss with the noodles.",
+  "Top with cucumber, kimchi, the eggs and sesame seeds.",
+]

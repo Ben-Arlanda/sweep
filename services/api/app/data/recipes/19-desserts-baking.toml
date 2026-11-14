@@ -1,0 +1,656 @@
+# Desserts, cakes, biscuits and baking. Written for Sweep (licence: Sweep original).
+
+[[recipe]]
+slug = "lemon-tart"
+title = "Lemon tart"
+cuisine = "french"
+servings = 8
+minutes = 230
+summary = "A crisp pastry case filled with a smooth, tangy lemon custard. Vegetarian."
+ingredients = [
+  "1 sheet shortcrust pastry",
+  "4 eggs",
+  "150 g caster sugar",
+  "3 lemons, zested and juiced",
+  "150 ml thickened cream",
+  "1 tbsp icing sugar",
+]
+method = [
+  "Heat the oven to 180°C. Line a 23 cm tart tin with the pastry, prick the base, line with baking paper and pastry weights and blind-bake for 15 minutes. Remove the paper and weights and bake for 5 minutes more.",
+  "Lower the oven to 150°C. Whisk the eggs, sugar, lemon zest and juice and cream until smooth.",
+  "Pour into the pastry case and bake for 30 minutes until just set with a slight wobble.",
+  "Cool, then chill for at least 3 hours. Dust with icing sugar to serve.",
+]
+
+[[recipe]]
+slug = "chocolate-self-saucing-pudding"
+title = "Chocolate self-saucing pudding"
+cuisine = "australian"
+servings = 6
+minutes = 50
+summary = "A soft chocolate sponge that makes its own rich sauce underneath as it bakes. Vegetarian."
+ingredients = [
+  "150 g self-raising flour",
+  "150 g caster sugar",
+  "4 tbsp cocoa powder",
+  "125 ml milk",
+  "60 g butter, melted",
+  "1 egg",
+  "1 tsp vanilla extract",
+  "100 g brown sugar",
+  "375 ml boiling water",
+]
+method = [
+  "Heat the oven to 180°C and grease a 1.5 litre baking dish.",
+  "Mix the flour, caster sugar and 2 tbsp cocoa. Whisk in the milk, butter, egg and vanilla and spread in the dish.",
+  "Mix the brown sugar and the rest of the cocoa and sprinkle over. Carefully pour the boiling water over the back of a spoon.",
+  "Bake for 35 minutes until the top is firm. Rest for 5 minutes before serving.",
+]
+
+[[recipe]]
+slug = "apple-pie"
+title = "Apple pie"
+cuisine = "american"
+servings = 8
+minutes = 90
+summary = "Cinnamon-spiced apples in a golden double-crust pie. Vegetarian."
+ingredients = [
+  "1 kg apples, peeled and sliced",
+  "100 g white sugar",
+  "2 tbsp plain flour",
+  "2 tsp ground cinnamon",
+  "1 lemon, juiced",
+  "3 sheets shortcrust pastry",
+  "1 egg, beaten",
+  "1 tbsp caster sugar",
+]
+method = [
+  "Heat the oven to 200°C. Toss the apples with the white sugar, flour, cinnamon and lemon juice.",
+  "Line a pie dish with pastry, fill with the apples and top with more pastry. Seal the edges and cut slits in the top.",
+  "Brush with egg, sprinkle with caster sugar and bake for 50 minutes until golden and the apples are tender. Cool for 20 minutes before slicing.",
+]
+
+[[recipe]]
+slug = "mixed-berry-crumble"
+title = "Mixed berry crumble"
+cuisine = "british"
+servings = 6
+minutes = 45
+summary = "Jammy berries under a crunchy oat and brown sugar crumble. Vegetarian."
+ingredients = [
+  "500 g frozen mixed berries",
+  "2 tbsp white sugar",
+  "1 tbsp cornflour",
+  "100 g plain flour",
+  "60 g rolled oats",
+  "80 g brown sugar",
+  "100 g butter, cold and diced",
+  "200 g greek yoghurt",
+]
+method = [
+  "Heat the oven to 190°C. Toss the berries with the white sugar and cornflour in a baking dish.",
+  "Rub the butter into the flour, oats and brown sugar until it clumps. Scatter over the berries.",
+  "Bake for 30 minutes until golden and bubbling. Serve with yoghurt.",
+]
+
+[[recipe]]
+slug = "crepes-lemon-sugar"
+title = "Crepes with lemon and sugar"
+cuisine = "french"
+servings = 4
+minutes = 30
+summary = "Thin, lacy pancakes with a squeeze of lemon and a sprinkle of sugar. Vegetarian."
+ingredients = [
+  "150 g plain flour",
+  "2 eggs",
+  "375 ml milk",
+  "30 g butter, melted",
+  "1 pinch salt",
+  "2 lemons, cut into wedges",
+  "4 tbsp caster sugar",
+]
+method = [
+  "Whisk the flour, eggs, milk, half the butter and the salt until smooth. Rest for 10 minutes.",
+  "Brush a frying pan with butter, pour in a thin layer of batter and swirl. Cook for 1 minute each side until golden in spots.",
+  "Repeat, then serve with lemon and sugar.",
+]
+
+[[recipe]]
+slug = "creme-brulee"
+title = "Creme brulee"
+cuisine = "french"
+servings = 6
+minutes = 270
+summary = "Silky vanilla custards under a crackly caramelised sugar top. Vegetarian."
+ingredients = [
+  "600 ml thickened cream",
+  "1 tsp vanilla extract",
+  "6 eggs, yolks only",
+  "80 g caster sugar",
+  "6 tbsp white sugar",
+]
+method = [
+  "Heat the oven to 150°C. Warm the cream and vanilla until steaming.",
+  "Whisk the yolks and caster sugar, then slowly whisk in the warm cream.",
+  "Pour into 6 ramekins in a deep tray, add hot water halfway up the sides and bake for 35 minutes until just set. Cool, then chill for at least 3 hours.",
+  "Sprinkle each with 1 tbsp white sugar and caramelise with a kitchen blowtorch or under a very hot grill for 2 minutes.",
+]
+
+[[recipe]]
+slug = "mango-coconut-rice"
+title = "Mango with coconut rice"
+cuisine = "thai"
+servings = 4
+minutes = 40
+summary = "Warm, sweet coconut rice with ripe mango and toasted sesame. Vegan."
+ingredients = [
+  "1 cup rice",
+  "400 ml coconut milk",
+  "250 ml water",
+  "60 g white sugar",
+  "1 pinch salt",
+  "2 mangoes, sliced",
+  "1 tsp sesame seeds",
+]
+method = [
+  "Simmer the rice with half the coconut milk, the water, half the sugar and the salt, covered, for 18 minutes until tender and creamy.",
+  "Warm the rest of the coconut milk and sugar until dissolved.",
+  "Toast the sesame seeds in a dry pan for 1 minute. Serve the rice with mango, the sweet coconut sauce and sesame.",
+]
+
+[[recipe]]
+slug = "eton-mess"
+title = "Eton mess"
+cuisine = "british"
+servings = 6
+minutes = 120
+summary = "Crushed homemade meringue folded with whipped cream and strawberries. Vegetarian."
+ingredients = [
+  "2 eggs, whites only",
+  "120 g caster sugar",
+  "300 ml thickened cream",
+  "500 g strawberries, hulled and halved",
+  "1 tbsp icing sugar",
+]
+method = [
+  "Heat the oven to 120°C. Whisk the egg whites to stiff peaks, then add the caster sugar a spoonful at a time until glossy.",
+  "Spoon onto a lined tray and bake for 1½ hours until crisp. Cool.",
+  "Toss half the strawberries with the icing sugar and crush lightly. Whip the cream.",
+  "Fold the crushed meringue, cream and both lots of strawberries together and serve straight away.",
+]
+
+[[recipe]]
+slug = "banana-choc-chip-muffins"
+title = "Banana choc chip muffins"
+cuisine = "australian"
+servings = 12
+minutes = 35
+summary = "Moist banana muffins studded with chocolate chips. Lunchbox gold. Vegetarian."
+ingredients = [
+  "3 bananas, mashed",
+  "100 g brown sugar",
+  "80 ml vegetable oil",
+  "1 egg",
+  "125 ml milk",
+  "250 g self-raising flour",
+  "1 tsp ground cinnamon",
+  "100 g chocolate chips",
+]
+method = [
+  "Heat the oven to 180°C and line a 12-hole muffin tin.",
+  "Mix the banana, sugar, oil, egg and milk. Stir in the flour, cinnamon and chocolate chips until just combined.",
+  "Spoon into the tin and bake for 22 minutes until risen and golden.",
+]
+
+[[recipe]]
+slug = "oat-sultana-cookies"
+title = "Oat and sultana cookies"
+cuisine = "american"
+servings = 20
+minutes = 30
+summary = "Chewy, cinnamon-spiced oat cookies with plump sultanas. Vegetarian."
+ingredients = [
+  "125 g butter, softened",
+  "150 g brown sugar",
+  "1 egg",
+  "1 tsp vanilla extract",
+  "125 g plain flour",
+  "1/2 tsp bicarbonate soda",
+  "1 tsp ground cinnamon",
+  "150 g rolled oats",
+  "100 g sultanas",
+]
+method = [
+  "Heat the oven to 180°C and line two trays.",
+  "Beat the butter and sugar until creamy, then the egg and vanilla. Stir in the flour, bicarbonate soda, cinnamon, oats and sultanas.",
+  "Roll into 20 balls, flatten slightly and bake for 12 minutes until golden at the edges.",
+]
+
+[[recipe]]
+slug = "peanut-butter-cookies"
+title = "Peanut butter cookies"
+cuisine = "american"
+servings = 18
+minutes = 25
+summary = "Soft, nutty cookies with the classic fork criss-cross. Vegetarian."
+ingredients = [
+  "250 g peanut butter",
+  "150 g brown sugar",
+  "1 egg",
+  "60 g plain flour",
+  "1/2 tsp bicarbonate soda",
+]
+method = [
+  "Heat the oven to 180°C and line two trays.",
+  "Mix everything to a soft dough. Roll into 18 balls and press each with a fork.",
+  "Bake for 10 minutes until just golden. Cool on the trays to firm up.",
+]
+
+[[recipe]]
+slug = "blondies"
+title = "Chocolate chip blondies"
+cuisine = "american"
+servings = 16
+minutes = 45
+summary = "Fudgy brown sugar bars with chocolate chips and a crackly top. Vegetarian."
+ingredients = [
+  "150 g butter, melted",
+  "220 g brown sugar",
+  "2 eggs",
+  "2 tsp vanilla extract",
+  "200 g plain flour",
+  "1 tsp baking powder",
+  "1 pinch salt",
+  "150 g chocolate chips",
+]
+method = [
+  "Heat the oven to 180°C and line a 20 cm square tin.",
+  "Whisk the butter and sugar, then the eggs and vanilla. Fold in the flour, baking powder, salt and chocolate chips.",
+  "Spread in the tin and bake for 28 minutes until golden and just set. Cool before cutting.",
+]
+
+[[recipe]]
+slug = "cinnamon-scrolls"
+title = "Cinnamon scrolls"
+cuisine = "american"
+servings = 12
+minutes = 150
+summary = "Soft yeasted scrolls swirled with butter, brown sugar and cinnamon, finished with icing. Vegetarian."
+ingredients = [
+  "500 g plain flour",
+  "2 tsp dried yeast",
+  "50 g white sugar",
+  "250 ml warm milk",
+  "1 egg",
+  "60 g butter, melted",
+  "80 g butter, softened",
+  "150 g brown sugar",
+  "1 tbsp ground cinnamon",
+  "150 g icing sugar",
+  "2 tbsp milk, extra",
+]
+method = [
+  "Mix the flour, yeast, white sugar, warm milk, egg and melted butter and knead for 8 minutes until smooth. Cover and rest for 1 hour until doubled.",
+  "Roll out to a 40 x 30 cm rectangle. Spread with the softened butter and sprinkle with the brown sugar and cinnamon.",
+  "Roll up from the long side, cut into 12 and pack into a lined tin. Rest for 30 minutes.",
+  "Heat the oven to 180°C and bake for 25 minutes until golden. Mix the icing sugar with the extra milk and drizzle over.",
+]
+
+[[recipe]]
+slug = "olive-oil-cake"
+title = "Olive oil and lemon cake with berries"
+cuisine = "italian"
+servings = 10
+minutes = 60
+summary = "A tender, fragrant cake made with olive oil, lemon and yoghurt, served with berries. Vegetarian."
+ingredients = [
+  "3 eggs",
+  "200 g caster sugar",
+  "2 lemons, zested and juiced",
+  "150 ml olive oil",
+  "150 g greek yoghurt",
+  "220 g self-raising flour",
+  "1 tbsp icing sugar",
+  "250 g strawberries, halved",
+]
+method = [
+  "Heat the oven to 170°C and line a 22 cm round tin.",
+  "Whisk the eggs and sugar until pale and thick. Whisk in the lemon zest and juice, oil and yoghurt, then fold in the flour.",
+  "Bake for 40 minutes until a skewer comes out clean. Cool, dust with icing sugar and serve with strawberries.",
+]
+
+[[recipe]]
+slug = "victoria-sponge"
+title = "Victoria sponge"
+cuisine = "british"
+servings = 10
+minutes = 60
+summary = "Two light butter sponges sandwiched with strawberry jam and whipped cream. Vegetarian."
+ingredients = [
+  "200 g butter, softened",
+  "200 g caster sugar",
+  "4 eggs",
+  "1 tsp vanilla extract",
+  "200 g self-raising flour",
+  "2 tbsp milk",
+  "150 g strawberry jam",
+  "300 ml thickened cream",
+  "1 tbsp icing sugar",
+]
+method = [
+  "Heat the oven to 180°C and line two 20 cm round tins.",
+  "Beat the butter and sugar until pale, then the eggs one at a time and the vanilla. Fold in the flour and milk.",
+  "Divide between the tins and bake for 22 minutes until golden and springy. Cool completely.",
+  "Whip the cream. Sandwich the cakes with jam and cream and dust the top with icing sugar.",
+]
+
+[[recipe]]
+slug = "pear-almond-tart"
+title = "Pear and almond tart"
+cuisine = "french"
+servings = 8
+minutes = 55
+summary = "Puff pastry spread with almond cream and topped with sliced pears. Vegetarian."
+ingredients = [
+  "1 sheet puff pastry",
+  "100 g almonds",
+  "60 g butter, softened",
+  "60 g caster sugar",
+  "1 egg",
+  "2 pears, thinly sliced",
+  "2 tbsp strawberry jam, warmed",
+]
+method = [
+  "Heat the oven to 200°C. Put the pastry on a lined tray and score a 2 cm border.",
+  "Blitz the almonds finely, then beat with the butter, sugar and egg. Spread inside the border.",
+  "Fan the pears on top and bake for 30 minutes until puffed and golden. Brush with the warm jam to glaze.",
+]
+
+[[recipe]]
+slug = "jam-drops"
+title = "Jam drops"
+cuisine = "australian"
+servings = 24
+minutes = 30
+summary = "Buttery little biscuits with a dollop of strawberry jam in the middle. Vegetarian."
+ingredients = [
+  "125 g butter, softened",
+  "100 g caster sugar",
+  "1 egg",
+  "1 tsp vanilla extract",
+  "250 g self-raising flour",
+  "80 g strawberry jam",
+]
+method = [
+  "Heat the oven to 180°C and line two trays.",
+  "Beat the butter and sugar until pale, then the egg and vanilla. Stir in the flour to a soft dough.",
+  "Roll into 24 balls, press a hollow in each with your thumb and fill with jam.",
+  "Bake for 12 minutes until lightly golden.",
+]
+
+[[recipe]]
+slug = "pikelets"
+title = "Pikelets"
+cuisine = "australian"
+servings = 20
+minutes = 25
+summary = "Little sweet pancakes, perfect warm with butter and jam. Vegetarian."
+ingredients = [
+  "150 g self-raising flour",
+  "2 tbsp caster sugar",
+  "1 egg",
+  "185 ml milk",
+  "20 g butter",
+  "60 g strawberry jam",
+]
+method = [
+  "Whisk the flour, sugar, egg and milk to a smooth, thick batter.",
+  "Melt a little butter in a frying pan and drop in tablespoons of batter. Cook for 1–2 minutes until bubbles appear, then flip and cook for 1 minute more.",
+  "Serve warm with butter and jam.",
+]
+
+[[recipe]]
+slug = "chocolate-mug-cake"
+title = "Chocolate mug cake"
+cuisine = "american"
+servings = 1
+minutes = 5
+summary = "A warm, gooey chocolate cake for one, made in the microwave. Vegetarian."
+ingredients = [
+  "4 tbsp self-raising flour",
+  "2 tbsp caster sugar",
+  "1 tbsp cocoa powder",
+  "3 tbsp milk",
+  "1 tbsp vegetable oil",
+  "1 tbsp chocolate chips",
+]
+method = [
+  "Mix everything in a large mug until smooth.",
+  "Microwave on high for 70–90 seconds until risen but still a little gooey in the middle. Cool for 1 minute.",
+]
+
+[[recipe]]
+slug = "baked-custard"
+title = "Baked egg custard"
+cuisine = "british"
+servings = 6
+minutes = 60
+summary = "A simple, wobbly vanilla custard baked with nutmeg. Comfort in a dish. Vegetarian."
+ingredients = [
+  "4 eggs",
+  "80 g caster sugar",
+  "600 ml milk",
+  "1 tsp vanilla extract",
+  "1/2 tsp ground nutmeg",
+]
+method = [
+  "Heat the oven to 160°C. Whisk the eggs, sugar, milk and vanilla and pour into a baking dish.",
+  "Sprinkle with nutmeg. Stand the dish in a tray of hot water and bake for 45 minutes until just set.",
+]
+
+[[recipe]]
+slug = "grilled-pineapple-honey-lime"
+title = "Grilled pineapple with honey and lime"
+cuisine = "australian"
+servings = 4
+minutes = 15
+summary = "Caramelised pineapple wedges with honey, lime and mint, served with yoghurt. Vegetarian."
+ingredients = [
+  "1 pineapple, cut into wedges",
+  "2 tbsp honey",
+  "1 lime, zested and juiced",
+  "1 bunch mint, leaves picked",
+  "200 g greek yoghurt",
+]
+method = [
+  "Grill or barbecue the pineapple for 3 minutes each side until charred.",
+  "Warm the honey with the lime juice and drizzle over. Scatter with lime zest and mint and serve with yoghurt.",
+]
+
+[[recipe]]
+slug = "red-wine-poached-pears"
+title = "Red wine poached pears"
+cuisine = "french"
+servings = 4
+minutes = 50
+summary = "Whole pears gently poached in spiced red wine syrup until ruby red. Vegan."
+ingredients = [
+  "4 pears, peeled",
+  "500 ml red wine",
+  "250 ml water",
+  "150 g white sugar",
+  "1 cinnamon stick",
+  "2 star anise",
+]
+method = [
+  "Bring the wine, water, sugar, cinnamon and star anise to a simmer, stirring until the sugar dissolves.",
+  "Add the pears and poach gently, turning now and then, for 30 minutes until tender.",
+  "Lift out the pears and boil the liquid for 10 minutes until syrupy. Spoon over the pears.",
+]
+
+[[recipe]]
+slug = "chocolate-ganache-tart"
+title = "Chocolate ganache tart"
+cuisine = "french"
+servings = 10
+minutes = 210
+summary = "A rich, silky dark chocolate filling in a crisp pastry shell. Vegetarian."
+ingredients = [
+  "1 sheet shortcrust pastry",
+  "300 ml thickened cream",
+  "250 g dark chocolate, chopped",
+  "30 g butter",
+  "1 pinch salt",
+  "250 g strawberries",
+]
+method = [
+  "Heat the oven to 180°C. Line a 23 cm tart tin with the pastry, prick, line with baking paper and pastry weights and blind-bake for 15 minutes. Remove the paper and weights and bake for 10 minutes more until golden. Cool.",
+  "Heat the cream until steaming, pour over the chocolate, butter and salt and stir until smooth.",
+  "Pour into the case and chill for at least 2 hours until set. Serve with strawberries.",
+]
+
+[[recipe]]
+slug = "coconut-macaroons"
+title = "Coconut macaroons"
+cuisine = "american"
+servings = 16
+minutes = 35
+summary = "Chewy golden coconut mounds, dipped in dark chocolate. Vegetarian."
+ingredients = [
+  "2 eggs, whites only",
+  "100 g caster sugar",
+  "1 tsp vanilla extract",
+  "200 g desiccated coconut",
+  "100 g dark chocolate, melted",
+]
+method = [
+  "Heat the oven to 170°C and line a tray.",
+  "Whisk the egg whites, sugar and vanilla until frothy, then stir in the coconut.",
+  "Shape into 16 mounds and bake for 18 minutes until golden. Cool, then dip the bases in the chocolate.",
+]
+
+[[recipe]]
+slug = "lemon-delicious"
+title = "Lemon delicious pudding"
+cuisine = "australian"
+servings = 6
+minutes = 55
+summary = "A light lemon sponge on top of a tangy lemon curd sauce, all from one batter. Vegetarian."
+ingredients = [
+  "60 g butter, softened",
+  "200 g caster sugar",
+  "3 eggs, separated",
+  "2 lemons, zested and juiced",
+  "50 g self-raising flour",
+  "300 ml milk",
+]
+method = [
+  "Heat the oven to 180°C and grease a 1.5 litre baking dish.",
+  "Beat the butter and sugar, then the egg yolks, lemon zest and juice. Stir in the flour, then the milk.",
+  "Whisk the egg whites to soft peaks and fold through.",
+  "Pour into the dish, stand in a tray of hot water and bake for 40 minutes until golden and set on top.",
+]
+
+[[recipe]]
+slug = "pineapple-upside-down-cake"
+title = "Pineapple upside-down cake"
+cuisine = "american"
+servings = 10
+minutes = 65
+summary = "Caramelised pineapple rings baked under a buttery cake, then flipped. Vegetarian."
+ingredients = [
+  "60 g butter, melted",
+  "80 g brown sugar",
+  "440 g canned pineapple, drained (rings)",
+  "125 g butter, softened",
+  "150 g caster sugar",
+  "2 eggs",
+  "200 g self-raising flour",
+  "125 ml milk",
+]
+method = [
+  "Heat the oven to 180°C. Pour the melted butter into a 22 cm round tin and sprinkle with the brown sugar. Arrange the pineapple on top.",
+  "Beat the softened butter and caster sugar until pale, then the eggs. Fold in the flour and milk and spread over the pineapple.",
+  "Bake for 45 minutes until a skewer comes out clean. Rest for 5 minutes, then turn out.",
+]
+
+[[recipe]]
+slug = "cinnamon-sugar-cookies"
+title = "Cinnamon sugar cookies"
+cuisine = "american"
+servings = 20
+minutes = 30
+summary = "Soft, crinkly butter cookies rolled in cinnamon sugar. Vegetarian."
+ingredients = [
+  "125 g butter, softened",
+  "150 g white sugar",
+  "1 egg",
+  "200 g plain flour",
+  "1 tsp baking powder",
+  "3 tbsp caster sugar",
+  "2 tsp ground cinnamon",
+]
+method = [
+  "Heat the oven to 180°C and line two trays.",
+  "Beat the butter and white sugar until pale, then the egg. Stir in the flour and baking powder.",
+  "Roll into 20 balls and roll in the caster sugar mixed with the cinnamon.",
+  "Bake for 10 minutes until puffed and just set. Cool on the trays.",
+]
+
+[[recipe]]
+slug = "damper"
+title = "Damper"
+cuisine = "australian"
+servings = 8
+minutes = 40
+summary = "A simple Australian bush bread with a crunchy crust. Great with butter and golden syrup. Vegetarian."
+ingredients = [
+  "450 g self-raising flour",
+  "1 tsp salt",
+  "60 g butter, cold and diced",
+  "250 ml milk",
+  "3 tbsp golden syrup",
+]
+method = [
+  "Heat the oven to 200°C. Rub the butter into the flour and salt, then stir in the milk to a soft dough.",
+  "Shape into a round on a floured tray, cut a cross on top and dust with flour.",
+  "Bake for 30 minutes until golden and hollow-sounding when tapped. Serve warm with golden syrup.",
+]
+
+[[recipe]]
+slug = "berry-yoghurt-bark"
+title = "Frozen berry yoghurt bark"
+cuisine = "australian"
+servings = 8
+minutes = 190
+summary = "Greek yoghurt swirled with honey and berries, frozen into snappable shards. Vegetarian."
+ingredients = [
+  "500 g greek yoghurt",
+  "2 tbsp honey",
+  "150 g frozen mixed berries",
+  "2 tbsp pepitas",
+  "40 g dark chocolate, chopped",
+]
+method = [
+  "Mix the yoghurt and honey and spread 1 cm thick on a lined tray.",
+  "Scatter with the berries, pepitas and chocolate.",
+  "Freeze for at least 3 hours until firm, then break into pieces. Keep frozen.",
+]
+
+[[recipe]]
+slug = "chocolate-truffles"
+title = "Dark chocolate truffles"
+cuisine = "french"
+servings = 20
+minutes = 150
+summary = "Rich two-ingredient ganache truffles rolled in cocoa. Vegetarian."
+ingredients = [
+  "200 g dark chocolate, chopped",
+  "125 ml thickened cream",
+  "3 tbsp cocoa powder",
+]
+method = [
+  "Heat the cream until steaming, pour over the chocolate and stir until smooth.",
+  "Chill for 2 hours until firm enough to scoop.",
+  "Roll into 20 balls and coat in cocoa. Keep in the fridge.",
+]

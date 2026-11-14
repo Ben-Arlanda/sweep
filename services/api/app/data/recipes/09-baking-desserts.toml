@@ -177,7 +177,7 @@ slug = "chocolate-mousse"
 title = "Chocolate mousse"
 cuisine = "french"
 servings = 6
-minutes = 25
+minutes = 265
 summary = "A light, rich dark chocolate mousse. Make it the day before."
 ingredients = [
   "200 g dark chocolate, chopped",

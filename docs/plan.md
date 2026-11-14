@@ -1,6 +1,6 @@
 # Sweep — Architecture & Implementation Plan
 
-Status: slices 0–4b merged (foundations; Households, invites, Clerk sign-in, account deletion; shared Shopping List with live updates and an offline retry queue; Ingredients and the Cabinet; the Zest + Kitchen Table design system, ADR 0007; Recipe Knowledge Base backend and Recipes screens). App shell (`feature/brand-and-motion`): welcome and "how it works" screens before sign-in, bottom tab bar, dark by default, rounded heroes, Urbanist. Visual polish is deferred until the app is feature-complete. Next: 4c growing the library to ~500 (ADR 0002, revised).
+Status: slices 0–4b merged (foundations; Households, invites, Clerk sign-in, account deletion; shared Shopping List with live updates and an offline retry queue; Ingredients and the Cabinet; the Zest + Kitchen Table design system, ADR 0007; Recipe Knowledge Base backend and Recipes screens). App shell (`feature/brand-and-motion`): welcome and "how it works" screens before sign-in, bottom tab bar, dark by default, rounded heroes, Urbanist. Visual polish is deferred until the app is feature-complete. 4c (`feature/recipe-library-growth`): library grown to 500 Seed Recipes, automated recipe checks gate CI, LLM reviewer + eval built (run on demand only). Next: slice 5, the LangGraph agent.
 Language follows [`CONTEXT.md`](../CONTEXT.md). Big decisions live in [`docs/adr/`](adr/).
 ⚠️ = unverified, check before relying on it.
 
@@ -226,7 +226,7 @@ Max 15 tool calls per turn, a LangGraph recursion limit, a 60s total turn timeou
    - Eval: `uv run python -m evals.ingredient_parsing [--llm]` (32 messy US-style lines). Latest: rules 47%; rules + Haiku 97–100% over 5 runs, 0 wrong links.
 3. Embed one document per recipe (title + summary + cuisine + Ingredient names) with Voyage `voyage-3.5` (1,024 dimensions), storing the model and a hash of the text, so only changed recipes are re-embedded. Rate limits (429) are retried with backoff.
 4. **Favourites** (ADR 0002, revised) use the same pipeline through several front doors: "what do you usually cook" matching at onboarding, pasted text, a photo, a link (only where robots.txt allows Sweep's user agent), or typing. Each ends at a review screen where AI-matched lines are marked for the Member to confirm. Imported text and images are **data, never instructions**.
-5. **Growing the library:** Claude drafts Seed Recipes, deterministic checks and an LLM reviewer flag problems, and a person approves flagged ones. Gap logs (searches and agent requests with no good match) decide what to write next.
+5. **Growing the library:** Claude drafts Seed Recipes, deterministic checks (`app/services/recipe_checks.py`, run in CI) and an LLM reviewer flag problems, and a person approves flagged ones. The reviewer costs money, so it only runs on request (`python -m evals.recipe_review --llm` measures it first). Gap logs (searches and agent requests with no good match) decide what to write next; they arrive with the agent in slice 5.
 
 ### Retrieval, built in stages and compared on the same evaluation set
 
@@ -320,7 +320,7 @@ Each slice is a feature branch and a focused PR that works end to end.
 | 3b | `feature/design-foundations` | Design tokens (colour roles, pastels, type, motion), core components, `/design` preview, restyled screens, WCAG 2.2 AA checks (ADR 0007) | (product: public-ready UI, accessibility) |
 | 4a | `feature/recipe-knowledge-base` | Seed Recipes (197), ingredient normalisation (rules + structured-output fallback, eval), Voyage embeddings, R1 search API | LLM engineering, RAG |
 | 4b | `feature/recipe-screens` | Recipes tab: browse, search, recipe detail with matched Ingredients | (product) |
-| 4c | `feature/recipe-library-growth` | ~500 Seed Recipes via draft → automated checks → LLM reviewer → approval; gap logging from search | Evaluation (LLM-as-judge) |
+| 4c | `feature/recipe-library-growth` | 500 Seed Recipes drafted in a Claude Code session → automated checks (CI gate) → LLM reviewer (opt-in, measured by an eval) → approval. Gap logging moved to slice 5, where agent requests also feed it | Evaluation (LLM-as-judge) |
 | 4d | `feature/favourites` | "What do you usually cook" onboarding, paste/photo/link/type import, shared review screen (after slice 6) | Multimodal input, AI security |
 | 5 | `feature/langgraph-agent` | Graph, read/compute/draft tools, validation loop, checkpointer, SSE to the app | Agentic AI, tool calling |
 | 6 | `feature/approvals` | Proposal, interrupt/resume, commit, audit log, Meal Plan, Cooked deduction | Human-in-the-loop, security |

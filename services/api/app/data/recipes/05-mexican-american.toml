@@ -100,8 +100,8 @@ ingredients = [
 ]
 method = [
   "Cook the rice. Rub the chicken with the spices and oil and pan-fry until cooked. Slice.",
-  "Warm the beans. Mix the corn, tomato, coriander and lime juice for a salsa.",
-  "Build bowls of rice, chicken, beans, salsa and avocado.",
+  "Warm the beans. Mix the corn, tomato, coriander and lime juice to spoon over the top.",
+  "Build bowls of rice, chicken, beans, the corn mix and avocado.",
 ]
 
 [[recipe]]
@@ -138,6 +138,7 @@ ingredients = [
   "1 tomato, diced",
   "1 red chilli, finely chopped",
   "1 bunch coriander, chopped",
+  "1/2 tsp salt",
 ]
 method = [
   "Mash the avocado with the lime juice.",

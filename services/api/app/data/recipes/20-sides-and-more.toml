@@ -1,0 +1,600 @@
+# Sides, breads, and mains from cuisines we had few of. Written for Sweep (licence: Sweep original).
+
+[[recipe]]
+slug = "crispy-smashed-potatoes"
+title = "Crispy smashed potatoes"
+cuisine = "australian"
+servings = 4
+minutes = 55
+summary = "Boiled baby potatoes squashed flat and roasted until shatteringly crisp. Vegan."
+ingredients = [
+  "1 kg potatoes, small",
+  "4 tbsp olive oil",
+  "1 tsp salt",
+  "2 sprigs rosemary, leaves picked",
+  "2 cloves garlic, crushed",
+]
+method = [
+  "Boil the potatoes for 15 minutes until tender. Drain and steam dry.",
+  "Heat the oven to 220°C. Squash each potato flat on an oiled tray with the bottom of a glass.",
+  "Drizzle with the oil, sprinkle with the salt, rosemary and garlic and roast for 30 minutes until deep golden and crisp.",
+]
+
+[[recipe]]
+slug = "gratin-dauphinois"
+title = "Potato gratin (dauphinois)"
+cuisine = "french"
+servings = 6
+minutes = 90
+summary = "Thin potato slices baked slowly in garlicky cream until tender and golden. Vegetarian."
+ingredients = [
+  "1.2 kg potatoes, very thinly sliced",
+  "300 ml thickened cream",
+  "250 ml milk",
+  "2 cloves garlic, crushed",
+  "1/2 tsp ground nutmeg",
+  "1 tsp salt",
+  "20 g butter",
+  "60 g gruyere, grated",
+]
+method = [
+  "Heat the oven to 160°C and butter a baking dish.",
+  "Warm the cream, milk, garlic, nutmeg and salt.",
+  "Layer the potatoes in the dish, pour over the cream and top with gruyere.",
+  "Bake for 75 minutes until the potatoes are tender and the top is golden.",
+]
+
+[[recipe]]
+slug = "honey-roast-carrots"
+title = "Honey and thyme roast carrots"
+cuisine = "australian"
+servings = 4
+minutes = 35
+summary = "Carrots roasted until sticky with honey and thyme. Vegetarian."
+ingredients = [
+  "800 g carrots, halved lengthways",
+  "2 tbsp olive oil",
+  "2 tbsp honey",
+  "1 bunch thyme, leaves picked",
+  "1/2 tsp salt",
+]
+method = [
+  "Heat the oven to 200°C. Toss the carrots with the oil, honey, thyme and salt.",
+  "Roast for 30 minutes, turning once, until tender and caramelised.",
+]
+
+[[recipe]]
+slug = "creamed-spinach"
+title = "Creamed spinach"
+cuisine = "american"
+servings = 4
+minutes = 15
+summary = "Silky spinach in a garlicky parmesan cream. Classic with steak. Vegetarian."
+ingredients = [
+  "500 g baby spinach",
+  "20 g butter",
+  "1 shallot, finely diced",
+  "1 clove garlic, crushed",
+  "125 ml thickened cream",
+  "30 g parmesan, grated",
+  "1/4 tsp ground nutmeg",
+]
+method = [
+  "Wilt the spinach in a large pan for 3 minutes, then squeeze out the liquid and chop.",
+  "Soften the shallot and garlic in the butter for 3 minutes. Add the cream and simmer for 2 minutes.",
+  "Stir in the spinach, parmesan and nutmeg until hot.",
+]
+
+[[recipe]]
+slug = "mexican-rice"
+title = "Mexican tomato rice"
+cuisine = "mexican"
+servings = 4
+minutes = 30
+summary = "Rice toasted then simmered with tomato, garlic and cumin. The perfect taco side. Vegan."
+ingredients = [
+  "1 1/2 cups rice",
+  "2 tbsp vegetable oil",
+  "1/2 onion, finely diced",
+  "2 cloves garlic, crushed",
+  "1 tsp ground cumin",
+  "3 tbsp tomato paste",
+  "750 ml vegetable stock",
+  "1 bunch coriander, chopped",
+]
+method = [
+  "Fry the rice in the oil for 4 minutes until lightly golden. Add the onion and garlic for 2 minutes, then the cumin and tomato paste.",
+  "Add the stock, bring to the boil, then cover and cook on low for 18 minutes. Rest for 5 minutes and fluff up with the coriander.",
+]
+
+[[recipe]]
+slug = "coconut-rice"
+title = "Fragrant coconut rice"
+cuisine = "malaysian"
+servings = 4
+minutes = 25
+summary = "Rice cooked in coconut milk with ginger and lemongrass. Vegan."
+ingredients = [
+  "1 1/2 cups rice",
+  "400 ml coconut milk",
+  "250 ml water",
+  "1 stalk lemongrass, bruised",
+  "10 g ginger, sliced",
+  "1/2 tsp salt",
+]
+method = [
+  "Rinse the rice until the water runs clear.",
+  "Bring everything to the boil, then cover and cook on low for 15 minutes. Rest for 5 minutes, remove the lemongrass and ginger and fluff up.",
+]
+
+[[recipe]]
+slug = "yoghurt-flatbreads"
+title = "Two-ingredient yoghurt flatbreads"
+cuisine = "middle-eastern"
+servings = 6
+minutes = 20
+summary = "Soft, puffy flatbreads from just self-raising flour and yoghurt. Vegetarian."
+ingredients = [
+  "300 g self-raising flour",
+  "300 g greek yoghurt",
+  "1 pinch salt",
+  "1 tbsp olive oil",
+]
+method = [
+  "Mix the flour, yoghurt and salt to a soft dough and knead briefly.",
+  "Divide into 6 and roll out thinly.",
+  "Cook in a hot, lightly oiled frying pan for 2 minutes each side until puffed and charred in spots.",
+]
+
+[[recipe]]
+slug = "charred-broccolini"
+title = "Charred broccolini with lemon and chilli"
+cuisine = "italian"
+servings = 4
+minutes = 15
+summary = "Broccolini blistered in a hot pan with garlic, chilli and lemon. Vegan."
+ingredients = [
+  "2 bunches broccolini",
+  "2 tbsp olive oil",
+  "2 cloves garlic, sliced",
+  "1/2 tsp chilli flakes",
+  "1 lemon, juiced",
+  "1/2 tsp salt",
+]
+method = [
+  "Fry the broccolini in the oil over high heat for 6 minutes, turning, until charred and tender.",
+  "Add the garlic and chilli for 1 minute, then squeeze over the lemon and season with the salt.",
+]
+
+[[recipe]]
+slug = "hasselback-potatoes"
+title = "Hasselback potatoes"
+cuisine = "swedish"
+servings = 4
+minutes = 70
+summary = "Potatoes sliced like an accordion and roasted with butter until the edges crisp. Vegetarian."
+ingredients = [
+  "8 potatoes, medium",
+  "50 g butter, melted",
+  "2 tbsp olive oil",
+  "1 tsp salt",
+  "30 g parmesan, grated",
+]
+method = [
+  "Heat the oven to 210°C. Cut thin slices into each potato, stopping before the bottom.",
+  "Brush with the butter and oil, letting it run between the slices, and sprinkle with salt.",
+  "Roast for 55 minutes, brushing again halfway, until golden and crisp. Sprinkle with parmesan for the last 5 minutes.",
+]
+
+[[recipe]]
+slug = "corn-herb-butter"
+title = "Corn on the cob with herb butter"
+cuisine = "american"
+servings = 4
+minutes = 15
+summary = "Sweet corn cobs slathered in garlic, chive and parsley butter. Vegetarian."
+ingredients = [
+  "4 corn cobs",
+  "50 g butter, softened",
+  "1 clove garlic, crushed",
+  "1 bunch chives, snipped",
+  "1 bunch parsley, chopped",
+  "1 pinch salt",
+]
+method = [
+  "Boil or barbecue the corn for 8 minutes until tender.",
+  "Mix the butter, garlic, herbs and salt and spread over the hot corn.",
+]
+
+[[recipe]]
+slug = "lemon-herb-couscous"
+title = "Lemon and herb couscous"
+cuisine = "middle-eastern"
+servings = 4
+minutes = 10
+summary = "Five-minute fluffy couscous with lemon, parsley, mint and pine nuts. Vegan."
+ingredients = [
+  "250 g couscous",
+  "250 ml boiling vegetable stock",
+  "2 tbsp olive oil",
+  "1 lemon, zested and juiced",
+  "1 bunch parsley, chopped",
+  "1 bunch mint, chopped",
+  "30 g pine nuts",
+]
+method = [
+  "Pour the boiling stock over the couscous, cover for 5 minutes and fluff up.",
+  "Toast the pine nuts in a dry pan for 3 minutes.",
+  "Stir through the oil, lemon, herbs and pine nuts.",
+]
+
+[[recipe]]
+slug = "german-potato-salad"
+title = "Warm German potato salad"
+cuisine = "german"
+servings = 6
+minutes = 30
+summary = "Warm potatoes in a tangy bacon, mustard and vinegar dressing with chives."
+ingredients = [
+  "1 kg potatoes, halved",
+  "4 rashers bacon, diced",
+  "1 onion, finely diced",
+  "60 ml white vinegar",
+  "125 ml chicken stock",
+  "1 tbsp dijon mustard",
+  "1 tsp white sugar",
+  "1 bunch chives, snipped",
+]
+method = [
+  "Boil the potatoes for 15 minutes until tender. Drain and slice.",
+  "Fry the bacon for 5 minutes until crisp, add the onion for 4 minutes, then the vinegar, stock, mustard and sugar. Simmer for 2 minutes.",
+  "Pour over the warm potatoes, toss gently and scatter with chives.",
+]
+
+[[recipe]]
+slug = "roasted-chickpeas"
+title = "Crunchy roasted chickpeas"
+cuisine = "middle-eastern"
+servings = 4
+minutes = 40
+summary = "Spiced chickpeas roasted until crunchy. A snack or a salad topper. Vegan."
+ingredients = [
+  "2 x 400 g cans chickpeas, drained and dried",
+  "2 tbsp olive oil",
+  "1 tsp paprika",
+  "1 tsp ground cumin",
+  "1/2 tsp salt",
+]
+method = [
+  "Heat the oven to 200°C. Toss the chickpeas with the oil, spices and salt.",
+  "Roast for 30 minutes, shaking the tray now and then, until crunchy. Cool on the tray.",
+]
+
+[[recipe]]
+slug = "pho-ga"
+title = "Chicken pho (pho ga)"
+cuisine = "vietnamese"
+servings = 4
+minutes = 75
+summary = "A clear, fragrant chicken broth with star anise and ginger, poured over rice noodles and herbs."
+ingredients = [
+  "800 g chicken thigh",
+  "2 litres chicken stock",
+  "1 onion, halved",
+  "30 g ginger, sliced",
+  "3 star anise",
+  "1 cinnamon stick",
+  "3 tbsp fish sauce",
+  "1 tsp white sugar",
+  "300 g rice noodles",
+  "150 g bean sprouts",
+  "1 bunch basil, leaves picked",
+  "1 bunch coriander, leaves picked",
+  "2 limes, cut into wedges",
+  "1 red chilli, sliced",
+]
+method = [
+  "Char the onion and ginger in a dry pan for 5 minutes. Add to the stock with the star anise and cinnamon and simmer for 20 minutes.",
+  "Add the chicken and simmer for 25 minutes until cooked through. Lift out and shred. Strain the broth and season with the fish sauce and sugar.",
+  "Soak the noodles in hot water until soft and drain.",
+  "Divide the noodles and chicken between bowls, pour over the hot broth and serve with bean sprouts, herbs, lime and chilli.",
+]
+
+[[recipe]]
+slug = "banh-xeo"
+title = "Crispy Vietnamese pancakes (banh xeo)"
+cuisine = "vietnamese"
+servings = 4
+minutes = 40
+summary = "Golden turmeric and coconut crepes filled with pork, prawns and bean sprouts, wrapped in lettuce."
+ingredients = [
+  "150 g plain flour",
+  "2 tbsp cornflour",
+  "1 tsp ground turmeric",
+  "200 ml coconut milk",
+  "250 ml water",
+  "3 spring onions, sliced",
+  "250 g pork mince",
+  "250 g prawns, peeled and halved",
+  "3 tbsp vegetable oil",
+  "200 g bean sprouts",
+  "1 lettuce, leaves separated",
+  "1 bunch mint, leaves picked",
+  "3 tbsp fish sauce",
+  "1 lime, juiced",
+  "1 tbsp white sugar",
+]
+method = [
+  "Whisk the flour, cornflour, turmeric, coconut milk and water to a thin batter. Stir in the spring onions and rest for 10 minutes.",
+  "Fry the pork and prawns in 1 tbsp oil for 5 minutes until the pork is cooked through and the prawns are pink. Remove.",
+  "Heat a little oil in a frying pan, pour in a thin layer of batter, scatter with some filling and bean sprouts, cover and cook for 3 minutes until crisp. Fold over and repeat.",
+  "Mix the fish sauce, lime juice and sugar for dipping. Wrap pieces in lettuce with mint and dip.",
+]
+
+[[recipe]]
+slug = "ayam-kecap"
+title = "Sweet soy chicken (ayam kecap)"
+cuisine = "indonesian"
+servings = 4
+minutes = 45
+summary = "Chicken simmered in kecap manis with garlic, ginger and chilli until sticky and glossy."
+ingredients = [
+  "1 kg chicken thigh, cut into large pieces",
+  "1 tbsp vegetable oil",
+  "1 onion, sliced",
+  "4 cloves garlic, crushed",
+  "1 tbsp ginger, grated",
+  "1 red chilli, sliced",
+  "5 tbsp kecap manis",
+  "1 tbsp soy sauce",
+  "250 ml water",
+  "1 lime, juiced",
+  "1 1/2 cups rice",
+]
+method = [
+  "Brown the chicken in the oil for 6 minutes. Add the onion, garlic, ginger and chilli for 3 minutes.",
+  "Add the kecap manis, soy sauce and water and simmer, uncovered, for 25 minutes until the chicken is cooked through and the sauce is sticky.",
+  "Cook the rice. Squeeze the lime over the chicken and serve.",
+]
+
+[[recipe]]
+slug = "hainanese-chicken-rice"
+title = "Hainanese chicken rice"
+cuisine = "malaysian"
+servings = 4
+minutes = 60
+summary = "Silky poached chicken with rice cooked in the broth, plus ginger and chilli sauces."
+ingredients = [
+  "800 g chicken thigh",
+  "1.5 litres chicken stock",
+  "40 g ginger, sliced, plus 2 tbsp grated",
+  "4 cloves garlic, crushed",
+  "4 spring onions",
+  "1 1/2 cups rice",
+  "1 tbsp vegetable oil",
+  "1 tsp sesame oil",
+  "2 red chillies, chopped",
+  "1 lime, juiced",
+  "2 tbsp soy sauce",
+  "1 cucumber, sliced",
+  "1 pinch salt",
+]
+method = [
+  "Simmer the chicken in the stock with the sliced ginger and 2 spring onions for 25 minutes until cooked through. Lift out and rub with the sesame oil. Keep the broth.",
+  "Fry half the garlic in the vegetable oil for 1 minute, add the rice, then 750 ml of the broth. Cover and cook on low for 15 minutes.",
+  "Mix the grated ginger and the rest of the spring onions, finely chopped, with 2 tbsp of the broth and a pinch of salt. Blitz the chillies with the rest of the garlic and the lime juice.",
+  "Slice the chicken and serve with the rice, cucumber, soy sauce, both sauces and a bowl of the hot broth.",
+]
+
+[[recipe]]
+slug = "pollo-al-ajillo"
+title = "Spanish garlic chicken (pollo al ajillo)"
+cuisine = "spanish"
+servings = 4
+minutes = 45
+summary = "Chicken pieces browned and simmered with lots of garlic, white wine and bay."
+ingredients = [
+  "1 kg chicken thigh",
+  "1/2 tsp salt",
+  "3 tbsp olive oil",
+  "12 cloves garlic, lightly crushed",
+  "2 bay leaves",
+  "1 tsp paprika",
+  "185 ml white wine",
+  "125 ml chicken stock",
+  "1 bunch parsley, chopped",
+  "1 baguette",
+]
+method = [
+  "Season the chicken with the salt and brown in the oil for 5 minutes each side. Add the garlic and bay leaves for 2 minutes.",
+  "Add the paprika, wine and stock and simmer, covered, for 20 minutes until the chicken is cooked through.",
+  "Scatter with parsley and serve with the baguette to mop up the sauce.",
+]
+
+[[recipe]]
+slug = "fideua"
+title = "Fideua (seafood noodle paella)"
+cuisine = "spanish"
+servings = 4
+minutes = 40
+summary = "Short pasta toasted then cooked paella-style with prawns, paprika and saffron."
+ingredients = [
+  "3 tbsp olive oil",
+  "300 g pasta, broken into short pieces",
+  "1 onion, diced",
+  "3 cloves garlic, crushed",
+  "1 capsicum, diced",
+  "2 tsp paprika",
+  "1 pinch saffron threads",
+  "2 tomatoes, grated",
+  "1 litre chicken stock",
+  "400 g prawns, peeled",
+  "1 lemon, cut into wedges",
+  "1 bunch parsley, chopped",
+]
+method = [
+  "Toast the pasta in 2 tbsp oil for 4 minutes until golden. Remove.",
+  "Soften the onion, garlic and capsicum in the rest of the oil for 6 minutes. Add the paprika, saffron and tomatoes for 2 minutes.",
+  "Add the pasta and stock and simmer for 10 minutes. Push the prawns in and cook for 4 minutes until pink and the liquid is absorbed.",
+  "Serve with lemon and parsley.",
+]
+
+[[recipe]]
+slug = "swedish-meatballs"
+title = "Swedish meatballs"
+cuisine = "swedish"
+servings = 4
+minutes = 45
+summary = "Tender beef and pork meatballs in a creamy gravy with mash and jam."
+ingredients = [
+  "250 g beef mince",
+  "250 g pork mince",
+  "40 g breadcrumbs",
+  "60 ml milk",
+  "1 egg",
+  "1/2 onion, grated",
+  "1/4 tsp ground nutmeg",
+  "30 g butter",
+  "2 tbsp plain flour",
+  "375 ml beef stock",
+  "125 ml thickened cream",
+  "1 tbsp soy sauce",
+  "800 g potatoes, peeled and chopped",
+  "3 tbsp strawberry jam",
+]
+method = [
+  "Soak the breadcrumbs in the milk, then mix with the minces, egg, onion and nutmeg. Roll into 24 balls.",
+  "Brown the meatballs in the butter for 8 minutes until cooked through. Remove.",
+  "Stir the flour into the pan, then the stock, cream and soy, and simmer for 3 minutes. Return the meatballs.",
+  "Boil the potatoes for 15 minutes and mash. Serve with the meatballs, gravy and a spoonful of jam.",
+]
+
+[[recipe]]
+slug = "lomo-saltado"
+title = "Lomo saltado (Peruvian beef stir-fry)"
+cuisine = "peruvian"
+servings = 4
+minutes = 40
+summary = "Beef, onion and tomato stir-fried with soy and vinegar, tossed with chips and served with rice."
+ingredients = [
+  "600 g beef steak, cut into strips",
+  "600 g potatoes, cut into chips",
+  "3 tbsp vegetable oil",
+  "1 red onion, cut into wedges",
+  "3 tomatoes, cut into wedges",
+  "3 cloves garlic, crushed",
+  "1 tsp ground cumin",
+  "3 tbsp soy sauce",
+  "2 tbsp red wine vinegar",
+  "1 bunch coriander, chopped",
+  "1 cup rice",
+]
+method = [
+  "Heat the oven to 220°C. Toss the chips in 1 tbsp oil and bake for 30 minutes. Cook the rice.",
+  "Sear the beef in the rest of the oil over very high heat in batches for 2 minutes until browned.",
+  "Add the onion, garlic and cumin for 2 minutes, then the tomatoes, soy and vinegar for 1 minute.",
+  "Toss with the chips and coriander and serve with the rice.",
+]
+
+[[recipe]]
+slug = "brazilian-black-bean-stew"
+title = "Brazilian black bean stew"
+cuisine = "brazilian"
+servings = 6
+minutes = 60
+summary = "A smoky, hearty stew of black beans, chorizo and bacon, served with rice and wilted greens."
+ingredients = [
+  "4 rashers bacon, diced",
+  "150 g chorizo, sliced",
+  "1 tbsp vegetable oil",
+  "1 onion, diced",
+  "3 cloves garlic, crushed",
+  "2 bay leaves",
+  "3 x 400 g cans black beans, drained",
+  "500 ml chicken stock",
+  "1 1/2 cups rice",
+  "200 g baby spinach",
+]
+method = [
+  "Fry the bacon and chorizo in the oil for 6 minutes until crisp. Add the onion and garlic for 5 minutes.",
+  "Add the bay leaves, beans and stock and simmer for 30 minutes, mashing some beans to thicken.",
+  "Cook the rice. Wilt the spinach in a hot pan for 2 minutes and serve with the stew and rice.",
+]
+
+[[recipe]]
+slug = "aloo-paratha"
+title = "Aloo paratha (potato-stuffed flatbreads)"
+cuisine = "indian"
+servings = 6
+minutes = 60
+summary = "Flaky flatbreads stuffed with spiced mashed potato, cooked in butter. Vegetarian."
+ingredients = [
+  "300 g plain flour",
+  "180 ml water",
+  "1/2 tsp salt",
+  "500 g potatoes, peeled and chopped",
+  "1 tsp ground cumin",
+  "1 tsp garam masala",
+  "1 red chilli, finely chopped",
+  "1 bunch coriander, chopped",
+  "40 g butter",
+  "200 g greek yoghurt",
+]
+method = [
+  "Mix the flour, water and salt to a soft dough and knead for 5 minutes. Rest for 15 minutes.",
+  "Boil the potatoes for 15 minutes, drain and mash with the spices, chilli and coriander.",
+  "Divide the dough into 6, roll each into a circle, put potato in the middle, gather the edges and roll out again gently.",
+  "Cook in a hot pan with a little butter for 2–3 minutes each side until golden. Serve with yoghurt.",
+]
+
+[[recipe]]
+slug = "scallion-pancakes"
+title = "Chinese spring onion pancakes"
+cuisine = "chinese"
+servings = 4
+minutes = 45
+summary = "Chewy, flaky flatbreads layered with sesame oil and spring onions. Vegan."
+ingredients = [
+  "300 g plain flour",
+  "185 ml boiling water",
+  "2 tbsp sesame oil",
+  "1 bunch spring onions, finely sliced",
+  "1/2 tsp salt",
+  "3 tbsp vegetable oil",
+  "2 tbsp soy sauce",
+  "1 tbsp rice vinegar",
+]
+method = [
+  "Stir the boiling water into the flour, then knead to a smooth dough. Rest for 15 minutes.",
+  "Divide into 4. Roll each out thinly, brush with sesame oil, sprinkle with spring onions and salt, roll up like a cigar, coil into a snail and roll flat again.",
+  "Fry in the vegetable oil for 3 minutes each side until golden and crisp.",
+  "Mix the soy and rice vinegar for dipping.",
+]
+
+[[recipe]]
+slug = "japchae-noodles"
+title = "Korean stir-fried noodles with beef"
+cuisine = "korean"
+servings = 4
+minutes = 30
+summary = "Japchae-style rice noodles tossed with beef, spinach, carrot and mushrooms in sweet soy and sesame."
+ingredients = [
+  "250 g rice vermicelli",
+  "300 g beef steak, thinly sliced",
+  "4 tbsp soy sauce",
+  "2 tbsp brown sugar",
+  "2 tbsp sesame oil",
+  "2 cloves garlic, crushed",
+  "1 tbsp vegetable oil",
+  "1 onion, sliced",
+  "1 carrot, cut into matchsticks",
+  "150 g mushrooms, sliced",
+  "150 g baby spinach",
+  "1 tbsp sesame seeds",
+]
+method = [
+  "Soak the noodles in hot water for 5 minutes, drain and cut into shorter lengths.",
+  "Mix the soy, sugar, sesame oil and garlic. Toss the beef in 2 tbsp of it.",
+  "Stir-fry the beef in the vegetable oil for 3 minutes until browned. Add the onion, carrot and mushrooms for 3 minutes, then the spinach.",
+  "Add the noodles and the rest of the sauce and toss for 2 minutes. Sprinkle with sesame seeds.",
+]

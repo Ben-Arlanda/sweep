@@ -32,6 +32,7 @@ ingredients = [
   "2 tbsp milk",
   "4 slices bread",
   "1 bunch chives, snipped",
+  "1 pinch salt",
 ]
 method = [
   "Whisk the eggs with the milk and a pinch of salt.",
@@ -212,7 +213,7 @@ servings = 4
 minutes = 15
 summary = "Quick lunch wraps with leftover chicken, avocado, lettuce, tomato and mayo."
 ingredients = [
-  "2 chicken breasts, cooked and shredded",
+  "2 chicken breasts",
   "4 tortillas",
   "1 avocado, sliced",
   "1/2 lettuce, shredded",
@@ -220,6 +221,7 @@ ingredients = [
   "3 tbsp mayonnaise",
 ]
 method = [
+  "Poach the chicken in simmering water for 15 minutes until cooked through. Cool and shred.",
   "Spread the tortillas with mayonnaise.",
   "Fill with chicken, avocado, lettuce and tomato, and roll up tightly.",
 ]
@@ -334,13 +336,14 @@ minutes = 25
 summary = "Pasta, chicken, cherry tomatoes, spinach and pesto. Great for lunchboxes."
 ingredients = [
   "300 g pasta",
-  "2 chicken breasts, cooked and shredded",
+  "2 chicken breasts",
   "250 g cherry tomatoes, halved",
   "60 g baby spinach",
   "100 g basil pesto",
   "30 g parmesan, grated",
 ]
 method = [
+  "Poach the chicken in simmering water for 15 minutes until cooked through. Cool and shred.",
   "Cook the pasta, drain, and cool under cold water.",
   "Toss with everything else.",
 ]

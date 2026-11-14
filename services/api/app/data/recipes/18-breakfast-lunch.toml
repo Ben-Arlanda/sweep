@@ -1,0 +1,596 @@
+# Breakfasts, lunches and lunchbox ideas. Written for Sweep (licence: Sweep original).
+
+[[recipe]]
+slug = "overnight-oats"
+title = "Overnight oats with berries"
+cuisine = "australian"
+servings = 4
+minutes = 490
+summary = "Oats soaked overnight in milk and yoghurt, topped with berries and honey. No cooking. Vegetarian."
+ingredients = [
+  "180 g rolled oats",
+  "500 ml milk",
+  "200 g greek yoghurt",
+  "2 tbsp honey",
+  "250 g frozen mixed berries",
+]
+method = [
+  "Mix the oats, milk, yoghurt and honey and divide between 4 jars.",
+  "Top with the berries, cover and refrigerate for 8 hours, or overnight.",
+]
+
+[[recipe]]
+slug = "bacon-egg-muffins"
+title = "Bacon and egg breakfast muffins"
+cuisine = "american"
+servings = 4
+minutes = 15
+summary = "Toasted English muffins stacked with crispy bacon, a fried egg and melted cheddar."
+ingredients = [
+  "4 english muffins, split",
+  "4 rashers bacon",
+  "4 eggs",
+  "1 tbsp butter",
+  "4 slices cheddar cheese",
+  "2 tbsp tomato sauce",
+]
+method = [
+  "Fry the bacon for 5 minutes until crisp.",
+  "Fry the eggs in the butter for 3 minutes until the whites are set. Toast the muffins.",
+  "Stack each muffin with cheddar, bacon, egg and a little tomato sauce.",
+]
+
+[[recipe]]
+slug = "banana-oat-pancakes"
+title = "Banana oat pancakes"
+cuisine = "american"
+servings = 4
+minutes = 20
+summary = "Soft, naturally sweet pancakes made with banana, oats and egg. Vegetarian."
+ingredients = [
+  "2 bananas",
+  "2 eggs",
+  "100 g rolled oats",
+  "125 ml milk",
+  "1 tsp baking powder",
+  "1 tsp ground cinnamon",
+  "20 g butter",
+  "2 tbsp maple syrup",
+]
+method = [
+  "Blend the bananas, eggs, oats, milk, baking powder and cinnamon until smooth. Rest for 5 minutes.",
+  "Cook spoonfuls in the butter over medium heat for 2 minutes each side until golden and cooked through.",
+  "Serve with maple syrup.",
+]
+
+[[recipe]]
+slug = "savoury-mince-toast"
+title = "Savoury mince on toast"
+cuisine = "australian"
+servings = 4
+minutes = 30
+summary = "A nostalgic breakfast or quick dinner of saucy beef mince with peas and carrot on buttered toast."
+ingredients = [
+  "500 g beef mince",
+  "1 tbsp vegetable oil",
+  "1 onion, diced",
+  "1 carrot, grated",
+  "1 tbsp plain flour",
+  "250 ml beef stock",
+  "2 tbsp tomato sauce",
+  "1 tbsp worcestershire sauce",
+  "150 g frozen peas",
+  "8 slices bread",
+  "30 g butter",
+]
+method = [
+  "Fry the mince, onion and carrot in the oil for 8 minutes until browned and cooked through.",
+  "Stir in the flour, then the stock, tomato sauce and worcestershire. Simmer for 10 minutes, adding the peas for the last 3 minutes.",
+  "Toast and butter the bread and spoon the mince over the top.",
+]
+
+[[recipe]]
+slug = "tofu-scramble"
+title = "Tofu scramble"
+cuisine = "american"
+servings = 2
+minutes = 15
+summary = "Crumbled tofu fried with turmeric, spinach and tomato. A vegan take on scrambled eggs."
+ingredients = [
+  "300 g tofu, crumbled",
+  "1 tbsp olive oil",
+  "1/2 onion, diced",
+  "1/2 tsp ground turmeric",
+  "1 tbsp soy sauce",
+  "100 g cherry tomatoes, halved",
+  "50 g baby spinach",
+  "4 slices bread, toasted",
+]
+method = [
+  "Soften the onion in the oil for 4 minutes.",
+  "Add the tofu, turmeric and soy and fry for 5 minutes until hot and golden in spots.",
+  "Add the tomatoes and spinach for 1 minute until wilted. Serve on the toast.",
+]
+
+[[recipe]]
+slug = "homemade-granola"
+title = "Honey nut granola"
+cuisine = "australian"
+servings = 10
+minutes = 40
+summary = "Crunchy clusters of oats, nuts and coconut baked with honey. Keeps for two weeks. Vegetarian."
+ingredients = [
+  "300 g rolled oats",
+  "100 g almonds, chopped",
+  "60 g pepitas",
+  "40 g desiccated coconut",
+  "1 tsp ground cinnamon",
+  "125 ml honey",
+  "60 ml vegetable oil",
+  "80 g sultanas",
+]
+method = [
+  "Heat the oven to 160°C. Mix the oats, almonds, pepitas, coconut and cinnamon.",
+  "Warm the honey and oil, pour over and mix well. Spread on a lined tray.",
+  "Bake for 25 minutes, stirring once, until golden. Cool on the tray to crisp up, then stir in the sultanas.",
+]
+
+[[recipe]]
+slug = "garlic-mushrooms-toast"
+title = "Garlic mushrooms on toast"
+cuisine = "british"
+servings = 2
+minutes = 15
+summary = "Buttery mushrooms with garlic and thyme on thick toast. Vegetarian."
+ingredients = [
+  "300 g mushrooms, sliced",
+  "30 g butter",
+  "2 cloves garlic, crushed",
+  "1 bunch thyme, leaves picked",
+  "1 pinch salt",
+  "4 slices bread",
+  "1 bunch parsley, chopped",
+]
+method = [
+  "Fry the mushrooms in the butter over high heat for 6 minutes until golden.",
+  "Add the garlic, thyme and salt for 1 minute.",
+  "Toast the bread, pile on the mushrooms and scatter with parsley.",
+]
+
+[[recipe]]
+slug = "apple-cinnamon-baked-oats"
+title = "Apple and cinnamon baked oats"
+cuisine = "australian"
+servings = 6
+minutes = 45
+summary = "A sliceable, cake-like breakfast of oats, apple and cinnamon. Make ahead for the week. Vegetarian."
+ingredients = [
+  "200 g rolled oats",
+  "1 tsp baking powder",
+  "2 tsp ground cinnamon",
+  "2 apples, grated",
+  "2 eggs",
+  "500 ml milk",
+  "3 tbsp maple syrup",
+  "40 g walnuts, chopped",
+]
+method = [
+  "Heat the oven to 180°C. Mix the oats, baking powder, cinnamon and apple in a baking dish.",
+  "Whisk the eggs, milk and maple syrup and pour over. Scatter with walnuts.",
+  "Bake for 35 minutes until set and golden.",
+]
+
+[[recipe]]
+slug = "sweet-potato-hash-eggs"
+title = "Sweet potato hash with fried eggs"
+cuisine = "american"
+servings = 4
+minutes = 30
+summary = "Crispy sweet potato, capsicum and onion with spinach and runny eggs. Vegetarian."
+ingredients = [
+  "2 sweet potatoes, diced small",
+  "2 tbsp olive oil",
+  "1 onion, diced",
+  "1 capsicum, diced",
+  "1 tsp paprika",
+  "100 g baby spinach",
+  "4 eggs",
+  "1 avocado, sliced",
+]
+method = [
+  "Fry the sweet potato in the oil for 12 minutes until tender and crisp at the edges.",
+  "Add the onion, capsicum and paprika for 5 minutes, then the spinach until wilted.",
+  "Make 4 hollows, crack in the eggs, cover and cook for 4 minutes until the whites are set. Serve with avocado.",
+]
+
+[[recipe]]
+slug = "cheese-veg-scrolls"
+title = "Cheese and vegetable scrolls"
+cuisine = "australian"
+servings = 12
+minutes = 40
+summary = "Soft scone-dough scrolls rolled with cheese, grated zucchini and carrot. Lunchbox-friendly. Vegetarian."
+ingredients = [
+  "300 g self-raising flour",
+  "50 g butter, cold and diced",
+  "200 ml milk",
+  "3 tbsp tomato paste",
+  "1 zucchini, grated and squeezed",
+  "1 carrot, grated",
+  "150 g cheddar cheese, grated",
+]
+method = [
+  "Heat the oven to 200°C. Rub the butter into the flour, then stir in the milk to a soft dough.",
+  "Roll out to a 30 x 25 cm rectangle. Spread with tomato paste and scatter with the zucchini, carrot and most of the cheese.",
+  "Roll up from the long side, cut into 12 slices and pack into a lined tin. Top with the rest of the cheese.",
+  "Bake for 22 minutes until risen and golden.",
+]
+
+[[recipe]]
+slug = "ham-cheese-spinach-muffins"
+title = "Ham, cheese and spinach muffins"
+cuisine = "australian"
+servings = 12
+minutes = 35
+summary = "Savoury muffins packed with ham, cheddar and spinach. Freeze well for lunches."
+ingredients = [
+  "300 g self-raising flour",
+  "150 g cheddar cheese, grated",
+  "150 g ham, diced",
+  "60 g baby spinach, chopped",
+  "2 eggs",
+  "250 ml milk",
+  "80 ml vegetable oil",
+]
+method = [
+  "Heat the oven to 190°C and line a 12-hole muffin tin.",
+  "Mix the flour, most of the cheese, the ham and spinach. Whisk the eggs, milk and oil and stir in until just combined.",
+  "Spoon into the tin, top with the rest of the cheese and bake for 22 minutes until golden and cooked through.",
+]
+
+[[recipe]]
+slug = "tuna-melts"
+title = "Tuna melts"
+cuisine = "american"
+servings = 4
+minutes = 15
+summary = "Creamy tuna, celery and spring onion on toast under bubbling cheddar."
+ingredients = [
+  "2 x 185 g cans canned tuna, drained",
+  "3 tbsp mayonnaise",
+  "1 stalk celery, finely diced",
+  "2 spring onions, sliced",
+  "1 lemon, juiced",
+  "8 slices bread",
+  "150 g cheddar cheese, grated",
+]
+method = [
+  "Mix the tuna, mayonnaise, celery, spring onions and lemon juice.",
+  "Toast the bread, spread with the tuna and top with cheddar.",
+  "Grill for 3 minutes until the cheese is bubbling.",
+]
+
+[[recipe]]
+slug = "blt-sandwiches"
+title = "BLT sandwiches"
+cuisine = "american"
+servings = 4
+minutes = 15
+summary = "Crispy bacon, crunchy lettuce and ripe tomato on toast with mayonnaise."
+ingredients = [
+  "8 rashers bacon",
+  "8 slices bread",
+  "4 tbsp mayonnaise",
+  "1 lettuce, leaves separated",
+  "3 tomatoes, sliced",
+  "1 pinch salt",
+]
+method = [
+  "Fry the bacon for 6 minutes until crisp.",
+  "Toast the bread and spread with mayonnaise.",
+  "Fill with lettuce, tomato sprinkled with salt, and bacon.",
+]
+
+[[recipe]]
+slug = "green-smoothie"
+title = "Green breakfast smoothie"
+cuisine = "australian"
+servings = 2
+minutes = 5
+summary = "Spinach, banana, mango and oats blended with milk. Sweet enough that kids drink it. Vegetarian."
+ingredients = [
+  "50 g baby spinach",
+  "1 banana",
+  "1 mango, flesh chopped",
+  "30 g rolled oats",
+  "375 ml milk",
+  "1 tsp honey",
+]
+method = [
+  "Blend everything until smooth.",
+]
+
+[[recipe]]
+slug = "breakfast-tacos"
+title = "Breakfast tacos"
+cuisine = "mexican"
+servings = 4
+minutes = 20
+summary = "Soft scrambled eggs with chorizo, avocado and salsa in warm tortillas."
+ingredients = [
+  "100 g chorizo, diced",
+  "6 eggs, beaten",
+  "1 tbsp butter",
+  "8 tortillas",
+  "1 avocado, sliced",
+  "100 g tomato salsa",
+  "1 bunch coriander, chopped",
+]
+method = [
+  "Fry the chorizo for 4 minutes until crisp. Remove.",
+  "Scramble the eggs in the butter over low heat for 3 minutes until just set. Fold in the chorizo.",
+  "Warm the tortillas and fill with the eggs, avocado, salsa and coriander.",
+]
+
+[[recipe]]
+slug = "dutch-baby"
+title = "Dutch baby pancake"
+cuisine = "american"
+servings = 4
+minutes = 30
+summary = "A big puffy oven pancake with lemon, icing sugar and berries. Vegetarian."
+ingredients = [
+  "3 eggs",
+  "125 g plain flour",
+  "250 ml milk",
+  "1 tbsp white sugar",
+  "40 g butter",
+  "1 lemon, cut into wedges",
+  "2 tbsp icing sugar",
+  "125 g blueberries",
+]
+method = [
+  "Heat the oven to 220°C with a 25 cm ovenproof frying pan inside.",
+  "Blend the eggs, flour, milk and sugar until smooth.",
+  "Melt the butter in the hot pan, pour in the batter and bake for 18 minutes until puffed and golden. Don't open the oven.",
+  "Dust with icing sugar and serve with lemon and blueberries.",
+]
+
+[[recipe]]
+slug = "potato-rosti-eggs"
+title = "Potato rosti with eggs"
+cuisine = "swiss"
+servings = 2
+minutes = 30
+summary = "A crisp, golden grated potato cake topped with fried eggs and chives. Vegetarian."
+ingredients = [
+  "500 g potatoes, grated and squeezed dry",
+  "1/2 tsp salt",
+  "40 g butter",
+  "1 tbsp vegetable oil",
+  "2 eggs",
+  "1 bunch chives, snipped",
+]
+method = [
+  "Toss the potato with the salt.",
+  "Heat half the butter and the oil in a frying pan, press in the potato and cook over medium heat for 10 minutes until golden underneath.",
+  "Slide onto a plate, flip back into the pan with the rest of the butter and cook for 8 minutes more until crisp and cooked through.",
+  "Fry the eggs for 3 minutes until the whites are set and serve on the rosti with chives.",
+]
+
+[[recipe]]
+slug = "ricotta-hotcakes"
+title = "Ricotta hotcakes with banana and honey"
+cuisine = "australian"
+servings = 4
+minutes = 25
+summary = "The cafe classic: light, fluffy ricotta hotcakes with banana and honey butter. Vegetarian."
+ingredients = [
+  "250 g ricotta",
+  "3 eggs, separated",
+  "185 ml milk",
+  "150 g plain flour",
+  "1 tsp baking powder",
+  "1 tbsp white sugar",
+  "40 g butter",
+  "2 bananas, sliced",
+  "3 tbsp honey",
+]
+method = [
+  "Mix the ricotta, egg yolks and milk, then the flour, baking powder and sugar.",
+  "Whisk the egg whites to soft peaks and fold through gently.",
+  "Cook large spoonfuls in a little of the butter over medium heat for 3 minutes each side until golden and cooked through.",
+  "Melt the rest of the butter with the honey and serve over the hotcakes with banana.",
+]
+
+[[recipe]]
+slug = "chicken-pesto-toastie"
+title = "Chicken, pesto and mozzarella toasties"
+cuisine = "italian"
+servings = 4
+minutes = 25
+summary = "Toasted sandwiches of chicken, basil pesto, tomato and melting mozzarella."
+ingredients = [
+  "2 chicken breasts",
+  "1 tbsp olive oil",
+  "8 slices bread",
+  "4 tbsp basil pesto",
+  "2 tomatoes, sliced",
+  "150 g mozzarella, sliced",
+  "30 g butter, softened",
+]
+method = [
+  "Fry the chicken in the oil for 6–7 minutes each side until cooked through. Rest, then slice.",
+  "Spread the bread with pesto, fill with chicken, tomato and mozzarella, and butter the outsides.",
+  "Cook in a frying pan for 3 minutes each side until golden and melted.",
+]
+
+[[recipe]]
+slug = "caprese-baguette"
+title = "Caprese baguette"
+cuisine = "italian"
+servings = 4
+minutes = 10
+summary = "A crusty baguette filled with tomato, mozzarella, basil and pesto. Vegetarian."
+ingredients = [
+  "1 baguette",
+  "3 tbsp basil pesto",
+  "3 tomatoes, sliced",
+  "250 g mozzarella, sliced",
+  "1 bunch basil, leaves picked",
+  "1 tbsp balsamic vinegar",
+]
+method = [
+  "Split the baguette and spread with pesto.",
+  "Layer the tomato, mozzarella and basil, drizzle with balsamic and cut into 4.",
+]
+
+[[recipe]]
+slug = "pea-ham-mini-frittatas"
+title = "Pea and ham mini frittatas"
+cuisine = "australian"
+servings = 12
+minutes = 30
+summary = "Bite-sized egg cups with ham, peas and cheese. Great for lunchboxes."
+ingredients = [
+  "8 eggs",
+  "125 ml milk",
+  "150 g ham, diced",
+  "100 g frozen peas",
+  "80 g cheddar cheese, grated",
+  "2 spring onions, sliced",
+]
+method = [
+  "Heat the oven to 180°C and grease a 12-hole muffin tin.",
+  "Whisk the eggs and milk. Divide the ham, peas, cheese and spring onions between the holes and pour over the egg.",
+  "Bake for 20 minutes until puffed and set.",
+]
+
+[[recipe]]
+slug = "curried-chicken-rolls"
+title = "Curried chicken salad rolls"
+cuisine = "australian"
+servings = 4
+minutes = 25
+summary = "Poached chicken in a mild curried mayonnaise with celery and sultanas, in soft rolls."
+ingredients = [
+  "2 chicken breasts",
+  "4 tbsp mayonnaise",
+  "1 tsp curry powder",
+  "1 stalk celery, finely diced",
+  "40 g sultanas",
+  "4 bread rolls",
+  "1 lettuce, shredded",
+]
+method = [
+  "Poach the chicken in simmering water for 15 minutes until cooked through. Cool and shred.",
+  "Mix the mayonnaise and curry powder, then the chicken, celery and sultanas.",
+  "Fill the rolls with lettuce and the chicken.",
+]
+
+[[recipe]]
+slug = "cheese-tomato-jaffles"
+title = "Cheese and tomato jaffles"
+cuisine = "australian"
+servings = 4
+minutes = 15
+summary = "Sealed toasted sandwiches oozing with melted cheddar and tomato. Vegetarian."
+ingredients = [
+  "8 slices bread",
+  "30 g butter, softened",
+  "200 g cheddar cheese, grated",
+  "2 tomatoes, sliced",
+  "1 pinch salt",
+]
+method = [
+  "Butter the outside of each slice.",
+  "Fill with cheddar and tomato sprinkled with salt.",
+  "Cook in a jaffle iron or sandwich press for 4 minutes until golden and melted.",
+]
+
+[[recipe]]
+slug = "prawn-cocktail-rolls"
+title = "Prawn cocktail rolls"
+cuisine = "australian"
+servings = 4
+minutes = 10
+summary = "Cooked prawns in a classic seafood sauce with crisp lettuce in soft rolls."
+ingredients = [
+  "500 g cooked prawns, peeled",
+  "4 tbsp mayonnaise",
+  "1 tbsp tomato sauce",
+  "1 tsp worcestershire sauce",
+  "1 lemon, juiced",
+  "4 bread rolls",
+  "1 lettuce, shredded",
+]
+method = [
+  "Mix the mayonnaise, tomato sauce, worcestershire and lemon juice.",
+  "Toss the prawns through the sauce.",
+  "Fill the rolls with lettuce and the prawns.",
+]
+
+[[recipe]]
+slug = "kimchi-egg-toast"
+title = "Kimchi and fried egg toast"
+cuisine = "korean"
+servings = 2
+minutes = 10
+summary = "Buttery toast topped with warm kimchi, cheese and a crispy-edged fried egg."
+ingredients = [
+  "2 slices bread",
+  "20 g butter",
+  "100 g kimchi, chopped",
+  "40 g cheddar cheese, grated",
+  "2 eggs",
+  "1 spring onion, sliced",
+]
+method = [
+  "Fry the kimchi in half the butter for 2 minutes.",
+  "Fry the eggs in the rest of the butter for 3 minutes until the whites are set and the edges crisp.",
+  "Toast the bread, top with the kimchi, cheddar and egg, and scatter with spring onion.",
+]
+
+[[recipe]]
+slug = "bliss-balls"
+title = "Choc-date bliss balls"
+cuisine = "australian"
+servings = 20
+minutes = 15
+summary = "No-bake snack balls of dates, oats, cocoa and coconut. Vegan."
+ingredients = [
+  "250 g dates, pitted",
+  "100 g rolled oats",
+  "80 g almonds",
+  "3 tbsp cocoa powder",
+  "2 tbsp maple syrup",
+  "40 g desiccated coconut",
+]
+method = [
+  "Soak the dates in boiling water for 5 minutes and drain.",
+  "Blitz the dates, oats, almonds, cocoa and maple syrup until it clumps together.",
+  "Roll into 20 balls and coat in the coconut. Keep in the fridge.",
+]
+
+[[recipe]]
+slug = "egg-bacon-pie"
+title = "Egg and bacon pie"
+cuisine = "australian"
+servings = 6
+minutes = 60
+summary = "A picnic classic: whole eggs and bacon baked between puff pastry."
+ingredients = [
+  "2 sheets puff pastry",
+  "6 rashers bacon, chopped",
+  "1 onion, diced",
+  "100 g frozen peas",
+  "7 eggs",
+  "1 bunch parsley, chopped",
+  "1 egg, beaten, extra",
+]
+method = [
+  "Heat the oven to 200°C. Fry the bacon and onion for 6 minutes. Cool.",
+  "Line a pie dish with one pastry sheet. Scatter in the bacon, onion, peas and parsley.",
+  "Crack in the 7 eggs, piercing a few yolks, top with the second sheet and seal. Brush with the extra egg.",
+  "Bake for 40 minutes until golden and the eggs are set. Cool a little before slicing.",
+]
