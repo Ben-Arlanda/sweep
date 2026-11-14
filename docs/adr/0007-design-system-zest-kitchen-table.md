@@ -20,6 +20,7 @@ A **code-first** design system inside the client. There's no Figma library or St
   - Five pastels (butter, blush, mint, sky, lilac) give each list, Member and item its own colour, picked by a stable hash of its id (`tintFor`), so Bob is the same colour on every phone.
   - Quantity pills use a deeper shade of the item's own pastel ("matched tint").
   - Cabinet statuses (Confirmed, Estimated, Unknown, Run out) have their own colours, and Unknown is dashed, so a status is never shown by colour alone and never mistaken for an action.
+- **Food thumbnails:** every food item and recipe shows a food emoji on its own pastel square (`FoodThumb`). The emoji are chosen in the app (`theme/foodEmoji.ts`), like the tints: every Ingredient has one, with a category fallback, and recipes get one from words in their title. A test reads the API's Ingredient list and Seed Recipes and fails if any lacks a specific emoji. Only emoji from Unicode 13 (2020) or earlier, so older phones don't show empty boxes. Real food photos can replace them later without changing screens. *(Added 2026-11-14.)*
 - **Type:** Bricolage Grotesque (chunky display) for headings, DM Sans for everything else. Each weight is its own font family, because on Android a custom family plus `fontWeight` can fall back to the system font.
 - **Motion** (Reanimated 4, on the UI thread): one springy feel.
   - Buttons shrink slightly while pressed.

@@ -181,9 +181,19 @@ def _filtered(query: Select[Recipe], filters: RecipeFilters) -> Select[Recipe]:
 
 
 async def list_recipes(
-    session: AsyncSession, household_id: uuid.UUID, filters: RecipeFilters, limit: int
+    session: AsyncSession,
+    household_id: uuid.UUID,
+    filters: RecipeFilters,
+    limit: int,
+    offset: int = 0,
 ) -> list[Recipe]:
-    query = _filtered(_visible_to(household_id), filters).order_by(Recipe.title).limit(limit)
+    # Ordered by title, then id: a stable order, so pages never repeat or skip a recipe.
+    query = (
+        _filtered(_visible_to(household_id), filters)
+        .order_by(Recipe.title, Recipe.id)
+        .limit(limit)
+        .offset(offset)
+    )
     return list((await session.execute(query)).scalars())
 
 

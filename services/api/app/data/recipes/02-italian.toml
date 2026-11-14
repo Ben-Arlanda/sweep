@@ -150,7 +150,7 @@ ingredients = [
   "2 carrots, diced",
   "2 sticks celery, diced",
   "2 cloves garlic, crushed",
-  "400 g can canned tomatoes",
+  "400 g can diced tomatoes",
   "1.5 litres vegetable stock",
   "400 g can cannellini beans, drained",
   "1 zucchini, diced",
@@ -196,7 +196,7 @@ ingredients = [
   "1 onion, sliced",
   "1 capsicum, sliced",
   "2 cloves garlic, crushed",
-  "400 g can canned tomatoes",
+  "400 g can diced tomatoes",
   "125 ml chicken stock",
   "80 g kalamata olives",
   "1 tsp dried oregano",
@@ -219,7 +219,7 @@ ingredients = [
   "3 tbsp olive oil",
   "4 cloves garlic, sliced",
   "1 tsp chilli flakes",
-  "2 x 400 g cans canned tomatoes",
+  "2 x 400 g cans diced tomatoes",
   "1 bunch parsley, chopped",
 ]
 method = [
@@ -378,7 +378,7 @@ ingredients = [
   "1 carrot, diced",
   "2 sticks celery, diced",
   "250 ml white wine",
-  "400 g can canned tomatoes",
+  "400 g can diced tomatoes",
   "250 ml beef stock",
   "1 lemon, zested",
 ]

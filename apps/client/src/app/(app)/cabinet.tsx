@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 
+import { FoodThumb } from '@/components/FoodThumb';
 import { StatusBadge } from '@/components/Pill';
 import { Button, Card, ErrorText, Field, Loading, Screen, SectionLabel, Text } from '@/components/ui';
 import { displayName, formatAmount } from '@/features/cabinet/format';
 import { useCabinet, useCabinetActions, useIngredientSearch } from '@/lib/api/cabinet';
 import type { components } from '@/lib/api/schema';
+import { ingredientEmoji } from '@/theme/foodEmoji';
 import { tintFor } from '@/theme/tint';
 import { useTheme } from '@/theme/useTheme';
 
@@ -196,7 +198,7 @@ function TrackedRow({ item, actions }: { item: Tracked; actions: Actions }) {
       }}
       style={({ pressed }) => [rowStyle(t), { opacity: pressed ? 0.75 : 1 }]}
     >
-      <Thumb name={item.ingredient.name} />
+      <FoodThumb emoji={ingredientEmoji(item.ingredient)} tint={tintFor(item.ingredient.name)} />
       <View style={{ flex: 1, gap: 2 }}>
         <Text variant="label">{displayName(item.ingredient.name)}</Text>
         <Text variant="caption" muted>
@@ -213,7 +215,10 @@ function StapleRow({ staple, actions }: { staple: Staple; actions: Actions }) {
   const id = staple.ingredient.id;
   return (
     <View style={rowStyle(t)}>
-      <Thumb name={staple.ingredient.name} />
+      <FoodThumb
+        emoji={ingredientEmoji(staple.ingredient)}
+        tint={tintFor(staple.ingredient.name)}
+      />
       <View style={{ flex: 1, gap: 4 }}>
         <Text variant="label">{displayName(staple.ingredient.name)}</Text>
         {!staple.have ? (
@@ -258,27 +263,4 @@ function rowStyle(t: ReturnType<typeof useTheme>) {
     paddingHorizontal: t.space.sm,
     boxShadow: t.shadow.card,
   };
-}
-
-/** The Ingredient's own pastel and initial. Decorative, so hidden from screen readers. */
-function Thumb({ name }: { name: string }) {
-  const t = useTheme();
-  const tint = t.tints[tintFor(name)];
-  return (
-    <View
-      aria-hidden
-      style={{
-        width: 40,
-        height: 40,
-        borderRadius: t.radius.sm + 4,
-        backgroundColor: tint.bg,
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <Text variant="heading" style={{ color: tint.text }}>
-        {name.charAt(0).toUpperCase()}
-      </Text>
-    </View>
-  );
 }

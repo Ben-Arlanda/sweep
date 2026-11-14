@@ -1,6 +1,6 @@
 # Sweep — Architecture & Implementation Plan
 
-Status: slices 0–3b merged (foundations; Households, invites, Clerk sign-in, account deletion; shared Shopping List with live updates and an offline retry queue; Ingredients and the Cabinet; the Zest + Kitchen Table design system, ADR 0007). Slice 4 (Recipe Knowledge Base) in progress: backend (4a, `feature/recipe-knowledge-base`) in review; next 4b Recipes screens, then 4c growing the library to ~500 (ADR 0002, revised).
+Status: slices 0–3b merged (foundations; Households, invites, Clerk sign-in, account deletion; shared Shopping List with live updates and an offline retry queue; Ingredients and the Cabinet; the Zest + Kitchen Table design system, ADR 0007). Slice 4 (Recipe Knowledge Base) in progress: 4a merged (PR #10). 4b Recipes screens (`feature/recipe-screens`) built: browse, search with time filters, recipe detail checked against the Cabinet, food emoji thumbnails everywhere. Next: 4c growing the library to ~500 (ADR 0002, revised).
 Language follows [`CONTEXT.md`](../CONTEXT.md). Big decisions live in [`docs/adr/`](adr/).
 ⚠️ = unverified, check before relying on it.
 
