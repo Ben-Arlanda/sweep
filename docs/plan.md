@@ -1,6 +1,6 @@
 # Sweep — Architecture & Implementation Plan
 
-Status: slices 0 and 1 built (backend merged; client with Clerk email-code sign-in in review). Slice 2 (shared Shopping List) next.
+Status: slices 0 and 1 merged (foundations; Households, invites, Clerk email-code sign-in, account deletion). Next: plan slice 2 (shared Shopping List) before building.
 Language follows [`CONTEXT.md`](../CONTEXT.md). Big decisions live in [`docs/adr/`](adr/).
 ⚠️ = unverified, check before relying on it.
 
