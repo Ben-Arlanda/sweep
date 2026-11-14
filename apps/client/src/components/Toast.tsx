@@ -9,6 +9,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { tabBarHeight } from '@/theme/tokens';
 import { useTheme } from '@/theme/useTheme';
 
 type ToastMessage = { tag?: string; text: string };
@@ -66,7 +67,8 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             position: 'absolute',
             left: t.space.lg,
             right: t.space.lg,
-            bottom: insets.bottom + t.space.lg,
+            // Above the tab bar, which every screen with a toast now has.
+            bottom: insets.bottom + tabBarHeight + t.space.lg,
             alignItems: 'center',
           },
           animated,

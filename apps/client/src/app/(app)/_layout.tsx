@@ -1,14 +1,15 @@
-import { useAuth } from '@clerk/expo';
+import { useAuth, useUser } from '@clerk/expo';
 import { useIsRestoring, useQueryClient } from '@tanstack/react-query';
 import { Redirect } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { useEffect } from 'react';
 
+import { useStackScreenOptions } from '@/components/stackOptions';
 import { ToastProvider } from '@/components/Toast';
-import { Loading } from '@/components/ui';
+import { Button, ErrorText, Loading, Screen } from '@/components/ui';
+import { Onboarding } from '@/features/household/Onboarding';
 import { useMe } from '@/lib/api/households';
 import { useChangeNotices } from '@/lib/sync/useChangeNotices';
-import { useTheme } from '@/theme/useTheme';
 
 /**
  * Signed-in screens. This check is for the user experience only: it decides which
@@ -18,12 +19,14 @@ import { useTheme } from '@/theme/useTheme';
 export default function AppLayout() {
   const { isLoaded, isSignedIn } = useAuth();
   if (!isLoaded) return <Loading />;
-  if (!isSignedIn) return <Redirect href="/sign-in" />;
+  if (!isSignedIn) return <Redirect href="/welcome" />;
   return <SignedIn />;
 }
 
 function SignedIn() {
-  const t = useTheme();
+  const stackOptions = useStackScreenOptions();
+  const { user } = useUser();
+  const emailName = user?.primaryEmailAddress?.emailAddress.split('@')[0] ?? '';
   const queryClient = useQueryClient();
   const isRestoring = useIsRestoring();
   const me = useMe();
@@ -38,26 +41,32 @@ function SignedIn() {
 
   useChangeNotices(inHousehold);
 
-  return (
-    <ToastProvider>
-      <Stack
-        screenOptions={{
-          headerStyle: { backgroundColor: t.colors.background },
-          headerShadowVisible: false,
-          headerTintColor: t.colors.text,
-          headerTitleStyle: { fontFamily: t.fonts.displayBold, fontSize: 18 },
-          headerBackButtonDisplayMode: 'minimal',
-          contentStyle: { backgroundColor: t.colors.background },
-        }}
-      >
-        {/* Home draws its own header (Household chip and avatars). */}
-        <Stack.Screen name="index" options={{ title: 'Home', headerShown: false }} />
-        <Stack.Screen name="lists/[id]" options={{ title: '' }} />
-        <Stack.Screen name="cabinet" options={{ title: '' }} />
-        <Stack.Screen name="recipes/index" options={{ title: '' }} />
-        <Stack.Screen name="recipes/[id]" options={{ title: '' }} />
+  return <ToastProvider>{body()}</ToastProvider>;
+
+  function body() {
+    if (me.isPending) return <Loading />;
+    if (me.isError) {
+      return (
+        <Screen edges={['top', 'bottom', 'left', 'right']}>
+          <ErrorText message={me.error.message} />
+          <Button title="Try again" onPress={() => me.refetch()} />
+        </Screen>
+      );
+    }
+    // Not in a Household yet: create or join one first. The tabs would all be empty.
+    if (!me.data) {
+      return (
+        <Screen edges={['top', 'bottom', 'left', 'right']}>
+          <Onboarding suggestedName={emailName} />
+        </Screen>
+      );
+    }
+    return (
+      <Stack screenOptions={stackOptions}>
+        {/* The tabs, each with its own Stack, so the tab bar stays as you go deeper. */}
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="design" options={{ title: 'Design system' }} />
       </Stack>
-    </ToastProvider>
-  );
+    );
+  }
 }

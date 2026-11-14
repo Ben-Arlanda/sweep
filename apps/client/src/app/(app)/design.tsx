@@ -29,7 +29,7 @@ export default function DesignScreen() {
   const [checked, setChecked] = useState(false);
 
   return (
-    <Screen>
+    <Screen edges={['bottom', 'left', 'right']}>
       <Text variant="display">
         Zest + <Highlight>Kitchen Table</Highlight>
       </Text>
@@ -71,7 +71,7 @@ export default function DesignScreen() {
         <Text variant="display">Display 34</Text>
         <Text variant="title">Title 28</Text>
         <Text variant="heading">Heading 20</Text>
-        <Text>Body 16. DM Sans for everything you read.</Text>
+        <Text>Body 16. Urbanist for everything.</Text>
         <Text variant="label">Label 15</Text>
         <Text variant="caption" muted>
           Caption 13, muted

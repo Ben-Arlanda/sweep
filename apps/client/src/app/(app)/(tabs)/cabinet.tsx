@@ -2,8 +2,19 @@ import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 
 import { FoodThumb } from '@/components/FoodThumb';
+import { Hero, HeroSearch } from '@/components/Hero';
 import { StatusBadge } from '@/components/Pill';
-import { Button, Card, ErrorText, Field, Loading, Screen, SectionLabel, Text } from '@/components/ui';
+import {
+  Button,
+  Card,
+  ErrorText,
+  Field,
+  Loading,
+  Screen,
+  SectionLabel,
+  TAB_ROOT,
+  Text,
+} from '@/components/ui';
 import { displayName, formatAmount } from '@/features/cabinet/format';
 import { useCabinet, useCabinetActions, useIngredientSearch } from '@/lib/api/cabinet';
 import type { components } from '@/lib/api/schema';
@@ -23,11 +34,12 @@ export default function CabinetScreen() {
   const t = useTheme();
   const cabinet = useCabinet();
   const actions = useCabinetActions();
+  const [query, setQuery] = useState(''); // the "Add to Cabinet" search in the hero
 
   if (cabinet.isPending) return <Loading />;
   if (cabinet.isError) {
     return (
-      <Screen>
+      <Screen edges={TAB_ROOT}>
         <ErrorText message={cabinet.error.message} />
         <Button title="Try again" onPress={() => cabinet.refetch()} />
       </Screen>
@@ -43,23 +55,36 @@ export default function CabinetScreen() {
   const ranOut = staples.filter((s) => !s.have).length;
 
   return (
-    <Screen>
-      <Card tint="mint" style={{ gap: t.space.sm }}>
-        <Text variant="title" accessibilityRole="header">
-          Cabinet
-        </Text>
-        <Text>
-          {[
+    <Screen
+      hero={
+        <Hero
+          title="Cabinet"
+          subtitle={[
             `${tracked.length} tracked`,
             toCheck ? `${toCheck} to check` : null,
             ranOut ? `${ranOut} run out` : null,
           ]
             .filter(Boolean)
             .join(' · ')}
-        </Text>
-      </Card>
-
-      <AddToCabinet known={known} onAdd={(id) => actions.setAmount(id, null)} />
+        >
+          <HeroSearch
+            label="Add to Cabinet"
+            placeholder="Add to Cabinet, e.g. rice"
+            value={query}
+            onChangeText={setQuery}
+            autoCorrect={false}
+          />
+        </Hero>
+      }
+    >
+      <AddMatches
+        query={query}
+        known={known}
+        onAdd={(id) => {
+          actions.setAmount(id, null);
+          setQuery('');
+        }}
+      />
       <ErrorText message={actions.error?.message} />
 
       <View style={{ gap: t.space.sm }}>
@@ -86,28 +111,30 @@ export default function CabinetScreen() {
   );
 }
 
-function AddToCabinet({ known, onAdd }: { known: Set<string>; onAdd: (id: string) => void }) {
+/** Ingredients matching the hero's "Add to Cabinet" search, each one tap to add. */
+function AddMatches({
+  query,
+  known,
+  onAdd,
+}: {
+  query: string;
+  known: Set<string>;
+  onAdd: (id: string) => void;
+}) {
   const t = useTheme();
-  const [query, setQuery] = useState('');
   const results = useIngredientSearch(query);
   const showing = query.trim().length >= 2;
+  if (!showing) return null;
 
   return (
     <View style={{ gap: t.space.sm }}>
-      <Field
-        label="Add to Cabinet"
-        placeholder="Search, e.g. rice"
-        value={query}
-        onChangeText={setQuery}
-        autoCorrect={false}
-      />
-      {showing && results.data?.length === 0 ? (
+      <SectionLabel>Add to Cabinet</SectionLabel>
+      {results.data?.length === 0 ? (
         <Text variant="caption" muted>
           No Ingredient called that yet.
         </Text>
       ) : null}
-      {showing
-        ? results.data?.slice(0, 6).map((ingredient) => {
+      {results.data?.slice(0, 6).map((ingredient) => {
             const already = known.has(ingredient.id);
             return (
               <Pressable
@@ -115,10 +142,7 @@ function AddToCabinet({ known, onAdd }: { known: Set<string>; onAdd: (id: string
                 accessibilityRole="button"
                 accessibilityState={{ disabled: already }}
                 disabled={already}
-                onPress={() => {
-                  onAdd(ingredient.id);
-                  setQuery('');
-                }}
+                onPress={() => onAdd(ingredient.id)}
                 style={({ pressed }) => ({
                   minHeight: t.touchTarget,
                   justifyContent: 'center',
@@ -131,8 +155,7 @@ function AddToCabinet({ known, onAdd }: { known: Set<string>; onAdd: (id: string
                 </Text>
               </Pressable>
             );
-          })
-        : null}
+          })}
     </View>
   );
 }

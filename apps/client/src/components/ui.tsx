@@ -46,29 +46,48 @@ export function Highlight({ children }: { children: ReactNode }) {
   );
 }
 
+/** Edges for a tab's first screen: it has no navigation header above it. */
+export const TAB_ROOT = ['top', 'left', 'right'] as const;
+
 export function Screen({
   children,
-  edges = ['bottom', 'left', 'right'],
+  edges = ['left', 'right'],
+  hero,
 }: {
   children: ReactNode;
-  /** Pass ['top', ...] on screens without a navigation header. */
-  edges?: ('top' | 'bottom' | 'left' | 'right')[];
+  /**
+   * Which phone edges (notch, home bar) to keep clear of. The tab bar already keeps
+   * clear of the bottom, so most screens need only the sides. Add 'top' on a screen
+   * with no navigation header, and 'bottom' on one with no tab bar.
+   */
+  edges?: readonly ('top' | 'bottom' | 'left' | 'right')[];
+  /** A <Hero>: full width at the top, scrolling with the page. It clears the notch itself. */
+  hero?: ReactNode;
 }) {
   const t = useTheme();
+  const content = (
+    <View
+      style={{
+        padding: t.space.lg,
+        paddingBottom: t.space.xxl * 2, // room above the toast
+        gap: t.space.lg,
+        width: '100%',
+        maxWidth: 560, // readable column on tablets and the web
+        alignSelf: 'center',
+      }}
+    >
+      {children}
+    </View>
+  );
   return (
-    <SafeAreaView edges={edges} style={{ flex: 1, backgroundColor: t.colors.background }}>
-      <ScrollView
-        contentContainerStyle={{
-          padding: t.space.lg,
-          paddingBottom: t.space.xxl * 2, // room above the toast
-          gap: t.space.lg,
-          width: '100%',
-          maxWidth: 560, // readable column on tablets and the web
-          alignSelf: 'center',
-        }}
-        keyboardShouldPersistTaps="handled"
-      >
-        {children}
+    <SafeAreaView
+      // With a hero, the hero runs up under the status bar and handles the top and sides.
+      edges={hero ? edges.filter((e) => e === 'bottom') : edges}
+      style={{ flex: 1, backgroundColor: t.colors.background }}
+    >
+      <ScrollView keyboardShouldPersistTaps="handled">
+        {hero}
+        {content}
       </ScrollView>
     </SafeAreaView>
   );

@@ -53,6 +53,15 @@ export type ColorTokens = {
   onInverse: string;
   danger: string;
   dangerSoft: string;
+  /**
+   * The rounded panel at the top of the main screens. Pale lime on the light theme; on
+   * the dark theme a lighter green-grey, so it still stands out from the page.
+   */
+  hero: string;
+  onHero: string;
+  onHeroMuted: string;
+  /** The search field inside the hero. */
+  heroField: string;
 };
 
 export const colors: Record<'light' | 'dark', ColorTokens> = {
@@ -71,6 +80,10 @@ export const colors: Record<'light' | 'dark', ColorTokens> = {
     onInverse: palette.white,
     danger: palette.red600,
     dangerSoft: palette.red100,
+    hero: palette.limeSoft,
+    onHero: palette.ink,
+    onHeroMuted: '#4d5338',
+    heroField: palette.white,
   },
   dark: {
     background: palette.night900,
@@ -87,6 +100,10 @@ export const colors: Record<'light' | 'dark', ColorTokens> = {
     onInverse: palette.ink,
     danger: palette.red300,
     dangerSoft: '#4a1f19',
+    hero: '#262b21',
+    onHero: palette.mist100,
+    onHeroMuted: '#bfc4b3',
+    heroField: '#353b2e',
   },
 };
 
@@ -132,29 +149,47 @@ export const statusColors: Record<'light' | 'dark', Record<StatusName, StatusCol
 };
 
 /**
+ * The welcome hero: always ink with a lime glow, in light and dark mode alike, like the
+ * website hero. It's the one place the brand is shown "full volume".
+ */
+export const hero = {
+  background: palette.ink,
+  /**
+   * A soft lime light behind the floating cards (a CSS radial gradient). It stays in the
+   * top half on purpose: text sits on plain ink, so its contrast is the tested value.
+   */
+  glow: 'radial-gradient(circle at 70% 25%, rgba(216, 242, 60, 0.4) 0%, rgba(216, 242, 60, 0) 55%)',
+  text: palette.white,
+  textMuted: '#c8ccbd',
+  border: '#3b3f35',
+  highlight: palette.lime,
+  onHighlight: palette.ink,
+} as const;
+
+/**
  * Font families, loaded in the root layout. On Android a custom font plus `fontWeight`
  * can silently fall back to the system font, so each weight is its own family and we
  * never set `fontWeight` alongside these.
  */
 export const fonts = {
-  display: 'BricolageGrotesque_800ExtraBold',
-  displayBold: 'BricolageGrotesque_700Bold',
-  body: 'DMSans_400Regular',
-  medium: 'DMSans_500Medium',
-  bold: 'DMSans_700Bold',
+  display: 'Urbanist_700Bold',
+  displayBold: 'Urbanist_600SemiBold',
+  body: 'Urbanist_500Medium',
+  medium: 'Urbanist_600SemiBold',
+  bold: 'Urbanist_700Bold',
 } as const;
 
 // A 4-point scale: every gap and padding is one of these, which keeps layouts even.
 export const space = { xs: 4, sm: 8, md: 12, lg: 16, xl: 24, xxl: 32 } as const;
 
 // Soft and round throughout: nothing sharp.
-export const radius = { sm: 8, md: 14, lg: 20, xl: 28, pill: 999 } as const;
+export const radius = { sm: 8, md: 14, lg: 20, xl: 28, hero: 32, pill: 999 } as const;
 
 export const type = {
-  display: { fontFamily: fonts.display, fontSize: 34, lineHeight: 38, letterSpacing: -0.8 },
-  title: { fontFamily: fonts.display, fontSize: 28, lineHeight: 32, letterSpacing: -0.5 },
-  heading: { fontFamily: fonts.displayBold, fontSize: 20, lineHeight: 24, letterSpacing: -0.2 },
-  body: { fontFamily: fonts.body, fontSize: 16, lineHeight: 22 },
+  display: { fontFamily: fonts.display, fontSize: 34, lineHeight: 40, letterSpacing: -0.6 },
+  title: { fontFamily: fonts.display, fontSize: 28, lineHeight: 34, letterSpacing: -0.4 },
+  heading: { fontFamily: fonts.displayBold, fontSize: 20, lineHeight: 26, letterSpacing: -0.2 },
+  body: { fontFamily: fonts.body, fontSize: 16, lineHeight: 23 },
   label: { fontFamily: fonts.bold, fontSize: 15, lineHeight: 20 },
   caption: { fontFamily: fonts.body, fontSize: 13, lineHeight: 18 },
   pill: { fontFamily: fonts.bold, fontSize: 12, lineHeight: 16 },
@@ -183,6 +218,9 @@ export const motion = {
   pressScale: 0.97,
   staggerMs: 45,
 } as const;
+
+/** Height of the bottom tab bar, above the phone's home-bar area. Toasts sit above it. */
+export const tabBarHeight = 64;
 
 /** Minimum tappable size (Apple HIG 44pt). Applies to every button and row. */
 export const touchTarget = 44;
