@@ -43,3 +43,9 @@ class LimitReached(DomainError):
 
 class IdempotencyKeyReused(DomainError):
     code = "idempotency_key_reused"
+
+
+class Unavailable(DomainError):
+    """A feature that depends on an outside service that isn't configured or reachable."""
+
+    code = "unavailable"

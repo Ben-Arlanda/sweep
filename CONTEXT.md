@@ -58,11 +58,11 @@ A Cabinet entry the app no longer trusts. The agent asks instead of assuming. Es
 ### Recipes
 
 **Seed Recipe**:
-A recipe loaded from an open dataset, available to every Household.
+A recipe written for Sweep (we own it), available to every Household.
 _Avoid_: default recipe, built-in recipe
 
 **Imported Recipe**:
-A recipe a Member saved from a URL. It belongs to that Household and is preferred over Seed Recipes when planning.
+A Household favourite a Member brought in (pasted, photographed, linked or typed). It belongs to that Household only and is preferred over Seed Recipes when planning.
 _Avoid_: saved recipe, user recipe
 
 **Recipe Adaptation**:

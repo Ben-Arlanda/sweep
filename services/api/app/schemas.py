@@ -15,7 +15,7 @@ from pydantic import (
     model_validator,
 )
 
-from app.models import AddedBy, ChangeSource, Role
+from app.models import AddedBy, ChangeSource, RecipeKind, Role
 
 HouseholdName = Annotated[
     str, StringConstraints(strip_whitespace=True, min_length=1, max_length=100)
@@ -194,3 +194,44 @@ class CabinetOut(BaseModel):
     version: int
     tracked: list[CabinetItemOut]
     staples: list[StapleOut]
+
+
+# --- Recipes -----------------------------------------------------------------------
+
+# An amount we report (never accept), sent as a string so no precision is lost.
+Amount = Annotated[Decimal, PlainSerializer(lambda d: f"{d.normalize():f}", return_type=str)]
+
+
+class RecipeSummaryOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: uuid.UUID
+    kind: RecipeKind
+    title: str
+    summary: str
+    cuisine: str | None
+    servings: int
+    total_minutes: int | None
+    # How close to the search (1 = identical meaning). Only set for a search.
+    score: float | None = None
+
+
+class RecipeIngredientOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    raw_text: str
+    ingredient: IngredientOut | None
+    quantity: Amount | None
+    unit: str | None
+    base_quantity: Amount | None  # in the Ingredient's own unit (g / ml / count)
+    note: str | None
+    optional: bool
+    needs_review: bool
+
+
+class RecipeOut(RecipeSummaryOut):
+    ingredients: list[RecipeIngredientOut]
+    method: list[str] | None
+    source_url: str | None
+    licence: str
+    attribution: str

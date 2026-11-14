@@ -7,10 +7,15 @@ docker compose up -d                  # Postgres on localhost:5433 (from the rep
 docker compose exec db createdb -U sweep sweep_test   # once, for the tests
 uv sync                               # install dependencies
 uv run alembic upgrade head           # apply migrations (also loads the Ingredient list)
+uv run python -m app.seed_recipes     # load Seed Recipes + embed new/changed (needs VOYAGE_API_KEY)
 uv run fastapi dev app/main.py        # dev server on http://localhost:8000
 uv run pytest                         # tests (rebuild sweep_test from the migrations)
 uv run ruff check . && uv run mypy    # lint + type check
+uv run python -m evals.ingredient_parsing --llm   # ingredient-line eval (one cheap Claude call)
 ```
+
+AI keys (`ANTHROPIC_API_KEY`, `VOYAGE_API_KEY`) are optional: without them, search is off
+and parsing is rules-only. Tests use fakes and never call out.
 
 ## Layout
 
@@ -29,7 +34,11 @@ app/
   realtime.py    Postgres NOTIFY → listener → Hub → WebSockets (ADR 0004)
   units.py       amount parsing and unit conversion (deterministic, ADR 0003)
   seed.py        reference data loader; data/ingredients.py is the starter Ingredient list
+  seed_recipes.py   loads data/recipes/*.toml (Seed Recipes) and embeds them
+  llm.py         the only module that calls an LLM (Claude), with structured outputs
+  embeddings.py  the only module that calls Voyage; plus a fake for tests
 alembic/         database migrations
+evals/           labelled datasets + scripts that score AI behaviour
 ```
 
 New migration after changing `models.py`: `uv run alembic revision --autogenerate -m "what changed"`, then read the generated file before committing.

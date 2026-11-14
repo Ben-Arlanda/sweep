@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -22,6 +22,14 @@ class Settings(BaseSettings):
     # JSON list, e.g. AUTH_ISSUERS='[{"issuer": "https://x.clerk.accounts.dev",
     #   "jwks_url": "https://x.clerk.accounts.dev/.well-known/jwks.json"}]'
     auth_issuers: list[TrustedIssuer] = []
+
+    # AI providers. Without a key the feature that needs it is switched off, not broken:
+    # tests and CI run with fakes and no keys at all.
+    anthropic_api_key: SecretStr | None = None
+    voyage_api_key: SecretStr | None = None
+    # Small, fast model for reading ingredient lines the rules couldn't (plan §8).
+    parsing_model: str = "claude-haiku-5-5"
+    embedding_model: str = "voyage-3.5"
 
 
 settings = Settings()

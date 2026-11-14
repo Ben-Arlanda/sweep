@@ -1,0 +1,436 @@
+# Baking and desserts. Written for Sweep (licence: Sweep original).
+
+[[recipe]]
+slug = "banana-bread"
+title = "Banana bread"
+cuisine = "australian"
+servings = 10
+minutes = 70
+summary = "A moist, easy loaf for using up overripe bananas. Great toasted with butter."
+ingredients = [
+  "3 bananas, mashed",
+  "125 g butter, melted",
+  "150 g brown sugar",
+  "2 eggs",
+  "250 g self-raising flour",
+  "1 tsp ground cinnamon",
+]
+method = [
+  "Heat the oven to 170°C and line a loaf tin.",
+  "Mix the banana, butter, sugar and eggs. Stir in the flour and cinnamon.",
+  "Bake for 55–60 minutes until a skewer comes out clean.",
+]
+
+[[recipe]]
+slug = "anzac-biscuits"
+title = "Anzac biscuits"
+cuisine = "australian"
+servings = 20
+minutes = 30
+summary = "Chewy oat and coconut biscuits made with golden syrup. An Australian classic."
+ingredients = [
+  "90 g rolled oats",
+  "150 g plain flour",
+  "85 g desiccated coconut",
+  "150 g brown sugar",
+  "125 g butter",
+  "2 tbsp golden syrup",
+  "1/2 tsp bicarbonate soda",
+]
+method = [
+  "Heat the oven to 160°C. Mix the oats, flour, coconut and sugar.",
+  "Melt the butter with the golden syrup. Stir in the bicarb mixed with 2 tbsp boiling water, then pour into the dry mix.",
+  "Roll into balls, flatten on trays, and bake for 12–15 minutes.",
+]
+
+[[recipe]]
+slug = "chocolate-chip-cookies"
+title = "Chocolate chip cookies"
+cuisine = "american"
+servings = 24
+minutes = 30
+summary = "Crisp-edged, chewy-middled cookies packed with chocolate chips."
+ingredients = [
+  "125 g butter, softened",
+  "100 g brown sugar",
+  "100 g caster sugar",
+  "1 egg",
+  "1 tsp vanilla extract",
+  "225 g plain flour",
+  "1/2 tsp bicarbonate soda",
+  "200 g chocolate chips",
+]
+method = [
+  "Heat the oven to 180°C. Beat the butter and sugars until creamy, then beat in the egg and vanilla.",
+  "Stir in the flour and bicarb, then the chocolate chips.",
+  "Roll into balls and bake for 10–12 minutes. Cool on the tray.",
+]
+
+[[recipe]]
+slug = "lemon-drizzle-cake"
+title = "Lemon drizzle cake"
+cuisine = "british"
+servings = 10
+minutes = 60
+summary = "A soft lemon loaf soaked with a tangy lemon sugar syrup."
+ingredients = [
+  "175 g butter, softened",
+  "175 g caster sugar",
+  "3 eggs",
+  "175 g self-raising flour",
+  "2 lemons, zested and juiced",
+  "100 g icing sugar",
+]
+method = [
+  "Heat the oven to 180°C. Beat the butter and sugar, then the eggs, then fold in the flour and lemon zest.",
+  "Bake in a lined loaf tin for 45 minutes.",
+  "Mix the lemon juice and icing sugar and pour over the warm cake.",
+]
+
+[[recipe]]
+slug = "chocolate-brownies"
+title = "Fudgy chocolate brownies"
+cuisine = "american"
+servings = 16
+minutes = 45
+summary = "Dense, fudgy brownies with a crackly top."
+ingredients = [
+  "200 g dark chocolate, chopped",
+  "150 g butter",
+  "250 g caster sugar",
+  "3 eggs",
+  "100 g plain flour",
+  "30 g cocoa powder",
+]
+method = [
+  "Heat the oven to 170°C and line a square tin. Melt the chocolate and butter together.",
+  "Whisk in the sugar, then the eggs. Fold in the flour and cocoa.",
+  "Bake for 25–30 minutes until just set in the middle. Cool before cutting.",
+]
+
+[[recipe]]
+slug = "scones"
+title = "Scones with jam and cream"
+cuisine = "british"
+servings = 12
+minutes = 30
+summary = "Light, tall scones served warm with jam and whipped cream."
+ingredients = [
+  "450 g self-raising flour",
+  "60 g butter, cubed",
+  "300 ml milk",
+  "150 g strawberry jam",
+  "300 ml thickened cream, whipped",
+]
+method = [
+  "Heat the oven to 220°C. Rub the butter into the flour, then stir in the milk to a soft dough.",
+  "Pat out 3 cm thick and cut rounds. Bake close together for 12–15 minutes.",
+  "Serve warm with jam and cream.",
+]
+
+[[recipe]]
+slug = "pavlova"
+title = "Pavlova"
+cuisine = "australian"
+servings = 10
+minutes = 120
+summary = "Crisp meringue with a marshmallow middle, topped with cream and fresh fruit."
+ingredients = [
+  "4 egg whites",
+  "220 g caster sugar",
+  "2 tsp cornflour",
+  "1 tsp white vinegar",
+  "300 ml thickened cream, whipped",
+  "250 g strawberries, sliced",
+  "2 passionfruit",
+]
+method = [
+  "Heat the oven to 150°C. Whisk the egg whites to stiff peaks, then add the sugar a spoonful at a time until glossy. Fold in the cornflour and vinegar.",
+  "Shape into a round on a lined tray. Bake for 1 hour 15 minutes, then turn off the oven and cool inside.",
+  "Top with cream, strawberries and passionfruit pulp.",
+]
+
+[[recipe]]
+slug = "apple-crumble"
+title = "Apple crumble"
+cuisine = "british"
+servings = 6
+minutes = 50
+summary = "Soft cinnamon apples under a buttery oat crumble. Serve with custard or ice cream."
+ingredients = [
+  "6 apples, peeled and sliced",
+  "2 tbsp brown sugar",
+  "1 tsp ground cinnamon",
+  "100 g plain flour",
+  "60 g rolled oats",
+  "100 g brown sugar",
+  "100 g butter, cubed",
+]
+method = [
+  "Heat the oven to 180°C. Toss the apples with 2 tbsp sugar and the cinnamon in a baking dish.",
+  "Rub the flour, oats, sugar and butter together into crumbs and scatter over.",
+  "Bake for 35 minutes until golden and bubbling.",
+]
+
+[[recipe]]
+slug = "chocolate-mousse"
+title = "Chocolate mousse"
+cuisine = "french"
+servings = 6
+minutes = 25
+summary = "A light, rich dark chocolate mousse. Make it the day before."
+ingredients = [
+  "200 g dark chocolate, chopped",
+  "4 eggs, separated",
+  "2 tbsp caster sugar",
+  "300 ml thickened cream",
+]
+method = [
+  "Melt the chocolate and cool slightly. Stir in the yolks.",
+  "Whip the cream to soft peaks. Whisk the whites with the sugar to soft peaks.",
+  "Fold the cream, then the whites, into the chocolate. Spoon into glasses and chill for 4 hours.",
+]
+
+[[recipe]]
+slug = "carrot-cake"
+title = "Carrot cake with cream cheese icing"
+cuisine = "american"
+servings = 12
+minutes = 80
+summary = "A moist, spiced carrot and walnut cake topped with tangy cream cheese icing."
+ingredients = [
+  "250 g self-raising flour",
+  "200 g brown sugar",
+  "2 tsp ground cinnamon",
+  "3 eggs",
+  "250 ml vegetable oil",
+  "3 carrots, grated",
+  "80 g walnuts, chopped",
+  "250 g cream cheese, softened",
+  "60 g butter, softened",
+  "150 g icing sugar",
+]
+method = [
+  "Heat the oven to 170°C and line a round tin. Mix the flour, sugar and cinnamon, then stir in the eggs, oil, carrot and walnuts.",
+  "Bake for 55–60 minutes and cool completely.",
+  "Beat the cream cheese, butter and icing sugar and spread over the cake.",
+]
+
+[[recipe]]
+slug = "lamingtons"
+title = "Lamingtons"
+cuisine = "australian"
+servings = 16
+minutes = 75
+summary = "Squares of sponge dipped in chocolate icing and rolled in coconut."
+ingredients = [
+  "125 g butter, softened",
+  "150 g caster sugar",
+  "3 eggs",
+  "225 g self-raising flour",
+  "125 ml milk",
+  "300 g icing sugar",
+  "30 g cocoa powder",
+  "200 g desiccated coconut",
+]
+method = [
+  "Heat the oven to 180°C. Beat the butter and sugar, add the eggs, then fold in the flour and milk. Bake in a lined slice tin for 25 minutes. Cool and cut into squares.",
+  "Mix the icing sugar and cocoa with 125 ml boiling water.",
+  "Dip each square in the icing, then roll in coconut. Leave to set.",
+]
+
+[[recipe]]
+slug = "vanilla-cupcakes"
+title = "Vanilla cupcakes"
+cuisine = "american"
+servings = 12
+minutes = 45
+summary = "Light vanilla cupcakes with fluffy buttercream. Perfect for birthdays."
+ingredients = [
+  "125 g butter, softened",
+  "150 g caster sugar",
+  "2 eggs",
+  "2 tsp vanilla extract",
+  "200 g self-raising flour",
+  "125 ml milk",
+  "150 g butter, softened",
+  "250 g icing sugar",
+]
+method = [
+  "Heat the oven to 180°C. Beat 125 g butter with the sugar, then the eggs and half the vanilla. Fold in the flour and milk.",
+  "Fill 12 cases and bake for 18–20 minutes. Cool.",
+  "Beat the remaining butter, icing sugar and vanilla until fluffy and pipe on top.",
+]
+
+[[recipe]]
+slug = "rice-pudding"
+title = "Creamy rice pudding"
+cuisine = "british"
+servings = 4
+minutes = 45
+summary = "Slow-stirred rice in vanilla milk with a little cinnamon. Old-fashioned comfort."
+ingredients = [
+  "100 g arborio rice",
+  "1 litre milk",
+  "60 g caster sugar",
+  "1 tsp vanilla extract",
+  "1/2 tsp ground cinnamon",
+]
+method = [
+  "Simmer the rice, milk and sugar gently for 35–40 minutes, stirring often, until thick.",
+  "Stir in the vanilla and serve sprinkled with cinnamon.",
+]
+
+[[recipe]]
+slug = "fruit-salad"
+title = "Tropical fruit salad"
+cuisine = "australian"
+servings = 6
+minutes = 15
+summary = "Mango, pineapple, kiwi fruit and berries with passionfruit and mint."
+ingredients = [
+  "2 mangoes, diced",
+  "1/2 pineapple, diced",
+  "3 kiwi fruit, sliced",
+  "250 g strawberries, halved",
+  "2 passionfruit",
+  "1 bunch mint",
+]
+method = [
+  "Combine the fruit in a bowl.",
+  "Spoon over the passionfruit pulp and scatter with mint.",
+]
+
+[[recipe]]
+slug = "chocolate-cake"
+title = "One-bowl chocolate cake"
+cuisine = "american"
+servings = 12
+minutes = 60
+summary = "A moist chocolate cake mixed in one bowl, with a simple chocolate icing."
+ingredients = [
+  "225 g plain flour",
+  "350 g caster sugar",
+  "75 g cocoa powder",
+  "2 tsp baking powder",
+  "2 eggs",
+  "250 ml milk",
+  "125 ml vegetable oil",
+  "250 ml hot water",
+  "200 g icing sugar",
+  "30 g butter, softened",
+]
+method = [
+  "Heat the oven to 180°C. Mix the flour, sugar, 50 g cocoa and baking powder. Whisk in the eggs, milk, oil, then the hot water.",
+  "Pour into a lined tin and bake for 35–40 minutes. Cool.",
+  "Mix the icing sugar, remaining cocoa, butter and a little hot water, and spread on top.",
+]
+
+[[recipe]]
+slug = "muesli-bars"
+title = "Chewy muesli bars"
+cuisine = "australian"
+servings = 16
+minutes = 35
+summary = "No-fuss oat bars with honey, peanut butter, seeds and dried fruit. Lunchbox-friendly."
+ingredients = [
+  "250 g rolled oats",
+  "80 g honey",
+  "125 g peanut butter",
+  "60 g butter",
+  "60 g sultanas",
+  "40 g pepitas",
+  "40 g desiccated coconut",
+]
+method = [
+  "Heat the oven to 170°C. Melt the honey, peanut butter and butter together.",
+  "Stir in everything else, press into a lined slice tin, and bake for 20 minutes.",
+  "Cool completely before cutting.",
+]
+
+[[recipe]]
+slug = "blueberry-muffins"
+title = "Blueberry muffins"
+cuisine = "american"
+servings = 12
+minutes = 35
+summary = "Tender muffins bursting with blueberries and a crunchy sugar top."
+ingredients = [
+  "300 g self-raising flour",
+  "150 g caster sugar",
+  "2 eggs",
+  "250 ml milk",
+  "125 ml vegetable oil",
+  "200 g blueberries",
+  "2 tbsp brown sugar",
+]
+method = [
+  "Heat the oven to 190°C. Mix the flour and caster sugar. Whisk the eggs, milk and oil and stir in until just combined.",
+  "Fold in the blueberries, spoon into a muffin tin, and sprinkle with brown sugar.",
+  "Bake for 20–22 minutes.",
+]
+
+[[recipe]]
+slug = "bread-and-butter-pudding"
+title = "Bread and butter pudding"
+cuisine = "british"
+servings = 6
+minutes = 60
+summary = "Buttered bread and sultanas baked in a vanilla custard until puffed and golden."
+ingredients = [
+  "8 slices bread",
+  "50 g butter, softened",
+  "60 g sultanas",
+  "4 eggs",
+  "500 ml milk",
+  "80 g caster sugar",
+  "1 tsp vanilla extract",
+]
+method = [
+  "Butter the bread, cut into triangles, and layer in a dish with the sultanas.",
+  "Whisk the eggs, milk, sugar and vanilla and pour over. Leave 15 minutes.",
+  "Bake at 170°C for 35–40 minutes until set and golden.",
+]
+
+[[recipe]]
+slug = "sticky-date-pudding"
+title = "Sticky date pudding"
+cuisine = "australian"
+servings = 8
+minutes = 60
+summary = "A soft date sponge drenched in hot butterscotch sauce."
+ingredients = [
+  "200 g dates, chopped",
+  "1 tsp bicarbonate soda",
+  "250 ml boiling water",
+  "60 g butter, softened",
+  "150 g brown sugar",
+  "2 eggs",
+  "175 g self-raising flour",
+  "100 g butter",
+  "150 g brown sugar",
+  "250 ml thickened cream",
+]
+method = [
+  "Heat the oven to 180°C. Soak the dates and bicarb in the boiling water for 10 minutes.",
+  "Beat 60 g butter with 150 g sugar and the eggs. Fold in the flour and the date mix. Bake in a lined tin for 35 minutes.",
+  "Simmer the remaining butter, sugar and cream for 3 minutes and pour over the warm pudding.",
+]
+
+[[recipe]]
+slug = "shortbread"
+title = "Shortbread"
+cuisine = "british"
+servings = 16
+minutes = 40
+summary = "Three-ingredient buttery shortbread that melts in the mouth."
+ingredients = [
+  "250 g butter, softened",
+  "125 g caster sugar",
+  "375 g plain flour",
+]
+method = [
+  "Heat the oven to 160°C. Beat the butter and sugar, then work in the flour to a dough.",
+  "Press into a lined tin, prick with a fork, and bake for 30 minutes until pale gold.",
+  "Cut into fingers while warm.",
+]

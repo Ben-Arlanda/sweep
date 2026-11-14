@@ -1,6 +1,6 @@
 # Sweep — Architecture & Implementation Plan
 
-Status: slices 0–3 merged (foundations; Households, invites, Clerk email-code sign-in, account deletion; shared Shopping List with idempotent writes, live notices, optimistic UI and an offline retry queue; Ingredients and the Cabinet, fed by ticking items off). Slice 3b (design foundations: the Zest + Kitchen Table design system and WCAG AA accessibility, ADR 0007) in progress. Next: slice 4 (Recipe Knowledge Base).
+Status: slices 0–3b merged (foundations; Households, invites, Clerk sign-in, account deletion; shared Shopping List with live updates and an offline retry queue; Ingredients and the Cabinet; the Zest + Kitchen Table design system, ADR 0007). Slice 4 (Recipe Knowledge Base) in progress: backend (4a, `feature/recipe-knowledge-base`) in review; next 4b Recipes screens, then 4c growing the library to ~500 (ADR 0002, revised).
 Language follows [`CONTEXT.md`](../CONTEXT.md). Big decisions live in [`docs/adr/`](adr/).
 ⚠️ = unverified, check before relying on it.
 
@@ -217,10 +217,16 @@ Max 15 tool calls per turn, a LangGraph recursion limit, a 60s total turn timeou
 
 ### Ingestion
 
-1. Load the seed dataset (licence-clear, ADR 0002) → recipes + raw ingredient lines.
-2. **Ingredient normalisation** (the hidden hard problem): rule-based parsing first (quantity, unit, name). The LLM structured-output fallback handles lines the rules can't parse. Then match to an Ingredient via aliases, then embeddings, and flag low-confidence matches. Convert to metric (g, ml, count) using `grams_per_ml` for cup→gram conversions.
-3. Embed one document per recipe (title + cuisine + ingredient names + short description).
-4. URL import uses the same pipeline from JSON-LD. Imported page text is treated as **data, never instructions**.
+1. Load the Seed Recipes (our own, ADR 0002) with `uv run python -m app.seed_recipes`. Not a migration: embedding calls a paid outside API, and migrations must run offline.
+2. **Ingredient normalisation** (the hidden hard problem), in `app/services/ingredient_lines.py`:
+   - **Rules first**: amount (fractions, ranges → the top, "2 x 400 g"), unit, notes, then a strict lookup (name, alias, plural). Seed lines must all parse with rules alone; a test enforces it.
+   - **LLM fallback** (Claude Haiku, structured outputs) only for lines the rules miss, one call per recipe. The model may only answer with our Ingredient names and units, every answer is checked against those lists, and our code does all unit conversion.
+   - Nothing matched → kept with `needs_review`, never linked to a near-miss. No embedding-based Ingredient matching for now: the eval shows rules + LLM already reach 97–100% with 0 wrong links.
+   - Converts to the Ingredient's unit only when honest: AU cup 250 ml / tbsp 20 ml / tsp 5 ml, US lb/oz, density for ml↔g. "3 cloves garlic", "a pinch" and "4 cups *cooked* rice" are matched but have no amount.
+   - Eval: `uv run python -m evals.ingredient_parsing [--llm]` (32 messy US-style lines). Latest: rules 47%; rules + Haiku 97–100% over 5 runs, 0 wrong links.
+3. Embed one document per recipe (title + summary + cuisine + Ingredient names) with Voyage `voyage-3.5` (1,024 dimensions), storing the model and a hash of the text, so only changed recipes are re-embedded. Rate limits (429) are retried with backoff.
+4. **Favourites** (ADR 0002, revised) use the same pipeline through several front doors: "what do you usually cook" matching at onboarding, pasted text, a photo, a link (only where robots.txt allows Sweep's user agent), or typing. Each ends at a review screen where AI-matched lines are marked for the Member to confirm. Imported text and images are **data, never instructions**.
+5. **Growing the library:** Claude drafts Seed Recipes, deterministic checks and an LLM reviewer flag problems, and a person approves flagged ones. Gap logs (searches and agent requests with no good match) decide what to write next.
 
 ### Retrieval, built in stages and compared on the same evaluation set
 
@@ -312,7 +318,10 @@ Each slice is a feature branch and a focused PR that works end to end.
 | 2 | `feature/shared-shopping-list` | Lists, idempotent mutations, NOTIFY → WebSocket, optimistic UI, retry queue | (product core) |
 | 3 | `feature/cabinet` | Ingredients + aliases, Staples/Tracked, tick → Cabinet, manual edits, calculated status | (product core) |
 | 3b | `feature/design-foundations` | Design tokens (colour roles, pastels, type, motion), core components, `/design` preview, restyled screens, WCAG 2.2 AA checks (ADR 0007) | (product: public-ready UI, accessibility) |
-| 4 | `feature/recipe-knowledge-base` | Seed ingest, ingredient normalisation (structured outputs), embeddings, R1 search, URL import | LLM engineering, RAG |
+| 4a | `feature/recipe-knowledge-base` | Seed Recipes (197), ingredient normalisation (rules + structured-output fallback, eval), Voyage embeddings, R1 search API | LLM engineering, RAG |
+| 4b | `feature/recipe-screens` | Recipes tab: browse, search, recipe detail with matched Ingredients | (product) |
+| 4c | `feature/recipe-library-growth` | ~500 Seed Recipes via draft → automated checks → LLM reviewer → approval; gap logging from search | Evaluation (LLM-as-judge) |
+| 4d | `feature/favourites` | "What do you usually cook" onboarding, paste/photo/link/type import, shared review screen (after slice 6) | Multimodal input, AI security |
 | 5 | `feature/langgraph-agent` | Graph, read/compute/draft tools, validation loop, checkpointer, SSE to the app | Agentic AI, tool calling |
 | 6 | `feature/approvals` | Proposal, interrupt/resume, commit, audit log, Meal Plan, Cooked deduction | Human-in-the-loop, security |
 | 7 | `feature/estimated-cost` | Simulated catalogue, `estimate_cost`, budget validation | (product) |
@@ -338,7 +347,7 @@ Every roadmap checkbox has a home in the table above or in E1–E5.
 
 1. ~~Bedrock access~~ Resolved: no Bedrock. The Anthropic API is the provider, and Bedrock is added later as a comparison (§8).
 2. ~~Apple Developer~~ Resolved: not needed for the MVP (Expo Go + web). Optional later for TestFlight.
-3. **Seed dataset licence:** verify the CC BY-SA source before slice 4.
+3. ~~Seed dataset licence~~ Resolved: the candidate looked scraped, so we write our own Seed Recipes (ADR 0002, revised).
 4. **Clerk pricing:** confirm the free tier fits.
 
 ## 16. Requirements the brief was missing (now included above)
