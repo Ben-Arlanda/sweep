@@ -35,3 +35,11 @@ class NotFound(DomainError):
 
 class Conflict(DomainError):
     code = "conflict"
+
+
+class LimitReached(DomainError):
+    code = "limit_reached"
+
+
+class IdempotencyKeyReused(DomainError):
+    code = "idempotency_key_reused"

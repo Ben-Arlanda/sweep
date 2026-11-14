@@ -1,5 +1,6 @@
 """Small API helpers so tests read like the user journey."""
 
+import uuid
 from typing import Any
 
 import httpx
@@ -41,3 +42,8 @@ async def member_ids(client: httpx.AsyncClient, issuer: FakeIssuer, subject: str
     response = await client.get("/households/current", headers=issuer.headers(subject))
     assert response.status_code == 200, response.text
     return [m["id"] for m in response.json()["members"]]
+
+
+def idem() -> dict[str, str]:
+    """A fresh Idempotency-Key header, as the app sends with every mutation."""
+    return {"Idempotency-Key": str(uuid.uuid4())}
