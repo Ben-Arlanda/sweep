@@ -196,6 +196,76 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/cabinet": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Cabinet */
+        get: operations["get_cabinet_cabinet_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/cabinet/items/{ingredient_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Set Tracked */
+        put: operations["set_tracked_cabinet_items__ingredient_id__put"];
+        post?: never;
+        /** Remove Tracked */
+        delete: operations["remove_tracked_cabinet_items__ingredient_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/cabinet/staples/{ingredient_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Set Staple */
+        put: operations["set_staple_cabinet_staples__ingredient_id__put"];
+        post?: never;
+        /** Remove Staple */
+        delete: operations["remove_staple_cabinet_staples__ingredient_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ingredients": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Search Ingredients */
+        get: operations["search_ingredients_ingredients_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/health": {
         parameters: {
             query?: never;
@@ -232,12 +302,48 @@ export interface components {
             quantity?: number | string | null;
             /** Unit */
             unit?: string | null;
+            /** Ingredient Id */
+            ingredient_id?: string | null;
         };
         /**
          * AddedBy
          * @enum {string}
          */
         AddedBy: "member" | "agent";
+        /** CabinetItemOut */
+        CabinetItemOut: {
+            ingredient: components["schemas"]["IngredientOut"];
+            /** Quantity */
+            quantity: string | null;
+            /** Unit */
+            unit: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "confirmed" | "estimated" | "unknown";
+            last_change_source: components["schemas"]["ChangeSource"];
+            /**
+             * Last Confirmed At
+             * Format: date-time
+             */
+            last_confirmed_at: string;
+        };
+        /** CabinetOut */
+        CabinetOut: {
+            /** Version */
+            version: number;
+            /** Tracked */
+            tracked: components["schemas"]["CabinetItemOut"][];
+            /** Staples */
+            staples: components["schemas"]["StapleOut"][];
+        };
+        /**
+         * ChangeSource
+         * @description What last changed a Cabinet quantity. Feeds the calculated status (ADR 0003).
+         * @enum {string}
+         */
+        ChangeSource: "purchase" | "manual" | "cooked";
         /** CreateHouseholdIn */
         CreateHouseholdIn: {
             /** Name */
@@ -247,7 +353,8 @@ export interface components {
         };
         /**
          * EditItemIn
-         * @description Only the fields present are changed. Send `null` to clear quantity or unit.
+         * @description Only the fields present are changed. Send `null` to clear quantity, unit or the
+         *     Ingredient link.
          */
         EditItemIn: {
             /** Text */
@@ -256,6 +363,8 @@ export interface components {
             quantity?: number | string | null;
             /** Unit */
             unit?: string | null;
+            /** Ingredient Id */
+            ingredient_id?: string | null;
         };
         /** HTTPValidationError */
         HTTPValidationError: {
@@ -294,6 +403,20 @@ export interface components {
              */
             created_at: string;
         };
+        /** IngredientOut */
+        IngredientOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Name */
+            name: string;
+            /** Category */
+            category: string;
+            /** Default Unit */
+            default_unit: string;
+        };
         /** InviteOut */
         InviteOut: {
             /** Code */
@@ -329,6 +452,7 @@ export interface components {
             checked_at: string | null;
             /** Checked By */
             checked_by: string | null;
+            ingredient: components["schemas"]["IngredientOut"] | null;
             /** Checked */
             readonly checked: boolean;
         };
@@ -367,6 +491,19 @@ export interface components {
         SetCheckedIn: {
             /** Checked */
             checked: boolean;
+        };
+        /**
+         * SetQuantityIn
+         * @description `null` means "we have some; amount not recorded".
+         */
+        SetQuantityIn: {
+            /** Quantity */
+            quantity: number | string | null;
+        };
+        /** SetStapleIn */
+        SetStapleIn: {
+            /** Have */
+            have: boolean;
         };
         /** ShoppingListDetailOut */
         ShoppingListDetailOut: {
@@ -407,6 +544,12 @@ export interface components {
             version: number;
             /** Unchecked Count */
             unchecked_count: number;
+        };
+        /** StapleOut */
+        StapleOut: {
+            ingredient: components["schemas"]["IngredientOut"];
+            /** Have */
+            have: boolean;
         };
         /** ValidationError */
         ValidationError: {
@@ -891,6 +1034,193 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ItemOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_cabinet_cabinet_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CabinetOut"];
+                };
+            };
+        };
+    };
+    set_tracked_cabinet_items__ingredient_id__put: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                ingredient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SetQuantityIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CabinetItemOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    remove_tracked_cabinet_items__ingredient_id__delete: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                ingredient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    set_staple_cabinet_staples__ingredient_id__put: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                ingredient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SetStapleIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StapleOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    remove_staple_cabinet_staples__ingredient_id__delete: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                ingredient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    search_ingredients_ingredients_get: {
+        parameters: {
+            query: {
+                q: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["IngredientOut"][];
                 };
             };
             /** @description Validation Error */

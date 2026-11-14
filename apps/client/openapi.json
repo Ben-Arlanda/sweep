@@ -762,6 +762,323 @@
         }
       }
     },
+    "/cabinet": {
+      "get": {
+        "tags": [
+          "cabinet"
+        ],
+        "summary": "Get Cabinet",
+        "operationId": "get_cabinet_cabinet_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CabinetOut"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/cabinet/items/{ingredient_id}": {
+      "put": {
+        "tags": [
+          "cabinet"
+        ],
+        "summary": "Set Tracked",
+        "operationId": "set_tracked_cabinet_items__ingredient_id__put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "ingredient_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Ingredient Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetQuantityIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CabinetItemOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "cabinet"
+        ],
+        "summary": "Remove Tracked",
+        "operationId": "remove_tracked_cabinet_items__ingredient_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "ingredient_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Ingredient Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cabinet/staples/{ingredient_id}": {
+      "put": {
+        "tags": [
+          "cabinet"
+        ],
+        "summary": "Set Staple",
+        "operationId": "set_staple_cabinet_staples__ingredient_id__put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "ingredient_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Ingredient Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetStapleIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StapleOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "cabinet"
+        ],
+        "summary": "Remove Staple",
+        "operationId": "remove_staple_cabinet_staples__ingredient_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "ingredient_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Ingredient Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ingredients": {
+      "get": {
+        "tags": [
+          "cabinet"
+        ],
+        "summary": "Search Ingredients",
+        "operationId": "search_ingredients_ingredients_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80,
+              "title": "Q"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IngredientOut"
+                  },
+                  "title": "Response Search Ingredients Ingredients Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/health": {
       "get": {
         "summary": "Health",
@@ -849,6 +1166,18 @@
               }
             ],
             "title": "Unit"
+          },
+          "ingredient_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ingredient Id"
           }
         },
         "type": "object",
@@ -864,6 +1193,94 @@
           "agent"
         ],
         "title": "AddedBy"
+      },
+      "CabinetItemOut": {
+        "properties": {
+          "ingredient": {
+            "$ref": "#/components/schemas/IngredientOut"
+          },
+          "quantity": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quantity"
+          },
+          "unit": {
+            "type": "string",
+            "title": "Unit"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "confirmed",
+              "estimated",
+              "unknown"
+            ],
+            "title": "Status"
+          },
+          "last_change_source": {
+            "$ref": "#/components/schemas/ChangeSource"
+          },
+          "last_confirmed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Last Confirmed At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ingredient",
+          "quantity",
+          "unit",
+          "status",
+          "last_change_source",
+          "last_confirmed_at"
+        ],
+        "title": "CabinetItemOut"
+      },
+      "CabinetOut": {
+        "properties": {
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          },
+          "tracked": {
+            "items": {
+              "$ref": "#/components/schemas/CabinetItemOut"
+            },
+            "type": "array",
+            "title": "Tracked"
+          },
+          "staples": {
+            "items": {
+              "$ref": "#/components/schemas/StapleOut"
+            },
+            "type": "array",
+            "title": "Staples"
+          }
+        },
+        "type": "object",
+        "required": [
+          "version",
+          "tracked",
+          "staples"
+        ],
+        "title": "CabinetOut"
+      },
+      "ChangeSource": {
+        "type": "string",
+        "enum": [
+          "purchase",
+          "manual",
+          "cooked"
+        ],
+        "title": "ChangeSource",
+        "description": "What last changed a Cabinet quantity. Feeds the calculated status (ADR 0003)."
       },
       "CreateHouseholdIn": {
         "properties": {
@@ -929,11 +1346,23 @@
               }
             ],
             "title": "Unit"
+          },
+          "ingredient_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ingredient Id"
           }
         },
         "type": "object",
         "title": "EditItemIn",
-        "description": "Only the fields present are changed. Send `null` to clear quantity or unit."
+        "description": "Only the fields present are changed. Send `null` to clear quantity, unit or the\nIngredient link."
       },
       "HTTPValidationError": {
         "properties": {
@@ -1005,6 +1434,35 @@
           "created_at"
         ],
         "title": "HouseholdOut"
+      },
+      "IngredientOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "default_unit": {
+            "type": "string",
+            "title": "Default Unit"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "category",
+          "default_unit"
+        ],
+        "title": "IngredientOut"
       },
       "InviteOut": {
         "properties": {
@@ -1102,6 +1560,16 @@
             ],
             "title": "Checked By"
           },
+          "ingredient": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IngredientOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "checked": {
             "type": "boolean",
             "title": "Checked",
@@ -1119,6 +1587,7 @@
           "created_at",
           "checked_at",
           "checked_by",
+          "ingredient",
           "checked"
         ],
         "title": "ItemOut"
@@ -1204,6 +1673,44 @@
         ],
         "title": "SetCheckedIn"
       },
+      "SetQuantityIn": {
+        "properties": {
+          "quantity": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quantity"
+          }
+        },
+        "type": "object",
+        "required": [
+          "quantity"
+        ],
+        "title": "SetQuantityIn",
+        "description": "`null` means \"we have some; amount not recorded\"."
+      },
+      "SetStapleIn": {
+        "properties": {
+          "have": {
+            "type": "boolean",
+            "title": "Have"
+          }
+        },
+        "type": "object",
+        "required": [
+          "have"
+        ],
+        "title": "SetStapleIn"
+      },
       "ShoppingListDetailOut": {
         "properties": {
           "id": {
@@ -1288,6 +1795,23 @@
           "unchecked_count"
         ],
         "title": "ShoppingListSummaryOut"
+      },
+      "StapleOut": {
+        "properties": {
+          "ingredient": {
+            "$ref": "#/components/schemas/IngredientOut"
+          },
+          "have": {
+            "type": "boolean",
+            "title": "Have"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ingredient",
+          "have"
+        ],
+        "title": "StapleOut"
       },
       "ValidationError": {
         "properties": {

@@ -201,6 +201,8 @@ export function settle(queryClient: QueryClient) {
   // This mutation still counts as running while onSettled runs, hence "<= 1".
   if (queryClient.isMutating({ mutationKey: listKeys.all }) <= 1) {
     void queryClient.invalidateQueries({ queryKey: listKeys.all });
+    // Ticking a linked item changes the Cabinet too.
+    void queryClient.invalidateQueries({ queryKey: ['cabinet'] });
   }
 }
 

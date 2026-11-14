@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Platform, Share, View } from 'react-native';
 
 import { Button, Card, ErrorText, Text } from '@/components/ui';
+import { CabinetCard } from '@/features/cabinet/CabinetCard';
 import { ListsCard } from '@/features/lists/ListsCard';
 import type { MeOut } from '@/lib/api/client';
 import {
@@ -30,6 +31,7 @@ export function HouseholdView({ me }: { me: MeOut }) {
       </View>
 
       <ListsCard />
+      <CabinetCard />
 
       <Card>
         <Text variant="heading">Members</Text>

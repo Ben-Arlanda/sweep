@@ -120,16 +120,21 @@ function ItemRow({ item, actions }: { item: Item; actions: Actions }) {
         >
           {item.checked ? <Text style={{ color: t.colors.onPrimary }}>✓</Text> : null}
         </View>
-        <Text
-          muted={item.checked}
-          style={{
-            flex: 1,
-            textDecorationLine: item.checked ? 'line-through' : 'none',
-          }}
-        >
-          {item.text}
-          {amount ? <Text muted> · {amount}</Text> : null}
-        </Text>
+        <View style={{ flex: 1 }}>
+          <Text
+            muted={item.checked}
+            style={{ textDecorationLine: item.checked ? 'line-through' : 'none' }}
+          >
+            {item.text}
+            {amount ? <Text muted> · {amount}</Text> : null}
+          </Text>
+          {/* Shows where a tick will go. Unlinked items don't reach the Cabinet. */}
+          {item.ingredient ? (
+            <Text variant="caption" muted>
+              Cabinet: {item.ingredient.name}
+            </Text>
+          ) : null}
+        </View>
       </Pressable>
       <Pressable
         accessibilityRole="button"

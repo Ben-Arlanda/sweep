@@ -1,6 +1,6 @@
 # Sweep — Architecture & Implementation Plan
 
-Status: slices 0–2 merged (foundations; Households, invites, Clerk email-code sign-in, account deletion; shared Shopping List with idempotent writes, live notices, optimistic UI and an offline retry queue). Next: slice 3 (Cabinet).
+Status: slices 0–3 merged (foundations; Households, invites, Clerk email-code sign-in, account deletion; shared Shopping List with idempotent writes, live notices, optimistic UI and an offline retry queue; Ingredients and the Cabinet, fed by ticking items off). Next: slice 4 (Recipe Knowledge Base).
 Language follows [`CONTEXT.md`](../CONTEXT.md). Big decisions live in [`docs/adr/`](adr/).
 ⚠️ = unverified, check before relying on it.
 
