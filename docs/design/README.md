@@ -25,7 +25,18 @@ Browse these by hand, save what you like, and note why:
 
 ## References
 
-<!-- - `references/example.png`: link. What I like: ... -->
+Screenshots live in `references/` **on your machine only**. They're git-ignored because this repo is public and they're other people's work. The notes below are the record.
+
+| File | Source | What we take from it |
+|---|---|---|
+| 01-greenso-product-detail | Greenso concept | White sheet rising over a sage photo area, nutrient fact chips, pill stepper with a deep-green CTA |
+| 02–07 freshora-* | Freshora (Behance case study, store listing, marketing page) | Lime-to-yellow gradients, black price/quantity pills, cut-out food photography, soft radial glows, highlighter-marked words, phone-in-hand and dark-glow marketing shots |
+| 08-placify-onboarding | Placify (Mobbin) | Tilted cards drifting and blurring in depth, words each in their own colour with a hand-drawn icon |
+| 09–10 magnet-* | Magnet (Mobbin) | Shared group board, chunky rounded headings, coral accent, pastel colour per card, bottom sheet, avatars showing who's there |
+
+Animation is part of the brief: the motion should feel springy and alive, and respect "reduce motion".
+
+Directions drafted from these (Zest, Market Garden, Kitchen Table) are in the design-directions page shared on 2026-11-14. Recommendation: Zest's lime and ink as the brand, with Kitchen Table's pastels and "who ticked it" personality inside the app. **Not yet chosen.**
 
 ## Constraints the design must respect
 
