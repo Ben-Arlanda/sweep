@@ -23,7 +23,7 @@ export default function HomeScreen() {
   const emailName = user?.primaryEmailAddress?.emailAddress.split('@')[0] ?? '';
 
   return (
-    <Screen>
+    <Screen edges={['top', 'bottom', 'left', 'right']}>
       {me.data ? <HouseholdView me={me.data} /> : <Onboarding suggestedName={emailName} />}
     </Screen>
   );

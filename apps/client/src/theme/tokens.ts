@@ -1,28 +1,39 @@
 /**
  * Design tokens: the app's shared visual decisions, named once and used everywhere.
  *
- * Components never hard-code a colour or a spacing value. They ask for a token
- * ("primary", "space.md"), so changing the look means changing this file only,
- * and light/dark mode is just a second set of values for the same names.
+ * Direction: "Zest + Kitchen Table" (ADR 0007). Lime and ink are the brand; warm white
+ * and soft pastels make it feel like a household kitchen rather than a shop.
+ *
+ * Components never hard-code a colour or a spacing value. They ask for a *role*
+ * ("action", "textMuted", a tint) rather than a raw colour, so each colour has one job:
+ * - Lime is for actions only (main buttons, ticks, the AI). Never text on white.
+ * - Pastel tints give each list, Member and item its own colour. Quantity pills use a
+ *   deeper shade of the same tint ("matched tint").
+ * - Cabinet statuses have their own colours so they never get confused with the brand.
+ *
+ * Contrast for every text/background pair is checked in tokens.test.ts.
  */
 
 const palette = {
-  basil700: '#245740',
-  basil600: '#2f6b4f',
-  basil300: '#7cc49f',
-  basil100: '#e3efe7',
-  ink900: '#1d2420',
-  ink600: '#5b6760',
-  ink300: '#c9d0c8',
-  paper: '#f7f8f4',
+  lime: '#d8f23c',
+  limePressed: '#c5de25',
+  limeSoft: '#eef8b8',
+  ink: '#12150f',
+  ink700: '#2a2f24',
+  paper: '#fffaf4',
   white: '#ffffff',
-  night900: '#121714',
-  night800: '#18201b',
-  night600: '#2c3730',
-  mist200: '#e4e9e4',
-  mist400: '#9aa69e',
-  tomato600: '#b3261e',
-  tomato300: '#f2b8b5',
+  stone600: '#5d6155',
+  stone300: '#e7e2d6',
+  night900: '#0f110d',
+  night800: '#181b15',
+  night700: '#22261e',
+  night600: '#2c3127',
+  mist100: '#eef1e6',
+  mist400: '#a6ab9b',
+  red700: '#a3271a',
+  red600: '#b3261e',
+  red100: '#ffe1dc',
+  red300: '#ffb4a8',
 } as const;
 
 export type ColorTokens = {
@@ -31,52 +42,147 @@ export type ColorTokens = {
   text: string;
   textMuted: string;
   border: string;
-  primary: string;
-  primaryPressed: string;
-  onPrimary: string;
-  primarySoft: string;
+  /** Lime: main buttons, ticks, the AI. */
+  action: string;
+  actionPressed: string;
+  onAction: string;
+  actionSoft: string;
+  onActionSoft: string;
+  /** The one strong dark (light in dark mode) surface: toasts and anchor cards. */
+  inverse: string;
+  onInverse: string;
   danger: string;
+  dangerSoft: string;
 };
 
 export const colors: Record<'light' | 'dark', ColorTokens> = {
   light: {
     background: palette.paper,
     surface: palette.white,
-    text: palette.ink900,
-    textMuted: palette.ink600,
-    border: palette.ink300,
-    primary: palette.basil600,
-    primaryPressed: palette.basil700,
-    onPrimary: palette.white,
-    primarySoft: palette.basil100,
-    danger: palette.tomato600,
+    text: palette.ink,
+    textMuted: palette.stone600,
+    border: palette.stone300,
+    action: palette.lime,
+    actionPressed: palette.limePressed,
+    onAction: palette.ink,
+    actionSoft: palette.limeSoft,
+    onActionSoft: '#2f3600',
+    inverse: palette.ink,
+    onInverse: palette.white,
+    danger: palette.red600,
+    dangerSoft: palette.red100,
   },
   dark: {
     background: palette.night900,
     surface: palette.night800,
-    text: palette.mist200,
+    text: palette.mist100,
     textMuted: palette.mist400,
     border: palette.night600,
-    primary: palette.basil300,
-    primaryPressed: palette.basil100,
-    onPrimary: palette.night900,
-    primarySoft: '#1d3127',
-    danger: palette.tomato300,
+    action: palette.lime, // lime with ink text works on dark backgrounds too
+    actionPressed: palette.limePressed,
+    onAction: palette.ink,
+    actionSoft: '#323a10',
+    onActionSoft: '#e6f59a',
+    inverse: palette.mist100,
+    onInverse: palette.ink,
+    danger: palette.red300,
+    dangerSoft: '#4a1f19',
   },
 };
+
+/** The household pastels. `bg` for cards and thumbnails, `pill`/`onPill` for quantity pills. */
+export const TINT_NAMES = ['butter', 'blush', 'mint', 'sky', 'lilac'] as const;
+export type TintName = (typeof TINT_NAMES)[number];
+export type Tint = { bg: string; pill: string; onPill: string; text: string };
+
+export const tints: Record<'light' | 'dark', Record<TintName, Tint>> = {
+  light: {
+    butter: { bg: '#fde9a6', pill: '#f6d469', onPill: '#4a3500', text: palette.ink },
+    blush: { bg: '#f9d6cf', pill: '#f4b9ab', onPill: '#5b1d12', text: palette.ink },
+    mint: { bg: '#cdebd9', pill: '#9fd7b6', onPill: '#0f3d24', text: palette.ink },
+    sky: { bg: '#d3e0fc', pill: '#aec5f6', onPill: '#13306b', text: palette.ink },
+    lilac: { bg: '#ecdaf6', pill: '#d6b9ec', onPill: '#43195e', text: palette.ink },
+  },
+  dark: {
+    butter: { bg: '#3a3218', pill: '#5a4b1c', onPill: '#fde9a6', text: palette.mist100 },
+    blush: { bg: '#3a2420', pill: '#5c3329', onPill: '#f9d6cf', text: palette.mist100 },
+    mint: { bg: '#1d3428', pill: '#2b4d3b', onPill: '#cdebd9', text: palette.mist100 },
+    sky: { bg: '#1f2a44', pill: '#2f3f66', onPill: '#d3e0fc', text: palette.mist100 },
+    lilac: { bg: '#33253d', pill: '#4a3758', onPill: '#ecdaf6', text: palette.mist100 },
+  },
+};
+
+/** Cabinet statuses (ADR 0003), deliberately not lime so they never read as "tap me". */
+export type StatusName = 'confirmed' | 'estimated' | 'unknown' | 'runOut';
+export type StatusColors = { bg: string; fg: string; border: string };
+
+export const statusColors: Record<'light' | 'dark', Record<StatusName, StatusColors>> = {
+  light: {
+    confirmed: { bg: '#e4ecff', fg: '#1f3f9e', border: '#e4ecff' },
+    estimated: { bg: '#fff0c7', fg: '#6e4a00', border: '#fff0c7' },
+    unknown: { bg: 'transparent', fg: '#545a4f', border: '#b3baa9' },
+    runOut: { bg: palette.red100, fg: palette.red700, border: palette.red100 },
+  },
+  dark: {
+    confirmed: { bg: '#1e2a4a', fg: '#c9d7ff', border: '#1e2a4a' },
+    estimated: { bg: '#3a2f10', fg: '#ffd98a', border: '#3a2f10' },
+    unknown: { bg: 'transparent', fg: '#b5bcab', border: '#5a6152' },
+    runOut: { bg: '#4a1f19', fg: palette.red300, border: '#4a1f19' },
+  },
+};
+
+/**
+ * Font families, loaded in the root layout. On Android a custom font plus `fontWeight`
+ * can silently fall back to the system font, so each weight is its own family and we
+ * never set `fontWeight` alongside these.
+ */
+export const fonts = {
+  display: 'BricolageGrotesque_800ExtraBold',
+  displayBold: 'BricolageGrotesque_700Bold',
+  body: 'DMSans_400Regular',
+  medium: 'DMSans_500Medium',
+  bold: 'DMSans_700Bold',
+} as const;
 
 // A 4-point scale: every gap and padding is one of these, which keeps layouts even.
 export const space = { xs: 4, sm: 8, md: 12, lg: 16, xl: 24, xxl: 32 } as const;
 
-export const radius = { sm: 6, md: 10, lg: 16, pill: 999 } as const;
+// Soft and round throughout: nothing sharp.
+export const radius = { sm: 8, md: 14, lg: 20, xl: 28, pill: 999 } as const;
 
 export const type = {
-  title: { fontSize: 28, fontWeight: '700', lineHeight: 34 },
-  heading: { fontSize: 20, fontWeight: '600', lineHeight: 26 },
-  body: { fontSize: 16, fontWeight: '400', lineHeight: 22 },
-  label: { fontSize: 14, fontWeight: '600', lineHeight: 18 },
-  caption: { fontSize: 13, fontWeight: '400', lineHeight: 18 },
+  display: { fontFamily: fonts.display, fontSize: 34, lineHeight: 38, letterSpacing: -0.8 },
+  title: { fontFamily: fonts.display, fontSize: 28, lineHeight: 32, letterSpacing: -0.5 },
+  heading: { fontFamily: fonts.displayBold, fontSize: 20, lineHeight: 24, letterSpacing: -0.2 },
+  body: { fontFamily: fonts.body, fontSize: 16, lineHeight: 22 },
+  label: { fontFamily: fonts.bold, fontSize: 15, lineHeight: 20 },
+  caption: { fontFamily: fonts.body, fontSize: 13, lineHeight: 18 },
+  pill: { fontFamily: fonts.bold, fontSize: 12, lineHeight: 16 },
 } as const;
 
-// Minimum comfortable touch target (Apple's guideline is 44pt).
+/** CSS-style shadows (supported on iOS, Android and web with the New Architecture). */
+export const shadow = {
+  card: '0px 4px 14px -8px rgba(0, 0, 0, 0.30)',
+  raised: '0px 12px 28px -14px rgba(0, 0, 0, 0.40)',
+} as const;
+
+/**
+ * Motion. One feel for the whole app: springy, quick, never slow.
+ * - pop: ticks and checkboxes overshoot, then settle.
+ * - press: buttons shrink slightly while held.
+ * - gentle: toasts and sheets slide in.
+ * Every animation is switched off when the device's "reduce motion" setting is on.
+ */
+export const motion = {
+  duration: { fast: 150, base: 250, slow: 400 },
+  spring: {
+    pop: { damping: 9, stiffness: 320, mass: 0.7 },
+    press: { damping: 20, stiffness: 400 },
+    gentle: { damping: 18, stiffness: 200 },
+  },
+  pressScale: 0.97,
+  staggerMs: 45,
+} as const;
+
+/** Minimum tappable size (Apple HIG 44pt). Applies to every button and row. */
 export const touchTarget = 44;

@@ -2,8 +2,6 @@
  * How Cabinet amounts read on screen. The API always sends the Ingredient's base unit
  * (g, ml or count); people read "1.5 kg" more easily than "1500 g".
  */
-type Status = 'confirmed' | 'estimated' | 'unknown';
-
 export function formatAmount(quantity: string | null, unit: string): string {
   if (quantity === null) return 'Some';
   const n = Number(quantity);
@@ -13,13 +11,7 @@ export function formatAmount(quantity: string | null, unit: string): string {
   return trim(n);
 }
 
-export const STATUS_LABEL: Record<Status, string> = {
-  confirmed: 'Confirmed',
-  estimated: 'Estimated',
-  unknown: 'Unknown, please check',
-};
-
-/** Unknown amounts are the ones the app (and later the agent) shouldn't rely on. */
-export function needsAttention(status: Status): boolean {
-  return status === 'unknown';
+/** Ingredient names are stored lowercase ("greek yoghurt"); show them as "Greek yoghurt". */
+export function displayName(name: string): string {
+  return name.charAt(0).toUpperCase() + name.slice(1);
 }

@@ -1,6 +1,6 @@
 # Sweep — Architecture & Implementation Plan
 
-Status: slices 0–3 merged (foundations; Households, invites, Clerk email-code sign-in, account deletion; shared Shopping List with idempotent writes, live notices, optimistic UI and an offline retry queue; Ingredients and the Cabinet, fed by ticking items off). Next: slice 4 (Recipe Knowledge Base).
+Status: slices 0–3 merged (foundations; Households, invites, Clerk email-code sign-in, account deletion; shared Shopping List with idempotent writes, live notices, optimistic UI and an offline retry queue; Ingredients and the Cabinet, fed by ticking items off). Slice 3b (design foundations: the Zest + Kitchen Table design system and WCAG AA accessibility, ADR 0007) in progress. Next: slice 4 (Recipe Knowledge Base).
 Language follows [`CONTEXT.md`](../CONTEXT.md). Big decisions live in [`docs/adr/`](adr/).
 ⚠️ = unverified, check before relying on it.
 
@@ -311,6 +311,7 @@ Each slice is a feature branch and a focused PR that works end to end.
 | 1 | `feature/auth-households` | Clerk sign-in, JWT verification, Households, invites, account deletion, cross-Household access tests | Security (authN/authZ) |
 | 2 | `feature/shared-shopping-list` | Lists, idempotent mutations, NOTIFY → WebSocket, optimistic UI, retry queue | (product core) |
 | 3 | `feature/cabinet` | Ingredients + aliases, Staples/Tracked, tick → Cabinet, manual edits, calculated status | (product core) |
+| 3b | `feature/design-foundations` | Design tokens (colour roles, pastels, type, motion), core components, `/design` preview, restyled screens, WCAG 2.2 AA checks (ADR 0007) | (product: public-ready UI, accessibility) |
 | 4 | `feature/recipe-knowledge-base` | Seed ingest, ingredient normalisation (structured outputs), embeddings, R1 search, URL import | LLM engineering, RAG |
 | 5 | `feature/langgraph-agent` | Graph, read/compute/draft tools, validation loop, checkpointer, SSE to the app | Agentic AI, tool calling |
 | 6 | `feature/approvals` | Proposal, interrupt/resume, commit, audit log, Meal Plan, Cooked deduction | Human-in-the-loop, security |

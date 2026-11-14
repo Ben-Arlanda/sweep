@@ -1,5 +1,5 @@
 /// <reference types="jest" />
-import { formatAmount, needsAttention } from './format';
+import { displayName, formatAmount } from './format';
 
 test.each([
   ['1500', 'g', '1.5 kg'],
@@ -13,8 +13,10 @@ test.each([
   expect(formatAmount(quantity, unit)).toBe(expected);
 });
 
-test('unknown and run-out things are the ones to check', () => {
-  expect(needsAttention('unknown')).toBe(true);
-  expect(needsAttention('estimated')).toBe(false);
-  expect(needsAttention('confirmed')).toBe(false);
+test.each([
+  ['greek yoghurt', 'Greek yoghurt'],
+  ['salt', 'Salt'],
+  ['', ''],
+])('displays %j as %j', (name, expected) => {
+  expect(displayName(name)).toBe(expected);
 });
