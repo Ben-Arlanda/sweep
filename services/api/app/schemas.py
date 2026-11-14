@@ -89,6 +89,8 @@ class ListNameIn(BaseModel):
 
 
 class AddItemIn(BaseModel):
+    # Optional: devices choose it so they can refer to the item before the server replies.
+    id: uuid.UUID | None = None
     text: ItemText
     quantity: Quantity | None = None
     unit: Unit | None = None
