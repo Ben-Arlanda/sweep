@@ -1,7 +1,6 @@
 """The Recipe Knowledge Base: loading Seed Recipes, R1 search, and who can see what."""
 
 import uuid
-from collections.abc import Awaitable, Callable, Sequence
 from typing import Any
 
 import httpx
@@ -16,7 +15,7 @@ from app.embeddings import HashingEmbedder
 from app.main import create_app
 from app.services import recipes
 from app.services.ingredient_lines import index_from_db
-from tests.conftest import FakeIssuer
+from tests.conftest import FakeIssuer, Loader
 from tests.helpers import create_household
 
 pytestmark = pytest.mark.anyio
@@ -56,22 +55,6 @@ STIR_FRY = seed(
     "chinese",
     ["500 g beef steak", "1 broccoli", "2 tbsp soy sauce", "1 cup rice"],
 )
-
-Loader = Callable[[Sequence[SeedRecipe]], Awaitable[recipes.SeedReport]]
-
-
-@pytest.fixture
-def load(database_url: str, db: Engine) -> Loader:
-    async def run(seeds: Sequence[SeedRecipe]) -> recipes.SeedReport:
-        engine = make_engine(database_url)
-        async with make_sessionmaker(engine)() as session:
-            report = await recipes.upsert_seed_recipes(session, seeds, await index_from_db(session))
-            await recipes.embed_missing(session, HashingEmbedder())
-            await session.commit()
-        await engine.dispose()
-        return report
-
-    return run
 
 
 async def get(

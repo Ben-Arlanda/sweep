@@ -8,12 +8,24 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app import errors
+from app.agent.checkpoints import Checkpoints
+from app.agent.model import AgentModel
 from app.auth import TokenVerifier
 from app.config import Settings, settings
 from app.db import make_engine, make_sessionmaker
 from app.embeddings import Embedder, VoyageEmbedder
+from app.llm import ClaudeAgentModel
 from app.realtime import Hub, listen
-from app.routes import cabinet, households, realtime, recipes, shopping_lists
+from app.routes import (
+    cabinet,
+    conversations,
+    dietary_rules,
+    households,
+    realtime,
+    recipes,
+    shopping_lists,
+)
+from app.services.conversations import Agent
 
 # The one place domain errors become HTTP status codes.
 ERROR_STATUS: dict[type[errors.DomainError], int] = {
@@ -45,13 +57,23 @@ def default_embedder(app_settings: Settings) -> Embedder | None:
     )
 
 
+def default_agent_model(app_settings: Settings) -> AgentModel | None:
+    key = app_settings.anthropic_api_key
+    if key is None:
+        return None  # the assistant is switched off; the rest of the app works
+    return ClaudeAgentModel(
+        key.get_secret_value(), app_settings.agent_model, app_settings.agent_effort
+    )
+
+
 def create_app(
     app_settings: Settings | None = None,
     token_verifier: TokenVerifier | None = None,
     embedder: Embedder | None = None,
+    agent_model: AgentModel | None = None,
 ) -> FastAPI:
     """Build the app. Tests pass their own settings, a verifier that trusts a test key,
-    and a fake embedder."""
+    a fake embedder and a scripted agent model."""
     app_settings = app_settings or settings
     # Creating an engine doesn't connect yet; the first query does.
     engine = make_engine(app_settings.database_url)
@@ -63,10 +85,13 @@ def create_app(
         # One background task per API instance holds a Postgres LISTEN connection and
         # hands change notices to this instance's WebSockets.
         listener = asyncio.create_task(listen(app_settings.database_url, hub))
+        if app.state.agent is not None:
+            await checkpoints.setup()  # before any request: see app/agent/checkpoints.py
         yield
         listener.cancel()
         with contextlib.suppress(asyncio.CancelledError):
             await listener
+        await checkpoints.close()
         await engine.dispose()  # close pooled connections on shutdown
 
     app = FastAPI(title="Sweep API", lifespan=lifespan)
@@ -77,6 +102,20 @@ def create_app(
         app_settings.auth_issuers
     )
     app.state.embedder = embedder or default_embedder(app_settings)
+    checkpoints = Checkpoints(app_settings.database_url)
+    model = agent_model or default_agent_model(app_settings)
+    app.state.agent = (
+        Agent(
+            model,
+            checkpoints,
+            engine,
+            app.state.sessionmaker,
+            app.state.embedder,
+            app_settings.agent_daily_token_budget,
+        )
+        if model is not None
+        else None
+    )
 
     # Browsers block cross-origin requests unless the server allows them.
     # Native iOS/Android apps aren't subject to CORS; this is for the web build.
@@ -91,6 +130,8 @@ def create_app(
     app.include_router(shopping_lists.router)
     app.include_router(cabinet.router)
     app.include_router(recipes.router)
+    app.include_router(dietary_rules.router)
+    app.include_router(conversations.router)
     app.include_router(realtime.router)
 
     @app.get("/health")

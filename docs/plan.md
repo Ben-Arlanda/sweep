@@ -1,6 +1,6 @@
 # Sweep — Architecture & Implementation Plan
 
-Status: slices 0–4b merged (foundations; Households, invites, Clerk sign-in, account deletion; shared Shopping List with live updates and an offline retry queue; Ingredients and the Cabinet; the Zest + Kitchen Table design system, ADR 0007; Recipe Knowledge Base backend and Recipes screens). App shell (`feature/brand-and-motion`): welcome and "how it works" screens before sign-in, bottom tab bar, dark by default, rounded heroes, Urbanist. Visual polish is deferred until the app is feature-complete. 4c (`feature/recipe-library-growth`): library grown to 500 Seed Recipes, automated recipe checks gate CI, LLM reviewer + eval built (run on demand only). Next: slice 5, the LangGraph agent.
+Status: slices 0–4b merged (foundations; Households, invites, Clerk sign-in, account deletion; shared Shopping List with live updates and an offline retry queue; Ingredients and the Cabinet; the Zest + Kitchen Table design system, ADR 0007; Recipe Knowledge Base backend and Recipes screens). App shell (`feature/brand-and-motion`): welcome and "how it works" screens before sign-in, bottom tab bar, dark by default, rounded heroes, Urbanist. Visual polish is deferred until the app is feature-complete. 4c merged: 500 Seed Recipes (all embedded), automated recipe checks gate CI. 5a (`feature/langgraph-agent`, built): Dietary Rules (vegetarian, vegan, gluten free, dairy free, excluded Ingredients) and Preferences; the LangGraph agent on Sonnet 5.5 with tools, validate loop, checkpointer and SSE (ADR 0008). Next: 5b, the chat screen.
 Language follows [`CONTEXT.md`](../CONTEXT.md). Big decisions live in [`docs/adr/`](adr/).
 ⚠️ = unverified, check before relying on it.
 
@@ -163,7 +163,7 @@ START → load_context ─→ agent ⇄ tools
 - **load_context** (no LLM): Dietary Rules, Preferences, Cabinet summary with statuses, current Meal Plan, Household size → into state.
 - **agent**: one LLM with tools bound. It decides what to call. This is the "genuine agent" part: the path is different for "plan 5 dinners" and for "we already have pasta".
 - **tools**: a wrapper around each tool that checks arguments (Pydantic), applies timeouts (10s), retries temporary failures twice, injects `household_id` from config (never from the LLM), and returns errors to the agent as data it can react to.
-- **validate** (no LLM): every recipe exists (grounding), Dietary Rules hold, servings are sensible, Estimated Cost vs budget. If it fails, it sends a structured list of problems back to the agent, at most 2 replans. After that, the agent presents its best attempt with the problems shown honestly.
+- **validate** (no LLM): every recipe exists (grounding), Dietary Rules hold, servings are sensible, Estimated Cost vs budget. If it fails, it sends a structured list of problems back to the agent, at most 2 replans. After that, the Member sees the best attempt with any meal that still has a problem removed and listed, so a Proposal never breaks a Dietary Rule. (Estimated Cost arrives in slice 7.)
 - **approve**: `interrupt(proposal)`. The paused state lives in Postgres and can be resumed hours later from any device.
 - **commit**: re-validates against current data, writes through services, logs to the audit trail. Idempotent per Proposal id.
 
@@ -185,7 +185,7 @@ Follow-ups work because `draft_plan` persists in the checkpoint. "Swap Tuesday" 
 | compute | `check_cabinet_coverage(recipe_ids, servings)` | Deterministic: missing Ingredients with quantities, unit-converted |
 | compute | `estimate_cost(items)` | Deterministic, simulated catalogue |
 | draft | `set_planned_meal(date, recipe_id, servings)` / `remove_planned_meal(date)` | Only edits agent state |
-| draft | `adapt_recipe(recipe_id, swaps)` | Creates a Recipe Adaptation in the draft. Validated against Dietary Rules. |
+| draft | `adapt_recipe(recipe_id, swaps)` | Creates a Recipe Adaptation in the draft. Validated against Dietary Rules. *(Not in 5a: comes with Recipe Adaptations.)* |
 | draft | `set_list_additions(items)` | |
 | finish | `propose_plan(summary)` | Ends the turn → validate → approve |
 
@@ -204,7 +204,7 @@ Max 15 tool calls per turn, a LangGraph recursion limit, a 60s total turn timeou
 
 ## 8. LLM layer
 
-- **Provider: the Anthropic API** (no Bedrock access yet), through one `llm` module. Nothing else imports a provider SDK. Use LangChain's Anthropic chat model so LangGraph tool calling works.
+- **Provider: the Anthropic API** (no Bedrock access yet), through one `llm` module. Nothing else imports a provider SDK. The agent calls Claude through the `anthropic` SDK inside a LangGraph node, not LangChain's chat model ([ADR 0008](adr/0008-claude-sdk-inside-langgraph-nodes.md)).
 - **Bedrock later:** add Bedrock as a second provider behind the same module (slice 11 / E5), using LangChain's Bedrock Converse model and an IAM role. Compare cost, latency and quality on the same evals. This keeps the brief's Bedrock learning objective as a real comparison, not a rewrite.
 - **Models by task:** a stronger Claude model for the agent, a small fast model for ingredient parsing and import cleanup. (When Bedrock is added: ⚠️ confirm model availability in `ap-southeast-2` or use cross-region inference.)
 - **Embeddings:** Anthropic doesn't offer an embeddings model, so use a separate provider (e.g. Voyage AI, or an open-source model run locally such as `bge`/`e5` via sentence-transformers) ⚠️. Record the model name with each vector so switching (e.g. to a Bedrock embedding model later) only means re-embedding.
@@ -322,7 +322,8 @@ Each slice is a feature branch and a focused PR that works end to end.
 | 4b | `feature/recipe-screens` | Recipes tab: browse, search, recipe detail with matched Ingredients | (product) |
 | 4c | `feature/recipe-library-growth` | 500 Seed Recipes drafted in a Claude Code session → automated checks (CI gate) → LLM reviewer (opt-in, measured by an eval) → approval. Gap logging moved to slice 5, where agent requests also feed it | Evaluation (LLM-as-judge) |
 | 4d | `feature/favourites` | "What do you usually cook" onboarding, paste/photo/link/type import, shared review screen (after slice 6) | Multimodal input, AI security |
-| 5 | `feature/langgraph-agent` | Graph, read/compute/draft tools, validation loop, checkpointer, SSE to the app | Agentic AI, tool calling |
+| 5a | `feature/langgraph-agent` | Dietary Rules + Preferences (enforced in search and validate), graph, read/compute/draft tools, validation loop, Postgres checkpointer, SSE, daily token budget | Agentic AI, tool calling |
+| 5b | `feature/agent-chat` | Chat screen (streamed replies, Proposal card), Dietary Rules and Preferences screen | (product) |
 | 6 | `feature/approvals` | Proposal, interrupt/resume, commit, audit log, Meal Plan, Cooked deduction | Human-in-the-loop, security |
 | 7 | `feature/estimated-cost` | Simulated catalogue, `estimate_cost`, budget validation | (product) |
 | 8 | `feature/agent-evals` | Scenario set, deterministic graders, baseline planner, Langfuse, cost tracking | Evaluation & observability |

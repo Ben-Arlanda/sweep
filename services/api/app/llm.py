@@ -1,7 +1,7 @@
 """The only module that talks to an LLM provider (plan §8). Today: the Anthropic API.
 
-Two jobs: read ingredient lines the rules couldn't, and review draft Seed Recipes
-(LLM-as-judge, slice 4c). Both use
+Three jobs: run the planning agent, read ingredient lines the rules couldn't, and
+review draft Seed Recipes (LLM-as-judge, slice 4c). The last two use
 **structured outputs**: we hand the API a Pydantic schema and the response is
 guaranteed to match its shape. The shape is all that's guaranteed, though. The model can
 still name an Ingredient we don't have, so the caller checks every value against our own
@@ -9,11 +9,13 @@ lists (see app.services.ingredient_lines._apply_reading).
 """
 
 import logging
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
+from typing import Any, cast
 
 import anthropic
 from pydantic import BaseModel, ValidationError
 
+from app.agent.model import ModelTurn, ModelUnavailable
 from app.data.recipes import SeedRecipe
 from app.services.ingredient_lines import LineReading
 from app.services.recipe_review import Review, as_text
@@ -140,3 +142,79 @@ class ClaudeRecipeReviewer:
             )
             return None
         return response.parsed_output
+
+
+class ClaudeAgentModel:
+    """The planning agent's model: Claude with tools, streamed.
+
+    Choices worth knowing:
+    - strict tools: Claude's tool arguments always match the schema (we still validate,
+      since a valid shape can hold a wrong value)
+    - tool_choice stays "auto": Sonnet 5.5 doesn't allow forcing a tool call, so the
+      prompt says when to call propose_plan
+    - thinking is left at the default (adaptive): Claude decides when to think. Its
+      thinking blocks go back into the history unchanged, as the API requires
+    - fallbacks="default": if a safety check declines a request, the API retries it on a
+      fallback model inside the same call instead of just stopping
+    - cache_control: the unchanging start (tools + system prompt + earlier turns) is
+      cached, so each step of a turn pays full price only for what's new
+    """
+
+    def __init__(self, api_key: str, model: str, effort: str) -> None:
+        self._client = anthropic.AsyncAnthropic(api_key=api_key, max_retries=2, timeout=60.0)
+        self.name = model
+        self._effort = effort
+
+    async def respond(
+        self,
+        system: str,
+        tools: Sequence[dict[str, Any]],
+        messages: Sequence[dict[str, Any]],
+        on_text: Callable[[str], None],
+    ) -> ModelTurn:
+        strict_tools = [
+            {**t, "input_schema": anthropic.transform_schema(t["input_schema"]), "strict": True}
+            for t in tools
+        ]
+        try:
+            async with self._client.beta.messages.stream(
+                model=self.name,
+                max_tokens=16000,
+                system=system,
+                tools=strict_tools,  # type: ignore[arg-type]
+                messages=list(messages),  # type: ignore[arg-type]
+                output_config={"effort": cast(Any, self._effort)},
+                cache_control={"type": "ephemeral"},
+                betas=["server-side-fallback-2026-07-01"],
+                fallbacks="default",
+            ) as stream:
+                async for event in stream:
+                    if event.type == "text":
+                        on_text(event.text)
+                message = await stream.get_final_message()
+        except (anthropic.APIConnectionError, anthropic.RateLimitError) as error:
+            log.warning("agent model unavailable: %s", error)
+            raise ModelUnavailable from error
+        except anthropic.APIStatusError as error:
+            if error.status_code >= 500:
+                log.warning("agent model server error: %s", error.status_code)
+                raise ModelUnavailable from error
+            raise  # a 400 is our bug (bad history or schema): fail loudly
+        log.info(
+            "agent: %s, stop=%s, %d in (%d cached) / %d out tokens",
+            message.model,
+            message.stop_reason,
+            message.usage.input_tokens,
+            message.usage.cache_read_input_tokens or 0,
+            message.usage.output_tokens,
+        )
+        cached = (message.usage.cache_read_input_tokens or 0) + (
+            message.usage.cache_creation_input_tokens or 0
+        )
+        return ModelTurn(
+            # exclude_none: send back exactly the fields the API sent, nothing extra.
+            content=[b.model_dump(mode="json", exclude_none=True) for b in message.content],
+            stop_reason=message.stop_reason or "end_turn",
+            input_tokens=message.usage.input_tokens + cached,
+            output_tokens=message.usage.output_tokens,
+        )

@@ -304,6 +304,93 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/households/current/dietary-rules": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Rules */
+        get: operations["get_rules_households_current_dietary_rules_get"];
+        /** Set Rules */
+        put: operations["set_rules_households_current_dietary_rules_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/households/current/preferences": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Preferences */
+        get: operations["get_preferences_households_current_preferences_get"];
+        /** Set Preferences */
+        put: operations["set_preferences_households_current_preferences_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/conversations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create */
+        post: operations["create_conversations_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/conversations/{conversation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get */
+        get: operations["get_conversations__conversation_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/conversations/{conversation_id}/messages": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Send */
+        post: operations["send_conversations__conversation_id__messages_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/health": {
         parameters: {
             query?: never;
@@ -382,12 +469,86 @@ export interface components {
          * @enum {string}
          */
         ChangeSource: "purchase" | "manual" | "cooked";
+        /** ChatLine */
+        ChatLine: {
+            /**
+             * Role
+             * @enum {string}
+             */
+            role: "user" | "assistant";
+            /** Text */
+            text: string;
+        };
+        /** ConversationDetailOut */
+        ConversationDetailOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Messages */
+            messages: components["schemas"]["ChatLine"][];
+            /** Draft */
+            draft: {
+                [key: string]: unknown;
+            } | null;
+            /** Proposal */
+            proposal: {
+                [key: string]: unknown;
+            } | null;
+        };
+        /** ConversationOut */
+        ConversationOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
         /** CreateHouseholdIn */
         CreateHouseholdIn: {
             /** Name */
             name: string;
             /** Display Name */
             display_name: string;
+        };
+        /**
+         * Diet
+         * @enum {string}
+         */
+        Diet: "vegetarian" | "vegan" | "gluten_free" | "dairy_free";
+        /**
+         * DietaryRulesIn
+         * @description The whole set (PUT replaces it). Unknown diets are rejected, not ignored.
+         */
+        DietaryRulesIn: {
+            /**
+             * Diets
+             * @default []
+             */
+            diets: components["schemas"]["Diet"][];
+            /**
+             * Excluded Ingredient Ids
+             * @default []
+             */
+            excluded_ingredient_ids: string[];
+        };
+        /** DietaryRulesOut */
+        DietaryRulesOut: {
+            /** Diets */
+            diets: components["schemas"]["Diet"][];
+            /** Excluded Ingredients */
+            excluded_ingredients: components["schemas"]["IngredientOut"][];
         };
         /**
          * EditItemIn
@@ -520,6 +681,27 @@ export interface components {
              */
             joined_at: string;
         };
+        /** PreferencesIn */
+        PreferencesIn: {
+            /** Household Size */
+            household_size?: number | null;
+            /**
+             * Cuisines
+             * @default []
+             */
+            cuisines: string[];
+            /** Weekly Budget */
+            weekly_budget?: number | string | null;
+        };
+        /** PreferencesOut */
+        PreferencesOut: {
+            /** Household Size */
+            household_size: number | null;
+            /** Cuisines */
+            cuisines: string[];
+            /** Weekly Budget */
+            weekly_budget: string | null;
+        };
         /** RecipeIngredientOut */
         RecipeIngredientOut: {
             /** Raw Text */
@@ -600,6 +782,11 @@ export interface components {
          * @enum {string}
          */
         Role: "owner" | "member";
+        /** SendMessageIn */
+        SendMessageIn: {
+            /** Text */
+            text: string;
+        };
         /** SetCheckedIn */
         SetCheckedIn: {
             /** Checked */
@@ -1403,6 +1590,202 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["RecipeOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_rules_households_current_dietary_rules_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DietaryRulesOut"];
+                };
+            };
+        };
+    };
+    set_rules_households_current_dietary_rules_put: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DietaryRulesIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DietaryRulesOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_preferences_households_current_preferences_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PreferencesOut"];
+                };
+            };
+        };
+    };
+    set_preferences_households_current_preferences_put: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PreferencesIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PreferencesOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_conversations_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConversationOut"];
+                };
+            };
+        };
+    };
+    get_conversations__conversation_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConversationDetailOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    send_conversations__conversation_id__messages_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SendMessageIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
                 };
             };
             /** @description Validation Error */
