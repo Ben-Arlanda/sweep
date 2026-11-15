@@ -22,7 +22,7 @@ from dataclasses import dataclass
 from app.data.ingredients import INGREDIENTS
 from app.data.recipes import SeedRecipe
 from app.services.ingredient_lines import IngredientIndex, parse_line
-from app.services.ingredients import _variants, normalise
+from app.services.ingredients import normalise, variants
 
 INDEX = IngredientIndex.from_seed(INGREDIENTS)
 CATEGORY = {i.name: i.category for i in INGREDIENTS}
@@ -41,12 +41,12 @@ class Problem:
 # could be any cheese, "pepper" could be black pepper or capsicum.
 VAGUE = {"cheese", "pepper", "mince", "steak", "cream", "rolls", "wraps", "stock cube"}
 
-_VAGUE_FORMS = {form for term in VAGUE for form in _variants(term)}  # "roll", "wrap" too
+_VAGUE_FORMS = {form for term in VAGUE for form in variants(term)}  # "roll", "wrap" too
 
 _TERMS: dict[str, str] = {}
 for _seed in INGREDIENTS:
     for _term in (_seed.name, *_seed.aliases):
-        for _form in _variants(normalise(_term)):
+        for _form in variants(normalise(_term)):
             if _form not in _VAGUE_FORMS:
                 _TERMS.setdefault(_form, _seed.name)
 _TERM_PATTERN = re.compile(
@@ -184,7 +184,7 @@ def check_recipes(recipes: Sequence[SeedRecipe]) -> list[Problem]:
         reported: set[str] = set()
         for term in _mentioned(" ".join(r.method)):
             name = _TERMS[term]
-            in_lines = any(re.search(rf"\b{re.escape(f)}\b", written) for f in _variants(term))
+            in_lines = any(re.search(rf"\b{re.escape(f)}\b", written) for f in variants(term))
             if name in names or name in reported or in_lines:
                 continue
             reported.add(name)

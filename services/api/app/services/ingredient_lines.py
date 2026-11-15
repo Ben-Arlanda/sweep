@@ -26,7 +26,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.data.ingredients import SeedIngredient
 from app.models import Ingredient, IngredientAlias, ParseMethod
-from app.services.ingredients import _variants, normalise
+from app.services.ingredients import normalise, variants
 from app.units import UNITS, convert
 
 
@@ -66,7 +66,7 @@ class IngredientIndex:
         name = core_name(text)
         if not name:
             return None
-        for candidate in _variants(name):
+        for candidate in variants(name):
             if candidate in self._by_term:
                 return self._by_term[candidate]
         return None

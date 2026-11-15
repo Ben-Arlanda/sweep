@@ -7,6 +7,7 @@ don't confirm the id exists somewhere else).
 """
 
 import uuid
+from collections.abc import Callable, Iterator
 from typing import Any
 
 import httpx
@@ -14,7 +15,9 @@ import pytest
 from sqlalchemy import Engine, text
 from sqlalchemy.exc import IntegrityError
 
-from app.db import make_engine, make_sessionmaker
+from app.data.ingredients import SeedIngredient
+from app.db import Base, make_engine, make_sessionmaker
+from app.seed import MERGED_TABLES, upsert_ingredients
 from app.services import ingredients
 from tests.conftest import FakeIssuer
 from tests.helpers import create_household, idem
@@ -65,10 +68,10 @@ async def list_id_of(client: httpx.AsyncClient, issuer: FakeIssuer, subject: str
 async def two_households(
     client: httpx.AsyncClient, issuer: FakeIssuer, db: Engine
 ) -> tuple[str, str]:
-    """Alice's Household owns "kale"; Mallory's Household owns nothing. Returns ids."""
+    """Alice's Household owns "finger lime"; Mallory's Household owns nothing. Returns ids."""
     alice = await new_household(client, issuer, db, "alice")
     mallory = await new_household(client, issuer, db, "mallory")
-    return household_ingredient(db, alice, "kale"), mallory
+    return household_ingredient(db, alice, "finger lime"), mallory
 
 
 # --- Schema ------------------------------------------------------------------------
@@ -80,11 +83,11 @@ async def test_names_are_unique_per_owner(
     alice = await new_household(client, fake_issuer, db, "alice")
     mallory = await new_household(client, fake_issuer, db, "mallory")
 
-    household_ingredient(db, alice, "kale")
-    household_ingredient(db, mallory, "kale")  # another Household may use the name
+    household_ingredient(db, alice, "finger lime")
+    household_ingredient(db, mallory, "finger lime")  # another Household may use the name
 
     with pytest.raises(IntegrityError):
-        household_ingredient(db, alice, "kale")
+        household_ingredient(db, alice, "finger lime")
     with pytest.raises(IntegrityError):  # NULLS NOT DISTINCT: starters are one owner too
         with db.begin() as conn:
             conn.execute(
@@ -100,11 +103,11 @@ async def test_deleting_a_household_deletes_its_ingredients(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer, db: Engine
 ) -> None:
     alice = await new_household(client, fake_issuer, db, "alice")
-    household_ingredient(db, alice, "kale")
+    household_ingredient(db, alice, "finger lime")
 
     with db.begin() as conn:
         conn.execute(text("DELETE FROM households WHERE id = :h"), {"h": alice})
-        left = conn.execute(text("SELECT count(*) FROM ingredients WHERE name = 'kale'"))
+        left = conn.execute(text("SELECT count(*) FROM ingredients WHERE name = 'finger lime'"))
 
     assert left.scalar_one() == 0
 
@@ -117,22 +120,22 @@ async def test_search_shows_starters_and_only_your_own_household_ingredients(
 ) -> None:
     await two_households(client, fake_issuer, db)
 
-    assert "kale" in await search(client, fake_issuer, "alice", "kale")
-    assert "kale" not in await search(client, fake_issuer, "mallory", "kale")
+    assert "finger lime" in await search(client, fake_issuer, "alice", "finger lime")
+    assert "finger lime" not in await search(client, fake_issuer, "mallory", "finger lime")
     assert "pasta" in await search(client, fake_issuer, "mallory", "pasta")
 
 
 async def test_another_households_ingredient_is_not_found_in_the_kitchen(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer, db: Engine
 ) -> None:
-    kale, _ = await two_households(client, fake_issuer, db)
+    lime, _ = await two_households(client, fake_issuer, db)
     mallory = fake_issuer.headers("mallory")
 
     tracked = await client.put(
-        f"/kitchen/items/{kale}", json={"quantity": "1"}, headers=mallory | idem()
+        f"/kitchen/items/{lime}", json={"quantity": "1"}, headers=mallory | idem()
     )
     staple = await client.put(
-        f"/kitchen/staples/{kale}", json={"have": True}, headers=mallory | idem()
+        f"/kitchen/staples/{lime}", json={"have": True}, headers=mallory | idem()
     )
 
     assert tracked.status_code == 404
@@ -142,28 +145,28 @@ async def test_another_households_ingredient_is_not_found_in_the_kitchen(
 async def test_your_own_household_ingredient_works_in_the_kitchen(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer, db: Engine
 ) -> None:
-    kale, _ = await two_households(client, fake_issuer, db)
+    lime, _ = await two_households(client, fake_issuer, db)
 
     response = await client.put(
-        f"/kitchen/items/{kale}",
+        f"/kitchen/items/{lime}",
         json={"quantity": "2"},
         headers=fake_issuer.headers("alice") | idem(),
     )
 
     assert response.status_code == 200, response.text
-    assert response.json()["ingredient"]["name"] == "kale"
+    assert response.json()["ingredient"]["name"] == "finger lime"
 
 
 async def test_another_households_ingredient_is_not_found_on_the_list(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer, db: Engine
 ) -> None:
-    kale, _ = await two_households(client, fake_issuer, db)
+    lime, _ = await two_households(client, fake_issuer, db)
     mallory = fake_issuer.headers("mallory")
     list_id = await list_id_of(client, fake_issuer, "mallory")
 
     added = await client.post(
         f"/lists/{list_id}/items",
-        json={"text": "Greens", "ingredient_id": kale},
+        json={"text": "Greens", "ingredient_id": lime},
         headers=mallory | idem(),
     )
     item = await client.post(
@@ -171,7 +174,7 @@ async def test_another_households_ingredient_is_not_found_on_the_list(
     )
     relinked = await client.patch(
         f"/lists/{list_id}/items/{item.json()['id']}",
-        json={"ingredient_id": kale},
+        json={"ingredient_id": lime},
         headers=mallory | idem(),
     )
 
@@ -182,11 +185,11 @@ async def test_another_households_ingredient_is_not_found_on_the_list(
 async def test_another_households_ingredient_cannot_be_excluded_by_dietary_rules(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer, db: Engine
 ) -> None:
-    kale, _ = await two_households(client, fake_issuer, db)
+    lime, _ = await two_households(client, fake_issuer, db)
 
     response = await client.put(
         "/households/current/dietary-rules",
-        json={"diets": [], "excluded_ingredient_ids": [kale]},
+        json={"diets": [], "excluded_ingredient_ids": [lime]},
         headers=fake_issuer.headers("mallory") | idem(),
     )
 
@@ -229,7 +232,7 @@ async def kitchen_places(
     return {t["ingredient"]["name"]: t["place"] for t in response.json()["tracked"]}
 
 
-@pytest.mark.parametrize("typed", ["Kale", "Bin bags", "Birthday candles"])
+@pytest.mark.parametrize("typed", ["Finger lime", "Bin bags", "Birthday candles"])
 async def test_anything_ticked_reaches_the_kitchen_in_the_cupboard(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer, typed: str
 ) -> None:
@@ -248,12 +251,12 @@ async def test_the_same_name_reuses_the_households_ingredient(
 ) -> None:
     await create_household(client, fake_issuer, "alice")
 
-    first = await add(client, fake_issuer, "alice", "Kale")
-    again = await add(client, fake_issuer, "alice", "kale!")
+    first = await add(client, fake_issuer, "alice", "Finger lime")
+    again = await add(client, fake_issuer, "alice", "finger lime!")
 
     assert again["ingredient"]["id"] == first["ingredient"]["id"]
     with db.begin() as conn:
-        count = conn.execute(text("SELECT count(*) FROM ingredients WHERE name = 'kale'"))
+        count = conn.execute(text("SELECT count(*) FROM ingredients WHERE name = 'finger lime'"))
         assert count.scalar_one() == 1
 
 
@@ -263,8 +266,8 @@ async def test_each_household_gets_its_own_new_ingredient(
     await create_household(client, fake_issuer, "alice")
     await create_household(client, fake_issuer, "mallory")
 
-    alices = await add(client, fake_issuer, "alice", "Kale")
-    mallorys = await add(client, fake_issuer, "mallory", "Kale")
+    alices = await add(client, fake_issuer, "alice", "Finger lime")
+    mallorys = await add(client, fake_issuer, "mallory", "Finger lime")
 
     assert alices["ingredient"]["id"] != mallorys["ingredient"]["id"]
 
@@ -314,15 +317,15 @@ async def test_without_create_unknown_names_resolve_to_nothing(
 ) -> None:
     """The agent resolves with create=False: a model's guess never adds Ingredients."""
     alice = uuid.UUID(await new_household(client, fake_issuer, db, "alice"))
-    kale = household_ingredient(db, str(alice), "kale")
+    lime = household_ingredient(db, str(alice), "finger lime")
     engine = make_engine(database_url)
     async with make_sessionmaker(engine)() as session:
         unknown = await ingredients.resolve(session, alice, "dragonfruit", create=False)
-        own = await ingredients.resolve(session, alice, "Kale", create=False)
+        own = await ingredients.resolve(session, alice, "Finger lime", create=False)
     await engine.dispose()
 
     assert unknown is None
-    assert own is not None and str(own.id) == kale
+    assert own is not None and str(own.id) == lime
     with db.begin() as conn:
         made = conn.execute(text("SELECT count(*) FROM ingredients WHERE name = 'dragonfruit'"))
         assert made.scalar_one() == 0
@@ -425,14 +428,14 @@ async def test_adding_to_the_kitchen_creates_a_household_ingredient_once(
 ) -> None:
     await create_household(client, fake_issuer, "alice")
 
-    first = await create(client, fake_issuer, "alice", "Kale")
-    again = await create(client, fake_issuer, "alice", "kale")
+    first = await create(client, fake_issuer, "alice", "Finger lime")
+    again = await create(client, fake_issuer, "alice", "finger lime")
 
     assert first.status_code == 200, first.text
-    assert first.json()["name"] == "kale"
+    assert first.json()["name"] == "finger lime"
     assert first.json()["is_household_ingredient"] is True
     assert again.json()["id"] == first.json()["id"]
-    assert "kale" in await search(client, fake_issuer, "alice", "kale")
+    assert "finger lime" in await search(client, fake_issuer, "alice", "finger lime")
 
 
 async def test_adding_a_known_name_returns_the_starter(
@@ -455,3 +458,121 @@ async def test_adding_needs_a_usable_name(
     response = await create(client, fake_issuer, "alice", name)
 
     assert response.status_code == 422
+
+
+# --- Merging into starters (step 4) --------------------------------------------------
+
+FINGER_LIME = SeedIngredient("finger lime", "produce", "g", None, False, ("caviar lime",))
+
+
+@pytest.fixture
+def add_starters(db: Engine) -> Iterator[Callable[..., None]]:
+    """Add starters as a later seed would. Starters survive between tests, so remove them."""
+    added: list[str] = []
+
+    def run(*seeds: SeedIngredient) -> None:
+        added.extend(s.name for s in seeds)
+        with db.begin() as conn:
+            upsert_ingredients(conn, seeds)
+
+    yield run
+    with db.begin() as conn:
+        conn.execute(
+            text("DELETE FROM ingredients WHERE household_id IS NULL AND name = ANY(:names)"),
+            {"names": added},
+        )
+
+
+async def test_a_new_starter_takes_over_the_household_ingredient(
+    client: httpx.AsyncClient,
+    fake_issuer: FakeIssuer,
+    db: Engine,
+    add_starters: Callable[..., None],
+) -> None:
+    await create_household(client, fake_issuer, "alice")
+    item = await add(client, fake_issuer, "alice", "Finger lime")
+    await tick(client, fake_issuer, "alice", item)
+    own = item["ingredient"]["id"]
+    await relink(
+        client, fake_issuer, "alice", await add(client, fake_issuer, "alice", "Caviar"), own
+    )
+    rules = await client.put(
+        "/households/current/dietary-rules",
+        json={"diets": [], "excluded_ingredient_ids": [own]},
+        headers=fake_issuer.headers("alice") | idem(),
+    )
+    assert rules.status_code == 200, rules.text
+
+    add_starters(FINGER_LIME)
+
+    listed = (await client.get("/list", headers=fake_issuer.headers("alice"))).json()["items"]
+    kitchen = (await client.get("/kitchen", headers=fake_issuer.headers("alice"))).json()
+    excluded = (
+        await client.get("/households/current/dietary-rules", headers=fake_issuer.headers("alice"))
+    ).json()["excluded_ingredients"]
+    starter = kitchen["tracked"][0]["ingredient"]
+    assert starter["name"] == "finger lime" and starter["is_household_ingredient"] is False
+    assert {i["ingredient"]["id"] for i in listed} == {starter["id"]}
+    assert [e["id"] for e in excluded] == [starter["id"]]
+    assert (await add(client, fake_issuer, "alice", "Caviar"))["ingredient"]["id"] == starter["id"]
+    with db.begin() as conn:
+        # Only the unused "caviar" made by the first add is left (unused ones stay).
+        left = conn.execute(text("SELECT name FROM ingredients WHERE household_id IS NOT NULL"))
+        assert left.scalars().all() == ["caviar"]
+
+
+async def test_merging_keeps_staples_and_forgets_amounts_in_another_unit(
+    client: httpx.AsyncClient,
+    fake_issuer: FakeIssuer,
+    db: Engine,
+    add_starters: Callable[..., None],
+) -> None:
+    alice = await new_household(client, fake_issuer, db, "alice")
+    counted = household_ingredient(db, alice, "finger lime")  # unit: count
+    stapled = household_ingredient(db, alice, "caviar lime")  # an alias of the new starter
+    headers = fake_issuer.headers("alice")
+    await client.put(f"/kitchen/items/{counted}", json={"quantity": "3"}, headers=headers | idem())
+    mallory = await new_household(client, fake_issuer, db, "mallory")
+    mallorys = household_ingredient(db, mallory, "caviar lime")
+    await client.put(
+        f"/kitchen/staples/{mallorys}",
+        json={"have": False},
+        headers=fake_issuer.headers("mallory") | idem(),
+    )
+
+    add_starters(FINGER_LIME)
+
+    alices = (await client.get("/kitchen", headers=headers)).json()["tracked"]
+    mallorys_kitchen = (await client.get("/kitchen", headers=fake_issuer.headers("mallory"))).json()
+    assert [(t["ingredient"]["name"], t["quantity"], t["unit"]) for t in alices] == [
+        ("finger lime", None, "g")  # 3 (count) means nothing in grams: now "some"
+    ]
+    assert {(s["ingredient"]["name"], s["have"]) for s in mallorys_kitchen["staples"]} >= {
+        ("finger lime", False)
+    }
+    assert stapled  # merged too (alias match), so it no longer exists
+    with db.begin() as conn:
+        left = conn.execute(text("SELECT count(*) FROM ingredients WHERE household_id IS NOT NULL"))
+        assert left.scalar_one() == 0
+
+
+def test_the_merge_covers_every_table_that_points_at_ingredients() -> None:
+    """Merging deletes the Household copies, and ON DELETE CASCADE would silently delete
+    rows in any table the merge forgot to repoint. A new table fails here until added."""
+    pointing = {
+        table.name
+        for table in Base.metadata.tables.values()
+        for fk in table.foreign_keys
+        if fk.column.table.name == "ingredients"
+    }
+
+    assert pointing == set(MERGED_TABLES) | {"ingredient_aliases"}  # aliases: starters only
+
+
+async def test_kale_is_a_starter_now(client: httpx.AsyncClient, fake_issuer: FakeIssuer) -> None:
+    await create_household(client, fake_issuer, "alice")
+
+    item = await add(client, fake_issuer, "alice", "Kale")
+
+    assert item["ingredient"]["name"] == "kale"
+    assert item["ingredient"]["is_household_ingredient"] is False

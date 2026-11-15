@@ -36,7 +36,7 @@ def normalise(text: str) -> str:
     return " ".join(re.sub(r"[^\w\s-]", " ", text.lower()).split())
 
 
-def _variants(name: str) -> list[str]:
+def variants(name: str) -> list[str]:
     """The name, then simple singular/plural forms of its last word."""
     words = name.split(" ")
     last = words[-1]
@@ -69,14 +69,14 @@ async def resolve(
     name = normalise(text)
     if not name:
         return None
-    variants = _variants(name)
+    forms = variants(name)
     linked = (
         await session.execute(
             select(Ingredient)
             .join(HouseholdIngredientLink, HouseholdIngredientLink.ingredient_id == Ingredient.id)
             .where(
                 HouseholdIngredientLink.household_id == household_id,
-                HouseholdIngredientLink.name.in_(variants),
+                HouseholdIngredientLink.name.in_(forms),
                 visible_to(household_id),  # a link can only point at what we may see
             )
             .order_by((HouseholdIngredientLink.name == name).desc())  # exact spelling first
@@ -86,7 +86,7 @@ async def resolve(
     if linked is not None:
         return linked
     for owner in (STARTERS, Ingredient.household_id == household_id):
-        found = await _by_name(session, owner, variants)
+        found = await _by_name(session, owner, forms)
         if found is not None:
             return found
     if not create or len(name) > NAME_MAX:
@@ -95,10 +95,10 @@ async def resolve(
 
 
 async def _by_name(
-    session: AsyncSession, owner: ColumnElement[bool], variants: list[str]
+    session: AsyncSession, owner: ColumnElement[bool], forms: list[str]
 ) -> Ingredient | None:
     """Try each form in order ("tomatoes" before "tomatoe"), names and aliases alike."""
-    for candidate in variants:
+    for candidate in forms:
         found = (
             await session.execute(
                 select(Ingredient)

@@ -2,7 +2,8 @@
 
 Reference data shared by every Household. Loaded by `app.seed.upsert_ingredients`, which
 migrations call, so every database (dev, test, CI, later production) has the same set.
-Slice 4's ingredient normalisation will grow this list.
+To add starters: edit this list, then add a migration that calls `upsert_ingredients`.
+That also merges any Household Ingredients with the same name into them (ADR 0012).
 
 Fields: name, category, base unit (g / ml / count), grams_per_ml (density, for converting
 cups and millilitres to grams), is a default Staple, aliases.
@@ -307,6 +308,18 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
     SeedIngredient("wombok", "produce", "count", None, False, ("chinese cabbage", "napa cabbage")),
     SeedIngredient("bok choy", "produce", "count", None, False, ("baby bok choy", "pak choy")),
     SeedIngredient("broccolini", "produce", "count", None, False, ("baby broccoli",)),
+    # Leafy greens, added in slice 3d after a Member's "Kale" had nowhere to go. Counted
+    # in bunches, like the herbs.
+    SeedIngredient("kale", "produce", "count", None, False, ("curly kale",)),
+    SeedIngredient(
+        "cavolo nero",
+        "produce",
+        "count",
+        None,
+        False,
+        ("tuscan kale", "lacinato kale", "black kale"),
+    ),
+    SeedIngredient("silverbeet", "produce", "count", None, False, ("swiss chard", "chard")),
     SeedIngredient("asparagus", "produce", "count", None, False, ()),  # counted in bunches
     SeedIngredient("celery", "produce", "count", None, False, ()),  # counted in bunches
     SeedIngredient("green beans", "produce", "g", None, False, ("string beans",)),
