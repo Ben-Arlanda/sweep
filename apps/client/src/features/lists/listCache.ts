@@ -14,6 +14,7 @@ export function newItem(fields: {
   text: string;
   memberId: string | null;
   now: string;
+  shopId?: string | null;
 }): Item {
   return {
     id: fields.id,
@@ -27,6 +28,7 @@ export function newItem(fields: {
     checked_by: null,
     checked: false,
     ingredient: null, // the server links it; the refetch fills this in
+    shop_id: fields.shopId ?? null,
   };
 }
 

@@ -1,26 +1,374 @@
-import { View } from 'react-native';
+import { useRef, useState } from 'react';
+import { Pressable, View, type TextInputInstance } from 'react-native';
+import Animated, { FadeInDown, ReduceMotion } from 'react-native-reanimated';
 
-import { Hero } from '@/components/Hero';
-import { Screen } from '@/components/ui';
-import { ListTiles, NewList } from '@/features/lists/ListTiles';
+import { AvatarStack } from '@/components/Avatar';
+import { Checkbox } from '@/components/Checkbox';
+import { ChoiceChips } from '@/components/ChoiceChips';
+import { Pill, Tag } from '@/components/Pill';
+import { useToast } from '@/components/Toast';
+import {
+  Button,
+  Card,
+  ErrorText,
+  Field,
+  Loading,
+  Screen,
+  SectionLabel,
+  Text,
+} from '@/components/ui';
+import { useMembers } from '@/features/household/useMembers';
+import { useLastShop } from '@/features/lists/lastShop';
+import { shoppingOrder } from '@/features/lists/listCache';
+import { ShopSheet } from '@/features/lists/ShopSheet';
+import {
+  filterByShop,
+  knownShop,
+  shopName,
+  type Shop,
+  type ShopFilter,
+} from '@/features/lists/shops';
+import type { Item, ListDetail, MemberOut } from '@/lib/api/client';
+import { useIsOnline, useList, useListActions, usePendingListChanges } from '@/lib/api/lists';
+import { tintFor } from '@/theme/tint';
+import { FoodThumb } from '@/components/FoodThumb';
+import { ingredientEmoji } from '@/theme/foodEmoji';
 import { useTheme } from '@/theme/useTheme';
 
-/** The Lists tab: every Shopping List in the Household, and a way to start a new one. */
-export default function ListsScreen() {
+const ALL = 'all';
+const ANY = 'any';
+
+/**
+ * The Household's Shopping List (one per Household, ADR 0009), made for using in a shop
+ * with one hand: big tap targets, the add box at the top, and ticked items sinking into
+ * "In the trolley". Filter by Shop when you're standing in one.
+ */
+export default function ListScreen() {
+  const list = useList();
+  if (list.isPending) return <Loading />;
+  if (list.isError) {
+    return (
+      <Screen>
+        <ErrorText message={list.error.message} />
+        <Button title="Try again" onPress={() => list.refetch()} />
+      </Screen>
+    );
+  }
+  return <ListContent list={list.data} />;
+}
+
+function ListContent({ list }: { list: ListDetail }) {
   const t = useTheme();
+  const actions = useListActions(list.id);
+  const { members, byId } = useMembers();
+  const [filter, setFilter] = useState<ShopFilter>(ALL);
+  // Which item's Shop sheet is open, if any.
+  const [tagging, setTagging] = useState<Item | null>(null);
+
+  const { shops } = list;
+  // A Shop deleted on another phone while we were filtering by it: show everything.
+  const shown = filter === ALL ? ALL : (knownShop(filter, shops) ?? ALL);
+  const { toBuy, inTrolley } = shoppingOrder(filterByShop(list.items, shown));
+  const at = shown === ALL ? '' : ` at ${shopName(shops, shown)}`;
+
+  const summary = [
+    toBuy.length === 0 ? `Nothing left to buy${at}` : `${toBuy.length} to buy${at}`,
+    inTrolley.length > 0 ? `${inTrolley.length} in the trolley` : null,
+  ]
+    .filter(Boolean)
+    .join(' · ');
+
+  const row = (item: Item, i: number) => (
+    <ItemRow
+      key={item.id}
+      item={item}
+      index={i}
+      actions={actions}
+      members={byId}
+      shops={shops}
+      onTag={setTagging}
+    />
+  );
+
   return (
-    <Screen
-      hero={
-        <Hero
-          title="Lists"
-          subtitle="Shared with everyone in your Household. Tick things off as you shop."
+    <Screen>
+      <Card tint={tintFor(list.id)} style={{ gap: t.space.sm }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'flex-start',
+            gap: t.space.md,
+          }}
+        >
+          <Text variant="title" accessibilityRole="header" style={{ flex: 1 }}>
+            Shopping List
+          </Text>
+          <AvatarStack members={members} size={28} />
+        </View>
+        <Text accessibilityLiveRegion="polite">{summary}</Text>
+      </Card>
+
+      {shops.length > 0 ? (
+        <ChoiceChips
+          label="Show items for"
+          value={shown}
+          onChange={setFilter}
+          options={[
+            { label: 'All', value: ALL, accessibilityLabel: 'All shops' },
+            ...shops.map((shop) => ({ label: shop.name, value: shop.id })),
+          ]}
         />
-      }
-    >
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.md }}>
-        <ListTiles />
+      ) : null}
+
+      <SyncStatus />
+      <AddItem shops={shops} onAdd={actions.addItem} />
+      <ErrorText message={actions.error?.message} />
+
+      <View style={{ gap: t.space.sm }}>
+        <SectionLabel>To buy</SectionLabel>
+        {toBuy.length === 0 ? <Text muted>Nothing left to buy. Nice work.</Text> : null}
+        {toBuy.map(row)}
       </View>
-      <NewList />
+
+      {inTrolley.length > 0 ? (
+        <View style={{ gap: t.space.sm }}>
+          <SectionLabel>In the trolley</SectionLabel>
+          {inTrolley.map(row)}
+        </View>
+      ) : null}
+
+      {tagging ? (
+        <ShopSheet
+          itemText={tagging.text}
+          shopId={tagging.shop_id}
+          shops={shops}
+          onPick={(shopId) => actions.setShop(tagging.id, shopId)}
+          onClose={() => setTagging(null)}
+        />
+      ) : null}
     </Screen>
+  );
+}
+
+type Actions = ReturnType<typeof useListActions>;
+
+/** The add box, with Shop chips under it. The chosen Shop sticks for the next item. */
+function AddItem({
+  shops,
+  onAdd,
+}: {
+  shops: readonly Shop[];
+  onAdd: (text: string, shopId: string | null) => void;
+}) {
+  const t = useTheme();
+  const [text, setText] = useState('');
+  const [lastShop, setLastShop] = useLastShop();
+  const shopId = knownShop(lastShop, shops);
+  const input = useRef<TextInputInstance>(null);
+
+  function submit() {
+    if (!text.trim()) return;
+    onAdd(text.trim(), shopId);
+    setText('');
+    input.current?.focus(); // keep the keyboard up for the next item
+  }
+
+  return (
+    <View style={{ gap: t.space.sm }}>
+      <Field
+        ref={input}
+        label="Add an item"
+        placeholder="e.g. 2 L milk"
+        value={text}
+        onChangeText={setText}
+        onSubmitEditing={submit}
+        submitBehavior="submit"
+        returnKeyType="done"
+        maxLength={200}
+      />
+      {shops.length > 0 ? (
+        <ChoiceChips
+          label="Buy new items at"
+          value={shopId ?? ANY}
+          onChange={(value) => setLastShop(value === ANY ? null : value)}
+          options={[
+            { label: 'Any shop', value: ANY },
+            ...shops.map((shop) => ({ label: shop.name, value: shop.id })),
+          ]}
+        />
+      ) : null}
+    </View>
+  );
+}
+
+/**
+ * One item. The whole row is the checkbox (a big target for one thumb in a shop); the
+ * ✕ is a separate button. Ticking an item linked to an Ingredient also stocks the
+ * Cabinet (ADR 0003), so we say so with a toast: that's the loop, made visible.
+ */
+function ItemRow({
+  item,
+  index,
+  actions,
+  members,
+  shops,
+  onTag,
+}: {
+  item: Item;
+  index: number;
+  actions: Actions;
+  members: Map<string, MemberOut>;
+  shops: readonly Shop[];
+  onTag: (item: Item) => void;
+}) {
+  const t = useTheme();
+  const toast = useToast();
+  const amount = [item.quantity, item.unit].filter(Boolean).join(' ');
+  const tint = tintFor(item.ingredient?.name ?? item.text);
+  const addedBy = item.added_by_member_id ? members.get(item.added_by_member_id) : undefined;
+  const tickedBy = item.checked_by ? members.get(item.checked_by) : undefined;
+  const shop = shopName(shops, item.shop_id);
+
+  const caption = [
+    item.ingredient ? `Cabinet: ${item.ingredient.name}` : null,
+    addedBy ? `added by ${addedBy.display_name}` : null,
+  ]
+    .filter(Boolean)
+    .join(' · ');
+
+  function toggle() {
+    const checked = !item.checked;
+    // Send what the Member *sees* as the new state, not "toggle" (ADR 0004).
+    actions.setChecked(item.id, checked);
+    if (checked && item.ingredient) {
+      toast({
+        tag: 'Cabinet',
+        text: `Added ${amount ? `${amount} ` : ''}${item.ingredient.name}`,
+      });
+    }
+  }
+
+  return (
+    <Animated.View
+      // Rows rise in one after another when the list opens. Capped so a long list
+      // doesn't make the last row wait.
+      entering={FadeInDown.delay(Math.min(index, 8) * t.motion.staggerMs)
+        .springify()
+        .damping(18)
+        .reduceMotion(ReduceMotion.System)}
+    >
+      {/* Ticked rows aren't dimmed with opacity: that would drop the captions below AA
+          contrast. The strike-through and the tick already say "done". */}
+      <View
+        style={{
+          flexDirection: 'row',
+          // On a narrow phone (320px) the Shop and ✕ buttons drop to their own line,
+          // so the item name keeps room to read.
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          backgroundColor: t.colors.surface,
+          borderRadius: t.radius.md,
+          boxShadow: t.shadow.card,
+        }}
+      >
+        {/* No custom label: the visible text ("Milk, added by Alice, ✓ Bob, 2 L") is the
+            name, so voice control users can say exactly what they see (WCAG 2.5.3). */}
+        <Pressable
+          accessibilityRole="checkbox"
+          accessibilityState={{ checked: item.checked }}
+          aria-checked={item.checked}
+          onPress={toggle}
+          style={({ pressed }) => ({
+            flexGrow: 1,
+            flexBasis: 200,
+            minHeight: t.touchTarget + 12,
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: t.space.md,
+            paddingVertical: t.space.sm,
+            paddingHorizontal: t.space.sm,
+            opacity: pressed ? 0.75 : 1,
+          })}
+        >
+          <FoodThumb emoji={ingredientEmoji(item.ingredient)} tint={tint} />
+          <View style={{ flex: 1, gap: 2 }}>
+            <Text
+              variant="label"
+              muted={item.checked}
+              style={{
+                textDecorationLine: item.checked ? 'line-through' : 'none',
+              }}
+            >
+              {item.text}
+            </Text>
+            {caption ? (
+              <Text variant="caption" muted numberOfLines={2}>
+                {caption}
+              </Text>
+            ) : null}
+            {item.checked && tickedBy ? (
+              <Tag tint={tintFor(tickedBy.id)}>{`✓ ${tickedBy.display_name}`}</Tag>
+            ) : null}
+          </View>
+          {amount ? <Pill tint={tint}>{amount}</Pill> : null}
+          <Checkbox checked={item.checked} />
+        </Pressable>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 'auto' }}>
+          {/* The Shop label is its own button, so tagging never ticks the item. Its name
+            starts with the visible text ("Coles", "+ Shop"), for voice control. */}
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={
+              shop ? `${shop}: change shop for ${item.text}` : `Shop: choose one for ${item.text}`
+            }
+            onPress={() => onTag(item)}
+            style={({ pressed }) => ({
+              minWidth: t.touchTarget,
+              minHeight: t.touchTarget,
+              paddingHorizontal: t.space.sm,
+              alignItems: 'center',
+              justifyContent: 'center',
+              opacity: pressed ? 0.6 : 1,
+            })}
+          >
+            {shop ? (
+              <Tag tint={tintFor(shop)}>{shop}</Tag>
+            ) : (
+              <Text variant="caption" muted>
+                + Shop
+              </Text>
+            )}
+          </Pressable>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={`Remove ${item.text}`}
+            onPress={() => actions.deleteItem(item.id)}
+            style={({ pressed }) => ({
+              minWidth: t.touchTarget,
+              minHeight: t.touchTarget,
+              alignItems: 'center',
+              justifyContent: 'center',
+              opacity: pressed ? 0.5 : 1,
+            })}
+          >
+            <Text muted>✕</Text>
+          </Pressable>
+        </View>
+      </View>
+    </Animated.View>
+  );
+}
+
+/** Tells the Member their taps are safe even when the signal isn't. */
+function SyncStatus() {
+  const pending = usePendingListChanges();
+  const online = useIsOnline();
+  if (pending === 0) return null;
+  return (
+    <Text variant="caption" muted accessibilityLiveRegion="polite">
+      {online
+        ? 'Saving…'
+        : `Offline. ${pending} ${pending === 1 ? 'change' : 'changes'} will sync when you're back online.`}
+    </Text>
   );
 }

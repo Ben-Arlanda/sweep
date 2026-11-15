@@ -18,7 +18,7 @@ import {
 } from '@/lib/api/diet';
 import { useTheme } from '@/theme/useTheme';
 
-import { budgetText, parseBudget, parseHouseholdSize } from './form';
+import { parseHouseholdSize } from './form';
 
 const DIETS: { value: Diet; label: string; hint: string }[] = [
   { value: 'vegetarian', label: 'Vegetarian', hint: 'No meat or seafood' },
@@ -62,12 +62,10 @@ function DietForm({ rules, preferences }: { rules: DietaryRules; preferences: Pr
   const [excluded, setExcluded] = useState<Ingredient[]>(rules.excluded_ingredients);
   const [size, setSize] = useState(preferences.household_size?.toString() ?? '');
   const [cuisines, setCuisines] = useState<string[]>(preferences.cuisines);
-  const [budget, setBudget] = useState(budgetText(preferences.weekly_budget));
   const [showErrors, setShowErrors] = useState(false);
 
   const sizeParsed = parseHouseholdSize(size);
-  const budgetParsed = parseBudget(budget);
-  const invalid = Boolean(sizeParsed.error || budgetParsed.error);
+  const invalid = Boolean(sizeParsed.error);
 
   const toggle = <T,>(list: T[], item: T) =>
     list.includes(item) ? list.filter((x) => x !== item) : [...list, item];
@@ -82,7 +80,6 @@ function DietForm({ rules, preferences }: { rules: DietaryRules; preferences: Pr
         preferences: {
           household_size: sizeParsed.value,
           cuisines,
-          weekly_budget: budgetParsed.value,
         },
       },
       { onSuccess: () => toast({ tag: 'Saved', text: 'Sweep will use these from now on' }) },
@@ -135,15 +132,6 @@ function DietForm({ rules, preferences }: { rules: DietaryRules; preferences: Pr
           onChangeText={setSize}
           maxLength={2}
           error={showErrors ? sizeParsed.error : null}
-        />
-        <Field
-          label="Weekly food budget ($)"
-          placeholder="e.g. 150"
-          keyboardType="decimal-pad"
-          value={budget}
-          onChangeText={setBudget}
-          maxLength={10}
-          error={showErrors ? budgetParsed.error : null}
         />
         <CuisineChips selected={cuisines} onToggle={(c) => setCuisines((now) => toggle(now, c))} />
       </Card>

@@ -16,7 +16,6 @@ export type MeOut = components['schemas']['MeOut'];
 export type HouseholdDetail = components['schemas']['HouseholdDetailOut'];
 export type MemberOut = components['schemas']['MemberOut'];
 export type InviteOut = components['schemas']['InviteOut'];
-export type ListSummary = components['schemas']['ShoppingListSummaryOut'];
 export type ListDetail = components['schemas']['ShoppingListDetailOut'];
 export type Item = components['schemas']['ItemOut'];
 

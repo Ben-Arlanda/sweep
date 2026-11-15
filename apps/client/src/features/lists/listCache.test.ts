@@ -18,6 +18,7 @@ function list(...texts: string[]): ListDetail {
     id: 'list-1',
     name: 'Shopping List',
     version: 3,
+    shops: [],
     items: texts.map((text, n) =>
       newItem({
         id: `item-${n}`,

@@ -1,6 +1,6 @@
 # Sweep — Architecture & Implementation Plan
 
-Status: slices 0–4b merged (foundations; Households, invites, Clerk sign-in, account deletion; shared Shopping List with live updates and an offline retry queue; Ingredients and the Cabinet; the Zest + Kitchen Table design system, ADR 0007; Recipe Knowledge Base backend and Recipes screens). App shell (`feature/brand-and-motion`): welcome and "how it works" screens before sign-in, bottom tab bar, dark by default, rounded heroes, Urbanist. Visual polish is deferred until the app is feature-complete. 4c merged: 500 Seed Recipes (all embedded), automated recipe checks gate CI. 5a merged (PR #14): Dietary Rules (vegetarian, vegan, gluten free, dairy free, excluded Ingredients) and Preferences; the LangGraph agent on Sonnet 5.5 with tools, validate loop, checkpointer and SSE (ADR 0008). 5b (`feature/agent-chat`): chat screen (streamed replies, Proposal card, resume on any device) and the Dietary Rules & Preferences screen. 5b merged (PR #15). **Pricing dropped (ADR 0010): no catalogue, no Estimated Cost, no weekly budget; slice 7 and E3 removed.** Next: slice 2b (one Shopping List with Shops, ADR 0009), then slice 6 approvals.
+Status: slices 0–4b merged (foundations; Households, invites, Clerk sign-in, account deletion; shared Shopping List with live updates and an offline retry queue; Ingredients and the Cabinet; the Zest + Kitchen Table design system, ADR 0007; Recipe Knowledge Base backend and Recipes screens). App shell (`feature/brand-and-motion`): welcome and "how it works" screens before sign-in, bottom tab bar, dark by default, rounded heroes, Urbanist. Visual polish is deferred until the app is feature-complete. 4c merged: 500 Seed Recipes (all embedded), automated recipe checks gate CI. 5a merged (PR #14): Dietary Rules (vegetarian, vegan, gluten free, dairy free, excluded Ingredients) and Preferences; the LangGraph agent on Sonnet 5.5 with tools, validate loop, checkpointer and SSE (ADR 0008). 5b (`feature/agent-chat`): chat screen (streamed replies, Proposal card, resume on any device) and the Dietary Rules & Preferences screen. 5b merged (PR #15). **Pricing dropped (ADR 0010): no catalogue, no Estimated Cost, no weekly budget; slice 7 and E3 removed.** 2b (`feature/one-shopping-list`): one Shopping List per Household with Shops as item labels (bottom sheet to tag, chips when adding, filter by Shop), weekly budget removed. Next: slice 6a, approvals backend.
 Language follows [`CONTEXT.md`](../CONTEXT.md). Big decisions live in [`docs/adr/`](adr/).
 ⚠️ = unverified, check before relying on it.
 
@@ -339,7 +339,9 @@ Each slice is a feature branch and a focused PR that works end to end.
 4. **Dietary Rules & Preferences screen**, opened from the Household tab: diet checkboxes, excluded Ingredients (search `/ingredients`), Household size, cuisines (from `GET /recipes/cuisines`, so they match the recipes' words), weekly budget (an exact decimal string end to end; removed in 2b, ADR 0010). Allergen disclaimer.
 5. Accessibility (live region for status, not every streamed word; 320px reflow; Lighthouse 100 light and dark) and an end-to-end check with live turns.
 
-Known gaps carried forward: only the latest Proposal is kept, so earlier ones drop out of the chat history (fix with slice 6's Proposal records); not yet run on a phone.
+Known gaps from 2b: deleting a Shop from inside the sheet drops keyboard focus to the page (the button it was on disappears); not yet run on a phone.
+
+Known gaps carried forward from 5b: only the latest Proposal is kept, so earlier ones drop out of the chat history (fix with slice 6's Proposal records); not yet run on a phone.
 
 **Slice 2b and 6 decisions** (2026-11-15):
 
