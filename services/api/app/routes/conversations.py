@@ -22,6 +22,7 @@ from app.schemas import (
     ChatLine,
     ChatProposalOut,
     ConversationDetailOut,
+    ConversationIn,
     ConversationOut,
     DraftOut,
     SendMessageIn,
@@ -41,8 +42,11 @@ def _agent(request: Request) -> Agent:
 
 
 @router.post("", status_code=status.HTTP_201_CREATED)
-async def create(ctx: MemberDep, session: SessionDep) -> ConversationOut:
-    conversation = await conversations.create(session, ctx)
+async def create(
+    ctx: MemberDep, session: SessionDep, body: ConversationIn | None = None
+) -> ConversationOut:
+    plan = body or ConversationIn()
+    conversation = await conversations.create(session, ctx, plan.mode, plan.days)
     await session.commit()
     return ConversationOut.model_validate(conversation)
 
@@ -66,6 +70,8 @@ async def get(
     return ConversationDetailOut(
         id=conversation.id,
         created_at=conversation.created_at,
+        plan_mode=conversation.plan_mode,
+        plan_days=conversation.plan_days,
         messages=[ChatLine.model_validate(line) for line in conversations.transcript(state)],
         draft=DraftOut.model_validate(d) if (d := state.get("draft")) else None,
         proposal=proposal_out(current) if current is not None else None,

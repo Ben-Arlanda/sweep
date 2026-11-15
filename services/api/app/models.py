@@ -388,6 +388,12 @@ class HouseholdPreferences(Base):
     )
     household_size: Mapped[int | None] = mapped_column(SmallInteger)
     cuisines: Mapped[list[str]] = mapped_column(ARRAY(String(40)), default=list)
+    # The days the Household usually plans, as ISO weekdays (Monday 1 … Sunday 7). The
+    # "Plan my week" sheet starts from these (slice 5d). Weekdays, not dates, so the
+    # pattern carries over to every week.
+    plan_weekdays: Mapped[list[int]] = mapped_column(
+        ARRAY(SmallInteger), default=lambda: [1, 2, 3, 4, 5], server_default="{1,2,3,4,5}"
+    )
 
 
 class RecipeKind(StrEnum):
@@ -495,6 +501,13 @@ class RecipeEmbedding(Base):
     )
 
 
+class PlanMode(StrEnum):
+    """What kind of plan the Member asked for in the "Plan my week" sheet (ADR 0015)."""
+
+    KITCHEN = "kitchen"  # cook from what's in the Kitchen, fewest things to buy (5c)
+    NEW = "new"  # new recipes to shop for; the Kitchen only trims the buy list
+
+
 class Conversation(Base):
     """A chat between one Member and the agent. Its id is also the LangGraph thread id:
     the messages and Draft Plan live in the checkpointer's tables, keyed by it.
@@ -514,6 +527,10 @@ class Conversation(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utcnow, server_default=func.now()
     )
+    # Set when the plan starts from the sheet; null for a free chat. Given to the agent
+    # every turn, and validate refuses meals on other days (ADR 0015).
+    plan_mode: Mapped[PlanMode | None] = mapped_column(str_enum(PlanMode, "plan_mode"))
+    plan_days: Mapped[list[date] | None] = mapped_column(ARRAY(Date))
 
 
 class AgentUsage(Base):

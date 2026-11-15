@@ -9,6 +9,7 @@ import logging
 import uuid
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
+from datetime import date, timedelta
 from typing import Any, cast
 
 from langchain_core.runnables import RunnableConfig
@@ -26,7 +27,7 @@ from app.agent.prompt import CONTEXT_TAG, today_in_sydney
 from app.agent.state import AgentState
 from app.agent.tools import AgentContext
 from app.embeddings import Embedder
-from app.models import Conversation, Proposal
+from app.models import Conversation, PlanMode, Proposal
 from app.services.households import MemberContext
 
 log = logging.getLogger(__name__)
@@ -35,8 +36,31 @@ TURN_TIMEOUT_SECONDS = 60
 Graph = CompiledStateGraph[AgentState, AgentContext, Any, Any]
 
 
-async def create(session: AsyncSession, ctx: MemberContext) -> Conversation:
-    conversation = Conversation(household_id=ctx.household.id, member_id=ctx.member.id)
+PLAN_DAYS = 14  # the same window validate allows: today and the next 13 days
+
+
+def check_days(days: list[date], today: date) -> list[date]:
+    """The days a plan may cover: from today, within the plan window, each once."""
+    if len(set(days)) != len(days):
+        raise errors.InvalidInput("Each day can only be picked once")
+    last = today + timedelta(days=PLAN_DAYS - 1)
+    if any(not today <= d <= last for d in days):
+        raise errors.InvalidInput(f"Pick days from {today:%a %-d %b} to {last:%a %-d %b}")
+    return sorted(days)
+
+
+async def create(
+    session: AsyncSession,
+    ctx: MemberContext,
+    mode: PlanMode | None = None,
+    days: list[date] | None = None,
+) -> Conversation:
+    conversation = Conversation(
+        household_id=ctx.household.id,
+        member_id=ctx.member.id,
+        plan_mode=mode,
+        plan_days=check_days(days, today_in_sydney()) if days is not None else None,
+    )
     session.add(conversation)
     await session.flush()
     return conversation

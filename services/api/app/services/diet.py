@@ -161,7 +161,9 @@ async def excluded_ingredients(
 
 async def get_preferences(session: AsyncSession, household_id: uuid.UUID) -> HouseholdPreferences:
     row = await session.get(HouseholdPreferences, household_id)
-    return row or HouseholdPreferences(household_id=household_id, cuisines=[])
+    return row or HouseholdPreferences(
+        household_id=household_id, cuisines=[], plan_weekdays=[1, 2, 3, 4, 5]
+    )
 
 
 async def set_preferences(
@@ -169,12 +171,16 @@ async def set_preferences(
     household_id: uuid.UUID,
     household_size: int | None,
     cuisines: Iterable[str],
+    plan_weekdays: Iterable[int] | None = None,
 ) -> HouseholdPreferences:
+    """Replaces the Preferences, except `plan_weekdays`: None keeps what's saved."""
     row = await session.get(HouseholdPreferences, household_id)
     if row is None:
-        row = HouseholdPreferences(household_id=household_id)
+        row = HouseholdPreferences(household_id=household_id, plan_weekdays=[1, 2, 3, 4, 5])
         session.add(row)
     row.household_size = household_size
     row.cuisines = sorted({c.lower() for c in cuisines})
+    if plan_weekdays is not None:
+        row.plan_weekdays = sorted(set(plan_weekdays))
     await session.flush()
     return row

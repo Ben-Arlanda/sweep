@@ -1,4 +1,5 @@
-"""HTTP routes for the Meal Plan: read a week, remove a meal, Mark as Cooked and undo.
+"""HTTP routes for the Meal Plan: read a week (Mon–Sun by default), remove a meal,
+Mark as Cooked and undo.
 
 Cooked is a sub-resource (`/planned-meals/{id}/cooked`): POST sets it, DELETE undoes
 it. Both are "set", never "toggle", so a repeated tap can't flip it back.
@@ -35,12 +36,15 @@ def meal_out(meal: PlannedMeal) -> PlannedMealOut:
 
 @router.get("/meal-plan")
 async def get_week(ctx: MemberDep, session: SessionDep, start: date | None = None) -> MealPlanOut:
-    first = start or today_in_sydney()
+    today = today_in_sydney()
+    # Mon–Sun weeks (slice 5d): with no start, this week's Monday.
+    first = start or today - timedelta(days=today.weekday())
     household = await session.get_one(Household, ctx.household.id, populate_existing=True)
     meals = await meal_plan.between(session, ctx.household.id, first, first + WEEK)
     return MealPlanOut(
         start=first,
         end=first + WEEK,
+        today=today,
         version=household.meal_plan_version,
         meals=[meal_out(m) for m in meals],
     )
