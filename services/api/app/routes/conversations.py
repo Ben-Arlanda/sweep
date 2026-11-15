@@ -13,10 +13,19 @@ from typing import cast
 
 from fastapi import APIRouter, Request, status
 from fastapi.responses import StreamingResponse
+from pydantic import RootModel
 
 from app import errors
 from app.deps import MemberDep, SessionDep
-from app.schemas import ChatLine, ConversationDetailOut, ConversationOut, SendMessageIn
+from app.schemas import (
+    ChatLine,
+    ConversationDetailOut,
+    ConversationOut,
+    DraftOut,
+    ProposalOut,
+    SendMessageIn,
+    TurnEvent,
+)
 from app.services import conversations
 from app.services.conversations import Agent
 
@@ -37,6 +46,12 @@ async def create(ctx: MemberDep, session: SessionDep) -> ConversationOut:
     return ConversationOut.model_validate(conversation)
 
 
+@router.get("")
+async def list_mine(ctx: MemberDep, session: SessionDep) -> list[ConversationOut]:
+    found = await conversations.list_mine(session, ctx)
+    return [ConversationOut.model_validate(c) for c in found]
+
+
 @router.get("/{conversation_id}")
 async def get(
     conversation_id: uuid.UUID, request: Request, ctx: MemberDep, session: SessionDep
@@ -47,19 +62,32 @@ async def get(
         id=conversation.id,
         created_at=conversation.created_at,
         messages=[ChatLine.model_validate(line) for line in conversations.transcript(state)],
-        draft=state.get("draft"),
-        proposal=state.get("proposal"),
+        draft=DraftOut.model_validate(d) if (d := state.get("draft")) else None,
+        proposal=ProposalOut.model_validate(p) if (p := state.get("proposal")) else None,
     )
 
 
-@router.post("/{conversation_id}/messages")
+class EventStreamResponse(StreamingResponse):
+    media_type = "text/event-stream"
+
+
+class TurnEvents(RootModel[TurnEvent]):
+    """OpenAPI can't describe a stream, so the docs describe one event. That's enough
+    for the generated TypeScript to include every event type."""
+
+
+@router.post(
+    "/{conversation_id}/messages",
+    response_class=EventStreamResponse,
+    responses={200: {"model": TurnEvents, "description": "Server-Sent Events, one per `data:`"}},
+)
 async def send(
     conversation_id: uuid.UUID,
     body: SendMessageIn,
     request: Request,
     ctx: MemberDep,
     session: SessionDep,
-) -> StreamingResponse:
+) -> EventStreamResponse:
     # Check access and configuration before the stream starts, so they're normal errors.
     conversation = await conversations.get(session, ctx, conversation_id)
     agent = _agent(request)
@@ -68,9 +96,8 @@ async def send(
         async for event in agent.run_turn(conversation, body.text):
             yield f"event: {event['type']}\ndata: {json.dumps(event, default=str)}\n\n"
 
-    return StreamingResponse(
+    return EventStreamResponse(
         events(),
-        media_type="text/event-stream",
         # Stop proxies holding the stream back to send it all at once.
         headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
     )

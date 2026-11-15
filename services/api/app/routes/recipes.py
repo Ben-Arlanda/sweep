@@ -51,6 +51,12 @@ async def list_or_search(
     ]
 
 
+# Before /{recipe_id}: routes match in order, and "cuisines" isn't a recipe id.
+@router.get("/cuisines")
+async def list_cuisines(ctx: MemberDep, session: SessionDep) -> list[str]:
+    return await recipes.cuisines(session, ctx.household.id)
+
+
 @router.get("/{recipe_id}")
 async def get_recipe(recipe_id: uuid.UUID, ctx: MemberDep, session: SessionDep) -> RecipeOut:
     return RecipeOut.model_validate(await recipes.get_recipe(session, ctx.household.id, recipe_id))

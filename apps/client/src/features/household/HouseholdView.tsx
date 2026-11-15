@@ -41,7 +41,9 @@ export function HomeHero({ me }: { me: MeOut }) {
         </>
       }
       subtitle={`Hi ${firstName}. Here's your kitchen at a glance.`}
-    />
+    >
+      <Button title="Plan my week" onPress={() => router.push('/plan')} />
+    </Hero>
   );
 }
 
@@ -79,6 +81,18 @@ export function HouseholdSettings({ me }: { me: MeOut }) {
             memberId={m.id}
           />
         ))}
+      </Card>
+
+      <Card>
+        <Text variant="heading">Food rules</Text>
+        <Text muted>
+          Allergies and diets Sweep must always follow, plus the food your Household likes.
+        </Text>
+        <Button
+          title="Dietary Rules & Preferences"
+          variant="secondary"
+          onPress={() => router.push('/dietary-rules')}
+        />
       </Card>
 
       {isOwner ? <InviteCard /> : null}

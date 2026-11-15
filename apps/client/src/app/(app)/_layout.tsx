@@ -11,6 +11,9 @@ import { Onboarding } from '@/features/household/Onboarding';
 import { useMe } from '@/lib/api/households';
 import { useChangeNotices } from '@/lib/sync/useChangeNotices';
 
+/** Opening /plan from a link still puts the tabs underneath it, so Back has somewhere to go. */
+export const unstable_settings = { initialRouteName: '(tabs)' };
+
 /**
  * Signed-in screens. This check is for the user experience only: it decides which
  * screen to show. The real protection is the API, which rejects any request without
@@ -64,7 +67,9 @@ function SignedIn() {
     return (
       <Stack screenOptions={stackOptions}>
         {/* The tabs, each with its own Stack, so the tab bar stays as you go deeper. */}
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false, title: 'Sweep' }} />
+        <Stack.Screen name="plan" options={{ title: 'Plan my week' }} />
+        <Stack.Screen name="dietary-rules" options={{ title: 'Food rules' }} />
         <Stack.Screen name="design" options={{ title: 'Design system' }} />
       </Stack>
     );

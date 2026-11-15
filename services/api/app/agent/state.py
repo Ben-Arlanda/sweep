@@ -11,6 +11,8 @@ from typing import Annotated, Any, NotRequired, TypedDict
 class DraftMeal(TypedDict):
     recipe_id: str
     servings: int
+    # A copy for showing the Draft as it grows. The Proposal reads titles fresh.
+    title: NotRequired[str]
 
 
 class DraftAddition(TypedDict):

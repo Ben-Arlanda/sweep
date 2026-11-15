@@ -156,6 +156,17 @@ async def test_browsing_without_a_query_lists_by_title(
     assert all(r["score"] is None for r in response.json())
 
 
+async def test_cuisines_lists_what_the_library_has_most_common_first(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, load: Loader
+) -> None:
+    risotto = seed("risotto", "Mushroom risotto", 40, "italian", ["300 g arborio rice"])
+    await load([PASTA, CURRY, risotto])
+    await create_household(client, fake_issuer, "ana")
+    response = await get(client, fake_issuer, "/recipes/cuisines")
+    assert response.status_code == 200
+    assert response.json() == ["italian", "indian"]
+
+
 async def test_browsing_pages_through_with_offset(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer, load: Loader
 ) -> None:

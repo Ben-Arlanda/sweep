@@ -284,10 +284,93 @@ class ChatLine(BaseModel):
     text: str
 
 
+class DraftMealOut(BaseModel):
+    recipe_id: str
+    servings: int
+    title: str | None = None  # missing on Drafts saved before 5b
+
+
+class DraftAdditionOut(BaseModel):
+    name: str
+    quantity: float | None
+    unit: str | None
+    ingredient_id: str | None
+
+
+class DraftOut(BaseModel):
+    """The Draft Plan as it grows during a turn. Not Household data yet."""
+
+    meals: dict[str, DraftMealOut]  # ISO date → meal
+    list_additions: list[DraftAdditionOut]
+
+
+class ProposalMealOut(BaseModel):
+    date: str
+    recipe_id: str
+    title: str
+    servings: int
+
+
+class ProposalOut(BaseModel):
+    """What the Member is asked to approve (slice 6). Meals that broke a Dietary Rule are
+    already left out and named in `dropped`; `check_label` lists ingredients to check."""
+
+    summary: str
+    meals: list[ProposalMealOut]
+    list_additions: list[DraftAdditionOut]
+    check_label: list[str]
+    dropped: list[str]
+
+
 class ConversationDetailOut(ConversationOut):
     messages: list[ChatLine]
-    draft: dict[str, object] | None
-    proposal: dict[str, object] | None
+    draft: DraftOut | None
+    proposal: ProposalOut | None
+
+
+# What POST /conversations/{id}/messages streams. Each SSE message is `event: <type>`
+# plus `data: <one of these as JSON>`. Listed in the OpenAPI schema so the app gets
+# generated types for them, and checked in the tests against every event the agent sends.
+
+
+class TextEvent(BaseModel):
+    type: Literal["text"]
+    text: str  # a piece of the reply, to append to what came before
+
+
+class ToolEvent(BaseModel):
+    type: Literal["tool"]
+    name: str  # the tool the agent is using right now
+
+
+class DraftEvent(BaseModel):
+    type: Literal["draft"]
+    draft: DraftOut
+
+
+class ReplanEvent(BaseModel):
+    type: Literal["replan"]
+    problems: list[str]  # why validate sent the plan back
+
+
+class ProposalEvent(BaseModel):
+    type: Literal["proposal"]
+    proposal: ProposalOut
+
+
+class DoneEvent(BaseModel):
+    type: Literal["done"]
+
+
+class ErrorEvent(BaseModel):
+    type: Literal["error"]
+    message: str  # safe to show the Member
+
+
+TurnEvent = Annotated[
+    TextEvent | ToolEvent | DraftEvent | ReplanEvent | ProposalEvent | DoneEvent | ErrorEvent,
+    Field(discriminator="type"),
+]
 
 
 class SendMessageIn(BaseModel):

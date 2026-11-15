@@ -10,7 +10,7 @@ import uuid
 from collections.abc import Sequence
 from dataclasses import dataclass, field
 
-from sqlalchemy import Select, exists, or_, select
+from sqlalchemy import Select, exists, func, or_, select
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -166,6 +166,22 @@ def _visible_to(household_id: uuid.UUID) -> Select[Recipe]:
     return select(Recipe).where(
         or_(Recipe.household_id.is_(None), Recipe.household_id == household_id)
     )
+
+
+async def cuisines(session: AsyncSession, household_id: uuid.UUID) -> list[str]:
+    """The cuisines this Household's recipes cover, most common first. Preferences pick
+    from these, so they match the words the recipes (and the agent's search) use."""
+    count = func.count()
+    found = await session.execute(
+        select(Recipe.cuisine, count)
+        .where(
+            Recipe.cuisine.is_not(None),
+            or_(Recipe.household_id.is_(None), Recipe.household_id == household_id),
+        )
+        .group_by(Recipe.cuisine)
+        .order_by(count.desc(), Recipe.cuisine)
+    )
+    return [cuisine for cuisine, _ in found if cuisine is not None]
 
 
 def _filtered(query: Select[Recipe], filters: RecipeFilters) -> Select[Recipe]:

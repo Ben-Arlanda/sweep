@@ -13,6 +13,7 @@ from typing import Any
 
 import httpx
 import pytest
+from pydantic import TypeAdapter
 from sqlalchemy import Engine, text
 
 from app.agent.graph import MAX_TOOL_CALLS, _dangling_results
@@ -20,6 +21,7 @@ from app.agent.prompt import CONTEXT_TAG, today_in_sydney
 from app.config import Settings
 from app.embeddings import HashingEmbedder
 from app.main import create_app
+from app.schemas import TurnEvent
 from tests.conftest import FakeIssuer, Loader
 from tests.fake_model import Messages, ScriptedModel, last_result, results, tool
 from tests.fake_model import text as say_text
@@ -28,6 +30,7 @@ from tests.test_dietary_rules import SALAD
 from tests.test_recipes import CURRY, PASTA, STIR_FRY
 
 pytestmark = pytest.mark.anyio
+TURN_EVENT: TypeAdapter[Any] = TypeAdapter(TurnEvent)
 
 TODAY = today_in_sydney()
 MON = TODAY.isoformat()
@@ -75,7 +78,9 @@ async def say(
     events = []
     for chunk in body.strip().split("\n\n"):
         data = next(line for line in chunk.splitlines() if line.startswith("data: "))
-        events.append(json.loads(data.removeprefix("data: ")))
+        event = json.loads(data.removeprefix("data: "))
+        TURN_EVENT.validate_python(event)  # the app's generated types depend on this shape
+        events.append(event)
     return events
 
 
@@ -127,6 +132,29 @@ async def test_a_reply_streams_and_the_conversation_is_saved(
         ]
 
 
+async def test_the_transcript_leaves_out_narration_next_to_tool_calls(
+    client_for: ClientFor, fake_issuer: FakeIssuer
+) -> None:
+    # Text written alongside a tool call is the agent thinking aloud ("Checking your
+    # Cabinet."). The app shows it as status while streaming, so not as a saved bubble.
+    model = ScriptedModel(
+        [
+            [say_text("Checking your Cabinet."), tool("get_cabinet")],
+            [say_text("Your Cabinet is empty, so let's start from scratch.")],
+        ]
+    )
+    async with client_for(model) as client:
+        await create_household(client, fake_issuer, "ana")
+        cid = await start(client, fake_issuer)
+        await say(client, fake_issuer, cid, "what can I cook?")
+
+        got = await client.get(f"/conversations/{cid}", headers=fake_issuer.headers("ana"))
+        assert got.json()["messages"] == [
+            {"role": "user", "text": "what can I cook?"},
+            {"role": "assistant", "text": "Your Cabinet is empty, so let's start from scratch."},
+        ]
+
+
 async def test_the_agent_plans_a_meal_and_proposes_it(
     client_for: ClientFor, fake_issuer: FakeIssuer, load: Loader
 ) -> None:
@@ -151,6 +179,9 @@ async def test_the_agent_plans_a_meal_and_proposes_it(
             "set_planned_meal",
             "propose_plan",
         ]
+        # The Draft carries titles, so the chat can show the plan as it grows.
+        [draft] = of(events, "draft")
+        assert draft["draft"]["meals"][MON]["title"] == "Chickpea salad"
         [proposal] = of(events, "proposal")
         assert proposal["proposal"]["meals"] == [
             {
@@ -376,6 +407,23 @@ async def test_usage_is_recorded_per_household_per_day(
 
 
 # --- who can see what ---------------------------------------------------------------
+
+
+async def test_listing_shows_only_my_conversations_newest_first(
+    client_for: ClientFor, fake_issuer: FakeIssuer
+) -> None:
+    async with client_for(ScriptedModel([])) as client:
+        await create_household(client, fake_issuer, "ana")
+        await join(client, fake_issuer, "ben", await invite(client, fake_issuer, "ana"))
+        assert (await client.get("/conversations", headers=fake_issuer.headers("ana"))).json() == []
+
+        older = await start(client, fake_issuer, "ana")
+        newer = await start(client, fake_issuer, "ana")
+        await start(client, fake_issuer, "ben")  # same Household, still not Ana's
+
+        got = await client.get("/conversations", headers=fake_issuer.headers("ana"))
+        assert got.status_code == 200
+        assert [c["id"] for c in got.json()] == [newer, older]
 
 
 async def test_a_conversation_is_private_to_the_member_who_started_it(
