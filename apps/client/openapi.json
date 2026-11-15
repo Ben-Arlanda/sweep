@@ -1217,6 +1217,36 @@
         }
       }
     },
+    "/recipes/cuisines": {
+      "get": {
+        "tags": [
+          "recipes"
+        ],
+        "summary": "List Cuisines",
+        "operationId": "list_cuisines_recipes_cuisines_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "title": "Response List Cuisines Recipes Cuisines Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
     "/recipes/{recipe_id}": {
       "get": {
         "tags": [

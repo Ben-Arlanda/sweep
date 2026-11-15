@@ -83,6 +83,18 @@ export function HouseholdSettings({ me }: { me: MeOut }) {
         ))}
       </Card>
 
+      <Card>
+        <Text variant="heading">Food rules</Text>
+        <Text muted>
+          Allergies and diets Sweep must always follow, plus the food your Household likes.
+        </Text>
+        <Button
+          title="Dietary Rules & Preferences"
+          variant="secondary"
+          onPress={() => router.push('/dietary-rules')}
+        />
+      </Card>
+
       {isOwner ? <InviteCard /> : null}
       <AppearanceCard />
       <AccountCard />
