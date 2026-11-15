@@ -1,6 +1,6 @@
 # Sweep — Architecture & Implementation Plan
 
-Status: slices 0–4b merged (foundations; Households, invites, Clerk sign-in, account deletion; shared Shopping List with live updates and an offline retry queue; Ingredients and the Cabinet; the Zest + Kitchen Table design system, ADR 0007; Recipe Knowledge Base backend and Recipes screens). App shell (`feature/brand-and-motion`): welcome and "how it works" screens before sign-in, bottom tab bar, dark by default, rounded heroes, Urbanist. Visual polish is deferred until the app is feature-complete. 4c merged: 500 Seed Recipes (all embedded), automated recipe checks gate CI. 5a merged (PR #14): Dietary Rules (vegetarian, vegan, gluten free, dairy free, excluded Ingredients) and Preferences; the LangGraph agent on Sonnet 5.5 with tools, validate loop, checkpointer and SSE (ADR 0008). 5b (`feature/agent-chat`) in progress, steps below the slice table.
+Status: slices 0–4b merged (foundations; Households, invites, Clerk sign-in, account deletion; shared Shopping List with live updates and an offline retry queue; Ingredients and the Cabinet; the Zest + Kitchen Table design system, ADR 0007; Recipe Knowledge Base backend and Recipes screens). App shell (`feature/brand-and-motion`): welcome and "how it works" screens before sign-in, bottom tab bar, dark by default, rounded heroes, Urbanist. Visual polish is deferred until the app is feature-complete. 4c merged: 500 Seed Recipes (all embedded), automated recipe checks gate CI. 5a merged (PR #14): Dietary Rules (vegetarian, vegan, gluten free, dairy free, excluded Ingredients) and Preferences; the LangGraph agent on Sonnet 5.5 with tools, validate loop, checkpointer and SSE (ADR 0008). 5b (`feature/agent-chat`): chat screen (streamed replies, Proposal card, resume on any device) and the Dietary Rules & Preferences screen. Next: slice 6, approvals.
 Language follows [`CONTEXT.md`](../CONTEXT.md). Big decisions live in [`docs/adr/`](adr/).
 ⚠️ = unverified, check before relying on it.
 
@@ -331,13 +331,15 @@ Each slice is a feature branch and a focused PR that works end to end.
 | 10 | `feature/ai-security` | Injection eval cases, rate limits, budget limits, hardening | AI security |
 | 11 | `feature/aws-deployment` | ECS, RDS, Secrets Manager, IAM, Bedrock as second LLM provider, web hosting (TestFlight optional) | Cloud (Bedrock + IAM, deployment) |
 
-**Slice 5b steps** (decided 2026-11-15: chat opens from a "Plan my week" button on Home, not a 6th tab; the chat reopens the Member's latest Conversation on any device, with a "New plan" button):
+**Slice 5b steps** (built 2026-11-15; decided: chat opens from a "Plan my week" button on Home, not a 6th tab; the chat reopens the Member's latest Conversation on any device, with a "New plan" button):
 
 1. **API:** `GET /conversations` (the Member's own, newest first) so any device can resume. Typed `DraftOut` / `ProposalOut` schemas instead of `dict[str, object]`, so the client gets real types.
 2. **Stream reader:** a small, unit-tested SSE parser over `expo/fetch` (React Native's built-in fetch can't read a body as it arrives; `EventSource` can't send POST or an auth header). Turn events are typed in TS by hand, since OpenAPI can't describe a stream. Never auto-retry a send: `POST /messages` isn't idempotent.
 3. **Chat screen** (`/plan`): transcript, streamed reply, "working" status from `tool` events (short between-tool text is shown as status, not as a bubble), the Draft as it grows, a read-only Proposal card (Approve / Reject arrive in slice 6), error and "still answering" states.
-4. **Dietary Rules & Preferences screen**, opened from the Household tab: diet chips, excluded Ingredients (search `/ingredients`), Household size, cuisines, weekly budget. Allergen disclaimer.
-5. Accessibility (live region for the streamed reply, 320px reflow, contrast) and an end-to-end check with a few live turns.
+4. **Dietary Rules & Preferences screen**, opened from the Household tab: diet checkboxes, excluded Ingredients (search `/ingredients`), Household size, cuisines (from `GET /recipes/cuisines`, so they match the recipes' words), weekly budget (an exact decimal string end to end). Allergen disclaimer.
+5. Accessibility (live region for status, not every streamed word; 320px reflow; Lighthouse 100 light and dark) and an end-to-end check with live turns.
+
+Known gaps carried forward: only the latest Proposal is kept, so earlier ones drop out of the chat history (fix with slice 6's Proposal records); not yet run on a phone.
 
 Experiments (`experiments/`, any time after slice 4):
 
