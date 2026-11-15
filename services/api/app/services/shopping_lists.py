@@ -23,7 +23,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.errors import Conflict, LimitReached, NotFound
 from app.models import Ingredient, Shop, ShoppingList, ShoppingListItem, utcnow
 from app.realtime import notify_change
-from app.services import cabinet, ingredients
+from app.services import ingredients, kitchen
 from app.services.households import MemberContext
 from app.units import parse_item_text
 
@@ -198,18 +198,18 @@ async def edit_item(
     """Change only the fields that were sent. Two Members editing different fields of the
     same item at the same time both keep their change (last write wins *per field*)."""
     if ingredient_id is not UNSET:
-        await cabinet.lock(session, ctx.household.id)  # relinking may move Cabinet stock
+        await kitchen.lock(session, ctx.household.id)  # relinking may move Kitchen stock
     lst = await _touch(session, ctx, list_id)
     item = await _find_item(session, lst, item_id)
     if ingredient_id is not UNSET and ingredient_id != item.ingredient_id:
-        # Relinking a ticked item moves what it added to the Cabinet to the new Ingredient.
-        was_applied = item.cabinet_applied
-        await cabinet.undo_purchase(session, ctx.household.id, item)
+        # Relinking a ticked item moves what it added to the Kitchen to the new Ingredient.
+        was_applied = item.kitchen_applied
+        await kitchen.undo_purchase(session, ctx.household.id, item)
         item.ingredient = (
             await _ingredient(session, ingredient_id) if ingredient_id is not None else None
         )
         if was_applied:
-            await cabinet.apply_purchase(session, ctx.household.id, item)
+            await kitchen.apply_purchase(session, ctx.household.id, item)
     if text is not UNSET:
         item.text = text
     if quantity is not UNSET:
@@ -232,19 +232,19 @@ async def set_checked(
 ) -> ShoppingListItem:
     """Set, never toggle. Saying "checked" twice leaves it checked, credited to the first.
 
-    Ticking a linked item puts it in the Cabinet as Confirmed; unticking takes it back.
+    Ticking a linked item puts it in the Kitchen as Confirmed; unticking takes it back.
     """
-    await cabinet.lock(session, ctx.household.id)
+    await kitchen.lock(session, ctx.household.id)
     lst = await _touch(session, ctx, list_id)
     item = await _find_item(session, lst, item_id)
     if checked and item.checked_at is None:
         item.checked_at = utcnow()
         item.checked_by = ctx.member.id
-        await cabinet.apply_purchase(session, ctx.household.id, item)
+        await kitchen.apply_purchase(session, ctx.household.id, item)
     elif not checked and item.checked_at is not None:
         item.checked_at = None
         item.checked_by = None
-        await cabinet.undo_purchase(session, ctx.household.id, item)
+        await kitchen.undo_purchase(session, ctx.household.id, item)
     return item
 
 

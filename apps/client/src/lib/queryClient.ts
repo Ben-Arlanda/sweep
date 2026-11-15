@@ -14,7 +14,7 @@ import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persi
 import { onlineManager, QueryClient } from '@tanstack/react-query';
 import { Platform } from 'react-native';
 
-import { registerCabinetMutations } from '@/lib/api/cabinet';
+import { registerKitchenMutations } from '@/lib/api/kitchen';
 import { registerListMutations } from '@/lib/api/lists';
 
 if (Platform.OS !== 'web') {
@@ -33,7 +33,7 @@ export function makeQueryClient() {
     },
   });
   registerListMutations(queryClient);
-  registerCabinetMutations(queryClient);
+  registerKitchenMutations(queryClient);
   return queryClient;
 }
 

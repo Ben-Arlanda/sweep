@@ -1,32 +1,32 @@
 /**
- * Does the Cabinet have what a recipe needs? Plain functions, so they're easy to test.
+ * Does the Kitchen have what a recipe needs? Plain functions, so they're easy to test.
  *
  * Both sides use the same Ingredient ids and the same base units (g / ml / count), which
- * is the whole reason recipes, lists and the Cabinet share one Ingredient list. The
+ * is the whole reason recipes, lists and the Kitchen share one Ingredient list. The
  * server sends recipe amounts already converted (`base_quantity`), so comparing is just
  * comparing numbers. No unit maths happens in the app.
  */
-import { formatAmount } from '@/features/cabinet/format';
+import { formatAmount } from '@/features/kitchen/format';
 import type { components } from '@/lib/api/schema';
 
 type Line = components['schemas']['RecipeIngredientOut'];
-type Cabinet = components['schemas']['CabinetOut'];
+type Kitchen = components['schemas']['KitchenOut'];
 
 export type Have =
   | { kind: 'have' }
   | { kind: 'low'; have: string } // there's some, less than the recipe needs
-  | { kind: 'check' } // in the Cabinet, but the amount is too old to trust
+  | { kind: 'check' } // in the Kitchen, but the amount is too old to trust
   | { kind: 'need' };
 
 /** null: the line has no Ingredient (water, or not recognised), so we can't say. */
-export function matchLine(line: Line, cabinet: Cabinet): Have | null {
+export function matchLine(line: Line, kitchen: Kitchen): Have | null {
   const id = line.ingredient?.id;
   if (!id) return null;
 
-  const staple = cabinet.staples.find((s) => s.ingredient.id === id);
+  const staple = kitchen.staples.find((s) => s.ingredient.id === id);
   if (staple) return staple.have ? { kind: 'have' } : { kind: 'need' };
 
-  const item = cabinet.tracked.find((i) => i.ingredient.id === id);
+  const item = kitchen.tracked.find((i) => i.ingredient.id === id);
   if (!item) return { kind: 'need' };
   if (item.status === 'unknown') return { kind: 'check' };
   // "Some" (no amount recorded), or a recipe amount that doesn't convert ("3 cloves"):
@@ -37,9 +37,9 @@ export function matchLine(line: Line, cabinet: Cabinet): Have | null {
 }
 
 /** "You have 6 of 9": counts lines with an Ingredient, leaving out optional ones. */
-export function haveSummary(lines: Line[], cabinet: Cabinet) {
+export function haveSummary(lines: Line[], kitchen: Kitchen) {
   const counted = lines.filter((l) => l.ingredient && !l.optional);
-  const have = counted.filter((l) => matchLine(l, cabinet)?.kind === 'have').length;
+  const have = counted.filter((l) => matchLine(l, kitchen)?.kind === 'have').length;
   return { have, total: counted.length };
 }
 

@@ -18,7 +18,7 @@ type ShowToast = (message: ToastMessage) => void;
 const ToastContext = createContext<ShowToast>(() => {});
 
 /**
- * Show a short confirmation from anywhere: `const toast = useToast(); toast({ tag: 'Cabinet', text: 'Added 1.5 kg chicken' })`.
+ * Show a short confirmation from anywhere: `const toast = useToast(); toast({ tag: 'Kitchen', text: 'Added 1.5 kg chicken' })`.
  *
  * Why a context: the toast must sit above every screen, but the thing that triggers it
  * (a list row) is deep inside one. The provider owns the single toast; the hook hands

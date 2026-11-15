@@ -18,7 +18,7 @@ type IconName = ComponentProps<typeof MaterialCommunityIcons>['name'];
 const TABS: { name: string; title: string; icon: IconName; iconSelected: IconName }[] = [
   { name: 'index', title: 'Home', icon: 'home-variant-outline', iconSelected: 'home-variant' },
   { name: 'lists', title: 'Lists', icon: 'basket-outline', iconSelected: 'basket' },
-  { name: 'cabinet', title: 'Cabinet', icon: 'fridge-outline', iconSelected: 'fridge' },
+  { name: 'kitchen', title: 'Kitchen', icon: 'fridge-outline', iconSelected: 'fridge' },
   {
     name: 'recipes',
     title: 'Recipes',

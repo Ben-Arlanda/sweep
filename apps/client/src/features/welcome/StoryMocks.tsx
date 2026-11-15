@@ -28,8 +28,8 @@ export function StoryMock({ story, active }: { story: StoryKey; active: boolean 
   switch (story) {
     case 'shop':
       return <ShopMock active={active} />;
-    case 'cabinet':
-      return <CabinetMock />;
+    case 'kitchen':
+      return <KitchenMock />;
     case 'ask':
       return <AskMock />;
     case 'plan':
@@ -98,7 +98,7 @@ function Name({ name, caption, done }: { name: string; caption?: ReactNode; done
   );
 }
 
-/** Bob ticks the chicken a moment after the page appears, and it goes to the Cabinet. */
+/** Bob ticks the chicken a moment after the page appears, and it goes to the Kitchen. */
 function ShopMock({ active }: { active: boolean }) {
   const t = useTheme();
   const [ticked, setTicked] = useState(false);
@@ -159,7 +159,7 @@ function ShopMock({ active }: { active: boolean }) {
             }}
           >
             <Text variant="label" style={{ color: t.colors.onInverse }}>
-              Chicken thighs added to the Cabinet
+              Chicken thighs added to the Kitchen
             </Text>
           </Animated.View>
         ) : null}
@@ -168,7 +168,7 @@ function ShopMock({ active }: { active: boolean }) {
   );
 }
 
-function CabinetMock() {
+function KitchenMock() {
   const items: { emoji: string; name: string; note: string; tint: TintName; status: StatusName }[] = [
     { emoji: '🍗', name: 'Chicken thighs', note: 'Just bought · 1.5 kg', tint: 'blush', status: 'confirmed' },
     { emoji: '🍋', name: 'Lemons', note: '4 · 9 days ago', tint: 'butter', status: 'estimated' },
@@ -176,7 +176,7 @@ function CabinetMock() {
     { emoji: '🧂', name: 'Salt', note: 'Staple', tint: 'sky', status: 'runOut' },
   ];
   return (
-    <Panel tint="mint" title="Cabinet" caption="12 tracked · 2 to check">
+    <Panel tint="mint" title="Kitchen" caption="12 tracked · 2 to check">
       {items.map((item, i) => (
         <Rise key={item.name} index={i}>
           <Row>
@@ -193,8 +193,8 @@ function CabinetMock() {
 function AskMock() {
   const t = useTheme();
   const ideas: { emoji: string; title: string; meta: string; tint: TintName; have: string; need?: string }[] = [
-    { emoji: '🍋', title: 'Lemon herb chicken traybake', meta: '35 min · serves 4', tint: 'blush', have: '5 of 6 in Cabinet', need: 'Need: yoghurt' },
-    { emoji: '🌮', title: 'Chicken & coriander tacos', meta: '25 min · serves 4', tint: 'mint', have: 'All in Cabinet' },
+    { emoji: '🍋', title: 'Lemon herb chicken traybake', meta: '35 min · serves 4', tint: 'blush', have: '5 of 6 in Kitchen', need: 'Need: yoghurt' },
+    { emoji: '🌮', title: 'Chicken & coriander tacos', meta: '25 min · serves 4', tint: 'mint', have: 'All in Kitchen' },
     { emoji: '🍛', title: 'Quick chicken curry', meta: '40 min · serves 4', tint: 'butter', have: '4 of 7', need: 'Need 3' },
   ];
   return (
@@ -280,7 +280,7 @@ function PlanMock() {
           }}
         >
           <Text variant="label" style={{ color: t.tints.lilac.text }}>
-            Draft plan · 14 items to buy · 18 from your Cabinet
+            Draft plan · 14 items to buy · 18 from your Kitchen
           </Text>
         </View>
       </Rise>

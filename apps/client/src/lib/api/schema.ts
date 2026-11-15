@@ -214,15 +214,15 @@ export interface paths {
         patch: operations["rename_shop_shops__shop_id__patch"];
         trace?: never;
     };
-    "/cabinet": {
+    "/kitchen": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Get Cabinet */
-        get: operations["get_cabinet_cabinet_get"];
+        /** Get Kitchen */
+        get: operations["get_kitchen_kitchen_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -231,7 +231,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/cabinet/items/{ingredient_id}": {
+    "/kitchen/items/{ingredient_id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -240,16 +240,16 @@ export interface paths {
         };
         get?: never;
         /** Set Tracked */
-        put: operations["set_tracked_cabinet_items__ingredient_id__put"];
+        put: operations["set_tracked_kitchen_items__ingredient_id__put"];
         post?: never;
         /** Remove Tracked */
-        delete: operations["remove_tracked_cabinet_items__ingredient_id__delete"];
+        delete: operations["remove_tracked_kitchen_items__ingredient_id__delete"];
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/cabinet/staples/{ingredient_id}": {
+    "/kitchen/staples/{ingredient_id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -258,10 +258,10 @@ export interface paths {
         };
         get?: never;
         /** Set Staple */
-        put: operations["set_staple_cabinet_staples__ingredient_id__put"];
+        put: operations["set_staple_kitchen_staples__ingredient_id__put"];
         post?: never;
         /** Remove Staple */
-        delete: operations["remove_staple_cabinet_staples__ingredient_id__delete"];
+        delete: operations["remove_staple_kitchen_staples__ingredient_id__delete"];
         options?: never;
         head?: never;
         patch?: never;
@@ -473,37 +473,9 @@ export interface components {
          * @enum {string}
          */
         AddedBy: "member" | "agent";
-        /** CabinetItemOut */
-        CabinetItemOut: {
-            ingredient: components["schemas"]["IngredientOut"];
-            /** Quantity */
-            quantity: string | null;
-            /** Unit */
-            unit: string;
-            /**
-             * Status
-             * @enum {string}
-             */
-            status: "confirmed" | "estimated" | "unknown";
-            last_change_source: components["schemas"]["ChangeSource"];
-            /**
-             * Last Confirmed At
-             * Format: date-time
-             */
-            last_confirmed_at: string;
-        };
-        /** CabinetOut */
-        CabinetOut: {
-            /** Version */
-            version: number;
-            /** Tracked */
-            tracked: components["schemas"]["CabinetItemOut"][];
-            /** Staples */
-            staples: components["schemas"]["StapleOut"][];
-        };
         /**
          * ChangeSource
-         * @description What last changed a Cabinet quantity. Feeds the calculated status (ADR 0003).
+         * @description What last changed a Kitchen quantity. Feeds the calculated status (ADR 0003).
          * @enum {string}
          */
         ChangeSource: "purchase" | "manual" | "cooked";
@@ -749,6 +721,34 @@ export interface components {
             shop_id: string | null;
             /** Checked */
             readonly checked: boolean;
+        };
+        /** KitchenItemOut */
+        KitchenItemOut: {
+            ingredient: components["schemas"]["IngredientOut"];
+            /** Quantity */
+            quantity: string | null;
+            /** Unit */
+            unit: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "confirmed" | "estimated" | "unknown";
+            last_change_source: components["schemas"]["ChangeSource"];
+            /**
+             * Last Confirmed At
+             * Format: date-time
+             */
+            last_confirmed_at: string;
+        };
+        /** KitchenOut */
+        KitchenOut: {
+            /** Version */
+            version: number;
+            /** Tracked */
+            tracked: components["schemas"]["KitchenItemOut"][];
+            /** Staples */
+            staples: components["schemas"]["StapleOut"][];
         };
         /** MeOut */
         MeOut: {
@@ -1466,7 +1466,7 @@ export interface operations {
             };
         };
     };
-    get_cabinet_cabinet_get: {
+    get_kitchen_kitchen_get: {
         parameters: {
             query?: never;
             header?: never;
@@ -1481,12 +1481,12 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["CabinetOut"];
+                    "application/json": components["schemas"]["KitchenOut"];
                 };
             };
         };
     };
-    set_tracked_cabinet_items__ingredient_id__put: {
+    set_tracked_kitchen_items__ingredient_id__put: {
         parameters: {
             query?: never;
             header: {
@@ -1509,7 +1509,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["CabinetItemOut"];
+                    "application/json": components["schemas"]["KitchenItemOut"];
                 };
             };
             /** @description Validation Error */
@@ -1523,7 +1523,7 @@ export interface operations {
             };
         };
     };
-    remove_tracked_cabinet_items__ingredient_id__delete: {
+    remove_tracked_kitchen_items__ingredient_id__delete: {
         parameters: {
             query?: never;
             header: {
@@ -1554,7 +1554,7 @@ export interface operations {
             };
         };
     };
-    set_staple_cabinet_staples__ingredient_id__put: {
+    set_staple_kitchen_staples__ingredient_id__put: {
         parameters: {
             query?: never;
             header: {
@@ -1591,7 +1591,7 @@ export interface operations {
             };
         };
     };
-    remove_staple_cabinet_staples__ingredient_id__delete: {
+    remove_staple_kitchen_staples__ingredient_id__delete: {
         parameters: {
             query?: never;
             header: {

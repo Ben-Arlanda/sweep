@@ -1,6 +1,6 @@
 # Sweep
 
-AI grocery shopping and meal-planning app: a shared Shopping List, a Cabinet of what you have at home, and a Recipe Knowledge Base, connected by a LangGraph agent.
+AI grocery shopping and meal-planning app: a shared Shopping List, a Kitchen of what you have at home, and a Recipe Knowledge Base, connected by a LangGraph agent.
 
 Planning docs: [`CONTEXT.md`](CONTEXT.md) (domain language) · [`docs/plan.md`](docs/plan.md) (architecture) · [`docs/adr/`](docs/adr/) (decisions)
 

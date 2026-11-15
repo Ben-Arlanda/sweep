@@ -1,5 +1,5 @@
 /**
- * How Cabinet amounts read on screen. The API always sends the Ingredient's base unit
+ * How Kitchen amounts read on screen. The API always sends the Ingredient's base unit
  * (g, ml or count); people read "1.5 kg" more easily than "1500 g".
  */
 export function formatAmount(quantity: string | null, unit: string): string {

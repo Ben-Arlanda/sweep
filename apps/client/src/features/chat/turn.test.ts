@@ -22,12 +22,12 @@ describe('turnReducer', () => {
 
   it('turns text written before a tool call into narration, not reply', () => {
     const turn = play([
-      { type: 'text', text: 'Checking your Cabinet.' },
-      { type: 'tool', name: 'get_cabinet' },
+      { type: 'text', text: 'Checking your Kitchen.' },
+      { type: 'tool', name: 'get_kitchen' },
     ]);
     expect(turn.reply).toBe('');
-    expect(turn.narration).toBe('Checking your Cabinet.');
-    expect(turn.activity).toBe('Checking your Cabinet');
+    expect(turn.narration).toBe('Checking your Kitchen.');
+    expect(turn.activity).toBe('Checking your Kitchen');
   });
 
   it('keeps only the text after the last tool call as the reply', () => {

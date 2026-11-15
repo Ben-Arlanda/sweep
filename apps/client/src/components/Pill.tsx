@@ -73,7 +73,7 @@ const STATUS_TEXT: Record<StatusName, string> = {
   runOut: 'Run out',
 };
 
-/** Cabinet status (ADR 0003). Unknown is dashed: "we genuinely don't know". */
+/** Kitchen status (ADR 0003). Unknown is dashed: "we genuinely don't know". */
 export function StatusBadge({ status }: { status: StatusName }) {
   const t = useTheme();
   const s = t.status[status];

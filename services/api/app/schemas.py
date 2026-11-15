@@ -171,7 +171,7 @@ class ShoppingListDetailOut(ShoppingListOut):
     shops: list[ShopOut]  # the Household's Shops, A to Z
 
 
-# --- Cabinet -----------------------------------------------------------------------
+# --- Kitchen -----------------------------------------------------------------------
 
 
 class SetQuantityIn(BaseModel):
@@ -184,7 +184,7 @@ class SetStapleIn(BaseModel):
     have: bool
 
 
-class CabinetItemOut(BaseModel):
+class KitchenItemOut(BaseModel):
     ingredient: IngredientOut
     quantity: Quantity | None
     unit: str  # always the Ingredient's own unit: g, ml or count
@@ -198,9 +198,9 @@ class StapleOut(BaseModel):
     have: bool
 
 
-class CabinetOut(BaseModel):
+class KitchenOut(BaseModel):
     version: int
-    tracked: list[CabinetItemOut]
+    tracked: list[KitchenItemOut]
     staples: list[StapleOut]
 
 

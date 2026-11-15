@@ -5,7 +5,7 @@ import { Checkbox } from '@/components/Checkbox';
 import { PressableScale } from '@/components/PressableScale';
 import { useToast } from '@/components/Toast';
 import { Button, Card, ErrorText, Field, Loading, Screen, Text } from '@/components/ui';
-import { useIngredientSearch } from '@/lib/api/cabinet';
+import { useIngredientSearch } from '@/lib/api/kitchen';
 import {
   newSaveKey,
   useCuisines,

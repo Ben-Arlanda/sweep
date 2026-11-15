@@ -7,7 +7,7 @@ import type { TintName } from '@/theme/tokens';
 import { useTheme } from '@/theme/useTheme';
 
 /**
- * A pastel card on the home board ("the fridge door"): a list, the Cabinet, and later
+ * A pastel card on the home board ("the fridge door"): a list, the Kitchen, and later
  * tonight's dinner and the week. Taps through to `href`.
  */
 export function Tile({

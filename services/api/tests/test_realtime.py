@@ -193,7 +193,7 @@ def test_socket_rejects_a_first_message_that_is_not_auth(live: TestClient) -> No
     assert closed.value.code == 4401
 
 
-def test_ticking_a_linked_item_also_announces_a_cabinet_change(
+def test_ticking_a_linked_item_also_announces_a_kitchen_change(
     live: TestClient, fake_issuer: FakeIssuer
 ) -> None:
     list_id = setup_household(live, fake_issuer, "alice")
@@ -213,4 +213,4 @@ def test_ticking_a_linked_item_also_announces_a_cabinet_change(
         )
 
         entities = {alice.receive_json()["entity"], alice.receive_json()["entity"]}
-        assert entities == {"shopping_list", "cabinet"}
+        assert entities == {"shopping_list", "kitchen"}

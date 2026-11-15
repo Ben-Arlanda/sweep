@@ -136,11 +136,11 @@ async def test_the_transcript_leaves_out_narration_next_to_tool_calls(
     client_for: ClientFor, fake_issuer: FakeIssuer
 ) -> None:
     # Text written alongside a tool call is the agent thinking aloud ("Checking your
-    # Cabinet."). The app shows it as status while streaming, so not as a saved bubble.
+    # Kitchen."). The app shows it as status while streaming, so not as a saved bubble.
     model = ScriptedModel(
         [
-            [say_text("Checking your Cabinet."), tool("get_cabinet")],
-            [say_text("Your Cabinet is empty, so let's start from scratch.")],
+            [say_text("Checking your Kitchen."), tool("get_kitchen")],
+            [say_text("Your Kitchen is empty, so let's start from scratch.")],
         ]
     )
     async with client_for(model) as client:
@@ -151,7 +151,7 @@ async def test_the_transcript_leaves_out_narration_next_to_tool_calls(
         got = await client.get(f"/conversations/{cid}", headers=fake_issuer.headers("ana"))
         assert got.json()["messages"] == [
             {"role": "user", "text": "what can I cook?"},
-            {"role": "assistant", "text": "Your Cabinet is empty, so let's start from scratch."},
+            {"role": "assistant", "text": "Your Kitchen is empty, so let's start from scratch."},
         ]
 
 
@@ -336,7 +336,7 @@ async def test_made_up_recipe_ids_and_bad_arguments_go_back_to_the_agent(
                 tool("set_planned_meal", date=MON, recipe_id=str(uuid.uuid4()), servings=2),
                 tool("set_planned_meal", date=MON, recipe_id="not-an-id", servings=0),
                 # Trying to point a tool at another Household: not a field it accepts.
-                tool("get_cabinet", household_id=str(uuid.uuid4())),
+                tool("get_kitchen", household_id=str(uuid.uuid4())),
             ],
             [say_text("I couldn't find that recipe.")],
         ]
@@ -358,7 +358,7 @@ async def test_the_tool_limit_stops_a_runaway_turn(
 ) -> None:
     model = ScriptedModel(
         [
-            [tool("get_cabinet") for _ in range(MAX_TOOL_CALLS + 1)],
+            [tool("get_kitchen") for _ in range(MAX_TOOL_CALLS + 1)],
             [say_text("Done.")],
         ]
     )
@@ -471,7 +471,7 @@ def test_unanswered_tool_calls_from_an_interrupted_turn_get_answered() -> None:
     # answers them first.
     history: Messages = [
         {"role": "user", "content": [say_text("plan")]},
-        {"role": "assistant", "content": [say_text("Looking..."), tool("get_cabinet")]},
+        {"role": "assistant", "content": [say_text("Looking..."), tool("get_kitchen")]},
     ]
     [answer] = _dangling_results(history)
     assert answer["tool_use_id"] == history[1]["content"][1]["id"]

@@ -17,10 +17,10 @@ from app.embeddings import Embedder, VoyageEmbedder
 from app.llm import ClaudeAgentModel
 from app.realtime import Hub, listen
 from app.routes import (
-    cabinet,
     conversations,
     dietary_rules,
     households,
+    kitchen,
     realtime,
     recipes,
     shopping_lists,
@@ -130,7 +130,7 @@ def create_app(
     app.include_router(shopping_lists.list_router)
     app.include_router(shopping_lists.router)
     app.include_router(shopping_lists.shops_router)
-    app.include_router(cabinet.router)
+    app.include_router(kitchen.router)
     app.include_router(recipes.router)
     app.include_router(dietary_rules.router)
     app.include_router(conversations.router)

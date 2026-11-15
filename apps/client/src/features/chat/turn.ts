@@ -44,10 +44,10 @@ export function startTurn(userText: string): Turn {
 const ACTIVITY: Record<string, string> = {
   search_recipes: 'Searching recipes',
   get_recipe: 'Reading a recipe',
-  get_cabinet: 'Checking your Cabinet',
+  get_kitchen: 'Checking your Kitchen',
   get_household_preferences: 'Checking your Preferences',
   get_shopping_list: 'Checking your Shopping List',
-  check_cabinet_coverage: "Working out what you'd need to buy",
+  check_kitchen_coverage: "Working out what you'd need to buy",
   set_planned_meal: 'Adding a meal',
   remove_planned_meal: 'Removing a meal',
   set_list_additions: 'Updating the Shopping List additions',

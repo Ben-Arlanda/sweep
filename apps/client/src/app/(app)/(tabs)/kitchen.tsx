@@ -15,38 +15,38 @@ import {
   TAB_ROOT,
   Text,
 } from '@/components/ui';
-import { displayName, formatAmount } from '@/features/cabinet/format';
-import { useCabinet, useCabinetActions, useIngredientSearch } from '@/lib/api/cabinet';
+import { displayName, formatAmount } from '@/features/kitchen/format';
+import { useKitchen, useKitchenActions, useIngredientSearch } from '@/lib/api/kitchen';
 import type { components } from '@/lib/api/schema';
 import { ingredientEmoji } from '@/theme/foodEmoji';
 import { tintFor } from '@/theme/tint';
 import { useTheme } from '@/theme/useTheme';
 
-type Tracked = components['schemas']['CabinetItemOut'];
+type Tracked = components['schemas']['KitchenItemOut'];
 type Staple = components['schemas']['StapleOut'];
-type Actions = ReturnType<typeof useCabinetActions>;
+type Actions = ReturnType<typeof useKitchenActions>;
 
 /**
  * What the Household has at home (ADR 0003). Tracked Ingredients show an amount and how
  * much to trust it; Staples are just "have" or "run out".
  */
-export default function CabinetScreen() {
+export default function KitchenScreen() {
   const t = useTheme();
-  const cabinet = useCabinet();
-  const actions = useCabinetActions();
-  const [query, setQuery] = useState(''); // the "Add to Cabinet" search in the hero
+  const kitchen = useKitchen();
+  const actions = useKitchenActions();
+  const [query, setQuery] = useState(''); // the "Add to Kitchen" search in the hero
 
-  if (cabinet.isPending) return <Loading />;
-  if (cabinet.isError) {
+  if (kitchen.isPending) return <Loading />;
+  if (kitchen.isError) {
     return (
       <Screen edges={TAB_ROOT}>
-        <ErrorText message={cabinet.error.message} />
-        <Button title="Try again" onPress={() => cabinet.refetch()} />
+        <ErrorText message={kitchen.error.message} />
+        <Button title="Try again" onPress={() => kitchen.refetch()} />
       </Screen>
     );
   }
 
-  const { tracked, staples } = cabinet.data;
+  const { tracked, staples } = kitchen.data;
   const known = new Set([...tracked, ...staples].map((x) => x.ingredient.id));
   // Run-out Staples first: they're the ones that need buying.
   const sortedStaples = [...staples].sort((a, b) => Number(a.have) - Number(b.have));
@@ -58,7 +58,7 @@ export default function CabinetScreen() {
     <Screen
       hero={
         <Hero
-          title="Cabinet"
+          title="Kitchen"
           subtitle={[
             `${tracked.length} tracked`,
             toCheck ? `${toCheck} to check` : null,
@@ -68,8 +68,8 @@ export default function CabinetScreen() {
             .join(' · ')}
         >
           <HeroSearch
-            label="Add to Cabinet"
-            placeholder="Add to Cabinet, e.g. rice"
+            label="Add to Kitchen"
+            placeholder="Add to Kitchen, e.g. rice"
             value={query}
             onChangeText={setQuery}
             autoCorrect={false}
@@ -111,7 +111,7 @@ export default function CabinetScreen() {
   );
 }
 
-/** Ingredients matching the hero's "Add to Cabinet" search, each one tap to add. */
+/** Ingredients matching the hero's "Add to Kitchen" search, each one tap to add. */
 function AddMatches({
   query,
   known,
@@ -128,7 +128,7 @@ function AddMatches({
 
   return (
     <View style={{ gap: t.space.sm }}>
-      <SectionLabel>Add to Cabinet</SectionLabel>
+      <SectionLabel>Add to Kitchen</SectionLabel>
       {results.data?.length === 0 ? (
         <Text variant="caption" muted>
           No Ingredient called that yet.
@@ -151,7 +151,7 @@ function AddMatches({
               >
                 <Text>
                   {displayName(ingredient.name)}
-                  <Text muted> {already ? '· already in Cabinet' : '· add'}</Text>
+                  <Text muted> {already ? '· already in Kitchen' : '· add'}</Text>
                 </Text>
               </Pressable>
             );

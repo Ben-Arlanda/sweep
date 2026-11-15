@@ -4,9 +4,9 @@ import { View } from 'react-native';
 import { FoodThumb } from '@/components/FoodThumb';
 import { Tag } from '@/components/Pill';
 import { Button, Card, ErrorText, Loading, Screen, SectionLabel, Text } from '@/components/ui';
-import { haveSummary, matchLine, type Have } from '@/features/recipes/cabinetMatch';
+import { haveSummary, matchLine, type Have } from '@/features/recipes/kitchenMatch';
 import { recipeMeta } from '@/features/recipes/RecipeRow';
-import { useCabinet } from '@/lib/api/cabinet';
+import { useKitchen } from '@/lib/api/kitchen';
 import { isNotFound, useRecipe } from '@/lib/api/recipes';
 import type { components } from '@/lib/api/schema';
 import { ingredientEmoji, recipeEmoji } from '@/theme/foodEmoji';
@@ -14,18 +14,18 @@ import { tintFor } from '@/theme/tint';
 import { useTheme } from '@/theme/useTheme';
 
 type Line = components['schemas']['RecipeIngredientOut'];
-type Cabinet = components['schemas']['CabinetOut'];
+type Kitchen = components['schemas']['KitchenOut'];
 
 /**
- * One recipe, checked against the Cabinet: each ingredient says whether you have it.
- * That's the loop working: what you bought (Cabinet) meets what you could cook.
+ * One recipe, checked against the Kitchen: each ingredient says whether you have it.
+ * That's the loop working: what you bought (Kitchen) meets what you could cook.
  */
 export default function RecipeScreen() {
   const t = useTheme();
   const { id } = useLocalSearchParams<{ id: string }>();
   const recipe = useRecipe(id);
-  // The Cabinet is optional here: if it fails to load, the recipe still shows.
-  const cabinet = useCabinet();
+  // The Kitchen is optional here: if it fails to load, the recipe still shows.
+  const kitchen = useKitchen();
 
   if (recipe.isPending) return <Loading />;
   if (recipe.isError && isNotFound(recipe.error)) {
@@ -50,7 +50,7 @@ export default function RecipeScreen() {
 
   const r = recipe.data;
   const tint = tintFor(r.title);
-  const summary = cabinet.data ? haveSummary(r.ingredients, cabinet.data) : null;
+  const summary = kitchen.data ? haveSummary(r.ingredients, kitchen.data) : null;
 
   return (
     <Screen>
@@ -75,11 +75,11 @@ export default function RecipeScreen() {
       <View style={{ gap: t.space.sm }}>
         <SectionLabel>Ingredients</SectionLabel>
         {r.ingredients.map((line, i) => (
-          <IngredientRow key={i} line={line} cabinet={cabinet.data} />
+          <IngredientRow key={i} line={line} kitchen={kitchen.data} />
         ))}
-        {cabinet.isError ? (
+        {kitchen.isError ? (
           <Text variant="caption" muted>
-            Couldn&apos;t check the Cabinet just now.
+            Couldn&apos;t check the Kitchen just now.
           </Text>
         ) : null}
       </View>
@@ -112,9 +112,9 @@ const HAVE_TEXT: Record<Have['kind'], string> = {
   need: 'Need',
 };
 
-function IngredientRow({ line, cabinet }: { line: Line; cabinet: Cabinet | undefined }) {
+function IngredientRow({ line, kitchen }: { line: Line; kitchen: Kitchen | undefined }) {
   const t = useTheme();
-  const have = cabinet ? matchLine(line, cabinet) : null;
+  const have = kitchen ? matchLine(line, kitchen) : null;
   const name = line.ingredient?.name ?? line.raw_text;
   const label = have
     ? have.kind === 'low'

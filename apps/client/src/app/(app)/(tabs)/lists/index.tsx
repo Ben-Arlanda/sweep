@@ -180,7 +180,7 @@ function AddItem({ onAdd }: { onAdd: (text: string) => void }) {
 /**
  * One item. The whole row is the checkbox (a big target for one thumb in a shop); the
  * ✕ is a separate button. Ticking an item linked to an Ingredient also stocks the
- * Cabinet (ADR 0003), so we say so with a toast: that's the loop, made visible.
+ * Kitchen (ADR 0003), so we say so with a toast: that's the loop, made visible.
  */
 function ItemRow({
   item,
@@ -206,7 +206,7 @@ function ItemRow({
   const shop = shopName(shops, item.shop_id);
 
   const caption = [
-    item.ingredient ? `Cabinet: ${item.ingredient.name}` : null,
+    item.ingredient ? `Kitchen: ${item.ingredient.name}` : null,
     addedBy ? `added by ${addedBy.display_name}` : null,
   ]
     .filter(Boolean)
@@ -218,7 +218,7 @@ function ItemRow({
     actions.setChecked(item.id, checked);
     if (checked && item.ingredient) {
       toast({
-        tag: 'Cabinet',
+        tag: 'Kitchen',
         text: `Added ${amount ? `${amount} ` : ''}${item.ingredient.name}`,
       });
     }

@@ -1,4 +1,4 @@
-"""The Cabinet (ADR 0003): Staples are have / run out; Tracked Ingredients have a quantity.
+"""The Kitchen (ADR 0003): Staples are have / run out; Tracked Ingredients have a quantity.
 
 Status is calculated when read, never stored:
 
@@ -7,8 +7,8 @@ Status is calculated when read, never stored:
     last change was Cooked, or age >= 7 days → Estimated  (probably about right)
     otherwise                                → Confirmed  (a Member said so recently)
 
-Every change bumps the Household's `cabinet_version` with an UPDATE on the Household
-row. That also locks the row, so two changes to one Cabinet run one after the other.
+Every change bumps the Household's `kitchen_version` with an UPDATE on the Household
+row. That also locks the row, so two changes to one Kitchen run one after the other.
 Lock order is always Household before list, here and in account deletion, so two
 transactions can't each hold the lock the other is waiting for (a deadlock).
 """
@@ -24,11 +24,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.errors import Conflict, NotFound
 from app.models import (
-    CabinetItem,
     ChangeSource,
     Household,
     HouseholdStaple,
     Ingredient,
+    KitchenItem,
     ShoppingListItem,
     utcnow,
 )
@@ -38,7 +38,7 @@ from app.units import convert
 
 CONFIRMED_FOR = timedelta(days=7)
 UNKNOWN_AFTER = timedelta(days=14)
-ENTITY = "cabinet"
+ENTITY = "kitchen"
 
 
 class Status(StrEnum):
@@ -47,7 +47,7 @@ class Status(StrEnum):
     UNKNOWN = "unknown"
 
 
-def status_of(item: CabinetItem, now: datetime) -> Status:
+def status_of(item: KitchenItem, now: datetime) -> Status:
     age = now - item.last_confirmed_at
     if age >= UNKNOWN_AFTER:
         return Status.UNKNOWN
@@ -57,18 +57,18 @@ def status_of(item: CabinetItem, now: datetime) -> Status:
 
 
 @dataclass(frozen=True)
-class CabinetView:
+class KitchenView:
     version: int
-    tracked: list[CabinetItem]
+    tracked: list[KitchenItem]
     staples: list[HouseholdStaple]
 
 
-async def get_cabinet(session: AsyncSession, ctx: MemberContext) -> CabinetView:
+async def get_kitchen(session: AsyncSession, ctx: MemberContext) -> KitchenView:
     household = await session.get_one(Household, ctx.household.id, populate_existing=True)
     tracked = await session.execute(
-        select(CabinetItem)
-        .join(Ingredient, CabinetItem.ingredient_id == Ingredient.id)
-        .where(CabinetItem.household_id == ctx.household.id)
+        select(KitchenItem)
+        .join(Ingredient, KitchenItem.ingredient_id == Ingredient.id)
+        .where(KitchenItem.household_id == ctx.household.id)
         .order_by(Ingredient.category, Ingredient.name)
     )
     staples = await session.execute(
@@ -77,8 +77,8 @@ async def get_cabinet(session: AsyncSession, ctx: MemberContext) -> CabinetView:
         .where(HouseholdStaple.household_id == ctx.household.id)
         .order_by(Ingredient.name)
     )
-    return CabinetView(
-        version=household.cabinet_version,
+    return KitchenView(
+        version=household.kitchen_version,
         tracked=list(tracked.scalars().unique()),
         staples=list(staples.scalars().unique()),
     )
@@ -92,7 +92,7 @@ async def set_tracked(
     ctx: MemberContext,
     ingredient_id: uuid.UUID,
     quantity: Decimal | None,
-) -> CabinetItem:
+) -> KitchenItem:
     """A Member says how much there is (None = "some"). That's a confirmation."""
     await _bump(session, ctx.household.id)
     ingredient = await _ingredient(session, ingredient_id)
@@ -101,7 +101,7 @@ async def set_tracked(
     now = utcnow()
     item = await _tracked(session, ctx.household.id, ingredient.id)
     if item is None:
-        item = CabinetItem(household_id=ctx.household.id, ingredient=ingredient)
+        item = KitchenItem(household_id=ctx.household.id, ingredient=ingredient)
         session.add(item)
     item.quantity = quantity
     item.last_change_source = ChangeSource.MANUAL
@@ -153,7 +153,7 @@ async def remove_staple(
 
 
 async def lock(session: AsyncSession, household_id: uuid.UUID) -> None:
-    """Take the Cabinet's lock before the list's (see the module docstring on lock order)."""
+    """Take the Kitchen's lock before the list's (see the module docstring on lock order)."""
     await session.execute(
         select(Household.id).where(Household.id == household_id).with_for_update()
     )
@@ -164,11 +164,11 @@ async def apply_purchase(
 ) -> None:
     """A linked item was ticked: we now have it. Caller holds `lock`."""
     ingredient = item.ingredient
-    if ingredient is None or item.cabinet_applied:
+    if ingredient is None or item.kitchen_applied:
         return
     await _bump(session, household_id)
-    item.cabinet_applied = True
-    item.cabinet_added_quantity = None
+    item.kitchen_applied = True
+    item.kitchen_added_quantity = None
 
     staple = await _staple(session, household_id, ingredient.id)
     if staple is not None:
@@ -184,7 +184,7 @@ async def apply_purchase(
     existing = await _tracked(session, household_id, ingredient.id)
     if existing is None:
         session.add(
-            CabinetItem(
+            KitchenItem(
                 household_id=household_id,
                 ingredient=ingredient,
                 quantity=amount,
@@ -204,7 +204,7 @@ async def apply_purchase(
         existing.last_change_source = ChangeSource.PURCHASE
         existing.last_confirmed_at = now
         existing.updated_at = now
-    item.cabinet_added_quantity = amount
+    item.kitchen_added_quantity = amount
 
 
 async def undo_purchase(
@@ -215,11 +215,11 @@ async def undo_purchase(
     Best effort. A Staple stays "have" and an unmeasured purchase stays "some", because
     we can't tell what was there before. Caller holds `lock`.
     """
-    if not item.cabinet_applied:
+    if not item.kitchen_applied:
         return
-    added = item.cabinet_added_quantity
-    item.cabinet_applied = False
-    item.cabinet_added_quantity = None
+    added = item.kitchen_added_quantity
+    item.kitchen_applied = False
+    item.kitchen_added_quantity = None
     if added is None or item.ingredient_id is None:
         return
     existing = await _tracked(session, household_id, item.ingredient_id)
@@ -239,8 +239,8 @@ async def _bump(session: AsyncSession, household_id: uuid.UUID) -> None:
     version = await session.scalar(
         update(Household)
         .where(Household.id == household_id)
-        .values(cabinet_version=Household.cabinet_version + 1)
-        .returning(Household.cabinet_version)
+        .values(kitchen_version=Household.kitchen_version + 1)
+        .returning(Household.kitchen_version)
     )
     assert version is not None  # the caller's own Household always exists
     await notify_change(session, household_id, ENTITY, household_id, version)
@@ -255,12 +255,12 @@ async def _ingredient(session: AsyncSession, ingredient_id: uuid.UUID) -> Ingred
 
 async def _tracked(
     session: AsyncSession, household_id: uuid.UUID, ingredient_id: uuid.UUID
-) -> CabinetItem | None:
+) -> KitchenItem | None:
     return (
         await session.execute(
-            select(CabinetItem).where(
-                CabinetItem.household_id == household_id,
-                CabinetItem.ingredient_id == ingredient_id,
+            select(KitchenItem).where(
+                KitchenItem.household_id == household_id,
+                KitchenItem.ingredient_id == ingredient_id,
             )
         )
     ).scalar_one_or_none()

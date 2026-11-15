@@ -30,7 +30,7 @@ import { startTurn, turnReducer, type Turn } from './turn';
 const SUGGESTIONS = [
   'Plan 5 dinners for this week',
   'Three quick vegetarian dinners',
-  "What can I cook with what's in my Cabinet?",
+  "What can I cook with what's in my Kitchen?",
 ];
 
 /**
@@ -255,7 +255,7 @@ function Welcome({ onPick }: { onPick: (text: string) => void }) {
         What should we cook?
       </Text>
       <Text muted>
-        Sweep plans meals from its recipes, follows your Dietary Rules and checks your Cabinet.
+        Sweep plans meals from its recipes, follows your Dietary Rules and checks your Kitchen.
         Nothing changes until you approve it.
       </Text>
       <View style={{ gap: t.space.sm }}>

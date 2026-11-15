@@ -43,8 +43,8 @@ Test sign-ins: `anything+clerk_test@example.com` with code `424242` (development
 - `useChangeNotices` keeps a WebSocket to `/ws`. A notice says "list X is at version N", and the app refetches that list if its copy is older (ADR 0004).
 - Known gap: a change that was **in flight** (not paused) when the app was killed isn't saved. TanStack only saves paused mutations.
 
-## Cabinet
+## Kitchen
 
-`src/lib/api/cabinet.ts` follows the same pattern: changes are queued, idempotent and not optimistic. The server decides units and status (ADR 0003), and the app only formats them (`features/cabinet/format.ts`). A tick on a list item linked to an Ingredient also refetches the Cabinet. Cabinet change notices arrive as `entity: "cabinet"`.
+`src/lib/api/kitchen.ts` follows the same pattern: changes are queued, idempotent and not optimistic. The server decides units and status (ADR 0003), and the app only formats them (`features/kitchen/format.ts`). A tick on a list item linked to an Ingredient also refetches the Kitchen. Kitchen change notices arrive as `entity: "kitchen"`.
 
 Dev server tip: run `npx expo start` normally. With `CI=1`, Metro doesn't watch files, so new screens and edits never appear.

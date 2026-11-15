@@ -33,7 +33,7 @@ type CardSpec = {
 const CARDS: CardSpec[] = [
   { emoji: '📅', title: 'This week', caption: '7 dinners planned', tint: 'sky', x: 0.5, y: 0.62, tilt: -5, far: true },
   { emoji: '🧺', title: 'Weekly shop', caption: '4 to buy · Alice & Bob', tint: 'butter', x: 0.02, y: 0.02, tilt: -7 },
-  { emoji: '🥫', title: 'Cabinet', caption: 'Chicken added just now', tint: 'mint', x: 0.46, y: 0.12, tilt: 6 },
+  { emoji: '🥫', title: 'Kitchen', caption: 'Chicken added just now', tint: 'mint', x: 0.46, y: 0.12, tilt: 6 },
   { emoji: '🌮', title: 'Tonight: tacos', caption: 'You have everything', tint: 'blush', x: 0.1, y: 0.5, tilt: 4 },
 ];
 

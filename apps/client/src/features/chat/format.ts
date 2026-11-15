@@ -1,4 +1,4 @@
-import { formatAmount } from '@/features/cabinet/format';
+import { formatAmount } from '@/features/kitchen/format';
 
 /**
  * "2026-11-16" → "Mon 16 Nov". Built from the parts, because `new Date('2026-11-16')`
