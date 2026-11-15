@@ -164,6 +164,7 @@ async def test_the_agent_plans_a_meal_and_proposes_it(
                 "recipe_id": proposal["proposal"]["meals"][0]["recipe_id"],
                 "title": "Chickpea salad",
                 "servings": 2,
+                "replaces": None,  # nothing planned that day yet
             }
         ]
         assert events[-1]["type"] == "done"

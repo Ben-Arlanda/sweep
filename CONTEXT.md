@@ -88,7 +88,7 @@ _Avoid_: generated recipe, AI recipe
 ### Planning
 
 **Meal Plan**:
-The Household's set of Planned Meals for a given week.
+The Household's Planned Meals for a given week. One dinner per day.
 _Avoid_: menu, schedule
 
 **Planned Meal**:
@@ -124,6 +124,8 @@ _Avoid_: suggestion, result
 **Proposal**:
 A Draft Plan the agent presents for approval. Nothing in a Proposal changes Household data until it is approved.
 _Avoid_: recommendation, change request
+
+A Proposal is *pending* until it's approved or rejected. It becomes *superseded* when the Member asks the agent for changes instead, and *expired* after 24 hours.
 
 **Approval**:
 A Member's decision on a Proposal: approve (optionally after unticking some meals or list additions) or reject. Recorded permanently. Bigger edits happen in the Conversation, which produces a new Proposal.

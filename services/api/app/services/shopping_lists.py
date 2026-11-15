@@ -21,7 +21,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.errors import Conflict, LimitReached, NotFound
-from app.models import Ingredient, Shop, ShoppingList, ShoppingListItem, utcnow
+from app.models import AddedBy, Ingredient, Shop, ShoppingList, ShoppingListItem, utcnow
 from app.realtime import notify_change
 from app.services import ingredients, kitchen
 from app.services.households import MemberContext
@@ -146,8 +146,12 @@ async def add_item(
     item_id: uuid.UUID | None = None,
     ingredient_id: uuid.UUID | None = None,
     shop_id: uuid.UUID | None = None,
+    added_by: AddedBy = AddedBy.MEMBER,
 ) -> ShoppingListItem:
-    """Add a line. "500g pasta" becomes "Pasta", 500 g, linked to the pasta Ingredient."""
+    """Add a line. "500g pasta" becomes "Pasta", 500 g, linked to the pasta Ingredient.
+
+    `added_by=AGENT` only from an approved Proposal (ADR 0005); `ctx` is then the Member
+    who approved it."""
     lst = await _touch(session, ctx, list_id)
     if shop_id is not None:
         await _shop(session, ctx, shop_id)  # must be this Household's
@@ -171,6 +175,7 @@ async def add_item(
         text=text,
         quantity=quantity,
         unit=unit,
+        added_by=added_by,
         added_by_member_id=ctx.member.id,
         ingredient=ingredient,
         shop_id=shop_id,

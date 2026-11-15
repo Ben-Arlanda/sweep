@@ -456,6 +456,75 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/proposals/{proposal_id}/decision": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Decide */
+        post: operations["decide_proposals__proposal_id__decision_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/meal-plan": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Week */
+        get: operations["get_week_meal_plan_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/planned-meals/{meal_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Remove */
+        delete: operations["remove_planned_meals__meal_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/planned-meals/{meal_id}/cooked": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Mark Cooked */
+        post: operations["mark_cooked_planned_meals__meal_id__cooked_post"];
+        /** Undo Cooked */
+        delete: operations["undo_cooked_planned_meals__meal_id__cooked_delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/health": {
         parameters: {
             query?: never;
@@ -518,6 +587,26 @@ export interface components {
             /** Text */
             text: string;
         };
+        /** ChatProposalOut */
+        ChatProposalOut: {
+            /** Id */
+            id?: string | null;
+            /** @default pending */
+            status: components["schemas"]["ProposalStatus"];
+            /** Summary */
+            summary: string;
+            /** Meals */
+            meals: components["schemas"]["ProposalMealOut"][];
+            /** List Additions */
+            list_additions: components["schemas"]["DraftAdditionOut"][];
+            /** Check Label */
+            check_label: string[];
+            /** Dropped */
+            dropped: string[];
+            outcome?: components["schemas"]["ProposalOutcomeOut"] | null;
+            /** After Line */
+            after_line: number | null;
+        };
         /** ConversationDetailOut */
         ConversationDetailOut: {
             /**
@@ -534,6 +623,8 @@ export interface components {
             messages: components["schemas"]["ChatLine"][];
             draft: components["schemas"]["DraftOut"] | null;
             proposal: components["schemas"]["ProposalOut"] | null;
+            /** Proposals */
+            proposals: components["schemas"]["ChatProposalOut"][];
         };
         /** ConversationOut */
         ConversationOut: {
@@ -554,6 +645,24 @@ export interface components {
             name: string;
             /** Display Name */
             display_name: string;
+        };
+        /**
+         * DecisionIn
+         * @description Approve (optionally with some meals or additions unticked) or reject.
+         *
+         *     `keep_meals` / `keep_additions` list what stays ticked: dates of proposed meals, and
+         *     positions in `list_additions`. Leave one out to keep all of that kind.
+         */
+        DecisionIn: {
+            /**
+             * Action
+             * @enum {string}
+             */
+            action: "approve" | "reject";
+            /** Keep Meals */
+            keep_meals?: string[] | null;
+            /** Keep Additions */
+            keep_additions?: number[] | null;
         };
         /**
          * Diet
@@ -792,6 +901,26 @@ export interface components {
             member: components["schemas"]["MemberOut"];
             household: components["schemas"]["HouseholdOut"];
         };
+        /**
+         * MealPlanOut
+         * @description A week of Planned Meals, from `start`. `version` matches the change notices.
+         */
+        MealPlanOut: {
+            /**
+             * Start
+             * Format: date
+             */
+            start: string;
+            /**
+             * End
+             * Format: date
+             */
+            end: string;
+            /** Version */
+            version: number;
+            /** Meals */
+            meals: components["schemas"]["PlannedMealOut"][];
+        };
         /** MemberOut */
         MemberOut: {
             /**
@@ -820,6 +949,32 @@ export interface components {
         /** PlaceOut */
         PlaceOut: {
             place: components["schemas"]["Place"];
+        };
+        /** PlannedMealOut */
+        PlannedMealOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            /**
+             * Recipe Id
+             * Format: uuid
+             */
+            recipe_id: string;
+            /** Title */
+            title: string;
+            /** Servings */
+            servings: number;
+            /** Cooked At */
+            cooked_at: string | null;
+            /** Cooked By */
+            cooked_by: string | null;
         };
         /** PreferencesIn */
         PreferencesIn: {
@@ -857,13 +1012,19 @@ export interface components {
             title: string;
             /** Servings */
             servings: number;
+            /** Replaces */
+            replaces?: string | null;
         };
         /**
          * ProposalOut
-         * @description What the Member is asked to approve (slice 6). Meals that broke a Dietary Rule are
-         *     already left out and named in `dropped`; `check_label` lists ingredients to check.
+         * @description What the Member is asked to approve. Meals that broke a Dietary Rule are already
+         *     left out and named in `dropped`; `check_label` lists ingredients to check.
          */
         ProposalOut: {
+            /** Id */
+            id?: string | null;
+            /** @default pending */
+            status: components["schemas"]["ProposalStatus"];
             /** Summary */
             summary: string;
             /** Meals */
@@ -874,7 +1035,27 @@ export interface components {
             check_label: string[];
             /** Dropped */
             dropped: string[];
+            outcome?: components["schemas"]["ProposalOutcomeOut"] | null;
         };
+        /**
+         * ProposalOutcomeOut
+         * @description What approving did. `message` is written by code, not the LLM.
+         */
+        ProposalOutcomeOut: {
+            /** Message */
+            message: string;
+            /** Saved Meals */
+            saved_meals: number;
+            /** Added Items */
+            added_items: number;
+            /** Skipped */
+            skipped: string[];
+        };
+        /**
+         * ProposalStatus
+         * @enum {string}
+         */
+        ProposalStatus: "pending" | "approved" | "rejected" | "superseded" | "expired";
         /** RecipeIngredientOut */
         RecipeIngredientOut: {
             /** Raw Text */
@@ -2068,6 +2249,169 @@ export interface operations {
                 };
                 content: {
                     "text/event-stream": components["schemas"]["TurnEvents"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    decide_proposals__proposal_id__decision_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                proposal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DecisionIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProposalOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_week_meal_plan_get: {
+        parameters: {
+            query?: {
+                start?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MealPlanOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    remove_planned_meals__meal_id__delete: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                meal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    mark_cooked_planned_meals__meal_id__cooked_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                meal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlannedMealOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    undo_cooked_planned_meals__meal_id__cooked_delete: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                meal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlannedMealOut"];
                 };
             };
             /** @description Validation Error */

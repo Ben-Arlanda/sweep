@@ -37,6 +37,12 @@ class Conflict(DomainError):
     code = "conflict"
 
 
+class InvalidInput(DomainError):
+    """Well-formed, but doesn't make sense against what's stored (e.g. not in the Proposal)."""
+
+    code = "invalid_input"
+
+
 class LimitReached(DomainError):
     code = "limit_reached"
 

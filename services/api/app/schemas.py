@@ -1,7 +1,7 @@
 """Request and response shapes. They also become the OpenAPI schema for the client."""
 
 import uuid
-from datetime import datetime
+from datetime import date, datetime
 from decimal import Decimal
 from typing import Annotated, Literal, Self
 
@@ -18,7 +18,7 @@ from pydantic import (
 
 from app.data.diet import Diet
 from app.data.places import Place
-from app.models import AddedBy, ChangeSource, RecipeKind, Role
+from app.models import AddedBy, ChangeSource, ProposalStatus, RecipeKind, Role
 from app.services.ingredients import normalise
 
 HouseholdName = Annotated[
@@ -299,6 +299,28 @@ class PreferencesOut(BaseModel):
     cuisines: list[str]
 
 
+# --- Meal Plan ----------------------------------------------------------------------
+
+
+class PlannedMealOut(BaseModel):
+    id: uuid.UUID
+    date: date
+    recipe_id: uuid.UUID
+    title: str
+    servings: int
+    cooked_at: datetime | None
+    cooked_by: uuid.UUID | None
+
+
+class MealPlanOut(BaseModel):
+    """A week of Planned Meals, from `start`. `version` matches the change notices."""
+
+    start: date
+    end: date
+    version: int
+    meals: list[PlannedMealOut]
+
+
 # --- Conversations with the agent --------------------------------------------------
 
 
@@ -339,23 +361,55 @@ class ProposalMealOut(BaseModel):
     recipe_id: str
     title: str
     servings: int
+    # The dinner already planned that day, which approving would replace.
+    replaces: str | None = None
+
+
+class ProposalOutcomeOut(BaseModel):
+    """What approving did. `message` is written by code, not the LLM."""
+
+    message: str
+    saved_meals: int
+    added_items: int
+    skipped: list[str]  # each one says what and why, e.g. "Rice is already on the list"
 
 
 class ProposalOut(BaseModel):
-    """What the Member is asked to approve (slice 6). Meals that broke a Dietary Rule are
-    already left out and named in `dropped`; `check_label` lists ingredients to check."""
+    """What the Member is asked to approve. Meals that broke a Dietary Rule are already
+    left out and named in `dropped`; `check_label` lists ingredients to check."""
 
+    id: uuid.UUID | None = None  # missing on Proposals shown before slice 6a
+    status: ProposalStatus = ProposalStatus.PENDING
     summary: str
     meals: list[ProposalMealOut]
     list_additions: list[DraftAdditionOut]
     check_label: list[str]
     dropped: list[str]
+    outcome: ProposalOutcomeOut | None = None
+
+
+class DecisionIn(BaseModel):
+    """Approve (optionally with some meals or additions unticked) or reject.
+
+    `keep_meals` / `keep_additions` list what stays ticked: dates of proposed meals, and
+    positions in `list_additions`. Leave one out to keep all of that kind."""
+
+    action: Literal["approve", "reject"]
+    keep_meals: list[date] | None = Field(default=None, max_length=14)
+    keep_additions: list[int] | None = Field(default=None, max_length=60)
+
+
+class ChatProposalOut(ProposalOut):
+    # How many `messages` lines come before it, so the chat can show it in place.
+    # None for Proposals made before slice 6a step 5 (shown at the end).
+    after_line: int | None
 
 
 class ConversationDetailOut(ConversationOut):
     messages: list[ChatLine]
     draft: DraftOut | None
-    proposal: ProposalOut | None
+    proposal: ProposalOut | None  # the one waiting for an answer, if any
+    proposals: list[ChatProposalOut]  # every Proposal in this chat, oldest first
 
 
 # What POST /conversations/{id}/messages streams. Each SSE message is `event: <type>`

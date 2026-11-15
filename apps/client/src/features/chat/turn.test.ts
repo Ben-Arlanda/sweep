@@ -53,6 +53,7 @@ describe('turnReducer', () => {
 
   it('keeps the Proposal and the error message', () => {
     const proposal = {
+      status: 'pending' as const,
       summary: 'Dhal for Monday.',
       meals: [{ date: '2026-11-16', recipe_id: 'r1', title: 'Dhal', servings: 2 }],
       list_additions: [],

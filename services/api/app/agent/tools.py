@@ -7,8 +7,8 @@ Every tool:
 - reuses the same services the HTTP routes use, so the rules are in one place
 - returns plain JSON; errors go back to the agent as data it can react to
 
-Draft tools only change the Draft Plan in the agent's state. Saving it is slice 6, and
-only after the Member approves (ADR 0005).
+Draft tools only change the Draft Plan in the agent's state. It's saved only after the
+Member approves, by plain code in app/services/proposals.py (ADR 0005).
 """
 
 import uuid
@@ -40,6 +40,7 @@ class AgentContext:
     """Per-run wiring. Not saved in checkpoints: it's rebuilt for every request."""
 
     sessionmaker: async_sessionmaker[AsyncSession]
+    conversation_id: uuid.UUID
     household_id: uuid.UUID
     member_id: uuid.UUID
     model: AgentModel

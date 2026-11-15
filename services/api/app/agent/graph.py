@@ -4,9 +4,16 @@
                              │ (agent called propose_plan)
                              ▼
                           validate ─ problems, replans left ─→ agent
-                             │ ok, or out of replans (bad meals dropped)
+                             │ ok, or out of replans (bad meals dropped): Proposal saved
                              ▼
-                            END   (slice 6 adds: approve ← interrupt, then commit)
+                          approve  ← interrupt(): the graph pauses, saved in Postgres
+                             │ resumed by POST /proposals/{id}/decision, or a chat message
+                ┌────────────┼──────────────┐
+             approve       reject         message (Proposal superseded)
+                ▼            ▼              ▼
+             commit         END         load_context → agent ... (a normal turn)
+                ▼
+               END
 
 The LLM chooses which tools to call and in what order: that's the "agent" part, and
 why "plan 5 dinners" and "we already have pasta" take different paths. Everything that
@@ -15,13 +22,14 @@ it.
 """
 
 import json
+import uuid
 from datetime import date
 from typing import Any
 
 from langgraph.graph import END, START, StateGraph
 from langgraph.graph.state import CompiledStateGraph
 from langgraph.runtime import Runtime
-from langgraph.types import Checkpointer
+from langgraph.types import Checkpointer, interrupt
 from pydantic import ValidationError
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -30,8 +38,8 @@ from app.agent import prompt, tools
 from app.agent.state import AgentState, Draft, empty_draft
 from app.agent.tools import AgentContext, Call, ToolError
 from app.agent.validate import build_proposal, validate_draft
-from app.models import AgentUsage
-from app.services import diet, recipes
+from app.models import AgentUsage, ProposalStatus
+from app.services import diet, meal_plan, proposals, recipes
 
 MAX_TOOL_CALLS = 15  # per turn: the agent should be done well before this
 MAX_REPLANS = 2  # times validate sends a plan back before showing the best attempt
@@ -76,6 +84,7 @@ async def load_context(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
         "tool_calls": 0,
         "replan_count": 0,
         "proposal": None,
+        "decision": None,
         "pending_proposal": None,
         "pending_results": [],
         "stop": None,
@@ -270,15 +279,100 @@ async def validate(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
         return {**update, "messages": [{"role": "user", "content": results}], "stop": "empty"}
 
     proposal = build_proposal(draft, found, rules, problems, pending["summary"])
+    async with ctx.sessionmaker() as session:
+        # Say on the card which days already have a dinner that this would replace.
+        days = [date.fromisoformat(m["date"]) for m in proposal["meals"]]
+        planned = (
+            {
+                pm.date.isoformat(): pm.recipe.title
+                for pm in await meal_plan.between(session, ctx.household_id, min(days), max(days))
+            }
+            if days
+            else {}
+        )
+        for meal in proposal["meals"]:
+            meal["replaces"] = planned.get(meal["date"])
+        row = await proposals.create(
+            session, ctx.conversation_id, ctx.household_id, ctx.member_id, proposal
+        )
+        await session.commit()
+    proposal = {**proposal, "id": str(row.id), "status": row.status.value}
     results.append(_result(pending["tool_use_id"], "Shown to the Member. Wait for their reply."))
     _write(runtime, {"type": "proposal", "proposal": proposal})
-    return {**update, "messages": [{"role": "user", "content": results}], "proposal": proposal}
+    return {
+        **update,
+        "messages": [{"role": "user", "content": results}],
+        "proposal": proposal,
+        "proposal_marks": [{"id": proposal["id"], "at": len(state["messages"])}],
+    }
 
 
 def after_validate(state: AgentState) -> str:
-    if state.get("proposal") is not None or state.get("stop"):
+    if state.get("proposal") is not None:
+        return "approve"
+    if state.get("stop"):
         return END
     return "agent"
+
+
+# --- approve and commit ----------------------------------------------------------------
+
+
+async def approve(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
+    """Pause until the Member answers. `interrupt()` saves the graph and stops the run;
+    resuming with `Command(resume=answer)` runs this node again from the top, and this
+    time `interrupt()` returns the answer. So nothing before it may have side effects."""
+    proposal = state.get("proposal")
+    assert proposal is not None
+    decision: dict[str, Any] = interrupt({"proposal_id": proposal["id"]})
+
+    ctx = runtime.context
+    action = decision["action"]
+    if action == "approve":
+        return {"decision": decision}  # commit does the work
+    status = ProposalStatus.REJECTED if action == "reject" else ProposalStatus.SUPERSEDED
+    async with ctx.sessionmaker() as session:
+        await proposals.close_pending(
+            session, ctx.conversation_id, status, ctx.member_id, uuid.UUID(proposal["id"])
+        )
+        await session.commit()
+    update: dict[str, Any] = {"decision": decision, "proposal": None}
+    if action == "message":
+        update["user_text"] = decision["text"]  # carry on with what they typed
+    return update
+
+
+def after_approve(state: AgentState) -> str:
+    action = (state.get("decision") or {}).get("action")
+    if action == "approve":
+        return "commit"
+    if action == "message":
+        return "load_context"
+    return END
+
+
+async def commit(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
+    """Plain code from here on (ADR 0005): the same services the REST API uses, under the
+    approving Member's permissions, in one transaction. Safe to run twice: the second
+    time `proposals.commit` sees it's already approved and returns the stored outcome."""
+    ctx = runtime.context
+    decision = state.get("decision") or {}
+    proposal = state.get("proposal")
+    assert proposal is not None
+    async with ctx.sessionmaker() as session:
+        member = await tools.member_context(session, ctx)
+        outcome = await proposals.commit(
+            session,
+            member,
+            uuid.UUID(proposal["id"]),
+            decision.get("keep_meals"),
+            decision.get("keep_additions"),
+            ctx.today,
+        )
+        await session.commit()
+    del outcome  # stored on the Proposal; the decision route reads it from there
+    # The plan is Household data now; the next request starts a fresh Draft.
+    return {"draft": empty_draft(), "proposal": None, "decision": None}
 
 
 def after_load(state: AgentState) -> str:
@@ -291,9 +385,13 @@ def build(checkpointer: Checkpointer) -> CompiledStateGraph[AgentState, AgentCon
     graph.add_node("agent", agent)
     graph.add_node("tools", run_tools)
     graph.add_node("validate", validate)
+    graph.add_node("approve", approve)
+    graph.add_node("commit", commit)
     graph.add_edge(START, "load_context")
     graph.add_conditional_edges("load_context", after_load)
     graph.add_conditional_edges("agent", after_agent)
     graph.add_conditional_edges("tools", after_tools)
     graph.add_conditional_edges("validate", after_validate)
+    graph.add_conditional_edges("approve", after_approve)
+    graph.add_edge("commit", END)
     return graph.compile(checkpointer=checkpointer)

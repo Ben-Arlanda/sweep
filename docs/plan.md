@@ -1,6 +1,6 @@
 # Sweep — Architecture & Implementation Plan
 
-Status: slices 0–4b merged (foundations; Households, invites, Clerk sign-in, account deletion; shared Shopping List with live updates and an offline retry queue; Ingredients and the Kitchen; the Zest + Kitchen Table design system, ADR 0007; Recipe Knowledge Base backend and Recipes screens). App shell (`feature/brand-and-motion`): welcome and "how it works" screens before sign-in, bottom tab bar, dark by default, rounded heroes, Urbanist. Visual polish is deferred until the app is feature-complete. 4c merged: 500 Seed Recipes (all embedded), automated recipe checks gate CI. 5a merged (PR #14): Dietary Rules (vegetarian, vegan, gluten free, dairy free, excluded Ingredients) and Preferences; the LangGraph agent on Sonnet 5.5 with tools, validate loop, checkpointer and SSE (ADR 0008). 5b (`feature/agent-chat`): chat screen (streamed replies, Proposal card, resume on any device) and the Dietary Rules & Preferences screen. 5b merged (PR #15). **Pricing dropped (ADR 0010): no catalogue, no Estimated Cost, no weekly budget; slice 7 and E3 removed.** 2b (`feature/one-shopping-list`): one Shopping List per Household with Shops as item labels (bottom sheet to tag, filter by Shop), weekly budget removed. 3c (`feature/kitchen`): Cabinet renamed **Kitchen** everywhere; Places (Fridge / Freezer / Cupboard) with per-item moves and a remembered filter (ADR 0011). 3d (`feature/household-ingredients`): the Kitchen takes anything. Household Ingredients, Household links, one scoped matcher (`ingredients.resolve`), a Link sheet on list items, "Add 'kale'" in the Kitchen, merge into new starters (kale, cavolo nero, silverbeet added) (ADR 0012). Built and checked end to end; PR not yet open. 5c (`feature/kitchen-first-planning`, stacked on 3d): Kitchen-first planning, Kitchen Match ranking, `recipes_from_kitchen`, "Plan my week" / "Just tonight" on Home (ADR 0013). Built and checked with live turns; PR not yet open. Next: 6a approvals backend.
+Status: slices 0–4b merged (foundations; Households, invites, Clerk sign-in, account deletion; shared Shopping List with live updates and an offline retry queue; Ingredients and the Kitchen; the Zest + Kitchen Table design system, ADR 0007; Recipe Knowledge Base backend and Recipes screens). App shell (`feature/brand-and-motion`): welcome and "how it works" screens before sign-in, bottom tab bar, dark by default, rounded heroes, Urbanist. Visual polish is deferred until the app is feature-complete. 4c merged: 500 Seed Recipes (all embedded), automated recipe checks gate CI. 5a merged (PR #14): Dietary Rules (vegetarian, vegan, gluten free, dairy free, excluded Ingredients) and Preferences; the LangGraph agent on Sonnet 5.5 with tools, validate loop, checkpointer and SSE (ADR 0008). 5b (`feature/agent-chat`): chat screen (streamed replies, Proposal card, resume on any device) and the Dietary Rules & Preferences screen. 5b merged (PR #15). **Pricing dropped (ADR 0010): no catalogue, no Estimated Cost, no weekly budget; slice 7 and E3 removed.** 2b (`feature/one-shopping-list`): one Shopping List per Household with Shops as item labels (bottom sheet to tag, filter by Shop), weekly budget removed. 3c (`feature/kitchen`): Cabinet renamed **Kitchen** everywhere; Places (Fridge / Freezer / Cupboard) with per-item moves and a remembered filter (ADR 0011). 3d (`feature/household-ingredients`): the Kitchen takes anything. Household Ingredients, Household links, one scoped matcher (`ingredients.resolve`), a Link sheet on list items, "Add 'kale'" in the Kitchen, merge into new starters (kale, cavolo nero, silverbeet added) (ADR 0012). Merged (PR #19). 5c (`feature/kitchen-first-planning`, stacked on 3d): Kitchen-first planning, Kitchen Match ranking, `recipes_from_kitchen`, "Plan my week" / "Just tonight" on Home (ADR 0013). Merged (PR #20). 6a (`feature/approvals`): Proposal records, the graph pauses for approval (`interrupt()`), decision route and deterministic commit, Meal Plan routes, Mark as Cooked with undo, audit log (ADR 0014). Built and tested; PR not yet open. Next: 6b approvals client.
 Language follows [`CONTEXT.md`](../CONTEXT.md). Big decisions live in [`docs/adr/`](adr/).
 ⚠️ = unverified, check before relying on it.
 
@@ -124,16 +124,19 @@ shops(id, household_id, name)                         -- Coles, Woolies, Aldi to
 shopping_list_items(id, list_id, text, ingredient_id?, shop_id?, quantity, unit,
                     added_by[member|agent], proposal_id?, checked_at, checked_by)
 
-meal_plans(id, household_id, week_start)
-planned_meals(id, meal_plan_id, date, recipe_id, servings, cooked_at, cooked_by)
+planned_meals(id, household_id, date, recipe_id, servings, proposal_id?,
+              cooked_at, cooked_by, cooked_deductions jsonb)
+              -- UNIQUE (household_id, date): one dinner per day. A Meal Plan is the
+              -- Planned Meals of one week, read by date range; no meal_plans table (6a)
 
 dietary_rules(household_id, kind[exclude_ingredient|allergen|diet], value)
 preferences(household_id, text)
 
 proposals(id, conversation_id, household_id, created_by, payload jsonb,
-          status[pending|approved|rejected|expired], decided_by, decided_at)
+          status[pending|approved|rejected|superseded|expired], expires_at,
+          decided_at, outcome jsonb)   -- outcome: what commit did, replayed on a retry
 conversations(id, household_id, member_id, langgraph_thread_id)
-audit_log(id, household_id, actor[member|agent], action, entity, before, after, at)
+audit_log(id, household_id, member_id?, actor[member|agent], action, entity, entity_id, detail jsonb, at)
 idempotency_keys(key, member_id, response, created_at)
 
 ```
@@ -345,7 +348,19 @@ Each slice is a feature branch and a focused PR that works end to end.
 
 Known gaps from 2b: deleting a Shop from inside the sheet drops keyboard focus to the page (the button it was on disappears); not yet run on a phone.
 
-Known gaps carried forward from 5b: only the latest Proposal is kept, so earlier ones drop out of the chat history (fix with slice 6's Proposal records); not yet run on a phone.
+Known gaps carried forward from 5b: not yet run on a phone. (Earlier Proposals dropping out of the chat history: fixed in 6a, `GET /conversations/{id}` returns every Proposal in place.)
+
+**Slice 6a steps** (agreed 2026-11-15; build test-first):
+
+1. **Schema:** `proposals`, `planned_meals` (one per Household per day, no `meal_plans` table), `audit_log` (append-only).
+2. **Proposal records and the pause:** validate saves a pending Proposal (24h expiry); a new `approve` node calls `interrupt()`, so the paused graph waits in the checkpointer. A chat message sent while it waits resumes it as "message": the Proposal becomes *superseded* and the turn carries on. `load_context` also gives the agent the Planned Meals for the next 14 days.
+3. **Decision and commit:** `POST /proposals/{id}/decision {approve, keep_meals, keep_additions | reject}`. Only the Conversation's starter (anyone else gets 404). Commit is plain code in one transaction: re-checks each meal against today's data and **skips** any that no longer pass (said in the confirmation); a meal on a planned day **replaces** it (a Cooked one stays); a list addition whose Ingredient is already unticked on the list is **skipped**; additions go on untagged with `added_by=agent`. The outcome is stored on the Proposal, so a retried Approve returns the same answer. Expired (24h) is checked when deciding. The confirmation is written by code, not an LLM.
+4. **Meal Plan and Cooked:** `GET /meal-plan?start=` (7 days), `DELETE /planned-meals/{id}`, `POST`/`DELETE /planned-meals/{id}/cooked`. Cooked deducts Tracked items only (recipe amounts scaled by servings), never below zero; an item with no amount recorded stays "some" but becomes Estimated. The deductions are stored on the Planned Meal so undo puts them back.
+5. Audit entries for every Proposal decision, commit and Cooked; `GET /conversations/{id}` returns every Proposal with its status (fixes the 5b gap); docs and ADR.
+
+Done 2026-11-15. 325 API tests (real Postgres, scripted model). No live model turns: approving makes no LLM call, and 6b's screens are where the flow gets checked end to end.
+
+Known gaps from 6a: the agent's Planned Meals context covers 14 days, but the Meal Plan route reads one week at a time; the audit log is append-only by convention (no database trigger, since deleting a Household must cascade); a Proposal waiting past 24h still pauses its graph until the next message (harmless: the message resumes it).
 
 **Slice 5d decisions** (2026-11-15): a second way to plan, for a week of new recipes to shop for. Home keeps "Plan my week" (Kitchen-first) and "Just tonight"; a quieter "Try new recipes instead →" link starts a "Something new" plan. The mode lives on the Conversation and goes into the per-turn context, not just the first message (5c showed wording alone is fragile). The Kitchen still subtracts from the buy list. Built after 6a, so approving actually fills the Shopping List.
 

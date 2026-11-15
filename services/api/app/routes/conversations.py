@@ -17,12 +17,13 @@ from pydantic import RootModel
 
 from app import errors
 from app.deps import MemberDep, SessionDep
+from app.routes.proposals import proposal_fields, proposal_out
 from app.schemas import (
     ChatLine,
+    ChatProposalOut,
     ConversationDetailOut,
     ConversationOut,
     DraftOut,
-    ProposalOut,
     SendMessageIn,
     TurnEvent,
 )
@@ -58,12 +59,22 @@ async def get(
 ) -> ConversationDetailOut:
     conversation = await conversations.get(session, ctx, conversation_id)
     state = await _agent(request).state(conversation.id)
+    saved = await conversations.proposals_of(session, conversation.id)
+    positions = conversations.proposal_positions(state)
+    waiting = (state.get("proposal") or {}).get("id")
+    current = next((p for p in saved if str(p.id) == waiting), None)
     return ConversationDetailOut(
         id=conversation.id,
         created_at=conversation.created_at,
         messages=[ChatLine.model_validate(line) for line in conversations.transcript(state)],
         draft=DraftOut.model_validate(d) if (d := state.get("draft")) else None,
-        proposal=ProposalOut.model_validate(p) if (p := state.get("proposal")) else None,
+        proposal=proposal_out(current) if current is not None else None,
+        proposals=[
+            ChatProposalOut.model_validate(
+                {**proposal_fields(p), "after_line": positions.get(str(p.id))}
+            )
+            for p in saved
+        ],
     )
 
 
