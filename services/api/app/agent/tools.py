@@ -27,10 +27,12 @@ from app.agent.model import AgentModel
 from app.agent.state import Draft, DraftAddition, DraftMeal
 from app.embeddings import Embedder, EmbeddingUnavailable
 from app.models import Household, Member, Recipe, utcnow
-from app.services import diet, ingredients, kitchen, recipes, shopping_lists
+from app.services import diet, ingredients, kitchen, kitchen_match, recipes, shopping_lists
 from app.services.households import MemberContext
 
 SEARCH_RESULTS = 8
+KITCHEN_RESULTS = 10  # enough to pick a week of dinners with some choice
+CANDIDATES = 60  # meaning search's shortlist before the Kitchen re-ranks it
 
 
 @dataclass(frozen=True)
@@ -102,15 +104,19 @@ async def search_recipes(call: Call, args: SearchArgs) -> Outcome:
         raise ToolError("Recipe search isn't available right now")
     hid = call.agent.household_id
     must: list[uuid.UUID] = []
+    named: list[str] = []  # Household Ingredients: Seed Recipes only name them in text
     for name in args.must_use_ingredients:
         found = await ingredients.resolve(call.session, hid, name, create=False)
         if found is None:
             raise ToolError(f"Unknown ingredient: {name!r}")
-        must.append(found.id)
+        if found.is_household_ingredient:
+            named.append(found.name)
+        else:
+            must.append(found.id)
     filters = await recipes.filters_for(call.session, hid, args.max_minutes, args.cuisine)
     try:
         # Fetch extra when filtering afterwards, so we still have enough to return.
-        limit = SEARCH_RESULTS * (4 if must else 1)
+        limit = SEARCH_RESULTS * (4 if must or named else 1)
         found_recipes = await recipes.search(
             call.session, hid, call.agent.embedder, args.query, filters, limit
         )
@@ -121,8 +127,60 @@ async def search_recipes(call: Call, args: SearchArgs) -> Outcome:
         r
         for r, _score in found_recipes
         if set(must) <= {line.ingredient_id for line in r.ingredients}
+        and all(kitchen_match.mentions(r, name) for name in named)
     ]
     return Outcome([_summary(r, rules) for r in matches[:SEARCH_RESULTS]])
+
+
+class FromKitchenArgs(Args):
+    query: str | None = Field(
+        default=None,
+        max_length=200,
+        description="Optional taste to narrow by meaning first, e.g. 'quick', 'thai'",
+    )
+    max_minutes: int | None = Field(default=None, gt=0, le=1440)
+    cuisine: str | None = Field(default=None, max_length=40, description="e.g. italian")
+    exclude_recipe_ids: list[uuid.UUID] = Field(
+        default=[], max_length=60, description="Recipes already planned, for variety"
+    )
+
+
+async def recipes_from_kitchen(call: Call, args: FromKitchenArgs) -> Outcome:
+    """Kitchen-first (ADR 0013): the app ranks by what the Household has, fewest things to
+    buy first; the agent picks among the results. Dietary Rules apply in SQL, as in
+    search_recipes. With a query, search by meaning picks candidates and the Kitchen
+    orders them (hybrid search with a deterministic re-ranker)."""
+    hid = call.agent.household_id
+    filters = await recipes.filters_for(call.session, hid, args.max_minutes, args.cuisine)
+    among: list[uuid.UUID] | None = None
+    if args.query:
+        if call.agent.embedder is None:
+            raise ToolError("Search by taste isn't available right now; try without a query")
+        try:
+            found = await recipes.search(
+                call.session, hid, call.agent.embedder, args.query, filters, CANDIDATES
+            )
+        except EmbeddingUnavailable as error:
+            raise ToolError("Search by taste is unavailable right now") from error
+        among = [r.id for r, _score in found]
+    snap = await kitchen_match.snapshot(call.session, call.member)
+    ranked = await kitchen_match.rank(
+        call.session,
+        hid,
+        snap,
+        filters,
+        among=among,
+        exclude=args.exclude_recipe_ids,
+        limit=KITCHEN_RESULTS,
+    )
+    rules = await diet.get_rules(call.session, hid)
+    return Outcome(
+        [
+            _summary(r, rules)
+            | {"have": list(m.have), "maybe": list(m.maybe), "missing": list(m.missing)}
+            for r, m in ranked
+        ]
+    )
 
 
 class RecipeArgs(Args):
@@ -382,9 +440,18 @@ class Tool:
 
 TOOLS: tuple[Tool, ...] = (
     Tool(
+        "recipes_from_kitchen",
+        "Start here for any plan: recipes ranked by what the Household already has, fewest "
+        "things to buy first. Each result lists have, maybe (might be gone) and missing. "
+        "Optional query narrows by taste first. Only returns recipes that fit the "
+        "Household's Dietary Rules.",
+        FromKitchenArgs,
+        recipes_from_kitchen,
+    ),
+    Tool(
         "search_recipes",
-        "Find recipes by meaning (e.g. 'quick vegetarian pasta'). Only returns recipes "
-        "that fit the Household's Dietary Rules.",
+        "Find recipes by meaning (e.g. 'quick vegetarian pasta') when the Member asks for "
+        "something specific. Only returns recipes that fit the Household's Dietary Rules.",
         SearchArgs,
         search_recipes,
     ),

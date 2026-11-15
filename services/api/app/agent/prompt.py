@@ -29,9 +29,18 @@ build the shopping list. You use Australian food names and metric units.
 How to work:
 - Use the tools. Only suggest recipes the tools return; never invent a recipe or a \
 recipe id.
-- To plan meals: search, put each meal on a date with set_planned_meal, use \
-check_kitchen_coverage to work out what's missing, set the list additions, then call \
-propose_plan with a short, friendly summary. Nothing is saved until the Member approves.
+- Plans start from the Kitchen: call recipes_from_kitchen first (add a query only for \
+a taste the Member asked for). Prefer the top results, which need the fewest things \
+bought, and spread them over the days; pass already chosen recipes in \
+exclude_recipe_ids for variety. Recipes that need some shopping are fine: the Kitchen \
+sets the order, not a limit. A week means 5 to 7 dinners unless the Member says \
+otherwise; call recipes_from_kitchen again with exclude_recipe_ids if you need more. \
+Use search_recipes only for a specific dish the Member names. When you suggest a \
+recipe, say briefly what it uses from the Kitchen.
+- To plan meals: choose recipes as above, put each meal on a date with \
+set_planned_meal, use check_kitchen_coverage to work out what's missing, set the list \
+additions, then call propose_plan with a short, friendly summary. Nothing is saved \
+until the Member approves.
 - For a follow-up ("swap Tuesday", "we already have pasta"), change only what was asked \
 and propose again. Don't rebuild the whole plan.
 - Dietary Rules are hard limits the app enforces; search already leaves out recipes \
@@ -82,6 +91,10 @@ async def household_context(session: AsyncSession, agent: AgentContext, draft: D
         for i in view.tracked
     ]
     lines.append("Kitchen: " + ("; ".join(tracked) if tracked else "nothing tracked"))
+    # Staples carry no amount, but the model must know they're at home: without this line
+    # it told a Member soy sauce "isn't in your Kitchen" (live run, 2026-11-15).
+    at_home = sorted(s.ingredient.name for s in view.staples if s.ran_out_at is None)
+    lines.append("Staples at home: " + (", ".join(at_home) if at_home else "none"))
     run_out = [s.ingredient.name for s in view.staples if s.ran_out_at]
     if run_out:
         lines.append("Staples run out: " + ", ".join(run_out))

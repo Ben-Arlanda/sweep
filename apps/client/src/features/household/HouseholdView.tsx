@@ -19,6 +19,7 @@ import {
   useHousehold,
   useRemoveMember,
 } from '@/lib/api/households';
+import { requestStart } from '@/features/chat/starters';
 import { clerkErrorMessage } from '@/lib/clerkErrors';
 import { useTheme } from '@/theme/useTheme';
 
@@ -42,7 +43,24 @@ export function HomeHero({ me }: { me: MeOut }) {
       }
       subtitle={`Hi ${firstName}. Here's your kitchen at a glance.`}
     >
-      <Button title="Plan my week" onPress={() => router.push('/plan')} />
+      {/* Both start from what's in the Kitchen (ADR 0013). */}
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.sm }}>
+        <Button
+          title="Plan my week"
+          onPress={() => {
+            requestStart('week');
+            router.push('/plan');
+          }}
+        />
+        <Button
+          title="Just tonight"
+          variant="secondary"
+          onPress={() => {
+            requestStart('tonight');
+            router.push('/plan');
+          }}
+        />
+      </View>
     </Hero>
   );
 }
@@ -231,8 +249,8 @@ function AccountCard() {
       {confirming ? (
         <>
           <Text danger>
-            This permanently deletes your account. If you&apos;re the last Member, the Household
-            and everything in it is deleted too.
+            This permanently deletes your account. If you&apos;re the last Member, the Household and
+            everything in it is deleted too.
           </Text>
           <Button
             title="Yes, delete my account"

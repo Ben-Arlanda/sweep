@@ -6,8 +6,7 @@ checkpointer, the services, Dietary Rules, the limits.
 
 import json
 import uuid
-from collections.abc import AsyncIterator, Callable
-from contextlib import asynccontextmanager
+from collections.abc import Callable
 from datetime import timedelta
 from typing import Any
 
@@ -18,11 +17,8 @@ from sqlalchemy import Engine, text
 
 from app.agent.graph import MAX_TOOL_CALLS, _dangling_results
 from app.agent.prompt import CONTEXT_TAG, today_in_sydney
-from app.config import Settings
-from app.embeddings import HashingEmbedder
-from app.main import create_app
 from app.schemas import TurnEvent
-from tests.conftest import FakeIssuer, Loader
+from tests.conftest import ClientFor, FakeIssuer, Loader
 from tests.fake_model import Messages, ScriptedModel, last_result, results, tool
 from tests.fake_model import text as say_text
 from tests.helpers import create_household, idem, invite, join
@@ -35,27 +31,6 @@ TURN_EVENT: TypeAdapter[Any] = TypeAdapter(TurnEvent)
 TODAY = today_in_sydney()
 MON = TODAY.isoformat()
 TUE = (TODAY + timedelta(days=1)).isoformat()
-
-ClientFor = Callable[[ScriptedModel], Any]
-
-
-@pytest.fixture
-def client_for(database_url: str, db: Engine, fake_issuer: FakeIssuer) -> ClientFor:
-    @asynccontextmanager
-    async def make(model: ScriptedModel) -> AsyncIterator[httpx.AsyncClient]:
-        app = create_app(
-            Settings(database_url=database_url, agent_daily_token_budget=50_000),
-            token_verifier=fake_issuer.verifier(),
-            embedder=HashingEmbedder(),
-            agent_model=model,
-        )
-        transport = httpx.ASGITransport(app=app)
-        async with httpx.AsyncClient(transport=transport, base_url="http://test") as http:
-            yield http
-        await app.state.agent.checkpoints.close()
-        await app.state.engine.dispose()
-
-    return make
 
 
 async def start(client: httpx.AsyncClient, issuer: FakeIssuer, who: str = "ana") -> str:

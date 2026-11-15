@@ -107,6 +107,10 @@ _Avoid_: preference, restriction (ambiguous)
 A soft taste the agent should lean towards ("likes Mediterranean", "quick weeknight meals"). Can be traded off.
 _Avoid_: dietary requirement
 
+**Kitchen Match**:
+How well a recipe fits what's in the Kitchen: which of its ingredients the Household has, might have (Unknown status) or is missing. Plans start from the best Kitchen Matches (fewest things to buy).
+_Avoid_: coverage score, pantry match
+
 ### The agent
 
 **Conversation**:

@@ -228,6 +228,24 @@ async def list_recipes(
     return list((await session.execute(query)).scalars())
 
 
+async def eligible(
+    session: AsyncSession,
+    household_id: uuid.UUID,
+    filters: RecipeFilters,
+    *,
+    among: Sequence[uuid.UUID] | None = None,
+    exclude: Sequence[uuid.UUID] = (),
+) -> list[Recipe]:
+    """Every recipe this Household may see that passes the filters (Dietary Rules
+    included), with its lines. For Kitchen Match, which scores all of them."""
+    query = _filtered(_visible_to(household_id), filters)
+    if among is not None:
+        query = query.where(Recipe.id.in_(among))
+    if exclude:
+        query = query.where(Recipe.id.not_in(exclude))
+    return list((await session.execute(query)).scalars())
+
+
 async def search(
     session: AsyncSession,
     household_id: uuid.UUID,

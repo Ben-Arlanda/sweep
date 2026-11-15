@@ -25,13 +25,8 @@ import { useTheme } from '@/theme/useTheme';
 
 import { DraftPeek, ProposalCard } from './ProposalCard';
 import { streamTurn, type TurnEvent } from './sse';
+import { SUGGESTIONS, takeStart } from './starters';
 import { startTurn, turnReducer, type Turn } from './turn';
-
-const SUGGESTIONS = [
-  'Plan 5 dinners for this week',
-  'Three quick vegetarian dinners',
-  "What can I cook with what's in my Kitchen?",
-];
 
 /**
  * Chatting with the agent. Two kinds of state live here:
@@ -61,16 +56,29 @@ export function ChatScreen() {
   // Leaving the screen mid-reply stops reading. The server saves what it had so far.
   useEffect(() => () => abort.current?.abort(), []);
 
-  async function send(text: string) {
+  // Home's "Plan my week" / "Just tonight" (ADR 0013): a new plan with a fixed first
+  // message. takeStart() hands it over once, so a reload never re-sends (a paid call).
+  const ready = !list.isPending;
+  useEffect(() => {
+    if (!ready) return;
+    const words = takeStart();
+    if (words) void send(words, { fresh: true });
+    // send is recreated every render; this should run once, when the list is ready.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready]);
+
+  /** `fresh`: start a new plan, even though the screen still shows the last one. */
+  async function send(text: string, opts: { fresh?: boolean } = {}) {
     const words = text.trim();
     if (!words || busy) return;
+    if (opts.fresh) setChosen(null); // show the new plan, not the last one
     setInput('');
     setError(null);
     setTurn(startTurn(words));
     abort.current = new AbortController();
 
     const result = await runTurn({
-      conversationId,
+      conversationId: opts.fresh ? null : conversationId,
       words,
       signal: abort.current.signal,
       createConversation: async () => {
