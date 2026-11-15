@@ -82,6 +82,23 @@ def match(lines: Iterable[Line], snapshot: KitchenSnapshot) -> Match:
     return Match(tuple(have), tuple(maybe), tuple(missing), used)
 
 
+def uses(lines: Iterable[Line], snapshot: KitchenSnapshot) -> list[str]:
+    """The Tracked items a recipe uses that are trusted to be there, in recipe order
+    ("uses your chicken thigh and rice" on Home). Staples are left out: every recipe
+    uses oil and salt, so naming them says nothing. Unknown items are left out too:
+    they might not be there any more. Pure: no database."""
+    own = _own_patterns(snapshot.own_names)
+    used: dict[uuid.UUID, str] = {}
+    for line in lines:
+        found = None if line.optional else _identify(line, own)
+        if found is None:
+            continue
+        ingredient_id, name = found
+        if ingredient_id in snapshot.tracked and ingredient_id in snapshot.have:
+            used.setdefault(ingredient_id, name)
+    return list(used.values())
+
+
 def rank_key(title: str, m: Match) -> tuple[int, int, int, str]:
     """Sort key: fewest missing, then fewest unsure, then uses the most, then A to Z."""
     return (len(m.missing), len(m.maybe), -m.tracked_used, title)

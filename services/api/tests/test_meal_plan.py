@@ -174,3 +174,66 @@ async def test_another_households_meal_is_not_found(
         response = await cooked(client, fake_issuer, mid, undo=undo, who="eve")
         assert response.status_code == 404
     assert rows(db, "SELECT cooked_at FROM planned_meals")[0].cooked_at is None
+
+
+async def test_a_planned_meal_says_what_it_uses_from_the_kitchen(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, load: Loader, db: Engine
+) -> None:
+    # Home's "uses your chicken thigh and chickpeas" (slice 6c): Tracked items only.
+    await load([CURRY])
+    await create_household(client, fake_issuer, "ana")
+    await track(client, fake_issuer, "chicken thigh", "1000")
+    await track(client, fake_issuer, "chickpeas", "150")  # not enough, but it's used
+    plan(db, MON, "chicken-curry")
+    # onion isn't in the Kitchen; vegetable oil is a Staple, which would be noise here.
+
+    body = (
+        await client.get("/meal-plan", params={"start": MON}, headers=fake_issuer.headers("ana"))
+    ).json()
+    assert body["meals"][0]["kitchen_uses"] == ["chicken thigh", "chickpeas"]
+
+
+async def test_an_unknown_item_isnt_claimed_as_used(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, load: Loader, db: Engine
+) -> None:
+    await load([CURRY])
+    await create_household(client, fake_issuer, "ana")
+    await track(client, fake_issuer, "chicken thigh", "1000")
+    await track(client, fake_issuer, "chickpeas", "400")
+    with db.begin() as conn:  # confirmed long ago: it might not be there any more
+        conn.execute(
+            text(
+                "UPDATE kitchen_items SET last_confirmed_at = now() - interval '90 days'"
+                " WHERE ingredient_id = (SELECT id FROM ingredients WHERE name = 'chickpeas'"
+                " AND household_id IS NULL)"
+            )
+        )
+    plan(db, MON, "chicken-curry")
+
+    body = (
+        await client.get("/meal-plan", params={"start": MON}, headers=fake_issuer.headers("ana"))
+    ).json()
+    assert body["meals"][0]["kitchen_uses"] == ["chicken thigh"]
+
+
+async def test_once_cooked_it_says_what_was_taken_out(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, load: Loader, db: Engine
+) -> None:
+    # After Cooked the Kitchen has changed (chickpeas ran out), so the list comes from
+    # what was actually deducted, not from today's Kitchen.
+    await load([CURRY])
+    await create_household(client, fake_issuer, "ana")
+    await track(client, fake_issuer, "chicken thigh", "1000")
+    await track(client, fake_issuer, "chickpeas", "150")
+    await track(client, fake_issuer, "onion", None)
+    mid = plan(db, MON, "chicken-curry", servings=2)
+
+    response = await cooked(client, fake_issuer, mid)
+    assert response.json()["kitchen_uses"] == ["chicken thigh", "chickpeas", "onion"]
+    body = (
+        await client.get("/meal-plan", params={"start": MON}, headers=fake_issuer.headers("ana"))
+    ).json()
+    assert body["meals"][0]["kitchen_uses"] == ["chicken thigh", "chickpeas", "onion"]
+
+    undone = await cooked(client, fake_issuer, mid, undo=True)
+    assert undone.json()["kitchen_uses"] == ["chicken thigh", "chickpeas", "onion"]

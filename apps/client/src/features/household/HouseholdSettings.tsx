@@ -5,13 +5,8 @@ import { Platform, Share, View } from 'react-native';
 
 import { router } from 'expo-router';
 
-import { Avatar, AvatarStack } from '@/components/Avatar';
-import { Hero, HeroLabel } from '@/components/Hero';
-import { Button, Card, ErrorText, Highlight, SectionLabel, Text } from '@/components/ui';
-import { KitchenTile } from '@/features/kitchen/KitchenTile';
-import { MealPlanTile } from '@/features/mealPlan/MealPlanTile';
-import { RecipesTile } from '@/features/recipes/RecipesTile';
-import { ShoppingListTile } from '@/features/lists/ShoppingListTile';
+import { Avatar } from '@/components/Avatar';
+import { Button, Card, ErrorText, Text } from '@/components/ui';
 import { AppearanceCard } from '@/features/household/AppearanceCard';
 import type { MeOut } from '@/lib/api/client';
 import {
@@ -20,73 +15,8 @@ import {
   useHousehold,
   useRemoveMember,
 } from '@/lib/api/households';
-import { requestPlan, requestStart } from '@/features/chat/starters';
-import { PlanSheet } from '@/features/mealPlan/PlanSheet';
 import { clerkErrorMessage } from '@/lib/clerkErrors';
 import { useTheme } from '@/theme/useTheme';
-
-/** Home's hero: the Household and everyone in it, then the question. */
-export function HomeHero({ me }: { me: MeOut }) {
-  const t = useTheme();
-  const household = useHousehold(true);
-  const firstName = me.member.display_name.split(' ')[0];
-  const [planning, setPlanning] = useState(false);
-  return (
-    <Hero
-      top={
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.md }}>
-          <AvatarStack members={household.data?.members ?? [me.member]} size={40} />
-          <HeroLabel label="Household" value={me.household.name} />
-        </View>
-      }
-      title={
-        <>
-          What&apos;s <Highlight>cooking</Highlight> tonight?
-        </>
-      }
-      subtitle={`Hi ${firstName}. Here's your kitchen at a glance.`}
-    >
-      {/* "Plan my week" asks which days and what kind of plan (ADR 0015); "Just tonight"
-          is always Kitchen-first (ADR 0013). */}
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.sm }}>
-        <Button title="Plan my week" onPress={() => setPlanning(true)} />
-        <Button
-          title="Just tonight"
-          variant="secondary"
-          onPress={() => {
-            requestStart('tonight');
-            router.push('/plan');
-          }}
-        />
-      </View>
-      {planning ? (
-        <PlanSheet
-          onClose={() => setPlanning(false)}
-          onPick={(mode, days) => {
-            requestPlan(mode, days);
-            router.push('/plan');
-          }}
-        />
-      ) : null}
-    </Hero>
-  );
-}
-
-/** The board: the Shopping List, the Meal Plan, the Kitchen and Recipes. */
-export function HouseholdView() {
-  const t = useTheme();
-  return (
-    <>
-      <SectionLabel>Your kitchen</SectionLabel>
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.md }}>
-        <ShoppingListTile />
-        <MealPlanTile />
-        <KitchenTile />
-        <RecipesTile />
-      </View>
-    </>
-  );
-}
 
 /** The Household tab: who's in it, inviting someone, appearance and your account. */
 export function HouseholdSettings({ me }: { me: MeOut }) {

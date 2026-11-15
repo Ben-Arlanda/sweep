@@ -1,6 +1,6 @@
 import { Hero, HeroLabel } from '@/components/Hero';
 import { Loading, Screen } from '@/components/ui';
-import { HouseholdSettings } from '@/features/household/HouseholdView';
+import { HouseholdSettings } from '@/features/household/HouseholdSettings';
 import { useHousehold, useMe } from '@/lib/api/households';
 
 /** The Household tab: Members, invites, appearance and account. */

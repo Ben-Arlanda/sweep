@@ -17,6 +17,7 @@ const meal = (date: string, title: string) => ({
   servings: 4,
   cooked_at: null,
   cooked_by: null,
+  kitchen_uses: [],
 });
 
 describe('addDays', () => {

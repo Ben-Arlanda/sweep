@@ -1038,6 +1038,8 @@ export interface components {
             cooked_at: string | null;
             /** Cooked By */
             cooked_by: string | null;
+            /** Kitchen Uses */
+            kitchen_uses: string[];
         };
         /** PreferencesIn */
         PreferencesIn: {
