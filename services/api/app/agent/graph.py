@@ -128,14 +128,16 @@ async def agent(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
             .values(
                 household_id=ctx.household_id,
                 day=ctx.today,
-                input_tokens=turn.input_tokens,
-                output_tokens=turn.output_tokens,
+                input_tokens=turn.usage.all_input,
+                output_tokens=turn.usage.output_tokens,
             )
             .on_conflict_do_update(
                 index_elements=["household_id", "day"],
                 set_={
-                    "input_tokens": AgentUsage.input_tokens + turn.input_tokens,
-                    "output_tokens": AgentUsage.output_tokens + turn.output_tokens,
+                    # Every input token, cached or not: the budget is a safety limit,
+                    # so it errs on the side of counting too much.
+                    "input_tokens": AgentUsage.input_tokens + turn.usage.all_input,
+                    "output_tokens": AgentUsage.output_tokens + turn.usage.output_tokens,
                 },
             )
         )

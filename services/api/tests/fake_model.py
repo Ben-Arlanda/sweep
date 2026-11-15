@@ -12,6 +12,7 @@ from collections.abc import Callable, Sequence
 from typing import Any
 
 from app.agent.model import ModelTurn
+from app.llm_costs import Usage
 
 Messages = list[dict[str, Any]]
 Step = Callable[[Messages], list[dict[str, Any]]]
@@ -62,4 +63,5 @@ class ScriptedModel:
             if block["type"] == "text":
                 on_text(block["text"])
         uses_tools = any(b["type"] == "tool_use" for b in content)
-        return ModelTurn(content, "tool_use" if uses_tools else "end_turn", 1000, 100)
+        usage = Usage(model=self.name, input_tokens=1000, output_tokens=100)
+        return ModelTurn(content, "tool_use" if uses_tools else "end_turn", usage)
