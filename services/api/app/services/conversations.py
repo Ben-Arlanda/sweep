@@ -174,9 +174,16 @@ class Agent:
 
 def transcript(state: dict[str, Any]) -> list[dict[str, str]]:
     """The chat as the Member saw it: their words and the agent's replies, in order.
-    Leaves out the Household context, tool calls and tool results."""
+    Leaves out the Household context, tool calls and tool results, and narration: text
+    the agent wrote in the same message as a tool call. The app shows narration as a
+    passing status while streaming, so a reload looks the same as the live chat."""
     out: list[dict[str, str]] = []
     for message in state.get("messages", []):
+        blocks = message["content"]
+        if isinstance(blocks, list) and any(
+            isinstance(b, dict) and b.get("type") == "tool_use" for b in blocks
+        ):
+            continue
         texts = [
             b["text"]
             for b in message["content"]

@@ -41,7 +41,9 @@ export function HomeHero({ me }: { me: MeOut }) {
         </>
       }
       subtitle={`Hi ${firstName}. Here's your kitchen at a glance.`}
-    />
+    >
+      <Button title="Plan my week" onPress={() => router.push('/plan')} />
+    </Hero>
   );
 }
 

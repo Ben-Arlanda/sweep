@@ -132,6 +132,29 @@ async def test_a_reply_streams_and_the_conversation_is_saved(
         ]
 
 
+async def test_the_transcript_leaves_out_narration_next_to_tool_calls(
+    client_for: ClientFor, fake_issuer: FakeIssuer
+) -> None:
+    # Text written alongside a tool call is the agent thinking aloud ("Checking your
+    # Cabinet."). The app shows it as status while streaming, so not as a saved bubble.
+    model = ScriptedModel(
+        [
+            [say_text("Checking your Cabinet."), tool("get_cabinet")],
+            [say_text("Your Cabinet is empty, so let's start from scratch.")],
+        ]
+    )
+    async with client_for(model) as client:
+        await create_household(client, fake_issuer, "ana")
+        cid = await start(client, fake_issuer)
+        await say(client, fake_issuer, cid, "what can I cook?")
+
+        got = await client.get(f"/conversations/{cid}", headers=fake_issuer.headers("ana"))
+        assert got.json()["messages"] == [
+            {"role": "user", "text": "what can I cook?"},
+            {"role": "assistant", "text": "Your Cabinet is empty, so let's start from scratch."},
+        ]
+
+
 async def test_the_agent_plans_a_meal_and_proposes_it(
     client_for: ClientFor, fake_issuer: FakeIssuer, load: Loader
 ) -> None:
