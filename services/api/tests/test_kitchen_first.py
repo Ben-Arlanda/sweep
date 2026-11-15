@@ -3,6 +3,7 @@ by what the Household has (fewest things to buy), with Dietary Rules applied in 
 Household Ingredients counted by name. The model is scripted; everything else is real.
 """
 
+import json
 from typing import Any
 
 import httpx
@@ -186,3 +187,23 @@ async def test_must_use_finds_recipes_naming_a_household_ingredient(
 
 def test_the_prompt_says_plans_start_from_the_kitchen() -> None:
     assert "recipes_from_kitchen" in SYSTEM
+
+
+def test_the_prompt_says_the_kitchen_orders_but_does_not_limit() -> None:
+    """Live finding (2026-11-15): told to plan "from" the Kitchen, the model stopped at two
+    dinners. The prompt must say shopping is fine and how many dinners a week is."""
+    assert "not a limit" in SYSTEM
+    assert "5 to 7 dinners" in SYSTEM
+
+
+async def test_the_agent_is_told_which_staples_are_at_home(
+    client_for: ClientFor, fake_issuer: FakeIssuer
+) -> None:
+    model = ScriptedModel([[say_text("Hi.")]])
+    async with client_for(model) as client:
+        await create_household(client, fake_issuer, "ana")
+        await say(client, fake_issuer, await start(client, fake_issuer), "hello")
+
+    context = json.dumps(model.calls[0])
+    assert "Staples at home:" in context
+    assert "soy sauce" in context.split("Staples at home:")[1]

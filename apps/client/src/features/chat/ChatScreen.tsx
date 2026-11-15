@@ -1,5 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { router, Stack, useLocalSearchParams } from 'expo-router';
+import { Stack } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import {
   AccessibilityInfo,
@@ -25,7 +25,7 @@ import { useTheme } from '@/theme/useTheme';
 
 import { DraftPeek, ProposalCard } from './ProposalCard';
 import { streamTurn, type TurnEvent } from './sse';
-import { starterMessage, SUGGESTIONS } from './starters';
+import { SUGGESTIONS, takeStart } from './starters';
 import { startTurn, turnReducer, type Turn } from './turn';
 
 /**
@@ -57,26 +57,21 @@ export function ChatScreen() {
   useEffect(() => () => abort.current?.abort(), []);
 
   // Home's "Plan my week" / "Just tonight" (ADR 0013): a new plan with a fixed first
-  // message. The ref makes it once per visit, even if React runs effects twice; clearing
-  // the param means going back or reloading doesn't send it again.
-  const { start } = useLocalSearchParams<{ start?: string }>();
-  const started = useRef(false);
+  // message. takeStart() hands it over once, so a reload never re-sends (a paid call).
   const ready = !list.isPending;
   useEffect(() => {
-    const words = starterMessage(start);
-    if (!ready || !words || started.current) return;
-    started.current = true;
-    router.setParams({ start: undefined });
-    setChosen(null);
-    void send(words, { fresh: true });
-    // send is recreated every render; this should run only when `start` arrives.
+    if (!ready) return;
+    const words = takeStart();
+    if (words) void send(words, { fresh: true });
+    // send is recreated every render; this should run once, when the list is ready.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready, start]);
+  }, [ready]);
 
   /** `fresh`: start a new plan, even though the screen still shows the last one. */
   async function send(text: string, opts: { fresh?: boolean } = {}) {
     const words = text.trim();
     if (!words || busy) return;
+    if (opts.fresh) setChosen(null); // show the new plan, not the last one
     setInput('');
     setError(null);
     setTurn(startTurn(words));

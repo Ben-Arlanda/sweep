@@ -19,6 +19,7 @@ import {
   useHousehold,
   useRemoveMember,
 } from '@/lib/api/households';
+import { requestStart } from '@/features/chat/starters';
 import { clerkErrorMessage } from '@/lib/clerkErrors';
 import { useTheme } from '@/theme/useTheme';
 
@@ -46,12 +47,18 @@ export function HomeHero({ me }: { me: MeOut }) {
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.sm }}>
         <Button
           title="Plan my week"
-          onPress={() => router.push({ pathname: '/plan', params: { start: 'week' } })}
+          onPress={() => {
+            requestStart('week');
+            router.push('/plan');
+          }}
         />
         <Button
           title="Just tonight"
           variant="secondary"
-          onPress={() => router.push({ pathname: '/plan', params: { start: 'tonight' } })}
+          onPress={() => {
+            requestStart('tonight');
+            router.push('/plan');
+          }}
         />
       </View>
     </Hero>

@@ -1,18 +1,31 @@
 /**
- * How a plan starts (ADR 0013). Home's "Plan my week" and "Just tonight" open the chat
- * with `?start=week` or `?start=tonight`; the chat sends the matching message in a new
- * plan, shown like one the Member typed. Plans start from the Kitchen, so the words do.
+ * How a plan starts (ADR 0013). Home's "Plan my week" and "Just tonight" leave a one-off
+ * request here, then open the chat; the chat takes it (read and clear in one step) and
+ * sends the message in a new plan, shown like one the Member typed.
+ *
+ * In memory, not in the URL, on purpose: a URL can be reloaded or shared, and each send
+ * is a paid model call. A reload starts with nothing pending, so nothing is re-sent.
  */
 
-const STARTERS: Record<string, string> = {
-  week: "Plan dinners for this week from what's in my Kitchen.",
+export type Start = 'week' | 'tonight';
+
+const MESSAGES: Record<Start, string> = {
+  week: "Plan this week's dinners, using what's in my Kitchen first.",
   tonight: "What can I cook tonight with what's in my Kitchen?",
 };
 
-/** The first message for a `start` route param, or null if it isn't one we know. */
-export function starterMessage(start: string | string[] | undefined): string | null {
-  if (typeof start !== 'string') return null;
-  return Object.hasOwn(STARTERS, start) ? STARTERS[start] : null;
+let pending: string | null = null;
+
+/** Called by a Home button just before it opens the chat. */
+export function requestStart(start: Start): void {
+  pending = MESSAGES[start];
+}
+
+/** The requested first message, once. Later calls return null until another request. */
+export function takeStart(): string | null {
+  const message = pending;
+  pending = null;
+  return message;
 }
 
 /** Tap-to-send ideas on an empty chat. */

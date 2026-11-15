@@ -18,7 +18,7 @@ Sweep's promise is "cook what you've got, buy only what's missing". The agent (A
 - **Recipes that need shopping are allowed**, with what's missing listed. A Kitchen with three things in it should still get a week of dinners.
 - **New agent tool `recipes_from_kitchen`** (optional taste `query`, `max_minutes`, `cuisine`, `exclude_recipe_ids`). Dietary Rules filter in SQL as before. With a `query`, search by meaning first (top 60), then re-rank by Kitchen Match: hybrid retrieval with a deterministic re-ranker. The system prompt says plans start from this tool; `search_recipes` is for a specific dish the Member asks for.
 - **`must_use_ingredients`** resolves names with the matcher; a Household Ingredient matches recipe lines whose text names it.
-- **Entry points:** Home has "Plan my week" and "Just tonight". Each opens a new plan and sends a fixed first message, visible in the chat like one the Member typed.
+- **Entry points:** Home has "Plan my week" and "Just tonight". Each opens a new plan and sends a fixed first message, visible in the chat like one the Member typed. The request is handed over in memory, read once, not in the URL: a reload must never send another (paid) turn.
 - **Measured.** An offline eval compares Kitchen-first against search-only on sample Kitchens: average items to buy per meal, and the share of Kitchen items a plan uses. No model calls.
 
 ## Consequences
@@ -27,3 +27,5 @@ Sweep's promise is "cook what you've got, buy only what's missing". The agent (A
 - Scoring runs in Python over every eligible recipe (500 × about 9 lines): milliseconds now. Move it into SQL if the library grows past a few thousand.
 - Matching a Household Ingredient by text is a whole-word match on a name the Household chose. It can't put anything in the Kitchen or on the list; it only changes ranking and labels.
 - No expiry dates, so "use it up before it goes off" waits until the Kitchen tracks them.
+- Live runs showed the words around the tool matter as much as the ranking. Told to plan "from what's in my Kitchen", the model stopped at two dinners; the prompt now says the Kitchen sets the order, not a limit, and a week is 5 to 7 dinners. It also doubted Staples it couldn't see, so the per-turn context lists the Staples at home.
+- The eval shows the weak spot: "fewest things to buy" can pick similar dinners and leave some Kitchen items unused. Variety is left to the agent (`exclude_recipe_ids`) for now.
