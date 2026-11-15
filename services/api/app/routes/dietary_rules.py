@@ -4,6 +4,8 @@ Any Member can change them, not just the Owner: the Member with the allergy is u
 the one who knows about it.
 """
 
+import uuid
+
 from fastapi import APIRouter, Request, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -23,8 +25,10 @@ from app.services.diet import DietaryRules
 router = APIRouter(prefix="/households/current", tags=["dietary rules"])
 
 
-async def rules_out(session: AsyncSession, rules: DietaryRules) -> DietaryRulesOut:
-    excluded = await diet.excluded_ingredients(session, rules)
+async def rules_out(
+    session: AsyncSession, household_id: uuid.UUID, rules: DietaryRules
+) -> DietaryRulesOut:
+    excluded = await diet.excluded_ingredients(session, household_id, rules)
     return DietaryRulesOut(
         diets=sorted(rules.diets),
         excluded_ingredients=[IngredientOut.model_validate(i) for i in excluded],
@@ -33,7 +37,9 @@ async def rules_out(session: AsyncSession, rules: DietaryRules) -> DietaryRulesO
 
 @router.get("/dietary-rules")
 async def get_rules(ctx: MemberDep, session: SessionDep) -> DietaryRulesOut:
-    return await rules_out(session, await diet.get_rules(session, ctx.household.id))
+    return await rules_out(
+        session, ctx.household.id, await diet.get_rules(session, ctx.household.id)
+    )
 
 
 @router.put("/dietary-rules", response_model=DietaryRulesOut)
@@ -46,7 +52,9 @@ async def set_rules(
 ) -> Response:
     async def work() -> DietaryRulesOut:
         rules = DietaryRules(frozenset(body.diets), frozenset(body.excluded_ingredient_ids))
-        return await rules_out(session, await diet.set_rules(session, ctx.household.id, rules))
+        return await rules_out(
+            session, ctx.household.id, await diet.set_rules(session, ctx.household.id, rules)
+        )
 
     return await idempotent(request, session, ctx, key, work)
 

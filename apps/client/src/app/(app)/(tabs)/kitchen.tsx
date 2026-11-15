@@ -17,6 +17,7 @@ import {
   TAB_ROOT,
   Text,
 } from '@/components/ui';
+import { newIngredientName } from '@/features/kitchen/addNew';
 import { displayName, formatAmount } from '@/features/kitchen/format';
 import { usePlaceFilter } from '@/features/kitchen/placeFilter';
 import {
@@ -93,6 +94,10 @@ export default function KitchenScreen() {
           actions.setAmount(id, null);
           setQuery('');
         }}
+        onAddNew={(name) => {
+          actions.addNew(name);
+          setQuery('');
+        }}
       />
       <ErrorText message={actions.error?.message} />
 
@@ -128,29 +133,39 @@ export default function KitchenScreen() {
   );
 }
 
-/** Ingredients matching the hero's "Add to Kitchen" search, each one tap to add. */
+/**
+ * Ingredients matching the hero's "Add to Kitchen" search, each one tap to add. When
+ * nothing is called exactly what was typed, the last row offers to add it anyway, as a
+ * Household Ingredient (ADR 0012): the Kitchen takes anything.
+ */
 function AddMatches({
   query,
   known,
   onAdd,
+  onAddNew,
 }: {
   query: string;
   known: Set<string>;
   onAdd: (id: string) => void;
+  onAddNew: (name: string) => void;
 }) {
   const t = useTheme();
   const results = useIngredientSearch(query);
   const showing = query.trim().length >= 2;
   if (!showing) return null;
+  // Wait for this query's results (not the previous query's, kept on screen meanwhile),
+  // so we never offer to add something search is about to show.
+  const settled = results.isSuccess && !results.isPlaceholderData;
+  const offer = settled
+    ? newIngredientName(
+        query,
+        results.data.map((i) => i.name),
+      )
+    : null;
 
   return (
     <View style={{ gap: t.space.sm }}>
       <SectionLabel>Add to Kitchen</SectionLabel>
-      {results.data?.length === 0 ? (
-        <Text variant="caption" muted>
-          No Ingredient called that yet.
-        </Text>
-      ) : null}
       {results.data?.slice(0, 6).map((ingredient) => {
         const already = known.has(ingredient.id);
         return (
@@ -173,6 +188,22 @@ function AddMatches({
           </Pressable>
         );
       })}
+      {offer ? (
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => onAddNew(offer)}
+          style={({ pressed }) => ({
+            minHeight: t.touchTarget,
+            justifyContent: 'center',
+            opacity: pressed ? 0.6 : 1,
+          })}
+        >
+          <Text>
+            {`Add "${displayName(offer)}"`}
+            <Text muted> · new to your Kitchen</Text>
+          </Text>
+        </Pressable>
+      ) : null}
     </View>
   );
 }

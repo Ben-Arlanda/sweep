@@ -18,6 +18,7 @@ export type MemberOut = components['schemas']['MemberOut'];
 export type InviteOut = components['schemas']['InviteOut'];
 export type ListDetail = components['schemas']['ShoppingListDetailOut'];
 export type Item = components['schemas']['ItemOut'];
+export type Ingredient = components['schemas']['IngredientOut'];
 
 /** Every error from our API has this shape (see services/api/app/main.py). */
 export class ApiError extends Error {

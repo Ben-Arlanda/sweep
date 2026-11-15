@@ -24,6 +24,7 @@ from app.models import (
     Ingredient,
     Recipe,
 )
+from app.services import ingredients
 
 
 @dataclass(frozen=True)
@@ -86,7 +87,9 @@ async def banned_ingredient_ids(session: AsyncSession, rules: DietaryRules) -> s
     ids = set(rules.excluded_ingredient_ids)
     names = banned_names(rules.diets)
     if names:
-        found = await session.execute(select(Ingredient.id).where(Ingredient.name.in_(names)))
+        found = await session.execute(
+            select(Ingredient.id).where(Ingredient.name.in_(names), ingredients.STARTERS)
+        )
         ids.update(found.scalars())
     return ids
 
@@ -111,7 +114,10 @@ async def set_rules(
     """Replace the Household's Rules (PUT: send the whole set)."""
     if rules.excluded_ingredient_ids:
         found = await session.execute(
-            select(Ingredient.id).where(Ingredient.id.in_(rules.excluded_ingredient_ids))
+            select(Ingredient.id).where(
+                Ingredient.id.in_(rules.excluded_ingredient_ids),
+                ingredients.visible_to(household_id),
+            )
         )
         if set(found.scalars()) != rules.excluded_ingredient_ids:
             raise errors.NotFound("Ingredient not found")
@@ -138,12 +144,16 @@ async def set_rules(
     return rules
 
 
-async def excluded_ingredients(session: AsyncSession, rules: DietaryRules) -> list[Ingredient]:
+async def excluded_ingredients(
+    session: AsyncSession, household_id: uuid.UUID, rules: DietaryRules
+) -> list[Ingredient]:
     if not rules.excluded_ingredient_ids:
         return []
     found = await session.execute(
         select(Ingredient)
-        .where(Ingredient.id.in_(rules.excluded_ingredient_ids))
+        .where(
+            Ingredient.id.in_(rules.excluded_ingredient_ids), ingredients.visible_to(household_id)
+        )
         .order_by(Ingredient.name)
     )
     return list(found.scalars())

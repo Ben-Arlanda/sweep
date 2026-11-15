@@ -26,7 +26,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.data.ingredients import SeedIngredient
 from app.models import Ingredient, IngredientAlias, ParseMethod
-from app.services.ingredients import _variants, normalise
+from app.services.ingredients import normalise, variants
 from app.units import UNITS, convert
 
 
@@ -66,7 +66,7 @@ class IngredientIndex:
         name = core_name(text)
         if not name:
             return None
-        for candidate in _variants(name):
+        for candidate in variants(name):
             if candidate in self._by_term:
                 return self._by_term[candidate]
         return None
@@ -287,8 +287,13 @@ async def normalise_lines(
 
 
 async def index_from_db(session: AsyncSession) -> IngredientIndex:
-    """Today's Ingredients and aliases, from the database."""
-    ingredients = (await session.execute(select(Ingredient))).scalars().all()
+    """Today's starter Ingredients and aliases, from the database. Seed Recipes may only
+    use starters (ADR 0012), so Household Ingredients are never in this index."""
+    ingredients = (
+        (await session.execute(select(Ingredient).where(Ingredient.household_id.is_(None))))
+        .scalars()
+        .all()
+    )
     aliases: dict[uuid.UUID, list[str]] = {}
     for alias, ingredient_id in await session.execute(
         select(IngredientAlias.alias, IngredientAlias.ingredient_id)

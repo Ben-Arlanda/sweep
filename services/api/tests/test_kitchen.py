@@ -155,16 +155,7 @@ async def test_common_names_link_to_the_right_ingredient(
     assert item["ingredient"]["name"] == ingredient
 
 
-async def test_things_that_are_not_ingredients_stay_unlinked(
-    client: httpx.AsyncClient, fake_issuer: FakeIssuer
-) -> None:
-    await create_household(client, fake_issuer, "alice")
-
-    item = await add(client, fake_issuer, "alice", "Birthday candles")
-    await tick(client, fake_issuer, "alice", item)
-
-    assert item["ingredient"] is None
-    assert (await kitchen(client, fake_issuer, "alice"))["tracked"] == []
+# Things Sweep doesn't know become Household Ingredients: test_household_ingredients.py
 
 
 async def test_a_member_can_fix_or_remove_the_link(
@@ -250,6 +241,50 @@ async def test_unticking_takes_it_back_out(
 
     assert after_one["rice"][0] == "1000"
     assert "rice" not in after_both  # back to nothing, not "0 g"
+
+
+async def test_unticking_an_unmeasured_mis_tap_takes_it_back_out(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer
+) -> None:
+    await create_household(client, fake_issuer, "alice")
+    item = await add(client, fake_issuer, "alice", "Rice")  # no amount: "some"
+    await tick(client, fake_issuer, "alice", item)
+
+    await tick(client, fake_issuer, "alice", item, on=False)
+
+    assert tracked(await kitchen(client, fake_issuer, "alice")) == {}
+
+
+async def test_unticking_unmeasured_keeps_what_was_there_before(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer
+) -> None:
+    await create_household(client, fake_issuer, "alice")
+    rice = await ingredient_id(client, fake_issuer, "alice", "rice")
+    await client.put(
+        f"/kitchen/items/{rice}",
+        json={"quantity": None},
+        headers=fake_issuer.headers("alice") | idem(),
+    )
+    item = await add(client, fake_issuer, "alice", "Rice")
+    await tick(client, fake_issuer, "alice", item)
+
+    await tick(client, fake_issuer, "alice", item, on=False)
+
+    assert "rice" in tracked(await kitchen(client, fake_issuer, "alice"))
+
+
+async def test_unticking_unmeasured_keeps_it_when_bought_again_since(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer
+) -> None:
+    await create_household(client, fake_issuer, "alice")
+    first = await add(client, fake_issuer, "alice", "Rice")
+    second = await add(client, fake_issuer, "alice", "Rice")
+    await tick(client, fake_issuer, "alice", first)
+    await tick(client, fake_issuer, "alice", second)
+
+    await tick(client, fake_issuer, "alice", first, on=False)
+
+    assert "rice" in tracked(await kitchen(client, fake_issuer, "alice"))
 
 
 async def test_ticking_twice_only_adds_once(

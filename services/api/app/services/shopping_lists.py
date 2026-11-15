@@ -160,9 +160,9 @@ async def add_item(
         if quantity is not None:
             text = name[:1].upper() + name[1:]
     ingredient = (
-        await _ingredient(session, ingredient_id)
+        await _ingredient(session, ctx, ingredient_id)
         if ingredient_id is not None
-        else await ingredients.match(session, text)
+        else await ingredients.resolve(session, ctx.household.id, text, create=True)
     )
 
     item = ShoppingListItem(
@@ -196,7 +196,11 @@ async def edit_item(
     shop_id: uuid.UUID | None | Unset = UNSET,
 ) -> ShoppingListItem:
     """Change only the fields that were sent. Two Members editing different fields of the
-    same item at the same time both keep their change (last write wins *per field*)."""
+    same item at the same time both keep their change (last write wins *per field*).
+
+    Relinking also saves a Household link for the item's name (ADR 0012), so the next
+    "Chocolate" goes to dark chocolate without asking again.
+    """
     if ingredient_id is not UNSET:
         await kitchen.lock(session, ctx.household.id)  # relinking may move Kitchen stock
     lst = await _touch(session, ctx, list_id)
@@ -206,12 +210,14 @@ async def edit_item(
         was_applied = item.kitchen_applied
         await kitchen.undo_purchase(session, ctx.household.id, item)
         item.ingredient = (
-            await _ingredient(session, ingredient_id) if ingredient_id is not None else None
+            await _ingredient(session, ctx, ingredient_id) if ingredient_id is not None else None
         )
         if was_applied:
             await kitchen.apply_purchase(session, ctx.household.id, item)
     if text is not UNSET:
         item.text = text
+    if ingredient_id is not UNSET:
+        await ingredients.set_link(session, ctx.household.id, item.text, item.ingredient)
     if quantity is not UNSET:
         item.quantity = quantity
     if unit is not UNSET:
@@ -304,8 +310,10 @@ async def _find_item(
     return item
 
 
-async def _ingredient(session: AsyncSession, ingredient_id: uuid.UUID) -> Ingredient:
-    ingredient = await ingredients.get(session, ingredient_id)
+async def _ingredient(
+    session: AsyncSession, ctx: MemberContext, ingredient_id: uuid.UUID
+) -> Ingredient:
+    ingredient = await ingredients.get(session, ctx.household.id, ingredient_id)
     if ingredient is None:
         raise NotFound("No such Ingredient")
     return ingredient

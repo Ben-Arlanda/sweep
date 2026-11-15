@@ -40,7 +40,13 @@ async def upsert_seed_recipes(
 ) -> SeedReport:
     """Make the Seed Recipes in the database match `seeds`. Safe to run any number of times."""
     report = SeedReport()
-    ingredient_ids = dict((await session.execute(select(Ingredient.name, Ingredient.id))).all())
+    ingredient_ids = dict(
+        (
+            await session.execute(
+                select(Ingredient.name, Ingredient.id).where(Ingredient.household_id.is_(None))
+            )
+        ).all()
+    )
     existing = {
         r.slug: r
         for r in (await session.execute(select(Recipe).where(Recipe.kind == RecipeKind.SEED)))

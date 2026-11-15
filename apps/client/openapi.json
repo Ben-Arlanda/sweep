@@ -1055,6 +1055,7 @@
           "kitchen"
         ],
         "summary": "Search Ingredients",
+        "description": "Starter Ingredients plus the caller's own Household Ingredients (ADR 0012).",
         "operationId": "search_ingredients_ingredients_get",
         "security": [
           {
@@ -1085,6 +1086,64 @@
                     "$ref": "#/components/schemas/IngredientOut"
                   },
                   "title": "Response Search Ingredients Ingredients Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "kitchen"
+        ],
+        "summary": "Add Ingredient",
+        "description": "The Kitchen's \"Add 'kale'\": the Ingredient this name means for the Household, made\nas a Household Ingredient if nothing matches (ADR 0012). 200 either way: asking twice\nreturns the same Ingredient.",
+        "operationId": "add_ingredient_ingredients_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IngredientIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IngredientOut"
                 }
               }
             }
@@ -2253,6 +2312,21 @@
         ],
         "title": "HouseholdOut"
       },
+      "IngredientIn": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "IngredientIn"
+      },
       "IngredientOut": {
         "properties": {
           "id": {
@@ -2271,6 +2345,10 @@
           "default_unit": {
             "type": "string",
             "title": "Default Unit"
+          },
+          "is_household_ingredient": {
+            "type": "boolean",
+            "title": "Is Household Ingredient"
           }
         },
         "type": "object",
@@ -2278,7 +2356,8 @@
           "id",
           "name",
           "category",
-          "default_unit"
+          "default_unit",
+          "is_household_ingredient"
         ],
         "title": "IngredientOut"
       },

@@ -294,10 +294,19 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Search Ingredients */
+        /**
+         * Search Ingredients
+         * @description Starter Ingredients plus the caller's own Household Ingredients (ADR 0012).
+         */
         get: operations["search_ingredients_ingredients_get"];
         put?: never;
-        post?: never;
+        /**
+         * Add Ingredient
+         * @description The Kitchen's "Add 'kale'": the Ingredient this name means for the Household, made
+         *     as a Household Ingredient if nothing matches (ADR 0012). 200 either way: asking twice
+         *     returns the same Ingredient.
+         */
+        post: operations["add_ingredient_ingredients_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -687,6 +696,11 @@ export interface components {
              */
             created_at: string;
         };
+        /** IngredientIn */
+        IngredientIn: {
+            /** Name */
+            name: string;
+        };
         /** IngredientOut */
         IngredientOut: {
             /**
@@ -700,6 +714,8 @@ export interface components {
             category: string;
             /** Default Unit */
             default_unit: string;
+            /** Is Household Ingredient */
+            is_household_ingredient: boolean;
         };
         /** InviteOut */
         InviteOut: {
@@ -1712,6 +1728,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["IngredientOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    add_ingredient_ingredients_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["IngredientIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["IngredientOut"];
                 };
             };
             /** @description Validation Error */

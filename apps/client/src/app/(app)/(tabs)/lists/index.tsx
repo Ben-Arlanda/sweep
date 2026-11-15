@@ -19,6 +19,7 @@ import {
 } from '@/components/ui';
 import { useMembers } from '@/features/household/useMembers';
 import { shoppingOrder } from '@/features/lists/listCache';
+import { LinkSheet } from '@/features/lists/LinkSheet';
 import { ShopSheet } from '@/features/lists/ShopSheet';
 import {
   filterByShop,
@@ -60,8 +61,10 @@ function ListContent({ list }: { list: ListDetail }) {
   const actions = useListActions(list.id);
   const { members, byId } = useMembers();
   const [filter, setFilter] = useState<ShopFilter>(ALL);
-  // Which item's Shop sheet is open, if any.
+  const toast = useToast();
+  // Which item's Shop sheet or Kitchen link sheet is open, if any.
   const [tagging, setTagging] = useState<Item | null>(null);
+  const [linking, setLinking] = useState<Item | null>(null);
 
   const { shops } = list;
   // A Shop deleted on another phone while we were filtering by it: show everything.
@@ -85,6 +88,7 @@ function ListContent({ list }: { list: ListDetail }) {
       members={byId}
       shops={shops}
       onTag={setTagging}
+      onLink={setLinking}
     />
   );
 
@@ -144,6 +148,21 @@ function ListContent({ list }: { list: ListDetail }) {
           onClose={() => setTagging(null)}
         />
       ) : null}
+      {linking ? (
+        <LinkSheet
+          item={linking}
+          onPick={(ingredient) => {
+            actions.link(linking.id, ingredient);
+            toast({
+              tag: 'Kitchen',
+              text: ingredient
+                ? `${linking.text} is ${ingredient.name}. Sweep will remember.`
+                : `${linking.text} won't be added to the Kitchen`,
+            });
+          }}
+          onClose={() => setLinking(null)}
+        />
+      ) : null}
     </Screen>
   );
 }
@@ -178,8 +197,8 @@ function AddItem({ onAdd }: { onAdd: (text: string) => void }) {
 }
 
 /**
- * One item. The whole row is the checkbox (a big target for one thumb in a shop); the
- * ✕ is a separate button. Ticking an item linked to an Ingredient also stocks the
+ * One item. The whole row is the checkbox (a big target for one thumb in a shop); Shop,
+ * Link and ✕ are separate buttons. Ticking an item linked to an Ingredient also stocks the
  * Kitchen (ADR 0003), so we say so with a toast: that's the loop, made visible.
  */
 function ItemRow({
@@ -189,6 +208,7 @@ function ItemRow({
   members,
   shops,
   onTag,
+  onLink,
 }: {
   item: Item;
   index: number;
@@ -196,6 +216,7 @@ function ItemRow({
   members: Map<string, MemberOut>;
   shops: readonly Shop[];
   onTag: (item: Item) => void;
+  onLink: (item: Item) => void;
 }) {
   const t = useTheme();
   const toast = useToast();
@@ -314,6 +335,25 @@ function ItemRow({
                 + Shop
               </Text>
             )}
+          </Pressable>
+          {/* "Link" fixes what the item is in the Kitchen (ADR 0012). Visible text first in
+              its name, for voice control, like the Shop button. */}
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={`Link: choose what ${item.text} is in the Kitchen`}
+            onPress={() => onLink(item)}
+            style={({ pressed }) => ({
+              minWidth: t.touchTarget,
+              minHeight: t.touchTarget,
+              paddingHorizontal: t.space.sm,
+              alignItems: 'center',
+              justifyContent: 'center',
+              opacity: pressed ? 0.6 : 1,
+            })}
+          >
+            <Text variant="caption" muted>
+              Link
+            </Text>
           </Pressable>
           <Pressable
             accessibilityRole="button"

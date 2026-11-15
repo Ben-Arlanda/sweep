@@ -12,12 +12,14 @@ from pydantic import (
     PlainSerializer,
     StringConstraints,
     computed_field,
+    field_validator,
     model_validator,
 )
 
 from app.data.diet import Diet
 from app.data.places import Place
 from app.models import AddedBy, ChangeSource, RecipeKind, Role
+from app.services.ingredients import normalise
 
 HouseholdName = Annotated[
     str, StringConstraints(strip_whitespace=True, min_length=1, max_length=100)
@@ -86,6 +88,17 @@ Quantity = Annotated[
 ]
 
 
+class IngredientIn(BaseModel):
+    name: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=80)]
+
+    @field_validator("name")
+    @classmethod
+    def has_letters_or_digits(cls, name: str) -> str:
+        if not normalise(name):  # "!!!" would match nothing and can't be a name
+            raise ValueError("needs a letter or number")
+        return name
+
+
 class IngredientOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
@@ -93,6 +106,7 @@ class IngredientOut(BaseModel):
     name: str
     category: str
     default_unit: str
+    is_household_ingredient: bool  # created by this Household (ADR 0012), not a starter
 
 
 class ShopIn(BaseModel):

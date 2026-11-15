@@ -201,6 +201,9 @@ class ShoppingListItem(Base):
     # What ticking this item added to the Kitchen, so un-ticking can take it back out.
     kitchen_applied: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false")
     kitchen_added_quantity: Mapped[Decimal | None] = mapped_column(Numeric(12, 3))
+    # When ticking created the Kitchen row (its last_confirmed_at); NULL if the row was
+    # already there. Lets unticking remove an unmeasured "some" that only this tick added.
+    kitchen_created_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
 
 class IdempotencyKey(Base):
@@ -225,21 +228,37 @@ class IdempotencyKey(Base):
 
 
 class Ingredient(Base):
-    """A canonical food item, shared by every Household (reference data, see app/seed.py)."""
+    """A canonical item the list, the Kitchen and recipes can all refer to.
+
+    Two kinds (ADR 0012): starters (`household_id` NULL) are shared reference data, see
+    app/seed.py. A Household Ingredient (`household_id` set) was created by one Household
+    adding something Sweep didn't know, and only that Household can see it.
+    """
 
     __tablename__ = "ingredients"
     __table_args__ = (
         CheckConstraint("default_unit IN ('g', 'ml', 'count')", name="default_unit_known"),
+        # One name per owner. NULLS NOT DISTINCT makes "the starters" count as one owner,
+        # so two starters can't share a name either.
+        UniqueConstraint("household_id", "name", postgresql_nulls_not_distinct=True),
     )
 
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
-    name: Mapped[str] = mapped_column(String(80), unique=True)
+    # No separate index: the unique constraint's index starts with household_id.
+    household_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("households.id", ondelete="CASCADE")
+    )
+    name: Mapped[str] = mapped_column(String(80))
     category: Mapped[str] = mapped_column(String(30))
     # The Kitchen stores this Ingredient's quantities in this unit only.
     default_unit: Mapped[str] = mapped_column(String(10))
     # Density, for turning millilitres into grams and back. Unknown for most things.
     grams_per_ml: Mapped[Decimal | None] = mapped_column(Numeric(6, 3))
     is_default_staple: Mapped[bool] = mapped_column(Boolean, default=False)
+
+    @property
+    def is_household_ingredient(self) -> bool:
+        return self.household_id is not None
 
 
 class IngredientAlias(Base):
@@ -248,6 +267,20 @@ class IngredientAlias(Base):
     __tablename__ = "ingredient_aliases"
 
     alias: Mapped[str] = mapped_column(String(80), primary_key=True)
+    ingredient_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("ingredients.id", ondelete="CASCADE"), index=True
+    )
+
+
+class HouseholdIngredientLink(Base):
+    """A Household's choice that a name means a particular Ingredient: "chocolate" → dark
+    chocolate. The matcher checks these first. `name` is stored normalised."""
+
+    __tablename__ = "household_ingredient_links"
+    __table_args__ = (PrimaryKeyConstraint("household_id", "name"),)
+
+    household_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("households.id", ondelete="CASCADE"))
+    name: Mapped[str] = mapped_column(String(80))
     ingredient_id: Mapped[uuid.UUID] = mapped_column(
         ForeignKey("ingredients.id", ondelete="CASCADE"), index=True
     )

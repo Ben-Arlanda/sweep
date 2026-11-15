@@ -1,0 +1,578 @@
+"""Household Ingredients (ADR 0012): the Kitchen takes anything, and each Household's own
+Ingredients stay private to it.
+
+Visibility rule: a Household sees the shared starter Ingredients plus its own. Another
+Household's Ingredient id is "not found" on every route that takes one (404, not 403:
+don't confirm the id exists somewhere else).
+"""
+
+import uuid
+from collections.abc import Callable, Iterator
+from typing import Any
+
+import httpx
+import pytest
+from sqlalchemy import Engine, text
+from sqlalchemy.exc import IntegrityError
+
+from app.data.ingredients import SeedIngredient
+from app.db import Base, make_engine, make_sessionmaker
+from app.seed import MERGED_TABLES, upsert_ingredients
+from app.services import ingredients
+from tests.conftest import FakeIssuer
+from tests.helpers import create_household, idem
+
+pytestmark = pytest.mark.anyio
+
+
+# --- Helpers ------------------------------------------------------------------------
+
+
+def household_ingredient(db: Engine, household_id: str, name: str) -> str:
+    """Arrange a Household Ingredient directly (the matcher creates them in normal use)."""
+    with db.begin() as conn:
+        found: uuid.UUID = conn.execute(
+            text(
+                "INSERT INTO ingredients (id, household_id, name, category, default_unit,"
+                " is_default_staple) VALUES (gen_random_uuid(), :h, :n, 'other', 'count', false)"
+                " RETURNING id"
+            ),
+            {"h": household_id, "n": name},
+        ).scalar_one()
+    return str(found)
+
+
+async def new_household(
+    client: httpx.AsyncClient, issuer: FakeIssuer, db: Engine, subject: str
+) -> str:
+    """Create a Household named after its owner and return its id."""
+    await create_household(client, issuer, subject, name=subject)
+    with db.begin() as conn:
+        found = conn.execute(text("SELECT id FROM households WHERE name = :n"), {"n": subject})
+        return str(found.scalar_one())
+
+
+async def search(client: httpx.AsyncClient, issuer: FakeIssuer, subject: str, q: str) -> list[str]:
+    response = await client.get("/ingredients", params={"q": q}, headers=issuer.headers(subject))
+    assert response.status_code == 200, response.text
+    return [i["name"] for i in response.json()]
+
+
+async def list_id_of(client: httpx.AsyncClient, issuer: FakeIssuer, subject: str) -> str:
+    response = await client.get("/list", headers=issuer.headers(subject))
+    assert response.status_code == 200, response.text
+    found: str = response.json()["id"]
+    return found
+
+
+async def two_households(
+    client: httpx.AsyncClient, issuer: FakeIssuer, db: Engine
+) -> tuple[str, str]:
+    """Alice's Household owns "finger lime"; Mallory's Household owns nothing. Returns ids."""
+    alice = await new_household(client, issuer, db, "alice")
+    mallory = await new_household(client, issuer, db, "mallory")
+    return household_ingredient(db, alice, "finger lime"), mallory
+
+
+# --- Schema ------------------------------------------------------------------------
+
+
+async def test_names_are_unique_per_owner(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, db: Engine
+) -> None:
+    alice = await new_household(client, fake_issuer, db, "alice")
+    mallory = await new_household(client, fake_issuer, db, "mallory")
+
+    household_ingredient(db, alice, "finger lime")
+    household_ingredient(db, mallory, "finger lime")  # another Household may use the name
+
+    with pytest.raises(IntegrityError):
+        household_ingredient(db, alice, "finger lime")
+    with pytest.raises(IntegrityError):  # NULLS NOT DISTINCT: starters are one owner too
+        with db.begin() as conn:
+            conn.execute(
+                text(
+                    "INSERT INTO ingredients (id, name, category, default_unit,"
+                    " is_default_staple) VALUES (gen_random_uuid(), 'pasta', 'other', 'count',"
+                    " false)"
+                )
+            )
+
+
+async def test_deleting_a_household_deletes_its_ingredients(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, db: Engine
+) -> None:
+    alice = await new_household(client, fake_issuer, db, "alice")
+    household_ingredient(db, alice, "finger lime")
+
+    with db.begin() as conn:
+        conn.execute(text("DELETE FROM households WHERE id = :h"), {"h": alice})
+        left = conn.execute(text("SELECT count(*) FROM ingredients WHERE name = 'finger lime'"))
+
+    assert left.scalar_one() == 0
+
+
+# --- Visibility --------------------------------------------------------------------
+
+
+async def test_search_shows_starters_and_only_your_own_household_ingredients(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, db: Engine
+) -> None:
+    await two_households(client, fake_issuer, db)
+
+    assert "finger lime" in await search(client, fake_issuer, "alice", "finger lime")
+    assert "finger lime" not in await search(client, fake_issuer, "mallory", "finger lime")
+    assert "pasta" in await search(client, fake_issuer, "mallory", "pasta")
+
+
+async def test_another_households_ingredient_is_not_found_in_the_kitchen(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, db: Engine
+) -> None:
+    lime, _ = await two_households(client, fake_issuer, db)
+    mallory = fake_issuer.headers("mallory")
+
+    tracked = await client.put(
+        f"/kitchen/items/{lime}", json={"quantity": "1"}, headers=mallory | idem()
+    )
+    staple = await client.put(
+        f"/kitchen/staples/{lime}", json={"have": True}, headers=mallory | idem()
+    )
+
+    assert tracked.status_code == 404
+    assert staple.status_code == 404
+
+
+async def test_your_own_household_ingredient_works_in_the_kitchen(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, db: Engine
+) -> None:
+    lime, _ = await two_households(client, fake_issuer, db)
+
+    response = await client.put(
+        f"/kitchen/items/{lime}",
+        json={"quantity": "2"},
+        headers=fake_issuer.headers("alice") | idem(),
+    )
+
+    assert response.status_code == 200, response.text
+    assert response.json()["ingredient"]["name"] == "finger lime"
+
+
+async def test_another_households_ingredient_is_not_found_on_the_list(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, db: Engine
+) -> None:
+    lime, _ = await two_households(client, fake_issuer, db)
+    mallory = fake_issuer.headers("mallory")
+    list_id = await list_id_of(client, fake_issuer, "mallory")
+
+    added = await client.post(
+        f"/lists/{list_id}/items",
+        json={"text": "Greens", "ingredient_id": lime},
+        headers=mallory | idem(),
+    )
+    item = await client.post(
+        f"/lists/{list_id}/items", json={"text": "Greens"}, headers=mallory | idem()
+    )
+    relinked = await client.patch(
+        f"/lists/{list_id}/items/{item.json()['id']}",
+        json={"ingredient_id": lime},
+        headers=mallory | idem(),
+    )
+
+    assert added.status_code == 404
+    assert relinked.status_code == 404
+
+
+async def test_another_households_ingredient_cannot_be_excluded_by_dietary_rules(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, db: Engine
+) -> None:
+    lime, _ = await two_households(client, fake_issuer, db)
+
+    response = await client.put(
+        "/households/current/dietary-rules",
+        json={"diets": [], "excluded_ingredient_ids": [lime]},
+        headers=fake_issuer.headers("mallory") | idem(),
+    )
+
+    assert response.status_code == 404
+
+
+# --- The matcher (step 2) ------------------------------------------------------------
+
+
+async def add(
+    client: httpx.AsyncClient, issuer: FakeIssuer, subject: str, text: str
+) -> dict[str, Any]:
+    list_id = await list_id_of(client, issuer, subject)
+    response = await client.post(
+        f"/lists/{list_id}/items", json={"text": text}, headers=issuer.headers(subject) | idem()
+    )
+    assert response.status_code == 201, response.text
+    body: dict[str, Any] = response.json()
+    return body
+
+
+async def tick(
+    client: httpx.AsyncClient, issuer: FakeIssuer, subject: str, item: dict[str, Any]
+) -> None:
+    list_id = await list_id_of(client, issuer, subject)
+    response = await client.put(
+        f"/lists/{list_id}/items/{item['id']}/checked",
+        json={"checked": True},
+        headers=issuer.headers(subject) | idem(),
+    )
+    assert response.status_code == 200, response.text
+
+
+async def kitchen_places(
+    client: httpx.AsyncClient, issuer: FakeIssuer, subject: str
+) -> dict[str, str]:
+    """{ingredient name: place} for everything Tracked."""
+    response = await client.get("/kitchen", headers=issuer.headers(subject))
+    assert response.status_code == 200, response.text
+    return {t["ingredient"]["name"]: t["place"] for t in response.json()["tracked"]}
+
+
+@pytest.mark.parametrize("typed", ["Finger lime", "Bin bags", "Birthday candles"])
+async def test_anything_ticked_reaches_the_kitchen_in_the_cupboard(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, typed: str
+) -> None:
+    await create_household(client, fake_issuer, "alice")
+
+    item = await add(client, fake_issuer, "alice", typed)
+    await tick(client, fake_issuer, "alice", item)
+
+    assert item["ingredient"]["name"] == typed.lower()
+    assert item["ingredient"]["is_household_ingredient"] is True
+    assert await kitchen_places(client, fake_issuer, "alice") == {typed.lower(): "cupboard"}
+
+
+async def test_the_same_name_reuses_the_households_ingredient(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, db: Engine
+) -> None:
+    await create_household(client, fake_issuer, "alice")
+
+    first = await add(client, fake_issuer, "alice", "Finger lime")
+    again = await add(client, fake_issuer, "alice", "finger lime!")
+
+    assert again["ingredient"]["id"] == first["ingredient"]["id"]
+    with db.begin() as conn:
+        count = conn.execute(text("SELECT count(*) FROM ingredients WHERE name = 'finger lime'"))
+        assert count.scalar_one() == 1
+
+
+async def test_each_household_gets_its_own_new_ingredient(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer
+) -> None:
+    await create_household(client, fake_issuer, "alice")
+    await create_household(client, fake_issuer, "mallory")
+
+    alices = await add(client, fake_issuer, "alice", "Finger lime")
+    mallorys = await add(client, fake_issuer, "mallory", "Finger lime")
+
+    assert alices["ingredient"]["id"] != mallorys["ingredient"]["id"]
+
+
+async def test_starters_win_over_creating_one(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer
+) -> None:
+    await create_household(client, fake_issuer, "alice")
+
+    item = await add(client, fake_issuer, "alice", "500g pasta")
+
+    assert item["ingredient"]["name"] == "pasta"
+    assert item["ingredient"]["is_household_ingredient"] is False
+
+
+async def test_a_household_link_wins_over_everything(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, db: Engine
+) -> None:
+    alice = await new_household(client, fake_issuer, db, "alice")
+    with db.begin() as conn:
+        conn.execute(
+            text(
+                "INSERT INTO household_ingredient_links (household_id, name, ingredient_id)"
+                " SELECT :h, 'chocolate', id FROM ingredients"
+                " WHERE name = 'dark chocolate' AND household_id IS NULL"
+            ),
+            {"h": alice},
+        )
+
+    item = await add(client, fake_issuer, "alice", "Chocolate")
+
+    assert item["ingredient"]["name"] == "dark chocolate"
+
+
+async def test_text_too_long_for_a_name_stays_unlinked(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer
+) -> None:
+    await create_household(client, fake_issuer, "alice")
+
+    item = await add(client, fake_issuer, "alice", "remember to " + "x" * 90)
+
+    assert item["ingredient"] is None
+
+
+async def test_without_create_unknown_names_resolve_to_nothing(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, db: Engine, database_url: str
+) -> None:
+    """The agent resolves with create=False: a model's guess never adds Ingredients."""
+    alice = uuid.UUID(await new_household(client, fake_issuer, db, "alice"))
+    lime = household_ingredient(db, str(alice), "finger lime")
+    engine = make_engine(database_url)
+    async with make_sessionmaker(engine)() as session:
+        unknown = await ingredients.resolve(session, alice, "dragonfruit", create=False)
+        own = await ingredients.resolve(session, alice, "Finger lime", create=False)
+    await engine.dispose()
+
+    assert unknown is None
+    assert own is not None and str(own.id) == lime
+    with db.begin() as conn:
+        made = conn.execute(text("SELECT count(*) FROM ingredients WHERE name = 'dragonfruit'"))
+        assert made.scalar_one() == 0
+
+
+# --- Links and adding (step 3) -------------------------------------------------------
+
+
+async def relink(
+    client: httpx.AsyncClient,
+    issuer: FakeIssuer,
+    subject: str,
+    item: dict[str, Any],
+    ingredient_id: str | None,
+) -> dict[str, Any]:
+    list_id = await list_id_of(client, issuer, subject)
+    response = await client.patch(
+        f"/lists/{list_id}/items/{item['id']}",
+        json={"ingredient_id": ingredient_id},
+        headers=issuer.headers(subject) | idem(),
+    )
+    assert response.status_code == 200, response.text
+    body: dict[str, Any] = response.json()
+    return body
+
+
+async def create(
+    client: httpx.AsyncClient, issuer: FakeIssuer, subject: str, name: str
+) -> httpx.Response:
+    return await client.post(
+        "/ingredients", json={"name": name}, headers=issuer.headers(subject) | idem()
+    )
+
+
+async def starter_id(client: httpx.AsyncClient, issuer: FakeIssuer, subject: str, name: str) -> str:
+    response = await client.get("/ingredients", params={"q": name}, headers=issuer.headers(subject))
+    found: str = next(i["id"] for i in response.json() if i["name"] == name)
+    return found
+
+
+async def test_relinking_an_item_saves_a_link_for_its_name(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer
+) -> None:
+    await create_household(client, fake_issuer, "alice")
+    dark = await starter_id(client, fake_issuer, "alice", "dark chocolate")
+
+    await relink(
+        client, fake_issuer, "alice", await add(client, fake_issuer, "alice", "Chocolate"), dark
+    )
+    later = await add(client, fake_issuer, "alice", "chocolate")
+
+    assert later["ingredient"]["name"] == "dark chocolate"
+
+
+async def test_links_belong_to_one_household(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer
+) -> None:
+    await create_household(client, fake_issuer, "alice")
+    await create_household(client, fake_issuer, "mallory")
+    dark = await starter_id(client, fake_issuer, "alice", "dark chocolate")
+    await relink(
+        client, fake_issuer, "alice", await add(client, fake_issuer, "alice", "Chocolate"), dark
+    )
+
+    mallorys = await add(client, fake_issuer, "mallory", "Chocolate")
+
+    assert mallorys["ingredient"]["name"] == "chocolate"
+
+
+async def test_unlinking_an_item_forgets_the_link(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer
+) -> None:
+    await create_household(client, fake_issuer, "alice")
+    dark = await starter_id(client, fake_issuer, "alice", "dark chocolate")
+    item = await add(client, fake_issuer, "alice", "Chocolate")
+    await relink(client, fake_issuer, "alice", item, dark)
+
+    unlinked = await relink(client, fake_issuer, "alice", item, None)
+    later = await add(client, fake_issuer, "alice", "Chocolate")
+
+    assert unlinked["ingredient"] is None
+    assert later["ingredient"]["name"] == "chocolate"
+
+
+async def test_linking_a_ticked_item_moves_its_kitchen_stock(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer
+) -> None:
+    await create_household(client, fake_issuer, "alice")
+    dark = await starter_id(client, fake_issuer, "alice", "dark chocolate")
+    item = await add(client, fake_issuer, "alice", "Chocolate")
+    await tick(client, fake_issuer, "alice", item)
+
+    await relink(client, fake_issuer, "alice", item, dark)
+
+    assert await kitchen_places(client, fake_issuer, "alice") == {"dark chocolate": "cupboard"}
+
+
+async def test_adding_to_the_kitchen_creates_a_household_ingredient_once(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer
+) -> None:
+    await create_household(client, fake_issuer, "alice")
+
+    first = await create(client, fake_issuer, "alice", "Finger lime")
+    again = await create(client, fake_issuer, "alice", "finger lime")
+
+    assert first.status_code == 200, first.text
+    assert first.json()["name"] == "finger lime"
+    assert first.json()["is_household_ingredient"] is True
+    assert again.json()["id"] == first.json()["id"]
+    assert "finger lime" in await search(client, fake_issuer, "alice", "finger lime")
+
+
+async def test_adding_a_known_name_returns_the_starter(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer
+) -> None:
+    await create_household(client, fake_issuer, "alice")
+
+    response = await create(client, fake_issuer, "alice", "Cilantro")
+
+    assert response.json()["name"] == "coriander"
+    assert response.json()["is_household_ingredient"] is False
+
+
+@pytest.mark.parametrize("name", ["", "   ", "!!!", "x" * 81])
+async def test_adding_needs_a_usable_name(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, name: str
+) -> None:
+    await create_household(client, fake_issuer, "alice")
+
+    response = await create(client, fake_issuer, "alice", name)
+
+    assert response.status_code == 422
+
+
+# --- Merging into starters (step 4) --------------------------------------------------
+
+FINGER_LIME = SeedIngredient("finger lime", "produce", "g", None, False, ("caviar lime",))
+
+
+@pytest.fixture
+def add_starters(db: Engine) -> Iterator[Callable[..., None]]:
+    """Add starters as a later seed would. Starters survive between tests, so remove them."""
+    added: list[str] = []
+
+    def run(*seeds: SeedIngredient) -> None:
+        added.extend(s.name for s in seeds)
+        with db.begin() as conn:
+            upsert_ingredients(conn, seeds)
+
+    yield run
+    with db.begin() as conn:
+        conn.execute(
+            text("DELETE FROM ingredients WHERE household_id IS NULL AND name = ANY(:names)"),
+            {"names": added},
+        )
+
+
+async def test_a_new_starter_takes_over_the_household_ingredient(
+    client: httpx.AsyncClient,
+    fake_issuer: FakeIssuer,
+    db: Engine,
+    add_starters: Callable[..., None],
+) -> None:
+    await create_household(client, fake_issuer, "alice")
+    item = await add(client, fake_issuer, "alice", "Finger lime")
+    await tick(client, fake_issuer, "alice", item)
+    own = item["ingredient"]["id"]
+    await relink(
+        client, fake_issuer, "alice", await add(client, fake_issuer, "alice", "Caviar"), own
+    )
+    rules = await client.put(
+        "/households/current/dietary-rules",
+        json={"diets": [], "excluded_ingredient_ids": [own]},
+        headers=fake_issuer.headers("alice") | idem(),
+    )
+    assert rules.status_code == 200, rules.text
+
+    add_starters(FINGER_LIME)
+
+    listed = (await client.get("/list", headers=fake_issuer.headers("alice"))).json()["items"]
+    kitchen = (await client.get("/kitchen", headers=fake_issuer.headers("alice"))).json()
+    excluded = (
+        await client.get("/households/current/dietary-rules", headers=fake_issuer.headers("alice"))
+    ).json()["excluded_ingredients"]
+    starter = kitchen["tracked"][0]["ingredient"]
+    assert starter["name"] == "finger lime" and starter["is_household_ingredient"] is False
+    assert {i["ingredient"]["id"] for i in listed} == {starter["id"]}
+    assert [e["id"] for e in excluded] == [starter["id"]]
+    assert (await add(client, fake_issuer, "alice", "Caviar"))["ingredient"]["id"] == starter["id"]
+    with db.begin() as conn:
+        # Only the unused "caviar" made by the first add is left (unused ones stay).
+        left = conn.execute(text("SELECT name FROM ingredients WHERE household_id IS NOT NULL"))
+        assert left.scalars().all() == ["caviar"]
+
+
+async def test_merging_keeps_staples_and_forgets_amounts_in_another_unit(
+    client: httpx.AsyncClient,
+    fake_issuer: FakeIssuer,
+    db: Engine,
+    add_starters: Callable[..., None],
+) -> None:
+    alice = await new_household(client, fake_issuer, db, "alice")
+    counted = household_ingredient(db, alice, "finger lime")  # unit: count
+    stapled = household_ingredient(db, alice, "caviar lime")  # an alias of the new starter
+    headers = fake_issuer.headers("alice")
+    await client.put(f"/kitchen/items/{counted}", json={"quantity": "3"}, headers=headers | idem())
+    mallory = await new_household(client, fake_issuer, db, "mallory")
+    mallorys = household_ingredient(db, mallory, "caviar lime")
+    await client.put(
+        f"/kitchen/staples/{mallorys}",
+        json={"have": False},
+        headers=fake_issuer.headers("mallory") | idem(),
+    )
+
+    add_starters(FINGER_LIME)
+
+    alices = (await client.get("/kitchen", headers=headers)).json()["tracked"]
+    mallorys_kitchen = (await client.get("/kitchen", headers=fake_issuer.headers("mallory"))).json()
+    assert [(t["ingredient"]["name"], t["quantity"], t["unit"]) for t in alices] == [
+        ("finger lime", None, "g")  # 3 (count) means nothing in grams: now "some"
+    ]
+    assert {(s["ingredient"]["name"], s["have"]) for s in mallorys_kitchen["staples"]} >= {
+        ("finger lime", False)
+    }
+    assert stapled  # merged too (alias match), so it no longer exists
+    with db.begin() as conn:
+        left = conn.execute(text("SELECT count(*) FROM ingredients WHERE household_id IS NOT NULL"))
+        assert left.scalar_one() == 0
+
+
+def test_the_merge_covers_every_table_that_points_at_ingredients() -> None:
+    """Merging deletes the Household copies, and ON DELETE CASCADE would silently delete
+    rows in any table the merge forgot to repoint. A new table fails here until added."""
+    pointing = {
+        table.name
+        for table in Base.metadata.tables.values()
+        for fk in table.foreign_keys
+        if fk.column.table.name == "ingredients"
+    }
+
+    assert pointing == set(MERGED_TABLES) | {"ingredient_aliases"}  # aliases: starters only
+
+
+async def test_kale_is_a_starter_now(client: httpx.AsyncClient, fake_issuer: FakeIssuer) -> None:
+    await create_household(client, fake_issuer, "alice")
+
+    item = await add(client, fake_issuer, "alice", "Kale")
+
+    assert item["ingredient"]["name"] == "kale"
+    assert item["ingredient"]["is_household_ingredient"] is False

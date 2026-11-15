@@ -34,6 +34,7 @@ from app.models import (
     utcnow,
 )
 from app.realtime import notify_change
+from app.services import ingredients
 from app.services.households import MemberContext
 from app.units import convert
 
@@ -96,7 +97,7 @@ async def set_tracked(
 ) -> KitchenItem:
     """A Member says how much there is (None = "some"). That's a confirmation."""
     await _bump(session, ctx.household.id)
-    ingredient = await _ingredient(session, ingredient_id)
+    ingredient = await _ingredient(session, ctx.household.id, ingredient_id)
     if await _staple(session, ctx.household.id, ingredient.id) is not None:
         raise Conflict(f"{ingredient.name} is a Staple, so it has no quantity")
     now = utcnow()
@@ -127,7 +128,7 @@ async def set_staple(
 ) -> HouseholdStaple:
     """Make this a Staple (if it isn't yet) and say whether we have it."""
     await _bump(session, ctx.household.id)
-    ingredient = await _ingredient(session, ingredient_id)
+    ingredient = await _ingredient(session, ctx.household.id, ingredient_id)
     staple = await _staple(session, ctx.household.id, ingredient.id)
     if staple is None:
         tracked = await _tracked(session, ctx.household.id, ingredient.id)
@@ -191,6 +192,7 @@ async def apply_purchase(
     await _bump(session, household_id)
     item.kitchen_applied = True
     item.kitchen_added_quantity = None
+    item.kitchen_created_at = None
 
     staple = await _staple(session, household_id, ingredient.id)
     if staple is not None:
@@ -215,6 +217,7 @@ async def apply_purchase(
                 updated_at=now,
             )
         )
+        item.kitchen_created_at = now
     else:
         trusted = status_of(existing, now) != Status.UNKNOWN
         if amount is None:
@@ -232,20 +235,35 @@ async def apply_purchase(
 async def undo_purchase(
     session: AsyncSession, household_id: uuid.UUID, item: ShoppingListItem
 ) -> None:
-    """A ticked item was unticked (usually a mis-tap): take back what ticking added.
+    """A ticked item was unticked (a mis-tap) or relinked: take back what ticking added.
 
-    Best effort. A Staple stays "have" and an unmeasured purchase stays "some", because
-    we can't tell what was there before. Caller holds `lock`.
+    If this tick created the row and nothing has touched it since (still this purchase,
+    same timestamp), the row goes, measured or not. Otherwise best effort: subtract a
+    measured amount; a Staple stays "have" and an unmeasured purchase into a row that
+    was already there stays "some". Caller holds `lock`.
     """
     if not item.kitchen_applied:
         return
     added = item.kitchen_added_quantity
+    created_at = item.kitchen_created_at
     item.kitchen_applied = False
     item.kitchen_added_quantity = None
-    if added is None or item.ingredient_id is None:
+    item.kitchen_created_at = None
+    if item.ingredient_id is None:
         return
     existing = await _tracked(session, household_id, item.ingredient_id)
-    if existing is None or existing.quantity is None:
+    if existing is None:
+        return
+    only_this_tick = (
+        created_at is not None
+        and existing.last_change_source == ChangeSource.PURCHASE
+        and existing.last_confirmed_at == created_at
+    )
+    if only_this_tick:
+        await _bump(session, household_id)
+        await session.delete(existing)
+        return
+    if added is None or existing.quantity is None:
         return
     await _bump(session, household_id)
     existing.quantity = max(Decimal(0), existing.quantity - added)
@@ -268,8 +286,10 @@ async def _bump(session: AsyncSession, household_id: uuid.UUID) -> None:
     await notify_change(session, household_id, ENTITY, household_id, version)
 
 
-async def _ingredient(session: AsyncSession, ingredient_id: uuid.UUID) -> Ingredient:
-    ingredient = await session.get(Ingredient, ingredient_id)
+async def _ingredient(
+    session: AsyncSession, household_id: uuid.UUID, ingredient_id: uuid.UUID
+) -> Ingredient:
+    ingredient = await ingredients.get(session, household_id, ingredient_id)
     if ingredient is None:
         raise NotFound("No such Ingredient")
     return ingredient

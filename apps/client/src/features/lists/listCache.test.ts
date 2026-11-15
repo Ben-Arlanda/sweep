@@ -7,6 +7,7 @@ import {
   shoppingOrder,
   withItemAdded,
   withItemChecked,
+  withItemIngredient,
   withItemRemoved,
 } from './listCache';
 
@@ -94,4 +95,20 @@ test('a notice only triggers a refetch when it is newer than what we have', () =
   expect(isNewer(4, list())).toBe(true);
   expect(isNewer(3, list())).toBe(false);
   expect(isNewer(1, undefined)).toBe(true);
+});
+
+test('linking shows the chosen Ingredient at once, and only on that item', () => {
+  const dark = {
+    id: 'dark',
+    name: 'dark chocolate',
+    category: 'pantry',
+    default_unit: 'g',
+    is_household_ingredient: false,
+  };
+
+  const linked = withItemIngredient(list('Chocolate', 'Milk'), 'item-0', dark);
+  const unlinked = withItemIngredient(linked, 'item-0', null);
+
+  expect(linked.items.map((i) => i.ingredient?.name ?? null)).toEqual(['dark chocolate', null]);
+  expect(unlinked.items[0].ingredient).toBeNull();
 });
