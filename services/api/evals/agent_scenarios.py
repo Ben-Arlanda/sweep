@@ -82,9 +82,11 @@ SCENARIOS: tuple[Scenario, ...] = (
     ),
     Scenario(
         "just-tonight",
-        "Just tonight: one dinner, today, from the Kitchen.",
+        # Decided 2026-11-16: tonight is a choice moment, so the agent may offer a few
+        # Kitchen-first options and ask; the Member's pick should then become a Proposal.
+        "Just tonight: options from the Kitchen, the Member picks, one dinner today.",
         Setup(kitchen=kitchen("after a big shop")),
-        (TONIGHT,),
+        (TONIGHT, Say("Let's do the first one, please.")),
         (*A_PLAN, meal_count(1), on_today, called("recipes_from_kitchen")),
     ),
     Scenario(
