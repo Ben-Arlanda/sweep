@@ -36,6 +36,7 @@ const kitchen: Kitchen = {
       status: 'confirmed',
       last_change_source: 'purchase',
       last_confirmed_at: '2026-11-14T00:00:00Z',
+      place: 'fridge',
     },
     {
       ingredient: ingredient('rice', 'rice'),
@@ -44,6 +45,7 @@ const kitchen: Kitchen = {
       status: 'estimated',
       last_change_source: 'manual',
       last_confirmed_at: '2026-11-01T00:00:00Z',
+      place: 'fridge',
     },
     {
       ingredient: ingredient('milk', 'milk', 'ml'),
@@ -52,11 +54,12 @@ const kitchen: Kitchen = {
       status: 'unknown',
       last_change_source: 'purchase',
       last_confirmed_at: '2026-09-01T00:00:00Z',
+      place: 'fridge',
     },
   ],
   staples: [
-    { ingredient: ingredient('salt', 'salt'), have: true },
-    { ingredient: ingredient('flour', 'plain flour'), have: false },
+    { ingredient: ingredient('salt', 'salt'), have: true, place: 'cupboard' },
+    { ingredient: ingredient('flour', 'plain flour'), have: false, place: 'cupboard' },
   ],
 };
 

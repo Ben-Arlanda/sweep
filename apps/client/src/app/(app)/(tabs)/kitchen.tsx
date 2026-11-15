@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 
+import { ChoiceChips } from '@/components/ChoiceChips';
 import { FoodThumb } from '@/components/FoodThumb';
 import { Hero, HeroSearch } from '@/components/Hero';
 import { StatusBadge } from '@/components/Pill';
+import { useToast } from '@/components/Toast';
 import {
   Button,
   Card,
@@ -16,25 +18,33 @@ import {
   Text,
 } from '@/components/ui';
 import { displayName, formatAmount } from '@/features/kitchen/format';
+import { usePlaceFilter } from '@/features/kitchen/placeFilter';
+import {
+  byPlace,
+  PLACES,
+  type Place,
+  type PlaceFilter,
+  type Staple,
+  type Tracked,
+} from '@/features/kitchen/places';
 import { useKitchen, useKitchenActions, useIngredientSearch } from '@/lib/api/kitchen';
-import type { components } from '@/lib/api/schema';
 import { ingredientEmoji } from '@/theme/foodEmoji';
 import { tintFor } from '@/theme/tint';
 import { useTheme } from '@/theme/useTheme';
 
-type Tracked = components['schemas']['KitchenItemOut'];
-type Staple = components['schemas']['StapleOut'];
 type Actions = ReturnType<typeof useKitchenActions>;
 
 /**
- * What the Household has at home (ADR 0003). Tracked Ingredients show an amount and how
- * much to trust it; Staples are just "have" or "run out".
+ * What the Household has at home, grouped by where it lives: Fridge, Freezer, Cupboard
+ * (ADR 0011). Tracked Ingredients show an amount and how much to trust it (ADR 0003);
+ * Staples are just "have" or "run out". Tap any item to change it or move it.
  */
 export default function KitchenScreen() {
   const t = useTheme();
   const kitchen = useKitchen();
   const actions = useKitchenActions();
   const [query, setQuery] = useState(''); // the "Add to Kitchen" search in the hero
+  const [filter, setFilter] = usePlaceFilter();
 
   if (kitchen.isPending) return <Loading />;
   if (kitchen.isError) {
@@ -48,8 +58,7 @@ export default function KitchenScreen() {
 
   const { tracked, staples } = kitchen.data;
   const known = new Set([...tracked, ...staples].map((x) => x.ingredient.id));
-  // Run-out Staples first: they're the ones that need buying.
-  const sortedStaples = [...staples].sort((a, b) => Number(a.have) - Number(b.have));
+  const sections = byPlace({ tracked, staples }, filter);
 
   const toCheck = tracked.filter((i) => i.status === 'unknown').length;
   const ranOut = staples.filter((s) => !s.have).length;
@@ -87,26 +96,34 @@ export default function KitchenScreen() {
       />
       <ErrorText message={actions.error?.message} />
 
-      <View style={{ gap: t.space.sm }}>
-        <SectionLabel>Tracked</SectionLabel>
-        <Text variant="caption" muted>
-          Ticking items off a Shopping List adds them here. Tap one to change the amount.
-        </Text>
-        {tracked.length === 0 ? <Text muted>Nothing tracked yet.</Text> : null}
-        {tracked.map((item) => (
-          <TrackedRow key={item.ingredient.id} item={item} actions={actions} />
-        ))}
-      </View>
+      <ChoiceChips<PlaceFilter>
+        label="Show"
+        value={filter}
+        onChange={setFilter}
+        options={[
+          { label: 'All', value: 'all', accessibilityLabel: 'All places' },
+          ...PLACES.map(({ place, label }) => ({ label, value: place })),
+        ]}
+      />
+      <Text variant="caption" muted>
+        Ticking items off the Shopping List adds them here. Tap one to change it or move it.
+      </Text>
 
-      <View style={{ gap: t.space.sm }}>
-        <SectionLabel>Staples</SectionLabel>
-        <Text variant="caption" muted>
-          Assumed to be in the cupboard until someone says it&apos;s run out.
-        </Text>
-        {sortedStaples.map((staple) => (
-          <StapleRow key={staple.ingredient.id} staple={staple} actions={actions} />
-        ))}
-      </View>
+      {sections.length === 0 ? <Text muted>Nothing in your Kitchen yet.</Text> : null}
+      {sections.map((section) => (
+        <View key={section.place} style={{ gap: t.space.sm }}>
+          <SectionLabel>{section.label}</SectionLabel>
+          {section.tracked.length + section.staples.length === 0 ? (
+            <Text muted>Nothing in the {section.label.toLowerCase()} yet.</Text>
+          ) : null}
+          {section.tracked.map((item) => (
+            <TrackedRow key={item.ingredient.id} item={item} actions={actions} />
+          ))}
+          {section.staples.map((staple) => (
+            <StapleRow key={staple.ingredient.id} staple={staple} actions={actions} />
+          ))}
+        </View>
+      ))}
     </Screen>
   );
 }
@@ -135,27 +152,27 @@ function AddMatches({
         </Text>
       ) : null}
       {results.data?.slice(0, 6).map((ingredient) => {
-            const already = known.has(ingredient.id);
-            return (
-              <Pressable
-                key={ingredient.id}
-                accessibilityRole="button"
-                accessibilityState={{ disabled: already }}
-                disabled={already}
-                onPress={() => onAdd(ingredient.id)}
-                style={({ pressed }) => ({
-                  minHeight: t.touchTarget,
-                  justifyContent: 'center',
-                  opacity: already ? 0.5 : pressed ? 0.6 : 1,
-                })}
-              >
-                <Text>
-                  {displayName(ingredient.name)}
-                  <Text muted> {already ? '· already in Kitchen' : '· add'}</Text>
-                </Text>
-              </Pressable>
-            );
-          })}
+        const already = known.has(ingredient.id);
+        return (
+          <Pressable
+            key={ingredient.id}
+            accessibilityRole="button"
+            accessibilityState={{ disabled: already }}
+            disabled={already}
+            onPress={() => onAdd(ingredient.id)}
+            style={({ pressed }) => ({
+              minHeight: t.touchTarget,
+              justifyContent: 'center',
+              opacity: already ? 0.5 : pressed ? 0.6 : 1,
+            })}
+          >
+            <Text>
+              {displayName(ingredient.name)}
+              <Text muted> {already ? '· already in Kitchen' : '· add'}</Text>
+            </Text>
+          </Pressable>
+        );
+      })}
     </View>
   );
 }
@@ -195,6 +212,14 @@ function TrackedRow({ item, actions }: { item: Tracked; actions: Actions }) {
             setEditing(false);
           }}
         />
+        <KeepIn
+          name={item.ingredient.name}
+          place={item.place}
+          onMove={(place) => {
+            actions.setPlace(id, place);
+            setEditing(false);
+          }}
+        />
         <Button
           title="Make it a Staple"
           variant="secondary"
@@ -214,7 +239,7 @@ function TrackedRow({ item, actions }: { item: Tracked; actions: Actions }) {
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={`${displayName(item.ingredient.name)}, ${amount}, ${item.status}`}
-      accessibilityHint="Edit amount"
+      accessibilityHint="Edit amount or move it"
       onPress={() => {
         setDraft(item.quantity ?? '');
         setEditing(true);
@@ -235,41 +260,106 @@ function TrackedRow({ item, actions }: { item: Tracked; actions: Actions }) {
 
 function StapleRow({ staple, actions }: { staple: Staple; actions: Actions }) {
   const t = useTheme();
+  const [editing, setEditing] = useState(false);
   const id = staple.ingredient.id;
+  const name = displayName(staple.ingredient.name);
+
+  if (editing) {
+    return (
+      <Card>
+        <Text variant="label">{name}</Text>
+        <KeepIn
+          name={staple.ingredient.name}
+          place={staple.place}
+          onMove={(place) => {
+            actions.setPlace(id, place);
+            setEditing(false);
+          }}
+        />
+        <Button
+          title="Stop treating it as a Staple"
+          variant="secondary"
+          onPress={() => actions.notAStaple(id)}
+        />
+        <Button title="Done" variant="ghost" onPress={() => setEditing(false)} />
+      </Card>
+    );
+  }
+
   return (
     <View style={rowStyle(t)}>
-      <FoodThumb
-        emoji={ingredientEmoji(staple.ingredient)}
-        tint={tintFor(staple.ingredient.name)}
-      />
-      <View style={{ flex: 1, gap: 4 }}>
-        <Text variant="label">{displayName(staple.ingredient.name)}</Text>
-        {!staple.have ? (
-          <View style={{ alignSelf: 'flex-start' }}>
-            <StatusBadge status="runOut" />
-          </View>
-        ) : null}
-      </View>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={`${name}, Staple${staple.have ? '' : ', run out'}`}
+        accessibilityHint="Move it or stop treating it as a Staple"
+        onPress={() => setEditing(true)}
+        style={({ pressed }) => ({
+          flex: 1,
+          minHeight: t.touchTarget,
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: t.space.md,
+          opacity: pressed ? 0.75 : 1,
+        })}
+      >
+        <FoodThumb
+          emoji={ingredientEmoji(staple.ingredient)}
+          tint={tintFor(staple.ingredient.name)}
+        />
+        <View style={{ flex: 1, gap: 4 }}>
+          <Text variant="label">{name}</Text>
+          {!staple.have ? (
+            <View style={{ alignSelf: 'flex-start' }}>
+              <StatusBadge status="runOut" />
+            </View>
+          ) : null}
+        </View>
+      </Pressable>
       <Button
         title={staple.have ? 'Ran out' : 'Got it'}
+        accessibilityLabel={staple.have ? `${name} ran out` : `Got ${name}`}
         variant={staple.have ? 'secondary' : 'primary'}
         compact
         onPress={() => actions.setStaple(id, !staple.have)}
       />
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel={`Stop treating ${staple.ingredient.name} as a Staple`}
-        onPress={() => actions.notAStaple(id)}
-        hitSlop={8}
-        style={{
-          minWidth: t.touchTarget,
-          minHeight: t.touchTarget,
-          alignItems: 'center',
-          justifyContent: 'center',
+    </View>
+  );
+}
+
+/**
+ * Where it's kept. Choosing a Place moves it at once; the toast says where it went,
+ * because under a filter the item disappears from view.
+ */
+function KeepIn({
+  name,
+  place,
+  onMove,
+}: {
+  name: string;
+  place: Place;
+  onMove: (place: Place) => void;
+}) {
+  const toast = useToast();
+  const t = useTheme();
+  return (
+    <View style={{ gap: t.space.xs }}>
+      <Text variant="label" aria-hidden>
+        Keep in
+      </Text>
+      <ChoiceChips<Place>
+        label={`Keep ${displayName(name)} in`}
+        value={place}
+        onChange={(next) => {
+          if (next === place) return;
+          onMove(next);
+          const label = PLACES.find((p) => p.place === next)?.label ?? next;
+          toast({
+            tag: 'Kitchen',
+            text: `Moved ${displayName(name)} to the ${label.toLowerCase()}`,
+          });
         }}
-      >
-        <Text muted>✕</Text>
-      </Pressable>
+        options={PLACES.map(({ place: value, label }) => ({ label, value }))}
+      />
     </View>
   );
 }

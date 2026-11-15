@@ -267,6 +267,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/kitchen/places/{ingredient_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Set Place
+         * @description Move an item to the Fridge, Freezer or Cupboard (ADR 0011).
+         */
+        put: operations["set_place_kitchen_places__ingredient_id__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/ingredients": {
         parameters: {
             query?: never;
@@ -740,6 +760,7 @@ export interface components {
              * Format: date-time
              */
             last_confirmed_at: string;
+            place: components["schemas"]["Place"];
         };
         /** KitchenOut */
         KitchenOut: {
@@ -770,6 +791,19 @@ export interface components {
              * Format: date-time
              */
             joined_at: string;
+        };
+        /**
+         * Place
+         * @enum {string}
+         */
+        Place: "fridge" | "freezer" | "cupboard";
+        /** PlaceIn */
+        PlaceIn: {
+            place: components["schemas"]["Place"] | null;
+        };
+        /** PlaceOut */
+        PlaceOut: {
+            place: components["schemas"]["Place"];
         };
         /** PreferencesIn */
         PreferencesIn: {
@@ -974,6 +1008,7 @@ export interface components {
             ingredient: components["schemas"]["IngredientOut"];
             /** Have */
             have: boolean;
+            place: components["schemas"]["Place"];
         };
         /** TextEvent */
         TextEvent: {
@@ -1610,6 +1645,43 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    set_place_kitchen_places__ingredient_id__put: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                ingredient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PlaceIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlaceOut"];
+                };
             };
             /** @description Validation Error */
             422: {

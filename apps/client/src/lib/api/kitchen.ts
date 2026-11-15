@@ -10,6 +10,9 @@ import { keepPreviousData, useMutation, useQuery, type QueryClient } from '@tans
 import { randomUUID } from 'expo-crypto';
 
 import { api, ApiError, unwrap } from './client';
+import type { components } from './schema';
+
+type Place = components['schemas']['Place'];
 
 export const kitchenKeys = {
   all: ['kitchen'] as const,
@@ -21,12 +24,14 @@ const mutationKeys = {
   removeTracked: ['kitchen', 'removeTracked'] as const,
   setStaple: ['kitchen', 'setStaple'] as const,
   removeStaple: ['kitchen', 'removeStaple'] as const,
+  setPlace: ['kitchen', 'setPlace'] as const,
 };
 
 type Keyed = { idempotencyKey: string };
 type SetTrackedVars = Keyed & { ingredientId: string; quantity: string | null };
 type IngredientVars = Keyed & { ingredientId: string };
 type SetStapleVars = Keyed & { ingredientId: string; have: boolean };
+type SetPlaceVars = Keyed & { ingredientId: string; place: Place | null };
 
 const header = (v: Keyed) => ({ 'Idempotency-Key': v.idempotencyKey });
 const scope = { id: 'kitchen' };
@@ -80,6 +85,16 @@ export function registerKitchenMutations(queryClient: QueryClient) {
       ),
     ...settled,
   });
+  queryClient.setMutationDefaults(mutationKeys.setPlace, {
+    mutationFn: async (v: SetPlaceVars) =>
+      unwrap(
+        await api.PUT('/kitchen/places/{ingredient_id}', {
+          params: { path: { ingredient_id: v.ingredientId }, header: header(v) },
+          body: { place: v.place },
+        }),
+      ),
+    ...settled,
+  });
 }
 
 export function useKitchen() {
@@ -118,9 +133,18 @@ export function useKitchenActions() {
     mutationKey: mutationKeys.removeStaple,
     scope,
   });
+  const setPlace = useMutation<unknown, Error, SetPlaceVars>({
+    mutationKey: mutationKeys.setPlace,
+    scope,
+  });
 
   return {
-    error: setTracked.error ?? removeTracked.error ?? setStaple.error ?? removeStaple.error,
+    error:
+      setTracked.error ??
+      removeTracked.error ??
+      setStaple.error ??
+      removeStaple.error ??
+      setPlace.error,
     setAmount: (ingredientId: string, quantity: string | null) =>
       setTracked.mutate({ ingredientId, quantity, idempotencyKey: randomUUID() }),
     usedUp: (ingredientId: string) =>
@@ -129,5 +153,8 @@ export function useKitchenActions() {
       setStaple.mutate({ ingredientId, have, idempotencyKey: randomUUID() }),
     notAStaple: (ingredientId: string) =>
       removeStaple.mutate({ ingredientId, idempotencyKey: randomUUID() }),
+    /** Move it to another Place; null puts it back where its category usually goes. */
+    setPlace: (ingredientId: string, place: Place | null) =>
+      setPlace.mutate({ ingredientId, place, idempotencyKey: randomUUID() }),
   };
 }
