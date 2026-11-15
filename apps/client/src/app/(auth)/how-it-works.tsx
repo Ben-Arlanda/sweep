@@ -17,7 +17,7 @@ import { useTheme } from '@/theme/useTheme';
 
 /**
  * "How Sweep works": four pages you swipe through (or tap Next), one per part of the
- * loop: shop, Cabinet, ask, plan. Skip is always there. The last page leads to sign-in.
+ * loop: shop, Kitchen, ask, plan. Skip is always there. The last page leads to sign-in.
  *
  * It's a sideways ScrollView with `pagingEnabled`, which snaps to whole pages. We work
  * out the current page from how far it has scrolled, so swiping and the Next button

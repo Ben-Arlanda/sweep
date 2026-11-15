@@ -4,7 +4,7 @@ import type { TintName } from '@/theme/tokens';
 import { useTheme } from '@/theme/useTheme';
 
 /**
- * A food emoji on a pastel square: the thumbnail on list rows, Cabinet rows and recipes
+ * A food emoji on a pastel square: the thumbnail on list rows, Kitchen rows and recipes
  * (ADR 0007). Decorative, so screen readers skip it; the name next to it says the same.
  *
  * `tint` is the square's pastel. `onWhite` flips it for use inside a pastel card, where

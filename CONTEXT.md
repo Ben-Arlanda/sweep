@@ -11,7 +11,7 @@ A person signed in to the app who belongs to a Household.
 _Avoid_: user (in domain discussions), account
 
 **Household**:
-The group of Members who share one Cabinet, one Shopping List, one Meal Plan and one recipe collection. A Member belongs to exactly one Household.
+The group of Members who share one Kitchen, one Shopping List, one Meal Plan and one recipe collection. A Member belongs to exactly one Household.
 _Avoid_: family, team, group
 
 **Owner**:
@@ -20,9 +20,13 @@ _Avoid_: admin
 
 ### The three pillars
 
-**Cabinet**:
-The household's record of the Ingredients it currently has at home.
-_Avoid_: kitchen inventory, pantry, virtual kitchen cabinet, stock
+**Kitchen**:
+The household's record of the Ingredients it currently has at home, grouped by Place.
+_Avoid_: cabinet (the old name, ADR 0011), kitchen inventory, pantry, stock
+
+**Place**:
+Where an Ingredient is kept in the Kitchen: Fridge, Freezer or Cupboard. Every Ingredient has a default Place (from its category); a Household can move an item.
+_Avoid_: location, storage, shelf
 
 **Shopping List**:
 The one list of items the Household intends to buy, shared across Members' devices. A Household has exactly one.
@@ -36,10 +40,10 @@ _Avoid_: store, supermarket (in code and UI), list
 The collection of recipes the app can search, recommend and plan from.
 _Avoid_: recipe database, cookbook
 
-### Ingredients and the Cabinet
+### Ingredients and the Kitchen
 
 **Ingredient**:
-A canonical food item ("plain flour", "chicken thigh") that recipes, the Shopping List and the Cabinet all refer to, so they can be compared.
+A canonical food item ("plain flour", "chicken thigh") that recipes, the Shopping List and the Kitchen all refer to, so they can be compared.
 _Avoid_: product, item (an item is a line on a list)
 
 **Staple**:
@@ -47,17 +51,17 @@ An Ingredient the Household is assumed to have until a Member marks it as run ou
 _Avoid_: pantry item, basic
 
 **Tracked Ingredient**:
-An Ingredient whose quantity the Cabinet records because it decides whether a meal is possible (meat, pasta, rice, cheese).
+An Ingredient whose quantity the Kitchen records because it decides whether a meal is possible (meat, pasta, rice, cheese).
 _Avoid_: inventory item
 
 **Confirmed**:
-A Cabinet quantity a Member recently stated or that came from ticking off a Shopping List item.
+A Kitchen quantity a Member recently stated or that came from ticking off a Shopping List item.
 
 **Estimated**:
-A Cabinet quantity the app calculated, e.g. by deducting a Cooked meal. Always shown as an estimate.
+A Kitchen quantity the app calculated, e.g. by deducting a Cooked meal. Always shown as an estimate.
 
 **Unknown**:
-A Cabinet entry the app no longer trusts. The agent asks instead of assuming. Estimated entries become Unknown after a period without confirmation.
+A Kitchen entry the app no longer trusts. The agent asks instead of assuming. Estimated entries become Unknown after a period without confirmation.
 
 ### Recipes
 
@@ -84,7 +88,7 @@ One recipe (or Recipe Adaptation) assigned to a day, with a number of servings.
 _Avoid_: meal slot, dinner
 
 **Cooked**:
-A Member's confirmation that a Planned Meal was actually made. Only Cooked meals deduct from the Cabinet.
+A Member's confirmation that a Planned Meal was actually made. Only Cooked meals deduct from the Kitchen.
 _Avoid_: completed, done
 
 **Dietary Rule**:
@@ -115,9 +119,9 @@ _Avoid_: confirmation (Confirmed means something else)
 
 ## Relationships
 
-- A **Household** has many **Members**, one **Cabinet**, one **Shopping List** and one **Meal Plan** per week
-- The **Cabinet**, **Shopping List** and **Recipe Knowledge Base** all refer to the same **Ingredients**. That shared vocabulary is what connects them.
-- Ticking an item off a **Shopping List** adds it to the **Cabinet** as **Confirmed** (if it's linked to an **Ingredient**)
+- A **Household** has many **Members**, one **Kitchen**, one **Shopping List** and one **Meal Plan** per week
+- The **Kitchen**, **Shopping List** and **Recipe Knowledge Base** all refer to the same **Ingredients**. That shared vocabulary is what connects them.
+- Ticking an item off a **Shopping List** adds it to the **Kitchen** as **Confirmed** (if it's linked to an **Ingredient**)
 - Marking a **Planned Meal** as **Cooked** deducts its Ingredients, which makes those quantities **Estimated**
 - **Estimated** becomes **Unknown** over time. **Staples** never carry a quantity.
 - The **Recipe Knowledge Base** contains **Seed Recipes** and each Household's **Imported Recipes**
@@ -128,13 +132,13 @@ _Avoid_: confirmation (Confirmed means something else)
 ## Example dialogue
 
 > **Member:** "Plan four dinners. We've got chicken and rice."
-> **Agent:** builds a **Draft Plan** from Seed and Imported Recipes, checks the **Cabinet** (chicken: Confirmed 1kg, rice: Estimated ~500g), and shows a **Proposal**: 4 **Planned Meals**, 9 Shopping List additions, and "I'm assuming you still have ~500g rice."
+> **Agent:** builds a **Draft Plan** from Seed and Imported Recipes, checks the **Kitchen** (chicken: Confirmed 1kg, rice: Estimated ~500g), and shows a **Proposal**: 4 **Planned Meals**, 9 Shopping List additions, and "I'm assuming you still have ~500g rice."
 > **Member:** "Swap Tuesday for something vegetarian." → the agent edits the Draft Plan. It doesn't rebuild it.
 > **Member:** approves → the Meal Plan and Shopping List update for the whole Household.
 
 ## Flagged ambiguities
 
-- "kitchen inventory", "virtual kitchen cabinet", "pantry". Resolved: **Cabinet**.
+- "kitchen inventory", "virtual kitchen cabinet", "pantry". Resolved: **Cabinet**, renamed **Kitchen** in 2026-11 (ADR 0011). "Pantry" also clashed with the Cupboard Place.
 - "dietary preferences" in the brief mixed hard and soft constraints. Resolved: split into **Dietary Rule** and **Preference**.
 - "basket" in the brief meant both the Shopping List and a priced product selection. Resolved: **Shopping List** only. Sweep has no prices or budgets (ADR 0010).
 - "lists" per supermarket. Resolved: one **Shopping List**, items labelled by **Shop** (ADR 0009).

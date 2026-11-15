@@ -65,7 +65,7 @@ describe('readEvents', () => {
   it('ends with an error when the stream stops without done', async () => {
     const got: TurnEvent[] = [];
     await readEvents(
-      body([bytes('event: tool\ndata: {"type":"tool","name":"get_cabinet"}\n\n')]),
+      body([bytes('event: tool\ndata: {"type":"tool","name":"get_kitchen"}\n\n')]),
       (e) => got.push(e),
     );
     expect(got.map((e) => e.type)).toEqual(['tool', 'error']);

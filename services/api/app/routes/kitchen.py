@@ -1,6 +1,6 @@
-"""HTTP routes for the Cabinet and for looking up Ingredients.
+"""HTTP routes for the Kitchen and for looking up Ingredients.
 
-Cabinet entries are addressed by Ingredient id (`/cabinet/items/{ingredient_id}`): a
+Kitchen entries are addressed by Ingredient id (`/kitchen/items/{ingredient_id}`): a
 Household has at most one entry per Ingredient, so "set how much pasta we have" is a
 PUT to pasta's address, and repeating it is harmless.
 """
@@ -11,29 +11,32 @@ from fastapi import APIRouter, Query, Request, Response, status
 
 from app.deps import MemberDep, SessionDep
 from app.idempotency import IdempotencyKeyHeader
-from app.models import CabinetItem, HouseholdStaple, utcnow
+from app.models import HouseholdStaple, KitchenItem, utcnow
 from app.routes.common import idempotent
 from app.schemas import (
-    CabinetItemOut,
-    CabinetOut,
     IngredientOut,
+    KitchenItemOut,
+    KitchenOut,
+    PlaceIn,
+    PlaceOut,
     SetQuantityIn,
     SetStapleIn,
     StapleOut,
 )
-from app.services import cabinet, ingredients
+from app.services import ingredients, kitchen
 
-router = APIRouter(tags=["cabinet"])
+router = APIRouter(tags=["kitchen"])
 
 
-def tracked_out(item: CabinetItem) -> CabinetItemOut:
-    return CabinetItemOut(
+def tracked_out(item: KitchenItem) -> KitchenItemOut:
+    return KitchenItemOut(
         ingredient=IngredientOut.model_validate(item.ingredient),
         quantity=item.quantity,
         unit=item.ingredient.default_unit,
-        status=cabinet.status_of(item, utcnow()).value,
+        status=kitchen.status_of(item, utcnow()).value,
         last_change_source=item.last_change_source,
         last_confirmed_at=item.last_confirmed_at,
+        place=kitchen.place_of(item),
     )
 
 
@@ -41,20 +44,21 @@ def staple_out(staple: HouseholdStaple) -> StapleOut:
     return StapleOut(
         ingredient=IngredientOut.model_validate(staple.ingredient),
         have=staple.ran_out_at is None,
+        place=kitchen.place_of(staple),
     )
 
 
-@router.get("/cabinet")
-async def get_cabinet(ctx: MemberDep, session: SessionDep) -> CabinetOut:
-    view = await cabinet.get_cabinet(session, ctx)
-    return CabinetOut(
+@router.get("/kitchen")
+async def get_kitchen(ctx: MemberDep, session: SessionDep) -> KitchenOut:
+    view = await kitchen.get_kitchen(session, ctx)
+    return KitchenOut(
         version=view.version,
         tracked=[tracked_out(i) for i in view.tracked],
         staples=[staple_out(s) for s in view.staples],
     )
 
 
-@router.put("/cabinet/items/{ingredient_id}", response_model=CabinetItemOut)
+@router.put("/kitchen/items/{ingredient_id}", response_model=KitchenItemOut)
 async def set_tracked(
     ingredient_id: uuid.UUID,
     body: SetQuantityIn,
@@ -63,13 +67,13 @@ async def set_tracked(
     session: SessionDep,
     key: IdempotencyKeyHeader,
 ) -> Response:
-    async def work() -> CabinetItemOut:
-        return tracked_out(await cabinet.set_tracked(session, ctx, ingredient_id, body.quantity))
+    async def work() -> KitchenItemOut:
+        return tracked_out(await kitchen.set_tracked(session, ctx, ingredient_id, body.quantity))
 
     return await idempotent(request, session, ctx, key, work)
 
 
-@router.delete("/cabinet/items/{ingredient_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/kitchen/items/{ingredient_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def remove_tracked(
     ingredient_id: uuid.UUID,
     request: Request,
@@ -78,12 +82,12 @@ async def remove_tracked(
     key: IdempotencyKeyHeader,
 ) -> Response:
     async def work() -> None:
-        await cabinet.remove_tracked(session, ctx, ingredient_id)
+        await kitchen.remove_tracked(session, ctx, ingredient_id)
 
     return await idempotent(request, session, ctx, key, work, status.HTTP_204_NO_CONTENT)
 
 
-@router.put("/cabinet/staples/{ingredient_id}", response_model=StapleOut)
+@router.put("/kitchen/staples/{ingredient_id}", response_model=StapleOut)
 async def set_staple(
     ingredient_id: uuid.UUID,
     body: SetStapleIn,
@@ -93,12 +97,12 @@ async def set_staple(
     key: IdempotencyKeyHeader,
 ) -> Response:
     async def work() -> StapleOut:
-        return staple_out(await cabinet.set_staple(session, ctx, ingredient_id, body.have))
+        return staple_out(await kitchen.set_staple(session, ctx, ingredient_id, body.have))
 
     return await idempotent(request, session, ctx, key, work)
 
 
-@router.delete("/cabinet/staples/{ingredient_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/kitchen/staples/{ingredient_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def remove_staple(
     ingredient_id: uuid.UUID,
     request: Request,
@@ -107,9 +111,26 @@ async def remove_staple(
     key: IdempotencyKeyHeader,
 ) -> Response:
     async def work() -> None:
-        await cabinet.remove_staple(session, ctx, ingredient_id)
+        await kitchen.remove_staple(session, ctx, ingredient_id)
 
     return await idempotent(request, session, ctx, key, work, status.HTTP_204_NO_CONTENT)
+
+
+@router.put("/kitchen/places/{ingredient_id}", response_model=PlaceOut)
+async def set_place(
+    ingredient_id: uuid.UUID,
+    body: PlaceIn,
+    request: Request,
+    ctx: MemberDep,
+    session: SessionDep,
+    key: IdempotencyKeyHeader,
+) -> Response:
+    """Move an item to the Fridge, Freezer or Cupboard (ADR 0011)."""
+
+    async def work() -> PlaceOut:
+        return PlaceOut(place=await kitchen.set_place(session, ctx, ingredient_id, body.place))
+
+    return await idempotent(request, session, ctx, key, work)
 
 
 @router.get("/ingredients")

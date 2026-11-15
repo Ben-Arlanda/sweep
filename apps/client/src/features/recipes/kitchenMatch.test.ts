@@ -1,10 +1,10 @@
 /// <reference types="jest" />
 import type { components } from '@/lib/api/schema';
 
-import { cuisineName, haveSummary, matchLine, minutesText } from './cabinetMatch';
+import { cuisineName, haveSummary, matchLine, minutesText } from './kitchenMatch';
 
 type Line = components['schemas']['RecipeIngredientOut'];
-type Cabinet = components['schemas']['CabinetOut'];
+type Kitchen = components['schemas']['KitchenOut'];
 
 const ingredient = (id: string, name: string, unit = 'g') => ({
   id,
@@ -26,7 +26,7 @@ const line = (over: Partial<Line> = {}): Line => ({
   ...over,
 });
 
-const cabinet: Cabinet = {
+const kitchen: Kitchen = {
   version: 1,
   tracked: [
     {
@@ -36,6 +36,7 @@ const cabinet: Cabinet = {
       status: 'confirmed',
       last_change_source: 'purchase',
       last_confirmed_at: '2026-11-14T00:00:00Z',
+      place: 'fridge',
     },
     {
       ingredient: ingredient('rice', 'rice'),
@@ -44,6 +45,7 @@ const cabinet: Cabinet = {
       status: 'estimated',
       last_change_source: 'manual',
       last_confirmed_at: '2026-11-01T00:00:00Z',
+      place: 'fridge',
     },
     {
       ingredient: ingredient('milk', 'milk', 'ml'),
@@ -52,53 +54,54 @@ const cabinet: Cabinet = {
       status: 'unknown',
       last_change_source: 'purchase',
       last_confirmed_at: '2026-09-01T00:00:00Z',
+      place: 'fridge',
     },
   ],
   staples: [
-    { ingredient: ingredient('salt', 'salt'), have: true },
-    { ingredient: ingredient('flour', 'plain flour'), have: false },
+    { ingredient: ingredient('salt', 'salt'), have: true, place: 'cupboard' },
+    { ingredient: ingredient('flour', 'plain flour'), have: false, place: 'cupboard' },
   ],
 };
 
-test('enough in the Cabinet: have', () => {
-  expect(matchLine(line({ base_quantity: '150' }), cabinet)).toEqual({ kind: 'have' });
+test('enough in the Kitchen: have', () => {
+  expect(matchLine(line({ base_quantity: '150' }), kitchen)).toEqual({ kind: 'have' });
 });
 
 test('some, but less than the recipe needs: says how much there is', () => {
-  expect(matchLine(line(), cabinet)).toEqual({ kind: 'low', have: '200 g' });
+  expect(matchLine(line(), kitchen)).toEqual({ kind: 'low', have: '200 g' });
 });
 
-test('in the Cabinet with no amount recorded: have', () => {
+test('in the Kitchen with no amount recorded: have', () => {
   const rice = line({ ingredient: ingredient('rice', 'rice'), base_quantity: '300' });
-  expect(matchLine(rice, cabinet)).toEqual({ kind: 'have' });
+  expect(matchLine(rice, kitchen)).toEqual({ kind: 'have' });
 });
 
 test('an amount we no longer trust: check', () => {
   const milk = line({ ingredient: ingredient('milk', 'milk', 'ml'), base_quantity: '250' });
-  expect(matchLine(milk, cabinet)).toEqual({ kind: 'check' });
+  expect(matchLine(milk, kitchen)).toEqual({ kind: 'check' });
 });
 
 test('Staples: have unless run out', () => {
-  expect(matchLine(line({ ingredient: ingredient('salt', 'salt') }), cabinet)).toEqual({
+  expect(matchLine(line({ ingredient: ingredient('salt', 'salt') }), kitchen)).toEqual({
     kind: 'have',
   });
-  expect(matchLine(line({ ingredient: ingredient('flour', 'plain flour') }), cabinet)).toEqual({
+  expect(matchLine(line({ ingredient: ingredient('flour', 'plain flour') }), kitchen)).toEqual({
     kind: 'need',
   });
 });
 
-test('not in the Cabinet: need', () => {
-  expect(matchLine(line({ ingredient: ingredient('eggs', 'eggs') }), cabinet)).toEqual({
+test('not in the Kitchen: need', () => {
+  expect(matchLine(line({ ingredient: ingredient('eggs', 'eggs') }), kitchen)).toEqual({
     kind: 'need',
   });
 });
 
 test('a recipe amount we cannot compare (3 cloves) counts as have', () => {
-  expect(matchLine(line({ base_quantity: null }), cabinet)).toEqual({ kind: 'have' });
+  expect(matchLine(line({ base_quantity: null }), kitchen)).toEqual({ kind: 'have' });
 });
 
 test('lines without an Ingredient get no indicator', () => {
-  expect(matchLine(line({ ingredient: null }), cabinet)).toBeNull();
+  expect(matchLine(line({ ingredient: null }), kitchen)).toBeNull();
 });
 
 test('summary counts only lines with an Ingredient, and skips optional ones', () => {
@@ -108,7 +111,7 @@ test('summary counts only lines with an Ingredient, and skips optional ones', ()
     line({ ingredient: ingredient('eggs', 'eggs'), optional: true }), // skipped
     line({ ingredient: null }), // water: skipped
   ];
-  expect(haveSummary(lines, cabinet)).toEqual({ have: 1, total: 2 });
+  expect(haveSummary(lines, kitchen)).toEqual({ have: 1, total: 2 });
 });
 
 test.each([

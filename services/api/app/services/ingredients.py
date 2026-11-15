@@ -1,8 +1,8 @@
 """Turning what a Member typed into an Ingredient, without guessing.
 
 Matching is deliberately strict: exact name, then alias, then simple plural/singular
-forms. No fuzzy matching. A wrong link would quietly put the wrong thing in the Cabinet;
-no link just means the item doesn't reach the Cabinet, which the app shows. Smarter
+forms. No fuzzy matching. A wrong link would quietly put the wrong thing in the Kitchen;
+no link just means the item doesn't reach the Kitchen, which the app shows. Smarter
 matching (embeddings, an LLM fallback) belongs to slice 4's normalisation, with evals.
 """
 

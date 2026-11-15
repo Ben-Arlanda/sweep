@@ -8,7 +8,7 @@ import { router } from 'expo-router';
 import { Avatar, AvatarStack } from '@/components/Avatar';
 import { Hero, HeroLabel } from '@/components/Hero';
 import { Button, Card, ErrorText, Highlight, SectionLabel, Text } from '@/components/ui';
-import { CabinetTile } from '@/features/cabinet/CabinetTile';
+import { KitchenTile } from '@/features/kitchen/KitchenTile';
 import { RecipesTile } from '@/features/recipes/RecipesTile';
 import { ShoppingListTile } from '@/features/lists/ShoppingListTile';
 import { AppearanceCard } from '@/features/household/AppearanceCard';
@@ -47,7 +47,7 @@ export function HomeHero({ me }: { me: MeOut }) {
   );
 }
 
-/** The board: the Shopping List, the Cabinet and Recipes. */
+/** The board: the Shopping List, the Kitchen and Recipes. */
 export function HouseholdView() {
   const t = useTheme();
   return (
@@ -55,7 +55,7 @@ export function HouseholdView() {
       <SectionLabel>Your kitchen</SectionLabel>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.md }}>
         <ShoppingListTile />
-        <CabinetTile />
+        <KitchenTile />
         <RecipesTile />
       </View>
     </>

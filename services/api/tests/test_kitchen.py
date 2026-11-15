@@ -1,4 +1,4 @@
-"""The Cabinet: Staples and Tracked Ingredients, fed by ticking off the Shopping List."""
+"""The Kitchen: Staples and Tracked Ingredients, fed by ticking off the Shopping List."""
 
 from datetime import UTC, datetime, timedelta
 from typing import Any
@@ -7,8 +7,8 @@ import httpx
 import pytest
 from sqlalchemy import Engine, text
 
-from app.models import CabinetItem, ChangeSource
-from app.services.cabinet import Status, status_of
+from app.models import ChangeSource, KitchenItem
+from app.services.kitchen import Status, status_of
 from tests.conftest import FakeIssuer
 from tests.helpers import create_household, idem, invite, join
 
@@ -35,7 +35,7 @@ NOW = datetime(2026, 11, 14, 12, tzinfo=UTC)
 def test_status_is_calculated_from_source_and_age(
     source: ChangeSource, age: timedelta, expected: Status
 ) -> None:
-    item = CabinetItem(last_change_source=source, last_confirmed_at=NOW - age)
+    item = KitchenItem(last_change_source=source, last_confirmed_at=NOW - age)
 
     assert status_of(item, NOW) == expected
 
@@ -43,8 +43,8 @@ def test_status_is_calculated_from_source_and_age(
 # --- Helpers ------------------------------------------------------------------------
 
 
-async def cabinet(client: httpx.AsyncClient, issuer: FakeIssuer, subject: str) -> dict[str, Any]:
-    response = await client.get("/cabinet", headers=issuer.headers(subject))
+async def kitchen(client: httpx.AsyncClient, issuer: FakeIssuer, subject: str) -> dict[str, Any]:
+    response = await client.get("/kitchen", headers=issuer.headers(subject))
     assert response.status_code == 200, response.text
     body: dict[str, Any] = response.json()
     return body
@@ -113,7 +113,7 @@ async def test_a_new_household_starts_with_default_staples_and_nothing_tracked(
 ) -> None:
     await create_household(client, fake_issuer, "alice")
 
-    cab = await cabinet(client, fake_issuer, "alice")
+    cab = await kitchen(client, fake_issuer, "alice")
 
     assert cab["tracked"] == []
     assert staples(cab)["salt"] is True
@@ -164,7 +164,7 @@ async def test_things_that_are_not_ingredients_stay_unlinked(
     await tick(client, fake_issuer, "alice", item)
 
     assert item["ingredient"] is None
-    assert (await cabinet(client, fake_issuer, "alice"))["tracked"] == []
+    assert (await kitchen(client, fake_issuer, "alice"))["tracked"] == []
 
 
 async def test_a_member_can_fix_or_remove_the_link(
@@ -186,10 +186,10 @@ async def test_a_member_can_fix_or_remove_the_link(
     assert unlinked.json()["ingredient"] is None
 
 
-# --- Ticking off → Cabinet -----------------------------------------------------------
+# --- Ticking off → Kitchen -----------------------------------------------------------
 
 
-async def test_ticking_puts_the_amount_in_the_cabinet_as_confirmed(
+async def test_ticking_puts_the_amount_in_the_kitchen_as_confirmed(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer
 ) -> None:
     await create_household(client, fake_issuer, "alice")
@@ -199,7 +199,7 @@ async def test_ticking_puts_the_amount_in_the_cabinet_as_confirmed(
     await tick(client, fake_issuer, "bob", item)
 
     # Stored in the Ingredient's own unit (grams), and visible to the whole Household.
-    assert tracked(await cabinet(client, fake_issuer, "alice")) == {
+    assert tracked(await kitchen(client, fake_issuer, "alice")) == {
         "chicken thigh": ("1500", "g", "confirmed")
     }
 
@@ -211,7 +211,7 @@ async def test_buying_more_adds_to_what_is_there(
     await tick(client, fake_issuer, "alice", await add(client, fake_issuer, "alice", "2L milk"))
     await tick(client, fake_issuer, "alice", await add(client, fake_issuer, "alice", "500ml milk"))
 
-    assert tracked(await cabinet(client, fake_issuer, "alice"))["milk"] == (
+    assert tracked(await kitchen(client, fake_issuer, "alice"))["milk"] == (
         "2500",
         "ml",
         "confirmed",
@@ -227,7 +227,7 @@ async def test_an_amount_that_cannot_be_converted_is_recorded_as_some(
         client, fake_issuer, "alice", await add(client, fake_issuer, "alice", "2 chicken breasts")
     )
 
-    assert tracked(await cabinet(client, fake_issuer, "alice"))["chicken breast"] == (
+    assert tracked(await kitchen(client, fake_issuer, "alice"))["chicken breast"] == (
         None,
         "g",
         "confirmed",
@@ -244,9 +244,9 @@ async def test_unticking_takes_it_back_out(
     await tick(client, fake_issuer, "alice", second)
 
     await tick(client, fake_issuer, "alice", second, on=False)
-    after_one = tracked(await cabinet(client, fake_issuer, "alice"))
+    after_one = tracked(await kitchen(client, fake_issuer, "alice"))
     await tick(client, fake_issuer, "alice", first, on=False)
-    after_both = tracked(await cabinet(client, fake_issuer, "alice"))
+    after_both = tracked(await kitchen(client, fake_issuer, "alice"))
 
     assert after_one["rice"][0] == "1000"
     assert "rice" not in after_both  # back to nothing, not "0 g"
@@ -262,7 +262,7 @@ async def test_ticking_twice_only_adds_once(
     await tick(client, fake_issuer, "alice", item)
     await tick(client, fake_issuer, "bob", item)  # Bob ticks it too, on his phone
 
-    assert tracked(await cabinet(client, fake_issuer, "alice"))["rice"][0] == "1000"
+    assert tracked(await kitchen(client, fake_issuer, "alice"))["rice"][0] == "1000"
 
 
 async def test_buying_something_unknown_replaces_the_guess(
@@ -272,14 +272,14 @@ async def test_buying_something_unknown_replaces_the_guess(
     await tick(client, fake_issuer, "alice", await add(client, fake_issuer, "alice", "1kg rice"))
     with db.begin() as conn:  # a month passes with nobody checking the rice
         conn.execute(
-            text("UPDATE cabinet_items SET last_confirmed_at = now() - interval '30 days'")
+            text("UPDATE kitchen_items SET last_confirmed_at = now() - interval '30 days'")
         )
-    assert tracked(await cabinet(client, fake_issuer, "alice"))["rice"][2] == "unknown"
+    assert tracked(await kitchen(client, fake_issuer, "alice"))["rice"][2] == "unknown"
 
     await tick(client, fake_issuer, "alice", await add(client, fake_issuer, "alice", "500g rice"))
 
     # We don't trust the old 1 kg, but we do know about the 500 g just bought.
-    assert tracked(await cabinet(client, fake_issuer, "alice"))["rice"] == ("500", "g", "confirmed")
+    assert tracked(await kitchen(client, fake_issuer, "alice"))["rice"] == ("500", "g", "confirmed")
 
 
 async def test_buying_a_staple_marks_it_as_in_stock(
@@ -288,17 +288,17 @@ async def test_buying_a_staple_marks_it_as_in_stock(
     await create_household(client, fake_issuer, "alice")
     salt = await ingredient_id(client, fake_issuer, "alice", "salt")
     await client.put(
-        f"/cabinet/staples/{salt}",
+        f"/kitchen/staples/{salt}",
         json={"have": False},
         headers=fake_issuer.headers("alice") | idem(),
     )
-    ran_out = staples(await cabinet(client, fake_issuer, "alice"))["salt"]
+    ran_out = staples(await kitchen(client, fake_issuer, "alice"))["salt"]
 
     await tick(client, fake_issuer, "alice", await add(client, fake_issuer, "alice", "Salt"))
 
     assert ran_out is False
-    assert staples(await cabinet(client, fake_issuer, "alice"))["salt"] is True
-    assert "salt" not in tracked(await cabinet(client, fake_issuer, "alice"))
+    assert staples(await kitchen(client, fake_issuer, "alice"))["salt"] is True
+    assert "salt" not in tracked(await kitchen(client, fake_issuer, "alice"))
 
 
 # --- Manual edits --------------------------------------------------------------------
@@ -309,7 +309,7 @@ async def test_members_can_set_and_remove_tracked_amounts(
 ) -> None:
     await create_household(client, fake_issuer, "alice")
     pasta = await ingredient_id(client, fake_issuer, "alice", "pasta")
-    url = f"/cabinet/items/{pasta}"
+    url = f"/kitchen/items/{pasta}"
     alice = fake_issuer.headers("alice")
 
     set_amount = await client.put(url, json={"quantity": "750"}, headers=alice | idem())
@@ -321,7 +321,7 @@ async def test_members_can_set_and_remove_tracked_amounts(
     assert set_amount.json()["last_change_source"] == "manual"
     assert some.json()["quantity"] is None
     assert (removed.status_code, removed_again.status_code) == (204, 204)
-    assert (await cabinet(client, fake_issuer, "alice"))["tracked"] == []
+    assert (await kitchen(client, fake_issuer, "alice"))["tracked"] == []
 
 
 async def test_a_staple_has_no_quantity(client: httpx.AsyncClient, fake_issuer: FakeIssuer) -> None:
@@ -329,7 +329,7 @@ async def test_a_staple_has_no_quantity(client: httpx.AsyncClient, fake_issuer: 
     salt = await ingredient_id(client, fake_issuer, "alice", "salt")
 
     response = await client.put(
-        f"/cabinet/items/{salt}",
+        f"/kitchen/items/{salt}",
         json={"quantity": "100"},
         headers=fake_issuer.headers("alice") | idem(),
     )
@@ -344,13 +344,13 @@ async def test_members_choose_which_ingredients_are_staples(
     alice = fake_issuer.headers("alice")
     rice = await ingredient_id(client, fake_issuer, "alice", "rice")
     salt = await ingredient_id(client, fake_issuer, "alice", "salt")
-    await client.put(f"/cabinet/items/{rice}", json={"quantity": "1000"}, headers=alice | idem())
+    await client.put(f"/kitchen/items/{rice}", json={"quantity": "1000"}, headers=alice | idem())
 
     made_staple = await client.put(
-        f"/cabinet/staples/{rice}", json={"have": True}, headers=alice | idem()
+        f"/kitchen/staples/{rice}", json={"have": True}, headers=alice | idem()
     )
-    no_longer = await client.delete(f"/cabinet/staples/{salt}", headers=alice | idem())
-    cab = await cabinet(client, fake_issuer, "alice")
+    no_longer = await client.delete(f"/kitchen/staples/{salt}", headers=alice | idem())
+    cab = await kitchen(client, fake_issuer, "alice")
 
     assert made_staple.status_code == 200
     assert no_longer.status_code == 204
@@ -365,7 +365,7 @@ async def test_unknown_ingredients_are_not_found(
     await create_household(client, fake_issuer, "alice")
 
     response = await client.put(
-        "/cabinet/items/00000000-0000-0000-0000-000000000000",
+        "/kitchen/items/00000000-0000-0000-0000-000000000000",
         json={"quantity": "1"},
         headers=fake_issuer.headers("alice") | idem(),
     )
@@ -391,7 +391,7 @@ async def test_ingredient_search_finds_names_and_aliases(
     assert response.json()[0]["name"] == expected_first
 
 
-async def test_each_household_has_its_own_cabinet(
+async def test_each_household_has_its_own_kitchen(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer
 ) -> None:
     await create_household(client, fake_issuer, "alice")
@@ -400,13 +400,13 @@ async def test_each_household_has_its_own_cabinet(
     await tick(client, fake_issuer, "alice", await add(client, fake_issuer, "alice", "1kg rice"))
 
     await client.put(
-        f"/cabinet/staples/{salt}",
+        f"/kitchen/staples/{salt}",
         json={"have": False},
         headers=fake_issuer.headers("mallory") | idem(),
     )
 
-    assert tracked(await cabinet(client, fake_issuer, "mallory")) == {}
-    assert staples(await cabinet(client, fake_issuer, "alice"))["salt"] is True
+    assert tracked(await kitchen(client, fake_issuer, "mallory")) == {}
+    assert staples(await kitchen(client, fake_issuer, "alice"))["salt"] is True
 
 
 async def test_relinking_a_ticked_item_moves_its_stock(
@@ -423,6 +423,6 @@ async def test_relinking_a_ticked_item_moves_its_stock(
         headers=fake_issuer.headers("alice") | idem(),
     )
 
-    assert tracked(await cabinet(client, fake_issuer, "alice")) == {
+    assert tracked(await kitchen(client, fake_issuer, "alice")) == {
         "pork mince": ("500", "g", "confirmed")
     }

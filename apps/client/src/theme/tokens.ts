@@ -9,7 +9,7 @@
  * - Lime is for actions only (main buttons, ticks, the AI). Never text on white.
  * - Pastel tints give each list, Member and item its own colour. Quantity pills use a
  *   deeper shade of the same tint ("matched tint").
- * - Cabinet statuses have their own colours so they never get confused with the brand.
+ * - Kitchen statuses have their own colours so they never get confused with the brand.
  *
  * Contrast for every text/background pair is checked in tokens.test.ts.
  */
@@ -129,7 +129,7 @@ export const tints: Record<'light' | 'dark', Record<TintName, Tint>> = {
   },
 };
 
-/** Cabinet statuses (ADR 0003), deliberately not lime so they never read as "tap me". */
+/** Kitchen statuses (ADR 0003), deliberately not lime so they never read as "tap me". */
 export type StatusName = 'confirmed' | 'estimated' | 'unknown' | 'runOut';
 export type StatusColors = { bg: string; fg: string; border: string };
 

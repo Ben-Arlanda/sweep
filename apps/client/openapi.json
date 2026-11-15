@@ -715,20 +715,20 @@
         }
       }
     },
-    "/cabinet": {
+    "/kitchen": {
       "get": {
         "tags": [
-          "cabinet"
+          "kitchen"
         ],
-        "summary": "Get Cabinet",
-        "operationId": "get_cabinet_cabinet_get",
+        "summary": "Get Kitchen",
+        "operationId": "get_kitchen_kitchen_get",
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CabinetOut"
+                  "$ref": "#/components/schemas/KitchenOut"
                 }
               }
             }
@@ -741,13 +741,13 @@
         ]
       }
     },
-    "/cabinet/items/{ingredient_id}": {
+    "/kitchen/items/{ingredient_id}": {
       "put": {
         "tags": [
-          "cabinet"
+          "kitchen"
         ],
         "summary": "Set Tracked",
-        "operationId": "set_tracked_cabinet_items__ingredient_id__put",
+        "operationId": "set_tracked_kitchen_items__ingredient_id__put",
         "security": [
           {
             "HTTPBearer": []
@@ -792,7 +792,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CabinetItemOut"
+                  "$ref": "#/components/schemas/KitchenItemOut"
                 }
               }
             }
@@ -811,10 +811,10 @@
       },
       "delete": {
         "tags": [
-          "cabinet"
+          "kitchen"
         ],
         "summary": "Remove Tracked",
-        "operationId": "remove_tracked_cabinet_items__ingredient_id__delete",
+        "operationId": "remove_tracked_kitchen_items__ingredient_id__delete",
         "security": [
           {
             "HTTPBearer": []
@@ -860,13 +860,13 @@
         }
       }
     },
-    "/cabinet/staples/{ingredient_id}": {
+    "/kitchen/staples/{ingredient_id}": {
       "put": {
         "tags": [
-          "cabinet"
+          "kitchen"
         ],
         "summary": "Set Staple",
-        "operationId": "set_staple_cabinet_staples__ingredient_id__put",
+        "operationId": "set_staple_kitchen_staples__ingredient_id__put",
         "security": [
           {
             "HTTPBearer": []
@@ -930,10 +930,10 @@
       },
       "delete": {
         "tags": [
-          "cabinet"
+          "kitchen"
         ],
         "summary": "Remove Staple",
-        "operationId": "remove_staple_cabinet_staples__ingredient_id__delete",
+        "operationId": "remove_staple_kitchen_staples__ingredient_id__delete",
         "security": [
           {
             "HTTPBearer": []
@@ -979,10 +979,80 @@
         }
       }
     },
+    "/kitchen/places/{ingredient_id}": {
+      "put": {
+        "tags": [
+          "kitchen"
+        ],
+        "summary": "Set Place",
+        "description": "Move an item to the Fridge, Freezer or Cupboard (ADR 0011).",
+        "operationId": "set_place_kitchen_places__ingredient_id__put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "ingredient_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Ingredient Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlaceIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlaceOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/ingredients": {
       "get": {
         "tags": [
-          "cabinet"
+          "kitchen"
         ],
         "summary": "Search Ingredients",
         "operationId": "search_ingredients_ingredients_get",
@@ -1702,84 +1772,6 @@
         ],
         "title": "AddedBy"
       },
-      "CabinetItemOut": {
-        "properties": {
-          "ingredient": {
-            "$ref": "#/components/schemas/IngredientOut"
-          },
-          "quantity": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Quantity"
-          },
-          "unit": {
-            "type": "string",
-            "title": "Unit"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "confirmed",
-              "estimated",
-              "unknown"
-            ],
-            "title": "Status"
-          },
-          "last_change_source": {
-            "$ref": "#/components/schemas/ChangeSource"
-          },
-          "last_confirmed_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Last Confirmed At"
-          }
-        },
-        "type": "object",
-        "required": [
-          "ingredient",
-          "quantity",
-          "unit",
-          "status",
-          "last_change_source",
-          "last_confirmed_at"
-        ],
-        "title": "CabinetItemOut"
-      },
-      "CabinetOut": {
-        "properties": {
-          "version": {
-            "type": "integer",
-            "title": "Version"
-          },
-          "tracked": {
-            "items": {
-              "$ref": "#/components/schemas/CabinetItemOut"
-            },
-            "type": "array",
-            "title": "Tracked"
-          },
-          "staples": {
-            "items": {
-              "$ref": "#/components/schemas/StapleOut"
-            },
-            "type": "array",
-            "title": "Staples"
-          }
-        },
-        "type": "object",
-        "required": [
-          "version",
-          "tracked",
-          "staples"
-        ],
-        "title": "CabinetOut"
-      },
       "ChangeSource": {
         "type": "string",
         "enum": [
@@ -1788,7 +1780,7 @@
           "cooked"
         ],
         "title": "ChangeSource",
-        "description": "What last changed a Cabinet quantity. Feeds the calculated status (ADR 0003)."
+        "description": "What last changed a Kitchen quantity. Feeds the calculated status (ADR 0003)."
       },
       "ChatLine": {
         "properties": {
@@ -2431,6 +2423,88 @@
         ],
         "title": "ItemOut"
       },
+      "KitchenItemOut": {
+        "properties": {
+          "ingredient": {
+            "$ref": "#/components/schemas/IngredientOut"
+          },
+          "quantity": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quantity"
+          },
+          "unit": {
+            "type": "string",
+            "title": "Unit"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "confirmed",
+              "estimated",
+              "unknown"
+            ],
+            "title": "Status"
+          },
+          "last_change_source": {
+            "$ref": "#/components/schemas/ChangeSource"
+          },
+          "last_confirmed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Last Confirmed At"
+          },
+          "place": {
+            "$ref": "#/components/schemas/Place"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ingredient",
+          "quantity",
+          "unit",
+          "status",
+          "last_change_source",
+          "last_confirmed_at",
+          "place"
+        ],
+        "title": "KitchenItemOut"
+      },
+      "KitchenOut": {
+        "properties": {
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          },
+          "tracked": {
+            "items": {
+              "$ref": "#/components/schemas/KitchenItemOut"
+            },
+            "type": "array",
+            "title": "Tracked"
+          },
+          "staples": {
+            "items": {
+              "$ref": "#/components/schemas/StapleOut"
+            },
+            "type": "array",
+            "title": "Staples"
+          }
+        },
+        "type": "object",
+        "required": [
+          "version",
+          "tracked",
+          "staples"
+        ],
+        "title": "KitchenOut"
+      },
       "MeOut": {
         "properties": {
           "member": {
@@ -2475,6 +2549,46 @@
           "joined_at"
         ],
         "title": "MemberOut"
+      },
+      "Place": {
+        "type": "string",
+        "enum": [
+          "fridge",
+          "freezer",
+          "cupboard"
+        ],
+        "title": "Place"
+      },
+      "PlaceIn": {
+        "properties": {
+          "place": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Place"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "place"
+        ],
+        "title": "PlaceIn"
+      },
+      "PlaceOut": {
+        "properties": {
+          "place": {
+            "$ref": "#/components/schemas/Place"
+          }
+        },
+        "type": "object",
+        "required": [
+          "place"
+        ],
+        "title": "PlaceOut"
       },
       "PreferencesIn": {
         "properties": {
@@ -3075,12 +3189,16 @@
           "have": {
             "type": "boolean",
             "title": "Have"
+          },
+          "place": {
+            "$ref": "#/components/schemas/Place"
           }
         },
         "type": "object",
         "required": [
           "ingredient",
-          "have"
+          "have",
+          "place"
         ],
         "title": "StapleOut"
       },

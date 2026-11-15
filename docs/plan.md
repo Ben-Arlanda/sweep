@@ -1,6 +1,6 @@
 # Sweep — Architecture & Implementation Plan
 
-Status: slices 0–4b merged (foundations; Households, invites, Clerk sign-in, account deletion; shared Shopping List with live updates and an offline retry queue; Ingredients and the Cabinet; the Zest + Kitchen Table design system, ADR 0007; Recipe Knowledge Base backend and Recipes screens). App shell (`feature/brand-and-motion`): welcome and "how it works" screens before sign-in, bottom tab bar, dark by default, rounded heroes, Urbanist. Visual polish is deferred until the app is feature-complete. 4c merged: 500 Seed Recipes (all embedded), automated recipe checks gate CI. 5a merged (PR #14): Dietary Rules (vegetarian, vegan, gluten free, dairy free, excluded Ingredients) and Preferences; the LangGraph agent on Sonnet 5.5 with tools, validate loop, checkpointer and SSE (ADR 0008). 5b (`feature/agent-chat`): chat screen (streamed replies, Proposal card, resume on any device) and the Dietary Rules & Preferences screen. 5b merged (PR #15). **Pricing dropped (ADR 0010): no catalogue, no Estimated Cost, no weekly budget; slice 7 and E3 removed.** 2b (`feature/one-shopping-list`): one Shopping List per Household with Shops as item labels (bottom sheet to tag, filter by Shop), weekly budget removed. Next: slice 6a, approvals backend.
+Status: slices 0–4b merged (foundations; Households, invites, Clerk sign-in, account deletion; shared Shopping List with live updates and an offline retry queue; Ingredients and the Kitchen; the Zest + Kitchen Table design system, ADR 0007; Recipe Knowledge Base backend and Recipes screens). App shell (`feature/brand-and-motion`): welcome and "how it works" screens before sign-in, bottom tab bar, dark by default, rounded heroes, Urbanist. Visual polish is deferred until the app is feature-complete. 4c merged: 500 Seed Recipes (all embedded), automated recipe checks gate CI. 5a merged (PR #14): Dietary Rules (vegetarian, vegan, gluten free, dairy free, excluded Ingredients) and Preferences; the LangGraph agent on Sonnet 5.5 with tools, validate loop, checkpointer and SSE (ADR 0008). 5b (`feature/agent-chat`): chat screen (streamed replies, Proposal card, resume on any device) and the Dietary Rules & Preferences screen. 5b merged (PR #15). **Pricing dropped (ADR 0010): no catalogue, no Estimated Cost, no weekly budget; slice 7 and E3 removed.** 2b (`feature/one-shopping-list`): one Shopping List per Household with Shops as item labels (bottom sheet to tag, filter by Shop), weekly budget removed. 3c (`feature/kitchen`): Cabinet renamed **Kitchen** everywhere; Places (Fridge / Freezer / Cupboard) with per-item moves and a remembered filter (ADR 0011). Next: slice 6a, approvals backend.
 Language follows [`CONTEXT.md`](../CONTEXT.md). Big decisions live in [`docs/adr/`](adr/).
 ⚠️ = unverified, check before relying on it.
 
@@ -8,7 +8,7 @@ Language follows [`CONTEXT.md`](../CONTEXT.md). Big decisions live in [`docs/adr
 
 ## 1. Product promise (revised from the brief)
 
-> Plan the week from what's in your Cabinet, shop together from one shared list, and stop hunting for recipes online.
+> Plan the week from what's in your Kitchen, shop together from one shared list, and stop hunting for recipes online.
 
 **First real users:** the builder's own Household. The MVP passes when that Household plans and shops with it for **4 consecutive weeks**.
 
@@ -18,7 +18,7 @@ Changes from `PRODUCT_BRIEF.md`:
 |---|---|---|
 | "Cheapest sensible basket", budget validation, basket optimisation | **Dropped**: no prices, no budget | No official supermarket APIs; the product owner chose not to build a simulated catalogue. No learning objective depends on it (ADR 0010, supersedes 0001) |
 | Several shopping lists | **One Shopping List** per Household, items labelled by **Shop** (Coles, Woolies, Aldi, or the Household's own) | A Household shops together; shops are a label, not a separate list (ADR 0009) |
-| Recipe-based inventory consumption: later | **Mark as Cooked** in MVP | Cheap with the tiered Cabinet. Keeps it accurate (ADR 0003). |
+| Recipe-based inventory consumption: later | **Mark as Cooked** in MVP | Cheap with the tiered Kitchen. Keeps it accurate (ADR 0003). |
 | Exact inventory quantities | Staples / Tracked + Confirmed/Estimated/Unknown | Survives real kitchens (ADR 0003) |
 | "Dietary preferences" | Split into Dietary Rules (hard) and Preferences (soft) | Allergies must never be traded off |
 
@@ -29,12 +29,12 @@ Changes from `PRODUCT_BRIEF.md`:
 1. Sign in (iOS or web), create a Household, invite a second Member.
 2. Seed Recipes are available. A Member imports 3 favourite recipes by URL.
 3. Members add items to the shared Shopping List. Both devices update.
-4. Ticking items off moves linked Ingredients into the Cabinet as Confirmed. Manual Cabinet edits and corrections work.
+4. Ticking items off moves linked Ingredients into the Kitchen as Confirmed. Manual Kitchen edits and corrections work.
 5. In a Conversation: *"Plan 4 dinners for 2, no mushrooms, use the chicken we have."*
-6. The agent builds a Draft Plan, validates it, and shows a **Proposal**: Planned Meals, Shopping List additions, and the Cabinet assumptions it relied on.
+6. The agent builds a Draft Plan, validates it, and shows a **Proposal**: Planned Meals, Shopping List additions, and the Kitchen assumptions it relied on.
 7. Follow-up: *"Make Tuesday vegetarian"* edits the Draft Plan without rebuilding it.
 8. Untick anything unwanted, then Approve → Meal Plan and Shopping List update for both Members.
-9. Mark a Planned Meal as **Cooked** → Cabinet deducts (Estimated).
+9. Mark a Planned Meal as **Cooked** → Kitchen deducts (Estimated).
 10. Account deletion works in-app.
 
 **Not in MVP:** Android release builds (but Android runs in dev from day one), push notifications, full offline mode, prices and budgets, expiry dates, multi-agent, MCP inside the product.
@@ -115,7 +115,7 @@ recipe_ingredients(recipe_id, raw_text, ingredient_id?, quantity, unit,
 recipe_embeddings(recipe_id, model, embedding vector)
 recipe_search (full-text tsvector, for hybrid search later)
 
-cabinet_items(household_id, ingredient_id, quantity, unit,
+kitchen_items(household_id, ingredient_id, quantity, unit,
               last_change_source[purchase|manual|cooked], last_confirmed_at)
               -- Confirmed/Estimated/Unknown is CALCULATED when read, not stored
 
@@ -159,7 +159,7 @@ START → load_context ─→ agent ⇄ tools
                       commit (deterministic services) → respond → END
 ```
 
-- **load_context** (no LLM): Dietary Rules, Preferences, Cabinet summary with statuses, current Meal Plan, Household size → into state.
+- **load_context** (no LLM): Dietary Rules, Preferences, Kitchen summary with statuses, current Meal Plan, Household size → into state.
 - **agent**: one LLM with tools bound. It decides what to call. This is the "genuine agent" part: the path is different for "plan 5 dinners" and for "we already have pasta".
 - **tools**: a wrapper around each tool that checks arguments (Pydantic), applies timeouts (10s), retries temporary failures twice, injects `household_id` from config (never from the LLM), and returns errors to the agent as data it can react to.
 - **validate** (no LLM): every recipe exists (grounding), Dietary Rules hold, servings are sensible. If it fails, it sends a structured list of problems back to the agent, at most 2 replans. After that, the Member sees the best attempt with any meal that still has a problem removed and listed, so a Proposal never breaks a Dietary Rule.
@@ -168,7 +168,7 @@ START → load_context ─→ agent ⇄ tools
 
 ### State
 
-`messages`, `draft_plan` (structured: planned meals + list additions + cabinet assumptions), `violations`, `replan_count`, `tool_call_count`, `proposal_id`. Household and Member come from the runtime config.
+`messages`, `draft_plan` (structured: planned meals + list additions + kitchen assumptions), `violations`, `replan_count`, `tool_call_count`, `proposal_id`. Household and Member come from the runtime config.
 
 Follow-ups work because `draft_plan` persists in the checkpoint. "Swap Tuesday" makes the agent call `set_planned_meal`, not rebuild the plan.
 
@@ -178,16 +178,16 @@ Follow-ups work because `draft_plan` persists in the checkpoint. "Swap Tuesday" 
 |---|---|---|
 | read | `search_recipes(query, max_minutes?, cuisine?, must_use_ingredients?)` | Dietary Rules applied as **hard SQL filters** automatically, not left to the agent |
 | read | `get_recipe(recipe_id)` | |
-| read | `get_cabinet()` | Returns statuses, so the agent knows what's uncertain |
+| read | `get_kitchen()` | Returns statuses, so the agent knows what's uncertain |
 | read | `get_household_preferences()` | |
 | read | `get_shopping_list()` | |
-| compute | `check_cabinet_coverage(recipe_ids, servings)` | Deterministic: missing Ingredients with quantities, unit-converted |
+| compute | `check_kitchen_coverage(recipe_ids, servings)` | Deterministic: missing Ingredients with quantities, unit-converted |
 | draft | `set_planned_meal(date, recipe_id, servings)` / `remove_planned_meal(date)` | Only edits agent state |
 | draft | `adapt_recipe(recipe_id, swaps)` | Creates a Recipe Adaptation in the draft. Validated against Dietary Rules. *(Not in 5a: comes with Recipe Adaptations.)* |
 | draft | `set_list_additions(items)` | |
 | finish | `propose_plan(summary)` | Ends the turn → validate → approve |
 
-Later: `find_substitutions`, `suggest_cabinet_adjustments`, `optimise_basket`.
+Later: `find_substitutions`, `suggest_kitchen_adjustments`, `optimise_basket`.
 
 ### Limits
 
@@ -235,7 +235,7 @@ Max 15 tool calls per turn, a LangGraph recursion limit, a 60s total turn timeou
 | R3 | Hybrid: combine R1 and R2 rankings with reciprocal rank fusion (merges two ranked lists by rewarding items near the top of either) | After MVP |
 | R4 | Re-ranking the top 30 (a hosted rerank model such as Voyage/Cohere ⚠️, a local cross-encoder, or an LLM judge) | After R3 |
 
-Ranking boosts: Imported Recipes, recipes that use Cabinet items, recipes the Household rated well.
+Ranking boosts: Imported Recipes, recipes that use Kitchen items, recipes the Household rated well.
 
 ### Recommendations (applied ML)
 
@@ -260,7 +260,7 @@ Ranking boosts: Imported Recipes, recipes that use Cabinet items, recipes the Ho
 
 ### Datasets (in `evals/`, versioned)
 
-- **Agent scenarios** (~30 to start): simple plan, conflicting Rules vs Preferences, missing Cabinet data, unavailable recipe, a tool timeout (injected), bad tool arguments, follow-up edits, approval reject → revise, prompt-injected recipe.
+- **Agent scenarios** (~30 to start): simple plan, conflicting Rules vs Preferences, missing Kitchen data, unavailable recipe, a tool timeout (injected), bad tool arguments, follow-up edits, approval reject → revise, prompt-injected recipe.
 - **Retrieval set** (~50 queries with hand-labelled relevant recipes).
 
 ### Graders
@@ -315,8 +315,9 @@ Each slice is a feature branch and a focused PR that works end to end.
 | 1 | `feature/auth-households` | Clerk sign-in, JWT verification, Households, invites, account deletion, cross-Household access tests | Security (authN/authZ) |
 | 2 | `feature/shared-shopping-list` | Lists, idempotent mutations, NOTIFY → WebSocket, optimistic UI, retry queue | (product core) |
 | 2b | `feature/one-shopping-list` | One Shopping List per Household; Shops (Household-editable) as item labels, bottom sheet to tag, filter by Shop; weekly budget removed (ADR 0009, 0010) | (product) |
-| 3 | `feature/cabinet` | Ingredients + aliases, Staples/Tracked, tick → Cabinet, manual edits, calculated status | (product core) |
+| 3 | `feature/cabinet` | Ingredients + aliases, Staples/Tracked, tick → Kitchen (then called the Cabinet), manual edits, calculated status | (product core) |
 | 3b | `feature/design-foundations` | Design tokens (colour roles, pastels, type, motion), core components, `/design` preview, restyled screens, WCAG 2.2 AA checks (ADR 0007) | (product: public-ready UI, accessibility) |
+| 3c | `feature/kitchen` | Cabinet renamed **Kitchen** everywhere (UI, code, routes, tables, agent tools); **Places** (Fridge / Freezer / Cupboard) from Ingredient category with per-item override; Kitchen screen grouped by Place with filter chips (ADR 0011) | (product) |
 | 4a | `feature/recipe-knowledge-base` | Seed Recipes (197), ingredient normalisation (rules + structured-output fallback, eval), Voyage embeddings, R1 search API | LLM engineering, RAG |
 | 4b | `feature/recipe-screens` | Recipes tab: browse, search, recipe detail with matched Ingredients | (product) |
 | 4c | `feature/recipe-library-growth` | 500 Seed Recipes drafted in a Claude Code session → automated checks (CI gate) → LLM reviewer (opt-in, measured by an eval) → approval. Gap logging moved to slice 5, where agent requests also feed it | Evaluation (LLM-as-judge) |
@@ -325,7 +326,7 @@ Each slice is a feature branch and a focused PR that works end to end.
 | 5b | `feature/agent-chat` | Chat screen (streamed replies, Proposal card), Dietary Rules and Preferences screen | (product) |
 | 6a | `feature/approvals` | Proposal records, approve node with `interrupt()`, `POST /proposals/{id}/decision`, deterministic commit, audit log, Meal Plan + Planned Meals, Cooked deduction (undoable), 24h expiry | Human-in-the-loop, security |
 | 6b | `feature/approvals-client` | Proposal card with checkboxes, "replaces …" per day, Approve / Reject; Meal Plan screen (from Home); Cooked button | (product) |
-| 6c | `feature/kitchen-and-home` | Cabinet → Kitchen rename (Fridge / Freezer / Cupboard); Home "Today" showing tonight's Planned Meal | (product) |
+| 6c | `feature/home-today` | Home "Today" showing tonight's Planned Meal (the Kitchen part moved to 3c) | (product) |
 | 8 | `feature/agent-evals` | Scenario set, deterministic graders, baseline planner, Langfuse, cost tracking | Evaluation & observability |
 | 9 | `feature/retrieval-evals` | Labelled set, R2/R3/R4, comparison report | Advanced RAG |
 | 10 | `feature/ai-security` | Injection eval cases, rate limits, budget limits, hardening | AI security |

@@ -1,6 +1,6 @@
 """A Member can never read or change another Household's data.
 
-These are the most important tests in this slice: every later feature (lists, Cabinet,
+These are the most important tests in this slice: every later feature (lists, Kitchen,
 the agent) relies on this boundary holding.
 """
 

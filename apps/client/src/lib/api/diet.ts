@@ -3,7 +3,7 @@
  * towards). Any Member can change them. The agent reads them fresh on every turn, so a
  * change applies to the very next message.
  *
- * Saves aren't queued offline like Cabinet changes: they're a deliberate "Save" that
+ * Saves aren't queued offline like Kitchen changes: they're a deliberate "Save" that
  * should succeed or say why. Each still carries an Idempotency-Key, so a retry after a
  * timeout can't be applied twice.
  */

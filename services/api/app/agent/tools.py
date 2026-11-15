@@ -27,7 +27,7 @@ from app.agent.model import AgentModel
 from app.agent.state import Draft, DraftAddition, DraftMeal
 from app.embeddings import Embedder, EmbeddingUnavailable
 from app.models import Household, Member, Recipe, utcnow
-from app.services import cabinet, diet, ingredients, recipes, shopping_lists
+from app.services import diet, ingredients, kitchen, recipes, shopping_lists
 from app.services.households import MemberContext
 
 SEARCH_RESULTS = 8
@@ -148,8 +148,8 @@ class NoArgs(Args):
     pass
 
 
-async def get_cabinet(call: Call, _args: NoArgs) -> Outcome:
-    view = await cabinet.get_cabinet(call.session, call.member)
+async def get_kitchen(call: Call, _args: NoArgs) -> Outcome:
+    view = await kitchen.get_kitchen(call.session, call.member)
     now = utcnow()
     return Outcome(
         {
@@ -158,7 +158,7 @@ async def get_cabinet(call: Call, _args: NoArgs) -> Outcome:
                     "ingredient": item.ingredient.name,
                     "quantity": float(item.quantity) if item.quantity is not None else None,
                     "unit": item.ingredient.default_unit,
-                    "status": cabinet.status_of(item, now).value,
+                    "status": kitchen.status_of(item, now).value,
                 }
                 for item in view.tracked
             ],
@@ -214,8 +214,8 @@ class CoverageArgs(Args):
     meals: list[MealRef] = Field(min_length=1, max_length=14)
 
 
-async def check_cabinet_coverage(call: Call, args: CoverageArgs) -> Outcome:
-    """What these meals need that the Cabinet doesn't have. Deterministic: plain sums."""
+async def check_kitchen_coverage(call: Call, args: CoverageArgs) -> Outcome:
+    """What these meals need that the Kitchen doesn't have. Deterministic: plain sums."""
     need: dict[str, Decimal] = defaultdict(Decimal)
     units: dict[str, str] = {}
     unmeasured: set[str] = set()  # "salt to taste": needed, amount unknown
@@ -235,7 +235,7 @@ async def check_cabinet_coverage(call: Call, args: CoverageArgs) -> Outcome:
             else:
                 need[name] += line.base_quantity * scale
 
-    view = await cabinet.get_cabinet(call.session, call.member)
+    view = await kitchen.get_kitchen(call.session, call.member)
     now = utcnow()
     tracked = {item.ingredient.name: item for item in view.tracked}
     staples = {s.ingredient.name: s for s in view.staples}
@@ -260,7 +260,7 @@ async def check_cabinet_coverage(call: Call, args: CoverageArgs) -> Outcome:
                 }
             )
         else:
-            status = cabinet.status_of(item, now).value
+            status = kitchen.status_of(item, now).value
             have = item.quantity
             short = need[name] - have if name in need and have is not None else None
             if have is None or status != "confirmed":
@@ -388,10 +388,10 @@ TOOLS: tuple[Tool, ...] = (
     ),
     Tool("get_recipe", "Full ingredients and method for one recipe.", RecipeArgs, get_recipe),
     Tool(
-        "get_cabinet",
+        "get_kitchen",
         "What the Household has at home, with how sure we are (confirmed, estimated, unknown).",
         NoArgs,
-        get_cabinet,
+        get_kitchen,
     ),
     Tool(
         "get_household_preferences",
@@ -401,11 +401,11 @@ TOOLS: tuple[Tool, ...] = (
     ),
     Tool("get_shopping_list", "Items already on the Shopping Lists.", NoArgs, get_shopping_list),
     Tool(
-        "check_cabinet_coverage",
-        "For a set of meals, which Ingredients are missing from the Cabinet and how much "
+        "check_kitchen_coverage",
+        "For a set of meals, which Ingredients are missing from the Kitchen and how much "
         "to buy. Use this to build list additions; don't guess quantities.",
         CoverageArgs,
-        check_cabinet_coverage,
+        check_kitchen_coverage,
     ),
     Tool(
         "set_planned_meal",

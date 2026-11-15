@@ -86,11 +86,11 @@ export default function DesignScreen() {
       <Button title="Loading" loading onPress={() => {}} />
       <Button title="Disabled" disabled onPress={() => {}} />
 
-      <SectionLabel>Pills, tags and Cabinet status</SectionLabel>
+      <SectionLabel>Pills, tags and Kitchen status</SectionLabel>
       <Card>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.sm }}>
           <Pill>neutral</Pill>
-          <Tag>5 of 6 in Cabinet</Tag>
+          <Tag>5 of 6 in Kitchen</Tag>
           <Tag kind="need">Need: yoghurt</Tag>
           <Tag kind="action">✦ Sweep AI</Tag>
         </View>
@@ -132,14 +132,14 @@ export default function DesignScreen() {
         <Button
           title="Show a toast"
           variant="secondary"
-          onPress={() => toast({ tag: 'Cabinet', text: 'Added 1.5 kg chicken thigh' })}
+          onPress={() => toast({ tag: 'Kitchen', text: 'Added 1.5 kg chicken thigh' })}
         />
       </Card>
 
       <SectionLabel>Tiles</SectionLabel>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.md }}>
         <Tile href="/design" tint="butter" emoji="🧺" title="Weekly shop" subtitle="4 to buy" />
-        <Tile href="/design" tint="mint" emoji="🥫" title="Cabinet" subtitle="12 tracked" />
+        <Tile href="/design" tint="mint" emoji="🥫" title="Kitchen" subtitle="12 tracked" />
       </View>
 
       <SectionLabel>Cards</SectionLabel>

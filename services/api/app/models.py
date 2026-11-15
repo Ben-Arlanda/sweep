@@ -26,6 +26,7 @@ from sqlalchemy import (
 from sqlalchemy.dialects.postgresql import ARRAY, JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+from app.data.places import Place
 from app.db import Base
 from app.embeddings import DIMENSIONS
 
@@ -40,7 +41,7 @@ class Role(StrEnum):
 
 
 class ChangeSource(StrEnum):
-    """What last changed a Cabinet quantity. Feeds the calculated status (ADR 0003)."""
+    """What last changed a Kitchen quantity. Feeds the calculated status (ADR 0003)."""
 
     PURCHASE = "purchase"  # ticked off a Shopping List
     MANUAL = "manual"  # a Member set it
@@ -72,8 +73,8 @@ class Household(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utcnow, server_default=func.now()
     )
-    # Goes up on every Cabinet change; carried by change notices, like a list's version.
-    cabinet_version: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
+    # Goes up on every Kitchen change; carried by change notices, like a list's version.
+    kitchen_version: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
 
 
 class Member(Base):
@@ -187,7 +188,7 @@ class ShoppingListItem(Base):
     checked_by: Mapped[uuid.UUID | None] = mapped_column(
         ForeignKey("members.id", ondelete="SET NULL")
     )
-    # Which Ingredient this line is, if we could tell. Only linked items reach the Cabinet.
+    # Which Ingredient this line is, if we could tell. Only linked items reach the Kitchen.
     ingredient_id: Mapped[uuid.UUID | None] = mapped_column(
         ForeignKey("ingredients.id", ondelete="SET NULL")
     )
@@ -197,9 +198,9 @@ class ShoppingListItem(Base):
     shop_id: Mapped[uuid.UUID | None] = mapped_column(
         ForeignKey("shops.id", ondelete="SET NULL"), index=True
     )
-    # What ticking this item added to the Cabinet, so un-ticking can take it back out.
-    cabinet_applied: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false")
-    cabinet_added_quantity: Mapped[Decimal | None] = mapped_column(Numeric(12, 3))
+    # What ticking this item added to the Kitchen, so un-ticking can take it back out.
+    kitchen_applied: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false")
+    kitchen_added_quantity: Mapped[Decimal | None] = mapped_column(Numeric(12, 3))
 
 
 class IdempotencyKey(Base):
@@ -234,7 +235,7 @@ class Ingredient(Base):
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
     name: Mapped[str] = mapped_column(String(80), unique=True)
     category: Mapped[str] = mapped_column(String(30))
-    # The Cabinet stores this Ingredient's quantities in this unit only.
+    # The Kitchen stores this Ingredient's quantities in this unit only.
     default_unit: Mapped[str] = mapped_column(String(10))
     # Density, for turning millilitres into grams and back. Unknown for most things.
     grams_per_ml: Mapped[Decimal | None] = mapped_column(Numeric(6, 3))
@@ -267,9 +268,11 @@ class HouseholdStaple(Base):
     )
     ingredient: Mapped[Ingredient] = relationship(lazy="joined")
     ran_out_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    # Where the Household keeps it, if not the default for its category (ADR 0011).
+    place: Mapped[Place | None] = mapped_column(str_enum(Place, "staple_place"))
 
 
-class CabinetItem(Base):
+class KitchenItem(Base):
     """A Tracked Ingredient the Household has. `quantity` is in the Ingredient's own unit;
     None means "we have some, amount not recorded".
 
@@ -277,7 +280,7 @@ class CabinetItem(Base):
     `last_change_source` and `last_confirmed_at` (ADR 0003), so it can't go stale.
     """
 
-    __tablename__ = "cabinet_items"
+    __tablename__ = "kitchen_items"
     __table_args__ = (
         UniqueConstraint("household_id", "ingredient_id"),
         CheckConstraint("quantity >= 0", name="quantity_not_negative"),
@@ -293,9 +296,11 @@ class CabinetItem(Base):
     ingredient: Mapped[Ingredient] = relationship(lazy="joined")
     quantity: Mapped[Decimal | None] = mapped_column(Numeric(12, 3))
     last_change_source: Mapped[ChangeSource] = mapped_column(
-        str_enum(ChangeSource, "cabinet_change_source")
+        str_enum(ChangeSource, "kitchen_change_source")
     )
     last_confirmed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    # Where the Household keeps it, if not the default for its category (ADR 0011).
+    place: Mapped[Place | None] = mapped_column(str_enum(Place, "kitchen_place"))
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utcnow, server_default=func.now()
     )

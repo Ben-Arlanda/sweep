@@ -9,7 +9,7 @@ import { recipeEmoji } from '@/theme/foodEmoji';
 import { tintFor } from '@/theme/tint';
 import { useTheme } from '@/theme/useTheme';
 
-import { cuisineName, minutesText } from './cabinetMatch';
+import { cuisineName, minutesText } from './kitchenMatch';
 
 type Summary = components['schemas']['RecipeSummaryOut'];
 

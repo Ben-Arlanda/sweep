@@ -1,11 +1,11 @@
 """Units and amounts: deterministic, boring, and refuses to guess (ADR 0003).
 
-Every Ingredient has one base unit: grams, millilitres or a count. The Cabinet stores
+Every Ingredient has one base unit: grams, millilitres or a count. The Kitchen stores
 quantities in that base unit only, so adding "1.5 kg" to "500 g" is plain addition.
 
 Converting between weight and volume needs the Ingredient's density (`grams_per_ml`).
 Without it, or for units we don't know ("a bunch"), we return None ("amount unknown")
-rather than inventing a number. A Cabinet that is confidently wrong is worse than one
+rather than inventing a number. A Kitchen that is confidently wrong is worse than one
 that admits it doesn't know.
 """
 

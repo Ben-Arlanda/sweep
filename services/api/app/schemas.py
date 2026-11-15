@@ -16,6 +16,7 @@ from pydantic import (
 )
 
 from app.data.diet import Diet
+from app.data.places import Place
 from app.models import AddedBy, ChangeSource, RecipeKind, Role
 
 HouseholdName = Annotated[
@@ -171,7 +172,7 @@ class ShoppingListDetailOut(ShoppingListOut):
     shops: list[ShopOut]  # the Household's Shops, A to Z
 
 
-# --- Cabinet -----------------------------------------------------------------------
+# --- Kitchen -----------------------------------------------------------------------
 
 
 class SetQuantityIn(BaseModel):
@@ -184,23 +185,33 @@ class SetStapleIn(BaseModel):
     have: bool
 
 
-class CabinetItemOut(BaseModel):
+class KitchenItemOut(BaseModel):
     ingredient: IngredientOut
     quantity: Quantity | None
     unit: str  # always the Ingredient's own unit: g, ml or count
     status: Literal["confirmed", "estimated", "unknown"]
     last_change_source: ChangeSource
     last_confirmed_at: datetime
+    place: Place
 
 
 class StapleOut(BaseModel):
     ingredient: IngredientOut
     have: bool
+    place: Place
 
 
-class CabinetOut(BaseModel):
+class PlaceIn(BaseModel):
+    place: Place | None  # None = back to the default for its category
+
+
+class PlaceOut(BaseModel):
+    place: Place
+
+
+class KitchenOut(BaseModel):
     version: int
-    tracked: list[CabinetItemOut]
+    tracked: list[KitchenItemOut]
     staples: list[StapleOut]
 
 

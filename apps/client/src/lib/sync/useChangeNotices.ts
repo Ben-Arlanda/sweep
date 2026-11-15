@@ -18,7 +18,7 @@ import { useEffect } from 'react';
 import { AppState } from 'react-native';
 
 import { isNewer } from '@/features/lists/listCache';
-import { cabinetKeys } from '@/lib/api/cabinet';
+import { kitchenKeys } from '@/lib/api/kitchen';
 import { getToken, type ListDetail } from '@/lib/api/client';
 import { listKeys } from '@/lib/api/lists';
 import { API_URL } from '@/lib/config';
@@ -32,7 +32,7 @@ type Notice =
   | { type: 'resync' }
   | { type: 'changed'; entity: string; id: string; version: number };
 
-type CabinetCache = { version: number };
+type KitchenCache = { version: number };
 
 export function useChangeNotices(enabled: boolean) {
   const queryClient = useQueryClient();
@@ -47,7 +47,7 @@ export function useChangeNotices(enabled: boolean) {
 
     const refetchAll = () => {
       void queryClient.invalidateQueries({ queryKey: listKeys.all });
-      void queryClient.invalidateQueries({ queryKey: cabinetKeys.all });
+      void queryClient.invalidateQueries({ queryKey: kitchenKeys.all });
     };
 
     function handle(notice: Notice) {
@@ -57,10 +57,10 @@ export function useChangeNotices(enabled: boolean) {
         return;
       }
       if (notice.type !== 'changed') return;
-      if (notice.entity === 'cabinet') {
-        const cached = queryClient.getQueryData<CabinetCache>(cabinetKeys.all);
+      if (notice.entity === 'kitchen') {
+        const cached = queryClient.getQueryData<KitchenCache>(kitchenKeys.all);
         if (!cached || notice.version > cached.version) {
-          void queryClient.invalidateQueries({ queryKey: cabinetKeys.all });
+          void queryClient.invalidateQueries({ queryKey: kitchenKeys.all });
         }
         return;
       }
