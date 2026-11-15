@@ -6,6 +6,7 @@ from typing import Any
 import httpx
 import pytest
 from sqlalchemy import Engine, text
+from sqlalchemy.exc import IntegrityError
 
 from tests.conftest import FakeIssuer
 from tests.helpers import create_household, idem, invite, join
@@ -14,18 +15,19 @@ pytestmark = pytest.mark.anyio
 
 
 async def default_list_id(client: httpx.AsyncClient, issuer: FakeIssuer, subject: str) -> str:
-    response = await client.get("/lists", headers=issuer.headers(subject))
+    response = await client.get("/list", headers=issuer.headers(subject))
     assert response.status_code == 200, response.text
-    list_id: str = response.json()[0]["id"]
+    list_id: str = response.json()["id"]
     return list_id
 
 
 async def get_list(
     client: httpx.AsyncClient, issuer: FakeIssuer, subject: str, list_id: str
 ) -> dict[str, Any]:
-    response = await client.get(f"/lists/{list_id}", headers=issuer.headers(subject))
+    response = await client.get("/list", headers=issuer.headers(subject))
     assert response.status_code == 200, response.text
     body: dict[str, Any] = response.json()
+    assert body["id"] == list_id
     return body
 
 
@@ -56,68 +58,45 @@ async def household_of_two(client: httpx.AsyncClient, issuer: FakeIssuer) -> str
 # --- Lists -------------------------------------------------------------------------
 
 
-async def test_a_new_household_starts_with_one_shopping_list(
+async def test_a_household_has_one_shopping_list_with_three_shops(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer
 ) -> None:
     await create_household(client, fake_issuer, "alice")
 
-    response = await client.get("/lists", headers=fake_issuer.headers("alice"))
+    body = (await client.get("/list", headers=fake_issuer.headers("alice"))).json()
 
-    assert [(lst["name"], lst["unchecked_count"]) for lst in response.json()] == [
-        ("Shopping List", 0)
-    ]
-
-
-async def test_members_can_create_rename_and_delete_lists(
-    client: httpx.AsyncClient, fake_issuer: FakeIssuer
-) -> None:
-    await household_of_two(client, fake_issuer)
-    alice, bob = fake_issuer.headers("alice"), fake_issuer.headers("bob")
-
-    created = await client.post("/lists", json={"name": "Party"}, headers=alice | idem())
-    list_id = created.json()["id"]
-    renamed = await client.patch(f"/lists/{list_id}", json={"name": "BBQ"}, headers=bob | idem())
-    names = [lst["name"] for lst in (await client.get("/lists", headers=bob)).json()]
-    deleted = await client.delete(f"/lists/{list_id}", headers=bob | idem())
-    after = [lst["name"] for lst in (await client.get("/lists", headers=alice)).json()]
-
-    assert created.status_code == 201
-    assert renamed.json()["name"] == "BBQ"
-    assert names == ["Shopping List", "BBQ"]
-    assert deleted.status_code == 204
-    assert after == ["Shopping List"]
+    assert body["name"] == "Shopping List"
+    assert body["items"] == []
+    assert [shop["name"] for shop in body["shops"]] == ["Aldi", "Coles", "Woolies"]
 
 
-async def test_list_summary_counts_items_still_to_buy(
+async def test_lists_can_no_longer_be_created_renamed_or_deleted(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer
 ) -> None:
     list_id = await household_of_two(client, fake_issuer)
-    milk = await add_item(client, fake_issuer, "alice", list_id, "Milk")
-    await add_item(client, fake_issuer, "alice", list_id, "Eggs")
-    await client.put(
-        f"/lists/{list_id}/items/{milk['id']}/checked",
-        json={"checked": True},
-        headers=fake_issuer.headers("alice") | idem(),
-    )
+    alice = fake_issuer.headers("alice")
 
-    response = await client.get("/lists", headers=fake_issuer.headers("bob"))
+    attempts = [
+        await client.post("/lists", json={"name": "Party"}, headers=alice | idem()),
+        await client.patch(f"/lists/{list_id}", json={"name": "BBQ"}, headers=alice | idem()),
+        await client.delete(f"/lists/{list_id}", headers=alice | idem()),
+    ]
 
-    assert response.json()[0]["unchecked_count"] == 1
+    assert [r.status_code for r in attempts] == [404, 404, 404]  # the routes are gone
 
 
-async def test_a_household_has_at_most_20_lists(
-    client: httpx.AsyncClient, fake_issuer: FakeIssuer
+async def test_the_database_allows_only_one_list_per_household(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, db: Engine
 ) -> None:
     await create_household(client, fake_issuer, "alice")
-    alice = fake_issuer.headers("alice")
-    for n in range(19):
-        ok = await client.post("/lists", json={"name": f"L{n}"}, headers=alice | idem())
-        assert ok.status_code == 201
 
-    response = await client.post("/lists", json={"name": "One too many"}, headers=alice | idem())
-
-    assert response.status_code == 409
-    assert response.json()["code"] == "limit_reached"
+    with db.connect() as conn, pytest.raises(IntegrityError):
+        conn.execute(
+            text(
+                "INSERT INTO shopping_lists (id, household_id, name, version) "
+                "SELECT gen_random_uuid(), household_id, 'Second', 1 FROM shopping_lists"
+            )
+        )
 
 
 # --- Items -------------------------------------------------------------------------
@@ -316,10 +295,7 @@ async def test_members_cannot_touch_another_households_list(
     own_list = await default_list_id(client, fake_issuer, "mallory")
 
     attempts = [
-        await client.get(f"/lists/{list_id}", headers=mallory),
         await client.post(f"/lists/{list_id}/items", json={"text": "x"}, headers=mallory | idem()),
-        await client.patch(f"/lists/{list_id}", json={"name": "x"}, headers=mallory | idem()),
-        await client.delete(f"/lists/{list_id}", headers=mallory | idem()),
         # Alice's item id, smuggled in under Mallory's own list.
         await client.put(
             f"/lists/{own_list}/items/{item['id']}/checked",
@@ -334,9 +310,7 @@ async def test_members_cannot_touch_another_households_list(
     assert [r.status_code for r in attempts] == [404] * len(attempts)
     after = await get_list(client, fake_issuer, "alice", list_id)
     assert after["items"] == [item]
-    assert [lst["name"] for lst in (await client.get("/lists", headers=mallory)).json()] == [
-        "Shopping List"
-    ]
+    assert (await client.get("/list", headers=mallory)).json()["items"] == []
 
 
 async def test_deleting_the_last_member_removes_the_households_lists(

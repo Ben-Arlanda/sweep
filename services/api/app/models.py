@@ -121,23 +121,43 @@ class HouseholdInvite(Base):
 
 
 class ShoppingList(Base):
-    """One of a Household's Shopping Lists.
+    """The Household's one Shopping List (ADR 0009: exactly one, enforced by UNIQUE).
 
-    `version` goes up by one on every change to the list or its items. Change notices
-    carry it, so a device can tell whether its copy is already up to date.
+    `version` goes up by one on every change to the list, its items or the Household's
+    Shops. Change notices carry it, so a device can tell whether its copy is up to date.
     """
 
     __tablename__ = "shopping_lists"
 
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
     household_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey("households.id", ondelete="CASCADE"), index=True
+        ForeignKey("households.id", ondelete="CASCADE"), unique=True
     )
     name: Mapped[str] = mapped_column(String(60))
     version: Mapped[int] = mapped_column(Integer, default=1, server_default="1")
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utcnow, server_default=func.now()
     )
+
+
+class Shop(Base):
+    """Where a Household plans to buy things: a label on Shopping List items, not a list.
+
+    Names are unique per Household ignoring case, so "coles" can't sit beside "Coles".
+    """
+
+    __tablename__ = "shops"
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    household_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("households.id", ondelete="CASCADE"))
+    name: Mapped[str] = mapped_column(String(40))
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utcnow, server_default=func.now()
+    )
+
+
+# An expression index (lower(name)) has to be declared once the columns exist.
+Index("uq_shops_household_id_name", Shop.household_id, func.lower(Shop.name), unique=True)
 
 
 class ShoppingListItem(Base):
@@ -173,6 +193,10 @@ class ShoppingListItem(Base):
     )
     # Loaded with the item every time (a JOIN), so reading it never needs an extra await.
     ingredient: Mapped["Ingredient | None"] = relationship(lazy="joined")
+    # Where to buy it. None = any shop. SET NULL: deleting a Shop keeps its items.
+    shop_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("shops.id", ondelete="SET NULL"), index=True
+    )
     # What ticking this item added to the Cabinet, so un-ticking can take it back out.
     cabinet_applied: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false")
     cabinet_added_quantity: Mapped[Decimal | None] = mapped_column(Numeric(12, 3))
@@ -316,7 +340,6 @@ class HouseholdPreferences(Base):
     __tablename__ = "household_preferences"
     __table_args__ = (
         CheckConstraint("household_size BETWEEN 1 AND 20", name="household_size_sensible"),
-        CheckConstraint("weekly_budget > 0", name="weekly_budget_positive"),
     )
 
     household_id: Mapped[uuid.UUID] = mapped_column(
@@ -324,7 +347,6 @@ class HouseholdPreferences(Base):
     )
     household_size: Mapped[int | None] = mapped_column(SmallInteger)
     cuisines: Mapped[list[str]] = mapped_column(ARRAY(String(40)), default=list)
-    weekly_budget: Mapped[Decimal | None] = mapped_column(Numeric(8, 2))
 
 
 class RecipeKind(StrEnum):

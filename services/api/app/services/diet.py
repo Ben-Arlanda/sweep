@@ -11,7 +11,6 @@ breaking it, because we can't tell what's in "1 jar mystery sauce".
 import uuid
 from collections.abc import Iterable
 from dataclasses import dataclass, field
-from decimal import Decimal
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -160,7 +159,6 @@ async def set_preferences(
     household_id: uuid.UUID,
     household_size: int | None,
     cuisines: Iterable[str],
-    weekly_budget: Decimal | None,
 ) -> HouseholdPreferences:
     row = await session.get(HouseholdPreferences, household_id)
     if row is None:
@@ -168,6 +166,5 @@ async def set_preferences(
         session.add(row)
     row.household_size = household_size
     row.cuisines = sorted({c.lower() for c in cuisines})
-    row.weekly_budget = weekly_budget
     await session.flush()
     return row

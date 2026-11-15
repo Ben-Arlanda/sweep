@@ -1,4 +1,4 @@
-"""HTTP routes for Shopping Lists and their items.
+"""HTTP routes for the Household's Shopping List, its items and its Shops.
 
 Every mutation needs an `Idempotency-Key` header and runs through `idempotent`, which
 replays the stored response for a retry instead of applying the change twice.
@@ -15,80 +15,70 @@ from app.schemas import (
     AddItemIn,
     EditItemIn,
     ItemOut,
-    ListNameIn,
     SetCheckedIn,
+    ShopIn,
+    ShopOut,
     ShoppingListDetailOut,
     ShoppingListOut,
-    ShoppingListSummaryOut,
 )
 from app.services import shopping_lists as lists
 from app.services.shopping_lists import UNSET
 
 router = APIRouter(prefix="/lists", tags=["shopping-lists"])
+list_router = APIRouter(tags=["shopping-lists"])
+shops_router = APIRouter(prefix="/shops", tags=["shopping-lists"])
 
 
-@router.get("")
-async def list_lists(ctx: MemberDep, session: SessionDep) -> list[ShoppingListSummaryOut]:
-    return [
-        ShoppingListSummaryOut(
-            **ShoppingListOut.model_validate(s.list).model_dump(),
-            unchecked_count=s.unchecked_count,
-        )
-        for s in await lists.list_lists(session, ctx)
-    ]
+@list_router.get("/list")
+async def get_list(ctx: MemberDep, session: SessionDep) -> ShoppingListDetailOut:
+    """The Household's one Shopping List, with its items and Shops (ADR 0009)."""
+    view = await lists.get_household_list(session, ctx)
+    return ShoppingListDetailOut(
+        **ShoppingListOut.model_validate(view.shopping_list).model_dump(),
+        items=[ItemOut.model_validate(i) for i in view.items],
+        shops=[ShopOut.model_validate(s) for s in view.shops],
+    )
 
 
-@router.post("", status_code=status.HTTP_201_CREATED, response_model=ShoppingListOut)
-async def create_list(
-    body: ListNameIn,
+@shops_router.post("", status_code=status.HTTP_201_CREATED, response_model=ShopOut)
+async def add_shop(
+    body: ShopIn,
     request: Request,
     ctx: MemberDep,
     session: SessionDep,
     key: IdempotencyKeyHeader,
 ) -> Response:
-    async def work() -> ShoppingListOut:
-        return ShoppingListOut.model_validate(await lists.create_list(session, ctx, body.name))
+    async def work() -> ShopOut:
+        return ShopOut.model_validate(await lists.add_shop(session, ctx, body.name))
 
     return await idempotent(request, session, ctx, key, work, status.HTTP_201_CREATED)
 
 
-@router.get("/{list_id}")
-async def get_list(
-    list_id: uuid.UUID, ctx: MemberDep, session: SessionDep
-) -> ShoppingListDetailOut:
-    lst, items = await lists.get_list(session, ctx, list_id)
-    return ShoppingListDetailOut(
-        **ShoppingListOut.model_validate(lst).model_dump(),
-        items=[ItemOut.model_validate(i) for i in items],
-    )
-
-
-@router.patch("/{list_id}", response_model=ShoppingListOut)
-async def rename_list(
-    list_id: uuid.UUID,
-    body: ListNameIn,
+@shops_router.patch("/{shop_id}", response_model=ShopOut)
+async def rename_shop(
+    shop_id: uuid.UUID,
+    body: ShopIn,
     request: Request,
     ctx: MemberDep,
     session: SessionDep,
     key: IdempotencyKeyHeader,
 ) -> Response:
-    async def work() -> ShoppingListOut:
-        lst = await lists.rename_list(session, ctx, list_id, body.name)
-        return ShoppingListOut.model_validate(lst)
+    async def work() -> ShopOut:
+        return ShopOut.model_validate(await lists.rename_shop(session, ctx, shop_id, body.name))
 
     return await idempotent(request, session, ctx, key, work)
 
 
-@router.delete("/{list_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_list(
-    list_id: uuid.UUID,
+@shops_router.delete("/{shop_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_shop(
+    shop_id: uuid.UUID,
     request: Request,
     ctx: MemberDep,
     session: SessionDep,
     key: IdempotencyKeyHeader,
 ) -> Response:
     async def work() -> None:
-        await lists.delete_list(session, ctx, list_id)
+        await lists.delete_shop(session, ctx, shop_id)
 
     return await idempotent(request, session, ctx, key, work, status.HTTP_204_NO_CONTENT)
 
@@ -112,6 +102,7 @@ async def add_item(
             body.unit,
             item_id=body.id,
             ingredient_id=body.ingredient_id,
+            shop_id=body.shop_id,
         )
         return ItemOut.model_validate(item)
 
@@ -140,6 +131,7 @@ async def edit_item(
             quantity=body.quantity if "quantity" in sent else UNSET,
             unit=body.unit if "unit" in sent else UNSET,
             ingredient_id=body.ingredient_id if "ingredient_id" in sent else UNSET,
+            shop_id=body.shop_id if "shop_id" in sent else UNSET,
         )
         return ItemOut.model_validate(item)
 
