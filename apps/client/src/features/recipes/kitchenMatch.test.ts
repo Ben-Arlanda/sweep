@@ -12,6 +12,7 @@ const ingredient = (id: string, name: string, unit = 'g') => ({
   category: 'pantry',
   default_unit: unit,
   is_default_staple: false,
+  is_household_ingredient: false,
 });
 
 const line = (over: Partial<Line> = {}): Line => ({

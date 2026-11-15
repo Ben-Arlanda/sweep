@@ -25,6 +25,7 @@ const mutationKeys = {
   setStaple: ['kitchen', 'setStaple'] as const,
   removeStaple: ['kitchen', 'removeStaple'] as const,
   setPlace: ['kitchen', 'setPlace'] as const,
+  addNew: ['kitchen', 'addNew'] as const,
 };
 
 type Keyed = { idempotencyKey: string };
@@ -32,6 +33,8 @@ type SetTrackedVars = Keyed & { ingredientId: string; quantity: string | null };
 type IngredientVars = Keyed & { ingredientId: string };
 type SetStapleVars = Keyed & { ingredientId: string; have: boolean };
 type SetPlaceVars = Keyed & { ingredientId: string; place: Place | null };
+// Two requests, so two keys, both made at tap time: a retry repeats each one safely.
+type AddNewVars = { name: string; createKey: string; setKey: string };
 
 const header = (v: Keyed) => ({ 'Idempotency-Key': v.idempotencyKey });
 const scope = { id: 'kitchen' };
@@ -95,6 +98,33 @@ export function registerKitchenMutations(queryClient: QueryClient) {
       ),
     ...settled,
   });
+
+  // "Add 'kale'": find or create the Household Ingredient, then put it in the Kitchen.
+  queryClient.setMutationDefaults(mutationKeys.addNew, {
+    mutationFn: async (v: AddNewVars) => {
+      const ingredient = unwrap(
+        await api.POST('/ingredients', {
+          params: { header: { 'Idempotency-Key': v.createKey } },
+          body: { name: v.name },
+        }),
+      );
+      return unwrap(
+        await api.PUT('/kitchen/items/{ingredient_id}', {
+          params: {
+            path: { ingredient_id: ingredient.id },
+            header: { 'Idempotency-Key': v.setKey },
+          },
+          body: { quantity: null },
+        }),
+      );
+    },
+    retry: shouldRetry,
+    onSettled: () => {
+      void queryClient.invalidateQueries({ queryKey: kitchenKeys.all });
+      // Search results are cached for minutes; the new Ingredient should show up now.
+      void queryClient.invalidateQueries({ queryKey: ['ingredients'] });
+    },
+  });
 }
 
 export function useKitchen() {
@@ -137,6 +167,10 @@ export function useKitchenActions() {
     mutationKey: mutationKeys.setPlace,
     scope,
   });
+  const addNew = useMutation<unknown, Error, AddNewVars>({
+    mutationKey: mutationKeys.addNew,
+    scope,
+  });
 
   return {
     error:
@@ -144,7 +178,8 @@ export function useKitchenActions() {
       removeTracked.error ??
       setStaple.error ??
       removeStaple.error ??
-      setPlace.error,
+      setPlace.error ??
+      addNew.error,
     setAmount: (ingredientId: string, quantity: string | null) =>
       setTracked.mutate({ ingredientId, quantity, idempotencyKey: randomUUID() }),
     usedUp: (ingredientId: string) =>
@@ -156,5 +191,8 @@ export function useKitchenActions() {
     /** Move it to another Place; null puts it back where its category usually goes. */
     setPlace: (ingredientId: string, place: Place | null) =>
       setPlace.mutate({ ingredientId, place, idempotencyKey: randomUUID() }),
+    /** Add something Sweep doesn't know yet ("kale"), as "some". */
+    addNew: (name: string) =>
+      addNew.mutate({ name, createKey: randomUUID(), setKey: randomUUID() }),
   };
 }

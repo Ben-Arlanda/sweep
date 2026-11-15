@@ -1,7 +1,13 @@
 /// <reference types="jest" />
 import { byPlace, type KitchenRows } from './places';
 
-const ing = (name: string) => ({ id: name, name, category: 'x', default_unit: 'g' });
+const ing = (name: string) => ({
+  id: name,
+  name,
+  category: 'x',
+  default_unit: 'g',
+  is_household_ingredient: false,
+});
 const tracked = (name: string, place: 'fridge' | 'freezer' | 'cupboard') => ({
   ingredient: ing(name),
   quantity: '1',

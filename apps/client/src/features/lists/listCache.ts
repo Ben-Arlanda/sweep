@@ -7,7 +7,7 @@
  * rules. When the server's answer arrives, the refetch replaces the guess with the real
  * thing, so a mismatch fixes itself.
  */
-import type { Item, ListDetail } from '@/lib/api/client';
+import type { Ingredient, Item, ListDetail } from '@/lib/api/client';
 
 export function newItem(fields: {
   id: string;
@@ -54,6 +54,21 @@ export function withItemChecked(
         ? { ...item, checked: true, checked_at: now, checked_by: memberId }
         : { ...item, checked: false, checked_at: null, checked_by: null };
     }),
+  };
+}
+
+/**
+ * "Link to…": the item now means this Ingredient (null: don't add it to the Kitchen).
+ * Moving Kitchen stock and saving the Household link are the server's job.
+ */
+export function withItemIngredient(
+  list: ListDetail,
+  itemId: string,
+  ingredient: Ingredient | null,
+): ListDetail {
+  return {
+    ...list,
+    items: list.items.map((item) => (item.id === itemId ? { ...item, ingredient } : item)),
   };
 }
 

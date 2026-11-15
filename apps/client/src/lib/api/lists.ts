@@ -32,11 +32,12 @@ import {
   newItem,
   withItemAdded,
   withItemChecked,
+  withItemIngredient,
   withItemRemoved,
 } from '@/features/lists/listCache';
 import { withItemShop } from '@/features/lists/shops';
 
-import { api, ApiError, unwrap, type ListDetail, type MeOut } from './client';
+import { api, ApiError, unwrap, type Ingredient, type ListDetail, type MeOut } from './client';
 import { queryKeys as householdKeys } from './households';
 
 export const listKeys = {
@@ -48,6 +49,7 @@ const mutationKeys = {
   addItem: ['lists', 'addItem'] as const,
   setChecked: ['lists', 'setChecked'] as const,
   setShop: ['lists', 'setShop'] as const,
+  link: ['lists', 'link'] as const,
   deleteItem: ['lists', 'deleteItem'] as const,
   addShop: ['lists', 'addShop'] as const,
   renameShop: ['lists', 'renameShop'] as const,
@@ -74,6 +76,11 @@ type SetShopVars = Keyed & {
   listId: string;
   itemId: string;
   shopId: string | null;
+};
+type LinkVars = Keyed & {
+  listId: string;
+  itemId: string;
+  ingredient: Ingredient | null; // the whole thing, so the optimistic row can show its name
 };
 type DeleteItemVars = Keyed & { listId: string; itemId: string };
 type AddShopVars = Keyed & { name: string };
@@ -168,6 +175,22 @@ export function registerListMutations(queryClient: QueryClient) {
         }),
       ),
     ...optimistic<SetShopVars>((list, v) => withItemShop(list, v.itemId, v.shopId)),
+  });
+
+  // Relinking also saves a Household link for the item's name and, for a ticked item,
+  // moves its Kitchen stock (ADR 0012). settle() refetches the Kitchen afterwards.
+  queryClient.setMutationDefaults(mutationKeys.link, {
+    mutationFn: async (v: LinkVars) =>
+      unwrap(
+        await api.PATCH('/lists/{list_id}/items/{item_id}', {
+          params: {
+            path: { list_id: v.listId, item_id: v.itemId },
+            header: header(v),
+          },
+          body: { ingredient_id: v.ingredient?.id ?? null },
+        }),
+      ),
+    ...optimistic<LinkVars>((list, v) => withItemIngredient(list, v.itemId, v.ingredient)),
   });
 
   queryClient.setMutationDefaults(mutationKeys.deleteItem, {
@@ -265,9 +288,13 @@ export function useListActions(listId: string) {
     mutationKey: mutationKeys.deleteItem,
     scope: SCOPE,
   });
+  const relink = useMutation<unknown, Error, LinkVars>({
+    mutationKey: mutationKeys.link,
+    scope: SCOPE,
+  });
 
   return {
-    error: add.error ?? check.error ?? tag.error ?? remove.error,
+    error: add.error ?? check.error ?? tag.error ?? remove.error ?? relink.error,
     addItem: (text: string) =>
       add.mutate({
         listId,
@@ -280,6 +307,9 @@ export function useListActions(listId: string) {
     setShop: (itemId: string, shopId: string | null) =>
       tag.mutate({ listId, itemId, shopId, idempotencyKey: randomUUID() }),
     deleteItem: (itemId: string) => remove.mutate({ listId, itemId, idempotencyKey: randomUUID() }),
+    /** What this item is in the Kitchen; null: don't add it to the Kitchen. */
+    link: (itemId: string, ingredient: Ingredient | null) =>
+      relink.mutate({ listId, itemId, ingredient, idempotencyKey: randomUUID() }),
   };
 }
 
