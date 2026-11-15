@@ -21,6 +21,7 @@ from app.routes import (
     dietary_rules,
     households,
     kitchen,
+    meal_plan,
     proposals,
     realtime,
     recipes,
@@ -137,6 +138,7 @@ def create_app(
     app.include_router(dietary_rules.router)
     app.include_router(conversations.router)
     app.include_router(proposals.router)
+    app.include_router(meal_plan.router)
     app.include_router(realtime.router)
 
     @app.get("/health")

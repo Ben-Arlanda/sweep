@@ -299,6 +299,28 @@ class PreferencesOut(BaseModel):
     cuisines: list[str]
 
 
+# --- Meal Plan ----------------------------------------------------------------------
+
+
+class PlannedMealOut(BaseModel):
+    id: uuid.UUID
+    date: date
+    recipe_id: uuid.UUID
+    title: str
+    servings: int
+    cooked_at: datetime | None
+    cooked_by: uuid.UUID | None
+
+
+class MealPlanOut(BaseModel):
+    """A week of Planned Meals, from `start`. `version` matches the change notices."""
+
+    start: date
+    end: date
+    version: int
+    meals: list[PlannedMealOut]
+
+
 # --- Conversations with the agent --------------------------------------------------
 
 

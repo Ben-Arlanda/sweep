@@ -1704,6 +1704,287 @@
         }
       }
     },
+    "/proposals/{proposal_id}/decision": {
+      "post": {
+        "tags": [
+          "agent"
+        ],
+        "summary": "Decide",
+        "operationId": "decide_proposals__proposal_id__decision_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "proposal_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Proposal Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DecisionIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProposalOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/meal-plan": {
+      "get": {
+        "tags": [
+          "meal-plan"
+        ],
+        "summary": "Get Week",
+        "operationId": "get_week_meal_plan_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MealPlanOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/planned-meals/{meal_id}": {
+      "delete": {
+        "tags": [
+          "meal-plan"
+        ],
+        "summary": "Remove",
+        "operationId": "remove_planned_meals__meal_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "meal_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Meal Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/planned-meals/{meal_id}/cooked": {
+      "post": {
+        "tags": [
+          "meal-plan"
+        ],
+        "summary": "Mark Cooked",
+        "operationId": "mark_cooked_planned_meals__meal_id__cooked_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "meal_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Meal Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlannedMealOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "meal-plan"
+        ],
+        "summary": "Undo Cooked",
+        "operationId": "undo_cooked_planned_meals__meal_id__cooked_delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "meal_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Meal Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlannedMealOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/health": {
       "get": {
         "summary": "Health",
@@ -1954,6 +2235,55 @@
           "display_name"
         ],
         "title": "CreateHouseholdIn"
+      },
+      "DecisionIn": {
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "approve",
+              "reject"
+            ],
+            "title": "Action"
+          },
+          "keep_meals": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "type": "array",
+                "maxItems": 14
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Keep Meals"
+          },
+          "keep_additions": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array",
+                "maxItems": 60
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Keep Additions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "action"
+        ],
+        "title": "DecisionIn",
+        "description": "Approve (optionally with some meals or additions unticked) or reject.\n\n`keep_meals` / `keep_additions` list what stays ticked: dates of proposed meals, and\npositions in `list_additions`. Leave one out to keep all of that kind."
       },
       "Diet": {
         "type": "string",
@@ -2600,6 +2930,40 @@
         ],
         "title": "MeOut"
       },
+      "MealPlanOut": {
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date",
+            "title": "Start"
+          },
+          "end": {
+            "type": "string",
+            "format": "date",
+            "title": "End"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          },
+          "meals": {
+            "items": {
+              "$ref": "#/components/schemas/PlannedMealOut"
+            },
+            "type": "array",
+            "title": "Meals"
+          }
+        },
+        "type": "object",
+        "required": [
+          "start",
+          "end",
+          "version",
+          "meals"
+        ],
+        "title": "MealPlanOut",
+        "description": "A week of Planned Meals, from `start`. `version` matches the change notices."
+      },
       "MemberOut": {
         "properties": {
           "id": {
@@ -2668,6 +3032,68 @@
           "place"
         ],
         "title": "PlaceOut"
+      },
+      "PlannedMealOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "recipe_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Recipe Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "servings": {
+            "type": "integer",
+            "title": "Servings"
+          },
+          "cooked_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cooked At"
+          },
+          "cooked_by": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cooked By"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "date",
+          "recipe_id",
+          "title",
+          "servings",
+          "cooked_at",
+          "cooked_by"
+        ],
+        "title": "PlannedMealOut"
       },
       "PreferencesIn": {
         "properties": {
@@ -2762,6 +3188,17 @@
           "servings": {
             "type": "integer",
             "title": "Servings"
+          },
+          "replaces": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Replaces"
           }
         },
         "type": "object",
@@ -2775,6 +3212,22 @@
       },
       "ProposalOut": {
         "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ProposalStatus",
+            "default": "pending"
+          },
           "summary": {
             "type": "string",
             "title": "Summary"
@@ -2806,6 +3259,16 @@
             },
             "type": "array",
             "title": "Dropped"
+          },
+          "outcome": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProposalOutcomeOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "type": "object",
@@ -2817,7 +3280,50 @@
           "dropped"
         ],
         "title": "ProposalOut",
-        "description": "What the Member is asked to approve (slice 6). Meals that broke a Dietary Rule are\nalready left out and named in `dropped`; `check_label` lists ingredients to check."
+        "description": "What the Member is asked to approve. Meals that broke a Dietary Rule are already\nleft out and named in `dropped`; `check_label` lists ingredients to check."
+      },
+      "ProposalOutcomeOut": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "saved_meals": {
+            "type": "integer",
+            "title": "Saved Meals"
+          },
+          "added_items": {
+            "type": "integer",
+            "title": "Added Items"
+          },
+          "skipped": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Skipped"
+          }
+        },
+        "type": "object",
+        "required": [
+          "message",
+          "saved_meals",
+          "added_items",
+          "skipped"
+        ],
+        "title": "ProposalOutcomeOut",
+        "description": "What approving did. `message` is written by code, not the LLM."
+      },
+      "ProposalStatus": {
+        "type": "string",
+        "enum": [
+          "pending",
+          "approved",
+          "rejected",
+          "superseded",
+          "expired"
+        ],
+        "title": "ProposalStatus"
       },
       "RecipeIngredientOut": {
         "properties": {

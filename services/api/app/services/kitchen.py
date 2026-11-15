@@ -18,6 +18,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from decimal import Decimal
 from enum import StrEnum
+from typing import Any
 
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -30,6 +31,7 @@ from app.models import (
     HouseholdStaple,
     Ingredient,
     KitchenItem,
+    Recipe,
     ShoppingListItem,
     utcnow,
 )
@@ -270,6 +272,102 @@ async def undo_purchase(
     existing.updated_at = utcnow()
     if existing.quantity == 0:
         await session.delete(existing)
+
+
+# --- Mark as Cooked ----------------------------------------------------------------------
+
+
+def _needs(recipe: Recipe, servings: int) -> dict[uuid.UUID, Decimal | None]:
+    """How much of each Ingredient cooking this recipe for `servings` uses, in the
+    Ingredient's own unit. None = used, amount unknown. Optional lines don't count."""
+    scale = Decimal(servings) / Decimal(recipe.servings)
+    needs: dict[uuid.UUID, Decimal | None] = {}
+    for line in recipe.ingredients:
+        if line.ingredient_id is None or line.optional:
+            continue
+        amount = line.base_quantity * scale if line.base_quantity is not None else None
+        if line.ingredient_id in needs:
+            known = needs[line.ingredient_id]
+            amount = known + amount if known is not None and amount is not None else known or amount
+        needs[line.ingredient_id] = amount
+    return needs
+
+
+async def deduct_cooked(
+    session: AsyncSession, household_id: uuid.UUID, recipe: Recipe, servings: int
+) -> list[dict[str, Any]]:
+    """A Planned Meal was Cooked: take what it used out of the Tracked items. Caller
+    holds `lock`. Returns exactly what changed, so `restore_cooked` can put it back.
+
+    - Staples aren't touched (they have no amount), nor is anything not in the Kitchen.
+    - Never below zero: a row that would go to zero or less is removed.
+    - "We have some" (no amount) stays "some". Every touched row becomes Estimated.
+    """
+    changes: list[dict[str, Any]] = []
+    for ingredient_id, need in _needs(recipe, servings).items():
+        row = await _tracked(session, household_id, ingredient_id)
+        if row is None:
+            continue
+        change: dict[str, Any] = {
+            "ingredient_id": str(ingredient_id),
+            "taken": None,
+            "removed": False,
+            "source": row.last_change_source.value,
+            "confirmed_at": row.last_confirmed_at.isoformat(),
+            "place": row.place.value if row.place else None,
+        }
+        if need is not None and row.quantity is not None:
+            taken = min(row.quantity, need)
+            change["taken"] = str(taken)
+            row.quantity -= taken
+        if row.quantity is not None and row.quantity <= 0:
+            change["removed"] = True
+            await session.delete(row)
+        else:
+            # The amount is now our sum, not something a Member checked: Estimated.
+            # last_confirmed_at stays: Cooking isn't a confirmation.
+            row.last_change_source = ChangeSource.COOKED
+            row.updated_at = utcnow()
+        changes.append(change)
+    if changes:
+        await _bump(session, household_id)
+    return changes
+
+
+async def restore_cooked(
+    session: AsyncSession, household_id: uuid.UUID, changes: list[dict[str, Any]]
+) -> None:
+    """Undo Cooked: put back what `deduct_cooked` took. Caller holds `lock`.
+
+    If a Member has changed a row since (a new amount, a purchase), their change wins
+    on the status; the taken amount is still added back where there's an amount."""
+    for change in changes:
+        ingredient_id = uuid.UUID(change["ingredient_id"])
+        taken = Decimal(change["taken"]) if change["taken"] is not None else None
+        row = await _tracked(session, household_id, ingredient_id)
+        if row is None:
+            if not change["removed"]:
+                continue  # removed by a Member since: leave it gone
+            ingredient = await session.get_one(Ingredient, ingredient_id)
+            session.add(
+                KitchenItem(
+                    household_id=household_id,
+                    ingredient=ingredient,
+                    quantity=taken,
+                    last_change_source=ChangeSource(change["source"]),
+                    last_confirmed_at=datetime.fromisoformat(change["confirmed_at"]),
+                    place=Place(change["place"]) if change["place"] else None,
+                    updated_at=utcnow(),
+                )
+            )
+            continue
+        if taken is not None and row.quantity is not None:
+            row.quantity += taken
+        if row.last_change_source == ChangeSource.COOKED:
+            row.last_change_source = ChangeSource(change["source"])
+        row.updated_at = utcnow()
+    if changes:
+        await _bump(session, household_id)
 
 
 # --- Internals -------------------------------------------------------------------------
