@@ -135,8 +135,10 @@ async def set_place(
 
 @router.get("/ingredients")
 async def search_ingredients(
-    ctx: MemberDep,  # signed-in Members only, though the data isn't Household-specific
+    ctx: MemberDep,
     session: SessionDep,
     q: str = Query(min_length=1, max_length=80),
 ) -> list[IngredientOut]:
-    return [IngredientOut.model_validate(i) for i in await ingredients.search(session, q)]
+    """Starter Ingredients plus the caller's own Household Ingredients (ADR 0012)."""
+    found = await ingredients.search(session, ctx.household.id, q)
+    return [IngredientOut.model_validate(i) for i in found]

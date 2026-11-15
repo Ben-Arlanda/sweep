@@ -9,7 +9,6 @@ from typing import Sequence, Union
 
 from alembic import op
 
-from app.seed import upsert_ingredients
 import sqlalchemy as sa
 
 
@@ -71,8 +70,10 @@ def upgrade() -> None:
     op.create_foreign_key(op.f('fk_shopping_list_items_ingredient_id_ingredients'), 'shopping_list_items', 'ingredients', ['ingredient_id'], ['id'], ondelete='SET NULL')
     # ### end Alembic commands ###
 
-    # Reference data, and the default Staples for Households created before this slice.
-    upsert_ingredients(op.get_bind())
+    # Default Staples for Households created before this slice.
+    # Loading the starter Ingredients moved to 1a8824d1da9a (it's live code, written for
+    # today's table). On a fresh database there are no Households yet, so nothing here
+    # needs them.
     op.execute(
         """
         INSERT INTO household_staples (household_id, ingredient_id)

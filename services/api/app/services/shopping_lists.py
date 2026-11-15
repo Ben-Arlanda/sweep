@@ -160,9 +160,9 @@ async def add_item(
         if quantity is not None:
             text = name[:1].upper() + name[1:]
     ingredient = (
-        await _ingredient(session, ingredient_id)
+        await _ingredient(session, ctx, ingredient_id)
         if ingredient_id is not None
-        else await ingredients.match(session, text)
+        else await ingredients.match(session, ctx.household.id, text)
     )
 
     item = ShoppingListItem(
@@ -206,7 +206,7 @@ async def edit_item(
         was_applied = item.kitchen_applied
         await kitchen.undo_purchase(session, ctx.household.id, item)
         item.ingredient = (
-            await _ingredient(session, ingredient_id) if ingredient_id is not None else None
+            await _ingredient(session, ctx, ingredient_id) if ingredient_id is not None else None
         )
         if was_applied:
             await kitchen.apply_purchase(session, ctx.household.id, item)
@@ -304,8 +304,10 @@ async def _find_item(
     return item
 
 
-async def _ingredient(session: AsyncSession, ingredient_id: uuid.UUID) -> Ingredient:
-    ingredient = await ingredients.get(session, ingredient_id)
+async def _ingredient(
+    session: AsyncSession, ctx: MemberContext, ingredient_id: uuid.UUID
+) -> Ingredient:
+    ingredient = await ingredients.get(session, ctx.household.id, ingredient_id)
     if ingredient is None:
         raise NotFound("No such Ingredient")
     return ingredient

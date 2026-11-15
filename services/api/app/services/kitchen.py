@@ -34,6 +34,7 @@ from app.models import (
     utcnow,
 )
 from app.realtime import notify_change
+from app.services import ingredients
 from app.services.households import MemberContext
 from app.units import convert
 
@@ -96,7 +97,7 @@ async def set_tracked(
 ) -> KitchenItem:
     """A Member says how much there is (None = "some"). That's a confirmation."""
     await _bump(session, ctx.household.id)
-    ingredient = await _ingredient(session, ingredient_id)
+    ingredient = await _ingredient(session, ctx.household.id, ingredient_id)
     if await _staple(session, ctx.household.id, ingredient.id) is not None:
         raise Conflict(f"{ingredient.name} is a Staple, so it has no quantity")
     now = utcnow()
@@ -127,7 +128,7 @@ async def set_staple(
 ) -> HouseholdStaple:
     """Make this a Staple (if it isn't yet) and say whether we have it."""
     await _bump(session, ctx.household.id)
-    ingredient = await _ingredient(session, ingredient_id)
+    ingredient = await _ingredient(session, ctx.household.id, ingredient_id)
     staple = await _staple(session, ctx.household.id, ingredient.id)
     if staple is None:
         tracked = await _tracked(session, ctx.household.id, ingredient.id)
@@ -268,8 +269,10 @@ async def _bump(session: AsyncSession, household_id: uuid.UUID) -> None:
     await notify_change(session, household_id, ENTITY, household_id, version)
 
 
-async def _ingredient(session: AsyncSession, ingredient_id: uuid.UUID) -> Ingredient:
-    ingredient = await session.get(Ingredient, ingredient_id)
+async def _ingredient(
+    session: AsyncSession, household_id: uuid.UUID, ingredient_id: uuid.UUID
+) -> Ingredient:
+    ingredient = await ingredients.get(session, household_id, ingredient_id)
     if ingredient is None:
         raise NotFound("No such Ingredient")
     return ingredient

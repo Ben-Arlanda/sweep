@@ -1,12 +1,13 @@
-"""Load reference data (Ingredients and their aliases). Safe to run any number of times.
+"""Load reference data (starter Ingredients and their aliases). Safe to run any number of
+times. Household Ingredients (ADR 0012) are never touched here.
 
-Called from migrations so every database gets the same set; can also be run by hand:
+Called from a migration so every database gets the same set; can also be run by hand:
 `uv run python -m app.seed`.
 
-Uses its own minimal table definitions rather than the ORM models in app/models.py. A
-migration that imports today's models breaks as soon as a later model adds a column
-that doesn't exist yet at that point in the migration history. These definitions list
-only the columns this code writes.
+Uses its own minimal table definitions rather than the ORM models in app/models.py, so a
+column added later doesn't break it. But it still targets today's constraints (the
+upsert needs the `(household_id, name)` one), so only migrations from 1a8824d1da9a on
+may call it. A migration that changes these constraints must take over the call.
 """
 
 import uuid
@@ -23,6 +24,7 @@ from app.services.ingredients import normalise
 Ingredient = sa.table(
     "ingredients",
     sa.column("id", sa.Uuid),
+    sa.column("household_id", sa.Uuid),
     sa.column("name", sa.String),
     sa.column("category", sa.String),
     sa.column("default_unit", sa.String),
@@ -46,7 +48,9 @@ def upsert_ingredients(conn: Connection) -> None:
         ingredient_id = conn.execute(
             insert(Ingredient)
             .values(id=uuid.uuid4(), **values)
-            .on_conflict_do_update(index_elements=["name"], set_=values)
+            # household_id left NULL: a starter. NULLS NOT DISTINCT makes this conflict
+            # with an existing starter of the same name, not with Household ones.
+            .on_conflict_do_update(constraint="uq_ingredients_household_id_name", set_=values)
             .returning(Ingredient.c.id)
         ).scalar_one()
 
@@ -70,5 +74,7 @@ if __name__ == "__main__":
     engine = create_engine(sqlalchemy_url(settings.database_url))
     with engine.begin() as conn:
         upsert_ingredients(conn)
-        count = len(conn.execute(select(Ingredient.c.id)).all())
-    print(f"{count} Ingredients loaded")
+        count = len(
+            conn.execute(select(Ingredient.c.id).where(Ingredient.c.household_id.is_(None))).all()
+        )
+    print(f"{count} starter Ingredients loaded")

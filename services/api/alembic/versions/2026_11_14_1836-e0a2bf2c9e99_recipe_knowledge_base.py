@@ -11,7 +11,6 @@ from alembic import op
 import pgvector.sqlalchemy
 import sqlalchemy as sa
 
-from app.seed import upsert_ingredients
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
@@ -78,8 +77,9 @@ def upgrade() -> None:
     )
     op.create_index(op.f('ix_recipe_ingredients_ingredient_id'), 'recipe_ingredients', ['ingredient_id'], unique=False)
     # ### end Alembic commands ###
-    # More Ingredients, so the Seed Recipes' lines have something to match.
-    upsert_ingredients(op.get_bind())
+    # Loading the starter Ingredients moved to 1a8824d1da9a (it's live code, written for
+    # today's table). On a fresh database there are no Households yet, so nothing here
+    # needs them.
 
 
 def downgrade() -> None:

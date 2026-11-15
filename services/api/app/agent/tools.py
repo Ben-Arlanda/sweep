@@ -103,7 +103,7 @@ async def search_recipes(call: Call, args: SearchArgs) -> Outcome:
     hid = call.agent.household_id
     must: list[uuid.UUID] = []
     for name in args.must_use_ingredients:
-        found = await ingredients.match(call.session, name)
+        found = await ingredients.match(call.session, hid, name)
         if found is None:
             raise ToolError(f"Unknown ingredient: {name!r}")
         must.append(found.id)
@@ -171,7 +171,7 @@ async def get_kitchen(call: Call, _args: NoArgs) -> Outcome:
 async def get_household_preferences(call: Call, _args: NoArgs) -> Outcome:
     hid = call.agent.household_id
     rules = await diet.get_rules(call.session, hid)
-    excluded = await diet.excluded_ingredients(call.session, rules)
+    excluded = await diet.excluded_ingredients(call.session, hid, rules)
     prefs = await diet.get_preferences(call.session, hid)
     return Outcome(
         {
@@ -343,7 +343,7 @@ class AdditionsArgs(Args):
 async def set_list_additions(call: Call, args: AdditionsArgs) -> Outcome:
     additions: list[DraftAddition] = []
     for item in args.items:
-        found = await ingredients.match(call.session, item.name)
+        found = await ingredients.match(call.session, call.agent.household_id, item.name)
         additions.append(
             DraftAddition(
                 name=item.name,

@@ -97,11 +97,17 @@ def db(database_url: str) -> Iterator[Engine]:
     """A plain sync connection for arranging and checking data. Empties tables afterwards."""
     engine = create_engine(sqlalchemy_url(database_url))
     yield engine
+    # Households stay out of the TRUNCATE: CASCADE empties every table that points at a
+    # truncated one, and ingredients points at households (Household Ingredients). A
+    # DELETE removes only the rows that belong to Households, starters stay.
     tables = ", ".join(
-        t.name for t in Base.metadata.sorted_tables if t.name not in REFERENCE_TABLES
+        t.name
+        for t in Base.metadata.sorted_tables
+        if t.name not in REFERENCE_TABLES | {"households"}
     )
     with engine.begin() as conn:
         conn.execute(text(f"TRUNCATE {tables} CASCADE"))
+        conn.execute(text("DELETE FROM households"))
     engine.dispose()
 
 

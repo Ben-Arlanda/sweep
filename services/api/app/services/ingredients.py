@@ -1,5 +1,9 @@
 """Turning what a Member typed into an Ingredient, without guessing.
 
+Visibility (ADR 0012): a Household sees the starter Ingredients plus its own Household
+Ingredients, never another Household's. Every query here takes the caller's Household
+and applies `visible_to`; code elsewhere that reads `ingredients` must do the same.
+
 Matching is deliberately strict: exact name, then alias, then simple plural/singular
 forms. No fuzzy matching. A wrong link would quietly put the wrong thing in the Kitchen;
 no link just means the item doesn't reach the Kitchen, which the app shows. Smarter
@@ -9,12 +13,20 @@ matching (embeddings, an LLM fallback) belongs to slice 4's normalisation, with 
 import re
 import uuid
 
-from sqlalchemy import or_, select
+from sqlalchemy import ColumnElement, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import Ingredient, IngredientAlias
 
 SEARCH_LIMIT = 20
+
+# The shared starter set. Names are unique per owner, so a lookup by name must say whose.
+STARTERS: ColumnElement[bool] = Ingredient.household_id.is_(None)
+
+
+def visible_to(household_id: uuid.UUID) -> ColumnElement[bool]:
+    """The rows this Household may see: starters and its own."""
+    return or_(STARTERS, Ingredient.household_id == household_id)
 
 
 def normalise(text: str) -> str:
@@ -38,7 +50,7 @@ def _variants(name: str) -> list[str]:
     return [" ".join([*words[:-1], form]) for form in forms]
 
 
-async def match(session: AsyncSession, text: str) -> Ingredient | None:
+async def match(session: AsyncSession, household_id: uuid.UUID, text: str) -> Ingredient | None:
     name = normalise(text)
     if not name:
         return None
@@ -47,7 +59,11 @@ async def match(session: AsyncSession, text: str) -> Ingredient | None:
             await session.execute(
                 select(Ingredient)
                 .outerjoin(IngredientAlias, IngredientAlias.ingredient_id == Ingredient.id)
-                .where(or_(Ingredient.name == candidate, IngredientAlias.alias == candidate))
+                .where(
+                    or_(Ingredient.name == candidate, IngredientAlias.alias == candidate),
+                    visible_to(household_id),
+                )
+                .order_by(Ingredient.household_id.nulls_first())  # starters win
                 .limit(1)
             )
         ).scalar_one_or_none()
@@ -56,7 +72,7 @@ async def match(session: AsyncSession, text: str) -> Ingredient | None:
     return None
 
 
-async def search(session: AsyncSession, query: str) -> list[Ingredient]:
+async def search(session: AsyncSession, household_id: uuid.UUID, query: str) -> list[Ingredient]:
     """Ingredients whose name or an alias contains the query.
 
     Ranked: exact name or alias first ("flour" → plain flour), then names starting with
@@ -71,7 +87,7 @@ async def search(session: AsyncSession, query: str) -> list[Ingredient]:
     exact_alias = select(IngredientAlias.ingredient_id).where(IngredientAlias.alias == q)
     rows = await session.execute(
         select(Ingredient)
-        .where(or_(Ingredient.id.in_(names), Ingredient.id.in_(aliases)))
+        .where(or_(Ingredient.id.in_(names), Ingredient.id.in_(aliases)), visible_to(household_id))
         .order_by(
             or_(Ingredient.name == q, Ingredient.id.in_(exact_alias)).desc(),
             Ingredient.name.like(f"{q}%").desc(),
@@ -82,5 +98,13 @@ async def search(session: AsyncSession, query: str) -> list[Ingredient]:
     return list(rows.scalars())
 
 
-async def get(session: AsyncSession, ingredient_id: uuid.UUID) -> Ingredient | None:
-    return await session.get(Ingredient, ingredient_id)
+async def get(
+    session: AsyncSession, household_id: uuid.UUID, ingredient_id: uuid.UUID
+) -> Ingredient | None:
+    """None for an unknown id *and* for another Household's: callers answer 404 either way,
+    so the response never confirms an id exists somewhere else."""
+    return (
+        await session.execute(
+            select(Ingredient).where(Ingredient.id == ingredient_id, visible_to(household_id))
+        )
+    ).scalar_one_or_none()

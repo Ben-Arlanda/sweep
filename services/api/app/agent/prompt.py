@@ -52,7 +52,7 @@ async def household_context(session: AsyncSession, agent: AgentContext, draft: D
     """A compact snapshot for this turn: today, Rules, Preferences, Kitchen, the draft."""
     hid = agent.household_id
     rules = await diet.get_rules(session, hid)
-    excluded = await diet.excluded_ingredients(session, rules)
+    excluded = await diet.excluded_ingredients(session, hid, rules)
     prefs = await diet.get_preferences(session, hid)
     view = await kitchen.get_kitchen(session, await member_context(session, agent))
     now = utcnow()

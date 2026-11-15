@@ -114,7 +114,9 @@ async def create_household(
     await session.execute(
         insert(HouseholdStaple).from_select(
             ["household_id", "ingredient_id"],
-            select(literal(household.id, Uuid), Ingredient.id).where(Ingredient.is_default_staple),
+            select(literal(household.id, Uuid), Ingredient.id).where(
+                Ingredient.is_default_staple, Ingredient.household_id.is_(None)
+            ),
         )
     )
     return MemberContext(member=member, household=household)
