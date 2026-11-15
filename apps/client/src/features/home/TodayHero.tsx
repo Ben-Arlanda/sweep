@@ -1,4 +1,3 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
@@ -13,7 +12,6 @@ import { addDays, mondayOf, type PlannedMeal } from '@/features/mealPlan/week';
 import type { MeOut } from '@/lib/api/client';
 import { useHousehold } from '@/lib/api/households';
 import { mealTap, useMealPlan, useMealPlanActions } from '@/lib/api/mealPlan';
-import { tintFor } from '@/theme/tint';
 import { useTheme } from '@/theme/useTheme';
 
 import { homeState, needsNextWeek, usesLine, type HomeState } from './today';
@@ -22,7 +20,7 @@ import { homeState, needsNextWeek, usesLine, type HomeState } from './today';
  * Home's hero (slice 6c): tonight's dinner when one is planned, otherwise the question
  * "What's cooking tonight?". Four states, worked out by `homeState`:
  *
- * - planned: the dinner, See the recipe and Cooked;
+ * - planned: the dinner, See the recipe and Cooked (no photo: dropped as too complex);
  * - cooked: "Cooked ✓" with Undo (no timer, WCAG 2.2.1), then tomorrow;
  * - free / empty: the question, Plan my week and Just tonight.
  */
@@ -127,7 +125,6 @@ function DinnerHero({
       top={
         <>
           <HouseholdRow me={me} />
-          <PhotoPlaceholder meal={meal} />
           <Text
             variant="label"
             accessibilityLiveRegion="polite"
@@ -175,27 +172,6 @@ function DinnerHero({
       {state.kind === 'cooked' ? <Tomorrow {...state.tomorrow} onPlan={onPlan} /> : null}
       {children}
     </Hero>
-  );
-}
-
-/** A pastel block until there's an image source for recipes (photos come later). */
-function PhotoPlaceholder({ meal }: { meal: PlannedMeal }) {
-  const t = useTheme();
-  const tint = t.tints[tintFor(meal.recipe_id)];
-  return (
-    <View
-      aria-hidden
-      importantForAccessibility="no-hide-descendants"
-      style={{
-        height: 180,
-        borderRadius: t.radius.xl,
-        backgroundColor: tint.bg,
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <MaterialCommunityIcons name="silverware-fork-knife" size={40} color={tint.onPill} />
-    </View>
   );
 }
 
