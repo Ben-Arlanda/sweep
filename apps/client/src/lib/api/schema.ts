@@ -347,7 +347,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        /** List Mine */
+        get: operations["list_mine_conversations_get"];
         put?: never;
         /** Create */
         post: operations["create_conversations_post"];
@@ -493,14 +494,8 @@ export interface components {
             created_at: string;
             /** Messages */
             messages: components["schemas"]["ChatLine"][];
-            /** Draft */
-            draft: {
-                [key: string]: unknown;
-            } | null;
-            /** Proposal */
-            proposal: {
-                [key: string]: unknown;
-            } | null;
+            draft: components["schemas"]["DraftOut"] | null;
+            proposal: components["schemas"]["ProposalOut"] | null;
         };
         /** ConversationOut */
         ConversationOut: {
@@ -550,6 +545,55 @@ export interface components {
             /** Excluded Ingredients */
             excluded_ingredients: components["schemas"]["IngredientOut"][];
         };
+        /** DoneEvent */
+        DoneEvent: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "done";
+        };
+        /** DraftAdditionOut */
+        DraftAdditionOut: {
+            /** Name */
+            name: string;
+            /** Quantity */
+            quantity: number | null;
+            /** Unit */
+            unit: string | null;
+            /** Ingredient Id */
+            ingredient_id: string | null;
+        };
+        /** DraftEvent */
+        DraftEvent: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "draft";
+            draft: components["schemas"]["DraftOut"];
+        };
+        /** DraftMealOut */
+        DraftMealOut: {
+            /** Recipe Id */
+            recipe_id: string;
+            /** Servings */
+            servings: number;
+            /** Title */
+            title?: string | null;
+        };
+        /**
+         * DraftOut
+         * @description The Draft Plan as it grows during a turn. Not Household data yet.
+         */
+        DraftOut: {
+            /** Meals */
+            meals: {
+                [key: string]: components["schemas"]["DraftMealOut"];
+            };
+            /** List Additions */
+            list_additions: components["schemas"]["DraftAdditionOut"][];
+        };
         /**
          * EditItemIn
          * @description Only the fields present are changed. Send `null` to clear quantity, unit or the
@@ -564,6 +608,16 @@ export interface components {
             unit?: string | null;
             /** Ingredient Id */
             ingredient_id?: string | null;
+        };
+        /** ErrorEvent */
+        ErrorEvent: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "error";
+            /** Message */
+            message: string;
         };
         /** HTTPValidationError */
         HTTPValidationError: {
@@ -702,6 +756,43 @@ export interface components {
             /** Weekly Budget */
             weekly_budget: string | null;
         };
+        /** ProposalEvent */
+        ProposalEvent: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "proposal";
+            proposal: components["schemas"]["ProposalOut"];
+        };
+        /** ProposalMealOut */
+        ProposalMealOut: {
+            /** Date */
+            date: string;
+            /** Recipe Id */
+            recipe_id: string;
+            /** Title */
+            title: string;
+            /** Servings */
+            servings: number;
+        };
+        /**
+         * ProposalOut
+         * @description What the Member is asked to approve (slice 6). Meals that broke a Dietary Rule are
+         *     already left out and named in `dropped`; `check_label` lists ingredients to check.
+         */
+        ProposalOut: {
+            /** Summary */
+            summary: string;
+            /** Meals */
+            meals: components["schemas"]["ProposalMealOut"][];
+            /** List Additions */
+            list_additions: components["schemas"]["DraftAdditionOut"][];
+            /** Check Label */
+            check_label: string[];
+            /** Dropped */
+            dropped: string[];
+        };
         /** RecipeIngredientOut */
         RecipeIngredientOut: {
             /** Raw Text */
@@ -777,6 +868,16 @@ export interface components {
             /** Score */
             score?: number | null;
         };
+        /** ReplanEvent */
+        ReplanEvent: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "replan";
+            /** Problems */
+            problems: string[];
+        };
         /**
          * Role
          * @enum {string}
@@ -851,6 +952,32 @@ export interface components {
             /** Have */
             have: boolean;
         };
+        /** TextEvent */
+        TextEvent: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "text";
+            /** Text */
+            text: string;
+        };
+        /** ToolEvent */
+        ToolEvent: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "tool";
+            /** Name */
+            name: string;
+        };
+        /**
+         * TurnEvents
+         * @description OpenAPI can't describe a stream, so the docs describe one event. That's enough
+         *     for the generated TypeScript to include every event type.
+         */
+        TurnEvents: components["schemas"]["TextEvent"] | components["schemas"]["ToolEvent"] | components["schemas"]["DraftEvent"] | components["schemas"]["ReplanEvent"] | components["schemas"]["ProposalEvent"] | components["schemas"]["DoneEvent"] | components["schemas"]["ErrorEvent"];
         /** ValidationError */
         ValidationError: {
             /** Location */
@@ -1713,6 +1840,26 @@ export interface operations {
             };
         };
     };
+    list_mine_conversations_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConversationOut"][];
+                };
+            };
+        };
+    };
     create_conversations_post: {
         parameters: {
             query?: never;
@@ -1779,13 +1926,13 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Successful Response */
+            /** @description Server-Sent Events, one per `data:` */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "text/event-stream": components["schemas"]["TurnEvents"];
                 };
             };
             /** @description Validation Error */

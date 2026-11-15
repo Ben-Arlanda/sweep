@@ -310,7 +310,9 @@ async def set_planned_meal(call: Call, args: SetMealArgs) -> Outcome:
         raise ToolError(f"{recipe.title} breaks the Dietary Rules: {', '.join(check.breaks)}")
     meals = {
         **call.draft["meals"],
-        args.date.isoformat(): DraftMeal(recipe_id=str(recipe.id), servings=args.servings),
+        args.date.isoformat(): DraftMeal(
+            recipe_id=str(recipe.id), servings=args.servings, title=recipe.title
+        ),
     }
     return Outcome(
         {"ok": True, "date": args.date.isoformat(), "title": recipe.title},

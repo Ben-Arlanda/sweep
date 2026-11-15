@@ -40,6 +40,23 @@ async def create(session: AsyncSession, ctx: MemberContext) -> Conversation:
     return conversation
 
 
+async def list_mine(
+    session: AsyncSession, ctx: MemberContext, limit: int = 20
+) -> list[Conversation]:
+    """The Member's own Conversations in their current Household, newest first. The app
+    reopens the first one, so a chat started on the phone carries on in the browser."""
+    found = await session.execute(
+        select(Conversation)
+        .where(
+            Conversation.member_id == ctx.member.id,
+            Conversation.household_id == ctx.household.id,
+        )
+        .order_by(Conversation.created_at.desc(), Conversation.id.desc())
+        .limit(limit)
+    )
+    return list(found.scalars())
+
+
 async def get(
     session: AsyncSession, ctx: MemberContext, conversation_id: uuid.UUID
 ) -> Conversation:

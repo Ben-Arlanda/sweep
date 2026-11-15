@@ -1432,6 +1432,34 @@
       }
     },
     "/conversations": {
+      "get": {
+        "tags": [
+          "agent"
+        ],
+        "summary": "List Mine",
+        "operationId": "list_mine_conversations_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ConversationOut"
+                  },
+                  "type": "array",
+                  "title": "Response List Mine Conversations Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      },
       "post": {
         "tags": [
           "agent"
@@ -1541,10 +1569,13 @@
         },
         "responses": {
           "200": {
-            "description": "Successful Response",
+            "description": "Server-Sent Events, one per `data:`",
             "content": {
-              "application/json": {
-                "schema": {}
+              "text/event-stream": {
+                "schema": {
+                  "type": "string",
+                  "$ref": "#/components/schemas/TurnEvents"
+                }
               }
             }
           },
@@ -1808,26 +1839,22 @@
           "draft": {
             "anyOf": [
               {
-                "additionalProperties": true,
-                "type": "object"
+                "$ref": "#/components/schemas/DraftOut"
               },
               {
                 "type": "null"
               }
-            ],
-            "title": "Draft"
+            ]
           },
           "proposal": {
             "anyOf": [
               {
-                "additionalProperties": true,
-                "type": "object"
+                "$ref": "#/components/schemas/ProposalOut"
               },
               {
                 "type": "null"
               }
-            ],
-            "title": "Proposal"
+            ]
           }
         },
         "type": "object",
@@ -1942,6 +1969,141 @@
         ],
         "title": "DietaryRulesOut"
       },
+      "DoneEvent": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "done",
+            "title": "Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "title": "DoneEvent"
+      },
+      "DraftAdditionOut": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "quantity": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quantity"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          },
+          "ingredient_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ingredient Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "quantity",
+          "unit",
+          "ingredient_id"
+        ],
+        "title": "DraftAdditionOut"
+      },
+      "DraftEvent": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "draft",
+            "title": "Type"
+          },
+          "draft": {
+            "$ref": "#/components/schemas/DraftOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "draft"
+        ],
+        "title": "DraftEvent"
+      },
+      "DraftMealOut": {
+        "properties": {
+          "recipe_id": {
+            "type": "string",
+            "title": "Recipe Id"
+          },
+          "servings": {
+            "type": "integer",
+            "title": "Servings"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          }
+        },
+        "type": "object",
+        "required": [
+          "recipe_id",
+          "servings"
+        ],
+        "title": "DraftMealOut"
+      },
+      "DraftOut": {
+        "properties": {
+          "meals": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DraftMealOut"
+            },
+            "type": "object",
+            "title": "Meals"
+          },
+          "list_additions": {
+            "items": {
+              "$ref": "#/components/schemas/DraftAdditionOut"
+            },
+            "type": "array",
+            "title": "List Additions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "meals",
+          "list_additions"
+        ],
+        "title": "DraftOut",
+        "description": "The Draft Plan as it grows during a turn. Not Household data yet."
+      },
       "EditItemIn": {
         "properties": {
           "text": {
@@ -2001,6 +2163,25 @@
         "type": "object",
         "title": "EditItemIn",
         "description": "Only the fields present are changed. Send `null` to clear quantity, unit or the\nIngredient link."
+      },
+      "ErrorEvent": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "error",
+            "title": "Type"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "message"
+        ],
+        "title": "ErrorEvent"
       },
       "HTTPValidationError": {
         "properties": {
@@ -2376,6 +2557,98 @@
         ],
         "title": "PreferencesOut"
       },
+      "ProposalEvent": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "proposal",
+            "title": "Type"
+          },
+          "proposal": {
+            "$ref": "#/components/schemas/ProposalOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "proposal"
+        ],
+        "title": "ProposalEvent"
+      },
+      "ProposalMealOut": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "title": "Date"
+          },
+          "recipe_id": {
+            "type": "string",
+            "title": "Recipe Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "servings": {
+            "type": "integer",
+            "title": "Servings"
+          }
+        },
+        "type": "object",
+        "required": [
+          "date",
+          "recipe_id",
+          "title",
+          "servings"
+        ],
+        "title": "ProposalMealOut"
+      },
+      "ProposalOut": {
+        "properties": {
+          "summary": {
+            "type": "string",
+            "title": "Summary"
+          },
+          "meals": {
+            "items": {
+              "$ref": "#/components/schemas/ProposalMealOut"
+            },
+            "type": "array",
+            "title": "Meals"
+          },
+          "list_additions": {
+            "items": {
+              "$ref": "#/components/schemas/DraftAdditionOut"
+            },
+            "type": "array",
+            "title": "List Additions"
+          },
+          "check_label": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Check Label"
+          },
+          "dropped": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Dropped"
+          }
+        },
+        "type": "object",
+        "required": [
+          "summary",
+          "meals",
+          "list_additions",
+          "check_label",
+          "dropped"
+        ],
+        "title": "ProposalOut",
+        "description": "What the Member is asked to approve (slice 6). Meals that broke a Dietary Rule are\nalready left out and named in `dropped`; `check_label` lists ingredients to check."
+      },
       "RecipeIngredientOut": {
         "properties": {
           "raw_text": {
@@ -2647,6 +2920,28 @@
         ],
         "title": "RecipeSummaryOut"
       },
+      "ReplanEvent": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "replan",
+            "title": "Type"
+          },
+          "problems": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Problems"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "problems"
+        ],
+        "title": "ReplanEvent"
+      },
       "Role": {
         "type": "string",
         "enum": [
@@ -2822,6 +3117,83 @@
           "have"
         ],
         "title": "StapleOut"
+      },
+      "TextEvent": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "text",
+            "title": "Type"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "text"
+        ],
+        "title": "TextEvent"
+      },
+      "ToolEvent": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "tool",
+            "title": "Type"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "name"
+        ],
+        "title": "ToolEvent"
+      },
+      "TurnEvents": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/TextEvent"
+          },
+          {
+            "$ref": "#/components/schemas/ToolEvent"
+          },
+          {
+            "$ref": "#/components/schemas/DraftEvent"
+          },
+          {
+            "$ref": "#/components/schemas/ReplanEvent"
+          },
+          {
+            "$ref": "#/components/schemas/ProposalEvent"
+          },
+          {
+            "$ref": "#/components/schemas/DoneEvent"
+          },
+          {
+            "$ref": "#/components/schemas/ErrorEvent"
+          }
+        ],
+        "title": "TurnEvents",
+        "description": "OpenAPI can't describe a stream, so the docs describe one event. That's enough\nfor the generated TypeScript to include every event type.",
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "done": "#/components/schemas/DoneEvent",
+            "draft": "#/components/schemas/DraftEvent",
+            "error": "#/components/schemas/ErrorEvent",
+            "proposal": "#/components/schemas/ProposalEvent",
+            "replan": "#/components/schemas/ReplanEvent",
+            "text": "#/components/schemas/TextEvent",
+            "tool": "#/components/schemas/ToolEvent"
+          }
+        }
       },
       "ValidationError": {
         "properties": {
