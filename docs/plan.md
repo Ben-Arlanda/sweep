@@ -325,6 +325,7 @@ Each slice is a feature branch and a focused PR that works end to end.
 | 4d | `feature/favourites` | "What do you usually cook" onboarding, paste/photo/link/type import, shared review screen (after slice 6) | Multimodal input, AI security |
 | 5a | `feature/langgraph-agent` | Dietary Rules + Preferences (enforced in search and validate), graph, read/compute/draft tools, validation loop, Postgres checkpointer, SSE, daily token budget | Agentic AI, tool calling |
 | 5b | `feature/agent-chat` | Chat screen (streamed replies, Proposal card), Dietary Rules and Preferences screen | (product) |
+| 5c | `feature/kitchen-first-planning` | Kitchen Match ranking, `recipes_from_kitchen` tool (hybrid: meaning search re-ranked by the Kitchen), Kitchen-first prompt, "Plan my week" / "Just tonight" on Home, offline eval vs search-only (ADR 0013) | Recommendation and ranking, hybrid search, recommendation evaluation |
 | 6a | `feature/approvals` | Proposal records, approve node with `interrupt()`, `POST /proposals/{id}/decision`, deterministic commit, audit log, Meal Plan + Planned Meals, Cooked deduction (undoable), 24h expiry | Human-in-the-loop, security |
 | 6b | `feature/approvals-client` | Proposal card with checkboxes, "replaces …" per day, Approve / Reject; Meal Plan screen (from Home); Cooked button | (product) |
 | 6c | `feature/home-today` | Home "Today" showing tonight's Planned Meal (the Kitchen part moved to 3c) | (product) |
@@ -344,6 +345,14 @@ Each slice is a feature branch and a focused PR that works end to end.
 Known gaps from 2b: deleting a Shop from inside the sheet drops keyboard focus to the page (the button it was on disappears); not yet run on a phone.
 
 Known gaps carried forward from 5b: only the latest Proposal is kept, so earlier ones drop out of the chat history (fix with slice 6's Proposal records); not yet run on a phone.
+
+**Slice 5c steps** (agreed 2026-11-15, ADR 0013; build test-first, after 3d):
+
+1. **Kitchen Match core:** a pure scoring function (have / maybe / missing per line, whole-word match for Household Ingredients) and the ranking, plus a service that loads the Kitchen and eligible recipes once.
+2. **Agent:** `recipes_from_kitchen` (optional taste query: meaning search top 60, re-ranked), `must_use_ingredients` for Household Ingredients, Kitchen-first system prompt. Agent tests with the scripted model.
+3. **Eval:** `evals/kitchen_first.py`, sample Kitchens, Kitchen-first vs search-only: items to buy per meal, share of Kitchen used. Offline, no model calls.
+4. **Client:** "Plan my week" and "Just tonight" on Home start a new plan with a fixed first message; the chat's suggestions become Kitchen-first.
+5. End to end (a couple of live turns, said before running), accessibility, docs.
 
 **Slice 3d steps** (agreed 2026-11-15, ADR 0012; build test-first):
 
