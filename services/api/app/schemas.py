@@ -18,7 +18,7 @@ from pydantic import (
 
 from app.data.diet import Diet
 from app.data.places import Place
-from app.models import AddedBy, ChangeSource, ProposalStatus, RecipeKind, Role
+from app.models import AddedBy, ChangeSource, PlanMode, ProposalStatus, RecipeKind, Role
 from app.services.ingredients import normalise
 
 HouseholdName = Annotated[
@@ -287,6 +287,9 @@ class DietaryRulesOut(BaseModel):
     excluded_ingredients: list[IngredientOut]
 
 
+Weekday = Annotated[int, Field(ge=1, le=7)]  # ISO: Monday 1 … Sunday 7
+
+
 class PreferencesIn(BaseModel):
     household_size: int | None = Field(default=None, ge=1, le=20)
     cuisines: list[Cuisine] = Field(default=[], max_length=20)
@@ -297,6 +300,25 @@ class PreferencesOut(BaseModel):
 
     household_size: int | None
     cuisines: list[str]
+    plan_weekdays: list[int]
+
+
+class PlanWeekdaysIn(BaseModel):
+    """The days the Household usually plans. Its own route, so saving them can't
+    overwrite another Member's change to the rest of the Preferences."""
+
+    weekdays: list[Weekday] = Field(min_length=1, max_length=7)
+
+    @field_validator("weekdays")
+    @classmethod
+    def _no_repeats(cls, v: list[int]) -> list[int]:
+        if len(set(v)) != len(v):
+            raise ValueError("each weekday once")
+        return v
+
+
+class PlanWeekdaysOut(BaseModel):
+    weekdays: list[int]
 
 
 # --- Meal Plan ----------------------------------------------------------------------
@@ -317,6 +339,7 @@ class MealPlanOut(BaseModel):
 
     start: date
     end: date
+    today: date  # the app's today (Sydney), so the phone doesn't trust its own clock
     version: int
     meals: list[PlannedMealOut]
 
@@ -324,11 +347,21 @@ class MealPlanOut(BaseModel):
 # --- Conversations with the agent --------------------------------------------------
 
 
+class ConversationIn(BaseModel):
+    """How a plan starts. Both left out for a free chat; the "Plan my week" sheet sends
+    the kind of plan and the days picked (ADR 0015)."""
+
+    mode: PlanMode | None = None
+    days: list[date] | None = Field(default=None, min_length=1, max_length=14)
+
+
 class ConversationOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: uuid.UUID
     created_at: datetime
+    plan_mode: PlanMode | None
+    plan_days: list[date] | None
 
 
 class ChatLine(BaseModel):

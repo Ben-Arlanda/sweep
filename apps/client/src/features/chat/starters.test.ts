@@ -1,17 +1,42 @@
 /// <reference types="jest" />
-import { requestStart, SUGGESTIONS, takeStart } from './starters';
+import { planMessage, requestPlan, requestStart, SUGGESTIONS, takeStart } from './starters';
+
+test('"Just tonight" starts a free chat with a Kitchen-first message', () => {
+  requestStart('tonight');
+
+  expect(takeStart()).toEqual({
+    text: "What can I cook tonight with what's in my Kitchen?",
+    plan: null,
+  });
+});
+
+test('the "Plan my week" sheet hands over the mode and days with its message', () => {
+  requestPlan('new', ['2026-11-17', '2026-11-16']);
+
+  expect(takeStart()).toEqual({
+    text: 'Plan new recipes to shop for, for Mon 16 and Tue 17 Nov.',
+    plan: { mode: 'new', days: ['2026-11-16', '2026-11-17'] },
+  });
+});
 
 test.each([
-  ['week', "Plan this week's dinners, using what's in my Kitchen first."],
-  ['tonight', "What can I cook tonight with what's in my Kitchen?"],
-] as const)('the %s button starts with a Kitchen-first message', (start, expected) => {
-  requestStart(start);
-
-  expect(takeStart()).toBe(expected);
+  ['kitchen', ['2026-11-18'], "Plan dinner from what's in my Kitchen, for Wed 18 Nov."],
+  [
+    'kitchen',
+    ['2026-11-16', '2026-11-17', '2026-11-18'],
+    "Plan dinners from what's in my Kitchen, for Mon 16, Tue 17 and Wed 18 Nov.",
+  ],
+  [
+    'new',
+    ['2026-11-30', '2026-12-01'],
+    'Plan new recipes to shop for, for Mon 30 Nov and Tue 1 Dec.',
+  ],
+] as const)('the message names the days (%s, %j)', (mode, days, expected) => {
+  expect(planMessage(mode, [...days])).toBe(expected);
 });
 
 test('a request is used once, so a reload or second visit sends nothing', () => {
-  requestStart('week');
+  requestStart('tonight');
   takeStart();
 
   expect(takeStart()).toBeNull();

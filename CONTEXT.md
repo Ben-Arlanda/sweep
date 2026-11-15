@@ -88,7 +88,7 @@ _Avoid_: generated recipe, AI recipe
 ### Planning
 
 **Meal Plan**:
-The Household's Planned Meals for a given week. One dinner per day.
+The Household's Planned Meals for a given week. Weeks run Monday to Sunday. One dinner per day.
 _Avoid_: menu, schedule
 
 **Planned Meal**:
@@ -116,6 +116,13 @@ _Avoid_: coverage score, pantry match
 **Conversation**:
 One ongoing chat between a Member and the agent. Follow-up requests continue the same Conversation and keep its context.
 _Avoid_: session, thread (implementation term)
+
+**Plan Mode**:
+The kind of plan a Member asks for in the "Plan my week" sheet: *Cook from my Kitchen* (fewest things to buy) or *New recipes* (chosen by taste; the Kitchen only trims the Shopping List). Stored on the Conversation. A free chat has none.
+_Avoid_: "Something new"
+
+**Plan Days**:
+The days a plan covers, picked in the "Plan my week" sheet. The agent may only put meals on these days. The Household's **Usual Days** (weekdays, e.g. Mon–Fri) are what the sheet starts with.
 
 **Draft Plan**:
 The work-in-progress Meal Plan and Shopping List changes the agent is building inside a Conversation. Visible to the Member, but not yet Household data.

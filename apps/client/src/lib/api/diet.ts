@@ -87,3 +87,24 @@ export function useSaveDiet() {
 }
 
 export const newSaveKey = () => randomUUID();
+
+/**
+ * The days the "Plan my week" sheet starts with, saved when a plan starts from it. Its
+ * own route: sending the whole Preferences could overwrite another Member's change.
+ * Fire and forget: if it fails, the plan still starts; next time just starts from the
+ * old days.
+ */
+export function useSavePlanWeekdays() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    retry: retryable,
+    mutationFn: async (v: { key: string; weekdays: number[] }) =>
+      unwrap(
+        await api.PUT('/households/current/plan-weekdays', {
+          params: { header: { 'Idempotency-Key': v.key } },
+          body: { weekdays: v.weekdays },
+        }),
+      ),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: dietKeys.preferences }),
+  });
+}

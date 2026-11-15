@@ -161,7 +161,9 @@ async def excluded_ingredients(
 
 async def get_preferences(session: AsyncSession, household_id: uuid.UUID) -> HouseholdPreferences:
     row = await session.get(HouseholdPreferences, household_id)
-    return row or HouseholdPreferences(household_id=household_id, cuisines=[])
+    return row or HouseholdPreferences(
+        household_id=household_id, cuisines=[], plan_weekdays=[1, 2, 3, 4, 5]
+    )
 
 
 async def set_preferences(
@@ -170,11 +172,24 @@ async def set_preferences(
     household_size: int | None,
     cuisines: Iterable[str],
 ) -> HouseholdPreferences:
+    """Replaces size and cuisines. The usual weekdays have their own setter."""
     row = await session.get(HouseholdPreferences, household_id)
     if row is None:
-        row = HouseholdPreferences(household_id=household_id)
+        row = HouseholdPreferences(household_id=household_id, plan_weekdays=[1, 2, 3, 4, 5])
         session.add(row)
     row.household_size = household_size
     row.cuisines = sorted({c.lower() for c in cuisines})
     await session.flush()
     return row
+
+
+async def set_plan_weekdays(
+    session: AsyncSession, household_id: uuid.UUID, weekdays: Iterable[int]
+) -> list[int]:
+    row = await session.get(HouseholdPreferences, household_id)
+    if row is None:
+        row = HouseholdPreferences(household_id=household_id, cuisines=[])
+        session.add(row)
+    row.plan_weekdays = sorted(set(weekdays))
+    await session.flush()
+    return row.plan_weekdays

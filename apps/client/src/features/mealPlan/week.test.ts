@@ -1,4 +1,13 @@
-import { addDays, weekDays } from './week';
+import {
+  addDays,
+  canPick,
+  isoWeekday,
+  mondayOf,
+  nextWeekdays,
+  pickDays,
+  planWeekFor,
+  weekDays,
+} from './week';
 
 const meal = (date: string, title: string) => ({
   id: `id-${date}`,
@@ -49,5 +58,82 @@ describe('weekDays', () => {
   it('ignores meals outside the week', () => {
     const days = weekDays('2026-11-15', [meal('2026-11-22', 'Late')]);
     expect(days.every((d) => d.meal === null)).toBe(true);
+  });
+});
+
+describe('Mon–Sun weeks (slice 5d)', () => {
+  // 15 Nov 2026 is a Sunday, 16 Nov a Monday.
+  it('finds the Monday of any day, Sunday belonging to the week before', () => {
+    expect(mondayOf('2026-11-16')).toBe('2026-11-16');
+    expect(mondayOf('2026-11-19')).toBe('2026-11-16');
+    expect(mondayOf('2026-11-15')).toBe('2026-11-09');
+  });
+
+  it('gives ISO weekdays, Monday 1 to Sunday 7', () => {
+    expect(isoWeekday('2026-11-16')).toBe(1);
+    expect(isoWeekday('2026-11-15')).toBe(7);
+  });
+
+  it('opens the sheet on this week, or next week at the weekend', () => {
+    expect(planWeekFor('2026-11-18')).toBe('2026-11-16'); // Wednesday
+    expect(planWeekFor('2026-11-20')).toBe('2026-11-16'); // Friday
+    expect(planWeekFor('2026-11-21')).toBe('2026-11-23'); // Saturday
+    expect(planWeekFor('2026-11-22')).toBe('2026-11-23'); // Sunday
+  });
+
+  it('turns usual weekdays into dates, skipping past days and planned ones', () => {
+    const picked = pickDays({
+      monday: '2026-11-16',
+      weekdays: [1, 2, 3, 4, 5],
+      today: '2026-11-18',
+      planned: ['2026-11-19'],
+    });
+    expect(picked).toEqual(['2026-11-18', '2026-11-20']); // Wed (today) and Fri
+  });
+
+  it('can only pick days from today', () => {
+    expect(canPick('2026-11-17', '2026-11-18')).toBe(false);
+    expect(canPick('2026-11-18', '2026-11-18')).toBe(true);
+  });
+});
+
+describe('the usual weekdays to save after picking', () => {
+  const base = { monday: '2026-11-16', today: '2026-11-16', planned: [] as string[] };
+
+  it('are the picked days when every day could be picked', () => {
+    expect(
+      nextWeekdays({ ...base, before: [1, 2, 3, 4, 5], picked: ['2026-11-21', '2026-11-22'] }),
+    ).toEqual([6, 7]);
+  });
+
+  it('keep days left out only because they already had a dinner', () => {
+    // Mon and Tue were planned, so they started unticked: that's not "we never plan Mondays".
+    const got = nextWeekdays({
+      ...base,
+      planned: ['2026-11-16', '2026-11-17'],
+      before: [1, 2, 3, 4, 5],
+      picked: ['2026-11-18', '2026-11-19', '2026-11-20', '2026-11-21'],
+    });
+    expect(got).toEqual([1, 2, 3, 4, 5, 6]);
+  });
+
+  it('keep days that had already gone', () => {
+    const got = nextWeekdays({
+      ...base,
+      today: '2026-11-19', // Thursday: Mon to Wed are past
+      before: [1, 2, 3, 4, 5],
+      picked: ['2026-11-19'],
+    });
+    expect(got).toEqual([1, 2, 3, 4]);
+  });
+
+  it('count a planned day the Member ticked to replace', () => {
+    const got = nextWeekdays({
+      ...base,
+      planned: ['2026-11-22'],
+      before: [1],
+      picked: ['2026-11-16', '2026-11-22'],
+    });
+    expect(got).toEqual([1, 7]);
   });
 });

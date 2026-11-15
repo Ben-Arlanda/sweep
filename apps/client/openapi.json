@@ -1543,6 +1543,66 @@
         }
       }
     },
+    "/households/current/plan-weekdays": {
+      "put": {
+        "tags": [
+          "dietary rules"
+        ],
+        "summary": "Set Plan Weekdays",
+        "description": "The days the \"Plan my week\" sheet starts with ticked (ADR 0015).",
+        "operationId": "set_plan_weekdays_households_current_plan_weekdays_put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanWeekdaysIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanWeekdaysOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/conversations": {
       "get": {
         "tags": [
@@ -1578,6 +1638,23 @@
         ],
         "summary": "Create",
         "operationId": "create_conversations_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/ConversationIn"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Body"
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
             "description": "Successful Response",
@@ -1585,6 +1662,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ConversationOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
             }
@@ -2239,6 +2326,31 @@
             "format": "date-time",
             "title": "Created At"
           },
+          "plan_mode": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PlanMode"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "plan_days": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Plan Days"
+          },
           "messages": {
             "items": {
               "$ref": "#/components/schemas/ChatLine"
@@ -2278,12 +2390,48 @@
         "required": [
           "id",
           "created_at",
+          "plan_mode",
+          "plan_days",
           "messages",
           "draft",
           "proposal",
           "proposals"
         ],
         "title": "ConversationDetailOut"
+      },
+      "ConversationIn": {
+        "properties": {
+          "mode": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PlanMode"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "days": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "type": "array",
+                "maxItems": 14,
+                "minItems": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Days"
+          }
+        },
+        "type": "object",
+        "title": "ConversationIn",
+        "description": "How a plan starts. Both left out for a free chat; the \"Plan my week\" sheet sends\nthe kind of plan and the days picked (ADR 0015)."
       },
       "ConversationOut": {
         "properties": {
@@ -2296,12 +2444,39 @@
             "type": "string",
             "format": "date-time",
             "title": "Created At"
+          },
+          "plan_mode": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PlanMode"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "plan_days": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Plan Days"
           }
         },
         "type": "object",
         "required": [
           "id",
-          "created_at"
+          "created_at",
+          "plan_mode",
+          "plan_days"
         ],
         "title": "ConversationOut"
       },
@@ -3033,6 +3208,11 @@
             "format": "date",
             "title": "End"
           },
+          "today": {
+            "type": "string",
+            "format": "date",
+            "title": "Today"
+          },
           "version": {
             "type": "integer",
             "title": "Version"
@@ -3049,6 +3229,7 @@
         "required": [
           "start",
           "end",
+          "today",
           "version",
           "meals"
         ],
@@ -3123,6 +3304,52 @@
           "place"
         ],
         "title": "PlaceOut"
+      },
+      "PlanMode": {
+        "type": "string",
+        "enum": [
+          "kitchen",
+          "new"
+        ],
+        "title": "PlanMode",
+        "description": "What kind of plan the Member asked for in the \"Plan my week\" sheet (ADR 0015)."
+      },
+      "PlanWeekdaysIn": {
+        "properties": {
+          "weekdays": {
+            "items": {
+              "type": "integer",
+              "maximum": 7.0,
+              "minimum": 1.0
+            },
+            "type": "array",
+            "maxItems": 7,
+            "minItems": 1,
+            "title": "Weekdays"
+          }
+        },
+        "type": "object",
+        "required": [
+          "weekdays"
+        ],
+        "title": "PlanWeekdaysIn",
+        "description": "The days the Household usually plans. Its own route, so saving them can't\noverwrite another Member's change to the rest of the Preferences."
+      },
+      "PlanWeekdaysOut": {
+        "properties": {
+          "weekdays": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Weekdays"
+          }
+        },
+        "type": "object",
+        "required": [
+          "weekdays"
+        ],
+        "title": "PlanWeekdaysOut"
       },
       "PlannedMealOut": {
         "properties": {
@@ -3235,12 +3462,20 @@
             },
             "type": "array",
             "title": "Cuisines"
+          },
+          "plan_weekdays": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Plan Weekdays"
           }
         },
         "type": "object",
         "required": [
           "household_size",
-          "cuisines"
+          "cuisines",
+          "plan_weekdays"
         ],
         "title": "PreferencesOut"
       },

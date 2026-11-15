@@ -16,6 +16,8 @@ from app.schemas import (
     DietaryRulesIn,
     DietaryRulesOut,
     IngredientOut,
+    PlanWeekdaysIn,
+    PlanWeekdaysOut,
     PreferencesIn,
     PreferencesOut,
 )
@@ -75,5 +77,22 @@ async def set_preferences(
     async def work() -> PreferencesOut:
         row = await diet.set_preferences(session, ctx.household.id, **body.model_dump())
         return PreferencesOut.model_validate(row)
+
+    return await idempotent(request, session, ctx, key, work)
+
+
+@router.put("/plan-weekdays", response_model=PlanWeekdaysOut)
+async def set_plan_weekdays(
+    body: PlanWeekdaysIn,
+    request: Request,
+    ctx: MemberDep,
+    session: SessionDep,
+    key: IdempotencyKeyHeader,
+) -> Response:
+    """The days the "Plan my week" sheet starts with ticked (ADR 0015)."""
+
+    async def work() -> PlanWeekdaysOut:
+        days = await diet.set_plan_weekdays(session, ctx.household.id, body.weekdays)
+        return PlanWeekdaysOut(weekdays=days)
 
     return await idempotent(request, session, ctx, key, work)

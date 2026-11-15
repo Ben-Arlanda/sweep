@@ -17,10 +17,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.agent.state import Draft
 from app.agent.tools import AgentContext, member_context
-from app.models import utcnow
+from app.models import Conversation, PlanMode, utcnow
 from app.services import diet, kitchen, meal_plan, proposals, recipes
 
 CONTEXT_TAG = "household_context"
+MODE_LINES = {
+    PlanMode.KITCHEN: "cook from my Kitchen (fewest things to buy)",
+    PlanMode.NEW: "new recipes to shop for (choose by taste; the Kitchen only trims the list)",
+}
 
 SYSTEM = f"""You are Sweep, a meal-planning assistant for an Australian household. You \
 help plan meals from the household's recipe library, check what they have at home, and \
@@ -37,6 +41,14 @@ sets the order, not a limit. A week means 5 to 7 dinners unless the Member says 
 otherwise; call recipes_from_kitchen again with exclude_recipe_ids if you need more. \
 Use search_recipes only for a specific dish the Member names. When you suggest a \
 recipe, say briefly what it uses from the Kitchen.
+- If the context says "Plan mode: new recipes to shop for", the Member wants fresh \
+dishes, not the Kitchen's best matches: choose by taste with search_recipes (their \
+words and Preferences make the query; vary it to get different cuisines and mains), \
+and skip recipes already in Planned Meals. The Kitchen still matters for the list: \
+check_kitchen_coverage, then add only what's missing.
+- If the context says "Plan these days only", put one dinner on each of those days \
+and none on any other day; the app refuses other days. If the Member asks for a day \
+that isn't listed, tell them to start a new plan from "Plan my week" to change the days.
 - To plan meals: choose recipes as above, put each meal on a date with \
 set_planned_meal, use check_kitchen_coverage to work out what's missing, set the list \
 additions, then call propose_plan with a short, friendly summary. Nothing is saved \
@@ -74,6 +86,14 @@ async def household_context(session: AsyncSession, agent: AgentContext, draft: D
         f"Today: {agent.today:%A} {agent.today.isoformat()}. "
         f"Plans can cover {agent.today.isoformat()} to {last_day.isoformat()}."
     ]
+    # From the "Plan my week" sheet (ADR 0015). Every turn, not just the first: wording
+    # in one message is easy to lose as the chat goes on.
+    conversation = await session.get_one(Conversation, agent.conversation_id)
+    if conversation.plan_mode is not None:
+        lines.append("Plan mode: " + MODE_LINES[conversation.plan_mode])
+    if conversation.plan_days:
+        days = ", ".join(f"{d:%a} {d.isoformat()}" for d in conversation.plan_days)
+        lines.append(f"Plan these days only (one dinner each): {days}")
 
     rule_parts = [d.value.replace("_", " ") for d in sorted(rules.diets)]
     if excluded:
