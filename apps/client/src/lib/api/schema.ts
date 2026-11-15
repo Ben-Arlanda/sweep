@@ -587,6 +587,26 @@ export interface components {
             /** Text */
             text: string;
         };
+        /** ChatProposalOut */
+        ChatProposalOut: {
+            /** Id */
+            id?: string | null;
+            /** @default pending */
+            status: components["schemas"]["ProposalStatus"];
+            /** Summary */
+            summary: string;
+            /** Meals */
+            meals: components["schemas"]["ProposalMealOut"][];
+            /** List Additions */
+            list_additions: components["schemas"]["DraftAdditionOut"][];
+            /** Check Label */
+            check_label: string[];
+            /** Dropped */
+            dropped: string[];
+            outcome?: components["schemas"]["ProposalOutcomeOut"] | null;
+            /** After Line */
+            after_line: number | null;
+        };
         /** ConversationDetailOut */
         ConversationDetailOut: {
             /**
@@ -603,6 +623,8 @@ export interface components {
             messages: components["schemas"]["ChatLine"][];
             draft: components["schemas"]["DraftOut"] | null;
             proposal: components["schemas"]["ProposalOut"] | null;
+            /** Proposals */
+            proposals: components["schemas"]["ChatProposalOut"][];
         };
         /** ConversationOut */
         ConversationOut: {

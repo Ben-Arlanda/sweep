@@ -51,6 +51,9 @@ class AgentState(TypedDict):
     # {"action": "approve", "keep_meals", "keep_additions"} | {"action": "reject"}
     # | {"action": "message", "text"} (they chatted instead of deciding).
     decision: NotRequired[dict[str, Any] | None]
+    # Where each Proposal sits in the chat: {"id", "at": how many messages came before}.
+    # Append-only like `messages`, so the chat history can show every Proposal in place.
+    proposal_marks: Annotated[list[dict[str, Any]], operator.add]
     replan_count: NotRequired[int]
     tool_calls: NotRequired[int]
     stop: NotRequired[str | None]  # why this turn ended early, if it did

@@ -399,10 +399,17 @@ class DecisionIn(BaseModel):
     keep_additions: list[int] | None = Field(default=None, max_length=60)
 
 
+class ChatProposalOut(ProposalOut):
+    # How many `messages` lines come before it, so the chat can show it in place.
+    # None for Proposals made before slice 6a step 5 (shown at the end).
+    after_line: int | None
+
+
 class ConversationDetailOut(ConversationOut):
     messages: list[ChatLine]
     draft: DraftOut | None
-    proposal: ProposalOut | None
+    proposal: ProposalOut | None  # the one waiting for an answer, if any
+    proposals: list[ChatProposalOut]  # every Proposal in this chat, oldest first
 
 
 # What POST /conversations/{id}/messages streams. Each SSE message is `event: <type>`

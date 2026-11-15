@@ -2144,6 +2144,89 @@
         ],
         "title": "ChatLine"
       },
+      "ChatProposalOut": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ProposalStatus",
+            "default": "pending"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary"
+          },
+          "meals": {
+            "items": {
+              "$ref": "#/components/schemas/ProposalMealOut"
+            },
+            "type": "array",
+            "title": "Meals"
+          },
+          "list_additions": {
+            "items": {
+              "$ref": "#/components/schemas/DraftAdditionOut"
+            },
+            "type": "array",
+            "title": "List Additions"
+          },
+          "check_label": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Check Label"
+          },
+          "dropped": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Dropped"
+          },
+          "outcome": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProposalOutcomeOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "after_line": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "After Line"
+          }
+        },
+        "type": "object",
+        "required": [
+          "summary",
+          "meals",
+          "list_additions",
+          "check_label",
+          "dropped",
+          "after_line"
+        ],
+        "title": "ChatProposalOut"
+      },
       "ConversationDetailOut": {
         "properties": {
           "id": {
@@ -2182,6 +2265,13 @@
                 "type": "null"
               }
             ]
+          },
+          "proposals": {
+            "items": {
+              "$ref": "#/components/schemas/ChatProposalOut"
+            },
+            "type": "array",
+            "title": "Proposals"
           }
         },
         "type": "object",
@@ -2190,7 +2280,8 @@
           "created_at",
           "messages",
           "draft",
-          "proposal"
+          "proposal",
+          "proposals"
         ],
         "title": "ConversationDetailOut"
       },

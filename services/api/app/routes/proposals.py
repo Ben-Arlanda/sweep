@@ -20,15 +20,24 @@ from app.services.conversations import Agent
 router = APIRouter(prefix="/proposals", tags=["agent"])
 
 
+def shown_status(proposal: Proposal) -> ProposalStatus:
+    """Pending but past its expiry reads as expired (it's saved as such when acted on)."""
+    if proposal.status == ProposalStatus.PENDING and proposal.expires_at <= utcnow():
+        return ProposalStatus.EXPIRED
+    return proposal.status
+
+
+def proposal_fields(proposal: Proposal) -> dict[str, Any]:
+    return {
+        **proposal.payload,
+        "id": proposal.id,
+        "status": shown_status(proposal),
+        "outcome": proposal.outcome,
+    }
+
+
 def proposal_out(proposal: Proposal) -> ProposalOut:
-    return ProposalOut.model_validate(
-        {
-            **proposal.payload,
-            "id": proposal.id,
-            "status": proposal.status,
-            "outcome": proposal.outcome,
-        }
-    )
+    return ProposalOut.model_validate(proposal_fields(proposal))
 
 
 @router.post("/{proposal_id}/decision")

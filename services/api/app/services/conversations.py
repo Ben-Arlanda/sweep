@@ -26,7 +26,7 @@ from app.agent.prompt import CONTEXT_TAG, today_in_sydney
 from app.agent.state import AgentState
 from app.agent.tools import AgentContext
 from app.embeddings import Embedder
-from app.models import Conversation
+from app.models import Conversation, Proposal
 from app.services.households import MemberContext
 
 log = logging.getLogger(__name__)
@@ -216,6 +216,24 @@ class Agent:
         for conversation_id in ids:
             await saver.adelete_thread(str(conversation_id))
         await session.execute(delete(Conversation).where(Conversation.member_id == member_id))
+
+
+def proposal_positions(state: dict[str, Any]) -> dict[str, int]:
+    """For each Proposal id: how many transcript lines come before it in the chat."""
+    messages = state.get("messages", [])
+    return {
+        mark["id"]: len(transcript({"messages": messages[: mark["at"]]}))
+        for mark in state.get("proposal_marks", [])
+    }
+
+
+async def proposals_of(session: AsyncSession, conversation_id: uuid.UUID) -> list[Proposal]:
+    found = await session.execute(
+        select(Proposal)
+        .where(Proposal.conversation_id == conversation_id)
+        .order_by(Proposal.created_at, Proposal.id)
+    )
+    return list(found.scalars())
 
 
 def transcript(state: dict[str, Any]) -> list[dict[str, str]]:

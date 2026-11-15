@@ -299,7 +299,12 @@ async def validate(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
     proposal = {**proposal, "id": str(row.id), "status": row.status.value}
     results.append(_result(pending["tool_use_id"], "Shown to the Member. Wait for their reply."))
     _write(runtime, {"type": "proposal", "proposal": proposal})
-    return {**update, "messages": [{"role": "user", "content": results}], "proposal": proposal}
+    return {
+        **update,
+        "messages": [{"role": "user", "content": results}],
+        "proposal": proposal,
+        "proposal_marks": [{"id": proposal["id"], "at": len(state["messages"])}],
+    }
 
 
 def after_validate(state: AgentState) -> str:

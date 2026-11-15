@@ -333,3 +333,54 @@ async def test_an_addition_already_on_the_list_is_skipped(
         texts = sorted(i.text for i in rows(db, "SELECT text FROM shopping_list_items"))
         assert texts == ["Coriander", "rice"]
         assert "Rice is already on the list" in outcome["skipped"]
+
+
+# --- the chat history keeps every Proposal ------------------------------------------------
+
+
+async def test_the_conversation_lists_every_proposal_in_place_with_its_status(
+    client_for: ClientFor, fake_issuer: FakeIssuer, load: Loader, db: Engine
+) -> None:
+    curry, pasta = await setup(load, db)
+    model = ScriptedModel(
+        [
+            *two_dinners(curry, pasta),
+            # Narration beside a tool call isn't a chat line, so it doesn't shift positions.
+            [
+                say_text("Swapping it."),
+                tool("set_planned_meal", date=TUE, recipe_id=curry, servings=2),
+            ],
+            [tool("propose_plan", summary="Curry twice.")],
+        ]
+    )
+    async with client_for(model) as client:
+        await create_household(client, fake_issuer, "ana")
+        cid, first = await propose(client, fake_issuer)
+        events = await say(client, fake_issuer, cid, "curry on Tuesday too")
+        [second] = [e["proposal"] for e in of(events, "proposal")]
+        await decide(client, fake_issuer, second["id"], {"action": "approve"})
+
+        got = (await client.get(f"/conversations/{cid}", headers=fake_issuer.headers("ana"))).json()
+        assert got["proposal"] is None  # nothing waiting any more
+        assert [(p["id"], p["status"]) for p in got["proposals"]] == [
+            (first["id"], "superseded"),
+            (second["id"], "approved"),
+        ]
+        # Each one sits after the chat line that asked for it.
+        assert [p["after_line"] for p in got["proposals"]] == [1, 2]
+        assert got["proposals"][1]["outcome"]["saved_meals"] == 2
+
+
+async def test_a_proposal_past_its_expiry_shows_as_expired(
+    client_for: ClientFor, fake_issuer: FakeIssuer, load: Loader, db: Engine
+) -> None:
+    curry, pasta = await setup(load, db)
+    async with client_for(ScriptedModel(two_dinners(curry, pasta))) as client:
+        await create_household(client, fake_issuer, "ana")
+        cid, _ = await propose(client, fake_issuer)
+        with db.begin() as conn:
+            conn.execute(text("UPDATE proposals SET expires_at = :t"), {"t": utcnow()})
+
+        got = (await client.get(f"/conversations/{cid}", headers=fake_issuer.headers("ana"))).json()
+        assert got["proposals"][0]["status"] == "expired"
+        assert got["proposal"]["status"] == "expired"  # the card can say so, not offer Approve
