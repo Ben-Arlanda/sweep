@@ -42,7 +42,18 @@ export function HomeHero({ me }: { me: MeOut }) {
       }
       subtitle={`Hi ${firstName}. Here's your kitchen at a glance.`}
     >
-      <Button title="Plan my week" onPress={() => router.push('/plan')} />
+      {/* Both start from what's in the Kitchen (ADR 0013). */}
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.sm }}>
+        <Button
+          title="Plan my week"
+          onPress={() => router.push({ pathname: '/plan', params: { start: 'week' } })}
+        />
+        <Button
+          title="Just tonight"
+          variant="secondary"
+          onPress={() => router.push({ pathname: '/plan', params: { start: 'tonight' } })}
+        />
+      </View>
     </Hero>
   );
 }
@@ -231,8 +242,8 @@ function AccountCard() {
       {confirming ? (
         <>
           <Text danger>
-            This permanently deletes your account. If you&apos;re the last Member, the Household
-            and everything in it is deleted too.
+            This permanently deletes your account. If you&apos;re the last Member, the Household and
+            everything in it is deleted too.
           </Text>
           <Button
             title="Yes, delete my account"

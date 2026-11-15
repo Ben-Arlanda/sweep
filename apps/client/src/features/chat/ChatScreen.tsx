@@ -1,5 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { Stack } from 'expo-router';
+import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import {
   AccessibilityInfo,
@@ -25,13 +25,8 @@ import { useTheme } from '@/theme/useTheme';
 
 import { DraftPeek, ProposalCard } from './ProposalCard';
 import { streamTurn, type TurnEvent } from './sse';
+import { starterMessage, SUGGESTIONS } from './starters';
 import { startTurn, turnReducer, type Turn } from './turn';
-
-const SUGGESTIONS = [
-  'Plan 5 dinners for this week',
-  'Three quick vegetarian dinners',
-  "What can I cook with what's in my Kitchen?",
-];
 
 /**
  * Chatting with the agent. Two kinds of state live here:
@@ -61,7 +56,25 @@ export function ChatScreen() {
   // Leaving the screen mid-reply stops reading. The server saves what it had so far.
   useEffect(() => () => abort.current?.abort(), []);
 
-  async function send(text: string) {
+  // Home's "Plan my week" / "Just tonight" (ADR 0013): a new plan with a fixed first
+  // message. The ref makes it once per visit, even if React runs effects twice; clearing
+  // the param means going back or reloading doesn't send it again.
+  const { start } = useLocalSearchParams<{ start?: string }>();
+  const started = useRef(false);
+  const ready = !list.isPending;
+  useEffect(() => {
+    const words = starterMessage(start);
+    if (!ready || !words || started.current) return;
+    started.current = true;
+    router.setParams({ start: undefined });
+    setChosen(null);
+    void send(words, { fresh: true });
+    // send is recreated every render; this should run only when `start` arrives.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready, start]);
+
+  /** `fresh`: start a new plan, even though the screen still shows the last one. */
+  async function send(text: string, opts: { fresh?: boolean } = {}) {
     const words = text.trim();
     if (!words || busy) return;
     setInput('');
@@ -70,7 +83,7 @@ export function ChatScreen() {
     abort.current = new AbortController();
 
     const result = await runTurn({
-      conversationId,
+      conversationId: opts.fresh ? null : conversationId,
       words,
       signal: abort.current.signal,
       createConversation: async () => {
