@@ -131,6 +131,8 @@ class RunRecord:
     today: str  # ISO date the run used as "today" (Sydney)
     usages: tuple[Usage, ...]  # one per model call
     seconds: float
+    # Part of `seconds` spent waiting on Voyage (our free tier's rate limit, not the agent).
+    embedding_seconds: float = 0.0
     crashed: str | None = None  # the harness itself failed (not the agent)
 
     @property
@@ -183,6 +185,7 @@ class CachedEmbedder:
         self.path = path
         self.hits = 0
         self.misses = 0
+        self.seconds = 0.0  # time spent waiting on the real embedder (rate limits included)
         self._cache: dict[str, list[float]] = json.loads(path.read_text()) if path.exists() else {}
 
     def _key(self, text: str, purpose: Purpose) -> str:
@@ -194,7 +197,9 @@ class CachedEmbedder:
         self.hits += len(texts) - len(missing)
         self.misses += len(missing)
         if missing:
+            started = time.monotonic()
             vectors = await self.inner.embed(missing, purpose)
+            self.seconds += time.monotonic() - started
             for t, v in zip(missing, vectors, strict=True):
                 self._cache[self._key(t, purpose)] = v
             self.path.parent.mkdir(parents=True, exist_ok=True)
@@ -451,7 +456,9 @@ async def run_scenario(
 ) -> RunRecord:
     """Run one Scenario once. Never raises for the agent's mistakes: they're the result."""
     started = time.monotonic()
+    embedded_before = embedder.seconds if isinstance(embedder, CachedEmbedder) else 0.0
     recording = RecordingModel(model)
+    cached = embedder
     if setup.embedder_failures:
         embedder = FlakyEmbedder(embedder, setup.embedder_failures)
     agent = Agent(
@@ -488,5 +495,8 @@ async def run_scenario(
         today=today.isoformat(),
         usages=tuple(t.usage for t in recording.turns),
         seconds=time.monotonic() - started,
+        embedding_seconds=(
+            cached.seconds - embedded_before if isinstance(cached, CachedEmbedder) else 0.0
+        ),
         crashed=crashed,
     )

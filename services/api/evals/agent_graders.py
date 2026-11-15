@@ -213,7 +213,7 @@ class Measures:
     tool_calls: int
     model_calls: int
     to_buy_per_meal: float | None  # final Proposal; None if it has no real meals
-    seconds: float
+    seconds: float  # without time spent waiting on Voyage's rate limit
     input_tokens: int  # every kind of input token
     output_tokens: int
     cost_usd: Decimal | None  # None if any call was on a model we have no price for
@@ -227,7 +227,7 @@ def measure(record: RunRecord) -> Measures:
         tool_calls=len(record.tool_calls),
         model_calls=len(record.usages),
         to_buy_per_meal=mean(to_buy) if to_buy else None,
-        seconds=record.seconds,
+        seconds=record.seconds - record.embedding_seconds,
         input_tokens=sum(u.all_input for u in record.usages),
         output_tokens=sum(u.output_tokens for u in record.usages),
         cost_usd=None if None in costs else sum((c for c in costs if c is not None), Decimal(0)),
