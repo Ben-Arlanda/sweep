@@ -17,6 +17,8 @@ from app.schemas import (
     IngredientOut,
     KitchenItemOut,
     KitchenOut,
+    PlaceIn,
+    PlaceOut,
     SetQuantityIn,
     SetStapleIn,
     StapleOut,
@@ -34,6 +36,7 @@ def tracked_out(item: KitchenItem) -> KitchenItemOut:
         status=kitchen.status_of(item, utcnow()).value,
         last_change_source=item.last_change_source,
         last_confirmed_at=item.last_confirmed_at,
+        place=kitchen.place_of(item),
     )
 
 
@@ -41,6 +44,7 @@ def staple_out(staple: HouseholdStaple) -> StapleOut:
     return StapleOut(
         ingredient=IngredientOut.model_validate(staple.ingredient),
         have=staple.ran_out_at is None,
+        place=kitchen.place_of(staple),
     )
 
 
@@ -110,6 +114,23 @@ async def remove_staple(
         await kitchen.remove_staple(session, ctx, ingredient_id)
 
     return await idempotent(request, session, ctx, key, work, status.HTTP_204_NO_CONTENT)
+
+
+@router.put("/kitchen/places/{ingredient_id}", response_model=PlaceOut)
+async def set_place(
+    ingredient_id: uuid.UUID,
+    body: PlaceIn,
+    request: Request,
+    ctx: MemberDep,
+    session: SessionDep,
+    key: IdempotencyKeyHeader,
+) -> Response:
+    """Move an item to the Fridge, Freezer or Cupboard (ADR 0011)."""
+
+    async def work() -> PlaceOut:
+        return PlaceOut(place=await kitchen.set_place(session, ctx, ingredient_id, body.place))
+
+    return await idempotent(request, session, ctx, key, work)
 
 
 @router.get("/ingredients")

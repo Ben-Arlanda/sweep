@@ -16,6 +16,7 @@ from pydantic import (
 )
 
 from app.data.diet import Diet
+from app.data.places import Place
 from app.models import AddedBy, ChangeSource, RecipeKind, Role
 
 HouseholdName = Annotated[
@@ -191,11 +192,21 @@ class KitchenItemOut(BaseModel):
     status: Literal["confirmed", "estimated", "unknown"]
     last_change_source: ChangeSource
     last_confirmed_at: datetime
+    place: Place
 
 
 class StapleOut(BaseModel):
     ingredient: IngredientOut
     have: bool
+    place: Place
+
+
+class PlaceIn(BaseModel):
+    place: Place | None  # None = back to the default for its category
+
+
+class PlaceOut(BaseModel):
+    place: Place
 
 
 class KitchenOut(BaseModel):

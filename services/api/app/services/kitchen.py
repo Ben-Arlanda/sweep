@@ -22,6 +22,7 @@ from enum import StrEnum
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.data.places import Place, default_place
 from app.errors import Conflict, NotFound
 from app.models import (
     ChangeSource,
@@ -130,13 +131,34 @@ async def set_staple(
     staple = await _staple(session, ctx.household.id, ingredient.id)
     if staple is None:
         tracked = await _tracked(session, ctx.household.id, ingredient.id)
-        if tracked is not None:
-            await session.delete(tracked)  # a Staple carries no quantity
         staple = HouseholdStaple(household_id=ctx.household.id, ingredient=ingredient)
+        if tracked is not None:
+            staple.place = tracked.place  # keep where the Household moved it
+            await session.delete(tracked)  # a Staple carries no quantity
         session.add(staple)
     staple.ran_out_at = None if have else (staple.ran_out_at or utcnow())
     await session.flush()
     return staple
+
+
+def place_of(row: KitchenItem | HouseholdStaple) -> Place:
+    """Where it lives: the Household's choice, else the default for its category."""
+    return row.place or default_place(row.ingredient.name, row.ingredient.category)
+
+
+async def set_place(
+    session: AsyncSession, ctx: MemberContext, ingredient_id: uuid.UUID, place: Place | None
+) -> Place:
+    """Move a Tracked item or Staple to another Place. None puts it back to the default."""
+    await _bump(session, ctx.household.id)
+    row: KitchenItem | HouseholdStaple | None = await _tracked(
+        session, ctx.household.id, ingredient_id
+    ) or await _staple(session, ctx.household.id, ingredient_id)
+    if row is None:
+        raise NotFound("That isn't in your Kitchen")
+    row.place = place
+    await session.flush()
+    return place_of(row)
 
 
 async def remove_staple(

@@ -26,6 +26,7 @@ from sqlalchemy import (
 from sqlalchemy.dialects.postgresql import ARRAY, JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+from app.data.places import Place
 from app.db import Base
 from app.embeddings import DIMENSIONS
 
@@ -267,6 +268,8 @@ class HouseholdStaple(Base):
     )
     ingredient: Mapped[Ingredient] = relationship(lazy="joined")
     ran_out_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    # Where the Household keeps it, if not the default for its category (ADR 0011).
+    place: Mapped[Place | None] = mapped_column(str_enum(Place, "staple_place"))
 
 
 class KitchenItem(Base):
@@ -296,6 +299,8 @@ class KitchenItem(Base):
         str_enum(ChangeSource, "kitchen_change_source")
     )
     last_confirmed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    # Where the Household keeps it, if not the default for its category (ADR 0011).
+    place: Mapped[Place | None] = mapped_column(str_enum(Place, "kitchen_place"))
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utcnow, server_default=func.now()
     )
