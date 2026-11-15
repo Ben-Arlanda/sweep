@@ -13,6 +13,7 @@ Every check reads what the agent *did* (Proposals, tool calls), never what it *s
 from collections import Counter
 from collections.abc import Callable, Iterable, Sequence
 from dataclasses import dataclass
+from datetime import date
 from decimal import Decimal
 from statistics import mean
 
@@ -168,6 +169,28 @@ def changed_only_day(index: int) -> Check:
             d for d in before.keys() | after.keys() if d != day and before.get(d) != after.get(d)
         ]
         return not others, "also changed " + ", ".join(sorted(others))
+
+    return check
+
+
+@_named("on_today")
+def on_today(record: RunRecord) -> tuple[bool, str]:
+    """ "Just tonight": every meal is today."""
+    wrong = [m.date for m in _final_meals(record) if m.date != record.today]
+    return not wrong, f"meals on {', '.join(wrong)}, not today ({record.today})"
+
+
+def on_weekdays(*names: str) -> Check:
+    """Meals only on these weekdays ("Saturday", "Sunday"), for free-text day requests."""
+
+    @_named(f"on_weekdays({', '.join(names)})")
+    def check(record: RunRecord) -> tuple[bool, str]:
+        wrong = [
+            f"{m.date} ({day})"
+            for m in _final_meals(record)
+            if (day := f"{date.fromisoformat(m.date):%A}") not in names
+        ]
+        return not wrong, "meals on " + ", ".join(wrong)
 
     return check
 

@@ -16,6 +16,8 @@ from evals.agent_graders import (
     never_called,
     no_crash,
     nothing_dropped,
+    on_today,
+    on_weekdays,
     only_chosen_days,
     proposal_made,
     revised_after_reject,
@@ -62,6 +64,7 @@ def record(
         turns=turns or (turn(),),
         proposals=proposals,
         chosen_days=days,
+        today=MON,
         usages=(Usage("claude-sonnet-5-5", 1_000_000, 100_000),),
         seconds=12.0,
         crashed=crashed,
@@ -121,6 +124,15 @@ def test_tools_called_and_not_called() -> None:
 def test_uses_a_kitchen_item() -> None:
     assert uses_kitchen_item("rice")(GOOD).ok
     assert not uses_kitchen_item("chicken thigh")(GOOD).ok
+
+
+def test_tonight_and_named_weekdays() -> None:
+    assert on_today(record(proposal(meal(MON)), days=None)).ok
+    assert not on_today(record(proposal(meal(TUE)), days=None)).ok
+    # 2026-11-16 is a Monday, 2026-11-17 a Tuesday.
+    assert on_weekdays("Monday", "Tuesday")(GOOD).ok
+    result = on_weekdays("Saturday", "Sunday")(GOOD)
+    assert not result.ok and "Monday" in result.detail
 
 
 def test_final_status() -> None:

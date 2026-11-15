@@ -128,6 +128,7 @@ class RunRecord:
     turns: tuple[TurnFacts, ...]
     proposals: tuple[ProposalFacts, ...]  # oldest first
     chosen_days: tuple[str, ...] | None  # ISO dates, when the Scenario picked days
+    today: str  # ISO date the run used as "today" (Sydney)
     usages: tuple[Usage, ...]  # one per model call
     seconds: float
     crashed: str | None = None  # the harness itself failed (not the agent)
@@ -349,8 +350,19 @@ async def build_household(
     return identity, ctx, conversation.id
 
 
-def _words(step: Say, days: Sequence[date] | None) -> str:
-    return step.text.format(*(f"{d:%A}" for d in days or ()))
+def list_days(days: Sequence[date]) -> str:
+    """ "Tue 17, Wed 18 and Thu 19 Nov", as the app writes it (starters.ts listDays)."""
+    parts = []
+    for i, d in enumerate(days):
+        month_ends = i == len(days) - 1 or days[i + 1].month != d.month
+        parts.append(f"{d:%a} {d.day}" + (f" {d:%b}" if month_ends else ""))
+    return parts[0] if len(parts) == 1 else ", ".join(parts[:-1]) + " and " + parts[-1]
+
+
+def words(step: Say, days: Sequence[date] | None) -> str:
+    """`{0}`, `{1}`… → weekday names of the chosen days; `{days}` → the app's day list."""
+    chosen = list(days or ())
+    return step.text.format(*(f"{d:%A}" for d in chosen), days=list_days(chosen) if chosen else "")
 
 
 async def _say(agent: Agent, conversation: Conversation, words: str) -> TurnFacts:
@@ -457,7 +469,7 @@ async def run_scenario(
     try:
         for step in steps:
             if isinstance(step, Say):
-                turns.append(await _say(agent, conversation, _words(step, days)))
+                turns.append(await _say(agent, conversation, words(step, days)))
             else:
                 action = "approve" if isinstance(step, Approve) else "reject"
                 await _decide(agent, conversation, action)
@@ -473,6 +485,7 @@ async def run_scenario(
         turns=tuple(turns),
         proposals=proposals,
         chosen_days=tuple(d.isoformat() for d in days) if days is not None else None,
+        today=today.isoformat(),
         usages=tuple(t.usage for t in recording.turns),
         seconds=time.monotonic() - started,
         crashed=crashed,

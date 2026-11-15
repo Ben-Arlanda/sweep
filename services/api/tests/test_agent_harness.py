@@ -5,7 +5,7 @@ the real model; everything they report comes through the code tested here.
 """
 
 import uuid
-from datetime import timedelta
+from datetime import date, timedelta
 from decimal import Decimal
 from pathlib import Path
 
@@ -28,8 +28,10 @@ from evals.agent_harness import (
     build_household,
     collect_proposals,
     copy_recipe_embeddings,
+    list_days,
     open_database,
     run_scenario,
+    words,
 )
 from tests.conftest import Loader
 from tests.fake_model import Messages, ScriptedModel, last_result, tool
@@ -107,6 +109,7 @@ async def test_a_run_records_what_the_agent_did(database_url: str, load: Loader)
     assert record.model == "scripted"
     [turn] = record.turns
     assert turn.said == "Plan " + f"{today_in_sydney() + timedelta(days=1):%A}"
+    assert record.today == today_in_sydney().isoformat()
     assert record.tool_calls == ("search_recipes", "set_planned_meal", "propose_plan")
     assert record.replans == 0 and turn.error is None
     assert record.chosen_days is not None and len(record.chosen_days) == 2
@@ -182,3 +185,13 @@ async def test_recipe_vectors_are_copied_by_slug(database_url: str, load: Loader
     async with open_database(database_url) as db:
         copied = await copy_recipe_embeddings(database_url, db, HashingEmbedder.model)
     assert copied == 4
+
+
+def test_messages_name_the_days_the_way_the_app_does() -> None:
+    days = [date(2026, 11, 29), date(2026, 11, 30), date(2026, 12, 1)]
+    assert list_days(days) == "Sun 29, Mon 30 Nov and Tue 1 Dec"
+    assert list_days(days[:1]) == "Sun 29 Nov"
+    step = Say("Plan new recipes to shop for, for {days}. Swap {1}.")
+    assert words(step, days) == (
+        "Plan new recipes to shop for, for Sun 29, Mon 30 Nov and Tue 1 Dec. Swap Monday."
+    )
