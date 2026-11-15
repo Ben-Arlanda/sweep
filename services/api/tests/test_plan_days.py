@@ -4,6 +4,7 @@ The "Plan my week" sheet starts a Conversation with a mode and the days picked. 
 Household's usual weekdays are remembered with its Preferences.
 """
 
+from collections.abc import Mapping
 from datetime import timedelta
 
 import httpx
@@ -29,7 +30,7 @@ def day(offset: int) -> str:
 
 
 async def start(
-    client: httpx.AsyncClient, issuer: FakeIssuer, body: dict[str, object] | None
+    client: httpx.AsyncClient, issuer: FakeIssuer, body: Mapping[str, object] | None
 ) -> httpx.Response:
     return await client.post("/conversations", json=body, headers=issuer.headers("ana"))
 
@@ -56,7 +57,8 @@ async def test_a_plain_chat_has_no_mode_or_days(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer
 ) -> None:
     await create_household(client, fake_issuer, "ana")
-    for body in (None, {}):
+    bodies: list[Mapping[str, object] | None] = [None, {}]
+    for body in bodies:
         created = (await start(client, fake_issuer, body)).json()
         assert created["plan_mode"] is None
         assert created["plan_days"] is None
@@ -148,7 +150,7 @@ async def test_the_meal_plan_starts_on_this_weeks_monday_and_says_what_today_is(
 
 
 async def started(
-    client: httpx.AsyncClient, issuer: FakeIssuer, body: dict[str, object] | None
+    client: httpx.AsyncClient, issuer: FakeIssuer, body: Mapping[str, object] | None
 ) -> str:
     response = await start(client, issuer, body)
     assert response.status_code == 201, response.text
