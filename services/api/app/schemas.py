@@ -372,6 +372,9 @@ class ProposalOutcomeOut(BaseModel):
     saved_meals: int
     added_items: int
     skipped: list[str]  # each one says what and why, e.g. "Rice is already on the list"
+    # What the Member left ticked. None on outcomes saved before this was recorded.
+    kept_meals: list[str] | None = None
+    kept_additions: list[int] | None = None
 
 
 class ProposalOut(BaseModel):

@@ -119,6 +119,8 @@ async def test_approving_saves_the_meals_and_list_additions(
         body = response.json()
         assert body["status"] == "approved"
         assert body["outcome"]["message"] == "Saved 2 meals and added 2 items to the list."
+        assert body["outcome"]["kept_meals"] == [MON, TUE]
+        assert body["outcome"]["kept_additions"] == [0, 1]
 
         meals = rows(
             db, "SELECT date::text, servings, proposal_id::text FROM planned_meals ORDER BY date"
@@ -148,6 +150,9 @@ async def test_unticked_meals_and_additions_are_left_out(
 
         assert [m.date for m in rows(db, "SELECT date::text FROM planned_meals")] == [TUE]
         assert [i.text for i in rows(db, "SELECT text FROM shopping_list_items")] == ["Coriander"]
+        # What stayed ticked is recorded, so the chat can show it later, after a reload.
+        assert response.json()["outcome"]["kept_meals"] == [TUE]
+        assert response.json()["outcome"]["kept_additions"] == [1]
 
 
 async def test_keeping_something_that_was_not_proposed_is_rejected(

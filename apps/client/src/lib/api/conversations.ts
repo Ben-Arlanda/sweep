@@ -4,9 +4,14 @@
  *
  * Sending a message isn't here: it streams, so it goes through features/chat/sse.ts.
  */
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { api, unwrap } from './client';
+import { listKeys } from './lists';
+import { mealPlanKeys } from './mealPlan';
+import type { components } from './schema';
+
+type Decision = components['schemas']['DecisionIn'];
 
 export const conversationKeys = {
   all: ['conversations'] as const,
@@ -43,5 +48,35 @@ export function useConversation(id: string | null) {
 export function useCreateConversation() {
   return useMutation({
     mutationFn: async () => unwrap(await api.POST('/conversations')),
+  });
+}
+
+/**
+ * Approve or reject a Proposal. No Idempotency-Key: the Proposal id does that job on the
+ * server (a repeated Approve returns the stored outcome, ADR 0014). And no automatic
+ * retry: approving resumes the agent, so if it fails we show why and let them tap again.
+ *
+ * Afterwards everything approving can touch is refetched: the Conversation (the card's
+ * new status and outcome), the Meal Plan and the Shopping List.
+ */
+export function useDecideProposal(conversationId: string | null) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (v: { proposalId: string; decision: Decision }) =>
+      unwrap(
+        await api.POST('/proposals/{proposal_id}/decision', {
+          params: { path: { proposal_id: v.proposalId } },
+          body: v.decision,
+        }),
+      ),
+    onSettled: async () => {
+      await Promise.all([
+        conversationId
+          ? queryClient.invalidateQueries({ queryKey: conversationKeys.one(conversationId) })
+          : null,
+        queryClient.invalidateQueries({ queryKey: mealPlanKeys.all }),
+        queryClient.invalidateQueries({ queryKey: listKeys.all }),
+      ]);
+    },
   });
 }
