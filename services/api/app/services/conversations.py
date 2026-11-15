@@ -8,11 +8,13 @@ import asyncio
 import logging
 import uuid
 from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 from typing import Any, cast
 
 from langchain_core.runnables import RunnableConfig
 from langgraph.errors import GraphRecursionError
 from langgraph.graph.state import CompiledStateGraph
+from langgraph.types import Command
 from sqlalchemy import delete, select, text
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
 
@@ -109,11 +111,10 @@ class Agent:
         snapshot = await (await self.graph()).aget_state(_config(conversation_id))
         return dict(snapshot.values)
 
-    async def run_turn(
-        self, conversation: Conversation, user_text: str
-    ) -> AsyncIterator[dict[str, Any]]:
-        context = AgentContext(
+    def _context(self, conversation: Conversation) -> AgentContext:
+        return AgentContext(
             sessionmaker=self.sessionmaker,
+            conversation_id=conversation.id,
             household_id=conversation.household_id,
             member_id=conversation.member_id,
             model=self.model,
@@ -121,23 +122,54 @@ class Agent:
             today=today_in_sydney(),
             daily_token_budget=self.daily_token_budget,
         )
-        compiled = await self.graph()
-        # One turn at a time per conversation, across every API instance: a Postgres
-        # advisory lock, held on its own connection for the length of the turn.
+
+    @asynccontextmanager
+    async def _one_at_a_time(self, conversation_id: uuid.UUID) -> AsyncIterator[bool]:
+        """One turn or decision at a time per Conversation, across every API instance: a
+        Postgres advisory lock, held on its own connection while the graph runs. Yields
+        False if something else holds it."""
         async with self.engine.connect() as lock_conn:
-            key = {"k": str(conversation.id)}
-            got = await lock_conn.scalar(
-                text("SELECT pg_try_advisory_lock(hashtextextended(:k, 0))"), key
+            key = {"k": str(conversation_id)}
+            got = bool(
+                await lock_conn.scalar(
+                    text("SELECT pg_try_advisory_lock(hashtextextended(:k, 0))"), key
+                )
             )
+            try:
+                yield got
+            finally:
+                if got:
+                    await lock_conn.execute(
+                        text("SELECT pg_advisory_unlock(hashtextextended(:k, 0))"), key
+                    )
+
+    async def waiting_on(self, conversation_id: uuid.UUID) -> str | None:
+        """The id of the Proposal the paused graph is waiting on, if it is paused."""
+        snapshot = await (await self.graph()).aget_state(_config(conversation_id))
+        if "approve" not in snapshot.next:
+            return None
+        proposal = snapshot.values.get("proposal") or {}
+        return proposal.get("id")
+
+    async def run_turn(
+        self, conversation: Conversation, user_text: str
+    ) -> AsyncIterator[dict[str, Any]]:
+        compiled = await self.graph()
+        async with self._one_at_a_time(conversation.id) as got:
             if not got:
                 yield {"type": "error", "message": "Still answering your last message."}
                 return
+            # Waiting on a Proposal? Then this message is the answer: "change something"
+            # instead of approving. Resuming supersedes the Proposal and carries on.
+            turn_input: Any = {"user_text": user_text}
+            if await self.waiting_on(conversation.id) is not None:
+                turn_input = Command(resume={"action": "message", "text": user_text})
             try:
                 async with asyncio.timeout(TURN_TIMEOUT_SECONDS):
                     async for chunk in compiled.astream(
-                        {"user_text": user_text},
+                        turn_input,
                         _config(conversation.id),
-                        context=context,
+                        context=self._context(conversation),
                         stream_mode="custom",
                     ):
                         yield cast(dict[str, Any], chunk)
@@ -151,9 +183,23 @@ class Agent:
             except Exception:
                 log.exception("agent turn failed")
                 yield {"type": "error", "message": "Something went wrong. Please try again."}
-            finally:
-                await lock_conn.execute(
-                    text("SELECT pg_advisory_unlock(hashtextextended(:k, 0))"), key
+
+    async def decide(
+        self, conversation: Conversation, proposal_id: uuid.UUID, decision: dict[str, Any]
+    ) -> None:
+        """Resume the paused graph with the Member's answer. No LLM call: approve goes
+        straight to commit, reject ends the run."""
+        compiled = await self.graph()
+        async with self._one_at_a_time(conversation.id) as got:
+            if not got:
+                raise errors.Conflict("Still answering your last message. Try again shortly.")
+            if await self.waiting_on(conversation.id) != str(proposal_id):
+                raise errors.Conflict("This plan is no longer waiting for an answer")
+            async with asyncio.timeout(TURN_TIMEOUT_SECONDS):
+                await compiled.ainvoke(
+                    Command(resume=decision),
+                    _config(conversation.id),
+                    context=self._context(conversation),
                 )
 
     async def forget_member(self, session: AsyncSession, member_id: uuid.UUID) -> None:

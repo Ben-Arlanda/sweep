@@ -21,6 +21,7 @@ from app.routes import (
     dietary_rules,
     households,
     kitchen,
+    proposals,
     realtime,
     recipes,
     shopping_lists,
@@ -37,6 +38,7 @@ ERROR_STATUS: dict[type[errors.DomainError], int] = {
     errors.Conflict: 409,
     errors.LimitReached: 409,
     errors.IdempotencyKeyReused: 422,
+    errors.InvalidInput: 422,
     errors.Unavailable: 503,
 }
 
@@ -134,6 +136,7 @@ def create_app(
     app.include_router(recipes.router)
     app.include_router(dietary_rules.router)
     app.include_router(conversations.router)
+    app.include_router(proposals.router)
     app.include_router(realtime.router)
 
     @app.get("/health")

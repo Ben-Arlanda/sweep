@@ -4,6 +4,7 @@ import uuid
 from datetime import UTC, date, datetime
 from decimal import Decimal
 from enum import StrEnum
+from typing import Any
 
 from pgvector.sqlalchemy import Vector
 from sqlalchemy import (
@@ -75,6 +76,8 @@ class Household(Base):
     )
     # Goes up on every Kitchen change; carried by change notices, like a list's version.
     kitchen_version: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
+    # The same for the Meal Plan (Planned Meals), so open apps refetch it.
+    meal_plan_version: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
 
 
 class Member(Base):
@@ -523,3 +526,102 @@ class AgentUsage(Base):
     day: Mapped[date] = mapped_column(Date)
     input_tokens: Mapped[int] = mapped_column(Integer, default=0)
     output_tokens: Mapped[int] = mapped_column(Integer, default=0)
+
+
+class ProposalStatus(StrEnum):
+    PENDING = "pending"  # waiting for the Member
+    APPROVED = "approved"
+    REJECTED = "rejected"
+    SUPERSEDED = "superseded"  # the Member asked for changes in the chat instead
+    EXPIRED = "expired"  # 24h passed without a decision
+
+
+class Proposal(Base):
+    """A Draft Plan shown to the Member for approval (ADR 0005). `payload` is exactly what
+    they saw; `outcome` is what approving it did, kept so a retried Approve gets the same
+    answer instead of doing it twice."""
+
+    __tablename__ = "proposals"
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    conversation_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("conversations.id", ondelete="CASCADE"), index=True
+    )
+    household_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("households.id", ondelete="CASCADE"), index=True
+    )
+    # The Member who started the Conversation: the only one who can decide it.
+    created_by: Mapped[uuid.UUID] = mapped_column(ForeignKey("members.id", ondelete="CASCADE"))
+    payload: Mapped[dict[str, Any]] = mapped_column(JSONB)
+    status: Mapped[ProposalStatus] = mapped_column(
+        str_enum(ProposalStatus, "proposal_status"), default=ProposalStatus.PENDING
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utcnow, server_default=func.now()
+    )
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    decided_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    outcome: Mapped[dict[str, Any] | None] = mapped_column(JSONB)
+
+
+class PlannedMeal(Base):
+    """One dinner on one day. The UNIQUE is the "one dinner per day" rule. A Meal Plan
+    is just a week of these, read by date, so there's no separate meal_plans table.
+
+    `cooked_deductions` is what Mark as Cooked took out of the Kitchen, so undoing it
+    can put exactly that back.
+    """
+
+    __tablename__ = "planned_meals"
+    __table_args__ = (
+        UniqueConstraint("household_id", "date"),
+        CheckConstraint("servings BETWEEN 1 AND 20", name="servings_sensible"),
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    household_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("households.id", ondelete="CASCADE"))
+    date: Mapped[date] = mapped_column(Date)
+    recipe_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("recipes.id", ondelete="CASCADE"))
+    recipe: Mapped[Recipe] = relationship(lazy="joined")
+    servings: Mapped[int] = mapped_column(SmallInteger)
+    # Which approved Proposal put it here. SET NULL: the meal outlives the Conversation.
+    proposal_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("proposals.id", ondelete="SET NULL")
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utcnow, server_default=func.now()
+    )
+    cooked_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    cooked_by: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("members.id", ondelete="SET NULL")
+    )
+    cooked_deductions: Mapped[list[dict[str, Any]] | None] = mapped_column(JSONB)
+
+
+class Actor(StrEnum):
+    MEMBER = "member"
+    AGENT = "agent"
+
+
+class AuditEntry(Base):
+    """Append-only record of decisions and the changes they made (ADR 0005). Rows are
+    only ever inserted: nothing in the app updates or deletes one."""
+
+    __tablename__ = "audit_log"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    household_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("households.id", ondelete="CASCADE"), index=True
+    )
+    # SET NULL: the record stays after the Member deletes their account.
+    member_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("members.id", ondelete="SET NULL")
+    )
+    actor: Mapped[Actor] = mapped_column(str_enum(Actor, "audit_actor"))
+    action: Mapped[str] = mapped_column(String(40))  # "proposal.approved", "meal.cooked"
+    entity: Mapped[str] = mapped_column(String(40))  # "proposal", "planned_meal"
+    entity_id: Mapped[uuid.UUID] = mapped_column()
+    detail: Mapped[dict[str, Any]] = mapped_column(JSONB, default=dict)
+    at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utcnow, server_default=func.now()
+    )

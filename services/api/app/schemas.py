@@ -1,7 +1,7 @@
 """Request and response shapes. They also become the OpenAPI schema for the client."""
 
 import uuid
-from datetime import datetime
+from datetime import date, datetime
 from decimal import Decimal
 from typing import Annotated, Literal, Self
 
@@ -18,7 +18,7 @@ from pydantic import (
 
 from app.data.diet import Diet
 from app.data.places import Place
-from app.models import AddedBy, ChangeSource, RecipeKind, Role
+from app.models import AddedBy, ChangeSource, ProposalStatus, RecipeKind, Role
 from app.services.ingredients import normalise
 
 HouseholdName = Annotated[
@@ -339,17 +339,42 @@ class ProposalMealOut(BaseModel):
     recipe_id: str
     title: str
     servings: int
+    # The dinner already planned that day, which approving would replace.
+    replaces: str | None = None
+
+
+class ProposalOutcomeOut(BaseModel):
+    """What approving did. `message` is written by code, not the LLM."""
+
+    message: str
+    saved_meals: int
+    added_items: int
+    skipped: list[str]  # each one says what and why, e.g. "Rice is already on the list"
 
 
 class ProposalOut(BaseModel):
-    """What the Member is asked to approve (slice 6). Meals that broke a Dietary Rule are
-    already left out and named in `dropped`; `check_label` lists ingredients to check."""
+    """What the Member is asked to approve. Meals that broke a Dietary Rule are already
+    left out and named in `dropped`; `check_label` lists ingredients to check."""
 
+    id: uuid.UUID | None = None  # missing on Proposals shown before slice 6a
+    status: ProposalStatus = ProposalStatus.PENDING
     summary: str
     meals: list[ProposalMealOut]
     list_additions: list[DraftAdditionOut]
     check_label: list[str]
     dropped: list[str]
+    outcome: ProposalOutcomeOut | None = None
+
+
+class DecisionIn(BaseModel):
+    """Approve (optionally with some meals or additions unticked) or reject.
+
+    `keep_meals` / `keep_additions` list what stays ticked: dates of proposed meals, and
+    positions in `list_additions`. Leave one out to keep all of that kind."""
+
+    action: Literal["approve", "reject"]
+    keep_meals: list[date] | None = Field(default=None, max_length=14)
+    keep_additions: list[int] | None = Field(default=None, max_length=60)
 
 
 class ConversationDetailOut(ConversationOut):
