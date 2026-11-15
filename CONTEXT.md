@@ -46,6 +46,14 @@ _Avoid_: recipe database, cookbook
 A canonical food item ("plain flour", "chicken thigh") that recipes, the Shopping List and the Kitchen all refer to, so they can be compared.
 _Avoid_: product, item (an item is a line on a list)
 
+**Household Ingredient**:
+An Ingredient one Household created by adding something Sweep didn't know ("kale", "bin bags"). Works like any Ingredient in that Household's list and Kitchen; merged into the shared one if Sweep adds it later.
+_Avoid_: custom item, unknown item
+
+**Ingredient link**:
+A Household's choice that a name means a particular Ingredient ("chocolate" → dark chocolate). Applies to future list items and imported recipe lines.
+_Avoid_: alias (aliases are shared reference data)
+
 **Staple**:
 An Ingredient the Household is assumed to have until a Member marks it as run out (salt, oil, common spices). No quantity is tracked.
 _Avoid_: pantry item, basic
