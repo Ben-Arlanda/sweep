@@ -10,7 +10,7 @@ The agent is a genuine LangGraph agent that picks its own tools. That freedom is
 
 - **The agent has no tool that writes Household data.** Its tools fall into three groups:
   - *read* (recipes, Cabinet, preferences, Shopping List)
-  - *compute* (deterministic: Cabinet coverage, Estimated Cost)
+  - *compute* (deterministic: Cabinet coverage)
   - *draft* (edit the Draft Plan held in agent state)
 - A `propose_plan` tool ends the turn. The graph moves to a validation node, then an **`interrupt()`** that shows the Proposal. Only after an Approval does a deterministic `commit` node call the same services the REST API uses, under the approving Member's permissions. The Proposal id is the idempotency key.
 - **`household_id` and `member_id` are never tool arguments.** They are injected from the authenticated request into the graph's runtime config. The LLM cannot pick a different Household.

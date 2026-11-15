@@ -1,6 +1,6 @@
 # Sweep — Architecture & Implementation Plan
 
-Status: slices 0–4b merged (foundations; Households, invites, Clerk sign-in, account deletion; shared Shopping List with live updates and an offline retry queue; Ingredients and the Cabinet; the Zest + Kitchen Table design system, ADR 0007; Recipe Knowledge Base backend and Recipes screens). App shell (`feature/brand-and-motion`): welcome and "how it works" screens before sign-in, bottom tab bar, dark by default, rounded heroes, Urbanist. Visual polish is deferred until the app is feature-complete. 4c merged: 500 Seed Recipes (all embedded), automated recipe checks gate CI. 5a merged (PR #14): Dietary Rules (vegetarian, vegan, gluten free, dairy free, excluded Ingredients) and Preferences; the LangGraph agent on Sonnet 5.5 with tools, validate loop, checkpointer and SSE (ADR 0008). 5b (`feature/agent-chat`): chat screen (streamed replies, Proposal card, resume on any device) and the Dietary Rules & Preferences screen. Next: slice 6, approvals.
+Status: slices 0–4b merged (foundations; Households, invites, Clerk sign-in, account deletion; shared Shopping List with live updates and an offline retry queue; Ingredients and the Cabinet; the Zest + Kitchen Table design system, ADR 0007; Recipe Knowledge Base backend and Recipes screens). App shell (`feature/brand-and-motion`): welcome and "how it works" screens before sign-in, bottom tab bar, dark by default, rounded heroes, Urbanist. Visual polish is deferred until the app is feature-complete. 4c merged: 500 Seed Recipes (all embedded), automated recipe checks gate CI. 5a merged (PR #14): Dietary Rules (vegetarian, vegan, gluten free, dairy free, excluded Ingredients) and Preferences; the LangGraph agent on Sonnet 5.5 with tools, validate loop, checkpointer and SSE (ADR 0008). 5b (`feature/agent-chat`): chat screen (streamed replies, Proposal card, resume on any device) and the Dietary Rules & Preferences screen. 5b merged (PR #15). **Pricing dropped (ADR 0010): no catalogue, no Estimated Cost, no weekly budget; slice 7 and E3 removed.** Next: slice 2b (one Shopping List with Shops, ADR 0009), then slice 6 approvals.
 Language follows [`CONTEXT.md`](../CONTEXT.md). Big decisions live in [`docs/adr/`](adr/).
 ⚠️ = unverified, check before relying on it.
 
@@ -8,7 +8,7 @@ Language follows [`CONTEXT.md`](../CONTEXT.md). Big decisions live in [`docs/adr
 
 ## 1. Product promise (revised from the brief)
 
-> Plan the week from what's in your Cabinet, shop together from one shared list, and stop hunting for recipes online, with a ballpark cost.
+> Plan the week from what's in your Cabinet, shop together from one shared list, and stop hunting for recipes online.
 
 **First real users:** the builder's own Household. The MVP passes when that Household plans and shops with it for **4 consecutive weeks**.
 
@@ -16,8 +16,8 @@ Changes from `PRODUCT_BRIEF.md`:
 
 | Brief | Plan | Why |
 |---|---|---|
-| "Cheapest sensible basket" across Coles/Woolworths/Aldi | Estimated Cost from a simulated catalogue | No official supermarket APIs (ADR 0001) |
-| Basic basket optimisation in MVP | Later experiment | Optimising simulated prices has little product value |
+| "Cheapest sensible basket", budget validation, basket optimisation | **Dropped**: no prices, no budget | No official supermarket APIs; the product owner chose not to build a simulated catalogue. No learning objective depends on it (ADR 0010, supersedes 0001) |
+| Several shopping lists | **One Shopping List** per Household, items labelled by **Shop** (Coles, Woolies, Aldi, or the Household's own) | A Household shops together; shops are a label, not a separate list (ADR 0009) |
 | Recipe-based inventory consumption: later | **Mark as Cooked** in MVP | Cheap with the tiered Cabinet. Keeps it accurate (ADR 0003). |
 | Exact inventory quantities | Staples / Tracked + Confirmed/Estimated/Unknown | Survives real kitchens (ADR 0003) |
 | "Dietary preferences" | Split into Dietary Rules (hard) and Preferences (soft) | Allergies must never be traded off |
@@ -30,14 +30,14 @@ Changes from `PRODUCT_BRIEF.md`:
 2. Seed Recipes are available. A Member imports 3 favourite recipes by URL.
 3. Members add items to the shared Shopping List. Both devices update.
 4. Ticking items off moves linked Ingredients into the Cabinet as Confirmed. Manual Cabinet edits and corrections work.
-5. In a Conversation: *"Plan 4 dinners for 2, under $90, no mushrooms, use the chicken we have."*
-6. The agent builds a Draft Plan, validates it, and shows a **Proposal**: Planned Meals, Shopping List additions, Estimated Cost, and the Cabinet assumptions it relied on.
+5. In a Conversation: *"Plan 4 dinners for 2, no mushrooms, use the chicken we have."*
+6. The agent builds a Draft Plan, validates it, and shows a **Proposal**: Planned Meals, Shopping List additions, and the Cabinet assumptions it relied on.
 7. Follow-up: *"Make Tuesday vegetarian"* edits the Draft Plan without rebuilding it.
-8. Approve → Meal Plan and Shopping List update for both Members.
+8. Untick anything unwanted, then Approve → Meal Plan and Shopping List update for both Members.
 9. Mark a Planned Meal as **Cooked** → Cabinet deducts (Estimated).
 10. Account deletion works in-app.
 
-**Not in MVP:** Android release builds (but Android runs in dev from day one), push notifications, full offline mode, live prices, basket optimisation, expiry dates, multi-agent, MCP inside the product.
+**Not in MVP:** Android release builds (but Android runs in dev from day one), push notifications, full offline mode, prices and budgets, expiry dates, multi-agent, MCP inside the product.
 
 ---
 
@@ -119,9 +119,10 @@ cabinet_items(household_id, ingredient_id, quantity, unit,
               last_change_source[purchase|manual|cooked], last_confirmed_at)
               -- Confirmed/Estimated/Unknown is CALCULATED when read, not stored
 
-shopping_lists(id, household_id, name)
-shopping_list_items(id, list_id, text, ingredient_id?, quantity, unit,
-                    added_by[member|agent], proposal_id?, checked_at, checked_by, version)
+shopping_lists(id, household_id UNIQUE, name, version)   -- exactly one per Household (ADR 0009)
+shops(id, household_id, name)                         -- Coles, Woolies, Aldi to start; Household can add
+shopping_list_items(id, list_id, text, ingredient_id?, shop_id?, quantity, unit,
+                    added_by[member|agent], proposal_id?, checked_at, checked_by)
 
 meal_plans(id, household_id, week_start)
 planned_meals(id, meal_plan_id, date, recipe_id, servings, cooked_at, cooked_by)
@@ -135,8 +136,6 @@ conversations(id, household_id, member_id, langgraph_thread_id)
 audit_log(id, household_id, actor[member|agent], action, entity, before, after, at)
 idempotency_keys(key, member_id, response, created_at)
 
-catalogue_products(id, ingredient_id, store, pack_size, pack_unit,
-                   estimated_price_cents, source='simulated')
 ```
 
 Tooling: SQLAlchemy 2 + Alembic migrations, Pydantic v2 schemas. LangGraph checkpoint tables are managed by the checkpointer.
@@ -163,7 +162,7 @@ START → load_context ─→ agent ⇄ tools
 - **load_context** (no LLM): Dietary Rules, Preferences, Cabinet summary with statuses, current Meal Plan, Household size → into state.
 - **agent**: one LLM with tools bound. It decides what to call. This is the "genuine agent" part: the path is different for "plan 5 dinners" and for "we already have pasta".
 - **tools**: a wrapper around each tool that checks arguments (Pydantic), applies timeouts (10s), retries temporary failures twice, injects `household_id` from config (never from the LLM), and returns errors to the agent as data it can react to.
-- **validate** (no LLM): every recipe exists (grounding), Dietary Rules hold, servings are sensible, Estimated Cost vs budget. If it fails, it sends a structured list of problems back to the agent, at most 2 replans. After that, the Member sees the best attempt with any meal that still has a problem removed and listed, so a Proposal never breaks a Dietary Rule. (Estimated Cost arrives in slice 7.)
+- **validate** (no LLM): every recipe exists (grounding), Dietary Rules hold, servings are sensible. If it fails, it sends a structured list of problems back to the agent, at most 2 replans. After that, the Member sees the best attempt with any meal that still has a problem removed and listed, so a Proposal never breaks a Dietary Rule.
 - **approve**: `interrupt(proposal)`. The paused state lives in Postgres and can be resumed hours later from any device.
 - **commit**: re-validates against current data, writes through services, logs to the audit trail. Idempotent per Proposal id.
 
@@ -183,7 +182,6 @@ Follow-ups work because `draft_plan` persists in the checkpoint. "Swap Tuesday" 
 | read | `get_household_preferences()` | |
 | read | `get_shopping_list()` | |
 | compute | `check_cabinet_coverage(recipe_ids, servings)` | Deterministic: missing Ingredients with quantities, unit-converted |
-| compute | `estimate_cost(items)` | Deterministic, simulated catalogue |
 | draft | `set_planned_meal(date, recipe_id, servings)` / `remove_planned_meal(date)` | Only edits agent state |
 | draft | `adapt_recipe(recipe_id, swaps)` | Creates a Recipe Adaptation in the draft. Validated against Dietary Rules. *(Not in 5a: comes with Recipe Adaptations.)* |
 | draft | `set_list_additions(items)` | |
@@ -262,14 +260,14 @@ Ranking boosts: Imported Recipes, recipes that use Cabinet items, recipes the Ho
 
 ### Datasets (in `evals/`, versioned)
 
-- **Agent scenarios** (~30 to start): simple plan, tight budget, conflicting Rules vs Preferences, missing Cabinet data, unavailable recipe, a tool timeout (injected), bad tool arguments, follow-up edits, approval reject → revise, prompt-injected recipe.
+- **Agent scenarios** (~30 to start): simple plan, conflicting Rules vs Preferences, missing Cabinet data, unavailable recipe, a tool timeout (injected), bad tool arguments, follow-up edits, approval reject → revise, prompt-injected recipe.
 - **Retrieval set** (~50 queries with hand-labelled relevant recipes).
 
 ### Graders
 
-- **Deterministic first:** grounding (all recipe ids exist), Dietary Rule compliance, budget compliance, coverage maths correctness, expected tools called and forbidden tools not called, steps, latency, cost.
+- **Deterministic first:** grounding (all recipe ids exist), Dietary Rule compliance, coverage maths correctness, expected tools called and forbidden tools not called, steps, latency, cost.
 - **LLM-as-judge** for plan quality, later, and checked against your own ratings on a sample.
-- **Baseline comparison:** a single-prompt planner (no tools, answer checked against the catalogue afterwards) vs the agent, on the same scenarios. This is the brief's "compare against simpler approaches".
+- **Baseline comparison:** a single-prompt planner (no tools, recipe ids and Dietary Rules checked afterwards) vs the agent, on the same scenarios. This is the brief's "compare against simpler approaches".
 - Retrieval: recall@10, MRR (how high the first relevant result ranks) for R1–R4.
 
 ### Observability
@@ -316,6 +314,7 @@ Each slice is a feature branch and a focused PR that works end to end.
 | 0 | `feature/foundations` | Repo layout, Docker Postgres + pgvector, FastAPI skeleton, Expo app on iOS + web, generated API client, PR CI | Cloud & production (Docker, CI) |
 | 1 | `feature/auth-households` | Clerk sign-in, JWT verification, Households, invites, account deletion, cross-Household access tests | Security (authN/authZ) |
 | 2 | `feature/shared-shopping-list` | Lists, idempotent mutations, NOTIFY → WebSocket, optimistic UI, retry queue | (product core) |
+| 2b | `feature/one-shopping-list` | One Shopping List per Household; Shops (Household-editable) as item labels, bottom sheet to tag, chips when adding, filter by Shop; weekly budget removed (ADR 0009, 0010) | (product) |
 | 3 | `feature/cabinet` | Ingredients + aliases, Staples/Tracked, tick → Cabinet, manual edits, calculated status | (product core) |
 | 3b | `feature/design-foundations` | Design tokens (colour roles, pastels, type, motion), core components, `/design` preview, restyled screens, WCAG 2.2 AA checks (ADR 0007) | (product: public-ready UI, accessibility) |
 | 4a | `feature/recipe-knowledge-base` | Seed Recipes (197), ingredient normalisation (rules + structured-output fallback, eval), Voyage embeddings, R1 search API | LLM engineering, RAG |
@@ -324,8 +323,9 @@ Each slice is a feature branch and a focused PR that works end to end.
 | 4d | `feature/favourites` | "What do you usually cook" onboarding, paste/photo/link/type import, shared review screen (after slice 6) | Multimodal input, AI security |
 | 5a | `feature/langgraph-agent` | Dietary Rules + Preferences (enforced in search and validate), graph, read/compute/draft tools, validation loop, Postgres checkpointer, SSE, daily token budget | Agentic AI, tool calling |
 | 5b | `feature/agent-chat` | Chat screen (streamed replies, Proposal card), Dietary Rules and Preferences screen | (product) |
-| 6 | `feature/approvals` | Proposal, interrupt/resume, commit, audit log, Meal Plan, Cooked deduction | Human-in-the-loop, security |
-| 7 | `feature/estimated-cost` | Simulated catalogue, `estimate_cost`, budget validation | (product) |
+| 6a | `feature/approvals` | Proposal records, approve node with `interrupt()`, `POST /proposals/{id}/decision`, deterministic commit, audit log, Meal Plan + Planned Meals, Cooked deduction (undoable), 24h expiry | Human-in-the-loop, security |
+| 6b | `feature/approvals-client` | Proposal card with checkboxes, "replaces …" per day, Approve / Reject; Meal Plan screen (from Home); Cooked button | (product) |
+| 6c | `feature/kitchen-and-home` | Cabinet → Kitchen rename (Fridge / Freezer / Cupboard); Home "Today" showing tonight's Planned Meal | (product) |
 | 8 | `feature/agent-evals` | Scenario set, deterministic graders, baseline planner, Langfuse, cost tracking | Evaluation & observability |
 | 9 | `feature/retrieval-evals` | Labelled set, R2/R3/R4, comparison report | Advanced RAG |
 | 10 | `feature/ai-security` | Injection eval cases, rate limits, budget limits, hardening | AI security |
@@ -336,21 +336,28 @@ Each slice is a feature branch and a focused PR that works end to end.
 1. **API:** `GET /conversations` (the Member's own, newest first) so any device can resume. Typed `DraftOut` / `ProposalOut` schemas instead of `dict[str, object]`, so the client gets real types.
 2. **Stream reader:** a small, unit-tested SSE parser over `expo/fetch` (React Native's built-in fetch can't read a body as it arrives; `EventSource` can't send POST or an auth header). Turn events are typed in TS by hand, since OpenAPI can't describe a stream. Never auto-retry a send: `POST /messages` isn't idempotent.
 3. **Chat screen** (`/plan`): transcript, streamed reply, "working" status from `tool` events (short between-tool text is shown as status, not as a bubble), the Draft as it grows, a read-only Proposal card (Approve / Reject arrive in slice 6), error and "still answering" states.
-4. **Dietary Rules & Preferences screen**, opened from the Household tab: diet checkboxes, excluded Ingredients (search `/ingredients`), Household size, cuisines (from `GET /recipes/cuisines`, so they match the recipes' words), weekly budget (an exact decimal string end to end). Allergen disclaimer.
+4. **Dietary Rules & Preferences screen**, opened from the Household tab: diet checkboxes, excluded Ingredients (search `/ingredients`), Household size, cuisines (from `GET /recipes/cuisines`, so they match the recipes' words), weekly budget (an exact decimal string end to end; removed in 2b, ADR 0010). Allergen disclaimer.
 5. Accessibility (live region for status, not every streamed word; 320px reflow; Lighthouse 100 light and dark) and an end-to-end check with live turns.
 
 Known gaps carried forward: only the latest Proposal is kept, so earlier ones drop out of the chat history (fix with slice 6's Proposal records); not yet run on a phone.
+
+**Slice 2b and 6 decisions** (2026-11-15):
+
+- **One Shopping List** per Household. Items carry an optional **Shop**; untagged means "any shop". Tag an existing item from a bottom sheet (tap its label); pick a Shop with chips under the add box (last choice remembered per device). Filter chips at the top: All plus each Shop; a Shop filter also shows untagged items. Households start with Coles, Woolies and Aldi and can add, rename or delete Shops from the same sheet; deleting a Shop returns its items to "any shop".
+- **Approval = untick, then approve.** The Proposal card has a checkbox per Planned Meal and per list addition. Bigger changes go through chat, and the agent re-proposes (the earlier Proposal becomes *superseded*).
+- A Proposal meal on a day that already has a Planned Meal **replaces** it, and the card says so before approving. One dinner per day.
+- Agent additions go to the one list, untagged. Only the Member who started the Conversation can approve. The confirmation after approval is plain code, not an LLM call.
+- The Meal Plan screen opens from Home, not a new tab.
 
 Experiments (`experiments/`, any time after slice 4):
 
 - **E1** MCP server: `services/mcp` exposes read + draft tools over the same services. Start with stdio (Claude Desktop/Code), then streamable HTTP protected by **OAuth 2.1** (authorisation code + PKCE, token checking, scopes mapped to read vs draft tools). This is the main OAuth learning exercise. Write up how it differs from native tool calling. *(MCP & tool calling)*
 - **E1b** Hand-built OAuth/OIDC login (Google via `expo-auth-session`, PKCE, refresh tokens) in a throwaway screen, to see every step that Clerk hides *(Security)*
 - **E2** Collaborative filtering vs content-based recommendations *(Applied ML)*
-- **E3** Basket optimisation: integer programming / greedy vs LLM on the simulated catalogue *(Applied ML, deterministic vs LLM)*
 - **E4** Multi-agent split (planner + shopper) vs single agent, on the same evals *(Agentic AI)*
 - **E5** Model comparison: Anthropic API vs Bedrock, and across Claude model tiers, on the same evals (cost, latency, quality) *(LLM engineering)*
 
-Every roadmap checkbox has a home in the table above or in E1–E5.
+Every roadmap checkbox has a home in the table above or in E1, E1b, E2, E4, E5. (E3, basket optimisation, was dropped with pricing.)
 
 ---
 
