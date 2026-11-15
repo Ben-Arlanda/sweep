@@ -192,11 +192,12 @@ async def commit(
 
     payload = proposal.payload
     meals = [m for m in payload["meals"] if keep_meals is None or m["date"] in keep_meals]
-    additions = [
-        a
-        for i, a in enumerate(payload["list_additions"])
+    kept_additions = [
+        i
+        for i in range(len(payload["list_additions"]))
         if keep_additions is None or i in keep_additions
     ]
+    additions = [payload["list_additions"][i] for i in kept_additions]
     skipped: list[str] = []
 
     # Meals: re-check against today's recipes and Dietary Rules.
@@ -292,6 +293,9 @@ async def commit(
         "saved_meals": saved,
         "added_items": added,
         "skipped": skipped,
+        # What the Member left ticked (before any skips), so the chat can show it later.
+        "kept_meals": [m["date"] for m in meals],
+        "kept_additions": kept_additions,
     }
     proposal.status = ProposalStatus.APPROVED
     proposal.decided_at = utcnow()

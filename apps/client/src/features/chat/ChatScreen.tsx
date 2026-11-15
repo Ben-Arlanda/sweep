@@ -23,7 +23,8 @@ import {
 } from '@/lib/api/conversations';
 import { useTheme } from '@/theme/useTheme';
 
-import { DraftPeek, ProposalCard } from './ProposalCard';
+import { placeProposals } from './history';
+import { DraftPeek, PastProposal, ProposalCard } from './ProposalCard';
 import { streamTurn, type TurnEvent } from './sse';
 import { SUGGESTIONS, takeStart } from './starters';
 import { startTurn, turnReducer, type Turn } from './turn';
@@ -119,7 +120,13 @@ export function ChatScreen() {
   if (list.isPending) return <Loading />;
 
   const messages = conversationId ? (saved.data?.messages ?? []) : [];
-  const proposal = turn ? turn.proposal : (saved.data?.proposal ?? null);
+  // Every Proposal back where it happened in the chat (6a); only a pending one can be
+  // decided, earlier ones shrink to a line saying what became of them.
+  const proposals = conversationId ? (saved.data?.proposals ?? []) : [];
+  const history = placeProposals(messages, proposals);
+  // The newest plan stays a full card after it's decided, so its outcome shows there
+  // (and is announced); older ones shrink to a line.
+  const newest = turn?.proposal ? null : proposals.at(-1);
   const empty = messages.length === 0 && !turn;
 
   return (
@@ -156,19 +163,35 @@ export function ChatScreen() {
           {saved.isError ? <ErrorText message={saved.error.message} /> : null}
           {empty ? <Welcome onPick={send} /> : null}
 
-          {messages.map((m, i) => (
-            <Bubble key={i} role={m.role} text={m.text} />
-          ))}
+          {history.map((item) =>
+            item.kind === 'line' ? (
+              <Bubble key={`line-${item.index}`} role={item.line.role} text={item.line.text} />
+            ) : item.proposal.status === 'pending' || item.proposal === newest ? (
+              <ProposalCard
+                key={item.proposal.id ?? 'pending'}
+                proposal={item.proposal}
+                conversationId={conversationId}
+                disabled={busy}
+              />
+            ) : (
+              <PastProposal key={item.proposal.id ?? 'past'} proposal={item.proposal} />
+            ),
+          )}
 
           {turn ? (
             <>
               <Bubble role="user" text={turn.userText} />
               {turn.reply ? <Bubble role="assistant" text={turn.reply} /> : null}
               {busy && !turn.proposal && turn.draft ? <DraftPeek draft={turn.draft} /> : null}
+              {turn.proposal ? (
+                <ProposalCard
+                  proposal={turn.proposal}
+                  conversationId={conversationId}
+                  disabled={busy}
+                />
+              ) : null}
             </>
           ) : null}
-
-          {proposal ? <ProposalCard proposal={proposal} /> : null}
 
           {/* Only the status is a live region: reading out every streamed word would
               swamp a screen reader. The finished reply is announced once instead. */}

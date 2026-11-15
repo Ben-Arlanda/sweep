@@ -9,6 +9,7 @@ import { Avatar, AvatarStack } from '@/components/Avatar';
 import { Hero, HeroLabel } from '@/components/Hero';
 import { Button, Card, ErrorText, Highlight, SectionLabel, Text } from '@/components/ui';
 import { KitchenTile } from '@/features/kitchen/KitchenTile';
+import { MealPlanTile } from '@/features/mealPlan/MealPlanTile';
 import { RecipesTile } from '@/features/recipes/RecipesTile';
 import { ShoppingListTile } from '@/features/lists/ShoppingListTile';
 import { AppearanceCard } from '@/features/household/AppearanceCard';
@@ -65,7 +66,7 @@ export function HomeHero({ me }: { me: MeOut }) {
   );
 }
 
-/** The board: the Shopping List, the Kitchen and Recipes. */
+/** The board: the Shopping List, the Meal Plan, the Kitchen and Recipes. */
 export function HouseholdView() {
   const t = useTheme();
   return (
@@ -73,6 +74,7 @@ export function HouseholdView() {
       <SectionLabel>Your kitchen</SectionLabel>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.md }}>
         <ShoppingListTile />
+        <MealPlanTile />
         <KitchenTile />
         <RecipesTile />
       </View>

@@ -21,6 +21,7 @@ import { isNewer } from '@/features/lists/listCache';
 import { kitchenKeys } from '@/lib/api/kitchen';
 import { getToken, type ListDetail } from '@/lib/api/client';
 import { listKeys } from '@/lib/api/lists';
+import { mealPlanKeys } from '@/lib/api/mealPlan';
 import { API_URL } from '@/lib/config';
 
 const WS_URL = `${API_URL.replace(/^http/, 'ws')}/ws`; // http→ws, https→wss
@@ -32,7 +33,8 @@ type Notice =
   | { type: 'resync' }
   | { type: 'changed'; entity: string; id: string; version: number };
 
-type KitchenCache = { version: number };
+/** The Kitchen and each Meal Plan week carry the Household's version for their entity. */
+type Versioned = { version: number };
 
 export function useChangeNotices(enabled: boolean) {
   const queryClient = useQueryClient();
@@ -48,6 +50,7 @@ export function useChangeNotices(enabled: boolean) {
     const refetchAll = () => {
       void queryClient.invalidateQueries({ queryKey: listKeys.all });
       void queryClient.invalidateQueries({ queryKey: kitchenKeys.all });
+      void queryClient.invalidateQueries({ queryKey: mealPlanKeys.all });
     };
 
     function handle(notice: Notice) {
@@ -58,9 +61,18 @@ export function useChangeNotices(enabled: boolean) {
       }
       if (notice.type !== 'changed') return;
       if (notice.entity === 'kitchen') {
-        const cached = queryClient.getQueryData<KitchenCache>(kitchenKeys.all);
+        const cached = queryClient.getQueryData<Versioned>(kitchenKeys.all);
         if (!cached || notice.version > cached.version) {
           void queryClient.invalidateQueries({ queryKey: kitchenKeys.all });
+        }
+        return;
+      }
+      if (notice.entity === 'meal_plan') {
+        // Several weeks may be cached (the screen pages through them), each with the
+        // Household's version at fetch time. Refetch any that are behind.
+        const weeks = queryClient.getQueriesData<Versioned>({ queryKey: mealPlanKeys.all });
+        if (weeks.some(([, week]) => !week || notice.version > week.version)) {
+          void queryClient.invalidateQueries({ queryKey: mealPlanKeys.all });
         }
         return;
       }

@@ -3393,6 +3393,34 @@
             },
             "type": "array",
             "title": "Skipped"
+          },
+          "kept_meals": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Kept Meals"
+          },
+          "kept_additions": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Kept Additions"
           }
         },
         "type": "object",

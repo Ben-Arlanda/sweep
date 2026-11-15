@@ -1050,6 +1050,10 @@ export interface components {
             added_items: number;
             /** Skipped */
             skipped: string[];
+            /** Kept Meals */
+            kept_meals?: string[] | null;
+            /** Kept Additions */
+            kept_additions?: number[] | null;
         };
         /**
          * ProposalStatus

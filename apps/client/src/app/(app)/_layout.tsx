@@ -69,6 +69,7 @@ function SignedIn() {
         {/* The tabs, each with its own Stack, so the tab bar stays as you go deeper. */}
         <Stack.Screen name="(tabs)" options={{ headerShown: false, title: 'Sweep' }} />
         <Stack.Screen name="plan" options={{ title: 'Plan my week' }} />
+        <Stack.Screen name="meal-plan" options={{ title: 'Meal Plan' }} />
         <Stack.Screen name="dietary-rules" options={{ title: 'Food rules' }} />
         <Stack.Screen name="design" options={{ title: 'Design system' }} />
       </Stack>
