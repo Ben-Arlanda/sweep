@@ -25,4 +25,7 @@ The Shopping List accepts any text, like Apple Reminders. The Kitchen only store
 - Nothing a Member types is refused. Non-food ("bin bags") becomes a Household Ingredient in the Cupboard; remove it from the Kitchen if you don't want it tracked.
 - Household Ingredients don't convert units ("1 bunch" stays "some" in the Kitchen unless bought in the same unit).
 - Seed Recipes only match Household Ingredients after a merge, so growing the starter list (kale, common greens) still matters. Recipe search by meaning (embeddings) finds recipes that mention an item even with no link.
-- Every new query on `ingredients` must apply the visibility rule. A test covers each route that takes an Ingredient id.
+- Every new query on `ingredients` must apply the visibility rule (`ingredients.visible_to`; lookups by name say whose, e.g. `STARTERS`). A test covers each route that takes an Ingredient id.
+- The merge must repoint every table that references `ingredients`, or deleting the Household copy CASCADE-deletes their rows. `seed.MERGED_TABLES` lists them and a test compares it with the models' foreign keys.
+- The starter seed targets the `(household_id, name)` constraint, so only migrations from this slice on may call it; the older migrations no longer do.
+- Every list item now gets an Ingredient, so most ticks are unmeasured ("some"). Ticks record `kitchen_created_at`, so unticking or relinking removes a Kitchen row only that tick created; before, an unmeasured "some" was left behind.
