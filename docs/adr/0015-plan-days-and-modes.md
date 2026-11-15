@@ -12,7 +12,7 @@ Date: 2026-11-15 · Status: Accepted
 - **Mode and days live on the Conversation** (`plan_mode`, `plan_days`), set when it's created and checked by the server (from today, within the 14-day plan window, each once). Every turn's context states them. The fixed system prompt explains both modes, so it stays identical between turns (prompt caching).
 - **Validate refuses meals on other days**, like any other date problem: the agent is sent back to fix it, and after the replans run out the meal is left out and listed. The model can't get round it.
 - **Usual days are remembered per Household** as ISO weekdays, through their own route (`PUT /households/current/plan-weekdays`), so saving them can't overwrite another Member's change to the rest of the Preferences. Only days the Member could choose change the pattern; a day left out because it was past or already planned keeps its old setting.
-- **The Meal Plan reads Mon–Sun weeks** with the same strip, and the server says what today is.
+- **The Meal Plan reads Mon–Sun weeks**, and the server says what today is. Its strip is a picker too (this week and next): tap days, then the same two choices appear under it. A strip that looks like a calendar gets tapped; the first version was display-only and the product owner couldn't pick days on it.
 
 ## Consequences
 

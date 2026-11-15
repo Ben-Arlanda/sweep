@@ -1,4 +1,3 @@
-import { randomUUID } from 'expo-crypto';
 import { useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 
@@ -7,11 +6,12 @@ import { Sheet } from '@/components/Sheet';
 import { Button, ErrorText, Text } from '@/components/ui';
 import { formatDay } from '@/features/chat/format';
 import type { PlanMode } from '@/features/chat/starters';
-import { usePreferences, useSavePlanWeekdays } from '@/lib/api/diet';
+import { usePreferences } from '@/lib/api/diet';
 import { useMealPlan } from '@/lib/api/mealPlan';
 import { useTheme } from '@/theme/useTheme';
 
-import { addDays, mondayOf, nextWeekdays, pickDays, planWeekFor } from './week';
+import { PlanChoices } from './PlanChoices';
+import { addDays, mondayOf, pickDays, planWeekFor } from './week';
 import { WeekStrip, type StripMeal } from './WeekStrip';
 
 const WEEKNIGHTS = [1, 2, 3, 4, 5];
@@ -24,8 +24,8 @@ const EVERY_DAY = [1, 2, 3, 4, 5, 6, 7];
  * next week at the weekend), leaving out past days and days already planned. "How many
  * days" is just how many are ticked; the chips are shortcuts.
  *
- * Picking a kind of plan saves the ticked weekdays as the new usual ones, then hands
- * the mode and days to `onPick`, which starts the chat.
+ * Picking a kind of plan (`PlanChoices`) remembers the usual days, then hands the mode
+ * and days to `onPick`, which starts the chat.
  */
 export function PlanSheet({
   onClose,
@@ -40,7 +40,6 @@ export function PlanSheet({
   const t = useTheme();
   const today = useMealPlan(null).data?.today;
   const prefs = usePreferences();
-  const saveWeekdays = useSavePlanWeekdays();
 
   const [chosenWeek, setChosenWeek] = useState<string | null>(openOn ?? null);
   const monday = chosenWeek ?? (today ? planWeekFor(today) : null);
@@ -70,10 +69,6 @@ export function PlanSheet({
   // after every tap.
   function body() {
     if (!today || !monday || !week.data || !prefs.data) return null;
-    // Copies TypeScript knows are set: the checks above don't carry into inner functions.
-    const day = today;
-    const weekStart = monday;
-    const usual = prefs.data.plan_weekdays;
     const planned = week.data.meals.map((m) => m.date);
     const daysFor = (weekdays: number[]) => pickDays({ monday, weekdays, today, planned });
     const picked = touched ?? daysFor(prefs.data.plan_weekdays);
@@ -101,20 +96,6 @@ export function PlanSheet({
       setTouched(
         picked.includes(date) ? picked.filter((d) => d !== date) : [...picked, date].sort(),
       );
-    }
-
-    function choose(mode: PlanMode) {
-      if (picked.length === 0) return;
-      const weekdays = nextWeekdays({
-        monday: weekStart,
-        today: day,
-        planned,
-        before: usual,
-        picked,
-      });
-      saveWeekdays.mutate({ key: randomUUID(), weekdays });
-      onClose();
-      onPick(mode, picked);
     }
 
     const count = `${picked.length} ${picked.length === 1 ? 'day' : 'days'}`;
@@ -161,27 +142,16 @@ export function PlanSheet({
             : `${count} · ✓ already planned (tick one to replace it)`}
         </Text>
 
-        <View style={{ gap: t.space.sm }}>
-          <Button
-            title="Cook from my Kitchen"
-            accessibilityLabel={`Cook from my Kitchen, ${count}`}
-            disabled={picked.length === 0}
-            onPress={() => choose('kitchen')}
-          />
-          <Text variant="caption" muted>
-            Uses what you have, so there&apos;s less to buy.
-          </Text>
-          <Button
-            title="New recipes to shop for"
-            accessibilityLabel={`New recipes to shop for, ${count}`}
-            variant="secondary"
-            disabled={picked.length === 0}
-            onPress={() => choose('new')}
-          />
-          <Text variant="caption" muted>
-            A fresh week. Sweep builds the Shopping List.
-          </Text>
-        </View>
+        <PlanChoices
+          monday={monday}
+          today={today}
+          planned={planned}
+          picked={picked}
+          onPick={(mode, days) => {
+            onClose();
+            onPick(mode, days);
+          }}
+        />
       </View>
     );
   }

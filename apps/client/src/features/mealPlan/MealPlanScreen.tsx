@@ -8,14 +8,16 @@ import { requestPlan } from '@/features/chat/starters';
 import { mealTap, useMealPlan, useMealPlanActions } from '@/lib/api/mealPlan';
 import { useTheme } from '@/theme/useTheme';
 
-import { PlanSheet } from './PlanSheet';
-import { addDays, mondayOf, weekDays, type Day, type PlannedMeal } from './week';
+import { PlanChoices } from './PlanChoices';
+import { addDays, canPick, mondayOf, weekDays, type Day, type PlannedMeal } from './week';
 import { WeekStrip, type StripMeal } from './WeekStrip';
 
 /**
- * A Mon–Sun week of dinners (slice 5d): the week strip for a glance, then one row per
- * day so a gap is visible; ‹ › to move a week. Cooked takes the recipe out of the Kitchen; its undo stays on the row with no
- * time limit (a toast that vanishes after a few seconds fails WCAG 2.2.1).
+ * A Mon–Sun week of dinners (slice 5d). The week strip on top is also where you plan:
+ * tap days from today on (a planned one to replace it), then pick the kind of plan.
+ * Below, one row per day so a gap is visible; ‹ › to move a week. Cooked takes the
+ * recipe out of the Kitchen; its undo stays on the row with no time limit (a toast
+ * that vanishes after a few seconds fails WCAG 2.2.1).
  *
  * `start` null means "this week", which the server counts from today in Sydney. We
  * don't work out today on the phone: its clock or time zone may disagree.
@@ -23,7 +25,7 @@ import { WeekStrip, type StripMeal } from './WeekStrip';
 export function MealPlanScreen() {
   const t = useTheme();
   const [start, setStart] = useState<string | null>(null);
-  const [planning, setPlanning] = useState(false);
+  const [picked, setPicked] = useState<string[]>([]);
   const week = useMealPlan(start);
   const thisWeek = useMealPlan(null).data?.start;
 
@@ -31,6 +33,7 @@ export function MealPlanScreen() {
     if (!week.data) return;
     const next = addDays(week.data.start, days);
     setStart(next === thisWeek ? null : next);
+    setPicked([]); // ticks belong to the week they were made in
   }
 
   if (week.isPending) return <Loading />;
@@ -50,6 +53,17 @@ export function MealPlanScreen() {
   const stripMeals: Record<string, StripMeal> = Object.fromEntries(
     week.data.meals.map((m) => [m.date, { title: m.title, cooked: m.cooked_at !== null }]),
   );
+  const planned = week.data.meals.map((m) => m.date);
+  // A plan covers today and the next 13 days, so this week and next can be planned.
+  const plannable =
+    week.data.start === mondayOf(today) || week.data.start === addDays(mondayOf(today), 7);
+  const pickable = plannable && days.some((d) => canPick(d.date, today));
+
+  function toggle(date: string) {
+    setPicked((now) =>
+      now.includes(date) ? now.filter((d) => d !== date) : [...now, date].sort(),
+    );
+  }
 
   return (
     <Screen>
@@ -85,7 +99,29 @@ export function MealPlanScreen() {
         <Text variant="caption" muted>
           {range} · {week.data.meals.length} of 7 planned
         </Text>
-        <WeekStrip monday={week.data.start} today={today} meals={stripMeals} />
+        <WeekStrip
+          monday={week.data.start}
+          today={today}
+          meals={stripMeals}
+          picked={pickable ? picked : undefined}
+          onToggle={pickable ? toggle : undefined}
+        />
+        <Text variant="caption" muted accessibilityLiveRegion="polite">
+          {planHint(picked.length, plannable, pickable, week.data.start < mondayOf(today))}
+        </Text>
+        {picked.length > 0 ? (
+          <PlanChoices
+            monday={week.data.start}
+            today={today}
+            planned={planned}
+            picked={picked}
+            onPick={(mode, days) => {
+              setPicked([]);
+              requestPlan(mode, days);
+              router.push('/plan');
+            }}
+          />
+        ) : null}
       </Card>
 
       <Card>
@@ -93,30 +129,17 @@ export function MealPlanScreen() {
           <DayRow key={day.date} day={day} label={dayLabel(day.date, today)} />
         ))}
       </Card>
-
-      {/* The sheet plans this week or next, so offer it there while a day is free. */}
-      {canPlan(days, today) ? (
-        <Button title="Plan free days with Sweep" onPress={() => setPlanning(true)} />
-      ) : null}
-      {planning ? (
-        <PlanSheet
-          week={week.data.start}
-          onClose={() => setPlanning(false)}
-          onPick={(mode, picked) => {
-            requestPlan(mode, picked);
-            router.push('/plan');
-          }}
-        />
-      ) : null}
     </Screen>
   );
 }
 
-/** This week or next, with a free day from today on. */
-function canPlan(days: Day[], today: string) {
-  const monday = days[0].date;
-  const inRange = monday === mondayOf(today) || monday === addDays(mondayOf(today), 7);
-  return inRange && days.some((d) => d.date >= today && d.meal === null);
+/** What the line under the strip says, so it's clear the days can be tapped. */
+function planHint(count: number, plannable: boolean, pickable: boolean, past: boolean) {
+  if (past) return 'This week has gone.';
+  if (!plannable) return 'Sweep plans up to two weeks ahead.';
+  if (!pickable) return 'Nothing left to plan this week. Use › for next week.';
+  if (count === 0) return 'Tap days to plan them with Sweep. Tap a ✓ day to replace its dinner.';
+  return `${count} ${count === 1 ? 'day' : 'days'} picked. What kind of plan?`;
 }
 
 /** "Today" and "Tomorrow" come from the server's today, not the phone's clock. */

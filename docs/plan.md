@@ -381,7 +381,7 @@ Known gaps from 6b: a re-proposal repeats list additions already added by the la
 - **Kind of plan:** "Cook from my Kitchen" (5c, fewest things to buy) or "New recipes to shop for" (choose by taste with `search_recipes`; the Kitchen only trims the buy list). UI copy says "New recipes", never "Something new".
 - **Stored on the Conversation** (`plan_mode`, `plan_days`) and put in every turn's context, not just the first message (5c showed wording alone is fragile). Null means a free chat.
 - **Deterministic guardrail:** validate treats a meal on a day that wasn't picked as a date problem, so the agent has to fix it before the Member sees the plan.
-- **Meal Plan screen** moves to Mon–Sun weeks with the same strip on top (✓ planned, – free, today marked); `GET /meal-plan` defaults to this week's Monday and returns `today`.
+- **Meal Plan screen** moves to Mon–Sun weeks with the same strip on top (✓ planned, – free, today marked), and you can plan straight from it: tap days (this week or next), then the two choices appear under it. `GET /meal-plan` defaults to this week's Monday and returns `today`.
 
 **Slice 5d steps** (build test-first):
 
