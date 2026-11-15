@@ -18,7 +18,6 @@ import {
   Text,
 } from '@/components/ui';
 import { useMembers } from '@/features/household/useMembers';
-import { useLastShop } from '@/features/lists/lastShop';
 import { shoppingOrder } from '@/features/lists/listCache';
 import { ShopSheet } from '@/features/lists/ShopSheet';
 import {
@@ -36,7 +35,6 @@ import { ingredientEmoji } from '@/theme/foodEmoji';
 import { useTheme } from '@/theme/useTheme';
 
 const ALL = 'all';
-const ANY = 'any';
 
 /**
  * The Household's Shopping List (one per Household, ADR 0009), made for using in a shop
@@ -121,7 +119,7 @@ function ListContent({ list }: { list: ListDetail }) {
       ) : null}
 
       <SyncStatus />
-      <AddItem shops={shops} onAdd={actions.addItem} />
+      <AddItem onAdd={actions.addItem} />
       <ErrorText message={actions.error?.message} />
 
       <View style={{ gap: t.space.sm }}>
@@ -152,52 +150,30 @@ function ListContent({ list }: { list: ListDetail }) {
 
 type Actions = ReturnType<typeof useListActions>;
 
-/** The add box, with Shop chips under it. The chosen Shop sticks for the next item. */
-function AddItem({
-  shops,
-  onAdd,
-}: {
-  shops: readonly Shop[];
-  onAdd: (text: string, shopId: string | null) => void;
-}) {
-  const t = useTheme();
+/** The add box. New items are "any shop"; tag one with its Shop button. */
+function AddItem({ onAdd }: { onAdd: (text: string) => void }) {
   const [text, setText] = useState('');
-  const [lastShop, setLastShop] = useLastShop();
-  const shopId = knownShop(lastShop, shops);
   const input = useRef<TextInputInstance>(null);
 
   function submit() {
     if (!text.trim()) return;
-    onAdd(text.trim(), shopId);
+    onAdd(text.trim());
     setText('');
     input.current?.focus(); // keep the keyboard up for the next item
   }
 
   return (
-    <View style={{ gap: t.space.sm }}>
-      <Field
-        ref={input}
-        label="Add an item"
-        placeholder="e.g. 2 L milk"
-        value={text}
-        onChangeText={setText}
-        onSubmitEditing={submit}
-        submitBehavior="submit"
-        returnKeyType="done"
-        maxLength={200}
-      />
-      {shops.length > 0 ? (
-        <ChoiceChips
-          label="Buy new items at"
-          value={shopId ?? ANY}
-          onChange={(value) => setLastShop(value === ANY ? null : value)}
-          options={[
-            { label: 'Any shop', value: ANY },
-            ...shops.map((shop) => ({ label: shop.name, value: shop.id })),
-          ]}
-        />
-      ) : null}
-    </View>
+    <Field
+      ref={input}
+      label="Add an item"
+      placeholder="e.g. 2 L milk"
+      value={text}
+      onChangeText={setText}
+      onSubmitEditing={submit}
+      submitBehavior="submit"
+      returnKeyType="done"
+      maxLength={200}
+    />
   );
 }
 
