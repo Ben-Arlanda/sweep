@@ -1543,6 +1543,66 @@
         }
       }
     },
+    "/households/current/plan-weekdays": {
+      "put": {
+        "tags": [
+          "dietary rules"
+        ],
+        "summary": "Set Plan Weekdays",
+        "description": "The days the \"Plan my week\" sheet starts with ticked (ADR 0015).",
+        "operationId": "set_plan_weekdays_households_current_plan_weekdays_put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanWeekdaysIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanWeekdaysOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/conversations": {
       "get": {
         "tags": [
@@ -3254,6 +3314,43 @@
         "title": "PlanMode",
         "description": "What kind of plan the Member asked for in the \"Plan my week\" sheet (ADR 0015)."
       },
+      "PlanWeekdaysIn": {
+        "properties": {
+          "weekdays": {
+            "items": {
+              "type": "integer",
+              "maximum": 7.0,
+              "minimum": 1.0
+            },
+            "type": "array",
+            "maxItems": 7,
+            "minItems": 1,
+            "title": "Weekdays"
+          }
+        },
+        "type": "object",
+        "required": [
+          "weekdays"
+        ],
+        "title": "PlanWeekdaysIn",
+        "description": "The days the Household usually plans. Its own route, so saving them can't\noverwrite another Member's change to the rest of the Preferences."
+      },
+      "PlanWeekdaysOut": {
+        "properties": {
+          "weekdays": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Weekdays"
+          }
+        },
+        "type": "object",
+        "required": [
+          "weekdays"
+        ],
+        "title": "PlanWeekdaysOut"
+      },
       "PlannedMealOut": {
         "properties": {
           "id": {
@@ -3341,24 +3438,6 @@
             "maxItems": 20,
             "title": "Cuisines",
             "default": []
-          },
-          "plan_weekdays": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "integer",
-                  "maximum": 7.0,
-                  "minimum": 1.0
-                },
-                "type": "array",
-                "maxItems": 7,
-                "minItems": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Plan Weekdays"
           }
         },
         "type": "object",

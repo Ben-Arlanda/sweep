@@ -26,7 +26,9 @@ import { useTheme } from '@/theme/useTheme';
 import { placeProposals } from './history';
 import { DraftPeek, PastProposal, ProposalCard } from './ProposalCard';
 import { streamTurn, type TurnEvent } from './sse';
-import { SUGGESTIONS, takeStart } from './starters';
+import { PlanSheet } from '@/features/mealPlan/PlanSheet';
+
+import { planMessage, SUGGESTIONS, takeStart, type Plan } from './starters';
 import { startTurn, turnReducer, type Turn } from './turn';
 
 /**
@@ -57,19 +59,24 @@ export function ChatScreen() {
   // Leaving the screen mid-reply stops reading. The server saves what it had so far.
   useEffect(() => () => abort.current?.abort(), []);
 
-  // Home's "Plan my week" / "Just tonight" (ADR 0013): a new plan with a fixed first
-  // message. takeStart() hands it over once, so a reload never re-sends (a paid call).
+  // Home's "Plan my week" sheet (ADR 0015) or "Just tonight" (ADR 0013): a new plan
+  // with a first message, and from the sheet a mode and days. takeStart() hands it over
+  // once, so a reload never re-sends (a paid call).
+  const [planning, setPlanning] = useState(false);
   const ready = !list.isPending;
   useEffect(() => {
     if (!ready) return;
-    const words = takeStart();
-    if (words) void send(words, { fresh: true });
+    const start = takeStart();
+    if (start) void send(start.text, { fresh: true, plan: start.plan });
     // send is recreated every render; this should run once, when the list is ready.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ready]);
 
-  /** `fresh`: start a new plan, even though the screen still shows the last one. */
-  async function send(text: string, opts: { fresh?: boolean } = {}) {
+  /**
+   * `fresh`: start a new plan, even though the screen still shows the last one.
+   * `plan`: the sheet's mode and days, saved on the new Conversation.
+   */
+  async function send(text: string, opts: { fresh?: boolean; plan?: Plan | null } = {}) {
     const words = text.trim();
     if (!words || busy) return;
     if (opts.fresh) setChosen(null); // show the new plan, not the last one
@@ -83,7 +90,7 @@ export function ChatScreen() {
       words,
       signal: abort.current.signal,
       createConversation: async () => {
-        const made = await create.mutateAsync();
+        const made = await create.mutateAsync(opts.plan ?? null);
         setChosen(made.id);
         queryClient.setQueryData(conversationKeys.list, (old: (typeof made)[] | undefined) => [
           made,
@@ -161,7 +168,7 @@ export function ChatScreen() {
           }}
         >
           {saved.isError ? <ErrorText message={saved.error.message} /> : null}
-          {empty ? <Welcome onPick={send} /> : null}
+          {empty ? <Welcome onPick={send} onPlanWeek={() => setPlanning(true)} /> : null}
 
           {history.map((item) =>
             item.kind === 'line' ? (
@@ -237,6 +244,14 @@ export function ChatScreen() {
           </View>
         </View>
       </KeyboardAvoidingView>
+      {planning ? (
+        <PlanSheet
+          onClose={() => setPlanning(false)}
+          onPick={(mode, days) =>
+            void send(planMessage(mode, days), { fresh: true, plan: { mode, days } })
+          }
+        />
+      ) : null}
     </SafeAreaView>
   );
 }
@@ -278,7 +293,13 @@ function announce(message: string) {
   if (Platform.OS === 'ios') AccessibilityInfo.announceForAccessibility(message);
 }
 
-function Welcome({ onPick }: { onPick: (text: string) => void }) {
+function Welcome({
+  onPick,
+  onPlanWeek,
+}: {
+  onPick: (text: string) => void;
+  onPlanWeek: () => void;
+}) {
   const t = useTheme();
   return (
     <View style={{ gap: t.space.md }}>
@@ -289,6 +310,7 @@ function Welcome({ onPick }: { onPick: (text: string) => void }) {
         Sweep plans meals from its recipes, follows your Dietary Rules and checks your Kitchen.
         Nothing changes until you approve it.
       </Text>
+      <Button title="Plan my week" onPress={onPlanWeek} />
       <View style={{ gap: t.space.sm }}>
         {SUGGESTIONS.map((s) => (
           <PressableScale

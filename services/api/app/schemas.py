@@ -293,16 +293,6 @@ Weekday = Annotated[int, Field(ge=1, le=7)]  # ISO: Monday 1 … Sunday 7
 class PreferencesIn(BaseModel):
     household_size: int | None = Field(default=None, ge=1, le=20)
     cuisines: list[Cuisine] = Field(default=[], max_length=20)
-    # Left out (None) means "keep what's saved": the Dietary Rules screen saves the rest of
-    # the Preferences and doesn't know about days, so it mustn't reset them.
-    plan_weekdays: list[Weekday] | None = Field(default=None, min_length=1, max_length=7)
-
-    @field_validator("plan_weekdays")
-    @classmethod
-    def _no_repeats(cls, v: list[int] | None) -> list[int] | None:
-        if v is not None and len(set(v)) != len(v):
-            raise ValueError("each weekday once")
-        return v
 
 
 class PreferencesOut(BaseModel):
@@ -311,6 +301,24 @@ class PreferencesOut(BaseModel):
     household_size: int | None
     cuisines: list[str]
     plan_weekdays: list[int]
+
+
+class PlanWeekdaysIn(BaseModel):
+    """The days the Household usually plans. Its own route, so saving them can't
+    overwrite another Member's change to the rest of the Preferences."""
+
+    weekdays: list[Weekday] = Field(min_length=1, max_length=7)
+
+    @field_validator("weekdays")
+    @classmethod
+    def _no_repeats(cls, v: list[int]) -> list[int]:
+        if len(set(v)) != len(v):
+            raise ValueError("each weekday once")
+        return v
+
+
+class PlanWeekdaysOut(BaseModel):
+    weekdays: list[int]
 
 
 # --- Meal Plan ----------------------------------------------------------------------

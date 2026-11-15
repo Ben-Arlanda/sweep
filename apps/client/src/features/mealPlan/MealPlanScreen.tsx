@@ -4,11 +4,12 @@ import { Pressable, View } from 'react-native';
 
 import { Button, Card, ErrorText, Loading, Screen, Text } from '@/components/ui';
 import { formatDay } from '@/features/chat/format';
-import { requestStart } from '@/features/chat/starters';
+import { requestPlan } from '@/features/chat/starters';
 import { mealTap, useMealPlan, useMealPlanActions } from '@/lib/api/mealPlan';
 import { useTheme } from '@/theme/useTheme';
 
-import { addDays, weekDays, type Day, type PlannedMeal } from './week';
+import { PlanSheet } from './PlanSheet';
+import { addDays, mondayOf, weekDays, type Day, type PlannedMeal } from './week';
 import { WeekStrip, type StripMeal } from './WeekStrip';
 
 /**
@@ -22,6 +23,7 @@ import { WeekStrip, type StripMeal } from './WeekStrip';
 export function MealPlanScreen() {
   const t = useTheme();
   const [start, setStart] = useState<string | null>(null);
+  const [planning, setPlanning] = useState(false);
   const week = useMealPlan(start);
   const thisWeek = useMealPlan(null).data?.start;
 
@@ -92,18 +94,29 @@ export function MealPlanScreen() {
         ))}
       </Card>
 
-      {/* The starter plans from today, so offer it only on this week. */}
-      {isThisWeek && week.data.meals.length === 0 ? (
-        <Button
-          title="Plan this week with Sweep"
-          onPress={() => {
-            requestStart('week');
+      {/* The sheet plans this week or next, so offer it there while a day is free. */}
+      {canPlan(days, today) ? (
+        <Button title="Plan free days with Sweep" onPress={() => setPlanning(true)} />
+      ) : null}
+      {planning ? (
+        <PlanSheet
+          week={week.data.start}
+          onClose={() => setPlanning(false)}
+          onPick={(mode, picked) => {
+            requestPlan(mode, picked);
             router.push('/plan');
           }}
         />
       ) : null}
     </Screen>
   );
+}
+
+/** This week or next, with a free day from today on. */
+function canPlan(days: Day[], today: string) {
+  const monday = days[0].date;
+  const inRange = monday === mondayOf(today) || monday === addDays(mondayOf(today), 7);
+  return inRange && days.some((d) => d.date >= today && d.meal === null);
 }
 
 /** "Today" and "Tomorrow" come from the server's today, not the phone's clock. */

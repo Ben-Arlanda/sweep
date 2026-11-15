@@ -404,6 +404,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/households/current/plan-weekdays": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Set Plan Weekdays
+         * @description The days the "Plan my week" sheet starts with ticked (ADR 0015).
+         */
+        put: operations["set_plan_weekdays_households_current_plan_weekdays_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/conversations": {
         parameters: {
             query?: never;
@@ -977,6 +997,20 @@ export interface components {
          * @enum {string}
          */
         PlanMode: "kitchen" | "new";
+        /**
+         * PlanWeekdaysIn
+         * @description The days the Household usually plans. Its own route, so saving them can't
+         *     overwrite another Member's change to the rest of the Preferences.
+         */
+        PlanWeekdaysIn: {
+            /** Weekdays */
+            weekdays: number[];
+        };
+        /** PlanWeekdaysOut */
+        PlanWeekdaysOut: {
+            /** Weekdays */
+            weekdays: number[];
+        };
         /** PlannedMealOut */
         PlannedMealOut: {
             /**
@@ -1012,8 +1046,6 @@ export interface components {
              * @default []
              */
             cuisines: string[];
-            /** Plan Weekdays */
-            plan_weekdays?: number[] | null;
         };
         /** PreferencesOut */
         PreferencesOut: {
@@ -2178,6 +2210,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PreferencesOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    set_plan_weekdays_households_current_plan_weekdays_put: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PlanWeekdaysIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlanWeekdaysOut"];
                 };
             };
             /** @description Validation Error */

@@ -1,4 +1,13 @@
-import { addDays, canPick, isoWeekday, mondayOf, pickDays, planWeekFor, weekDays } from './week';
+import {
+  addDays,
+  canPick,
+  isoWeekday,
+  mondayOf,
+  nextWeekdays,
+  pickDays,
+  planWeekFor,
+  weekDays,
+} from './week';
 
 const meal = (date: string, title: string) => ({
   id: `id-${date}`,
@@ -85,5 +94,46 @@ describe('Mon–Sun weeks (slice 5d)', () => {
   it('can only pick days from today', () => {
     expect(canPick('2026-11-17', '2026-11-18')).toBe(false);
     expect(canPick('2026-11-18', '2026-11-18')).toBe(true);
+  });
+});
+
+describe('the usual weekdays to save after picking', () => {
+  const base = { monday: '2026-11-16', today: '2026-11-16', planned: [] as string[] };
+
+  it('are the picked days when every day could be picked', () => {
+    expect(
+      nextWeekdays({ ...base, before: [1, 2, 3, 4, 5], picked: ['2026-11-21', '2026-11-22'] }),
+    ).toEqual([6, 7]);
+  });
+
+  it('keep days left out only because they already had a dinner', () => {
+    // Mon and Tue were planned, so they started unticked: that's not "we never plan Mondays".
+    const got = nextWeekdays({
+      ...base,
+      planned: ['2026-11-16', '2026-11-17'],
+      before: [1, 2, 3, 4, 5],
+      picked: ['2026-11-18', '2026-11-19', '2026-11-20', '2026-11-21'],
+    });
+    expect(got).toEqual([1, 2, 3, 4, 5, 6]);
+  });
+
+  it('keep days that had already gone', () => {
+    const got = nextWeekdays({
+      ...base,
+      today: '2026-11-19', // Thursday: Mon to Wed are past
+      before: [1, 2, 3, 4, 5],
+      picked: ['2026-11-19'],
+    });
+    expect(got).toEqual([1, 2, 3, 4]);
+  });
+
+  it('count a planned day the Member ticked to replace', () => {
+    const got = nextWeekdays({
+      ...base,
+      planned: ['2026-11-22'],
+      before: [1],
+      picked: ['2026-11-16', '2026-11-22'],
+    });
+    expect(got).toEqual([1, 7]);
   });
 });

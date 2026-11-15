@@ -20,7 +20,8 @@ import {
   useHousehold,
   useRemoveMember,
 } from '@/lib/api/households';
-import { requestStart } from '@/features/chat/starters';
+import { requestPlan, requestStart } from '@/features/chat/starters';
+import { PlanSheet } from '@/features/mealPlan/PlanSheet';
 import { clerkErrorMessage } from '@/lib/clerkErrors';
 import { useTheme } from '@/theme/useTheme';
 
@@ -29,6 +30,7 @@ export function HomeHero({ me }: { me: MeOut }) {
   const t = useTheme();
   const household = useHousehold(true);
   const firstName = me.member.display_name.split(' ')[0];
+  const [planning, setPlanning] = useState(false);
   return (
     <Hero
       top={
@@ -44,15 +46,10 @@ export function HomeHero({ me }: { me: MeOut }) {
       }
       subtitle={`Hi ${firstName}. Here's your kitchen at a glance.`}
     >
-      {/* Both start from what's in the Kitchen (ADR 0013). */}
+      {/* "Plan my week" asks which days and what kind of plan (ADR 0015); "Just tonight"
+          is always Kitchen-first (ADR 0013). */}
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.sm }}>
-        <Button
-          title="Plan my week"
-          onPress={() => {
-            requestStart('week');
-            router.push('/plan');
-          }}
-        />
+        <Button title="Plan my week" onPress={() => setPlanning(true)} />
         <Button
           title="Just tonight"
           variant="secondary"
@@ -62,6 +59,15 @@ export function HomeHero({ me }: { me: MeOut }) {
           }}
         />
       </View>
+      {planning ? (
+        <PlanSheet
+          onClose={() => setPlanning(false)}
+          onPick={(mode, days) => {
+            requestPlan(mode, days);
+            router.push('/plan');
+          }}
+        />
+      ) : null}
     </Hero>
   );
 }

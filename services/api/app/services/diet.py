@@ -171,16 +171,25 @@ async def set_preferences(
     household_id: uuid.UUID,
     household_size: int | None,
     cuisines: Iterable[str],
-    plan_weekdays: Iterable[int] | None = None,
 ) -> HouseholdPreferences:
-    """Replaces the Preferences, except `plan_weekdays`: None keeps what's saved."""
+    """Replaces size and cuisines. The usual weekdays have their own setter."""
     row = await session.get(HouseholdPreferences, household_id)
     if row is None:
         row = HouseholdPreferences(household_id=household_id, plan_weekdays=[1, 2, 3, 4, 5])
         session.add(row)
     row.household_size = household_size
     row.cuisines = sorted({c.lower() for c in cuisines})
-    if plan_weekdays is not None:
-        row.plan_weekdays = sorted(set(plan_weekdays))
     await session.flush()
     return row
+
+
+async def set_plan_weekdays(
+    session: AsyncSession, household_id: uuid.UUID, weekdays: Iterable[int]
+) -> list[int]:
+    row = await session.get(HouseholdPreferences, household_id)
+    if row is None:
+        row = HouseholdPreferences(household_id=household_id, cuisines=[])
+        session.add(row)
+    row.plan_weekdays = sorted(set(weekdays))
+    await session.flush()
+    return row.plan_weekdays

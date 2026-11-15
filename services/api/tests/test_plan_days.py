@@ -84,10 +84,17 @@ async def test_days_must_be_ones_a_plan_can_cover(
 # --- the Household's usual days ------------------------------------------------------
 
 
-async def put_prefs(
-    client: httpx.AsyncClient, issuer: FakeIssuer, body: dict[str, object]
+WEEKDAYS = "/households/current/plan-weekdays"
+
+
+async def put_weekdays(
+    client: httpx.AsyncClient, issuer: FakeIssuer, weekdays: list[int]
 ) -> httpx.Response:
-    return await client.put(PREFS, json=body, headers=issuer.headers("ana") | idem())
+    """Its own route, so the sheet saves only the days: sending the whole Preferences
+    could overwrite a change another Member just made to the cuisines."""
+    return await client.put(
+        WEEKDAYS, json={"weekdays": weekdays}, headers=issuer.headers("ana") | idem()
+    )
 
 
 async def test_usual_days_start_as_weeknights_and_are_remembered(
@@ -97,27 +104,29 @@ async def test_usual_days_start_as_weeknights_and_are_remembered(
     got = (await client.get(PREFS, headers=fake_issuer.headers("ana"))).json()
     assert got["plan_weekdays"] == [1, 2, 3, 4, 5]  # ISO weekdays: Monday is 1
 
-    assert (await put_prefs(client, fake_issuer, {"plan_weekdays": [7, 1, 3]})).status_code == 200
+    response = await put_weekdays(client, fake_issuer, [7, 1, 3])
+    assert response.status_code == 200, response.text
+    assert response.json() == {"weekdays": [1, 3, 7]}
     got = (await client.get(PREFS, headers=fake_issuer.headers("ana"))).json()
     assert got["plan_weekdays"] == [1, 3, 7]
 
 
-async def test_saving_other_preferences_keeps_the_usual_days(
+async def test_the_days_and_the_other_preferences_dont_overwrite_each_other(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer
 ) -> None:
-    """The Dietary Rules screen doesn't know about days. Saving it mustn't reset them."""
     await create_household(client, fake_issuer, "ana")
-    await put_prefs(client, fake_issuer, {"plan_weekdays": [6, 7]})
-    await put_prefs(client, fake_issuer, {"household_size": 3, "cuisines": ["thai"]})
+    prefs = {"household_size": 3, "cuisines": ["thai"]}
+    await client.put(PREFS, json=prefs, headers=fake_issuer.headers("ana") | idem())
+    await put_weekdays(client, fake_issuer, [6, 7])
+    await client.put(PREFS, json=prefs, headers=fake_issuer.headers("ana") | idem())
     got = (await client.get(PREFS, headers=fake_issuer.headers("ana"))).json()
-    assert got["plan_weekdays"] == [6, 7]
-    assert got["household_size"] == 3
+    assert got == {"household_size": 3, "cuisines": ["thai"], "plan_weekdays": [6, 7]}
 
 
 async def test_usual_days_are_validated(client: httpx.AsyncClient, fake_issuer: FakeIssuer) -> None:
     await create_household(client, fake_issuer, "ana")
     for bad in ([], [0], [8], [1, 1]):
-        response = await put_prefs(client, fake_issuer, {"plan_weekdays": bad})
+        response = await put_weekdays(client, fake_issuer, bad)
         assert response.status_code == 422, (bad, response.text)
 
 

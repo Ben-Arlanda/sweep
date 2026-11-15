@@ -47,7 +47,9 @@ export function useConversation(id: string | null) {
  */
 export function useCreateConversation() {
   return useMutation({
-    mutationFn: async () => unwrap(await api.POST('/conversations')),
+    // `plan` from the "Plan my week" sheet: the kind of plan and the days (ADR 0015).
+    mutationFn: async (plan: components['schemas']['ConversationIn'] | null) =>
+      unwrap(await api.POST('/conversations', { body: plan ?? {} })),
   });
 }
 

@@ -64,3 +64,25 @@ export function pickDays(opts: {
       !opts.planned.includes(date),
   );
 }
+
+/**
+ * The usual weekdays to remember after the Member picks days. Only days they could
+ * actually choose change the pattern: a day left out because it had already gone, or
+ * already had a dinner, keeps what was saved before (a planned Monday doesn't mean "we
+ * never plan Mondays"). A planned day they ticked to replace counts as picked.
+ */
+export function nextWeekdays(opts: {
+  monday: string;
+  today: string;
+  planned: string[];
+  before: number[];
+  picked: string[];
+}): number[] {
+  return Array.from({ length: 7 }, (_, i) => addDays(opts.monday, i))
+    .filter((date) => {
+      if (opts.picked.includes(date)) return true;
+      const couldChoose = canPick(date, opts.today) && !opts.planned.includes(date);
+      return couldChoose ? false : opts.before.includes(isoWeekday(date));
+    })
+    .map(isoWeekday);
+}
