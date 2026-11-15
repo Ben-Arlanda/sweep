@@ -7,6 +7,7 @@
 """
 
 from collections.abc import AsyncIterator, Awaitable, Callable, Iterator, Sequence
+from contextlib import asynccontextmanager
 from dataclasses import dataclass, field
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
@@ -149,3 +150,27 @@ def load(database_url: str, db: Engine) -> Loader:
         return report
 
     return run
+
+
+# --- The agent with a scripted model (shared by agent tests) -----------------------
+
+ClientFor = Callable[[ScriptedModel], Any]
+
+
+@pytest.fixture
+def client_for(database_url: str, db: Engine, fake_issuer: FakeIssuer) -> ClientFor:
+    @asynccontextmanager
+    async def make(model: ScriptedModel) -> AsyncIterator[httpx.AsyncClient]:
+        app = create_app(
+            Settings(database_url=database_url, agent_daily_token_budget=50_000),
+            token_verifier=fake_issuer.verifier(),
+            embedder=HashingEmbedder(),
+            agent_model=model,
+        )
+        transport = httpx.ASGITransport(app=app)
+        async with httpx.AsyncClient(transport=transport, base_url="http://test") as http:
+            yield http
+        await app.state.agent.checkpoints.close()
+        await app.state.engine.dispose()
+
+    return make

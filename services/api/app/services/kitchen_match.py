@@ -108,6 +108,12 @@ def _own_patterns(names: Mapping[str, uuid.UUID]) -> list[tuple[re.Pattern[str],
     ]
 
 
+def mentions(recipe: Recipe, name: str) -> bool:
+    """Does any line of this recipe name `name` as a whole word (or simple plural)?"""
+    [(pattern, _, _)] = _own_patterns({name: uuid.UUID(int=0)})
+    return any(pattern.search(normalise(row.raw_text)) for row in recipe.ingredients)
+
+
 # --- Loading from the database -------------------------------------------------------
 
 
@@ -126,7 +132,7 @@ async def snapshot(session: AsyncSession, ctx: MemberContext) -> KitchenSnapshot
         have=frozenset(trusted | staples),
         maybe=frozenset(unsure),
         tracked=frozenset(trusted | unsure),
-        own_names=dict(own.tuples().all()),
+        own_names={name: ingredient_id for name, ingredient_id in own},
     )
 
 
