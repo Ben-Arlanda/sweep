@@ -73,7 +73,7 @@ class ErrorOut(BaseModel):
 
 # --- Shopping Lists ----------------------------------------------------------------
 
-ListName = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=60)]
+ShopName = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=40)]
 ItemText = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=200)]
 Unit = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=20)]
 # Sent and returned as a string ("1.5"), so no float rounding on either side.
@@ -94,8 +94,15 @@ class IngredientOut(BaseModel):
     default_unit: str
 
 
-class ListNameIn(BaseModel):
-    name: ListName
+class ShopIn(BaseModel):
+    name: ShopName
+
+
+class ShopOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: uuid.UUID
+    name: str
 
 
 class AddItemIn(BaseModel):
@@ -106,16 +113,18 @@ class AddItemIn(BaseModel):
     unit: Unit | None = None
     # Usually left out: the server reads the amount off the text and finds the Ingredient.
     ingredient_id: uuid.UUID | None = None
+    shop_id: uuid.UUID | None = None  # None = any shop
 
 
 class EditItemIn(BaseModel):
-    """Only the fields present are changed. Send `null` to clear quantity, unit or the
-    Ingredient link."""
+    """Only the fields present are changed. Send `null` to clear quantity, unit, the
+    Ingredient link or the Shop."""
 
     text: ItemText | None = None
     quantity: Quantity | None = None
     unit: Unit | None = None
     ingredient_id: uuid.UUID | None = None
+    shop_id: uuid.UUID | None = None
 
     @model_validator(mode="after")
     def text_cannot_be_cleared(self) -> Self:
@@ -141,6 +150,7 @@ class ItemOut(BaseModel):
     checked_at: datetime | None
     checked_by: uuid.UUID | None
     ingredient: IngredientOut | None
+    shop_id: uuid.UUID | None
 
     @computed_field  # type: ignore[prop-decorator]
     @property
@@ -156,12 +166,9 @@ class ShoppingListOut(BaseModel):
     version: int
 
 
-class ShoppingListSummaryOut(ShoppingListOut):
-    unchecked_count: int
-
-
 class ShoppingListDetailOut(ShoppingListOut):
     items: list[ItemOut]
+    shops: list[ShopOut]  # the Household's Shops, A to Z
 
 
 # --- Cabinet -----------------------------------------------------------------------
@@ -258,7 +265,6 @@ class DietaryRulesOut(BaseModel):
 class PreferencesIn(BaseModel):
     household_size: int | None = Field(default=None, ge=1, le=20)
     cuisines: list[Cuisine] = Field(default=[], max_length=20)
-    weekly_budget: Decimal | None = Field(default=None, gt=0, le=10_000, decimal_places=2)
 
 
 class PreferencesOut(BaseModel):
@@ -266,7 +272,6 @@ class PreferencesOut(BaseModel):
 
     household_size: int | None
     cuisines: list[str]
-    weekly_budget: Decimal | None
 
 
 # --- Conversations with the agent --------------------------------------------------

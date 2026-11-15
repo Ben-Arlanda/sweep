@@ -173,7 +173,6 @@ async def get_household_preferences(call: Call, _args: NoArgs) -> Outcome:
     rules = await diet.get_rules(call.session, hid)
     excluded = await diet.excluded_ingredients(call.session, rules)
     prefs = await diet.get_preferences(call.session, hid)
-    budget = prefs.weekly_budget
     return Outcome(
         {
             "dietary_rules": {
@@ -184,23 +183,23 @@ async def get_household_preferences(call: Call, _args: NoArgs) -> Outcome:
             "preferences": {
                 "household_size": prefs.household_size,
                 "cuisines": prefs.cuisines,
-                "weekly_budget": float(budget) if budget is not None else None,
             },
         }
     )
 
 
 async def get_shopping_list(call: Call, _args: NoArgs) -> Outcome:
-    out = []
-    for summary in await shopping_lists.list_lists(call.session, call.member):
-        _lst, items = await shopping_lists.get_list(call.session, call.member, summary.list.id)
-        out.append(
-            {
-                "list": summary.list.name,
-                "to_buy": [i.text for i in items if i.checked_at is None],
-            }
-        )
-    return Outcome(out)
+    view = await shopping_lists.get_household_list(call.session, call.member)
+    shop_names = {s.id: s.name for s in view.shops}
+    return Outcome(
+        {
+            "to_buy": [
+                {"item": i.text, "shop": shop_names.get(i.shop_id) if i.shop_id else None}
+                for i in view.items
+                if i.checked_at is None
+            ]
+        }
+    )
 
 
 # --- compute ---------------------------------------------------------------------------

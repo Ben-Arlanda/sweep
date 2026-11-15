@@ -73,8 +73,6 @@ async def household_context(session: AsyncSession, agent: AgentContext, draft: D
         pref_parts.append(f"{prefs.household_size} people")
     if prefs.cuisines:
         pref_parts.append("likes " + ", ".join(prefs.cuisines))
-    if prefs.weekly_budget:
-        pref_parts.append(f"usual budget ${prefs.weekly_budget}/week")
     lines.append("Preferences: " + ("; ".join(pref_parts) or "none set"))
 
     tracked = [

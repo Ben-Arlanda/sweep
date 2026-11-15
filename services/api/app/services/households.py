@@ -31,6 +31,7 @@ from app.models import (
     Ingredient,
     Member,
     Role,
+    Shop,
     ShoppingList,
     utcnow,
 )
@@ -40,6 +41,7 @@ INVITE_LIFETIME = timedelta(days=7)
 INVITE_ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"
 INVITE_LENGTH = 8
 DEFAULT_LIST_NAME = "Shopping List"
+DEFAULT_SHOPS = ("Coles", "Woolies", "Aldi")
 
 
 @dataclass(frozen=True)
@@ -107,6 +109,7 @@ async def create_household(
     member = await _add_member(session, identity, household, Role.OWNER, display_name)
     # Every Household starts with one list, so there's somewhere to add things straight away.
     session.add(ShoppingList(household_id=household.id, name=DEFAULT_LIST_NAME))
+    session.add_all(Shop(household_id=household.id, name=name) for name in DEFAULT_SHOPS)
     # ...and with the default Staples (salt, oil, spices), which Members can change.
     await session.execute(
         insert(HouseholdStaple).from_select(

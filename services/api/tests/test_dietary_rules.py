@@ -121,7 +121,7 @@ async def test_a_new_household_has_no_rules_and_no_preferences(
     got = await client.get(RULES, headers=fake_issuer.headers("ana"))
     assert got.json() == {"diets": [], "excluded_ingredients": []}
     got = await client.get(PREFS, headers=fake_issuer.headers("ana"))
-    assert got.json() == {"household_size": None, "cuisines": [], "weekly_budget": None}
+    assert got.json() == {"household_size": None, "cuisines": []}
 
 
 async def test_any_member_can_set_rules_and_the_whole_household_sees_them(
@@ -165,12 +165,13 @@ async def test_preferences_round_trip_and_are_validated(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer
 ) -> None:
     await create_household(client, fake_issuer, "ana")
+    # weekly_budget was removed (ADR 0010); an older app still sending it is ignored.
     body = {"household_size": 2, "cuisines": ["Italian", "greek"], "weekly_budget": "120.00"}
     assert (await put(client, fake_issuer, PREFS, body)).status_code == 200
     got = (await client.get(PREFS, headers=fake_issuer.headers("ana"))).json()
-    assert got == {"household_size": 2, "cuisines": ["greek", "italian"], "weekly_budget": "120.00"}
+    assert got == {"household_size": 2, "cuisines": ["greek", "italian"]}
 
-    for bad in ({"household_size": 0}, {"weekly_budget": "-5"}, {"cuisines": ["x" * 50]}):
+    for bad in ({"household_size": 0}, {"cuisines": ["x" * 50]}):
         assert (await put(client, fake_issuer, PREFS, bad)).status_code == 422, bad
 
 

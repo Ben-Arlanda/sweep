@@ -68,12 +68,9 @@ export function useChangeNotices(enabled: boolean) {
       // Our own queued changes will refetch when they finish (see `settle`). Refetching
       // now could briefly show the list without the ones still on their way.
       if (queryClient.isMutating({ mutationKey: listKeys.all }) > 0) return;
-      void queryClient.invalidateQueries({ queryKey: listKeys.summaries });
-      const cached = queryClient.getQueryData<ListDetail>(listKeys.detail(notice.id));
-      if (isNewer(notice.version, cached)) {
-        void queryClient.invalidateQueries({
-          queryKey: listKeys.detail(notice.id),
-        });
+      const cached = queryClient.getQueryData<ListDetail>(listKeys.current);
+      if (cached?.id !== notice.id || isNewer(notice.version, cached)) {
+        void queryClient.invalidateQueries({ queryKey: listKeys.current });
       }
     }
 

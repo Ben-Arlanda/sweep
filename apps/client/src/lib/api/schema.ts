@@ -107,41 +107,24 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/lists": {
+    "/list": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** List Lists */
-        get: operations["list_lists_lists_get"];
+        /**
+         * Get List
+         * @description The Household's one Shopping List, with its items and Shops (ADR 0009).
+         */
+        get: operations["get_list_list_get"];
         put?: never;
-        /** Create List */
-        post: operations["create_list_lists_post"];
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
-        trace?: never;
-    };
-    "/lists/{list_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get List */
-        get: operations["get_list_lists__list_id__get"];
-        put?: never;
-        post?: never;
-        /** Delete List */
-        delete: operations["delete_list_lists__list_id__delete"];
-        options?: never;
-        head?: never;
-        /** Rename List */
-        patch: operations["rename_list_lists__list_id__patch"];
         trace?: never;
     };
     "/lists/{list_id}/items": {
@@ -194,6 +177,41 @@ export interface paths {
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/shops": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add Shop */
+        post: operations["add_shop_shops_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/shops/{shop_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete Shop */
+        delete: operations["delete_shop_shops__shop_id__delete"];
+        options?: never;
+        head?: never;
+        /** Rename Shop */
+        patch: operations["rename_shop_shops__shop_id__patch"];
         trace?: never;
     };
     "/cabinet": {
@@ -447,6 +465,8 @@ export interface components {
             unit?: string | null;
             /** Ingredient Id */
             ingredient_id?: string | null;
+            /** Shop Id */
+            shop_id?: string | null;
         };
         /**
          * AddedBy
@@ -613,8 +633,8 @@ export interface components {
         };
         /**
          * EditItemIn
-         * @description Only the fields present are changed. Send `null` to clear quantity, unit or the
-         *     Ingredient link.
+         * @description Only the fields present are changed. Send `null` to clear quantity, unit, the
+         *     Ingredient link or the Shop.
          */
         EditItemIn: {
             /** Text */
@@ -625,6 +645,8 @@ export interface components {
             unit?: string | null;
             /** Ingredient Id */
             ingredient_id?: string | null;
+            /** Shop Id */
+            shop_id?: string | null;
         };
         /** ErrorEvent */
         ErrorEvent: {
@@ -723,13 +745,10 @@ export interface components {
             /** Checked By */
             checked_by: string | null;
             ingredient: components["schemas"]["IngredientOut"] | null;
+            /** Shop Id */
+            shop_id: string | null;
             /** Checked */
             readonly checked: boolean;
-        };
-        /** ListNameIn */
-        ListNameIn: {
-            /** Name */
-            name: string;
         };
         /** MeOut */
         MeOut: {
@@ -761,8 +780,6 @@ export interface components {
              * @default []
              */
             cuisines: string[];
-            /** Weekly Budget */
-            weekly_budget?: number | string | null;
         };
         /** PreferencesOut */
         PreferencesOut: {
@@ -770,8 +787,6 @@ export interface components {
             household_size: number | null;
             /** Cuisines */
             cuisines: string[];
-            /** Weekly Budget */
-            weekly_budget: string | null;
         };
         /** ProposalEvent */
         ProposalEvent: {
@@ -923,6 +938,21 @@ export interface components {
             /** Have */
             have: boolean;
         };
+        /** ShopIn */
+        ShopIn: {
+            /** Name */
+            name: string;
+        };
+        /** ShopOut */
+        ShopOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Name */
+            name: string;
+        };
         /** ShoppingListDetailOut */
         ShoppingListDetailOut: {
             /**
@@ -936,32 +966,8 @@ export interface components {
             version: number;
             /** Items */
             items: components["schemas"]["ItemOut"][];
-        };
-        /** ShoppingListOut */
-        ShoppingListOut: {
-            /**
-             * Id
-             * Format: uuid
-             */
-            id: string;
-            /** Name */
-            name: string;
-            /** Version */
-            version: number;
-        };
-        /** ShoppingListSummaryOut */
-        ShoppingListSummaryOut: {
-            /**
-             * Id
-             * Format: uuid
-             */
-            id: string;
-            /** Name */
-            name: string;
-            /** Version */
-            version: number;
-            /** Unchecked Count */
-            unchecked_count: number;
+            /** Shops */
+            shops: components["schemas"]["ShopOut"][];
         };
         /** StapleOut */
         StapleOut: {
@@ -1192,68 +1198,11 @@ export interface operations {
             };
         };
     };
-    list_lists_lists_get: {
+    get_list_list_get: {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ShoppingListSummaryOut"][];
-                };
-            };
-        };
-    };
-    create_list_lists_post: {
-        parameters: {
-            query?: never;
-            header: {
-                "Idempotency-Key": string;
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["ListNameIn"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ShoppingListOut"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    get_list_lists__list_id__get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                list_id: string;
-            };
             cookie?: never;
         };
         requestBody?: never;
@@ -1265,83 +1214,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ShoppingListDetailOut"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    delete_list_lists__list_id__delete: {
-        parameters: {
-            query?: never;
-            header: {
-                "Idempotency-Key": string;
-            };
-            path: {
-                list_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    rename_list_lists__list_id__patch: {
-        parameters: {
-            query?: never;
-            header: {
-                "Idempotency-Key": string;
-            };
-            path: {
-                list_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["ListNameIn"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ShoppingListOut"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };
@@ -1478,6 +1350,109 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ItemOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    add_shop_shops_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ShopIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ShopOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_shop_shops__shop_id__delete: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                shop_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    rename_shop_shops__shop_id__patch: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                shop_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ShopIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ShopOut"];
                 };
             };
             /** @description Validation Error */

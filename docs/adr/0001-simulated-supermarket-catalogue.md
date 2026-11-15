@@ -1,6 +1,6 @@
 # 1. Use a simulated supermarket catalogue, not live supermarket data
 
-Date: 2026-11-08 · Status: Accepted
+Date: 2026-11-08 · Status: Superseded by [ADR 0010](0010-no-prices-or-budgets.md) (2026-11-15)
 
 ## Context
 

@@ -10,7 +10,7 @@ import { Hero, HeroLabel } from '@/components/Hero';
 import { Button, Card, ErrorText, Highlight, SectionLabel, Text } from '@/components/ui';
 import { CabinetTile } from '@/features/cabinet/CabinetTile';
 import { RecipesTile } from '@/features/recipes/RecipesTile';
-import { ListTiles } from '@/features/lists/ListTiles';
+import { ShoppingListTile } from '@/features/lists/ShoppingListTile';
 import { AppearanceCard } from '@/features/household/AppearanceCard';
 import type { MeOut } from '@/lib/api/client';
 import {
@@ -47,14 +47,14 @@ export function HomeHero({ me }: { me: MeOut }) {
   );
 }
 
-/** The board: one pastel tile per list, plus the Cabinet and Recipes. */
+/** The board: the Shopping List, the Cabinet and Recipes. */
 export function HouseholdView() {
   const t = useTheme();
   return (
     <>
       <SectionLabel>Your kitchen</SectionLabel>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.md }}>
-        <ListTiles />
+        <ShoppingListTile />
         <CabinetTile />
         <RecipesTile />
       </View>

@@ -223,117 +223,14 @@
         }
       }
     },
-    "/lists": {
-      "get": {
-        "tags": [
-          "shopping-lists"
-        ],
-        "summary": "List Lists",
-        "operationId": "list_lists_lists_get",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ShoppingListSummaryOut"
-                  },
-                  "title": "Response List Lists Lists Get"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "shopping-lists"
-        ],
-        "summary": "Create List",
-        "operationId": "create_list_lists_post",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "Idempotency-Key",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 255,
-              "title": "Idempotency-Key"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ListNameIn"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ShoppingListOut"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/lists/{list_id}": {
+    "/list": {
       "get": {
         "tags": [
           "shopping-lists"
         ],
         "summary": "Get List",
-        "operationId": "get_list_lists__list_id__get",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "list_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "List Id"
-            }
-          }
-        ],
+        "description": "The Household's one Shopping List, with its items and Shops (ADR 0009).",
+        "operationId": "get_list_list_get",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -344,135 +241,13 @@
                 }
               }
             }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "shopping-lists"
-        ],
-        "summary": "Rename List",
-        "operationId": "rename_list_lists__list_id__patch",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "list_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "List Id"
-            }
-          },
-          {
-            "name": "Idempotency-Key",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 255,
-              "title": "Idempotency-Key"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ListNameIn"
-              }
-            }
           }
         },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ShoppingListOut"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "shopping-lists"
-        ],
-        "summary": "Delete List",
-        "operationId": "delete_list_lists__list_id__delete",
         "security": [
           {
             "HTTPBearer": []
           }
-        ],
-        "parameters": [
-          {
-            "name": "list_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "List Id"
-            }
-          },
-          {
-            "name": "Idempotency-Key",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 255,
-              "title": "Idempotency-Key"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Successful Response"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
+        ]
       }
     },
     "/lists/{list_id}/items": {
@@ -748,6 +523,184 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shops": {
+      "post": {
+        "tags": [
+          "shopping-lists"
+        ],
+        "summary": "Add Shop",
+        "operationId": "add_shop_shops_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShopIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShopOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shops/{shop_id}": {
+      "patch": {
+        "tags": [
+          "shopping-lists"
+        ],
+        "summary": "Rename Shop",
+        "operationId": "rename_shop_shops__shop_id__patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "shop_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Shop Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShopIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShopOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "shopping-lists"
+        ],
+        "summary": "Delete Shop",
+        "operationId": "delete_shop_shops__shop_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "shop_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Shop Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
           },
           "422": {
             "description": "Validation Error",
@@ -1721,6 +1674,18 @@
               }
             ],
             "title": "Ingredient Id"
+          },
+          "shop_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Shop Id"
           }
         },
         "type": "object",
@@ -2188,11 +2153,23 @@
               }
             ],
             "title": "Ingredient Id"
+          },
+          "shop_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Shop Id"
           }
         },
         "type": "object",
         "title": "EditItemIn",
-        "description": "Only the fields present are changed. Send `null` to clear quantity, unit or the\nIngredient link."
+        "description": "Only the fields present are changed. Send `null` to clear quantity, unit, the\nIngredient link or the Shop."
       },
       "ErrorEvent": {
         "properties": {
@@ -2419,6 +2396,18 @@
               }
             ]
           },
+          "shop_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Shop Id"
+          },
           "checked": {
             "type": "boolean",
             "title": "Checked",
@@ -2437,24 +2426,10 @@
           "checked_at",
           "checked_by",
           "ingredient",
+          "shop_id",
           "checked"
         ],
         "title": "ItemOut"
-      },
-      "ListNameIn": {
-        "properties": {
-          "name": {
-            "type": "string",
-            "maxLength": 60,
-            "minLength": 1,
-            "title": "Name"
-          }
-        },
-        "type": "object",
-        "required": [
-          "name"
-        ],
-        "title": "ListNameIn"
       },
       "MeOut": {
         "properties": {
@@ -2526,22 +2501,6 @@
             "maxItems": 20,
             "title": "Cuisines",
             "default": []
-          },
-          "weekly_budget": {
-            "anyOf": [
-              {
-                "type": "number",
-                "maximum": 10000.0,
-                "exclusiveMinimum": 0.0
-              },
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Weekly Budget"
           }
         },
         "type": "object",
@@ -2566,24 +2525,12 @@
             },
             "type": "array",
             "title": "Cuisines"
-          },
-          "weekly_budget": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Weekly Budget"
           }
         },
         "type": "object",
         "required": [
           "household_size",
-          "cuisines",
-          "weekly_budget"
+          "cuisines"
         ],
         "title": "PreferencesOut"
       },
@@ -3046,6 +2993,40 @@
         ],
         "title": "SetStapleIn"
       },
+      "ShopIn": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 40,
+            "minLength": 1,
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "ShopIn"
+      },
+      "ShopOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "ShopOut"
+      },
       "ShoppingListDetailOut": {
         "properties": {
           "id": {
@@ -3067,6 +3048,13 @@
             },
             "type": "array",
             "title": "Items"
+          },
+          "shops": {
+            "items": {
+              "$ref": "#/components/schemas/ShopOut"
+            },
+            "type": "array",
+            "title": "Shops"
           }
         },
         "type": "object",
@@ -3074,62 +3062,10 @@
           "id",
           "name",
           "version",
-          "items"
+          "items",
+          "shops"
         ],
         "title": "ShoppingListDetailOut"
-      },
-      "ShoppingListOut": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "title": "Id"
-          },
-          "name": {
-            "type": "string",
-            "title": "Name"
-          },
-          "version": {
-            "type": "integer",
-            "title": "Version"
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "name",
-          "version"
-        ],
-        "title": "ShoppingListOut"
-      },
-      "ShoppingListSummaryOut": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "title": "Id"
-          },
-          "name": {
-            "type": "string",
-            "title": "Name"
-          },
-          "version": {
-            "type": "integer",
-            "title": "Version"
-          },
-          "unchecked_count": {
-            "type": "integer",
-            "title": "Unchecked Count"
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "name",
-          "version",
-          "unchecked_count"
-        ],
-        "title": "ShoppingListSummaryOut"
       },
       "StapleOut": {
         "properties": {

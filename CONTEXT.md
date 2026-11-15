@@ -11,7 +11,7 @@ A person signed in to the app who belongs to a Household.
 _Avoid_: user (in domain discussions), account
 
 **Household**:
-The group of Members who share one Cabinet, one set of Shopping Lists, one Meal Plan and one recipe collection. A Member belongs to exactly one Household.
+The group of Members who share one Cabinet, one Shopping List, one Meal Plan and one recipe collection. A Member belongs to exactly one Household.
 _Avoid_: family, team, group
 
 **Owner**:
@@ -25,8 +25,12 @@ The household's record of the Ingredients it currently has at home.
 _Avoid_: kitchen inventory, pantry, virtual kitchen cabinet, stock
 
 **Shopping List**:
-The list of items the Household intends to buy, shared across Members' devices.
-_Avoid_: grocery list, basket
+The one list of items the Household intends to buy, shared across Members' devices. A Household has exactly one.
+_Avoid_: grocery list, basket, lists (there is only one)
+
+**Shop**:
+Where the Household plans to buy an item (Coles, Woolies, Aldi, or one it added). A label on a Shopping List item, not a separate list. An item without a Shop can be bought anywhere.
+_Avoid_: store, supermarket (in code and UI), list
 
 **Recipe Knowledge Base**:
 The collection of recipes the app can search, recommend and plan from.
@@ -106,22 +110,12 @@ A Draft Plan the agent presents for approval. Nothing in a Proposal changes Hous
 _Avoid_: recommendation, change request
 
 **Approval**:
-A Member's decision to accept, reject or edit a Proposal. Recorded permanently.
+A Member's decision on a Proposal: approve (optionally after unticking some meals or list additions) or reject. Recorded permanently. Bigger edits happen in the Conversation, which produces a new Proposal.
 _Avoid_: confirmation (Confirmed means something else)
-
-### Money
-
-**Estimated Price**:
-A price from the simulated catalogue, always shown as an estimate and never as a real current shelf price.
-_Avoid_: price, real price
-
-**Estimated Cost**:
-The total of Estimated Prices for the items a Proposal would add to the Shopping List.
-_Avoid_: total, budget (the budget is the limit, not the cost)
 
 ## Relationships
 
-- A **Household** has many **Members**, one **Cabinet**, one or more **Shopping Lists** and one **Meal Plan** per week
+- A **Household** has many **Members**, one **Cabinet**, one **Shopping List** and one **Meal Plan** per week
 - The **Cabinet**, **Shopping List** and **Recipe Knowledge Base** all refer to the same **Ingredients**. That shared vocabulary is what connects them.
 - Ticking an item off a **Shopping List** adds it to the **Cabinet** as **Confirmed** (if it's linked to an **Ingredient**)
 - Marking a **Planned Meal** as **Cooked** deducts its Ingredients, which makes those quantities **Estimated**
@@ -134,7 +128,7 @@ _Avoid_: total, budget (the budget is the limit, not the cost)
 ## Example dialogue
 
 > **Member:** "Plan four dinners. We've got chicken and rice."
-> **Agent:** builds a **Draft Plan** from Seed and Imported Recipes, checks the **Cabinet** (chicken: Confirmed 1kg, rice: Estimated ~500g), and shows a **Proposal**: 4 **Planned Meals**, 9 Shopping List additions, **Estimated Cost** ~$64, and "I'm assuming you still have ~500g rice."
+> **Agent:** builds a **Draft Plan** from Seed and Imported Recipes, checks the **Cabinet** (chicken: Confirmed 1kg, rice: Estimated ~500g), and shows a **Proposal**: 4 **Planned Meals**, 9 Shopping List additions, and "I'm assuming you still have ~500g rice."
 > **Member:** "Swap Tuesday for something vegetarian." → the agent edits the Draft Plan. It doesn't rebuild it.
 > **Member:** approves → the Meal Plan and Shopping List update for the whole Household.
 
@@ -142,5 +136,5 @@ _Avoid_: total, budget (the budget is the limit, not the cost)
 
 - "kitchen inventory", "virtual kitchen cabinet", "pantry". Resolved: **Cabinet**.
 - "dietary preferences" in the brief mixed hard and soft constraints. Resolved: split into **Dietary Rule** and **Preference**.
-- "basket" in the brief meant both the Shopping List and a priced product selection. Resolved: use **Shopping List** for the list and **Estimated Cost** for the money. Product-level basket optimisation is a later experiment.
-- Live supermarket pricing: **not required**. All prices are **Estimated Prices**.
+- "basket" in the brief meant both the Shopping List and a priced product selection. Resolved: **Shopping List** only. Sweep has no prices or budgets (ADR 0010).
+- "lists" per supermarket. Resolved: one **Shopping List**, items labelled by **Shop** (ADR 0009).

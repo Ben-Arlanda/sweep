@@ -98,7 +98,7 @@ def setup_household(client: TestClient, issuer: FakeIssuer, owner: str, *joiners
             headers=headers(issuer, joiner),
         )
         assert r.status_code == 200, r.text
-    list_id: str = client.get("/lists", headers=issuer.headers(owner)).json()[0]["id"]
+    list_id: str = client.get("/list", headers=issuer.headers(owner)).json()["id"]
     return list_id
 
 

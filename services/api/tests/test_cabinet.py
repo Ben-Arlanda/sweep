@@ -62,7 +62,7 @@ def staples(cab: dict[str, Any]) -> dict[str, bool]:
 
 
 async def list_id_of(client: httpx.AsyncClient, issuer: FakeIssuer, subject: str) -> str:
-    lid: str = (await client.get("/lists", headers=issuer.headers(subject))).json()[0]["id"]
+    lid: str = (await client.get("/list", headers=issuer.headers(subject))).json()["id"]
     return lid
 
 
