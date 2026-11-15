@@ -619,12 +619,25 @@ export interface components {
              * Format: date-time
              */
             created_at: string;
+            plan_mode: components["schemas"]["PlanMode"] | null;
+            /** Plan Days */
+            plan_days: string[] | null;
             /** Messages */
             messages: components["schemas"]["ChatLine"][];
             draft: components["schemas"]["DraftOut"] | null;
             proposal: components["schemas"]["ProposalOut"] | null;
             /** Proposals */
             proposals: components["schemas"]["ChatProposalOut"][];
+        };
+        /**
+         * ConversationIn
+         * @description How a plan starts. Both left out for a free chat; the "Plan my week" sheet sends
+         *     the kind of plan and the days picked (ADR 0015).
+         */
+        ConversationIn: {
+            mode?: components["schemas"]["PlanMode"] | null;
+            /** Days */
+            days?: string[] | null;
         };
         /** ConversationOut */
         ConversationOut: {
@@ -638,6 +651,9 @@ export interface components {
              * Format: date-time
              */
             created_at: string;
+            plan_mode: components["schemas"]["PlanMode"] | null;
+            /** Plan Days */
+            plan_days: string[] | null;
         };
         /** CreateHouseholdIn */
         CreateHouseholdIn: {
@@ -916,6 +932,11 @@ export interface components {
              * Format: date
              */
             end: string;
+            /**
+             * Today
+             * Format: date
+             */
+            today: string;
             /** Version */
             version: number;
             /** Meals */
@@ -950,6 +971,12 @@ export interface components {
         PlaceOut: {
             place: components["schemas"]["Place"];
         };
+        /**
+         * PlanMode
+         * @description What kind of plan the Member asked for in the "Plan my week" sheet (ADR 0015).
+         * @enum {string}
+         */
+        PlanMode: "kitchen" | "new";
         /** PlannedMealOut */
         PlannedMealOut: {
             /**
@@ -985,6 +1012,8 @@ export interface components {
              * @default []
              */
             cuisines: string[];
+            /** Plan Weekdays */
+            plan_weekdays?: number[] | null;
         };
         /** PreferencesOut */
         PreferencesOut: {
@@ -992,6 +1021,8 @@ export interface components {
             household_size: number | null;
             /** Cuisines */
             cuisines: string[];
+            /** Plan Weekdays */
+            plan_weekdays: number[];
         };
         /** ProposalEvent */
         ProposalEvent: {
@@ -2187,7 +2218,11 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["ConversationIn"] | null;
+            };
+        };
         responses: {
             /** @description Successful Response */
             201: {
@@ -2196,6 +2231,15 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ConversationOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

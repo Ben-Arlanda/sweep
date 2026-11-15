@@ -1,4 +1,4 @@
-import { addDays, weekDays } from './week';
+import { addDays, canPick, isoWeekday, mondayOf, pickDays, planWeekFor, weekDays } from './week';
 
 const meal = (date: string, title: string) => ({
   id: `id-${date}`,
@@ -49,5 +49,41 @@ describe('weekDays', () => {
   it('ignores meals outside the week', () => {
     const days = weekDays('2026-11-15', [meal('2026-11-22', 'Late')]);
     expect(days.every((d) => d.meal === null)).toBe(true);
+  });
+});
+
+describe('Mon–Sun weeks (slice 5d)', () => {
+  // 15 Nov 2026 is a Sunday, 16 Nov a Monday.
+  it('finds the Monday of any day, Sunday belonging to the week before', () => {
+    expect(mondayOf('2026-11-16')).toBe('2026-11-16');
+    expect(mondayOf('2026-11-19')).toBe('2026-11-16');
+    expect(mondayOf('2026-11-15')).toBe('2026-11-09');
+  });
+
+  it('gives ISO weekdays, Monday 1 to Sunday 7', () => {
+    expect(isoWeekday('2026-11-16')).toBe(1);
+    expect(isoWeekday('2026-11-15')).toBe(7);
+  });
+
+  it('opens the sheet on this week, or next week at the weekend', () => {
+    expect(planWeekFor('2026-11-18')).toBe('2026-11-16'); // Wednesday
+    expect(planWeekFor('2026-11-20')).toBe('2026-11-16'); // Friday
+    expect(planWeekFor('2026-11-21')).toBe('2026-11-23'); // Saturday
+    expect(planWeekFor('2026-11-22')).toBe('2026-11-23'); // Sunday
+  });
+
+  it('turns usual weekdays into dates, skipping past days and planned ones', () => {
+    const picked = pickDays({
+      monday: '2026-11-16',
+      weekdays: [1, 2, 3, 4, 5],
+      today: '2026-11-18',
+      planned: ['2026-11-19'],
+    });
+    expect(picked).toEqual(['2026-11-18', '2026-11-20']); // Wed (today) and Fri
+  });
+
+  it('can only pick days from today', () => {
+    expect(canPick('2026-11-17', '2026-11-18')).toBe(false);
+    expect(canPick('2026-11-18', '2026-11-18')).toBe(true);
   });
 });

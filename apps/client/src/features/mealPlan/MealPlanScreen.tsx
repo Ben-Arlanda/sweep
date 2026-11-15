@@ -9,10 +9,11 @@ import { mealTap, useMealPlan, useMealPlanActions } from '@/lib/api/mealPlan';
 import { useTheme } from '@/theme/useTheme';
 
 import { addDays, weekDays, type Day, type PlannedMeal } from './week';
+import { WeekStrip, type StripMeal } from './WeekStrip';
 
 /**
- * A week of dinners, from today. One row per day so a gap is visible, ‹ › to move a
- * week. Cooked takes the recipe out of the Kitchen; its undo stays on the row with no
+ * A Mon–Sun week of dinners (slice 5d): the week strip for a glance, then one row per
+ * day so a gap is visible; ‹ › to move a week. Cooked takes the recipe out of the Kitchen; its undo stays on the row with no
  * time limit (a toast that vanishes after a few seconds fails WCAG 2.2.1).
  *
  * `start` null means "this week", which the server counts from today in Sydney. We
@@ -40,9 +41,13 @@ export function MealPlanScreen() {
     );
   }
 
+  const { today } = week.data;
   const days = weekDays(week.data.start, week.data.meals);
   const range = `${formatDay(week.data.start)} – ${formatDay(week.data.end)}`;
   const isThisWeek = start === null;
+  const stripMeals: Record<string, StripMeal> = Object.fromEntries(
+    week.data.meals.map((m) => [m.date, { title: m.title, cooked: m.cooked_at !== null }]),
+  );
 
   return (
     <Screen>
@@ -75,8 +80,15 @@ export function MealPlanScreen() {
       )}
 
       <Card>
-        {days.map((day, i) => (
-          <DayRow key={day.date} day={day} label={dayLabel(day.date, isThisWeek ? i : -1)} />
+        <Text variant="caption" muted>
+          {range} · {week.data.meals.length} of 7 planned
+        </Text>
+        <WeekStrip monday={week.data.start} today={today} meals={stripMeals} />
+      </Card>
+
+      <Card>
+        {days.map((day) => (
+          <DayRow key={day.date} day={day} label={dayLabel(day.date, today)} />
         ))}
       </Card>
 
@@ -94,9 +106,10 @@ export function MealPlanScreen() {
   );
 }
 
-function dayLabel(date: string, indexInThisWeek: number) {
-  if (indexInThisWeek === 0) return 'Today';
-  if (indexInThisWeek === 1) return 'Tomorrow';
+/** "Today" and "Tomorrow" come from the server's today, not the phone's clock. */
+function dayLabel(date: string, today: string) {
+  if (date === today) return 'Today';
+  if (date === addDays(today, 1)) return 'Tomorrow';
   return formatDay(date);
 }
 
