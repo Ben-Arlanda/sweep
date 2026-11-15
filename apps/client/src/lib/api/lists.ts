@@ -62,7 +62,8 @@ type AddItemVars = Keyed & {
   listId: string;
   itemId: string;
   text: string;
-  shopId: string | null;
+  // The app no longer sends one, but an add queued offline by an older version might.
+  shopId?: string | null;
 };
 type SetCheckedVars = Keyed & {
   listId: string;
@@ -122,7 +123,7 @@ export function registerListMutations(queryClient: QueryClient) {
       unwrap(
         await api.POST('/lists/{list_id}/items', {
           params: { path: { list_id: v.listId }, header: header(v) },
-          body: { id: v.itemId, text: v.text, shop_id: v.shopId },
+          body: { id: v.itemId, text: v.text, shop_id: v.shopId ?? null },
         }),
       ),
     ...optimistic<AddItemVars>((list, v) =>
@@ -267,12 +268,11 @@ export function useListActions(listId: string) {
 
   return {
     error: add.error ?? check.error ?? tag.error ?? remove.error,
-    addItem: (text: string, shopId: string | null) =>
+    addItem: (text: string) =>
       add.mutate({
         listId,
         itemId: randomUUID(),
         text,
-        shopId,
         idempotencyKey: randomUUID(),
       }),
     setChecked: (itemId: string, checked: boolean) =>
