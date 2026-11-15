@@ -1,7 +1,7 @@
 /// <reference types="jest" />
 import type { components } from '@/lib/api/schema';
 
-import { cuisineName, haveSummary, matchLine, minutesText } from './kitchenMatch';
+import { addText, cuisineName, haveSummary, matchLine, minutesText } from './kitchenMatch';
 
 type Line = components['schemas']['RecipeIngredientOut'];
 type Kitchen = components['schemas']['KitchenOut'];
@@ -130,4 +130,74 @@ test.each([
   [null, null],
 ])('shows cuisine %j as %j', (cuisine, expected) => {
   expect(cuisineName(cuisine)).toBe(expected);
+});
+
+describe('the Shopping List', () => {
+  type Item = components['schemas']['ItemOut'];
+  const item = (over: Partial<Item> = {}): Item => ({
+    id: 'i1',
+    text: 'tomatoes',
+    quantity: '3',
+    unit: null,
+    added_by: 'agent',
+    added_by_member_id: null,
+    created_at: '2026-11-15T00:00:00Z',
+    checked_at: null,
+    checked_by: null,
+    ingredient: ingredient('tomatoes', 'tomatoes', 'count'),
+    shop_id: null,
+    checked: false,
+    ...over,
+  });
+  const tomatoes = line({
+    raw_text: '2 tomatoes, sliced',
+    ingredient: ingredient('tomatoes', 'tomatoes', 'count'),
+    quantity: '2',
+    unit: null,
+    base_quantity: '2',
+  });
+
+  it('says "on list" for a needed line already on the list, not "need"', () => {
+    expect(matchLine(tomatoes, kitchen, [item()])).toEqual({ kind: 'onList' });
+    expect(matchLine(tomatoes, kitchen)).toEqual({ kind: 'need' }); // no list loaded
+  });
+
+  it('a ticked item is bought, so it no longer counts as on the list', () => {
+    expect(
+      matchLine(tomatoes, kitchen, [item({ checked_at: '2026-11-15T01:00:00Z', checked: true })]),
+    ).toEqual({
+      kind: 'need',
+    });
+  });
+
+  it('what you have still wins over the list', () => {
+    const pasta = item({ ingredient: ingredient('pasta', 'pasta') });
+    expect(matchLine(line({ base_quantity: '100' }), kitchen, [pasta])).toEqual({ kind: 'have' });
+  });
+});
+
+describe('addText', () => {
+  it('is the amount and the Ingredient name, which the list reads back', () => {
+    expect(
+      addText(
+        line({
+          raw_text: '30 g butter, softened',
+          ingredient: ingredient('b', 'butter'),
+          base_quantity: '30',
+        }),
+      ),
+    ).toBe('30 g butter');
+    expect(
+      addText(line({ ingredient: ingredient('t', 'tomatoes', 'count'), base_quantity: '2' })),
+    ).toBe('2 tomatoes');
+    expect(addText(line({ ingredient: ingredient('f', 'flour'), base_quantity: '1500' }))).toBe(
+      '1.5 kg flour',
+    );
+  });
+
+  it('leaves the amount out when the recipe has none that converts ("1 pinch salt")', () => {
+    expect(addText(line({ ingredient: ingredient('s', 'salt'), base_quantity: null }))).toBe(
+      'salt',
+    );
+  });
 });
