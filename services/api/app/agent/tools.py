@@ -26,9 +26,10 @@ from app import errors
 from app.agent.model import AgentModel
 from app.agent.state import Draft, DraftAddition, DraftMeal
 from app.embeddings import Embedder, EmbeddingUnavailable
-from app.models import Household, Member, Recipe, utcnow
+from app.models import Household, Ingredient, Member, Recipe, utcnow
 from app.services import diet, ingredients, kitchen, kitchen_match, recipes, shopping_lists
 from app.services.households import MemberContext
+from app.units import convert
 
 SEARCH_RESULTS = 8
 KITCHEN_RESULTS = 10  # enough to pick a week of dinners with some choice
@@ -278,6 +279,7 @@ async def check_kitchen_coverage(call: Call, args: CoverageArgs) -> Outcome:
     need: dict[str, Decimal] = defaultdict(Decimal)
     units: dict[str, str] = {}
     unmeasured: set[str] = set()  # "salt to taste": needed, amount unknown
+    found: dict[str, Ingredient] = {}
     for meal in args.meals:
         try:
             recipe = await recipes.get_recipe(call.session, call.agent.household_id, meal.recipe_id)
@@ -289,6 +291,7 @@ async def check_kitchen_coverage(call: Call, args: CoverageArgs) -> Outcome:
                 continue
             name = line.ingredient.name
             units[name] = line.ingredient.default_unit
+            found[name] = line.ingredient
             if line.base_quantity is None:
                 unmeasured.add(name)
             else:
@@ -336,12 +339,50 @@ async def check_kitchen_coverage(call: Call, args: CoverageArgs) -> Outcome:
                 )
             elif have is not None and status == "confirmed":
                 covered.append(name)
+
+    # Then the Shopping List: a list addition is the extra on top of what's already on
+    # it (ADR 0016), so take that off too. Plain sums, never the model's arithmetic.
+    view_list = await shopping_lists.get_household_list(call.session, call.member)
+    still_missing: list[dict[str, Any]] = []
+    on_list: list[dict[str, Any]] = []
+    for entry in missing:
+        name = entry["ingredient"]
+        ingredient = found[name]
+        listed_item = shopping_lists.unticked_match(view_list.items, ingredient.id, name)
+        if listed_item is None:
+            still_missing.append(entry)
+            continue
+        listed = shopping_lists.amount_text(listed_item.quantity, listed_item.unit)
+        wanted = entry.get("need")
+        have = (
+            convert(
+                listed_item.quantity,
+                listed_item.unit,
+                ingredient.default_unit,
+                ingredient.grams_per_ml,
+            )
+            if listed_item.quantity is not None
+            else None
+        )
+        if wanted is None or listed_item.quantity is None:
+            on_list.append({"ingredient": name, "on_list": listed})  # can't tell: count it
+        elif have is None:
+            still_missing.append({**entry, "on_list": listed})  # units don't compare
+        elif Decimal(str(wanted)) - have > 0:
+            more = round(float(Decimal(str(wanted)) - have), 1)
+            still_missing.append({**entry, "need": more, "on_list": listed})
+        else:
+            on_list.append({"ingredient": name, "on_list": listed})
+
     return Outcome(
         {
-            "missing": missing,
+            "missing": still_missing,
+            "on_list": on_list,
             "uncertain": uncertain,
             "covered": covered,
             "note": "Quantities are in each Ingredient's own unit (g, ml or count). "
+            "'missing' already takes off the Kitchen and the Shopping List: add exactly "
+            "those amounts, they're extra on top of the list. Leave out 'on_list' items. "
             "Ask the Member about 'uncertain' items rather than assuming.",
         }
     )

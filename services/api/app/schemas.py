@@ -380,6 +380,9 @@ class DraftAdditionOut(BaseModel):
     quantity: float | None
     unit: str | None
     ingredient_id: str | None
+    # On a Proposal: how much of it is already on the Shopping List ("200 g"), since an
+    # addition is the extra on top (ADR 0016). None when it isn't there.
+    on_list: str | None = None
 
 
 class DraftOut(BaseModel):
@@ -405,6 +408,8 @@ class ProposalOutcomeOut(BaseModel):
     saved_meals: int
     added_items: int
     skipped: list[str]  # each one says what and why, e.g. "Rice is already on the list"
+    # Additions already on the list, raised by the extra (ADR 0016): "rice: 500 g → 800 g".
+    topped_up: list[str] = []
     # What the Member left ticked. None on outcomes saved before this was recorded.
     kept_meals: list[str] | None = None
     kept_additions: list[int] | None = None

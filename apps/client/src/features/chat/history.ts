@@ -36,6 +36,7 @@ export function statusLine(p: { status: Status; outcome?: Outcome | null }): str
       const parts = [
         o.saved_meals > 0 ? `${plural(o.saved_meals, 'meal', 'meals')} saved` : null,
         o.added_items > 0 ? `${plural(o.added_items, 'item', 'items')} added` : null,
+        o.topped_up?.length ? `${o.topped_up.length} topped up` : null,
       ].filter(Boolean);
       return parts.length ? `Approved · ${parts.join(', ')}` : 'Approved';
     }

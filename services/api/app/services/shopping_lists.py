@@ -11,6 +11,7 @@ Every change follows the same three steps, all inside the caller's transaction:
 """
 
 import uuid
+from collections.abc import Iterable
 from dataclasses import dataclass
 from decimal import Decimal
 from enum import Enum
@@ -322,3 +323,31 @@ async def _ingredient(
     if ingredient is None:
         raise NotFound("No such Ingredient")
     return ingredient
+
+
+# --- matching proposed additions to the list (slice 6d, ADR 0016) ----------------------
+
+
+def unticked_match(
+    items: Iterable[ShoppingListItem], ingredient_id: uuid.UUID | None, name: str
+) -> ShoppingListItem | None:
+    """The unticked item an addition would duplicate: same Ingredient, else same name.
+    Ticked items don't count: ticked means bought, so more needs a new line."""
+    key = ingredients.normalise(name)
+    unticked = [i for i in items if i.checked_at is None]
+    if ingredient_id is not None:
+        for item in unticked:
+            if item.ingredient_id == ingredient_id:
+                return item
+    for item in unticked:
+        if ingredients.normalise(item.text) == key:
+            return item
+    return None
+
+
+def amount_text(quantity: Decimal | None, unit: str | None) -> str:
+    """ "200 g", "1.5 kg", "4" (a count), or "some (no amount)"."""
+    if quantity is None:
+        return "some (no amount)"
+    number = f"{quantity.normalize():f}"
+    return f"{number} {unit}" if unit and unit != "count" else number

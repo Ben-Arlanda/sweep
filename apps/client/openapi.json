@@ -2663,6 +2663,17 @@
               }
             ],
             "title": "Ingredient Id"
+          },
+          "on_list": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "On List"
           }
         },
         "type": "object",
@@ -3628,6 +3639,14 @@
             },
             "type": "array",
             "title": "Skipped"
+          },
+          "topped_up": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Topped Up",
+            "default": []
           },
           "kept_meals": {
             "anyOf": [

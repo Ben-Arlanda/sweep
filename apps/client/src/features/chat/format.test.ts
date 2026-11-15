@@ -1,4 +1,4 @@
-import { formatAddition, formatDay } from './format';
+import { additionLine, formatAddition, formatDay } from './format';
 
 describe('formatDay', () => {
   it('reads an ISO date as a local day, not UTC midnight', () => {
@@ -19,5 +19,22 @@ describe('formatAddition', () => {
     [{ name: 'garlic', quantity: null, unit: null }, 'garlic'],
   ])('%j → %s', (item, expected) => {
     expect(formatAddition(item)).toBe(expected);
+  });
+});
+
+describe('additionLine', () => {
+  it('says how much is already on the list, since the addition is the extra', () => {
+    expect(additionLine({ name: 'sausages', quantity: 4, unit: 'count', on_list: '4' })).toBe(
+      '4 more sausages (4 on the list)',
+    );
+    expect(additionLine({ name: 'rice', quantity: 300, unit: 'g', on_list: '500 g' })).toBe(
+      '300 g more rice (500 g on the list)',
+    );
+  });
+
+  it('is just the addition when nothing is on the list', () => {
+    expect(additionLine({ name: 'eggs', quantity: 6, unit: 'count', on_list: null })).toBe(
+      '6 eggs',
+    );
   });
 });

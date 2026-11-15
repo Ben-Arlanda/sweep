@@ -746,6 +746,8 @@ export interface components {
             unit: string | null;
             /** Ingredient Id */
             ingredient_id: string | null;
+            /** On List */
+            on_list?: string | null;
         };
         /** DraftEvent */
         DraftEvent: {
@@ -1113,6 +1115,11 @@ export interface components {
             added_items: number;
             /** Skipped */
             skipped: string[];
+            /**
+             * Topped Up
+             * @default []
+             */
+            topped_up: string[];
             /** Kept Meals */
             kept_meals?: string[] | null;
             /** Kept Additions */

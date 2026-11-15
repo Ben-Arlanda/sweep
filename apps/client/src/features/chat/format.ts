@@ -13,17 +13,30 @@ export function formatDay(iso: string): string {
   return `${weekday} ${date.getDate()} ${month}`;
 }
 
-/** "6 eggs", "1.2 kg canned tomatoes", "1 bunch coriander", or just "garlic". */
-export function formatAddition(item: {
-  name: string;
-  quantity: number | null;
-  unit: string | null;
-}): string {
-  if (item.quantity === null) return item.name;
+type AdditionShape = { name: string; quantity: number | null; unit: string | null };
+
+/** "6", "1.2 kg", "1 bunch", or null when there's no amount. */
+function amountOf(item: AdditionShape): string | null {
+  if (item.quantity === null) return null;
   const unit = item.unit ?? 'count';
-  const amount =
-    unit === 'g' || unit === 'ml' || unit === 'count'
-      ? formatAmount(String(item.quantity), unit) // g → kg, ml → L, count → just the number
-      : `${item.quantity} ${unit}`;
-  return `${amount} ${item.name}`;
+  return unit === 'g' || unit === 'ml' || unit === 'count'
+    ? formatAmount(String(item.quantity), unit) // g → kg, ml → L, count → just the number
+    : `${item.quantity} ${unit}`;
+}
+
+/** "6 eggs", "1.2 kg canned tomatoes", "1 bunch coriander", or just "garlic". */
+export function formatAddition(item: AdditionShape): string {
+  const amount = amountOf(item);
+  return amount ? `${amount} ${item.name}` : item.name;
+}
+
+/**
+ * A Proposal's list addition. It's the extra on top of what's already on the list (ADR
+ * 0016), so when some is there it says "4 more sausages (4 on the list)".
+ */
+export function additionLine(item: AdditionShape & { on_list?: string | null }): string {
+  if (!item.on_list) return formatAddition(item);
+  const amount = amountOf(item);
+  const what = amount ? `${amount} more ${item.name}` : item.name;
+  return `${what} (${item.on_list} on the list)`;
 }
