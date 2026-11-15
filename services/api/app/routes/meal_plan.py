@@ -22,7 +22,14 @@ router = APIRouter(tags=["meal-plan"])
 WEEK = timedelta(days=6)  # start plus six more days
 
 
-def meal_out(meal: PlannedMeal) -> PlannedMealOut:
+async def meals_out(
+    session: SessionDep, ctx: MemberDep, meals: list[PlannedMeal]
+) -> list[PlannedMealOut]:
+    uses = await meal_plan.kitchen_uses(session, ctx, meals)
+    return [_meal_out(m, uses[m.id]) for m in meals]
+
+
+def _meal_out(meal: PlannedMeal, kitchen_uses: list[str]) -> PlannedMealOut:
     return PlannedMealOut(
         id=meal.id,
         date=meal.date,
@@ -31,6 +38,7 @@ def meal_out(meal: PlannedMeal) -> PlannedMealOut:
         servings=meal.servings,
         cooked_at=meal.cooked_at,
         cooked_by=meal.cooked_by,
+        kitchen_uses=kitchen_uses,
     )
 
 
@@ -46,7 +54,7 @@ async def get_week(ctx: MemberDep, session: SessionDep, start: date | None = Non
         end=first + WEEK,
         today=today,
         version=household.meal_plan_version,
-        meals=[meal_out(m) for m in meals],
+        meals=await meals_out(session, ctx, meals),
     )
 
 
@@ -73,7 +81,8 @@ async def mark_cooked(
     key: IdempotencyKeyHeader,
 ) -> Response:
     async def work() -> PlannedMealOut:
-        return meal_out(await meal_plan.mark_cooked(session, ctx, meal_id))
+        [out] = await meals_out(session, ctx, [await meal_plan.mark_cooked(session, ctx, meal_id)])
+        return out
 
     return await idempotent(request, session, ctx, key, work)
 
@@ -87,6 +96,7 @@ async def undo_cooked(
     key: IdempotencyKeyHeader,
 ) -> Response:
     async def work() -> PlannedMealOut:
-        return meal_out(await meal_plan.undo_cooked(session, ctx, meal_id))
+        [out] = await meals_out(session, ctx, [await meal_plan.undo_cooked(session, ctx, meal_id)])
+        return out
 
     return await idempotent(request, session, ctx, key, work)

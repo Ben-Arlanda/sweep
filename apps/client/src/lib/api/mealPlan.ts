@@ -18,8 +18,9 @@ export const mealPlanKeys = {
   week: (start: string | null) => ['meal-plan', start ?? 'today'] as const,
 };
 
-export function useMealPlan(start: string | null) {
+export function useMealPlan(start: string | null, enabled = true) {
   return useQuery({
+    enabled,
     queryKey: mealPlanKeys.week(start),
     queryFn: async () =>
       unwrap(await api.GET('/meal-plan', { params: { query: start ? { start } : {} } })),

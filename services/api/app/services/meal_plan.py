@@ -11,9 +11,9 @@ from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import errors
-from app.models import Household, PlannedMeal, utcnow
+from app.models import Household, Ingredient, PlannedMeal, utcnow
 from app.realtime import notify_change
-from app.services import audit, kitchen
+from app.services import audit, kitchen, kitchen_match
 from app.services.households import MemberContext
 
 ENTITY = "meal_plan"
@@ -40,6 +40,34 @@ async def between(
     if for_update:
         query = query.with_for_update(of=PlannedMeal)
     return list((await session.execute(query)).scalars())
+
+
+async def kitchen_uses(
+    session: AsyncSession, ctx: MemberContext, meals: list[PlannedMeal]
+) -> dict[uuid.UUID, list[str]]:
+    """What each meal uses from the Kitchen, by meal id (Home's "uses your …", 6c).
+
+    Not cooked yet: worked out from the Kitchen now (`kitchen_match.uses`). Cooked:
+    what Mark as Cooked actually took out. The Kitchen has changed by then (a used-up
+    item is gone), so working it out again would leave things out."""
+    out: dict[uuid.UUID, list[str]] = {}
+    planned = [m for m in meals if m.cooked_at is None]
+    if planned:
+        snap = await kitchen_match.snapshot(session, ctx)
+        for meal in planned:
+            out[meal.id] = kitchen_match.uses(kitchen_match.lines_of(meal.recipe), snap)
+    cooked = [m for m in meals if m.cooked_at is not None]
+    ids = {uuid.UUID(c["ingredient_id"]) for m in cooked for c in m.cooked_deductions or []}
+    names: dict[uuid.UUID, str] = {}
+    if ids:
+        found = await session.execute(
+            select(Ingredient.id, Ingredient.name).where(Ingredient.id.in_(ids))
+        )
+        names = {i: name for i, name in found}
+    for meal in cooked:
+        taken = (uuid.UUID(c["ingredient_id"]) for c in meal.cooked_deductions or [])
+        out[meal.id] = [names[i] for i in taken if i in names]
+    return out
 
 
 async def bump(session: AsyncSession, household_id: uuid.UUID) -> None:

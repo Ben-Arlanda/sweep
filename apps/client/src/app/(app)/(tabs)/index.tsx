@@ -1,15 +1,16 @@
 import { Loading, Screen } from '@/components/ui';
-import { HomeHero, HouseholdView } from '@/features/household/HouseholdView';
+import { TodayBelow } from '@/features/home/TodayBelow';
+import { TodayHero } from '@/features/home/TodayHero';
 import { useMe } from '@/lib/api/households';
 
-/** Home: the Household hero, then the board of tiles (lists, Kitchen, Recipes). */
+/** Home "Today" (slice 6c): tonight's dinner or the question, then the week and the list. */
 export default function HomeScreen() {
   const me = useMe();
   // The (app) layout only shows the tabs once you're in a Household, so data is there.
   if (!me.data) return <Loading />;
   return (
-    <Screen hero={<HomeHero me={me.data} />}>
-      <HouseholdView />
+    <Screen hero={<TodayHero me={me.data} />}>
+      <TodayBelow />
     </Screen>
   );
 }
