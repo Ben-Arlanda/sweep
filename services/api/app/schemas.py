@@ -93,6 +93,7 @@ class IngredientOut(BaseModel):
     name: str
     category: str
     default_unit: str
+    is_household_ingredient: bool  # created by this Household (ADR 0012), not a starter
 
 
 class ShopIn(BaseModel):

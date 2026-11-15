@@ -155,16 +155,7 @@ async def test_common_names_link_to_the_right_ingredient(
     assert item["ingredient"]["name"] == ingredient
 
 
-async def test_things_that_are_not_ingredients_stay_unlinked(
-    client: httpx.AsyncClient, fake_issuer: FakeIssuer
-) -> None:
-    await create_household(client, fake_issuer, "alice")
-
-    item = await add(client, fake_issuer, "alice", "Birthday candles")
-    await tick(client, fake_issuer, "alice", item)
-
-    assert item["ingredient"] is None
-    assert (await kitchen(client, fake_issuer, "alice"))["tracked"] == []
+# Things Sweep doesn't know become Household Ingredients: test_household_ingredients.py
 
 
 async def test_a_member_can_fix_or_remove_the_link(

@@ -5,20 +5,22 @@ Ingredients, never another Household's. Every query here takes the caller's Hous
 and applies `visible_to`; code elsewhere that reads `ingredients` must do the same.
 
 Matching is deliberately strict: exact name, then alias, then simple plural/singular
-forms. No fuzzy matching. A wrong link would quietly put the wrong thing in the Kitchen;
-no link just means the item doesn't reach the Kitchen, which the app shows. Smarter
-matching (embeddings, an LLM fallback) belongs to slice 4's normalisation, with evals.
+forms. No fuzzy matching. A wrong match would quietly put the wrong thing in the
+Kitchen; an unknown name instead becomes a Household Ingredient, and the Member fixes a
+near-miss ("chocolate" should be dark chocolate) with a link.
 """
 
 import re
 import uuid
 
 from sqlalchemy import ColumnElement, or_, select
+from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models import Ingredient, IngredientAlias
+from app.models import HouseholdIngredientLink, Ingredient, IngredientAlias
 
 SEARCH_LIMIT = 20
+NAME_MAX = 80  # ingredients.name is VARCHAR(80)
 
 # The shared starter set. Names are unique per owner, so a lookup by name must say whose.
 STARTERS: ColumnElement[bool] = Ingredient.household_id.is_(None)
@@ -50,26 +52,91 @@ def _variants(name: str) -> list[str]:
     return [" ".join([*words[:-1], form]) for form in forms]
 
 
-async def match(session: AsyncSession, household_id: uuid.UUID, text: str) -> Ingredient | None:
+async def resolve(
+    session: AsyncSession, household_id: uuid.UUID, text: str, *, create: bool
+) -> Ingredient | None:
+    """The one matcher (ADR 0012), used by the list, the Kitchen, the agent and recipe lines.
+
+    Lookup order, each step trying the name and its simple plural/singular forms:
+      1. this Household's links ("chocolate" → dark chocolate): the Member said so
+      2. starter names and aliases
+      3. this Household's own Ingredients
+      4. with `create`, a new Household Ingredient, so nothing a Member types is refused
+
+    Callers acting on a Member's words pass create=True. The agent passes False: a model's
+    guess must never add Ingredients.
+    """
     name = normalise(text)
     if not name:
         return None
-    for candidate in _variants(name):
+    variants = _variants(name)
+    linked = (
+        await session.execute(
+            select(Ingredient)
+            .join(HouseholdIngredientLink, HouseholdIngredientLink.ingredient_id == Ingredient.id)
+            .where(
+                HouseholdIngredientLink.household_id == household_id,
+                HouseholdIngredientLink.name.in_(variants),
+                visible_to(household_id),  # a link can only point at what we may see
+            )
+            .order_by((HouseholdIngredientLink.name == name).desc())  # exact spelling first
+            .limit(1)
+        )
+    ).scalar_one_or_none()
+    if linked is not None:
+        return linked
+    for owner in (STARTERS, Ingredient.household_id == household_id):
+        found = await _by_name(session, owner, variants)
+        if found is not None:
+            return found
+    if not create or len(name) > NAME_MAX:
+        return None  # 80+ characters is a note, not a thing; it stays unlinked
+    return await _create(session, household_id, name)
+
+
+async def _by_name(
+    session: AsyncSession, owner: ColumnElement[bool], variants: list[str]
+) -> Ingredient | None:
+    """Try each form in order ("tomatoes" before "tomatoe"), names and aliases alike."""
+    for candidate in variants:
         found = (
             await session.execute(
                 select(Ingredient)
                 .outerjoin(IngredientAlias, IngredientAlias.ingredient_id == Ingredient.id)
-                .where(
-                    or_(Ingredient.name == candidate, IngredientAlias.alias == candidate),
-                    visible_to(household_id),
-                )
-                .order_by(Ingredient.household_id.nulls_first())  # starters win
+                .where(or_(Ingredient.name == candidate, IngredientAlias.alias == candidate), owner)
                 .limit(1)
             )
         ).scalar_one_or_none()
         if found is not None:
             return found
     return None
+
+
+async def _create(session: AsyncSession, household_id: uuid.UUID, name: str) -> Ingredient:
+    """A Household Ingredient: category "other" (so the Cupboard), counted, no density.
+
+    ON CONFLICT DO NOTHING, then read: two Members adding "kale" at the same moment both
+    end up with the same row instead of one of them getting an error.
+    """
+    await session.execute(
+        insert(Ingredient)
+        .values(
+            id=uuid.uuid4(),
+            household_id=household_id,
+            name=name,
+            category="other",
+            default_unit="count",
+            is_default_staple=False,
+        )
+        .on_conflict_do_nothing(constraint="uq_ingredients_household_id_name")
+    )
+    return (
+        await session.execute(
+            select(Ingredient).where(
+                Ingredient.household_id == household_id, Ingredient.name == name
+            )
+        )
+    ).scalar_one()
 
 
 async def search(session: AsyncSession, household_id: uuid.UUID, query: str) -> list[Ingredient]:

@@ -253,6 +253,10 @@ class Ingredient(Base):
     grams_per_ml: Mapped[Decimal | None] = mapped_column(Numeric(6, 3))
     is_default_staple: Mapped[bool] = mapped_column(Boolean, default=False)
 
+    @property
+    def is_household_ingredient(self) -> bool:
+        return self.household_id is not None
+
 
 class IngredientAlias(Base):
     """Another name for an Ingredient: "all-purpose flour" → plain flour. Stored normalised."""

@@ -162,7 +162,7 @@ async def add_item(
     ingredient = (
         await _ingredient(session, ctx, ingredient_id)
         if ingredient_id is not None
-        else await ingredients.match(session, ctx.household.id, text)
+        else await ingredients.resolve(session, ctx.household.id, text, create=True)
     )
 
     item = ShoppingListItem(
