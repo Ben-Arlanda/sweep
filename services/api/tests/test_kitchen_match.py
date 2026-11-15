@@ -108,3 +108,13 @@ def test_fewest_things_to_buy_ranks_first_then_unsure_then_what_it_uses() -> Non
     )
 
     assert ordered == ["uses three", "uses one", "maybe basil", "needs lemon"]
+
+
+def test_kitchen_first_beats_kitchen_blind_on_the_real_recipes() -> None:
+    """The eval (evals/kitchen_first.py) as a guard: on every sample Kitchen, planning
+    from the Kitchen needs fewer things bought than picking at random."""
+    from app.data.recipes import load_seed_recipes
+    from evals.kitchen_first import KITCHENS, evaluate
+
+    for result in evaluate(KITCHENS, load_seed_recipes()):
+        assert result.first.to_buy_per_meal < result.blind.to_buy_per_meal / 2, result.kitchen
