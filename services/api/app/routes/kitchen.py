@@ -14,6 +14,7 @@ from app.idempotency import IdempotencyKeyHeader
 from app.models import HouseholdStaple, KitchenItem, utcnow
 from app.routes.common import idempotent
 from app.schemas import (
+    IngredientIn,
     IngredientOut,
     KitchenItemOut,
     KitchenOut,
@@ -142,3 +143,23 @@ async def search_ingredients(
     """Starter Ingredients plus the caller's own Household Ingredients (ADR 0012)."""
     found = await ingredients.search(session, ctx.household.id, q)
     return [IngredientOut.model_validate(i) for i in found]
+
+
+@router.post("/ingredients", response_model=IngredientOut)
+async def add_ingredient(
+    body: IngredientIn,
+    request: Request,
+    ctx: MemberDep,
+    session: SessionDep,
+    key: IdempotencyKeyHeader,
+) -> Response:
+    """The Kitchen's "Add 'kale'": the Ingredient this name means for the Household, made
+    as a Household Ingredient if nothing matches (ADR 0012). 200 either way: asking twice
+    returns the same Ingredient."""
+
+    async def work() -> IngredientOut:
+        found = await ingredients.resolve(session, ctx.household.id, body.name, create=True)
+        assert found is not None  # IngredientIn guarantees a usable name
+        return IngredientOut.model_validate(found)
+
+    return await idempotent(request, session, ctx, key, work)

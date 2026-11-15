@@ -13,7 +13,7 @@ near-miss ("chocolate" should be dark chocolate) with a link.
 import re
 import uuid
 
-from sqlalchemy import ColumnElement, or_, select
+from sqlalchemy import ColumnElement, delete, or_, select
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -137,6 +137,35 @@ async def _create(session: AsyncSession, household_id: uuid.UUID, name: str) -> 
             )
         )
     ).scalar_one()
+
+
+async def set_link(
+    session: AsyncSession, household_id: uuid.UUID, text: str, ingredient: Ingredient | None
+) -> None:
+    """Remember what this Household means by `text` (None forgets it). Called when a Member
+    relinks a list item; the matcher then sends future items with that name the same way.
+
+    The caller has already checked the Ingredient is visible to this Household.
+    """
+    name = normalise(text)
+    if not name or len(name) > NAME_MAX:
+        return
+    if ingredient is None or ingredient.name == name:
+        # Unlinked, or linked to what the name already means: no link needed.
+        await session.execute(
+            delete(HouseholdIngredientLink).where(
+                HouseholdIngredientLink.household_id == household_id,
+                HouseholdIngredientLink.name == name,
+            )
+        )
+        return
+    await session.execute(
+        insert(HouseholdIngredientLink)
+        .values(household_id=household_id, name=name, ingredient_id=ingredient.id)
+        .on_conflict_do_update(
+            index_elements=["household_id", "name"], set_={"ingredient_id": ingredient.id}
+        )
+    )
 
 
 async def search(session: AsyncSession, household_id: uuid.UUID, query: str) -> list[Ingredient]:

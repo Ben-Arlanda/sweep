@@ -326,3 +326,132 @@ async def test_without_create_unknown_names_resolve_to_nothing(
     with db.begin() as conn:
         made = conn.execute(text("SELECT count(*) FROM ingredients WHERE name = 'dragonfruit'"))
         assert made.scalar_one() == 0
+
+
+# --- Links and adding (step 3) -------------------------------------------------------
+
+
+async def relink(
+    client: httpx.AsyncClient,
+    issuer: FakeIssuer,
+    subject: str,
+    item: dict[str, Any],
+    ingredient_id: str | None,
+) -> dict[str, Any]:
+    list_id = await list_id_of(client, issuer, subject)
+    response = await client.patch(
+        f"/lists/{list_id}/items/{item['id']}",
+        json={"ingredient_id": ingredient_id},
+        headers=issuer.headers(subject) | idem(),
+    )
+    assert response.status_code == 200, response.text
+    body: dict[str, Any] = response.json()
+    return body
+
+
+async def create(
+    client: httpx.AsyncClient, issuer: FakeIssuer, subject: str, name: str
+) -> httpx.Response:
+    return await client.post(
+        "/ingredients", json={"name": name}, headers=issuer.headers(subject) | idem()
+    )
+
+
+async def starter_id(client: httpx.AsyncClient, issuer: FakeIssuer, subject: str, name: str) -> str:
+    response = await client.get("/ingredients", params={"q": name}, headers=issuer.headers(subject))
+    found: str = next(i["id"] for i in response.json() if i["name"] == name)
+    return found
+
+
+async def test_relinking_an_item_saves_a_link_for_its_name(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer
+) -> None:
+    await create_household(client, fake_issuer, "alice")
+    dark = await starter_id(client, fake_issuer, "alice", "dark chocolate")
+
+    await relink(
+        client, fake_issuer, "alice", await add(client, fake_issuer, "alice", "Chocolate"), dark
+    )
+    later = await add(client, fake_issuer, "alice", "chocolate")
+
+    assert later["ingredient"]["name"] == "dark chocolate"
+
+
+async def test_links_belong_to_one_household(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer
+) -> None:
+    await create_household(client, fake_issuer, "alice")
+    await create_household(client, fake_issuer, "mallory")
+    dark = await starter_id(client, fake_issuer, "alice", "dark chocolate")
+    await relink(
+        client, fake_issuer, "alice", await add(client, fake_issuer, "alice", "Chocolate"), dark
+    )
+
+    mallorys = await add(client, fake_issuer, "mallory", "Chocolate")
+
+    assert mallorys["ingredient"]["name"] == "chocolate"
+
+
+async def test_unlinking_an_item_forgets_the_link(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer
+) -> None:
+    await create_household(client, fake_issuer, "alice")
+    dark = await starter_id(client, fake_issuer, "alice", "dark chocolate")
+    item = await add(client, fake_issuer, "alice", "Chocolate")
+    await relink(client, fake_issuer, "alice", item, dark)
+
+    unlinked = await relink(client, fake_issuer, "alice", item, None)
+    later = await add(client, fake_issuer, "alice", "Chocolate")
+
+    assert unlinked["ingredient"] is None
+    assert later["ingredient"]["name"] == "chocolate"
+
+
+async def test_linking_a_ticked_item_moves_its_kitchen_stock(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer
+) -> None:
+    await create_household(client, fake_issuer, "alice")
+    dark = await starter_id(client, fake_issuer, "alice", "dark chocolate")
+    item = await add(client, fake_issuer, "alice", "Chocolate")
+    await tick(client, fake_issuer, "alice", item)
+
+    await relink(client, fake_issuer, "alice", item, dark)
+
+    assert await kitchen_places(client, fake_issuer, "alice") == {"dark chocolate": "cupboard"}
+
+
+async def test_adding_to_the_kitchen_creates_a_household_ingredient_once(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer
+) -> None:
+    await create_household(client, fake_issuer, "alice")
+
+    first = await create(client, fake_issuer, "alice", "Kale")
+    again = await create(client, fake_issuer, "alice", "kale")
+
+    assert first.status_code == 200, first.text
+    assert first.json()["name"] == "kale"
+    assert first.json()["is_household_ingredient"] is True
+    assert again.json()["id"] == first.json()["id"]
+    assert "kale" in await search(client, fake_issuer, "alice", "kale")
+
+
+async def test_adding_a_known_name_returns_the_starter(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer
+) -> None:
+    await create_household(client, fake_issuer, "alice")
+
+    response = await create(client, fake_issuer, "alice", "Cilantro")
+
+    assert response.json()["name"] == "coriander"
+    assert response.json()["is_household_ingredient"] is False
+
+
+@pytest.mark.parametrize("name", ["", "   ", "!!!", "x" * 81])
+async def test_adding_needs_a_usable_name(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, name: str
+) -> None:
+    await create_household(client, fake_issuer, "alice")
+
+    response = await create(client, fake_issuer, "alice", name)
+
+    assert response.status_code == 422

@@ -201,6 +201,9 @@ class ShoppingListItem(Base):
     # What ticking this item added to the Kitchen, so un-ticking can take it back out.
     kitchen_applied: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false")
     kitchen_added_quantity: Mapped[Decimal | None] = mapped_column(Numeric(12, 3))
+    # When ticking created the Kitchen row (its last_confirmed_at); NULL if the row was
+    # already there. Lets unticking remove an unmeasured "some" that only this tick added.
+    kitchen_created_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
 
 class IdempotencyKey(Base):
