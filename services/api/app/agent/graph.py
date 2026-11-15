@@ -38,7 +38,7 @@ from app.agent import prompt, tools
 from app.agent.state import AgentState, Draft, empty_draft
 from app.agent.tools import AgentContext, Call, ToolError
 from app.agent.validate import build_proposal, validate_draft
-from app.models import AgentUsage, ProposalStatus
+from app.models import AgentUsage, Conversation, ProposalStatus
 from app.services import diet, meal_plan, proposals, recipes
 
 MAX_TOOL_CALLS = 15  # per turn: the agent should be done well before this
@@ -252,7 +252,8 @@ async def validate(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
         ids = [m["recipe_id"] for m in draft["meals"].values()]
         found = await recipes.get_many(session, ctx.household_id, ids)
         rules = await diet.get_rules(session, ctx.household_id)
-    problems = validate_draft(draft, found, rules, ctx.today)
+        conversation = await session.get_one(Conversation, ctx.conversation_id)
+    problems = validate_draft(draft, found, rules, ctx.today, conversation.plan_days)
     replans = state.get("replan_count", 0)
     results = list(state.get("pending_results", []))
     update: dict[str, Any] = {"pending_proposal": None, "pending_results": []}

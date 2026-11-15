@@ -8,10 +8,15 @@ from datetime import timedelta
 
 import httpx
 import pytest
+from sqlalchemy import Engine
 
-from app.agent.prompt import today_in_sydney
-from tests.conftest import FakeIssuer
+from app.agent.prompt import SYSTEM, today_in_sydney
+from tests.conftest import ClientFor, FakeIssuer, Loader
+from tests.fake_model import ScriptedModel, tool
+from tests.fake_model import text as say_text
 from tests.helpers import create_household, idem
+from tests.test_agent import of, rid_in_db, say
+from tests.test_recipes import CURRY, PASTA
 
 pytestmark = pytest.mark.anyio
 
@@ -128,3 +133,118 @@ async def test_the_meal_plan_starts_on_this_weeks_monday_and_says_what_today_is(
     assert body["start"] == monday.isoformat()
     assert body["end"] == (monday + timedelta(days=6)).isoformat()
     assert body["today"] == TODAY.isoformat()
+
+
+# --- step 2: the agent sees the mode and days; validate holds it to the days ---------
+
+
+async def started(
+    client: httpx.AsyncClient, issuer: FakeIssuer, body: dict[str, object] | None
+) -> str:
+    response = await start(client, issuer, body)
+    assert response.status_code == 201, response.text
+    cid: str = response.json()["id"]
+    return cid
+
+
+def context_of(model: ScriptedModel, call: int = 0) -> str:
+    text_block: str = model.calls[call][-1]["content"][0]["text"]
+    return text_block
+
+
+@pytest.mark.parametrize(
+    ("mode", "expected"),
+    [("kitchen", "Plan mode: cook from my Kitchen"), ("new", "Plan mode: new recipes to shop for")],
+)
+async def test_every_turn_says_the_mode_and_the_days(
+    client_for: ClientFor, fake_issuer: FakeIssuer, mode: str, expected: str
+) -> None:
+    model = ScriptedModel([[say_text("Sure.")], [say_text("Sure.")]])
+    async with client_for(model) as client:
+        await create_household(client, fake_issuer, "ana")
+        cid = await started(client, fake_issuer, {"mode": mode, "days": [day(2), day(1)]})
+        await say(client, fake_issuer, cid, "plan it")
+        await say(client, fake_issuer, cid, "make them quick")  # not just the first turn
+
+    for call in (0, 1):
+        context = context_of(model, call)
+        assert expected in context
+        # With the weekday, so the model doesn't have to work it out.
+        named = ", ".join(f"{TODAY + timedelta(days=n):%a} {day(n)}" for n in (1, 2))
+        assert f"Plan these days only (one dinner each): {named}" in context
+
+
+async def test_a_free_chat_has_no_mode_or_days_in_its_context(
+    client_for: ClientFor, fake_issuer: FakeIssuer
+) -> None:
+    model = ScriptedModel([[say_text("Sure.")]])
+    async with client_for(model) as client:
+        await create_household(client, fake_issuer, "ana")
+        cid = await started(client, fake_issuer, None)
+        await say(client, fake_issuer, cid, "hi")
+    assert "Plan mode" not in context_of(model)
+    assert "Plan these days" not in context_of(model)
+
+
+def test_the_fixed_prompt_explains_both_modes_and_the_days() -> None:
+    assert "Plan mode: new recipes" in SYSTEM
+    assert "search_recipes" in SYSTEM
+    assert "Plan these days only" in SYSTEM
+
+
+async def test_validate_sends_back_a_meal_on_a_day_that_was_not_picked(
+    client_for: ClientFor, fake_issuer: FakeIssuer, load: Loader, db: Engine
+) -> None:
+    await load([CURRY, PASTA])
+    curry, pasta = await rid_in_db(db, "chicken-curry"), await rid_in_db(db, "tomato-pasta")
+    model = ScriptedModel(
+        [
+            [
+                tool("set_planned_meal", date=day(1), recipe_id=curry, servings=4),
+                tool("set_planned_meal", date=day(2), recipe_id=pasta, servings=4),
+            ],
+            [tool("propose_plan", summary="Two dinners.")],
+            # Sent back: day(2) wasn't picked. The agent takes it off and proposes again.
+            [tool("remove_planned_meal", date=day(2))],
+            [tool("propose_plan", summary="One dinner.")],
+        ]
+    )
+    async with client_for(model) as client:
+        await create_household(client, fake_issuer, "ana")
+        cid = await started(client, fake_issuer, {"mode": "kitchen", "days": [day(1)]})
+        events = await say(client, fake_issuer, cid, "plan it")
+
+    [replan] = of(events, "replan")
+    assert replan["problems"] == [f"{day(2)}: not one of the days picked for this plan ({day(1)})"]
+    [proposal] = of(events, "proposal")
+    assert [m["date"] for m in proposal["proposal"]["meals"]] == [day(1)]
+
+
+async def test_a_plan_that_keeps_using_other_days_shows_them_as_left_out(
+    client_for: ClientFor, fake_issuer: FakeIssuer, load: Loader, db: Engine
+) -> None:
+    """The model can't get round it: after the replans run out, the meal is dropped."""
+    await load([CURRY, PASTA])
+    curry, pasta = await rid_in_db(db, "chicken-curry"), await rid_in_db(db, "tomato-pasta")
+    stubborn = [tool("propose_plan", summary="Two dinners.")]
+    model = ScriptedModel(
+        [
+            [
+                tool("set_planned_meal", date=day(1), recipe_id=curry, servings=4),
+                tool("set_planned_meal", date=day(2), recipe_id=pasta, servings=4),
+            ],
+            stubborn,
+            stubborn,
+            stubborn,
+        ]
+    )
+    async with client_for(model) as client:
+        await create_household(client, fake_issuer, "ana")
+        cid = await started(client, fake_issuer, {"mode": "kitchen", "days": [day(1)]})
+        events = await say(client, fake_issuer, cid, "plan it")
+
+    [proposal] = of(events, "proposal")
+    assert [m["date"] for m in proposal["proposal"]["meals"]] == [day(1)]
+    assert proposal["proposal"]["dropped"] == [
+        f"{day(2)}: not one of the days picked for this plan ({day(1)})"
+    ]

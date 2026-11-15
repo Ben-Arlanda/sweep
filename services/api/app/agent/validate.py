@@ -6,7 +6,7 @@ the Member sees the best attempt, with any meal that still has a problem taken o
 listed, so a Proposal never contains a recipe that breaks a Dietary Rule.
 """
 
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from datetime import date, timedelta
 from typing import Any, Literal
@@ -29,9 +29,15 @@ class Problem:
 
 
 def validate_draft(
-    draft: Draft, recipes: Mapping[str, Recipe], rules: DietaryRules, today: date
+    draft: Draft,
+    recipes: Mapping[str, Recipe],
+    rules: DietaryRules,
+    today: date,
+    plan_days: Sequence[date] | None = None,
 ) -> list[Problem]:
-    """Everything wrong with the draft. `recipes`: the ones this Household can see."""
+    """Everything wrong with the draft. `recipes`: the ones this Household can see.
+    `plan_days`: the days picked in the "Plan my week" sheet, if any (ADR 0015)."""
+    picked = {d.isoformat() for d in plan_days} if plan_days is not None else None
     if not draft["meals"] and not draft["list_additions"]:
         return [Problem("empty", "The plan is empty: add meals or list items first.")]
 
@@ -47,6 +53,11 @@ def validate_draft(
             continue
         if not today <= date.fromisoformat(day) <= last_day:
             problems.append(Problem("date", f"{day}: dates must be {today} to {last_day}", day))
+        elif picked is not None and day not in picked:
+            listed = ", ".join(sorted(picked))
+            problems.append(
+                Problem("date", f"{day}: not one of the days picked for this plan ({listed})", day)
+            )
         if not 1 <= meal["servings"] <= MAX_SERVINGS:
             problems.append(
                 Problem("servings", f"{day}: servings must be 1 to {MAX_SERVINGS}", day)
