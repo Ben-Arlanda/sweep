@@ -16,7 +16,7 @@ import {
   toggleMeal,
   type Ticks,
 } from './decision';
-import { formatAddition, formatDay } from './format';
+import { additionLine, formatDay } from './format';
 import { keptOf, statusLine } from './history';
 import type { Draft, Proposal } from './turn';
 
@@ -101,9 +101,9 @@ export function ProposalCard({
               ticked={pending ? isAdditionKept(ticks, i) : null}
               disabled={!canAct}
               onToggle={() => setTicks((now) => toggleAddition(now, i))}
-              label={formatAddition(item)}
+              label={additionLine(item)}
             >
-              <Text style={{ flexShrink: 1 }}>{formatAddition(item)}</Text>
+              <Text style={{ flexShrink: 1 }}>{additionLine(item)}</Text>
             </TickRow>
           ))}
         </Section>
@@ -132,6 +132,11 @@ export function ProposalCard({
       <View accessibilityLiveRegion="polite" style={{ gap: t.space.xs }}>
         {pending ? null : <Text variant="label">{statusLine(proposal)}</Text>}
         {proposal.outcome ? <Text>{proposal.outcome.message}</Text> : null}
+        {proposal.outcome?.topped_up?.map((line) => (
+          <Text key={line} variant="caption" muted>
+            Topped up {line}
+          </Text>
+        ))}
         {/* The message says "Skipped N: see below", so each reason goes here. */}
         {proposal.outcome?.skipped.map((reason) => (
           <Text key={reason} variant="caption" muted>

@@ -41,13 +41,19 @@ describe('placeProposals', () => {
 
 describe('statusLine', () => {
   it('says what happened to an earlier plan, in plain words', () => {
-    const outcome = { message: '', saved_meals: 3, added_items: 5, skipped: [] };
+    const outcome = { message: '', saved_meals: 3, added_items: 5, skipped: [], topped_up: [] };
     expect(statusLine({ status: 'approved', outcome })).toBe(
       'Approved · 3 meals saved, 5 items added',
     );
     expect(
       statusLine({ status: 'approved', outcome: { ...outcome, saved_meals: 1, added_items: 0 } }),
     ).toBe('Approved · 1 meal saved');
+    expect(
+      statusLine({
+        status: 'approved',
+        outcome: { ...outcome, saved_meals: 1, added_items: 0, topped_up: ['rice: 1 → 2'] },
+      }),
+    ).toBe('Approved · 1 meal saved, 1 topped up');
     expect(statusLine({ status: 'rejected', outcome: null })).toBe('Rejected');
     expect(statusLine({ status: 'superseded', outcome: null })).toBe('Replaced by a newer plan');
     expect(statusLine({ status: 'expired', outcome: null })).toBe('Expired');
@@ -65,6 +71,7 @@ describe('keptOf', () => {
       saved_meals: 1,
       added_items: 1,
       skipped: [],
+      topped_up: [],
       kept_meals: ['2026-11-17'],
       kept_additions: [1],
     },

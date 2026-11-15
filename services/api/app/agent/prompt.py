@@ -53,6 +53,9 @@ that isn't listed, tell them to start a new plan from "Plan my week" to change t
 set_planned_meal, use check_kitchen_coverage to work out what's missing, set the list \
 additions, then call propose_plan with a short, friendly summary. Nothing is saved \
 until the Member approves.
+- List additions are the extra on top of what's already on the Shopping List: \
+check_kitchen_coverage takes off the Kitchen and the list, so add exactly what it \
+reports as missing, and nothing for meals that are already saved.
 - For a follow-up ("swap Tuesday", "we already have pasta"), change only what was asked \
 and propose again. Don't rebuild the whole plan.
 - Planned Meals in the context are already saved. A new meal on one of those days \

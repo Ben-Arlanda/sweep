@@ -22,6 +22,7 @@ from app.agent.validate import validate_draft
 from app.models import Actor, AddedBy, PlannedMeal, Proposal, ProposalStatus, utcnow
 from app.services import audit, diet, ingredients, kitchen, meal_plan, recipes, shopping_lists
 from app.services.households import MemberContext
+from app.units import top_up
 
 EXPIRES_AFTER = timedelta(hours=24)
 ENTITY = "proposal"
@@ -148,17 +149,32 @@ def _plural(n: int, word: str) -> str:
     return f"{n} {word}{'' if n == 1 else 's'}"
 
 
-def _message(saved: int, added: int, skipped: int) -> str:
+def _message(saved: int, added: int, topped_up: int, skipped: int) -> str:
     """The confirmation the Member sees. Written by code: no LLM call (slice 6 decision)."""
     parts = []
     if saved:
-        parts.append(f"Saved {_plural(saved, 'meal')}")
+        parts.append(f"saved {_plural(saved, 'meal')}")
     if added:
-        parts.append(("added " if parts else "Added ") + f"{_plural(added, 'item')} to the list")
-    text = (" and ".join(parts) + ".") if parts else "Nothing was saved."
+        parts.append(f"added {_plural(added, 'item')} to the list")
+    if topped_up:
+        parts.append(f"topped up {topped_up} already there")
+    if parts:
+        joined = parts[0] if len(parts) == 1 else ", ".join(parts[:-1]) + " and " + parts[-1]
+        text = joined[0].upper() + joined[1:] + "."
+    else:
+        text = "Nothing was saved."
     if skipped:
         text += f" Skipped {skipped}: see below."
     return text
+
+
+def _cant_top_up(name: str, have: Decimal | None, extra: Decimal | None, unit: str | None) -> str:
+    if extra is None:
+        return f"{name} is already on the list"
+    more = shopping_lists.amount_text(extra, unit)
+    if have is None:
+        return f"{name} is already on the list with no amount: make sure it covers {more} more"
+    return f"{name} is already on the list in a different unit: add {more} more yourself"
 
 
 async def commit(
@@ -257,42 +273,67 @@ async def commit(
 
     # List additions: onto the one list, untagged, marked as the agent's.
     view = await shopping_lists.get_household_list(session, ctx)
-    unticked = [i for i in view.items if i.checked_at is None]
-    on_list_ids = {i.ingredient_id for i in unticked if i.ingredient_id is not None}
-    on_list_names = {ingredients.normalise(i.text) for i in unticked}
+    items = list(view.items)
     added = 0
+    topped_up: list[str] = []
     for addition in additions:
         name = addition["name"]
         ingredient_id = addition.get("ingredient_id")
         if ingredient_id is None:
             match = await ingredients.resolve(session, hid, name, create=False)
             ingredient_id = str(match.id) if match else None
-        if (ingredient_id and uuid.UUID(ingredient_id) in on_list_ids) or (
-            ingredients.normalise(name) in on_list_names
-        ):
-            skipped.append(f"{name} is already on the list")
-            continue
+        iid = uuid.UUID(ingredient_id) if ingredient_id else None
         quantity = addition.get("quantity")
+        extra = Decimal(str(quantity)) if quantity is not None else None
+        unit = addition.get("unit")
+
+        # An addition is the extra to buy (ADR 0016). Already on the list, unticked: top
+        # that line up if the amounts combine honestly; otherwise skip and say what to check.
+        listed = shopping_lists.unticked_match(items, iid, name)
+        if listed is not None:
+            ingredient = listed.ingredient
+            total = (
+                top_up(
+                    listed.quantity,
+                    listed.unit,
+                    extra,
+                    unit,
+                    ingredient.default_unit,
+                    ingredient.grams_per_ml,
+                )
+                if ingredient is not None
+                else None
+            )
+            if total is None:
+                skipped.append(_cant_top_up(name, listed.quantity, extra, unit))
+                continue
+            before = shopping_lists.amount_text(listed.quantity, listed.unit)
+            await shopping_lists.edit_item(
+                session, ctx, view.shopping_list.id, listed.id, quantity=total
+            )
+            after = shopping_lists.amount_text(total, listed.unit)
+            topped_up.append(f"{name}: {before} → {after}")
+            continue
+
         item = await shopping_lists.add_item(
             session,
             ctx,
             view.shopping_list.id,
             name,
-            Decimal(str(quantity)) if quantity is not None else None,
-            addition.get("unit"),
-            ingredient_id=uuid.UUID(ingredient_id) if ingredient_id else None,
+            extra,
+            unit,
+            ingredient_id=iid,
             added_by=AddedBy.AGENT,
         )
-        if item.ingredient_id is not None:
-            on_list_ids.add(item.ingredient_id)
-        on_list_names.add(ingredients.normalise(name))
+        items.append(item)
         added += 1
 
     outcome: dict[str, Any] = {
-        "message": _message(saved, added, len(skipped)),
+        "message": _message(saved, added, len(topped_up), len(skipped)),
         "saved_meals": saved,
         "added_items": added,
         "skipped": skipped,
+        "topped_up": topped_up,
         # What the Member left ticked (before any skips), so the chat can show it later.
         "kept_meals": [m["date"] for m in meals],
         "kept_additions": kept_additions,

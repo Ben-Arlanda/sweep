@@ -39,7 +39,7 @@ from app.agent.state import AgentState, Draft, empty_draft
 from app.agent.tools import AgentContext, Call, ToolError
 from app.agent.validate import build_proposal, validate_draft
 from app.models import AgentUsage, Conversation, ProposalStatus
-from app.services import diet, meal_plan, proposals, recipes
+from app.services import diet, meal_plan, proposals, recipes, shopping_lists
 
 MAX_TOOL_CALLS = 15  # per turn: the agent should be done well before this
 MAX_REPLANS = 2  # times validate sends a plan back before showing the best attempt
@@ -293,6 +293,13 @@ async def validate(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
         )
         for meal in proposal["meals"]:
             meal["replaces"] = planned.get(meal["date"])
+        # Say on the card how much of each addition is already on the list (ADR 0016).
+        view = await shopping_lists.get_household_list(
+            session, await tools.member_context(session, ctx)
+        )
+        proposal["list_additions"] = [
+            {**a, "on_list": _on_list(view.items, a)} for a in proposal["list_additions"]
+        ]
         row = await proposals.create(
             session, ctx.conversation_id, ctx.household_id, ctx.member_id, proposal
         )
@@ -306,6 +313,12 @@ async def validate(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
         "proposal": proposal,
         "proposal_marks": [{"id": proposal["id"], "at": len(state["messages"])}],
     }
+
+
+def _on_list(items: Any, addition: dict[str, Any]) -> str | None:
+    iid = addition.get("ingredient_id")
+    found = shopping_lists.unticked_match(items, uuid.UUID(iid) if iid else None, addition["name"])
+    return shopping_lists.amount_text(found.quantity, found.unit) if found else None
 
 
 def after_validate(state: AgentState) -> str:

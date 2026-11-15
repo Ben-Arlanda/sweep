@@ -4,7 +4,7 @@ from decimal import Decimal
 
 import pytest
 
-from app.units import convert, parse_item_text
+from app.units import convert, parse_item_text, top_up
 
 D = Decimal
 
@@ -62,3 +62,49 @@ def test_reads_a_leading_amount_off_what_was_typed(
     text: str, expected: tuple[str, Decimal | None, str | None]
 ) -> None:
     assert parse_item_text(text) == expected
+
+
+# --- topping up a list item (slice 6d) -----------------------------------------------
+
+
+@pytest.mark.parametrize(
+    ("have", "have_unit", "extra", "extra_unit", "base", "density", "expected"),
+    [
+        (D("4"), None, D("4"), None, "count", None, D("8")),  # 4 sausages + 4 more
+        (D("500"), "g", D("300"), "g", "g", None, D("800")),
+        (D("1"), "kg", D("500"), "g", "g", None, D("1.5")),  # kept in the list's unit
+        (D("2"), "bunch", D("1"), "bunch", "count", None, D("3")),
+        # Agent additions and list items can carry the base unit's own name, "count".
+        (D("6"), "count", D("6"), "count", "count", None, D("12")),
+        (D("1"), "L", D("250"), "ml", "ml", None, D("1.25")),
+    ],
+)
+def test_adds_an_extra_amount_in_the_list_items_own_unit(
+    have: Decimal,
+    have_unit: str | None,
+    extra: Decimal,
+    extra_unit: str | None,
+    base: str,
+    density: Decimal | None,
+    expected: Decimal,
+) -> None:
+    assert top_up(have, have_unit, extra, extra_unit, base, density) == expected
+
+
+@pytest.mark.parametrize(
+    ("have", "have_unit", "extra", "extra_unit", "base"),
+    [
+        (None, None, D("4"), None, "count"),  # "Sausages" with no amount: how many is that?
+        (D("4"), None, None, None, "count"),  # nothing to add
+        (D("1"), "jar", D("100"), "g", "g"),  # unknown unit: refuse to guess
+        (D("1"), "bunch", D("200"), "g", "g"),
+    ],
+)
+def test_refuses_to_add_amounts_it_cant_combine_honestly(
+    have: Decimal | None,
+    have_unit: str | None,
+    extra: Decimal | None,
+    extra_unit: str | None,
+    base: str,
+) -> None:
+    assert top_up(have, have_unit, extra, extra_unit, base, None) is None

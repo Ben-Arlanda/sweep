@@ -29,6 +29,7 @@ UNITS: dict[str, tuple[BaseUnit, Decimal]] = {
     "litres": ("ml", Decimal(1000)),
     "liter": ("ml", Decimal(1000)),
     "liters": ("ml", Decimal(1000)),
+    "count": ("count", Decimal(1)),  # the base unit by name, as items and additions store it
     "each": ("count", Decimal(1)),
     "x": ("count", Decimal(1)),
     "pc": ("count", Decimal(1)),
@@ -65,6 +66,27 @@ def convert(
     if grams_per_ml is not None and {source_base, base_unit} == {"g", "ml"}:
         return amount * grams_per_ml if source_base == "ml" else amount / grams_per_ml
     return None
+
+
+def top_up(
+    have: Decimal | None,
+    have_unit: str | None,
+    extra: Decimal | None,
+    extra_unit: str | None,
+    base_unit: str,
+    grams_per_ml: Decimal | None,
+) -> Decimal | None:
+    """A list item's new amount after adding `extra`, in the item's own unit ("1 kg" +
+    500 g → 1.5, still kg), or None if the two can't be combined honestly: either amount
+    missing, or a unit that doesn't convert ("1 jar" + 100 g)."""
+    if have is None or extra is None:
+        return None
+    have_base = convert(have, have_unit, base_unit, grams_per_ml)
+    extra_base = convert(extra, extra_unit, base_unit, grams_per_ml)
+    one = convert(Decimal(1), have_unit, base_unit, grams_per_ml)  # the item's unit, in base
+    if have_base is None or extra_base is None or not one:
+        return None
+    return ((have_base + extra_base) / one).normalize()
 
 
 def parse_item_text(text: str) -> tuple[str, Decimal | None, str | None]:

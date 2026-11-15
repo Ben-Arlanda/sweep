@@ -124,6 +124,9 @@ _Avoid_: "Something new"
 **Plan Days**:
 The days a plan covers, picked in the "Plan my week" sheet. The agent may only put meals on these days. The Household's **Usual Days** (weekdays, e.g. Mon–Fri) are what the sheet starts with.
 
+**List Addition**:
+An item a Proposal would put on the Shopping List. Its amount is the extra to buy, on top of what's already on the list; approving tops up a matching unticked item rather than adding a second line.
+
 **Draft Plan**:
 The work-in-progress Meal Plan and Shopping List changes the agent is building inside a Conversation. Visible to the Member, but not yet Household data.
 _Avoid_: suggestion, result
