@@ -326,6 +326,7 @@ Each slice is a feature branch and a focused PR that works end to end.
 | 5a | `feature/langgraph-agent` | Dietary Rules + Preferences (enforced in search and validate), graph, read/compute/draft tools, validation loop, Postgres checkpointer, SSE, daily token budget | Agentic AI, tool calling |
 | 5b | `feature/agent-chat` | Chat screen (streamed replies, Proposal card), Dietary Rules and Preferences screen | (product) |
 | 5c | `feature/kitchen-first-planning` | Kitchen Match ranking, `recipes_from_kitchen` tool (hybrid: meaning search re-ranked by the Kitchen), Kitchen-first prompt, "Plan my week" / "Just tonight" on Home, offline eval vs search-only (ADR 0013) | Recommendation and ranking, hybrid search, recommendation evaluation |
+| 5d | `feature/plan-something-new` | "Something new" planning: a plan mode stored on the Conversation and given to the agent every turn; chooses by taste with `search_recipes`, the Kitchen only trims the buy list; "Try new recipes instead →" link under Home's buttons and in the chat's New plan (after 6a) | (product; agent modes) |
 | 6a | `feature/approvals` | Proposal records, approve node with `interrupt()`, `POST /proposals/{id}/decision`, deterministic commit, audit log, Meal Plan + Planned Meals, Cooked deduction (undoable), 24h expiry | Human-in-the-loop, security |
 | 6b | `feature/approvals-client` | Proposal card with checkboxes, "replaces …" per day, Approve / Reject; Meal Plan screen (from Home); Cooked button | (product) |
 | 6c | `feature/home-today` | Home "Today" showing tonight's Planned Meal (the Kitchen part moved to 3c) | (product) |
@@ -345,6 +346,8 @@ Each slice is a feature branch and a focused PR that works end to end.
 Known gaps from 2b: deleting a Shop from inside the sheet drops keyboard focus to the page (the button it was on disappears); not yet run on a phone.
 
 Known gaps carried forward from 5b: only the latest Proposal is kept, so earlier ones drop out of the chat history (fix with slice 6's Proposal records); not yet run on a phone.
+
+**Slice 5d decisions** (2026-11-15): a second way to plan, for a week of new recipes to shop for. Home keeps "Plan my week" (Kitchen-first) and "Just tonight"; a quieter "Try new recipes instead →" link starts a "Something new" plan. The mode lives on the Conversation and goes into the per-turn context, not just the first message (5c showed wording alone is fragile). The Kitchen still subtracts from the buy list. Built after 6a, so approving actually fills the Shopping List.
 
 **Slice 5c steps** (agreed 2026-11-15, ADR 0013; build test-first, after 3d):
 
