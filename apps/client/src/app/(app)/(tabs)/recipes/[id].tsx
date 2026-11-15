@@ -1,12 +1,14 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { View } from 'react-native';
+import { useState } from 'react';
+import { Pressable, View } from 'react-native';
 
 import { FoodThumb } from '@/components/FoodThumb';
 import { Tag } from '@/components/Pill';
 import { Button, Card, ErrorText, Loading, Screen, SectionLabel, Text } from '@/components/ui';
-import { haveSummary, matchLine, type Have } from '@/features/recipes/kitchenMatch';
+import { addText, haveSummary, matchLine, type Have } from '@/features/recipes/kitchenMatch';
 import { recipeMeta } from '@/features/recipes/RecipeRow';
 import { useKitchen } from '@/lib/api/kitchen';
+import { useList, useListActions } from '@/lib/api/lists';
 import { isNotFound, useRecipe } from '@/lib/api/recipes';
 import type { components } from '@/lib/api/schema';
 import { ingredientEmoji, recipeEmoji } from '@/theme/foodEmoji';
@@ -15,10 +17,14 @@ import { useTheme } from '@/theme/useTheme';
 
 type Line = components['schemas']['RecipeIngredientOut'];
 type Kitchen = components['schemas']['KitchenOut'];
+type List = components['schemas']['ShoppingListDetailOut'];
 
 /**
  * One recipe, checked against the Kitchen: each ingredient says whether you have it.
  * That's the loop working: what you bought (Kitchen) meets what you could cook.
+ *
+ * Something you need shows "+ Need": one tap puts it on the Shopping List. Anything
+ * already unticked on the list shows "On list", the same rule the planner uses.
  */
 export default function RecipeScreen() {
   const t = useTheme();
@@ -26,6 +32,8 @@ export default function RecipeScreen() {
   const recipe = useRecipe(id);
   // The Kitchen is optional here: if it fails to load, the recipe still shows.
   const kitchen = useKitchen();
+  // Optional too: without the list, "Need" is just a label, with no + to add it.
+  const list = useList();
 
   if (recipe.isPending) return <Loading />;
   if (recipe.isError && isNotFound(recipe.error)) {
@@ -75,7 +83,7 @@ export default function RecipeScreen() {
       <View style={{ gap: t.space.sm }}>
         <SectionLabel>Ingredients</SectionLabel>
         {r.ingredients.map((line, i) => (
-          <IngredientRow key={i} line={line} kitchen={kitchen.data} />
+          <IngredientRow key={i} line={line} kitchen={kitchen.data} list={list.data} />
         ))}
         {kitchen.isError ? (
           <Text variant="caption" muted>
@@ -110,24 +118,30 @@ const HAVE_TEXT: Record<Have['kind'], string> = {
   low: 'Low',
   check: 'Check',
   need: 'Need',
+  onList: 'On list',
 };
 
-function IngredientRow({ line, kitchen }: { line: Line; kitchen: Kitchen | undefined }) {
+function IngredientRow({
+  line,
+  kitchen,
+  list,
+}: {
+  line: Line;
+  kitchen: Kitchen | undefined;
+  list: List | undefined;
+}) {
   const t = useTheme();
-  const have = kitchen ? matchLine(line, kitchen) : null;
+  // Between the tap and the list coming back from the server, the new item has no
+  // Ingredient yet, so `matchLine` can't see it. Remember the tap so it says "On list"
+  // straight away.
+  const [added, setAdded] = useState(false);
+  const match = kitchen ? matchLine(line, kitchen, list?.items) : null;
+  const have: Have | null = added && match?.kind === 'need' ? { kind: 'onList' } : match;
   const name = line.ingredient?.name ?? line.raw_text;
-  const label = have
-    ? have.kind === 'low'
-      ? `Have ${have.have}`
-      : HAVE_TEXT[have.kind]
-    : null;
+  const label = have ? (have.kind === 'low' ? `Have ${have.have}` : HAVE_TEXT[have.kind]) : null;
 
   return (
     <View
-      accessible
-      accessibilityLabel={[line.raw_text, line.optional ? 'optional' : null, label]
-        .filter(Boolean)
-        .join(', ')}
       style={{
         minHeight: t.touchTarget,
         flexDirection: 'row',
@@ -135,25 +149,61 @@ function IngredientRow({ line, kitchen }: { line: Line; kitchen: Kitchen | undef
         gap: t.space.md,
       }}
     >
-      <FoodThumb emoji={ingredientEmoji(line.ingredient)} tint={tintFor(name)} size={36} />
-      <View style={{ flex: 1 }}>
-        <Text>{line.raw_text}</Text>
-        {line.optional ? (
-          <Text variant="caption" muted>
-            Optional
-          </Text>
+      <View
+        accessible
+        // The status ("Have", "On list", "+ Need") is read from the tag beside it, which
+        // sits in a live region, so it's announced when it changes.
+        accessibilityLabel={[line.raw_text, line.optional ? 'optional' : null]
+          .filter(Boolean)
+          .join(', ')}
+        style={{ flex: 1, flexDirection: 'row', alignItems: 'center', gap: t.space.md }}
+      >
+        <FoodThumb emoji={ingredientEmoji(line.ingredient)} tint={tintFor(name)} size={36} />
+        <View style={{ flex: 1 }}>
+          <Text>{line.raw_text}</Text>
+          {line.optional ? (
+            <Text variant="caption" muted>
+              Optional
+            </Text>
+          ) : null}
+        </View>
+      </View>
+      {/* The live region reads "On list" out after a tap on +. */}
+      <View accessibilityLiveRegion="polite" style={{ alignSelf: 'center' }}>
+        {have?.kind === 'need' && list ? (
+          <AddToList line={line} listId={list.id} onAdded={() => setAdded(true)} />
+        ) : have && label ? (
+          <View>
+            <Tag
+              kind={have.kind === 'need' ? 'need' : 'soft'}
+              tint={have.kind === 'have' ? 'mint' : undefined}
+            >
+              {label}
+            </Tag>
+          </View>
         ) : null}
       </View>
-      {have && label ? (
-        <View style={{ alignSelf: 'center' }}>
-          <Tag
-          kind={have.kind === 'need' ? 'need' : 'soft'}
-          tint={have.kind === 'have' ? 'mint' : undefined}
-        >
-          {label}
-          </Tag>
-        </View>
-      ) : null}
     </View>
+  );
+}
+
+/** "+ Need": puts this ingredient on the Shopping List (queued if offline, like any add). */
+function AddToList({ line, listId, onAdded }: { line: Line; listId: string; onAdded: () => void }) {
+  const t = useTheme();
+  const { addItem } = useListActions(listId);
+  const text = addText(line);
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`Need. Add ${text} to the Shopping List`}
+      onPress={() => {
+        addItem(text);
+        onAdded();
+      }}
+      // A 44pt target around the small pill (the pill alone is too small to tap).
+      style={{ minHeight: t.touchTarget, minWidth: t.touchTarget, justifyContent: 'center' }}
+    >
+      <Tag kind="need">+ Need</Tag>
+    </Pressable>
   );
 }
