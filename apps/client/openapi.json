@@ -3410,6 +3410,13 @@
               }
             ],
             "title": "Cooked By"
+          },
+          "kitchen_uses": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Kitchen Uses"
           }
         },
         "type": "object",
@@ -3420,7 +3427,8 @@
           "title",
           "servings",
           "cooked_at",
-          "cooked_by"
+          "cooked_by",
+          "kitchen_uses"
         ],
         "title": "PlannedMealOut"
       },

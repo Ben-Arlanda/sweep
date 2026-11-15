@@ -332,6 +332,8 @@ class PlannedMealOut(BaseModel):
     servings: int
     cooked_at: datetime | None
     cooked_by: uuid.UUID | None
+    # Before Cooked: Tracked items in the Kitchen it uses. After: what Cooked took out.
+    kitchen_uses: list[str]
 
 
 class MealPlanOut(BaseModel):
