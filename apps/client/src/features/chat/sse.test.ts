@@ -1,4 +1,9 @@
-import { createSseParser, readEvents, type TurnEvent } from './sse';
+import { fetch } from 'expo/fetch';
+
+import { createSseParser, readEvents, streamTurn, type TurnEvent } from './sse';
+
+// sse.ts streams with expo/fetch, not the global one.
+jest.mock('expo/fetch', () => ({ fetch: jest.fn() }));
 
 describe('createSseParser', () => {
   it('reads one whole event', () => {
@@ -79,4 +84,28 @@ describe('readEvents', () => {
     );
     expect(got).toEqual([{ type: 'done' }]);
   });
+});
+
+describe('streamTurn refused before streaming (slice 10 limits)', () => {
+  function refuse(status: number, body: object) {
+    jest.mocked(fetch).mockResolvedValue({ ok: false, status, json: async () => body } as never);
+  }
+
+  it.each([
+    [
+      409,
+      'turn_in_progress',
+      "Sweep is still answering your last message, maybe on another device. Try again when it's done.",
+    ],
+    [429, 'rate_limited', "That's a lot of messages. Try again in 12 minutes."],
+  ])(
+    '%i gives the server words, which the chat shows as they are',
+    async (status, code, detail) => {
+      refuse(status, { code, detail });
+      const events: TurnEvent[] = [];
+      const sent = streamTurn('c1', 'plan dinners', (e) => events.push(e));
+      await expect(sent).rejects.toMatchObject({ status, code, message: detail });
+      expect(events).toEqual([]); // no turn started, so no half reply to clean up
+    },
+  );
 });

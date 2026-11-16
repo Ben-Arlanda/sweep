@@ -94,18 +94,29 @@ export function ProposalCard({
 
       {shown.additions.length > 0 ? (
         <Section title={pending ? 'Add to the Shopping List' : 'For the Shopping List'}>
-          {shown.additions.map(({ item, index: i }) => (
-            <TickRow
-              // Positions are what the server keeps, and names can repeat.
-              key={i}
-              ticked={pending ? isAdditionKept(ticks, i) : null}
-              disabled={!canAct}
-              onToggle={() => setTicks((now) => toggleAddition(now, i))}
-              label={additionLine(item)}
-            >
-              <Text style={{ flexShrink: 1 }}>{additionLine(item)}</Text>
-            </TickRow>
-          ))}
+          {shown.additions.map(({ item, index: i }) => {
+            // Flagged while pending: no meal needs it and the Member didn't ask (slice 10).
+            const flag = pending && item.reason === 'unexplained' ? 'Not for any meal' : null;
+            return (
+              <TickRow
+                // Positions are what the server keeps, and names can repeat.
+                key={i}
+                ticked={pending ? isAdditionKept(proposal, ticks, i) : null}
+                disabled={!canAct}
+                onToggle={() => setTicks((now) => toggleAddition(now, i))}
+                label={[additionLine(item), flag].filter(Boolean).join(', ')}
+              >
+                <View style={{ flexShrink: 1 }}>
+                  <Text>{additionLine(item)}</Text>
+                  {flag ? (
+                    <Text variant="caption" muted>
+                      {flag}
+                    </Text>
+                  ) : null}
+                </View>
+              </TickRow>
+            );
+          })}
         </Section>
       ) : null}
 

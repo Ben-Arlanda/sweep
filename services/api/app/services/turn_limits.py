@@ -49,7 +49,10 @@ async def start(
         )
     )
     if running:
-        raise errors.TurnInProgress("Still answering your last message.")
+        raise errors.TurnInProgress(
+            "Sweep is still answering your last message, maybe on another device. "
+            "Try again when it's done."
+        )
 
     recent = list(
         (

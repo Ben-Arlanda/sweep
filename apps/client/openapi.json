@@ -2702,6 +2702,30 @@
               }
             ],
             "title": "On List"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "meal",
+                  "asked",
+                  "unexplained"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "for_meals": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "For Meals",
+            "default": []
           }
         },
         "type": "object",
