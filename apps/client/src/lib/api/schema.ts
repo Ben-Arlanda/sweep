@@ -416,6 +416,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/recipes/imports/link": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Read Link
+         * @description The Link door: the page's own recipe data, read by code. Stores nothing.
+         */
+        post: operations["read_link_recipes_imports_link_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/recipes/imported/{recipe_id}": {
         parameters: {
             query?: never;
@@ -979,6 +999,8 @@ export interface components {
             lines: components["schemas"]["DraftLineOut"][];
             /** Method */
             method: string[] | null;
+            /** Source Url */
+            source_url: string | null;
             /** More Recipes */
             more_recipes: boolean;
         };
@@ -1008,6 +1030,8 @@ export interface components {
             lines: components["schemas"]["ImportedLineIn"][];
             /** Method */
             method?: string[] | null;
+            /** Source Url */
+            source_url?: string | null;
         };
         /**
          * ImportedRecipeOut
@@ -1135,6 +1159,11 @@ export interface components {
         LinesIn: {
             /** Lines */
             lines: string[];
+        };
+        /** LinkIn */
+        LinkIn: {
+            /** Url */
+            url: string;
         };
         /** MeOut */
         MeOut: {
@@ -2409,6 +2438,39 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": components["schemas"]["PasteIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ImportDraftOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    read_link_recipes_imports_link_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LinkIn"];
             };
         };
         responses: {

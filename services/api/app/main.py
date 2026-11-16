@@ -28,7 +28,8 @@ from app.routes import (
     shopping_lists,
 )
 from app.services.conversations import Agent
-from app.services.recipe_import import RecipeReader
+from app.services.recipe_import import PageFetcher, RecipeReader
+from app.web_fetch import SafeFetcher
 
 # The one place domain errors become HTTP status codes.
 ERROR_STATUS: dict[type[errors.DomainError], int] = {
@@ -90,9 +91,11 @@ def create_app(
     embedder: Embedder | None = None,
     agent_model: AgentModel | None = None,
     recipe_reader: RecipeReader | None = None,
+    page_fetcher: PageFetcher | None = None,
 ) -> FastAPI:
     """Build the app. Tests pass their own settings, a verifier that trusts a test key,
-    a fake embedder, a scripted agent model and a scripted recipe reader."""
+    a fake embedder, and scripted stand-ins for the agent model, the recipe reader and the
+    page fetcher."""
     app_settings = app_settings or settings
     # Creating an engine doesn't connect yet; the first query does.
     engine = make_engine(app_settings.database_url)
@@ -126,6 +129,7 @@ def create_app(
     )
     app.state.embedder = embedder or default_embedder(app_settings)
     app.state.recipe_reader = recipe_reader or default_recipe_reader(app_settings)
+    app.state.page_fetcher = page_fetcher or SafeFetcher()  # needs no key: always on
     checkpoints = Checkpoints(app_settings.database_url)
     model = agent_model or default_agent_model(app_settings)
     app.state.agent = (

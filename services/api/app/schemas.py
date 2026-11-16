@@ -6,6 +6,7 @@ from decimal import Decimal
 from typing import Annotated, Literal, Self
 
 from pydantic import (
+    AfterValidator,
     BaseModel,
     ConfigDict,
     Field,
@@ -30,6 +31,7 @@ from app.models import (
 )
 from app.services.ingredients import normalise
 from app.text import ONE_LINE
+from app.web_fetch import check_url
 
 
 # Trimming runs before ONE_LINE, so a pasted trailing newline is simply removed.
@@ -538,12 +540,17 @@ class SendMessageIn(BaseModel):
 # --- Imported Recipes (slice 4d) --------------------------------------------------------
 
 RecipeLine = Annotated[str, _name(300), ONE_LINE]  # an ingredient line, as written
+MAX_RECIPE_LINES, MAX_METHOD_STEPS = 60, 40
+
+
+# The same rules the Link door fetches by: plain https, no credentials, no odd ports.
+SourceUrl = Annotated[str, StringConstraints(max_length=2048), AfterValidator(check_url)]
 
 
 class LinesIn(BaseModel):
     """Ingredient lines to read for the review screen. Nothing is stored."""
 
-    lines: list[RecipeLine] = Field(min_length=1, max_length=60)
+    lines: list[RecipeLine] = Field(min_length=1, max_length=MAX_RECIPE_LINES)
 
 
 class ImportedLineIn(BaseModel):
@@ -561,8 +568,12 @@ class ImportedRecipeIn(BaseModel):
     total_minutes: int | None = Field(default=None, gt=0, le=1440)
     course: Course
     cuisine: Cuisine | None = None
-    lines: list[ImportedLineIn] = Field(min_length=1, max_length=60)
-    method: list[Annotated[str, _name(2000)]] | None = Field(default=None, max_length=40)
+    lines: list[ImportedLineIn] = Field(min_length=1, max_length=MAX_RECIPE_LINES)
+    method: list[Annotated[str, _name(2000)]] | None = Field(
+        default=None, max_length=MAX_METHOD_STEPS
+    )
+    # Where it came from (the Link door). Its method stays there: "Method on a.example".
+    source_url: SourceUrl | None = None
 
 
 class PasteIn(BaseModel):
@@ -587,4 +598,9 @@ class ImportDraftOut(BaseModel):
     cuisine: str | None
     lines: list[DraftLineOut]
     method: list[str] | None
+    source_url: str | None  # the Link door: the page it came from
     more_recipes: bool  # "This has more than one recipe: we've taken the first."
+
+
+class LinkIn(BaseModel):
+    url: Annotated[str, StringConstraints(max_length=2048)]

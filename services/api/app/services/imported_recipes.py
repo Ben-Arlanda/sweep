@@ -97,6 +97,7 @@ def _fill(recipe: Recipe, body: ImportedRecipeIn) -> None:
     recipe.title, recipe.course, recipe.cuisine = body.title, body.course, body.cuisine
     recipe.servings, recipe.total_minutes = body.servings, body.total_minutes
     recipe.method = list(body.method) if body.method else None
+    recipe.source_url = body.source_url
 
 
 async def save(session: AsyncSession, ctx: MemberContext, body: ImportedRecipeIn) -> Recipe:

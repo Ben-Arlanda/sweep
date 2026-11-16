@@ -1532,6 +1532,53 @@
         ]
       }
     },
+    "/recipes/imports/link": {
+      "post": {
+        "tags": [
+          "recipes"
+        ],
+        "summary": "Read Link",
+        "description": "The Link door: the page's own recipe data, read by code. Stores nothing.",
+        "operationId": "read_link_recipes_imports_link_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LinkIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportDraftOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
     "/recipes/imported/{recipe_id}": {
       "put": {
         "tags": [
@@ -3431,6 +3478,17 @@
             ],
             "title": "Method"
           },
+          "source_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Url"
+          },
           "more_recipes": {
             "type": "boolean",
             "title": "More Recipes"
@@ -3445,6 +3503,7 @@
           "cuisine",
           "lines",
           "method",
+          "source_url",
           "more_recipes"
         ],
         "title": "ImportDraftOut",
@@ -3545,6 +3604,18 @@
               }
             ],
             "title": "Method"
+          },
+          "source_url": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2048
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Url"
           }
         },
         "type": "object",
@@ -3930,6 +4001,20 @@
         ],
         "title": "LinesIn",
         "description": "Ingredient lines to read for the review screen. Nothing is stored."
+      },
+      "LinkIn": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "maxLength": 2048,
+            "title": "Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "url"
+        ],
+        "title": "LinkIn"
       },
       "MeOut": {
         "properties": {

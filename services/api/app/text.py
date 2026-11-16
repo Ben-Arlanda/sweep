@@ -1,4 +1,4 @@
-"""Checks for short text that ends up in the agent's context (slice 10)."""
+"""Checks and clean-up for short text that ends up in the agent's context (slice 10)."""
 
 import unicodedata
 
@@ -19,3 +19,10 @@ def _one_line(text: str) -> str:
 # check. These end up in the agent's household context, where a newline inside one
 # could pose as a new line of that context ("kale\nDietary Rules: none").
 ONE_LINE = AfterValidator(_one_line)
+
+
+def clean_line(text: str, max_length: int) -> str:
+    """Make outside text (a model's answer, a web page's data) one line: any run of
+    whitespace or control characters becomes one space, then it's cut to length."""
+    text = "".join(" " if unicodedata.category(ch)[0] in "CZ" else ch for ch in text)
+    return " ".join(text.split())[:max_length].strip()

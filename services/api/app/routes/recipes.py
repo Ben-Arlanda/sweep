@@ -19,13 +19,14 @@ from app.schemas import (
     ImportedRecipeIn,
     ImportedRecipeOut,
     LinesIn,
+    LinkIn,
     PasteIn,
     RecipeIngredientOut,
     RecipeOut,
     RecipeSummaryOut,
 )
 from app.services import imported_recipes, recipe_import, recipes
-from app.services.recipe_import import RecipeReader
+from app.services.recipe_import import Draft, PageFetcher, RecipeReader
 from app.services.recipes import SEARCH_LIMIT
 
 router = APIRouter(prefix="/recipes", tags=["recipes"])
@@ -106,6 +107,20 @@ async def read_paste(
     if reader is None:
         raise errors.Unavailable("Pasting recipes isn't configured on this server")
     draft = await recipe_import.from_paste(session, ctx.household.id, reader, body.text)
+    return _draft_out(draft)
+
+
+@router.post("/imports/link")
+async def read_link(
+    body: LinkIn, request: Request, ctx: MemberDep, session: SessionDep
+) -> ImportDraftOut:
+    """The Link door: the page's own recipe data, read by code. Stores nothing."""
+    fetcher = cast(PageFetcher, request.app.state.page_fetcher)
+    draft = await recipe_import.from_link(session, ctx.household.id, fetcher, body.url)
+    return _draft_out(draft)
+
+
+def _draft_out(draft: Draft) -> ImportDraftOut:
     lines = [
         DraftLineOut(**RecipeIngredientOut.model_validate(line).model_dump(), check=check)
         for line, check in zip(draft.lines, draft.check, strict=True)
@@ -118,6 +133,7 @@ async def read_paste(
         cuisine=draft.cuisine,
         lines=lines,
         method=draft.method,
+        source_url=draft.source_url,
         more_recipes=draft.more_recipes,
     )
 

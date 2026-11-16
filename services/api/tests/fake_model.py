@@ -85,3 +85,25 @@ class ScriptedReader:
         if not self.answers:
             raise AssertionError("the recipe reader was called more times than scripted")
         return self.answers.pop(0), Usage(model="scripted", input_tokens=500, output_tokens=200)
+
+
+class ScriptedFetcher:
+    """Stands in for the Link door's page fetcher. `pages` maps a link to (final URL,
+    HTML) or to an exception to raise. Any other link fails the test: no test may
+    touch the network."""
+
+    def __init__(self) -> None:
+        self.pages: dict[str, Any] = {}
+        self.calls: list[str] = []
+
+    async def fetch(self, url: str) -> Any:
+        from app.web_fetch import Page
+
+        self.calls.append(url)
+        if url not in self.pages:
+            raise AssertionError(f"unscripted fetch: {url}")
+        answer = self.pages[url]
+        if isinstance(answer, Exception):
+            raise answer
+        final, html = answer
+        return Page(url=final, html=html)

@@ -12,13 +12,15 @@ import pytest
 from app.models import Course
 from app.services.recipe_import import RecipeReading, appears_in
 from tests.conftest import FakeIssuer, Loader
-from tests.fake_model import ScriptedReader
-from tests.helpers import create_household
+from tests.fake_model import ScriptedFetcher, ScriptedReader
+from tests.helpers import create_household, idem
+from tests.test_recipe_jsonld import RAGU, page
 from tests.test_recipes import CURRY
 
 pytestmark = pytest.mark.anyio
 
 PASTE = "/recipes/imports/paste"
+LINK = "/recipes/imports/link"
 
 PASTED = """Mum's Beef Ragu  (serves 4, about 2 hours)
 
@@ -180,3 +182,75 @@ async def test_no_answer_from_the_model_is_a_clear_503(
     response = await paste(client, fake_issuer, PASTED)
     assert response.status_code == 503, response.text
     assert "type it in" in response.json()["detail"]
+
+
+# --- The Link door: plain code reads the page's recipe data, no model -------------------
+
+
+async def link(client: httpx.AsyncClient, issuer: FakeIssuer, url: str) -> httpx.Response:
+    return await client.post(LINK, json={"url": url}, headers=issuer.headers("ana"))
+
+
+async def test_a_link_gives_the_facts_and_the_source_but_never_the_method(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, fetcher: ScriptedFetcher
+) -> None:
+    await create_household(client, fake_issuer, "ana")
+    fetcher.pages["https://a.example/r"] = ("https://a.example/ragu", page(RAGU))
+
+    response = await link(client, fake_issuer, "https://a.example/r")
+    assert response.status_code == 200, response.text
+    draft = response.json()
+    assert (draft["title"], draft["servings"], draft["total_minutes"]) == (
+        "Mum's Beef Ragu",
+        4,
+        135,
+    )
+    assert draft["source_url"] == "https://a.example/ragu"  # where it really came from
+    assert draft["method"] is None  # "Method on a.example"
+    assert [line["raw_text"] for line in draft["lines"]] == [
+        "500g beef mince",
+        "1 onion, finely chopped",
+    ]
+    assert [line["check"] for line in draft["lines"]] == [False, False]  # the site's own data
+    mine = await client.get("/recipes/imported", headers=fake_issuer.headers("ana"))
+    assert mine.json() == []
+
+
+async def test_a_page_without_recipe_data_suggests_pasting(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, fetcher: ScriptedFetcher
+) -> None:
+    await create_household(client, fake_issuer, "ana")
+    fetcher.pages["https://a.example/blog"] = ("https://a.example/blog", "<p>Just a story</p>")
+    response = await link(client, fake_issuer, "https://a.example/blog")
+    assert response.status_code == 422, response.text
+    assert "Paste" in response.json()["detail"]
+
+
+@pytest.mark.parametrize("url", ["http://a.example/r", "https://10.0.0.5:8080/admin", "ragu"])
+async def test_a_bad_link_is_refused_before_anything_is_fetched(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, fetcher: ScriptedFetcher, url: str
+) -> None:
+    await create_household(client, fake_issuer, "ana")
+    assert (await link(client, fake_issuer, url)).status_code == 422
+    assert fetcher.calls == []
+
+
+async def test_save_keeps_the_source_link_and_only_https_ones(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer
+) -> None:
+    await create_household(client, fake_issuer, "ana")
+    body = {
+        "title": "Mum's Beef Ragu",
+        "servings": 4,
+        "course": "main",
+        "lines": [{"raw_text": "500g beef mince"}],
+        "source_url": "https://a.example/ragu",
+    }
+    headers = fake_issuer.headers("ana")
+    saved = await client.post("/recipes/imported", json=body, headers=headers | idem())
+    assert saved.status_code == 201, saved.text
+    assert (saved.json()["source_url"], saved.json()["method"]) == ("https://a.example/ragu", None)
+
+    bad = body | {"source_url": "javascript:alert(1)"}
+    refused = await client.post("/recipes/imported", json=bad, headers=headers | idem())
+    assert refused.status_code == 422

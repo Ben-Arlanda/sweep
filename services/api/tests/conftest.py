@@ -31,7 +31,7 @@ from app.embeddings import HashingEmbedder
 from app.main import create_app
 from app.services import recipes
 from app.services.ingredient_lines import index_from_db
-from tests.fake_model import ScriptedModel, ScriptedReader
+from tests.fake_model import ScriptedFetcher, ScriptedModel, ScriptedReader
 
 # Never send traces from tests, whatever keys a local .env holds (app/tracing.py).
 os.environ["LANGFUSE_TRACING"] = "false"
@@ -128,8 +128,18 @@ def reader() -> ScriptedReader:
 
 
 @pytest.fixture
+def fetcher() -> ScriptedFetcher:
+    """The Link door's fetcher, scripted. Tests add pages to it."""
+    return ScriptedFetcher()
+
+
+@pytest.fixture
 async def client(
-    database_url: str, db: Engine, fake_issuer: FakeIssuer, reader: ScriptedReader
+    database_url: str,
+    db: Engine,
+    fake_issuer: FakeIssuer,
+    reader: ScriptedReader,
+    fetcher: ScriptedFetcher,
 ) -> AsyncIterator[httpx.AsyncClient]:
     app = create_app(
         Settings(database_url=database_url),
@@ -138,6 +148,7 @@ async def client(
         # Never the real Claude (a local .env may hold a key). Any call fails the test.
         agent_model=ScriptedModel(),
         recipe_reader=reader,
+        page_fetcher=fetcher,
     )
     transport = httpx.ASGITransport(app=app)
     async with httpx.AsyncClient(transport=transport, base_url="http://test") as http:
@@ -178,6 +189,7 @@ def client_for(database_url: str, db: Engine, fake_issuer: FakeIssuer) -> Client
             embedder=HashingEmbedder(),
             agent_model=model,
             recipe_reader=ScriptedReader(),
+            page_fetcher=ScriptedFetcher(),
         )
         transport = httpx.ASGITransport(app=app)
         async with httpx.AsyncClient(transport=transport, base_url="http://test") as http:
