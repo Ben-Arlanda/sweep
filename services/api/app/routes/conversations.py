@@ -29,7 +29,7 @@ from app.schemas import (
     SendMessageIn,
     TurnEvent,
 )
-from app.services import conversations
+from app.services import conversations, turn_limits
 from app.services.conversations import Agent
 
 router = APIRouter(prefix="/conversations", tags=["agent"])
@@ -106,13 +106,18 @@ async def send(
     ctx: MemberDep,
     session: SessionDep,
 ) -> EventStreamResponse:
-    # Check access and configuration before the stream starts, so they're normal errors.
+    # Check access, configuration and the rate limits before the stream starts, so
+    # they're normal errors (403/404, 503, 409 or 429), not events inside a 200.
     conversation = await conversations.get(session, ctx, conversation_id)
     agent = _agent(request)
+    turn_id = await turn_limits.start(session, ctx.member.id, conversation.id)
 
     async def events() -> AsyncIterator[str]:
-        async for event in agent.run_turn(conversation, body.text):
-            yield f"event: {event['type']}\ndata: {json.dumps(event, default=str)}\n\n"
+        try:
+            async for event in agent.run_turn(conversation, body.text):
+                yield f"event: {event['type']}\ndata: {json.dumps(event, default=str)}\n\n"
+        finally:  # also when the Member closes the app mid-reply
+            await turn_limits.finish(agent.sessionmaker, turn_id)
 
     return EventStreamResponse(
         events(),
