@@ -76,3 +76,15 @@ def test_haiku_does_not_ask_for_a_fallback_it_does_not_have() -> None:
     options = agent_request_options("claude-haiku-5-5")
     assert "fallbacks" not in options
     assert "betas" not in options
+    assert "thinking" in options  # every model gets the thinking summary
+
+
+def test_both_models_return_a_thinking_summary_for_traces() -> None:
+    # Claude 5.5 models hide thinking by default ("omitted": empty blocks). A summary
+    # costs no extra tokens and shows in Langfuse why the agent chose each step. It
+    # never reaches the Member: the chat shows text blocks only.
+    for model in ("claude-sonnet-5-5", "claude-haiku-5-5"):
+        assert agent_request_options(model)["thinking"] == {
+            "type": "adaptive",
+            "display": "summarized",
+        }
