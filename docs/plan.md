@@ -542,6 +542,16 @@ Known gaps from 6c: tapping Cooked or Undo swaps the button, so keyboard focus d
 
 **Slice 4d-b** (`feature/favourites-client`): "Your recipes" row, + Add Sheet, review screen, photo picker with resizing on the phone, PDF picker (`expo-document-picker`), Edit and Delete; then the browser check.
 
+**Slice 4d-b steps** (`feature/favourites-client`, branched from `feature/favourites`; build test-first, pure rules in `features/imports/`):
+
+1. **Review rules (pure):** a draft (from any door, or an Imported Recipe to edit) becomes a form; each line's mark ("Check" or "Not linked"); what Save needs (title, servings, a Course, one line); the form becomes `ImportedRecipeIn` (a Member's Link choice kept as `ingredient_id`); "has changes" for the leave dialog.
+2. **API hooks** (`lib/api/imports.ts`): "Your recipes", the four reading doors, read lines, save, edit, delete; `429` and budget messages come from the server. The draft goes from the Add Sheet to the review screen in a small in-memory store (too big for a route param); a reload loses it, and the screen says so.
+3. **Recipes tab:** "Your recipes" row with **+ Add** → Sheet (Paste · Photo · Link · File · Type). Paste and Link take their text in the Sheet; Type opens an empty review screen.
+4. **Review screen** (`recipes/review`, new and edit): fields, Course with Sweep's guess labelled, lines (tap → the Link sheet, made generic; add, remove), method steps or the source link, "more than one recipe" note. Leaving with changes asks in the app's own dialog (new `ConfirmDialog`).
+5. **Photo and File doors:** `expo-image-picker` (up to 3) resized to ~1,600 px JPEG with `expo-image-manipulator`; `expo-document-picker` for one PDF; multipart upload on phone and web.
+6. **Recipe screen:** Edit and Delete for Imported Recipes (Delete asks first), the method or "Method on example.com", and the reason when a Dietary Rule can't be checked.
+7. **End to end** in the browser (each door, Save, Edit, Delete, checked in Postgres), accessibility (Lighthouse 100 light and dark, 320px), docs.
+
 Experiments (`experiments/`, any time after slice 4):
 
 - **E1** MCP server: `services/mcp` exposes read + draft tools over the same services. Start with stdio (Claude Desktop/Code), then streamable HTTP protected by **OAuth 2.1** (authorisation code + PKCE, token checking, scopes mapped to read vs draft tools). This is the main OAuth learning exercise. Write up how it differs from native tool calling. *(MCP & tool calling)*
