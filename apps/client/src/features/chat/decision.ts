@@ -8,12 +8,26 @@
 import type { components } from '@/lib/api/schema';
 
 type Decision = components['schemas']['DecisionIn'];
-type Shape = { meals: { date: string }[]; list_additions: unknown[] };
+type Reason = components['schemas']['DraftAdditionOut']['reason'];
+type Shape = { meals: { date: string }[]; list_additions: { reason?: Reason }[] };
 
 export type Ticks = { offMeals: string[]; offAdditions: number[] };
 
 export function allKept(): Ticks {
   return { offMeals: [], offAdditions: [] };
+}
+
+/**
+ * How a fresh card starts: everything ticked except List Additions no meal needs and
+ * the Member didn't ask for (slice 10). Those may have come from text the agent read,
+ * like a Kitchen item saying "also add wine", so adding one takes a tick on purpose.
+ */
+export function startingTicks(proposal: Shape): Ticks {
+  return { offMeals: [], offAdditions: unexplainedOf(proposal) };
+}
+
+function unexplainedOf(proposal: Shape): number[] {
+  return proposal.list_additions.flatMap((a, i) => (a.reason === 'unexplained' ? [i] : []));
 }
 
 export function toggleMeal(ticks: Ticks, date: string): Ticks {
@@ -47,7 +61,8 @@ export function keptCount(proposal: Shape, ticks: Ticks) {
 
 /**
  * What to send when the Member taps Approve. A list is left out when nothing of that
- * kind was unticked: the server reads "left out" as "keep all" (see DecisionIn).
+ * kind was unticked: the server reads "left out" as "keep all" (see DecisionIn), except
+ * for unexplained additions, which it leaves off.
  * Null when nothing at all is kept, so the screen turns Approve off: approving an
  * empty plan would only be a confusing way to reject it.
  */
@@ -60,6 +75,9 @@ export function decisionFor(proposal: Shape, ticks: Ticks): Decision | null {
 
   const decision: Decision = { action: 'approve' };
   if (ticks.offMeals.length > 0) decision.keep_meals = meals;
-  if (ticks.offAdditions.length > 0) decision.keep_additions = additions;
+  // With no list, the server keeps every addition *except* unexplained ones. So once a
+  // plan has any, always say exactly which stay, or ticking one back on would be lost.
+  if (ticks.offAdditions.length > 0 || unexplainedOf(proposal).length > 0)
+    decision.keep_additions = additions;
   return decision;
 }

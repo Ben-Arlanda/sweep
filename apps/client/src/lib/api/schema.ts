@@ -755,6 +755,13 @@ export interface components {
             ingredient_id: string | null;
             /** On List */
             on_list?: string | null;
+            /** Reason */
+            reason?: ("meal" | "asked" | "unexplained") | null;
+            /**
+             * For Meals
+             * @default []
+             */
+            for_meals: string[];
         };
         /** DraftEvent */
         DraftEvent: {

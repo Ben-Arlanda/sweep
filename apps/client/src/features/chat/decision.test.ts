@@ -1,8 +1,21 @@
-import { allKept, decisionFor, keptCount, toggleAddition, toggleMeal } from './decision';
+import {
+  allKept,
+  decisionFor,
+  isAdditionKept,
+  keptCount,
+  startingTicks,
+  toggleAddition,
+  toggleMeal,
+} from './decision';
 
 const proposal = {
   meals: [{ date: '2026-11-16' }, { date: '2026-11-17' }],
-  list_additions: [{ name: 'eggs' }, { name: 'coriander' }, { name: 'limes' }],
+  // reason null: how the API returns Proposals saved before slice 10.
+  list_additions: [
+    { name: 'eggs', reason: null },
+    { name: 'coriander', reason: null },
+    { name: 'limes', reason: null },
+  ],
 };
 
 describe('ticks on a Proposal', () => {
@@ -49,5 +62,41 @@ describe('ticks on a Proposal', () => {
     ticks = toggleAddition(ticks, 2);
     ticks = toggleAddition(ticks, 0);
     expect(decisionFor(proposal, ticks)?.keep_additions).toEqual([0, 2]);
+  });
+});
+
+describe('unexplained List Additions (slice 10)', () => {
+  // "wine" came from text the agent read (say, a Kitchen item), not from a meal or
+  // from the Member: it starts unticked, so approving without looking leaves it off.
+  const flagged = {
+    meals: [{ date: '2026-11-16' }],
+    list_additions: [
+      { name: 'eggs', reason: 'meal' as const },
+      { name: 'wine', reason: 'unexplained' as const },
+      { name: 'limes', reason: 'asked' as const },
+    ],
+  };
+
+  it('start unticked, and approving names exactly what stays ticked', () => {
+    const ticks = startingTicks(flagged);
+    expect(isAdditionKept(ticks, 1)).toBe(false);
+    expect(keptCount(flagged, ticks)).toEqual({ meals: 1, additions: 2 });
+    expect(decisionFor(flagged, ticks)).toEqual({ action: 'approve', keep_additions: [0, 2] });
+  });
+
+  it('are added when the Member ticks one on purpose', () => {
+    const ticks = toggleAddition(startingTicks(flagged), 1);
+    expect(isAdditionKept(ticks, 1)).toBe(true);
+    // Nothing unticked now, so no list is sent: the server's "keep all" default would
+    // skip "wine" again, so the decision must name it.
+    expect(decisionFor(flagged, ticks)).toEqual({
+      action: 'approve',
+      keep_additions: [0, 1, 2],
+    });
+  });
+
+  it('leave a plan with no reasons (saved before slice 10) fully ticked', () => {
+    expect(startingTicks(proposal)).toEqual(allKept());
+    expect(decisionFor(proposal, startingTicks(proposal))).toEqual({ action: 'approve' });
   });
 });
