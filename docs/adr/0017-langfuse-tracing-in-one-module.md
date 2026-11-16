@@ -21,4 +21,4 @@ Langfuse recommends a framework integration first. Ours don't fit well: the agen
 
 - About 150 lines we own instead of an integration. In return: no duplicate spans, correct cost, and traces that survive a provider change.
 - **Data leaves the machine.** Traces hold the Member's messages, the per-turn Household context (Dietary Rules, which can include allergies; the Kitchen; Preferences), tool arguments and results, and replies. No names or emails. Acceptable while only test Households exist; **before real users** this needs a privacy notice and either masking (`mask_otel_spans`) or self-hosting (slice 11).
-- Thinking blocks are recorded but empty: Claude 5.5 models return thinking as `display: "omitted"` by default. Showing summaries is a separate, small API change (open item).
+- Thinking is returned as a summary (`display: "summarized"`, same tokens billed) so traces show the reasoning; the chat shows text blocks only, so Members never see it.
