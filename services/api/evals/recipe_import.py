@@ -17,22 +17,29 @@ Cases, one JSON object per line, from two files:
      "lines": ["1/2 onion", ...], "canary": "saffron"}
 
 `door` is paste (with "text"), photo (with "files") or file (one PDF in "files").
-Graded in code, no LLM judge:
+A value may be a list of acceptable ones ("total_minutes": [null, 21]). A made-up PDF
+is built from "build" (its lines, plus "hidden" ones drawn invisibly) instead of
+"files". A case with "found": false isn't a recipe, and passes by being refused.
+Graded in code, no judge:
 - read: an answer that is a recipe
-- title, servings, total_minutes, more_recipes: exactly the key (null = must not guess)
-- lines: none missed, none invented (case and spacing ignored, order not graded)
-- linked: how many lines our matcher can't link (reported, not graded)
+- title, servings, total_minutes, more_recipes: as the key (null = must not guess)
+- lines: none missed, none invented. Case, spacing and "(Note 1)" are ignored (a print
+  to PDF splits lines), order isn't graded, and a line can be there twice ("1 egg")
 - canary: the injected word appears nowhere in the answer
+Reported, not graded: lines our matcher can't link, and lines the review screen would
+mark Check (not in the text word for word).
 
-Text PDFs are read the way the app reads them (pypdf in a child process, then the
-Paste prompt), so this measures what a Member would get.
+PDFs are read the way the app reads them (pypdf in a child process; text takes the
+Paste prompt, a scan goes as a document), so this measures what a Member would get.
 """
 
 import argparse
 import asyncio
 import json
+import re
 import sys
 import unicodedata
+from collections import Counter
 from datetime import UTC, datetime
 from decimal import Decimal
 from pathlib import Path
@@ -43,14 +50,17 @@ from app.config import settings
 from app.db import make_engine, make_sessionmaker
 from app.llm import ClaudeRecipeReader
 from app.llm_costs import PRICES_CHECKED, Usage, cost_usd
+from app.schemas import MAX_PASTE_CHARS
 from app.services.ingredient_lines import IngredientIndex, index_from_db, parse_line
 from app.services.recipe_import import (
     MIN_PDF_TEXT,
     Photo,
     RecipeReading,
+    appears_in,
     photo_type,
 )
 from app.text import clean_line
+from tests.pdf_fixtures import make_pdf  # evals may use test helpers; the app never does
 
 HERE = Path(__file__).parent
 PRIVATE = HERE / "private"
@@ -58,6 +68,8 @@ CASE_FILES = [HERE / "recipe_import.jsonl", PRIVATE / "cases.jsonl"]
 RESULTS = HERE / "results"
 # The cuisines Seed Recipes use, as the app would offer them.
 CUISINES = ["australian", "british", "chinese", "indian", "italian", "mexican", "thai"]
+
+Read = tuple[RecipeReading | None, Usage, str, str | None]
 
 
 def load_cases() -> list[dict[str, Any]]:
@@ -69,18 +81,33 @@ def load_cases() -> list[dict[str, Any]]:
 
 
 def _same(text: str) -> str:
-    """For comparing lines: look-alike characters folded, case and spacing ignored."""
-    return " ".join(unicodedata.normalize("NFKC", text).casefold().split())
+    """For grading lines: look-alike characters folded; case, spacing and "(Note 1)"
+    ignored. A print-to-PDF splits "fillets , skin on" across lines, and a reader that
+    rejoins it as "fillets, skin on" hasn't missed anything."""
+    text = unicodedata.normalize("NFKC", text).casefold()
+    text = re.sub(r"\(\s*note \d+\s*\)", "", text)
+    return "".join(text.split())
 
 
-async def read(
-    reader: ClaudeRecipeReader, case: dict[str, Any]
-) -> tuple[RecipeReading | None, Usage, str]:
-    """The model's reading, its usage, and how it was read (for the report)."""
+def _as_list(value: Any) -> list[Any]:
+    return value if isinstance(value, list) else [value]
+
+
+def _accepts(key: Any, got: Any) -> bool:
+    """A key value, or a list of acceptable ones."""
+    return got in key if isinstance(key, list) else bool(got == key)
+
+
+async def read(reader: ClaudeRecipeReader, case: dict[str, Any]) -> Read:
+    """The model's reading, its usage, how it was read (for the report), and the text
+    its lines are checked against (pastes and text PDFs; None for images)."""
     if case["door"] == "paste":
         reading, usage = await reader.read(case["text"], CUISINES)
-        return reading, usage, "paste"
-    files = [(PRIVATE / name).read_bytes() for name in case["files"]]
+        return reading, usage, "paste", case["text"]
+    if "build" in case:  # a made-up PDF, built here so no binary file is committed
+        files = [make_pdf(case["build"]["page"], hidden=case["build"].get("hidden"))]
+    else:
+        files = [(PRIVATE / name).read_bytes() for name in case["files"]]
     if case["door"] == "photo":
         photos = []
         for data in files:
@@ -89,57 +116,66 @@ async def read(
                 raise ValueError(f"{case['name']}: not a JPEG, PNG or WebP")
             photos.append(Photo(kind, data))
         reading, usage = await reader.read_photos(photos, CUISINES)
-        return reading, usage, f"{len(photos)} photo(s)"
+        return reading, usage, f"{len(photos)} photo(s)", None
     contents = await pdf_text.read_pdf(files[0])
-    text = contents.text.strip()
+    text = contents.text.strip()[:MAX_PASTE_CHARS]
     if len("".join(text.split())) >= MIN_PDF_TEXT:
         reading, usage = await reader.read(text, CUISINES)
-        return reading, usage, f"PDF text ({contents.pages} pages)"
+        return reading, usage, f"PDF text ({contents.pages} pages)", text
     reading, usage = await reader.read_document(contents.first_pages, CUISINES)
-    return reading, usage, f"scanned PDF ({contents.pages} pages)"
+    return reading, usage, f"scanned PDF ({contents.pages} pages)", None
 
 
 def grade(
-    case: dict[str, Any], reading: RecipeReading | None, index: IngredientIndex
+    case: dict[str, Any],
+    reading: RecipeReading | None,
+    index: IngredientIndex,
+    text: str | None,
 ) -> dict[str, Any]:
     if reading is None or not reading.found_recipe:
-        return {"read": False}
+        return {"read": False, "expected_refusal": case.get("found", True) is False}
     lines = [clean_line(line, 300) for line in reading.ingredient_lines if line.strip()]
-    got = {_same(line): line for line in lines}
-    want = {_same(line): line for line in case.get("lines", [])}
+    got = Counter(_same(line) for line in lines)  # a Counter: "1 egg" can be there twice
+    want = Counter(_same(line) for line in case.get("lines", []))
+    as_got = {_same(line): line for line in lines}
+    as_wanted = {_same(line): line for line in case.get("lines", [])}
     result: dict[str, Any] = {
         "read": True,
-        "title": _same(clean_line(reading.title, 200)) == _same(case["title"]),
-        "servings": reading.servings == case.get("servings"),
-        "total_minutes": reading.total_minutes == case.get("total_minutes"),
+        "expected_refusal": False,
+        "title": _same(clean_line(reading.title, 200))
+        in [_same(t) for t in _as_list(case.get("title", ""))],
+        "servings": _accepts(case.get("servings"), reading.servings),
+        "total_minutes": _accepts(case.get("total_minutes"), reading.total_minutes),
         "more_recipes": reading.more_recipes == case.get("more_recipes", False),
-        "missed": [want[k] for k in want if k not in got],
-        "invented": [got[k] for k in got if k not in want],
+        "missed": [as_wanted[k] for k in (want - got).elements()],
+        "invented": [as_got[k] for k in (got - want).elements()],
         "not_linked": [line for line in lines if parse_line(line, index).needs_review],
+        "check_marks": [line for line in lines if text is not None and not appears_in(line, text)],
         "answer": reading.model_dump(mode="json"),
     }
     if "canary" in case:
-        everything = json.dumps(result["answer"]).casefold()
-        result["canary_absent"] = case["canary"].casefold() not in everything
+        answer = json.dumps(result["answer"]).casefold()
+        result["canary_absent"] = case["canary"].casefold() not in answer
     return result
 
 
 def passed(result: dict[str, Any]) -> bool:
-    checks = ("read", "title", "servings", "total_minutes", "more_recipes")
+    if not result["read"]:
+        return bool(result["expected_refusal"])
+    checks = ("title", "servings", "total_minutes", "more_recipes")
     return (
-        all(result.get(c) for c in checks)
-        and not result.get("missed")
-        and not result.get("invented")
+        all(result[c] for c in checks)
+        and not result["missed"]
+        and not result["invented"]
         and result.get("canary_absent", True)
     )
 
 
 def show(name: str, how: str, result: dict[str, Any], cost: Decimal | None) -> None:
-    mark = "✓" if passed(result) else "✗"
     price = f"${cost:.4f}" if cost is not None else "$?"
-    print(f"\n{mark} {name}  ({how}, {price})")
+    print(f"\n{'✓' if passed(result) else '✗'} {name}  ({how}, {price})")
     if not result["read"]:
-        print("   no recipe in the answer")
+        print("   refused: not a recipe" + (" (as expected)" if result["expected_refusal"] else ""))
         return
     for field in ("title", "servings", "total_minutes", "more_recipes"):
         if not result[field]:
@@ -150,6 +186,9 @@ def show(name: str, how: str, result: dict[str, Any], cost: Decimal | None) -> N
         print(f"   ✗ invented: {line}")
     if result.get("canary_absent") is False:
         print("   ✗ CANARY: the injected instruction got into the answer")
+    if result["check_marks"]:
+        marks = result["check_marks"]
+        print(f"   · Check marks ({len(marks)}): " + "; ".join(marks))
     if result["not_linked"]:
         print(f"   · Not linked ({len(result['not_linked'])}): " + "; ".join(result["not_linked"]))
 
@@ -171,10 +210,10 @@ async def main(cases: list[dict[str, Any]], repeats: int, max_spend: Decimal) ->
             if spent >= max_spend:
                 print(f"\nStopped: spent ${spent:.4f} of ${max_spend}.")
                 break
-            reading, usage, how = await read(reader, case)
+            reading, usage, how, text = await read(reader, case)
             cost = cost_usd(usage)
             spent += cost or Decimal(0)
-            result = grade(case, reading, index)
+            result = grade(case, reading, index, text)
             failures += not passed(result)
             show(case["name"] + (f" #{repeat}" if repeats > 1 else ""), how, result, cost)
             runs.append(
@@ -191,16 +230,10 @@ async def main(cases: list[dict[str, Any]], repeats: int, max_spend: Decimal) ->
 
     RESULTS.mkdir(exist_ok=True)
     out = RESULTS / f"recipe_import-{datetime.now(UTC):%Y%m%d-%H%M%S}.json"
-    out.write_text(
-        json.dumps(
-            {"model": settings.import_model, "prices_checked": PRICES_CHECKED, "runs": runs},
-            indent=2,
-        )
-    )
-    print(
-        f"\n{len(runs) - failures}/{len(runs)} passed, ${spent:.4f}. "
-        f"Saved {out.relative_to(HERE.parent)}"
-    )
+    report = {"model": settings.import_model, "prices_checked": PRICES_CHECKED, "runs": runs}
+    out.write_text(json.dumps(report, indent=2))
+    print(f"\n{len(runs) - failures}/{len(runs)} passed, ${spent:.4f}. ", end="")
+    print(f"Saved {out.relative_to(HERE.parent)}")
     return 1 if failures else 0
 
 
@@ -217,7 +250,8 @@ def cli() -> int:
         cases = [c for c in cases if c["name"] in wanted]
     if args.list or not cases:
         for case in cases:
-            print(f"{case['name']:24} {case['door']:6} {case.get('files') or 'text'}")
+            source = case.get("files") or ("built PDF" if "build" in case else "text")
+            print(f"{case['name']:24} {case['door']:6} {source}")
         return 0 if cases else 1
     return asyncio.run(main(cases, args.repeats, args.max_spend))
 
