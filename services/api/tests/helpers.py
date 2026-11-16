@@ -1,10 +1,12 @@
 """Small API helpers so tests read like the user journey."""
 
+import json
 import uuid
 from typing import Any
 
 import httpx
 
+from app.agent.prompt import CONTEXT_TAG
 from tests.conftest import FakeIssuer
 
 
@@ -47,3 +49,11 @@ async def member_ids(client: httpx.AsyncClient, issuer: FakeIssuer, subject: str
 def idem() -> dict[str, str]:
     """A fresh Idempotency-Key header, as the app sends with every mutation."""
     return {"Idempotency-Key": str(uuid.uuid4())}
+
+
+def context_json(block: str) -> dict[str, Any]:
+    """The household context the agent was sent, read back from its tags."""
+    start, end = f"<{CONTEXT_TAG}>\n", f"\n</{CONTEXT_TAG}>"
+    assert block.startswith(start) and block.endswith(end), block
+    parsed: dict[str, Any] = json.loads(block[len(start) : -len(end)])
+    return parsed

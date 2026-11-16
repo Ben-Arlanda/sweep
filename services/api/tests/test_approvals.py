@@ -15,7 +15,7 @@ from app.models import utcnow
 from tests.conftest import ClientFor, FakeIssuer, Loader
 from tests.fake_model import ScriptedModel, tool
 from tests.fake_model import text as say_text
-from tests.helpers import create_household, idem, invite, join
+from tests.helpers import context_json, create_household, idem, invite, join
 from tests.test_agent import MON, TODAY, TUE, of, rid_in_db, say, start
 from tests.test_recipes import CURRY, PASTA
 
@@ -265,10 +265,15 @@ async def test_after_approving_the_next_turn_knows_and_starts_a_fresh_draft(
         await decide(client, fake_issuer, proposal["id"], {"action": "approve"})
 
         await say(client, fake_issuer, cid, "thanks")
-        context = model.calls[-1][-1]["content"][0]["text"]
-        assert "Last Proposal: approved. Saved 2 meals" in context
-        assert f"Planned Meals: {MON} Chicken and chickpea curry (serves 4)" in context
-        assert "Current Draft Plan" not in context
+        context = context_json(model.calls[-1][-1]["content"][0]["text"])
+        assert context["last_proposal"].startswith("approved. Saved 2 meals")
+        assert context["planned_meals"][0] == {
+            "date": MON,
+            "title": "Chicken and chickpea curry",
+            "servings": 4,
+            "cooked": False,
+        }
+        assert "current_draft_plan" not in context
         got = await client.get(f"/conversations/{cid}", headers=fake_issuer.headers("ana"))
         assert got.json()["draft"]["meals"] == {}
 
@@ -291,7 +296,8 @@ async def test_rejecting_saves_nothing_and_the_chat_carries_on(
         assert rows(db, "SELECT 1 FROM shopping_list_items") == []
 
         await say(client, fake_issuer, cid, "try again later")
-        assert "Last Proposal: rejected." in model.calls[-1][-1]["content"][0]["text"]
+        context = context_json(model.calls[-1][-1]["content"][0]["text"])
+        assert context["last_proposal"] == "rejected."
 
 
 # --- who can decide, and when ---------------------------------------------------------------

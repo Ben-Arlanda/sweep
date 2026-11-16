@@ -3,7 +3,6 @@ by what the Household has (fewest things to buy), with Dietary Rules applied in 
 Household Ingredients counted by name. The model is scripted; everything else is real.
 """
 
-import json
 from typing import Any
 
 import httpx
@@ -14,7 +13,7 @@ from app.agent.prompt import SYSTEM
 from tests.conftest import ClientFor, FakeIssuer, Loader
 from tests.fake_model import ScriptedModel, last_result, tool
 from tests.fake_model import text as say_text
-from tests.helpers import create_household, idem
+from tests.helpers import context_json, create_household, idem
 from tests.test_agent import say, start
 from tests.test_dietary_rules import SALAD
 from tests.test_household_ingredients import add, tick
@@ -253,6 +252,5 @@ async def test_the_agent_is_told_which_staples_are_at_home(
         await create_household(client, fake_issuer, "ana")
         await say(client, fake_issuer, await start(client, fake_issuer), "hello")
 
-    context = json.dumps(model.calls[0])
-    assert "Staples at home:" in context
-    assert "soy sauce" in context.split("Staples at home:")[1]
+    context = context_json(model.calls[0][-1]["content"][0]["text"])
+    assert "soy sauce" in context["staples_at_home"]
