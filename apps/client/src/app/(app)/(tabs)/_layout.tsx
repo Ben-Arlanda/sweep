@@ -1,36 +1,32 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router/tabs';
-import type { ComponentProps } from 'react';
+import {
+  BookOpen,
+  House,
+  Refrigerator,
+  ShoppingBasket,
+  Users,
+  type LucideIcon,
+} from 'lucide-react-native';
 import { Text, View, type ColorValue } from 'react-native';
 
+import { Icon } from '@/components/Icon';
 import { tabBarHeight } from '@/theme/tokens';
 import { useTheme } from '@/theme/useTheme';
-
-type IconName = ComponentProps<typeof MaterialCommunityIcons>['name'];
 
 /**
  * The tab bar along the bottom: the five places you go most. Each tab shows an icon
  * and a word (icons alone are guesswork for many people).
  *
  * The selected tab is shown three ways, so it never relies on colour alone (WCAG 1.4.1):
- * the icon fills in, it sits on a lime pill, and its label turns bold and full contrast.
+ * the icon's line gets heavier, it sits on a lime pill, and its label turns bold and full
+ * contrast.
  */
-const TABS: { name: string; title: string; icon: IconName; iconSelected: IconName }[] = [
-  { name: 'index', title: 'Home', icon: 'home-variant-outline', iconSelected: 'home-variant' },
-  { name: 'lists', title: 'Lists', icon: 'basket-outline', iconSelected: 'basket' },
-  { name: 'kitchen', title: 'Kitchen', icon: 'fridge-outline', iconSelected: 'fridge' },
-  {
-    name: 'recipes',
-    title: 'Recipes',
-    icon: 'book-open-page-variant-outline',
-    iconSelected: 'book-open-page-variant',
-  },
-  {
-    name: 'household',
-    title: 'Household',
-    icon: 'account-group-outline',
-    iconSelected: 'account-group',
-  },
+const TABS: { name: string; title: string; icon: LucideIcon }[] = [
+  { name: 'index', title: 'Home', icon: House },
+  { name: 'lists', title: 'Lists', icon: ShoppingBasket },
+  { name: 'kitchen', title: 'Kitchen', icon: Refrigerator },
+  { name: 'recipes', title: 'Recipes', icon: BookOpen },
+  { name: 'household', title: 'Household', icon: Users },
 ];
 
 export default function TabsLayout() {
@@ -59,9 +55,7 @@ export default function TabsLayout() {
             tabBarLabel: ({ focused, color }) => (
               <TabLabel title={tab.title} focused={focused} color={color} />
             ),
-            tabBarIcon: ({ focused }) => (
-              <TabIcon name={focused ? tab.iconSelected : tab.icon} focused={focused} />
-            ),
+            tabBarIcon: ({ focused }) => <TabIcon icon={tab.icon} focused={focused} />,
           }}
         />
       ))}
@@ -69,7 +63,7 @@ export default function TabsLayout() {
   );
 }
 
-function TabIcon({ name, focused }: { name: IconName; focused: boolean }) {
+function TabIcon({ icon, focused }: { icon: LucideIcon; focused: boolean }) {
   const t = useTheme();
   return (
     <View
@@ -82,12 +76,7 @@ function TabIcon({ name, focused }: { name: IconName; focused: boolean }) {
         backgroundColor: focused ? t.colors.action : 'transparent',
       }}
     >
-      <MaterialCommunityIcons
-        name={name}
-        size={22}
-        color={focused ? t.colors.onAction : t.colors.textMuted}
-        aria-hidden
-      />
+      <Icon icon={icon} color={focused ? t.colors.onAction : t.colors.textMuted} strong={focused} />
     </View>
   );
 }

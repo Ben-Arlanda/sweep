@@ -1,8 +1,9 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Search } from 'lucide-react-native';
 import { useState, type ReactNode } from 'react';
 import { Platform, TextInput, View, type TextInputProps } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { Icon } from '@/components/Icon';
 import { Text } from '@/components/ui';
 import { useTheme } from '@/theme/useTheme';
 
@@ -46,9 +47,7 @@ export function Hero({
           <Text variant="display" accessibilityRole="header" style={{ color: t.colors.onHero }}>
             {title}
           </Text>
-          {subtitle ? (
-            <Text style={{ color: t.colors.onHeroMuted }}>{subtitle}</Text>
-          ) : null}
+          {subtitle ? <Text style={{ color: t.colors.onHeroMuted }}>{subtitle}</Text> : null}
         </View>
         {children}
       </View>
@@ -98,7 +97,7 @@ export function HeroSearch({ label, ...props }: TextInputProps & { label: string
         borderColor: focused ? t.colors.onHero : 'transparent',
       }}
     >
-      <MaterialCommunityIcons name="magnify" size={22} color={t.colors.onHeroMuted} aria-hidden />
+      <Icon icon={Search} color={t.colors.onHeroMuted} />
       <TextInput
         {...props}
         // react-native-web turns dataSet into a data-hero-search attribute (see above).
@@ -113,10 +112,7 @@ export function HeroSearch({ label, ...props }: TextInputProps & { label: string
           setFocused(false);
           props.onBlur?.(e);
         }}
-        style={[
-          t.type.body,
-          { flex: 1, minHeight: t.touchTarget, color: t.colors.onHero },
-        ]}
+        style={[t.type.body, { flex: 1, minHeight: t.touchTarget, color: t.colors.onHero }]}
       />
     </View>
   );
