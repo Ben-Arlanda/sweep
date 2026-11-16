@@ -9,12 +9,18 @@ import { recipeEmoji } from '@/theme/foodEmoji';
 import { tintFor } from '@/theme/tint';
 import { useTheme } from '@/theme/useTheme';
 
+import { courseName } from './courses';
 import { cuisineName, minutesText } from './kitchenMatch';
 
 type Summary = components['schemas']['RecipeSummaryOut'];
 
-export function recipeMeta(r: Pick<Summary, 'total_minutes' | 'servings' | 'cuisine'>) {
-  return [minutesText(r.total_minutes), `Serves ${r.servings}`, cuisineName(r.cuisine)]
+export function recipeMeta(r: Pick<Summary, 'course' | 'total_minutes' | 'servings' | 'cuisine'>) {
+  return [
+    courseName(r.course),
+    minutesText(r.total_minutes),
+    `Serves ${r.servings}`,
+    cuisineName(r.cuisine),
+  ]
     .filter(Boolean)
     .join(' · ');
 }

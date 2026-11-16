@@ -1230,6 +1230,22 @@
             }
           },
           {
+            "name": "course",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/Course"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Course"
+            }
+          },
+          {
             "name": "exclude_ingredient",
             "in": "query",
             "required": false,
@@ -2479,6 +2495,18 @@
           "plan_days"
         ],
         "title": "ConversationOut"
+      },
+      "Course": {
+        "type": "string",
+        "enum": [
+          "main",
+          "side",
+          "dessert",
+          "breakfast",
+          "lunch"
+        ],
+        "title": "Course",
+        "description": "What a recipe is for. Exactly one each; plans offer mains, because a Planned Meal\nis a dinner (see CONTEXT.md)."
       },
       "CreateHouseholdIn": {
         "properties": {
@@ -3825,6 +3853,9 @@
             ],
             "title": "Cuisine"
           },
+          "course": {
+            "$ref": "#/components/schemas/Course"
+          },
           "servings": {
             "type": "integer",
             "title": "Servings"
@@ -3899,6 +3930,7 @@
           "title",
           "summary",
           "cuisine",
+          "course",
           "servings",
           "total_minutes",
           "ingredients",
@@ -3938,6 +3970,9 @@
             ],
             "title": "Cuisine"
           },
+          "course": {
+            "$ref": "#/components/schemas/Course"
+          },
           "servings": {
             "type": "integer",
             "title": "Servings"
@@ -3972,6 +4007,7 @@
           "title",
           "summary",
           "cuisine",
+          "course",
           "servings",
           "total_minutes"
         ],

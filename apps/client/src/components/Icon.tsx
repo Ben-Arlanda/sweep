@@ -1,4 +1,5 @@
 import type { LucideIcon } from 'lucide-react-native';
+import { View } from 'react-native';
 
 import { iconStroke } from '@/theme/tokens';
 
@@ -18,14 +19,15 @@ export function Icon({
   /** The heavier line, for a selected state. */
   strong?: boolean;
 }) {
+  // Hidden on the wrapping View: React Native maps aria-hidden to each platform's own
+  // setting, while the SVG underneath would pass unknown props straight to the web DOM.
   return (
-    <Glyph
-      size={size}
-      color={color}
-      strokeWidth={strong ? iconStroke.strong : iconStroke.regular}
-      aria-hidden
-      accessibilityElementsHidden
-      importantForAccessibility="no-hide-descendants"
-    />
+    <View aria-hidden>
+      <Glyph
+        size={size}
+        color={color}
+        strokeWidth={strong ? iconStroke.strong : iconStroke.regular}
+      />
+    </View>
   );
 }

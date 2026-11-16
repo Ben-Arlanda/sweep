@@ -675,6 +675,13 @@ export interface components {
             /** Plan Days */
             plan_days: string[] | null;
         };
+        /**
+         * Course
+         * @description What a recipe is for. Exactly one each; plans offer mains, because a Planned Meal
+         *     is a dinner (see CONTEXT.md).
+         * @enum {string}
+         */
+        Course: "main" | "side" | "dessert" | "breakfast" | "lunch";
         /** CreateHouseholdIn */
         CreateHouseholdIn: {
             /** Name */
@@ -1169,6 +1176,7 @@ export interface components {
             summary: string;
             /** Cuisine */
             cuisine: string | null;
+            course: components["schemas"]["Course"];
             /** Servings */
             servings: number;
             /** Total Minutes */
@@ -1200,6 +1208,7 @@ export interface components {
             summary: string;
             /** Cuisine */
             cuisine: string | null;
+            course: components["schemas"]["Course"];
             /** Servings */
             servings: number;
             /** Total Minutes */
@@ -2040,6 +2049,7 @@ export interface operations {
                 q?: string | null;
                 cuisine?: string | null;
                 max_minutes?: number | null;
+                course?: components["schemas"]["Course"] | null;
                 exclude_ingredient?: string[];
                 limit?: number;
                 /** @description Browsing only */
