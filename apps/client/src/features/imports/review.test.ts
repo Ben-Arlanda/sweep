@@ -9,6 +9,7 @@ import {
   linkLine,
   removeLine,
   saveProblems,
+  searchGuess,
   toImportedRecipe,
   type ReviewForm,
 } from './review';
@@ -216,5 +217,19 @@ describe('addLine', () => {
     expect(addLine(start, '   ')).toBe(start);
     const added = addLine(start, '  1 egg ');
     expect(added.lines.at(-1)).toMatchObject({ rawText: '1 egg', ingredient: null, pending: true });
+  });
+});
+
+describe('searchGuess', () => {
+  it.each([
+    ['2 shallots, sliced', 'shallots'],
+    ['1/2 tsp cooking salt', 'cooking salt'],
+    ['1 1/2 cups (150g) cheddar, shredded', 'cheddar'],
+    ['4 x 180g salmon fillets', 'salmon fillets'],
+    ['½ cup pickled jalapeño', 'pickled jalapeño'],
+    ['Parsley, to serve', 'Parsley'],
+    ['3', '3'], // nothing left: keep what was written
+  ])('%j → %j', (line, guess) => {
+    expect(searchGuess(line)).toBe(guess);
   });
 });

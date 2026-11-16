@@ -201,3 +201,19 @@ export function hasChanges(start: ReviewForm, now: ReviewForm): boolean {
     });
   return comparable(start) !== comparable(now);
 }
+
+const UNIT =
+  /^(g|kg|ml|l|cups?|tbsp|tsp|tablespoons?|teaspoons?|x|pinch|handful|bunch|cloves?|cans?|tins?|of)$/i;
+
+/** What the Link sheet's search starts with: the line without its amount, unit or note. */
+export function searchGuess(line: string): string {
+  const words = line
+    .split(',')[0]
+    .replace(/\([^)]*\)/g, ' ')
+    .trim()
+    .split(/\s+/);
+  while (words.length && (/^[\d/.½⅓⅔¼¾⅛-]+[a-z]*$/i.test(words[0]) || UNIT.test(words[0]))) {
+    words.shift();
+  }
+  return words.join(' ') || line.trim();
+}

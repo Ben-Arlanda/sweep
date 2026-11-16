@@ -4,7 +4,7 @@ import { Pressable, View } from 'react-native';
 import { Sheet } from '@/components/Sheet';
 import { Button, Field, Text } from '@/components/ui';
 import { displayName } from '@/features/kitchen/format';
-import type { Ingredient, Item } from '@/lib/api/client';
+import type { Ingredient } from '@/lib/api/client';
 import { useIngredientSearch } from '@/lib/api/kitchen';
 import { useTheme } from '@/theme/useTheme';
 
@@ -14,20 +14,32 @@ import { useTheme } from '@/theme/useTheme';
  * meant dark chocolate), pick the right one here. The server remembers the choice for
  * this name, so the next "Chocolate" goes to dark chocolate too, and a ticked item's
  * stock moves with it.
+ *
+ * Imported Recipe lines use it too (slice 4d), with their own wording and no "Don't add".
  */
 export function LinkSheet({
-  item,
+  name,
+  current: currentIngredient,
   onPick,
   onClose,
+  title = `What is ${name} in the Kitchen?`,
+  hint = `Sweep will remember this for ${name} next time.`,
+  allowNone = true,
+  startQuery = name,
 }: {
-  item: Item;
+  name: string; // what the Member wrote: "Chocolate", "2 shallots, sliced"
+  current: Ingredient | null;
   onPick: (ingredient: Ingredient | null) => void;
   onClose: () => void;
+  title?: string;
+  hint?: string;
+  allowNone?: boolean;
+  startQuery?: string; // what the search box starts with
 }) {
   const t = useTheme();
-  const [query, setQuery] = useState(item.text);
+  const [query, setQuery] = useState(startQuery);
   const results = useIngredientSearch(query);
-  const current = item.ingredient?.id ?? null;
+  const current = currentIngredient?.id ?? null;
 
   function pick(ingredient: Ingredient | null) {
     onPick(ingredient);
@@ -35,13 +47,9 @@ export function LinkSheet({
   }
 
   return (
-    <Sheet
-      label={`Kitchen link for ${item.text}`}
-      title={`What is ${item.text} in the Kitchen?`}
-      onClose={onClose}
-    >
+    <Sheet label={`Kitchen link for ${name}`} title={title} onClose={onClose}>
       <Text variant="caption" muted>
-        Sweep will remember this for {item.text} next time.
+        {hint}
       </Text>
       <Field
         label="Search Ingredients"
@@ -82,7 +90,7 @@ export function LinkSheet({
         })}
       </View>
       <View style={{ gap: t.space.sm }}>
-        {current ? (
+        {current && allowNone ? (
           <Button
             title="Don't add it to the Kitchen"
             variant="secondary"

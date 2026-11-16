@@ -25,8 +25,11 @@ export function recipeMeta(r: Pick<Summary, 'course' | 'total_minutes' | 'servin
     .join(' · ');
 }
 
-/** One recipe in a list. The whole row is the link; its name is what's on screen. */
-export function RecipeRow({ recipe }: { recipe: Summary }) {
+/**
+ * One recipe in a list. The whole row is the link; its name is what's on screen.
+ * `note` is a line under it, e.g. why a Dietary Rule can't be checked for it.
+ */
+export function RecipeRow({ recipe, note }: { recipe: Summary; note?: string | null }) {
   const t = useTheme();
   return (
     <Link href={{ pathname: '/recipes/[id]', params: { id: recipe.id } }} asChild>
@@ -50,6 +53,7 @@ export function RecipeRow({ recipe }: { recipe: Summary }) {
           <Text variant="caption" muted>
             {recipeMeta(recipe)}
           </Text>
+          {note ? <Text variant="caption">{note}</Text> : null}
         </View>
       </PressableScale>
     </Link>
