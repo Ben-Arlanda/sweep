@@ -17,7 +17,7 @@ from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from datetime import date
 from decimal import Decimal
-from typing import Any, Literal
+from typing import Annotated, Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
@@ -29,6 +29,7 @@ from app.embeddings import Embedder, EmbeddingUnavailable
 from app.models import Course, Household, Ingredient, Member, Recipe, utcnow
 from app.services import diet, ingredients, kitchen, kitchen_match, recipes, shopping_lists
 from app.services.households import MemberContext
+from app.text import ONE_LINE
 from app.units import convert
 
 SEARCH_RESULTS = 8
@@ -443,9 +444,11 @@ async def remove_planned_meal(call: Call, args: RemoveMealArgs) -> Outcome:
 
 
 class Addition(Args):
-    name: str = Field(min_length=1, max_length=200)
+    # One line, like a name a Member types: once approved it is a list item, and so
+    # part of the context of later turns.
+    name: Annotated[str, ONE_LINE] = Field(min_length=1, max_length=200)
     quantity: float | None = Field(default=None, gt=0)
-    unit: str | None = Field(default=None, max_length=20)
+    unit: Annotated[str, ONE_LINE] | None = Field(default=None, max_length=20)
 
 
 class AdditionsArgs(Args):
