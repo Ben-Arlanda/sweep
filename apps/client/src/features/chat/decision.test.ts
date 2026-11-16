@@ -3,7 +3,6 @@ import {
   decisionFor,
   isAdditionKept,
   keptCount,
-  startingTicks,
   toggleAddition,
   toggleMeal,
 } from './decision';
@@ -78,15 +77,15 @@ describe('unexplained List Additions (slice 10)', () => {
   };
 
   it('start unticked, and approving names exactly what stays ticked', () => {
-    const ticks = startingTicks(flagged);
-    expect(isAdditionKept(ticks, 1)).toBe(false);
+    const ticks = allKept();
+    expect(isAdditionKept(flagged, ticks, 1)).toBe(false);
     expect(keptCount(flagged, ticks)).toEqual({ meals: 1, additions: 2 });
     expect(decisionFor(flagged, ticks)).toEqual({ action: 'approve', keep_additions: [0, 2] });
   });
 
   it('are added when the Member ticks one on purpose', () => {
-    const ticks = toggleAddition(startingTicks(flagged), 1);
-    expect(isAdditionKept(ticks, 1)).toBe(true);
+    const ticks = toggleAddition(allKept(), 1);
+    expect(isAdditionKept(flagged, ticks, 1)).toBe(true);
     // Nothing unticked now, so no list is sent: the server's "keep all" default would
     // skip "wine" again, so the decision must name it.
     expect(decisionFor(flagged, ticks)).toEqual({
@@ -96,7 +95,18 @@ describe('unexplained List Additions (slice 10)', () => {
   });
 
   it('leave a plan with no reasons (saved before slice 10) fully ticked', () => {
-    expect(startingTicks(proposal)).toEqual(allKept());
-    expect(decisionFor(proposal, startingTicks(proposal))).toEqual({ action: 'approve' });
+    expect(decisionFor(proposal, allKept())).toEqual({ action: 'approve' });
+  });
+
+  it('follow the plan the card has now, not the one it first saw', () => {
+    // The card can first draw from a cached copy and then get a fresh one. The ticks
+    // only record what the Member changed, so the flag and the tick can't disagree.
+    const before = {
+      ...flagged,
+      list_additions: flagged.list_additions.map((a) => ({ ...a, reason: 'meal' as const })),
+    };
+    const ticks = allKept();
+    expect(isAdditionKept(before, ticks, 1)).toBe(true);
+    expect(isAdditionKept(flagged, ticks, 1)).toBe(false);
   });
 });

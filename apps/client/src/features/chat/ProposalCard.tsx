@@ -7,12 +7,12 @@ import { useDecideProposal } from '@/lib/api/conversations';
 import { useTheme } from '@/theme/useTheme';
 
 import {
+  allKept,
   decisionFor,
   isAdditionKept,
   isMealKept,
   keptCount,
   toggleAddition,
-  startingTicks,
   toggleMeal,
   type Ticks,
 } from './decision';
@@ -38,7 +38,7 @@ export function ProposalCard({
   disabled?: boolean;
 }) {
   const t = useTheme();
-  const [ticks, setTicks] = useState<Ticks>(() => startingTicks(proposal));
+  const [ticks, setTicks] = useState<Ticks>(allKept);
   const decide = useDecideProposal(conversationId);
   const pending = proposal.status === 'pending';
   const decision = decisionFor(proposal, ticks);
@@ -101,7 +101,7 @@ export function ProposalCard({
               <TickRow
                 // Positions are what the server keeps, and names can repeat.
                 key={i}
-                ticked={pending ? isAdditionKept(ticks, i) : null}
+                ticked={pending ? isAdditionKept(proposal, ticks, i) : null}
                 disabled={!canAct}
                 onToggle={() => setTicks((now) => toggleAddition(now, i))}
                 label={[additionLine(item), flag].filter(Boolean).join(', ')}
