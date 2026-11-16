@@ -110,16 +110,18 @@ class Draft:
 
 def _comparable(text: str) -> str:
     # NFKC folds look-alike characters together (full-width digits, "ﬁ"); casefold is
-    # lower-case for every language. Spacing is ignored; every other character counts.
-    return " ".join(unicodedata.normalize("NFKC", text).casefold().split())
+    # lower-case for every language. All spacing is dropped, line breaks too: text from
+    # a PDF splits "fillets, skin on" into "fillets ⏎ , skin on". Every other character
+    # counts.
+    return "".join(unicodedata.normalize("NFKC", text).casefold().split())
 
 
 def appears_in(line: str, text: str) -> bool:
-    """Is this line in the text, word for word (ignoring case and spacing)?
+    """Is this line in the text, character for character (ignoring case and spacing)?
 
-    Strict on purpose. "500 g" for "500g" fails, and that's fine: it only adds a
-    "Check" mark for a person to look at. What it must never do is pass a line the
-    model made up ("50 saffron threads"), and a strict check can't.
+    Strict on purpose. "500 g lamb" for "500g beef" fails, and that's fine: it only
+    adds a "Check" mark for a person to look at. What it must never do is pass a line
+    the model made up ("50 saffron threads"), and a strict check can't.
     """
     wanted = _comparable(line)
     return bool(wanted) and wanted in _comparable(text)

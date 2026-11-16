@@ -68,13 +68,23 @@ async def paste(client: httpx.AsyncClient, issuer: FakeIssuer, text: str) -> htt
         ("500g beef mince", True),
         ("500G  Beef   Mince", True),  # case and spacing don't matter
         ("1 onion, finely chopped", True),
-        ("500 g beef mince", False),  # reworded, even slightly: a person should look
+        ("500 g beef mince", True),  # spacing inside a line doesn't matter either
+        ("1 onion,finely chopped", True),
+        ("500g lamb mince", False),  # reworded: a person should look
         ("50 saffron threads", False),  # invented
         ("", False),
     ],
 )
 def test_a_line_must_appear_in_the_pasted_text(line: str, found: bool) -> None:
     assert appears_in(line, PASTED) is found
+
+
+def test_a_line_split_by_a_print_to_pdf_still_appears() -> None:
+    # What pypdf gives for a RecipeTin print-out: the comma and the rest of the line
+    # land on the next line, so "fillets, skin on" reads "fillets ⏎ , skin on".
+    pdf_text = "4 salmon fillets\n, skin on (Note 1)\n2 tbsp olive oil"
+    assert appears_in("4 salmon fillets, skin on (Note 1)", pdf_text)
+    assert not appears_in("4 salmon fillets, skin off", pdf_text)
 
 
 # --- The route ----------------------------------------------------------------------------
