@@ -34,10 +34,13 @@ class Settings(BaseSettings):
     # Reviews draft Seed Recipes (slice 4c). Start small; the eval decides if it's enough.
     review_model: str = "claude-haiku-5-5"
     embedding_model: str = "voyage-3.5"
-    # The planning agent (slice 5): multi-step tool use, so a stronger model than parsing.
-    agent_model: str = "claude-sonnet-5-5"
-    # How hard it thinks. "medium" is the suggested start for multi-step tool use on
-    # Sonnet 5.5; the agent evals (slice 8) decide whether to change it.
+    # The planning agent (slice 5).
+    # Haiku since slice 8 (ADR 0018): passed the same Scenarios as Sonnet at ~1/13 the
+    # cost. Set AGENT_MODEL=claude-sonnet-5-5 to go back; re-run the evals before
+    # changing it either way.
+    agent_model: str = "claude-haiku-5-5"
+    # How hard it thinks: "medium" (Haiku 5.5's default too), as measured by the slice 8
+    # evals. Re-run them before changing it.
     agent_effort: str = "medium"
     # Langfuse tracing (slice 8b, app/tracing.py). Off unless both keys are set; tests
     # force it off with LANGFUSE_TRACING=false so a local .env never sends test traces.

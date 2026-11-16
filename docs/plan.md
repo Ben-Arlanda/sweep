@@ -468,7 +468,13 @@ Known gaps from 6c: tapping Cooked or Undo swaps the button, so keyboard focus d
 
 1. **Baseline Planner**, graded by the same Graders.
 2. **Langfuse Cloud tracing** (the product owner creates the account first). Done 2026-11-16 on `feature/agent-tracing` with the Langfuse agent skill (ADR 0017): hand-written observations in `app/tracing.py`, our own cost, only our spans exported. The first live trace caught the Anthropic SDK's duplicate generation spans (cost counted twice); fixed and re-audited: Langfuse cost = eval cost exactly.
-3. **Comparison report** (agent / baseline × Sonnet / Haiku) and an ADR on the result.
+3. **Comparison report** (agent / baseline × Sonnet / Haiku) and an ADR on the result. Done 2026-11-16: `evals/baseline.py`, `python -m evals.compare` (with a blind review export). Every approach 36/36 on safety; the baseline is faster and cheaper but picked poor dinners (desserts, sides). **ADR 0018: the agent runs on Haiku 5.5; the baseline is not adopted; plan quality not yet measured.**
+
+**Follow-ups from slice 8** (data, not model):
+- Label recipes by course (main / side / dessert / breakfast) so plans only propose mains for dinner; the baseline's jaffles, crepes and mango rice showed the gap.
+- "New recipes" mode: rank by the Member's taste and Preferences, not only Kitchen Match, so a liked cuisine (Thai) isn't pushed out of the candidates.
+- Optional: an LLM judge for plan quality, calibrated on human ratings (the blind review page collects them).
+- Optional, experiment E5: other providers (Bedrock, GPT) on the same evals.
 
 Experiments (`experiments/`, any time after slice 4):
 
