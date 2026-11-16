@@ -1485,6 +1485,53 @@
         ]
       }
     },
+    "/recipes/imports/paste": {
+      "post": {
+        "tags": [
+          "recipes"
+        ],
+        "summary": "Read Paste",
+        "description": "The Paste door: one model call reads the text into a draft. Stores nothing.",
+        "operationId": "read_paste_recipes_imports_paste_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasteIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportDraftOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
     "/recipes/imported/{recipe_id}": {
       "put": {
         "tags": [
@@ -3014,6 +3061,97 @@
         ],
         "title": "DraftEvent"
       },
+      "DraftLineOut": {
+        "properties": {
+          "raw_text": {
+            "type": "string",
+            "title": "Raw Text"
+          },
+          "ingredient": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IngredientOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "quantity": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quantity"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          },
+          "base_quantity": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Base Quantity"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "optional": {
+            "type": "boolean",
+            "title": "Optional"
+          },
+          "needs_review": {
+            "type": "boolean",
+            "title": "Needs Review"
+          },
+          "parse_method": {
+            "$ref": "#/components/schemas/ParseMethod"
+          },
+          "check": {
+            "type": "boolean",
+            "title": "Check"
+          }
+        },
+        "type": "object",
+        "required": [
+          "raw_text",
+          "ingredient",
+          "quantity",
+          "unit",
+          "base_quantity",
+          "note",
+          "optional",
+          "needs_review",
+          "parse_method",
+          "check"
+        ],
+        "title": "DraftLineOut"
+      },
       "DraftMealOut": {
         "properties": {
           "recipe_id": {
@@ -3229,6 +3367,88 @@
           "created_at"
         ],
         "title": "HouseholdOut"
+      },
+      "ImportDraftOut": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "servings": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Servings"
+          },
+          "total_minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Total Minutes"
+          },
+          "course": {
+            "$ref": "#/components/schemas/Course"
+          },
+          "cuisine": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cuisine"
+          },
+          "lines": {
+            "items": {
+              "$ref": "#/components/schemas/DraftLineOut"
+            },
+            "type": "array",
+            "title": "Lines"
+          },
+          "method": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Method"
+          },
+          "more_recipes": {
+            "type": "boolean",
+            "title": "More Recipes"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "servings",
+          "total_minutes",
+          "course",
+          "cuisine",
+          "lines",
+          "method",
+          "more_recipes"
+        ],
+        "title": "ImportDraftOut",
+        "description": "What a door read, for the review screen. Nothing is stored until Save."
       },
       "ImportedLineIn": {
         "properties": {
@@ -3805,6 +4025,22 @@
         ],
         "title": "ParseMethod",
         "description": "How a recipe line was linked to its Ingredient."
+      },
+      "PasteIn": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "maxLength": 20000,
+            "minLength": 1,
+            "title": "Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "title": "PasteIn",
+        "description": "Pasted recipe text. Line breaks are kept: they're how recipes are laid out."
       },
       "Place": {
         "type": "string",

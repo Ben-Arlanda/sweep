@@ -13,15 +13,19 @@ from app.idempotency import IdempotencyKeyHeader
 from app.models import Course
 from app.routes.common import idempotent
 from app.schemas import (
+    DraftLineOut,
+    ImportDraftOut,
     ImportedLineIn,
     ImportedRecipeIn,
     ImportedRecipeOut,
     LinesIn,
+    PasteIn,
     RecipeIngredientOut,
     RecipeOut,
     RecipeSummaryOut,
 )
-from app.services import imported_recipes, recipes
+from app.services import imported_recipes, recipe_import, recipes
+from app.services.recipe_import import RecipeReader
 from app.services.recipes import SEARCH_LIMIT
 
 router = APIRouter(prefix="/recipes", tags=["recipes"])
@@ -64,7 +68,7 @@ async def list_or_search(
     ]
 
 
-# Before /{recipe_id}: routes match in order, and "cuisines", "imported" and "lines" aren't ids.
+# Before GET /{recipe_id}: routes match in order, and "cuisines" and "imported" aren't ids.
 @router.get("/cuisines")
 async def list_cuisines(ctx: MemberDep, session: SessionDep) -> list[str]:
     return await recipes.cuisines(session, ctx.household.id)
@@ -91,6 +95,31 @@ async def read_lines(
         session, ctx.household.id, [ImportedLineIn(raw_text=t) for t in body.lines]
     )
     return [RecipeIngredientOut.model_validate(line) for line in found]
+
+
+@router.post("/imports/paste")
+async def read_paste(
+    body: PasteIn, request: Request, ctx: MemberDep, session: SessionDep
+) -> ImportDraftOut:
+    """The Paste door: one model call reads the text into a draft. Stores nothing."""
+    reader = cast(RecipeReader | None, request.app.state.recipe_reader)
+    if reader is None:
+        raise errors.Unavailable("Pasting recipes isn't configured on this server")
+    draft = await recipe_import.from_paste(session, ctx.household.id, reader, body.text)
+    lines = [
+        DraftLineOut(**RecipeIngredientOut.model_validate(line).model_dump(), check=check)
+        for line, check in zip(draft.lines, draft.check, strict=True)
+    ]
+    return ImportDraftOut(
+        title=draft.title,
+        servings=draft.servings,
+        total_minutes=draft.total_minutes,
+        course=draft.course,
+        cuisine=draft.cuisine,
+        lines=lines,
+        method=draft.method,
+        more_recipes=draft.more_recipes,
+    )
 
 
 @router.post("/imported", status_code=status.HTTP_201_CREATED, response_model=RecipeOut)

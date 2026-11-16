@@ -14,7 +14,7 @@ from app.auth import TokenVerifier
 from app.config import Settings, settings
 from app.db import make_engine, make_sessionmaker
 from app.embeddings import Embedder, VoyageEmbedder
-from app.llm import ClaudeAgentModel
+from app.llm import ClaudeAgentModel, ClaudeRecipeReader
 from app.realtime import Hub, listen
 from app.routes import (
     conversations,
@@ -28,6 +28,7 @@ from app.routes import (
     shopping_lists,
 )
 from app.services.conversations import Agent
+from app.services.recipe_import import RecipeReader
 
 # The one place domain errors become HTTP status codes.
 ERROR_STATUS: dict[type[errors.DomainError], int] = {
@@ -76,14 +77,22 @@ def default_agent_model(app_settings: Settings) -> AgentModel | None:
     )
 
 
+def default_recipe_reader(app_settings: Settings) -> RecipeReader | None:
+    key = app_settings.anthropic_api_key
+    if key is None:
+        return None  # Paste is switched off; typing a recipe still works
+    return ClaudeRecipeReader(key.get_secret_value(), app_settings.import_model)
+
+
 def create_app(
     app_settings: Settings | None = None,
     token_verifier: TokenVerifier | None = None,
     embedder: Embedder | None = None,
     agent_model: AgentModel | None = None,
+    recipe_reader: RecipeReader | None = None,
 ) -> FastAPI:
     """Build the app. Tests pass their own settings, a verifier that trusts a test key,
-    a fake embedder and a scripted agent model."""
+    a fake embedder, a scripted agent model and a scripted recipe reader."""
     app_settings = app_settings or settings
     # Creating an engine doesn't connect yet; the first query does.
     engine = make_engine(app_settings.database_url)
@@ -116,6 +125,7 @@ def create_app(
         app_settings.auth_issuers
     )
     app.state.embedder = embedder or default_embedder(app_settings)
+    app.state.recipe_reader = recipe_reader or default_recipe_reader(app_settings)
     checkpoints = Checkpoints(app_settings.database_url)
     model = agent_model or default_agent_model(app_settings)
     app.state.agent = (

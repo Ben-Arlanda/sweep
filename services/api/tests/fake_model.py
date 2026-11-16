@@ -69,3 +69,19 @@ class ScriptedModel:
         usage = Usage(model=self.name, input_tokens=1000, output_tokens=100)
         stop = self.stop_reasons.get(len(self.calls) - 1)
         return ModelTurn(content, stop or ("tool_use" if uses_tools else "end_turn"), usage)
+
+
+class ScriptedReader:
+    """Stands in for the recipe reader (the Paste door's one Haiku call). Queue answers
+    in `answers`; None means "no usable answer" (refused, cut off, malformed). An
+    unscripted call fails the test, so no test can reach the real Claude."""
+
+    def __init__(self) -> None:
+        self.answers: list[Any] = []  # RecipeReading | None, in call order
+        self.calls: list[tuple[str, list[str]]] = []  # (text, cuisines) per call
+
+    async def read(self, text: str, cuisines: Sequence[str]) -> tuple[Any, Usage]:
+        self.calls.append((text, list(cuisines)))
+        if not self.answers:
+            raise AssertionError("the recipe reader was called more times than scripted")
+        return self.answers.pop(0), Usage(model="scripted", input_tokens=500, output_tokens=200)

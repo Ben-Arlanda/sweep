@@ -396,6 +396,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/recipes/imports/paste": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Read Paste
+         * @description The Paste door: one model call reads the text into a draft. Stores nothing.
+         */
+        post: operations["read_paste_recipes_imports_paste_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/recipes/imported/{recipe_id}": {
         parameters: {
             query?: never;
@@ -835,6 +855,27 @@ export interface components {
             type: "draft";
             draft: components["schemas"]["DraftOut"];
         };
+        /** DraftLineOut */
+        DraftLineOut: {
+            /** Raw Text */
+            raw_text: string;
+            ingredient: components["schemas"]["IngredientOut"] | null;
+            /** Quantity */
+            quantity: string | null;
+            /** Unit */
+            unit: string | null;
+            /** Base Quantity */
+            base_quantity: string | null;
+            /** Note */
+            note: string | null;
+            /** Optional */
+            optional: boolean;
+            /** Needs Review */
+            needs_review: boolean;
+            parse_method: components["schemas"]["ParseMethod"];
+            /** Check */
+            check: boolean;
+        };
         /** DraftMealOut */
         DraftMealOut: {
             /** Recipe Id */
@@ -919,6 +960,27 @@ export interface components {
              * Format: date-time
              */
             created_at: string;
+        };
+        /**
+         * ImportDraftOut
+         * @description What a door read, for the review screen. Nothing is stored until Save.
+         */
+        ImportDraftOut: {
+            /** Title */
+            title: string;
+            /** Servings */
+            servings: number | null;
+            /** Total Minutes */
+            total_minutes: number | null;
+            course: components["schemas"]["Course"];
+            /** Cuisine */
+            cuisine: string | null;
+            /** Lines */
+            lines: components["schemas"]["DraftLineOut"][];
+            /** Method */
+            method: string[] | null;
+            /** More Recipes */
+            more_recipes: boolean;
         };
         /** ImportedLineIn */
         ImportedLineIn: {
@@ -1126,6 +1188,14 @@ export interface components {
          * @enum {string}
          */
         ParseMethod: "rule" | "llm" | "member";
+        /**
+         * PasteIn
+         * @description Pasted recipe text. Line breaks are kept: they're how recipes are laid out.
+         */
+        PasteIn: {
+            /** Text */
+            text: string;
+        };
         /**
          * Place
          * @enum {string}
@@ -2316,6 +2386,39 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["RecipeIngredientOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    read_paste_recipes_imports_paste_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PasteIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ImportDraftOut"];
                 };
             };
             /** @description Validation Error */

@@ -563,3 +563,28 @@ class ImportedRecipeIn(BaseModel):
     cuisine: Cuisine | None = None
     lines: list[ImportedLineIn] = Field(min_length=1, max_length=60)
     method: list[Annotated[str, _name(2000)]] | None = Field(default=None, max_length=40)
+
+
+class PasteIn(BaseModel):
+    """Pasted recipe text. Line breaks are kept: they're how recipes are laid out."""
+
+    text: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=20_000)]
+
+
+class DraftLineOut(RecipeIngredientOut):
+    # True: the line isn't in the pasted text word for word, so the review screen marks
+    # it "Check". The model may have reworded it, or made it up.
+    check: bool
+
+
+class ImportDraftOut(BaseModel):
+    """What a door read, for the review screen. Nothing is stored until Save."""
+
+    title: str
+    servings: int | None  # None: the Member fills it in (Save needs it)
+    total_minutes: int | None
+    course: Course  # Sweep's guess, pre-selected and labelled as one
+    cuisine: str | None
+    lines: list[DraftLineOut]
+    method: list[str] | None
+    more_recipes: bool  # "This has more than one recipe: we've taken the first."

@@ -31,7 +31,7 @@ from app.embeddings import HashingEmbedder
 from app.main import create_app
 from app.services import recipes
 from app.services.ingredient_lines import index_from_db
-from tests.fake_model import ScriptedModel
+from tests.fake_model import ScriptedModel, ScriptedReader
 
 # Never send traces from tests, whatever keys a local .env holds (app/tracing.py).
 os.environ["LANGFUSE_TRACING"] = "false"
@@ -122,8 +122,14 @@ def anyio_backend() -> str:
 
 
 @pytest.fixture
+def reader() -> ScriptedReader:
+    """The Paste door's model, scripted. Tests queue answers on it."""
+    return ScriptedReader()
+
+
+@pytest.fixture
 async def client(
-    database_url: str, db: Engine, fake_issuer: FakeIssuer
+    database_url: str, db: Engine, fake_issuer: FakeIssuer, reader: ScriptedReader
 ) -> AsyncIterator[httpx.AsyncClient]:
     app = create_app(
         Settings(database_url=database_url),
@@ -131,6 +137,7 @@ async def client(
         embedder=HashingEmbedder(),
         # Never the real Claude (a local .env may hold a key). Any call fails the test.
         agent_model=ScriptedModel(),
+        recipe_reader=reader,
     )
     transport = httpx.ASGITransport(app=app)
     async with httpx.AsyncClient(transport=transport, base_url="http://test") as http:
@@ -170,6 +177,7 @@ def client_for(database_url: str, db: Engine, fake_issuer: FakeIssuer) -> Client
             token_verifier=fake_issuer.verifier(),
             embedder=HashingEmbedder(),
             agent_model=model,
+            recipe_reader=ScriptedReader(),
         )
         transport = httpx.ASGITransport(app=app)
         async with httpx.AsyncClient(transport=transport, base_url="http://test") as http:
