@@ -78,7 +78,7 @@ UNIT_WORDS: dict[str, str] = {
     **{u: u for u in ("g", "kg", "ml", "l", "cup", "tbsp", "tsp", "bunch", "head", "lb", "oz")},
     **dict.fromkeys(("lbs", "pound", "pounds"), "lb"),
     **dict.fromkeys(("ounce", "ounces"), "oz"),
-    **dict.fromkeys(("gram", "grams"), "g"),
+    **dict.fromkeys(("gram", "grams", "gm", "gms"), "g"),  # "gm": common in Australia
     **dict.fromkeys(("kilo", "kilos", "kilogram", "kilograms"), "kg"),
     **dict.fromkeys(("millilitre", "millilitres", "milliliter", "milliliters"), "ml"),
     **dict.fromkeys(("litre", "litres", "liter", "liters"), "l"),
@@ -110,6 +110,18 @@ CONTAINERS = {"can", "cans", "tin", "tins", "jar", "jars", "packet", "packets", 
 PREPARED = {"cooked", "leftover"}
 # Things recipes list but nobody shops for.
 NOT_SHOPPED = {"water", "ice", "ice cubes"}
+# For the second look only (see _second_look). Preparation, which recipe websites
+# often write without a comma ("1 onion finely chopped")...
+PREP_WORDS = {
+    *("chopped", "diced", "sliced", "crushed", "grated", "minced", "peeled", "zested"),
+    *("juiced", "halved", "quartered", "torn", "trimmed", "drained", "rinsed", "shredded"),
+    *("cut", "cleaned", "softened", "melted", "beaten", "deseeded", "picked", "washed"),
+    *("finely", "roughly", "thinly", "coarsely", "freshly"),
+}
+# ...and loose words in front of the name: "½ a lemon", "handful of ice", "frozen".
+# Not plain DESCRIPTORS: "frozen peas" is a starter, and the first look must find it.
+LOOSE_WORDS = {"a", "an", "and", "of", "handful", "handfuls", "pinch", "knob", "splash", "dash"}
+LOOSE_WORDS |= {"frozen", "chilled", "mixed"}  # "mixed herbs" is found by the first look
 
 
 def core_name(text: str) -> str:
@@ -217,6 +229,13 @@ def parse_line(text: str, index: IngredientIndex) -> ParsedLine:
         if len(words) > 1 and words[0] in PREPARED:
             ingredient = index.lookup(" ".join(words[1:]))
             prepared = ingredient is not None
+    if ingredient is None:
+        second = _second_look(head, index, can_take_unit=quantity is not None and unit is None)
+        if second is not None:
+            head, ingredient, extra_note, trailing_unit = second
+            unit = trailing_unit or unit
+            if extra_note:
+                notes.insert(0, extra_note)
 
     return ParsedLine(
         raw_text=raw,
@@ -229,6 +248,62 @@ def parse_line(text: str, index: IngredientIndex) -> ParsedLine:
         method=ParseMethod.RULE,
         prepared=prepared,
     )
+
+
+def _clean_word(word: str) -> str:
+    return word.lower().strip(".;:")
+
+
+def _second_look(
+    head: str, index: IngredientIndex, *, can_take_unit: bool
+) -> tuple[str, KnownIngredient | None, str | None, str | None] | None:
+    """Only for a line the first look couldn't match. Recipe websites write lines our
+    rules never saw ("2 garlic cloves crushed", "1 cup frozen spinach or kale"), so try
+    simpler readings of the name, still only exact names and aliases: no guessing.
+
+    Returns (name, Ingredient or None for something nobody shops for, note, unit from a
+    trailing measure), or None if nothing matched.
+    """
+    words = head.split()
+    leading: list[str] = []  # "finely grated parmesan": the preparation goes to the note
+    while words and (
+        _clean_word(words[0]) in PREP_WORDS
+        or _clean_word(words[0]) in LOOSE_WORDS
+        or _clean_word(words[0]) in DESCRIPTORS
+    ):
+        word = words.pop(0)
+        if _clean_word(word) in PREP_WORDS:
+            leading.append(word)
+    trailing: list[str] = []  # "onion finely chopped", "parmesan to serve"
+    for i, word in enumerate(words[1:], start=1):
+        if _clean_word(word) in PREP_WORDS or _clean_word(word) == "to":
+            words, trailing = words[:i], words[i:]
+            break
+    note = "; ".join(part for part in (" ".join(leading), " ".join(trailing)) if part) or None
+
+    name = " ".join(words).replace("-", " ")  # "extra-virgin" → "extra virgin"
+    candidates = [name]
+    if " or " in name:  # "spinach or kale"; "chicken or vegetable stock" → chicken stock
+        first, second = name.split(" or ", 1)
+        rest = second.split()
+        if len(first.split()) == 1 and len(rest) > 1:
+            candidates += [f"{first} {' '.join(rest[1:])}", second, first]
+        else:
+            candidates += [first, second]
+
+    for candidate in candidates:
+        parts = candidate.split()
+        measure = TRAILING_MEASURES.get(_clean_word(parts[-1])) if len(parts) > 1 else None
+        if measure is not None:  # "garlic cloves" → garlic, in cloves (not bulbs)
+            found = index.lookup(" ".join(parts[:-1]))
+            if found is not None:
+                return " ".join(parts[:-1]), found, note, measure if can_take_unit else None
+        found = index.lookup(candidate)
+        if found is not None:
+            return candidate, found, note, None
+        if core_name(candidate) in NOT_SHOPPED:
+            return candidate, None, note, None
+    return None
 
 
 # --- LLM fallback ---------------------------------------------------------------------

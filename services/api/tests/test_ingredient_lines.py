@@ -82,6 +82,61 @@ def test_converts_to_the_ingredients_own_unit_only_when_honest(
     assert parse_line(text, INDEX).base_quantity == base_quantity
 
 
+# Real recipe sites write lines our Seed Recipes never do (found by evals.link_import,
+# 2026-11-16: 31 of 36 lines from four sites were Not linked). Reworded here, same shapes.
+@pytest.mark.parametrize(
+    ("text", "ingredient", "quantity", "unit", "note"),
+    [
+        # Preparation words without a comma
+        ("1 onion finely chopped", "onion", D("1"), None, "finely chopped"),
+        ("2 garlic cloves crushed", "garlic", D("2"), "clove", "crushed"),  # cloves, not bulbs
+        ("1 large zucchini peeled into ribbons", "zucchini", D("1"), None, "peeled into ribbons"),
+        ("½ a lemon zested and juiced", "lemons", D("0.5"), None, "zested and juiced"),
+        # ...or in front of the name
+        ("1 cup finely grated parmesan", "parmesan", D("1"), "cup", "finely grated"),
+        ("grated parmesan to serve", "parmesan", None, None, "grated; to serve"),
+        # Hyphens, frozen, "X or Y", loose measures
+        ("60 ml extra-virgin olive oil", "olive oil", D("60"), "ml", None),
+        ("½ frozen banana", "bananas", D("0.5"), None, None),
+        ("1 cup frozen spinach or kale", "baby spinach", D("1"), "cup", None),
+        ("3 cups chicken or vegetable stock", "chicken stock", D("3"), "cup", None),
+        ("large handful parsley leaves chopped", "parsley", None, None, "chopped"),
+        ("2 tbsp basil leaves", "basil", D("2"), "tbsp", None),
+        # New starters and aliases (2026-11-16)
+        ("1 tsp fennel seeds", "fennel seeds", D("1"), "tsp", None),
+        ("1 kg baby calamari", "squid", D("1"), "kg", None),
+        ("1 cup almond milk", "almond milk", D("1"), "cup", None),
+        ("½ tablespoon almond butter", "almond butter", D("0.5"), "tbsp", None),
+        ("1 tsp chia seeds", "chia seeds", D("1"), "tsp", None),
+        ("1 cup instant polenta", "polenta", D("1"), "cup", None),
+        ("70 g greek-style yoghurt", "greek yoghurt", D("70"), "g", None),
+        ("80 gm mixed olives", "kalamata olives", D("80"), "g", None),  # "gm" for grams
+        ("salt flakes, to serve", "salt", None, None, "to serve"),
+        ("cooking oil spray", "vegetable oil", None, None, None),
+    ],
+)
+def test_reads_lines_the_way_recipe_websites_write_them(
+    text: str, ingredient: str, quantity: Decimal | None, unit: str | None, note: str | None
+) -> None:
+    line = parse_line(text, INDEX)
+    assert line.ingredient is not None, f"no Ingredient for {text!r}"
+    assert line.ingredient.name == ingredient
+    assert (line.quantity, line.unit, line.note) == (quantity, unit, note)
+
+
+def test_the_new_rules_only_run_when_the_old_ones_found_nothing() -> None:
+    # "frozen peas" is a starter: stripping "frozen" first would have lost it.
+    assert parse_line("1 cup frozen peas", INDEX).ingredient.name == "frozen peas"  # type: ignore[union-attr]
+    # Canned products keep their identity: crushed tomatoes come in a can.
+    crushed = parse_line("2 x 400g cans crushed tomatoes", INDEX)
+    assert crushed.ingredient is not None and crushed.ingredient.name == "canned tomatoes"
+    # Loose words go, and what's left can still be something nobody shops for.
+    ice = parse_line("handful of ice", INDEX)
+    assert (ice.ingredient, ice.needs_review) == (None, False)
+    # Still no guessing: an unknown thing stays unknown.
+    assert parse_line("2 tbsp finely chopped unobtainium", INDEX).needs_review
+
+
 def test_flags_lines_it_cannot_match_instead_of_guessing() -> None:
     line = parse_line("1 cup unobtainium shavings", INDEX)
     assert line.ingredient is None

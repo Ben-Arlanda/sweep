@@ -57,7 +57,7 @@ _MEAT = (
 )
 _SEAFOOD = (
     "salmon fillet, prawns, canned tuna, white fish fillets, cooked prawns, fish sauce, "
-    "oyster sauce, dashi stock, worcestershire sauce"  # worcestershire has anchovies
+    "oyster sauce, dashi stock, worcestershire sauce, squid"  # worcestershire: anchovies
 )
 _DAIRY = (
     "milk, butter, cheddar cheese, parmesan, mozzarella, feta, greek yoghurt, "

@@ -190,6 +190,10 @@ class SafeFetcher:
                             "That link redirects somewhere that isn't https."
                         ) from error
                     continue
+                if response.status_code in (401, 403, 429):  # often a bot wall (Cloudflare)
+                    raise errors.InvalidInput(
+                        "That site doesn't let apps read its pages. Paste the recipe text instead."
+                    )
                 if response.status_code != 200:
                     raise errors.InvalidInput(
                         f"That page couldn't be opened ({response.status_code})."

@@ -10,8 +10,10 @@ sites publish, and how many of their lines our matcher can link.
 Per link it prints what the Link door would put on the review screen, each line's
 Ingredient (or "Not linked"), and anything that went wrong. With --keyed, each link in
 evals/link_import.jsonl is graded against its answer key:
-    {"url": "...", "title": "...", "servings": 4, "total_minutes": 135, "lines": 9}
-(any of the keys after url may be left out).
+    {"url": "...", "title": "...", "servings": 4, "total_minutes": 135, "lines": 9,
+     "max_not_linked": 1}
+(any of the keys after url may be left out). Only facts go in a key, never the
+recipe's text.
 
 Results go to evals/results/ (git-ignored) as JSON. The pages themselves are never
 saved: they're someone else's work.
@@ -82,6 +84,9 @@ def grade(result: dict[str, Any], key: dict[str, Any]) -> list[str]:
             misses.append(f"{field}: got {result.get(field)!r}, expected {key[field]!r}")
     if "lines" in key and len(result.get("lines", [])) != key["lines"]:
         misses.append(f"lines: got {len(result.get('lines', []))}, expected {key['lines']}")
+    not_linked = sum(line["not_linked"] for line in result.get("lines", []))
+    if "max_not_linked" in key and not_linked > key["max_not_linked"]:
+        misses.append(f"Not linked: {not_linked}, at most {key['max_not_linked']}")
     return misses
 
 

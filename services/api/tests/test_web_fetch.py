@@ -210,6 +210,9 @@ async def test_a_page_too_big_is_refused_without_reading_it_all() -> None:
             "web page",
         ),
         (httpx.Response(404), "couldn't be opened"),
+        # A bot wall (evals.link_import found Cloudflare's on a real site): we don't get
+        # around it, we point to Paste.
+        (httpx.Response(403, headers={"cf-mitigated": "challenge"}), "Paste the recipe text"),
     ],
 )
 async def test_only_html_pages_that_load_are_read(answer: httpx.Response, message: str) -> None:

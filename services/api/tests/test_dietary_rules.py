@@ -30,6 +30,12 @@ def test_every_flagged_name_is_a_real_ingredient() -> None:
     assert set(CHECK_LABEL) - known == set()
 
 
+def test_squid_is_seafood() -> None:
+    # Added with the link-import starters (2026-11-16). A starter with no flags counts
+    # as fine for every diet, so a new animal food must be flagged when it's added.
+    assert "seafood" in CONTAINS["squid"]
+
+
 def test_eggs_are_not_dairy() -> None:
     # They sit in the dairy aisle, which is exactly how this mistake gets made.
     assert "dairy" not in CONTAINS["eggs"]

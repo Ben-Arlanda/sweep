@@ -96,8 +96,8 @@ async def test_paste_returns_a_draft_for_the_review_screen_and_stores_nothing(
     )
     assert (draft["course"], draft["cuisine"], draft["more_recipes"]) == ("main", "indian", False)
     names = [(line["ingredient"] or {}).get("name") for line in draft["lines"]]
-    assert names == ["beef mince", "onion", None]  # no "crushed tomatoes" starter: Not linked
-    assert [line["needs_review"] for line in draft["lines"]] == [False, False, True]
+    assert names == ["beef mince", "onion", "canned tomatoes"]
+    assert [line["needs_review"] for line in draft["lines"]] == [False, False, False]
     assert [line["check"] for line in draft["lines"]] == [False, False, False]
     assert draft["method"] == ["Brown the mince.", "Add the onion and tomatoes, simmer 2 hours."]
 
