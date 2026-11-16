@@ -282,23 +282,6 @@ async def search(
     return [(recipe, 1 - float(d)) for recipe, d in rows]
 
 
-async def imported(
-    session: AsyncSession, household_id: uuid.UUID
-) -> list[tuple[Recipe, diet.RuleCheck]]:
-    """This Household's Imported Recipes, newest first, each with its Rule check.
-
-    Not filtered by the Rules, unlike everything else here: this is the Household's own
-    list ("Your recipes"), so a recipe the Rules hide still shows, with the reason.
-    """
-    rules = await diet.get_rules(session, household_id)
-    found = await session.execute(
-        select(Recipe)
-        .where(Recipe.household_id == household_id, Recipe.kind == RecipeKind.IMPORTED)
-        .order_by(Recipe.created_at.desc(), Recipe.id)
-    )
-    return [(r, diet.check_recipe(r, rules)) for r in found.scalars()]
-
-
 async def get_recipe(
     session: AsyncSession, household_id: uuid.UUID, recipe_id: uuid.UUID
 ) -> Recipe:

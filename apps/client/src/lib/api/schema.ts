@@ -351,6 +351,69 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/recipes/imported": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Imported
+         * @description "Your recipes": every one, even those the Dietary Rules hide, with the reason.
+         */
+        get: operations["list_imported_recipes_imported_get"];
+        put?: never;
+        /**
+         * Save Imported
+         * @description Save from the review screen (every door ends here).
+         */
+        post: operations["save_imported_recipes_imported_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/recipes/lines": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Read Lines
+         * @description Read and match ingredient lines for the review screen. Stores nothing, uses no AI,
+         *     so it has no limit beyond the request's size.
+         */
+        post: operations["read_lines_recipes_lines_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/recipes/imported/{recipe_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Update Imported */
+        put: operations["update_imported_recipes_imported__recipe_id__put"];
+        post?: never;
+        /** Delete Imported */
+        delete: operations["delete_imported_recipes_imported__recipe_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/recipes/{recipe_id}": {
         parameters: {
             query?: never;
@@ -857,6 +920,61 @@ export interface components {
              */
             created_at: string;
         };
+        /** ImportedLineIn */
+        ImportedLineIn: {
+            /** Raw Text */
+            raw_text: string;
+            /** Ingredient Id */
+            ingredient_id?: string | null;
+        };
+        /**
+         * ImportedRecipeIn
+         * @description What the review screen saves (POST) or replaces (PUT). Its Save rules: a title,
+         *     servings, a Course and one line. The marks ("Check", "Not linked") never block.
+         */
+        ImportedRecipeIn: {
+            /** Title */
+            title: string;
+            /** Servings */
+            servings: number;
+            /** Total Minutes */
+            total_minutes?: number | null;
+            course: components["schemas"]["Course"];
+            /** Cuisine */
+            cuisine?: string | null;
+            /** Lines */
+            lines: components["schemas"]["ImportedLineIn"][];
+            /** Method */
+            method?: string[] | null;
+        };
+        /**
+         * ImportedRecipeOut
+         * @description One of "Your recipes". `rule_breaks` empty = plannable; otherwise why the Dietary
+         *     Rules hide it from search and plans: "satay sauce (couldn't check)".
+         */
+        ImportedRecipeOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            kind: components["schemas"]["RecipeKind"];
+            /** Title */
+            title: string;
+            /** Summary */
+            summary: string;
+            /** Cuisine */
+            cuisine: string | null;
+            course: components["schemas"]["Course"];
+            /** Servings */
+            servings: number;
+            /** Total Minutes */
+            total_minutes: number | null;
+            /** Score */
+            score?: number | null;
+            /** Rule Breaks */
+            rule_breaks: string[];
+        };
         /** IngredientIn */
         IngredientIn: {
             /** Name */
@@ -948,6 +1066,14 @@ export interface components {
             /** Staples */
             staples: components["schemas"]["StapleOut"][];
         };
+        /**
+         * LinesIn
+         * @description Ingredient lines to read for the review screen. Nothing is stored.
+         */
+        LinesIn: {
+            /** Lines */
+            lines: string[];
+        };
         /** MeOut */
         MeOut: {
             member: components["schemas"]["MemberOut"];
@@ -994,6 +1120,12 @@ export interface components {
              */
             joined_at: string;
         };
+        /**
+         * ParseMethod
+         * @description How a recipe line was linked to its Ingredient.
+         * @enum {string}
+         */
+        ParseMethod: "rule" | "llm" | "member";
         /**
          * Place
          * @enum {string}
@@ -1163,6 +1295,7 @@ export interface components {
             optional: boolean;
             /** Needs Review */
             needs_review: boolean;
+            parse_method: components["schemas"]["ParseMethod"];
         };
         /**
          * RecipeKind
@@ -2104,6 +2237,162 @@ export interface operations {
                 };
                 content: {
                     "application/json": string[];
+                };
+            };
+        };
+    };
+    list_imported_recipes_imported_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ImportedRecipeOut"][];
+                };
+            };
+        };
+    };
+    save_imported_recipes_imported_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ImportedRecipeIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecipeOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    read_lines_recipes_lines_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LinesIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecipeIngredientOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_imported_recipes_imported__recipe_id__put: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                recipe_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ImportedRecipeIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecipeOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_imported_recipes_imported__recipe_id__delete: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                recipe_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

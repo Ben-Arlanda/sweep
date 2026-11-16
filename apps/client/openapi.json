@@ -1345,6 +1345,265 @@
         ]
       }
     },
+    "/recipes/imported": {
+      "get": {
+        "tags": [
+          "recipes"
+        ],
+        "summary": "List Imported",
+        "description": "\"Your recipes\": every one, even those the Dietary Rules hide, with the reason.",
+        "operationId": "list_imported_recipes_imported_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImportedRecipeOut"
+                  },
+                  "title": "Response List Imported Recipes Imported Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "recipes"
+        ],
+        "summary": "Save Imported",
+        "description": "Save from the review screen (every door ends here).",
+        "operationId": "save_imported_recipes_imported_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportedRecipeIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipeOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipes/lines": {
+      "post": {
+        "tags": [
+          "recipes"
+        ],
+        "summary": "Read Lines",
+        "description": "Read and match ingredient lines for the review screen. Stores nothing, uses no AI,\nso it has no limit beyond the request's size.",
+        "operationId": "read_lines_recipes_lines_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LinesIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/RecipeIngredientOut"
+                  },
+                  "type": "array",
+                  "title": "Response Read Lines Recipes Lines Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/recipes/imported/{recipe_id}": {
+      "put": {
+        "tags": [
+          "recipes"
+        ],
+        "summary": "Update Imported",
+        "operationId": "update_imported_recipes_imported__recipe_id__put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "recipe_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Recipe Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportedRecipeIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipeOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "recipes"
+        ],
+        "summary": "Delete Imported",
+        "operationId": "delete_imported_recipes_imported__recipe_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "recipe_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Recipe Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/recipes/{recipe_id}": {
       "get": {
         "tags": [
@@ -2971,6 +3230,194 @@
         ],
         "title": "HouseholdOut"
       },
+      "ImportedLineIn": {
+        "properties": {
+          "raw_text": {
+            "type": "string",
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Raw Text"
+          },
+          "ingredient_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ingredient Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "raw_text"
+        ],
+        "title": "ImportedLineIn"
+      },
+      "ImportedRecipeIn": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Title"
+          },
+          "servings": {
+            "type": "integer",
+            "maximum": 50.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Servings"
+          },
+          "total_minutes": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 1440.0,
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Total Minutes"
+          },
+          "course": {
+            "$ref": "#/components/schemas/Course"
+          },
+          "cuisine": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 40,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cuisine"
+          },
+          "lines": {
+            "items": {
+              "$ref": "#/components/schemas/ImportedLineIn"
+            },
+            "type": "array",
+            "maxItems": 60,
+            "minItems": 1,
+            "title": "Lines"
+          },
+          "method": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "maxLength": 2000,
+                  "minLength": 1
+                },
+                "type": "array",
+                "maxItems": 40
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Method"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "servings",
+          "course",
+          "lines"
+        ],
+        "title": "ImportedRecipeIn",
+        "description": "What the review screen saves (POST) or replaces (PUT). Its Save rules: a title,\nservings, a Course and one line. The marks (\"Check\", \"Not linked\") never block."
+      },
+      "ImportedRecipeOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/RecipeKind"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary"
+          },
+          "cuisine": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cuisine"
+          },
+          "course": {
+            "$ref": "#/components/schemas/Course"
+          },
+          "servings": {
+            "type": "integer",
+            "title": "Servings"
+          },
+          "total_minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Total Minutes"
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score"
+          },
+          "rule_breaks": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Rule Breaks"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "title",
+          "summary",
+          "cuisine",
+          "course",
+          "servings",
+          "total_minutes",
+          "rule_breaks"
+        ],
+        "title": "ImportedRecipeOut",
+        "description": "One of \"Your recipes\". `rule_breaks` empty = plannable; otherwise why the Dietary\nRules hide it from search and plans: \"satay sauce (couldn't check)\"."
+      },
       "IngredientIn": {
         "properties": {
           "name": {
@@ -3243,6 +3690,27 @@
         ],
         "title": "KitchenOut"
       },
+      "LinesIn": {
+        "properties": {
+          "lines": {
+            "items": {
+              "type": "string",
+              "maxLength": 300,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 60,
+            "minItems": 1,
+            "title": "Lines"
+          }
+        },
+        "type": "object",
+        "required": [
+          "lines"
+        ],
+        "title": "LinesIn",
+        "description": "Ingredient lines to read for the review screen. Nothing is stored."
+      },
       "MeOut": {
         "properties": {
           "member": {
@@ -3327,6 +3795,16 @@
           "joined_at"
         ],
         "title": "MemberOut"
+      },
+      "ParseMethod": {
+        "type": "string",
+        "enum": [
+          "rule",
+          "llm",
+          "member"
+        ],
+        "title": "ParseMethod",
+        "description": "How a recipe line was linked to its Ingredient."
       },
       "Place": {
         "type": "string",
@@ -3825,6 +4303,9 @@
           "needs_review": {
             "type": "boolean",
             "title": "Needs Review"
+          },
+          "parse_method": {
+            "$ref": "#/components/schemas/ParseMethod"
           }
         },
         "type": "object",
@@ -3836,7 +4317,8 @@
           "base_quantity",
           "note",
           "optional",
-          "needs_review"
+          "needs_review",
+          "parse_method"
         ],
         "title": "RecipeIngredientOut"
       },

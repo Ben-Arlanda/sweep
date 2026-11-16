@@ -24,6 +24,7 @@ const line = (over: Partial<Line> = {}): Line => ({
   note: null,
   optional: false,
   needs_review: false,
+  parse_method: 'rule',
   ...over,
 });
 

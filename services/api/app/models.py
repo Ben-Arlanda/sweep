@@ -409,12 +409,15 @@ class Course(StrEnum):
 
 class RecipeKind(StrEnum):
     SEED = "seed"  # written for Sweep, shared by every Household
-    IMPORTED = "imported"  # saved from a URL by one Household (slice 4b)
+    IMPORTED = "imported"  # a Household's favourite: pasted, photo, link, file or typed (4d)
 
 
 class ParseMethod(StrEnum):
-    RULE = "rule"
-    LLM = "llm"
+    """How a recipe line was linked to its Ingredient."""
+
+    RULE = "rule"  # our parsing rules
+    LLM = "llm"  # the model picked it: the review screen marks it "Check"
+    MEMBER = "member"  # a Member chose it in the Link sheet
 
 
 class Recipe(Base):

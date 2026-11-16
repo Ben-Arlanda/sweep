@@ -22,6 +22,7 @@ from app.models import (
     AddedBy,
     ChangeSource,
     Course,
+    ParseMethod,
     PlanMode,
     ProposalStatus,
     RecipeKind,
@@ -284,6 +285,7 @@ class RecipeIngredientOut(BaseModel):
     note: str | None
     optional: bool
     needs_review: bool
+    parse_method: ParseMethod  # "llm" = the review screen's "Check" mark
 
 
 class RecipeOut(RecipeSummaryOut):
@@ -531,3 +533,33 @@ TurnEvent = Annotated[
 
 class SendMessageIn(BaseModel):
     text: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=2000)]
+
+
+# --- Imported Recipes (slice 4d) --------------------------------------------------------
+
+RecipeLine = Annotated[str, _name(300), ONE_LINE]  # an ingredient line, as written
+
+
+class LinesIn(BaseModel):
+    """Ingredient lines to read for the review screen. Nothing is stored."""
+
+    lines: list[RecipeLine] = Field(min_length=1, max_length=60)
+
+
+class ImportedLineIn(BaseModel):
+    raw_text: RecipeLine
+    # Set when a Member chose the Ingredient in the Link sheet; otherwise Sweep matches it.
+    ingredient_id: uuid.UUID | None = None
+
+
+class ImportedRecipeIn(BaseModel):
+    """What the review screen saves (POST) or replaces (PUT). Its Save rules: a title,
+    servings, a Course and one line. The marks ("Check", "Not linked") never block."""
+
+    title: Annotated[str, _name(200), ONE_LINE]
+    servings: int = Field(gt=0, le=50)
+    total_minutes: int | None = Field(default=None, gt=0, le=1440)
+    course: Course
+    cuisine: Cuisine | None = None
+    lines: list[ImportedLineIn] = Field(min_length=1, max_length=60)
+    method: list[Annotated[str, _name(2000)]] | None = Field(default=None, max_length=40)
