@@ -396,6 +396,17 @@ class HouseholdPreferences(Base):
     )
 
 
+class Course(StrEnum):
+    """What a recipe is for. Exactly one each; plans offer mains, because a Planned Meal
+    is a dinner (see CONTEXT.md)."""
+
+    MAIN = "main"
+    SIDE = "side"
+    DESSERT = "dessert"  # sweet things and baking, snacks included
+    BREAKFAST = "breakfast"
+    LUNCH = "lunch"  # sandwiches, wraps, rolls, toasties
+
+
 class RecipeKind(StrEnum):
     SEED = "seed"  # written for Sweep, shared by every Household
     IMPORTED = "imported"  # saved from a URL by one Household (slice 4b)
@@ -430,6 +441,9 @@ class Recipe(Base):
     title: Mapped[str] = mapped_column(String(200))
     summary: Mapped[str] = mapped_column(String(500))
     cuisine: Mapped[str | None] = mapped_column(String(40))
+    # Required, with no default: no way of adding a recipe can forget it (imports in 4d
+    # ask the Member to confirm a suggested one).
+    course: Mapped[Course] = mapped_column(str_enum(Course, "recipe_course"))
     servings: Mapped[int] = mapped_column(SmallInteger)
     total_minutes: Mapped[int | None] = mapped_column(SmallInteger)
     # Steps, for recipes we're allowed to show in full. Imported Recipes link out instead.

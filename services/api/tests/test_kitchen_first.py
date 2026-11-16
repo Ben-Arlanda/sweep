@@ -18,7 +18,7 @@ from tests.helpers import create_household, idem
 from tests.test_agent import say, start
 from tests.test_dietary_rules import SALAD
 from tests.test_household_ingredients import add, tick
-from tests.test_recipes import CURRY, PASTA, STIR_FRY, seed
+from tests.test_recipes import CURRY, PASTA, PAVLOVA, STIR_FRY, seed
 
 pytestmark = pytest.mark.anyio
 
@@ -183,6 +183,55 @@ async def test_must_use_finds_recipes_naming_a_household_ingredient(
     )
 
     assert [r["title"] for r in found] == ["Finger lime chicken"]
+
+
+async def test_planning_from_the_kitchen_offers_mains_only(
+    client_for: ClientFor, fake_issuer: FakeIssuer, db: Engine, load: Loader
+) -> None:
+    """A Planned Meal is a dinner. Pavlova needs the least shopping here, but it's a
+    dessert, so the tool never offers it: the Course is set in code, not left to the model."""
+    await load([CURRY, PAVLOVA])
+    eggs_cream = await ingredient_ids(db, "pavlova")
+
+    async def arrange(client: httpx.AsyncClient) -> None:
+        await stock(client, fake_issuer, eggs_cream)
+
+    found = await run(client_for, fake_issuer, "recipes_from_kitchen", {}, arrange)
+
+    assert [r["title"] for r in found] == ["Chicken and chickpea curry"]
+
+
+async def test_search_offers_mains_by_default(
+    client_for: ClientFor, fake_issuer: FakeIssuer, load: Loader
+) -> None:
+    await load([CURRY, PAVLOVA])
+    found = await run(client_for, fake_issuer, "search_recipes", {"query": "pavlova"})
+    assert [r["title"] for r in found] == ["Chicken and chickpea curry"]
+
+
+async def test_search_finds_a_named_non_main_with_any_course(
+    client_for: ClientFor, fake_issuer: FakeIssuer, load: Loader
+) -> None:
+    await load([CURRY, PAVLOVA])
+    found = await run(
+        client_for, fake_issuer, "search_recipes", {"query": "pavlova", "course": "any"}
+    )
+    assert found[0]["title"] == "Pavlova"
+    assert found[0]["course"] == "dessert"  # the agent can see what it's picking
+
+
+async def test_search_can_ask_for_one_course(
+    client_for: ClientFor, fake_issuer: FakeIssuer, load: Loader
+) -> None:
+    await load([CURRY, PAVLOVA])
+    found = await run(
+        client_for, fake_issuer, "search_recipes", {"query": "something", "course": "dessert"}
+    )
+    assert [r["title"] for r in found] == ["Pavlova"]
+
+
+def test_the_prompt_says_when_to_widen_the_course() -> None:
+    assert 'course="any"' in SYSTEM
 
 
 def test_the_prompt_says_plans_start_from_the_kitchen() -> None:

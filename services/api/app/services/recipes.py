@@ -17,7 +17,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app import errors
 from app.data.recipes import ATTRIBUTION, LICENCE, SeedRecipe
 from app.embeddings import Embedder
-from app.models import Ingredient, Recipe, RecipeEmbedding, RecipeIngredient, RecipeKind
+from app.models import Course, Ingredient, Recipe, RecipeEmbedding, RecipeIngredient, RecipeKind
 from app.services import diet
 from app.services.ingredient_lines import IngredientIndex, normalise_lines
 
@@ -63,6 +63,7 @@ async def upsert_seed_recipes(
             recipe.ingredients.clear()
             await session.flush()  # delete the old lines before adding new ones
         recipe.title, recipe.summary, recipe.cuisine = seed.title, seed.summary, seed.cuisine
+        recipe.course = seed.course
         recipe.servings, recipe.total_minutes = seed.servings, seed.minutes
         recipe.method = list(seed.method)
         recipe.licence, recipe.attribution = LICENCE, ATTRIBUTION
@@ -162,6 +163,7 @@ class RecipeFilters:
 
     max_minutes: int | None = None
     cuisine: str | None = None
+    course: Course | None = None  # None: every Course
     exclude_ingredient_ids: Sequence[uuid.UUID] = ()
     # Set when Dietary Rules apply: a line we couldn't match might break them (fail safe).
     exclude_unmatched: bool = False
@@ -195,6 +197,8 @@ def _filtered(query: Select[Recipe], filters: RecipeFilters) -> Select[Recipe]:
         query = query.where(Recipe.total_minutes <= filters.max_minutes)
     if filters.cuisine is not None:
         query = query.where(Recipe.cuisine == filters.cuisine)
+    if filters.course is not None:
+        query = query.where(Recipe.course == filters.course)
     if filters.exclude_ingredient_ids:
         query = query.where(
             ~exists().where(
@@ -290,6 +294,7 @@ async def filters_for(
     max_minutes: int | None = None,
     cuisine: str | None = None,
     exclude_ingredient_ids: Sequence[uuid.UUID] = (),
+    course: Course | None = None,
 ) -> RecipeFilters:
     """The caller's filters plus the Household's Dietary Rules, which always apply.
 
@@ -301,6 +306,7 @@ async def filters_for(
     return RecipeFilters(
         max_minutes=max_minutes,
         cuisine=cuisine,
+        course=course,
         exclude_ingredient_ids=sorted(set(exclude_ingredient_ids) | banned),
         exclude_unmatched=rules.active,
     )

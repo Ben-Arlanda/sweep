@@ -226,7 +226,7 @@ Max 15 tool calls per turn, a LangGraph recursion limit, a 60s total turn timeou
    - Converts to the Ingredient's unit only when honest: AU cup 250 ml / tbsp 20 ml / tsp 5 ml, US lb/oz, density for ml↔g. "3 cloves garlic", "a pinch" and "4 cups *cooked* rice" are matched but have no amount.
    - Eval: `uv run python -m evals.ingredient_parsing [--llm]` (32 messy US-style lines). Latest: rules 47%; rules + Haiku 97–100% over 5 runs, 0 wrong links.
 3. Embed one document per recipe (title + summary + cuisine + Ingredient names) with Voyage `voyage-3.5` (1,024 dimensions), storing the model and a hash of the text, so only changed recipes are re-embedded. Rate limits (429) are retried with backoff.
-4. **Favourites** (ADR 0002, revised) use the same pipeline through several front doors: "what do you usually cook" matching at onboarding, pasted text, a photo, a link (only where robots.txt allows Sweep's user agent), or typing. Each ends at a review screen where AI-matched lines are marked for the Member to confirm. Imported text and images are **data, never instructions**.
+4. **Favourites** (ADR 0002, revised) use the same pipeline through several front doors: "what do you usually cook" matching at onboarding, pasted text, a photo, a link (only where robots.txt allows Sweep's user agent), or typing. Each ends at a review screen where AI-matched lines are marked for the Member to confirm. Every recipe needs a **Course** (the column is required): the same Haiku call suggests one and the review screen shows it as a guess to confirm or change. Imported text and images are **data, never instructions**.
 5. **Growing the library:** Claude drafts Seed Recipes, deterministic checks (`app/services/recipe_checks.py`, run in CI) and an LLM reviewer flag problems, and a person approves flagged ones. The reviewer costs money, so it only runs on request (`python -m evals.recipe_review --llm` measures it first). Gap logs (searches and agent requests with no good match) decide what to write next; they arrive with the agent in slice 5.
 
 ### Retrieval, built in stages and compared on the same evaluation set
@@ -471,10 +471,20 @@ Known gaps from 6c: tapping Cooked or Undo swaps the button, so keyboard focus d
 3. **Comparison report** (agent / baseline × Sonnet / Haiku) and an ADR on the result. Done 2026-11-16: `evals/baseline.py`, `python -m evals.compare` (with a blind review export). Every approach 36/36 on safety; the baseline is faster and cheaper but picked poor dinners (desserts, sides). **ADR 0018: the agent runs on Haiku 5.5; the baseline is not adopted; plan quality not yet measured.**
 
 **Follow-ups from slice 8** (data, not model):
-- Label recipes by course (main / side / dessert / breakfast) so plans only propose mains for dinner; the baseline's jaffles, crepes and mango rice showed the gap.
-- "New recipes" mode: rank by the Member's taste and Preferences, not only Kitchen Match, so a liked cuisine (Thai) isn't pushed out of the candidates.
+- Label recipes by Course so plans only propose mains for dinner; the baseline's jaffles, crepes and mango rice showed the gap, and the agent itself planned jaffles, rosti with eggs and roasted chickpeas in Kitchen weeks. **This is slice 8c, below.**
+- ~~"New recipes" mode: rank by taste, not only Kitchen Match~~ Dropped 2026-11-16: only the Baseline Planner had this gap (not adopted, ADR 0018). The agent already searches by meaning in New mode (Thai Preference → Thai dinners in 3/3 runs). Revisit only if real use shows bad search queries.
 - Optional: an LLM judge for plan quality, calibrated on human ratings (the blind review page collects them).
 - Optional, experiment E5: other providers (Bedrock, GPT) on the same evals.
+
+**Slice 8c: Courses** (`feature/recipe-courses`, grilled 2026-11-16; see Course in CONTEXT.md):
+
+- **One Course per recipe:** main, side, dessert (sweet things and baking), breakfast, lunch (sandwiches, wraps, rolls, toasties). A required column (NOT NULL, no default), like `seed_has_no_household`, so no code path can forget it.
+- **Seed Recipes:** `course` is a required field in the TOML, labelled by hand per recipe (file names don't tell: `20-sides-and-more` holds pho and Swedish meatballs). The review is the list of non-mains grouped by Course. Not added to the embedding text, so no re-embedding.
+- **Planning, set in code:** `recipes_from_kitchen` returns mains only. `search_recipes` takes `course` (default `main`, or `any`); the prompt widens it only when the Member names a dish or kind of dish that isn't a main ("pancakes on Friday", "something sweet"). `validate` doesn't check Course: a dessert for dinner is a bad suggestion the Member sees before approving, not a safety problem like a Dietary Rule. The filter lives in `filters_for`, so the browse list, search, both tools and the Baseline Planner all get it.
+- **Evals:** a must-pass grader "no non-main planned unless the Scenario asked for one", and a Scenario that asks for pancakes and expects them planned. Re-run Haiku after (about 15¢).
+- **Recipes screen:** a Course filter as one row of five tiles (Lucide icon over the word, stroke 1.5; Mains, Sides, Desserts, Breakfast, Lunch), no "All" tile: tapping the chosen tile again clears it. The "Ready in" pills become one row of four equal columns (Any time, 20 min, 30 min, 45 min; no "≤", the label says it), 36px to look at and 44px to tap, via options on `ChoiceChips`; if 45 min ever can't fit, drop it. The recipe row and detail show the Course. Lucide (`lucide-react-native` + `react-native-svg`) replaces MaterialCommunityIcons across the app so there's one icon style. Mockup: https://claude.ai/artifact/AtmcwqAptjN77uSaiqPSkq (variant D).
+- **Imported Recipes (4d):** the import's Haiku call suggests a Course; the review screen shows it to confirm or change.
+- **Dropped:** "New recipes" taste ranking (see the follow-ups above).
 
 Experiments (`experiments/`, any time after slice 4):
 

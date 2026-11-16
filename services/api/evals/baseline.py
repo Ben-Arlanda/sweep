@@ -27,7 +27,7 @@ from app.agent.prompt import household_context, today_in_sydney
 from app.agent.state import empty_draft
 from app.agent.tools import AgentContext
 from app.llm_costs import Usage
-from app.models import Conversation
+from app.models import Conversation, Course
 from app.services import households, kitchen_match, proposals, recipes
 from evals.agent_harness import (
     EvalDatabase,
@@ -117,7 +117,7 @@ async def run_baseline(db: EvalDatabase, picker: Picker, scenario: Scenario) -> 
             daily_token_budget=0,
         )
         context = await household_context(session, wiring, empty_draft())
-        filters = await recipes.filters_for(session, ctx.household.id)
+        filters = await recipes.filters_for(session, ctx.household.id, course=Course.MAIN)
         snap = await kitchen_match.snapshot(session, ctx)
         ranked = await kitchen_match.rank(
             session, ctx.household.id, snap, filters, limit=CANDIDATES

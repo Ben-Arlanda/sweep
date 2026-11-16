@@ -26,6 +26,10 @@ def main() -> int:
         ", ".join(f"{c} {n}" for c, n in Counter(r.cuisine for r in recipes).most_common()),
     )
     print(
+        "By course:",
+        ", ".join(f"{c} {n}" for c, n in Counter(r.course for r in recipes).most_common()),
+    )
+    print(
         "By time:",
         ", ".join(f"{b} {n}" for b, n in sorted(Counter(band(r.minutes) for r in recipes).items())),
     )

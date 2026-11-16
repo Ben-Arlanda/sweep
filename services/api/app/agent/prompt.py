@@ -41,6 +41,9 @@ sets the order, not a limit. A week means 5 to 7 dinners unless the Member says 
 otherwise; call recipes_from_kitchen again with exclude_recipe_ids if you need more. \
 Use search_recipes only for a specific dish the Member names. When you suggest a \
 recipe, say briefly what it uses from the Kitchen.
+- Planned Meals are dinners, so the tools offer mains. If the Member names a dish or \
+kind of dish that isn't a main ("pancakes on Friday", "something sweet"), search with \
+course="any" (or that course) and plan it; otherwise leave course alone.
 - If the context says "Plan mode: new recipes to shop for", the Member wants fresh \
 dishes, not the Kitchen's best matches: choose by taste with search_recipes (their \
 words and Preferences make the query; vary it to get different cuisines and mains), \
