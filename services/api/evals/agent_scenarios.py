@@ -47,6 +47,14 @@ class Scenario:
     def all_checks(self) -> tuple[Check, ...]:
         return DEFAULT_CHECKS + self.checks
 
+    def checks_for(self, planner: str) -> tuple[Check, ...]:
+        """The Baseline Planner has no tools, so checks about tool calls don't apply."""
+        if planner == "agent":
+            return self.all_checks
+        return tuple(
+            c for c in self.all_checks if not c.__name__.startswith(("called(", "never_called("))
+        )
+
     @property
     def single_message(self) -> bool:
         """One message and nothing else: the Baseline Planner can try it too (8b)."""
