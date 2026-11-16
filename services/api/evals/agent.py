@@ -32,6 +32,7 @@ from decimal import Decimal
 from pathlib import Path
 from typing import Any
 
+from app import tracing
 from app.config import settings
 from app.embeddings import VoyageEmbedder
 from app.llm import ClaudeAgentModel
@@ -118,6 +119,8 @@ async def run(model_id: str, scenarios: Sequence[Scenario], repeats: int, cap: D
         print("ANTHROPIC_API_KEY and VOYAGE_API_KEY must be set in services/api/.env")
         return 2
     conversations.TURN_TIMEOUT_SECONDS = EVAL_TURN_TIMEOUT  # see the module docstring
+    # Eval traces get their own environment, so they never mix into dev dashboards.
+    traced = tracing.configure(settings.model_copy(update={"langfuse_environment": "eval"}))
 
     prepare_eval_database(
         settings.eval_database_url, settings.database_url, settings.embedding_model
@@ -141,12 +144,20 @@ async def run(model_id: str, scenarios: Sequence[Scenario], repeats: int, cap: D
                     stopped = True
                     break
                 record = await run_scenario(
-                    db, model, embedder, scenario.name, scenario.setup, scenario.steps
+                    db,
+                    model,
+                    embedder,
+                    scenario.name,
+                    scenario.setup,
+                    scenario.steps,
+                    trace_metadata={"eval_run": f"{started:%Y%m%d-%H%M%S}", "repeat": repeat},
                 )
                 g = grade(record, scenario.all_checks)
                 graded.append(g)
                 spent += g.measures.cost_usd or Decimal(0)
                 mark = "pass" if g.passed else "FAIL " + ", ".join(r.name for r in g.failures)
+                if not g.passed and traced:
+                    mark += f"  [Langfuse session {record.session_id}]"
                 print(
                     f"[{repeat}/{repeats}] {scenario.name:<32} {mark}  "
                     f"({g.measures.seconds:.0f}s, {_money(g.measures.cost_usd)})"
@@ -155,6 +166,7 @@ async def run(model_id: str, scenarios: Sequence[Scenario], repeats: int, cap: D
                 print(f"\nStopped: --max-spend {_money(cap)} reached.")
                 break
 
+    tracing.flush()  # before exit, or the last traces are lost
     print()
     print(table(summarise(graded)))
     print()

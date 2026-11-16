@@ -6,6 +6,7 @@
   app trusts that key. The real verification code runs; only the key source differs.
 """
 
+import os
 from collections.abc import AsyncIterator, Awaitable, Callable, Iterator, Sequence
 from contextlib import asynccontextmanager
 from dataclasses import dataclass, field
@@ -31,6 +32,9 @@ from app.main import create_app
 from app.services import recipes
 from app.services.ingredient_lines import index_from_db
 from tests.fake_model import ScriptedModel
+
+# Never send traces from tests, whatever keys a local .env holds (app/tracing.py).
+os.environ["LANGFUSE_TRACING"] = "false"
 
 API_DIR = Path(__file__).resolve().parent.parent
 TEST_ISSUER = "https://issuer.test"

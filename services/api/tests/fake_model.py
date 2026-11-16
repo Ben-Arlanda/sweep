@@ -45,6 +45,7 @@ class ScriptedModel:
     def __init__(self, steps: Sequence[Step | list[dict[str, Any]]] = ()) -> None:
         self.steps = list(steps)
         self.calls: list[Messages] = []  # what the model was sent, per call
+        self.parameters: dict[str, Any] = {}
         # Call number (from 0) → stop reason, to fake a "refusal" or "max_tokens".
         self.stop_reasons: dict[int, str] = {}
 

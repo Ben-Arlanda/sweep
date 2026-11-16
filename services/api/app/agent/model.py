@@ -4,7 +4,7 @@ A small interface, so the graph doesn't know or care which provider answers. The
 one is ClaudeAgentModel in app/llm.py; tests use a scripted fake.
 """
 
-from collections.abc import Callable, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
 from typing import Any, Protocol
 
@@ -22,6 +22,11 @@ class ModelTurn:
 
 class AgentModel(Protocol):
     name: str
+
+    @property
+    def parameters(self) -> Mapping[str, Any]:
+        """Request settings worth recording in traces (effort, max tokens). Read-only."""
+        ...
 
     async def respond(
         self,

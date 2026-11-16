@@ -158,6 +158,9 @@ def agent_request_options(model: str) -> dict[str, Any]:
     return {}
 
 
+MAX_TOKENS = 16000
+
+
 class ClaudeAgentModel:
     """The planning agent's model: Claude with tools, streamed.
 
@@ -179,6 +182,7 @@ class ClaudeAgentModel:
         self._client = anthropic.AsyncAnthropic(api_key=api_key, max_retries=2, timeout=60.0)
         self.name = model
         self._effort = effort
+        self.parameters: dict[str, Any] = {"max_tokens": MAX_TOKENS, "effort": effort}
 
     async def respond(
         self,
@@ -195,7 +199,7 @@ class ClaudeAgentModel:
         try:
             async with self._client.beta.messages.stream(
                 model=self.name,
-                max_tokens=16000,
+                max_tokens=MAX_TOKENS,
                 system=system,
                 tools=strict_tools,  # type: ignore[arg-type]
                 messages=list(messages),  # type: ignore[arg-type]
