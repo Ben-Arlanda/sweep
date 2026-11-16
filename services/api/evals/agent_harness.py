@@ -99,6 +99,7 @@ class MealFacts:
     rule_breaks: tuple[str, ...]  # Dietary Rules it breaks, checked again from scratch
     to_buy: int | None  # missing Ingredients against the Kitchen (None if it doesn't exist)
     kitchen_uses: tuple[str, ...]  # Tracked Kitchen items it uses
+    course: str | None  # the recipe's Course (None if it doesn't exist)
 
 
 @dataclass(frozen=True)
@@ -436,6 +437,7 @@ async def collect_proposals(
                     rule_breaks=(tuple(diet.check_recipe(recipe, rules).breaks) if recipe else ()),
                     to_buy=(len(kitchen_match.match(lines, snap).missing) if recipe else None),
                     kitchen_uses=tuple(kitchen_match.uses(lines, snap)),
+                    course=recipe.course.value if recipe else None,
                 )
             )
         out.append(

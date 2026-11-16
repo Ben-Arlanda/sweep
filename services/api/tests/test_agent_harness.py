@@ -161,6 +161,7 @@ async def test_a_rule_break_is_found_even_if_validate_missed_it(
         )
     meal = await facts_for_a_proposal_of(database_url, curry)
     assert meal.exists and meal.rule_breaks == ("chicken thigh (vegetarian)",)
+    assert meal.course == "main"  # for the only_courses check
 
 
 async def test_a_made_up_recipe_id_is_recorded_as_missing(database_url: str, load: Loader) -> None:

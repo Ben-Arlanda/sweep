@@ -8,6 +8,7 @@ from evals.agent_graders import (
     DEFAULT_CHECKS,
     called,
     changed_only_day,
+    course_on_day,
     final_status,
     follows_rules,
     grade,
@@ -19,6 +20,7 @@ from evals.agent_graders import (
     on_today,
     on_weekdays,
     only_chosen_days,
+    only_courses,
     proposal_made,
     revised_after_reject,
     summarise,
@@ -38,6 +40,7 @@ def meal(day: str, title: str = "Dhal", **changes: object) -> MealFacts:
         rule_breaks=(),
         to_buy=2,
         kitchen_uses=("rice",),
+        course="main",
     )
     return replace(base, **changes)  # type: ignore[arg-type]
 
@@ -184,3 +187,22 @@ def test_summary_gives_a_pass_rate_and_averages_per_scenario_and_model() -> None
     assert (row.passed, row.runs) == (2, 3)
     assert row.cost_usd == Decimal("3.00")  # average per run
     assert row.failures == {"meal_count(9)": 1}
+
+
+def test_only_courses_fails_on_a_non_main_in_any_proposal() -> None:
+    mains = only_courses("main")
+    assert mains(GOOD).ok
+    jaffles = meal(TUE, "Cheese and tomato jaffles", course="lunch")
+    earlier = proposal(meal(MON), jaffles, status="superseded")
+    later = proposal(meal(MON), meal(TUE, "Curry"))
+    result = mains(record(earlier, later))
+    assert not result.ok  # the Member saw the jaffles, even if a later plan dropped them
+    assert "Cheese and tomato jaffles (lunch)" in result.detail
+    assert only_courses("main", "lunch")(record(earlier, later)).ok
+
+
+def test_course_on_day_wants_that_course_on_that_day() -> None:
+    pancakes = meal(TUE, "Banana oat pancakes", course="breakfast")
+    assert course_on_day(1, "breakfast")(record(proposal(meal(MON), pancakes))).ok
+    assert not course_on_day(0, "breakfast")(record(proposal(meal(MON), pancakes))).ok
+    assert not course_on_day(1, "breakfast")(GOOD).ok

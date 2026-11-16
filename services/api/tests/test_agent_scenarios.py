@@ -42,3 +42,14 @@ def test_the_baseline_can_try_the_single_message_ones() -> None:
     assert "week-new-recipes" in single
     assert "swap-one-day-then-approve" not in single
     assert len(single) >= 10
+
+
+def test_every_scenario_wants_mains_unless_it_asks_for_more() -> None:
+    for scenario in SCENARIOS:
+        names = [c.__name__ for c in scenario.all_checks]
+        expected = (
+            "only_courses(main, breakfast)"
+            if scenario.name == "pancakes-on-a-day"
+            else ("only_courses(main)")
+        )
+        assert expected in names, scenario.name
