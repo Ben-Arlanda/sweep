@@ -33,8 +33,6 @@ from langgraph.graph.state import CompiledStateGraph
 from langgraph.runtime import Runtime
 from langgraph.types import Checkpointer, interrupt
 from pydantic import ValidationError
-from sqlalchemy.dialects.postgresql import insert
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import tracing
 from app.agent import prompt, tools
@@ -42,8 +40,16 @@ from app.agent.state import AgentState, Draft, empty_draft
 from app.agent.tools import AgentContext, Call, ToolError
 from app.agent.validate import Problem, build_proposal, explain_additions, validate_draft
 from app.llm_costs import cost_usd
-from app.models import AgentUsage, Conversation, ProposalStatus, Recipe
-from app.services import diet, ingredients, meal_plan, proposals, recipes, shopping_lists
+from app.models import Conversation, ProposalStatus, Recipe
+from app.services import (
+    diet,
+    ingredients,
+    meal_plan,
+    proposals,
+    recipes,
+    shopping_lists,
+    token_budget,
+)
 from app.services.diet import DietaryRules
 
 MAX_TOOL_CALLS = 15  # per turn: the agent should be done well before this
@@ -59,11 +65,6 @@ def _write(runtime: Runtime_, event: dict[str, Any]) -> None:
 
 
 # --- load_context ------------------------------------------------------------------
-
-
-async def tokens_used_today(session: AsyncSession, household_id: Any, day: date) -> int:
-    row = await session.get(AgentUsage, (household_id, day))
-    return row.input_tokens + row.output_tokens if row else 0
 
 
 def _dangling_results(messages: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -97,7 +98,7 @@ async def load_context(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
         "stop": None,
     }
     async with agent.sessionmaker() as session:
-        used = await tokens_used_today(session, agent.household_id, agent.today)
+        used = await token_budget.tokens_used_today(session, agent.household_id, agent.today)
         if used >= agent.daily_token_budget:
             _write(
                 runtime,
@@ -156,24 +157,7 @@ async def agent(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
             level="WARNING" if turn.stop_reason in ("refusal", "max_tokens") else None,
         )
     async with ctx.sessionmaker() as session:
-        await session.execute(
-            insert(AgentUsage)
-            .values(
-                household_id=ctx.household_id,
-                day=ctx.today,
-                input_tokens=turn.usage.all_input,
-                output_tokens=turn.usage.output_tokens,
-            )
-            .on_conflict_do_update(
-                index_elements=["household_id", "day"],
-                set_={
-                    # Every input token, cached or not: the budget is a safety limit,
-                    # so it errs on the side of counting too much.
-                    "input_tokens": AgentUsage.input_tokens + turn.usage.all_input,
-                    "output_tokens": AgentUsage.output_tokens + turn.usage.output_tokens,
-                },
-            )
-        )
+        await token_budget.add_usage(session, ctx.household_id, ctx.today, turn.usage)
         await session.commit()
 
     update: dict[str, Any] = {"messages": [{"role": "assistant", "content": turn.content}]}

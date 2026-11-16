@@ -409,12 +409,15 @@ class Course(StrEnum):
 
 class RecipeKind(StrEnum):
     SEED = "seed"  # written for Sweep, shared by every Household
-    IMPORTED = "imported"  # saved from a URL by one Household (slice 4b)
+    IMPORTED = "imported"  # a Household's favourite: pasted, photo, link, file or typed (4d)
 
 
 class ParseMethod(StrEnum):
-    RULE = "rule"
-    LLM = "llm"
+    """How a recipe line was linked to its Ingredient."""
+
+    RULE = "rule"  # our parsing rules
+    LLM = "llm"  # the model picked it: the review screen marks it "Check"
+    MEMBER = "member"  # a Member chose it in the Link sheet
 
 
 class Recipe(Base):
@@ -557,6 +560,20 @@ class AgentUsage(Base):
     day: Mapped[date] = mapped_column(Date)
     input_tokens: Mapped[int] = mapped_column(Integer, default=0)
     output_tokens: Mapped[int] = mapped_column(Integer, default=0)
+
+
+class RecipeImport(Base):
+    """One attempt at the paste, photo, file or link door (slice 4d), for the limit of
+    20 an hour per Member. Attempts, not successes: a failed one cost us work too.
+    Typing a recipe isn't recorded: it has no limit."""
+
+    __tablename__ = "recipe_imports"
+    __table_args__ = (Index("ix_recipe_imports_member_started", "member_id", "started_at"),)
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    member_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("members.id", ondelete="CASCADE"))
+    door: Mapped[str] = mapped_column(String(10))  # paste, photo, file, link
+    started_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
 
 
 class AgentTurn(Base):

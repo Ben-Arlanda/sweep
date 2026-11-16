@@ -6,6 +6,7 @@ from decimal import Decimal
 from typing import Annotated, Literal, Self
 
 from pydantic import (
+    AfterValidator,
     BaseModel,
     ConfigDict,
     Field,
@@ -22,6 +23,7 @@ from app.models import (
     AddedBy,
     ChangeSource,
     Course,
+    ParseMethod,
     PlanMode,
     ProposalStatus,
     RecipeKind,
@@ -29,6 +31,7 @@ from app.models import (
 )
 from app.services.ingredients import normalise
 from app.text import ONE_LINE
+from app.web_fetch import check_url
 
 
 # Trimming runs before ONE_LINE, so a pasted trailing newline is simply removed.
@@ -266,6 +269,13 @@ class RecipeSummaryOut(BaseModel):
     score: float | None = None
 
 
+class ImportedRecipeOut(RecipeSummaryOut):
+    """One of "Your recipes". `rule_breaks` empty = plannable; otherwise why the Dietary
+    Rules hide it from search and plans: "satay sauce (couldn't check)"."""
+
+    rule_breaks: list[str]
+
+
 class RecipeIngredientOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
@@ -277,6 +287,7 @@ class RecipeIngredientOut(BaseModel):
     note: str | None
     optional: bool
     needs_review: bool
+    parse_method: ParseMethod  # "llm" = the review screen's "Check" mark
 
 
 class RecipeOut(RecipeSummaryOut):
@@ -524,3 +535,75 @@ TurnEvent = Annotated[
 
 class SendMessageIn(BaseModel):
     text: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=2000)]
+
+
+# --- Imported Recipes (slice 4d) --------------------------------------------------------
+
+RecipeLine = Annotated[str, _name(300), ONE_LINE]  # an ingredient line, as written
+MAX_RECIPE_LINES, MAX_METHOD_STEPS = 60, 40
+MAX_PASTE_CHARS = 20_000  # about 5 long recipes; text pulled from a PDF is cut to this too
+
+
+# The same rules the Link door fetches by: plain https, no credentials, no odd ports.
+SourceUrl = Annotated[str, StringConstraints(max_length=2048), AfterValidator(check_url)]
+
+
+class LinesIn(BaseModel):
+    """Ingredient lines to read for the review screen. Nothing is stored."""
+
+    lines: list[RecipeLine] = Field(min_length=1, max_length=MAX_RECIPE_LINES)
+
+
+class ImportedLineIn(BaseModel):
+    raw_text: RecipeLine
+    # Set when a Member chose the Ingredient in the Link sheet; otherwise Sweep matches it.
+    ingredient_id: uuid.UUID | None = None
+
+
+class ImportedRecipeIn(BaseModel):
+    """What the review screen saves (POST) or replaces (PUT). Its Save rules: a title,
+    servings, a Course and one line. The marks ("Check", "Not linked") never block."""
+
+    title: Annotated[str, _name(200), ONE_LINE]
+    servings: int = Field(gt=0, le=50)
+    total_minutes: int | None = Field(default=None, gt=0, le=1440)
+    course: Course
+    cuisine: Cuisine | None = None
+    lines: list[ImportedLineIn] = Field(min_length=1, max_length=MAX_RECIPE_LINES)
+    method: list[Annotated[str, _name(2000)]] | None = Field(
+        default=None, max_length=MAX_METHOD_STEPS
+    )
+    # Where it came from (the Link door). Its method stays there: "Method on a.example".
+    source_url: SourceUrl | None = None
+
+
+class PasteIn(BaseModel):
+    """Pasted recipe text. Line breaks are kept: they're how recipes are laid out."""
+
+    text: Annotated[
+        str, StringConstraints(strip_whitespace=True, min_length=1, max_length=MAX_PASTE_CHARS)
+    ]
+
+
+class DraftLineOut(RecipeIngredientOut):
+    # True: the line isn't in the pasted text word for word, so the review screen marks
+    # it "Check". The model may have reworded it, or made it up.
+    check: bool
+
+
+class ImportDraftOut(BaseModel):
+    """What a door read, for the review screen. Nothing is stored until Save."""
+
+    title: str
+    servings: int | None  # None: the Member fills it in (Save needs it)
+    total_minutes: int | None
+    course: Course  # Sweep's guess, pre-selected and labelled as one
+    cuisine: str | None
+    lines: list[DraftLineOut]
+    method: list[str] | None
+    source_url: str | None  # the Link door: the page it came from
+    more_recipes: bool  # "This has more than one recipe: we've taken the first."
+
+
+class LinkIn(BaseModel):
+    url: Annotated[str, StringConstraints(max_length=2048)]

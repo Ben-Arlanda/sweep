@@ -14,7 +14,7 @@ from app.auth import TokenVerifier
 from app.config import Settings, settings
 from app.db import make_engine, make_sessionmaker
 from app.embeddings import Embedder, VoyageEmbedder
-from app.llm import ClaudeAgentModel
+from app.llm import ClaudeAgentModel, ClaudeRecipeReader
 from app.realtime import Hub, listen
 from app.routes import (
     conversations,
@@ -27,7 +27,10 @@ from app.routes import (
     recipes,
     shopping_lists,
 )
+from app.services import recipes as recipe_service
 from app.services.conversations import Agent
+from app.services.recipe_import import PageFetcher, RecipeReader
+from app.web_fetch import SafeFetcher
 
 # The one place domain errors become HTTP status codes.
 ERROR_STATUS: dict[type[errors.DomainError], int] = {
@@ -76,14 +79,24 @@ def default_agent_model(app_settings: Settings) -> AgentModel | None:
     )
 
 
+def default_recipe_reader(app_settings: Settings) -> RecipeReader | None:
+    key = app_settings.anthropic_api_key
+    if key is None:
+        return None  # Paste is switched off; typing a recipe still works
+    return ClaudeRecipeReader(key.get_secret_value(), app_settings.import_model)
+
+
 def create_app(
     app_settings: Settings | None = None,
     token_verifier: TokenVerifier | None = None,
     embedder: Embedder | None = None,
     agent_model: AgentModel | None = None,
+    recipe_reader: RecipeReader | None = None,
+    page_fetcher: PageFetcher | None = None,
 ) -> FastAPI:
     """Build the app. Tests pass their own settings, a verifier that trusts a test key,
-    a fake embedder and a scripted agent model."""
+    a fake embedder, and scripted stand-ins for the agent model, the recipe reader and the
+    page fetcher."""
     app_settings = app_settings or settings
     # Creating an engine doesn't connect yet; the first query does.
     engine = make_engine(app_settings.database_url)
@@ -100,7 +113,18 @@ def create_app(
         # Here, not in create_app: tests build apps without running startup, and must
         # never send traces (app/tracing.py).
         tracing.configure(app_settings)
+        # Imported Recipes a Save couldn't embed (slice 4d): in the background, so a
+        # slow embedding service never delays the API starting.
+        catch_up = (
+            asyncio.create_task(
+                recipe_service.catch_up_imported(app.state.sessionmaker, app.state.embedder)
+            )
+            if app.state.embedder is not None
+            else None
+        )
         yield
+        if catch_up is not None:
+            catch_up.cancel()
         tracing.shutdown()  # send what's buffered before the process exits
         listener.cancel()
         with contextlib.suppress(asyncio.CancelledError):
@@ -116,6 +140,10 @@ def create_app(
         app_settings.auth_issuers
     )
     app.state.embedder = embedder or default_embedder(app_settings)
+    app.state.recipe_reader = recipe_reader or default_recipe_reader(app_settings)
+    # One budget per Household per day, shared by the agent and the import doors.
+    app.state.daily_token_budget = app_settings.agent_daily_token_budget
+    app.state.page_fetcher = page_fetcher or SafeFetcher()  # needs no key: always on
     checkpoints = Checkpoints(app_settings.database_url)
     model = agent_model or default_agent_model(app_settings)
     app.state.agent = (

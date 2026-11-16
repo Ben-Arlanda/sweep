@@ -82,7 +82,7 @@ A recipe written for Sweep (we own it), available to every Household.
 _Avoid_: default recipe, built-in recipe
 
 **Imported Recipe**:
-A Household favourite a Member brought in (pasted, photographed, linked or typed). It belongs to that Household only and is preferred over Seed Recipes when planning.
+A Household favourite a Member brought in (pasted, photographed, linked, uploaded as a PDF file or typed). It belongs to that Household only and is preferred over Seed Recipes when planning.
 _Avoid_: saved recipe, user recipe
 
 **Recipe Adaptation**:

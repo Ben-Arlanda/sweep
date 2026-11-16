@@ -78,20 +78,26 @@ UNIT_WORDS: dict[str, str] = {
     **{u: u for u in ("g", "kg", "ml", "l", "cup", "tbsp", "tsp", "bunch", "head", "lb", "oz")},
     **dict.fromkeys(("lbs", "pound", "pounds"), "lb"),
     **dict.fromkeys(("ounce", "ounces"), "oz"),
-    **dict.fromkeys(("gram", "grams"), "g"),
+    **dict.fromkeys(("gram", "grams", "gm", "gms"), "g"),  # "gm": common in Australia
     **dict.fromkeys(("kilo", "kilos", "kilogram", "kilograms"), "kg"),
     **dict.fromkeys(("millilitre", "millilitres", "milliliter", "milliliters"), "ml"),
     **dict.fromkeys(("litre", "litres", "liter", "liters"), "l"),
-    "cups": "cup",
+    **dict.fromkeys(("cups", "cupful", "cupfuls", "teacupful", "teacupfuls"), "cup"),
     **dict.fromkeys(("tablespoon", "tablespoons", "tbs", "tbsps", "tbl"), "tbsp"),
+    # Older cookbooks and typed-up family recipes: "1 tablespoonful of curry powder"
+    **dict.fromkeys(("tablespoonful", "tablespoonfuls", "tablespoonsful"), "tbsp"),
+    **dict.fromkeys(("teaspoonful", "teaspoonfuls", "teaspoonsful"), "tsp"),
     **dict.fromkeys(("teaspoon", "teaspoons", "tsps"), "tsp"),
+    # A length ("2 cm piece ginger"): kept as written, never converted to a weight.
+    **dict.fromkeys(("cm", "centimetre", "centimetres"), "cm"),
+    **dict.fromkeys(("inch", "inches"), "inch"),
     **dict.fromkeys(("bunches",), "bunch"),
     "heads": "head",
     **dict.fromkeys(("clove", "cloves"), "clove"),
     **dict.fromkeys(("pinch", "pinches"), "pinch"),
     **dict.fromkeys(("handful", "handfuls"), "handful"),
     **dict.fromkeys(("slice", "slices"), "slice"),
-    **dict.fromkeys(("sprig", "sprigs"), "sprig"),
+    **dict.fromkeys(("sprig", "sprigs", "strand", "strands"), "sprig"),  # "4 strands of coriander"
     **dict.fromkeys(("stalk", "stalks"), "stalk"),
     **dict.fromkeys(("sheet", "sheets"), "sheet"),
     **dict.fromkeys(("rasher", "rashers"), "rasher"),
@@ -106,10 +112,23 @@ STORED_UNITS = sorted({*UNIT_WORDS.values(), *TRAILING_MEASURES.values()})
 DESCRIPTORS = {"large", "small", "medium", "fresh", "ripe", "boiling", "cold", "warm", "hot"}
 # Container words left in front of the name after a weight: "400 g can chickpeas".
 CONTAINERS = {"can", "cans", "tin", "tins", "jar", "jars", "packet", "packets", "of"}
+CONTAINERS |= {"cube", "cubes", "piece", "pieces"}  # "2 cm piece ginger", "1 inch cube of"
 # "4 cups cooked rice": the Ingredient is rice, but the amount isn't an amount you'd buy.
 PREPARED = {"cooked", "leftover"}
 # Things recipes list but nobody shops for.
 NOT_SHOPPED = {"water", "ice", "ice cubes"}
+# For the second look only (see _second_look). Preparation, which recipe websites
+# often write without a comma ("1 onion finely chopped")...
+PREP_WORDS = {
+    *("chopped", "diced", "sliced", "crushed", "grated", "minced", "peeled", "zested"),
+    *("juiced", "halved", "quartered", "torn", "trimmed", "drained", "rinsed", "shredded"),
+    *("cut", "cleaned", "softened", "melted", "beaten", "deseeded", "picked", "washed"),
+    *("finely", "roughly", "thinly", "coarsely", "freshly"),
+}
+# ...and loose words in front of the name: "½ a lemon", "handful of ice", "frozen".
+# Not plain DESCRIPTORS: "frozen peas" is a starter, and the first look must find it.
+LOOSE_WORDS = {"a", "an", "and", "of", "handful", "handfuls", "pinch", "knob", "splash", "dash"}
+LOOSE_WORDS |= {"frozen", "chilled", "mixed"}  # "mixed herbs" is found by the first look
 
 
 def core_name(text: str) -> str:
@@ -123,6 +142,13 @@ def core_name(text: str) -> str:
 _FRACTIONS = {"½": "1/2", "⅓": "1/3", "⅔": "2/3", "¼": "1/4", "¾": "3/4", "⅛": "1/8"}
 # Fractions first, or "1/2" would match as just "1".
 _NUMBER = r"\d+/\d+|\d+(?:[.,]\d+)?(?:\s+\d+/\d+)?"
+# "180g/6 oz", "500g/1 lb", "250ml/1 cup": a metric amount, then the same in imperial.
+# The imperial one is dropped (it's the same thing, and we keep metric).
+_IMPERIAL_TWIN = re.compile(
+    rf"(?P<metric>(?:{_NUMBER})\s*(?:g|kg|ml|l))\s*/\s*(?:{_NUMBER})\s*"
+    r"(?:fl\.?\s*oz|oz|lbs?|cups?|pints?|quarts?)\b",
+    re.IGNORECASE,
+)
 _AMOUNT = re.compile(
     rf"^(?:(?P<times>\d+)\s*x\s+)?(?P<qty>{_NUMBER})(?:\s*(?:-|–|to)\s*(?P<upper>{_NUMBER}))?"
 )
@@ -173,6 +199,7 @@ def parse_line(text: str, index: IngredientIndex) -> ParsedLine:
     work = raw
     for symbol, fraction in _FRACTIONS.items():  # "1½" → "1 1/2"
         work = re.sub(rf"(\d){symbol}", rf"\1 {fraction}", work).replace(symbol, fraction)
+    work = _IMPERIAL_TWIN.sub(r"\g<metric>", work)
 
     notes = [n.strip() for n in re.findall(r"\(([^)]*)\)", work)]
     work = re.sub(r"\([^)]*\)", " ", work)
@@ -217,6 +244,13 @@ def parse_line(text: str, index: IngredientIndex) -> ParsedLine:
         if len(words) > 1 and words[0] in PREPARED:
             ingredient = index.lookup(" ".join(words[1:]))
             prepared = ingredient is not None
+    if ingredient is None:
+        second = _second_look(head, index, can_take_unit=quantity is not None and unit is None)
+        if second is not None:
+            head, ingredient, extra_note, trailing_unit = second
+            unit = trailing_unit or unit
+            if extra_note:
+                notes.insert(0, extra_note)
 
     return ParsedLine(
         raw_text=raw,
@@ -229,6 +263,64 @@ def parse_line(text: str, index: IngredientIndex) -> ParsedLine:
         method=ParseMethod.RULE,
         prepared=prepared,
     )
+
+
+def _clean_word(word: str) -> str:
+    return word.lower().strip(".;:")
+
+
+def _second_look(
+    head: str, index: IngredientIndex, *, can_take_unit: bool
+) -> tuple[str, KnownIngredient | None, str | None, str | None] | None:
+    """Only for a line the first look couldn't match. Recipe websites write lines our
+    rules never saw ("2 garlic cloves crushed", "1 cup frozen spinach or kale"), so try
+    simpler readings of the name, still only exact names and aliases: no guessing.
+
+    Returns (name, Ingredient or None for something nobody shops for, note, unit from a
+    trailing measure), or None if nothing matched.
+    """
+    words = head.split()
+    leading: list[str] = []  # "finely grated parmesan": the preparation goes to the note
+    while words and (
+        _clean_word(words[0]) in PREP_WORDS
+        or _clean_word(words[0]) in LOOSE_WORDS
+        or _clean_word(words[0]) in DESCRIPTORS
+    ):
+        word = words.pop(0)
+        if _clean_word(word) in PREP_WORDS:
+            leading.append(word)
+    trailing: list[str] = []  # "onion finely chopped", "parmesan to serve", "if you can"
+    for i, word in enumerate(words[1:], start=1):
+        if _clean_word(word) in PREP_WORDS or _clean_word(word) in ("to", "if"):
+            words, trailing = words[:i], words[i:]
+            break
+    note = "; ".join(part for part in (" ".join(leading), " ".join(trailing)) if part) or None
+
+    name = " ".join(words).replace("-", " ")  # "extra-virgin" → "extra virgin"
+    # "cooking salt / kosher salt" is a choice, like "or" (but never "1/2": letters only)
+    name = re.sub(r"(?<=[^\W\d])\s*/\s*(?=[^\W\d])", " or ", name)
+    candidates = [name]
+    if " or " in name:  # "spinach or kale"; "chicken or vegetable stock" → chicken stock
+        first, second = name.split(" or ", 1)
+        rest = second.split()
+        if len(first.split()) == 1 and len(rest) > 1:
+            candidates += [f"{first} {' '.join(rest[1:])}", second, first]
+        else:
+            candidates += [first, second]
+
+    for candidate in candidates:
+        parts = candidate.split()
+        measure = TRAILING_MEASURES.get(_clean_word(parts[-1])) if len(parts) > 1 else None
+        if measure is not None:  # "garlic cloves" → garlic, in cloves (not bulbs)
+            found = index.lookup(" ".join(parts[:-1]))
+            if found is not None:
+                return " ".join(parts[:-1]), found, note, measure if can_take_unit else None
+        found = index.lookup(candidate)
+        if found is not None:
+            return candidate, found, note, None
+        if core_name(candidate) in NOT_SHOPPED:
+            return candidate, None, note, None
+    return None
 
 
 # --- LLM fallback ---------------------------------------------------------------------

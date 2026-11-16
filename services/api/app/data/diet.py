@@ -53,11 +53,11 @@ _MEAT = (
     "chicken thigh, chicken breast, beef mince, pork mince, lamb chops, beef steak, bacon, "
     "beef chuck steak, chicken drumsticks, chicken wings, chicken mince, whole chicken, "
     "lamb leg, lamb shoulder, lamb mince, pork loin, pork shoulder, veal shanks, ham, "
-    "sausages, chorizo, chicken stock, beef stock"
+    "sausages, chorizo, chicken stock, beef stock, pork ribs"
 )
 _SEAFOOD = (
     "salmon fillet, prawns, canned tuna, white fish fillets, cooked prawns, fish sauce, "
-    "oyster sauce, dashi stock, worcestershire sauce"  # worcestershire has anchovies
+    "oyster sauce, dashi stock, worcestershire sauce, squid"  # worcestershire: anchovies
 )
 _DAIRY = (
     "milk, butter, cheddar cheese, parmesan, mozzarella, feta, greek yoghurt, "
@@ -107,7 +107,7 @@ CHECK_LABEL: dict[str, frozenset[Contains]] = _invert(
             "ham, worcestershire sauce, oyster sauce, hoisin sauce, miso paste, "
             "barbecue sauce, cornflour, baking powder, icing sugar, curry powder, "
             "chocolate chips, corn chips, madras curry paste, rogan josh curry paste, "
-            "biryani curry paste, tandoori paste, tomato sauce"
+            "biryani curry paste, tandoori paste, tomato sauce, taco seasoning, taco shells"
         ),
     }
 )

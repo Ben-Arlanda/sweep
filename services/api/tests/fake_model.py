@@ -69,3 +69,61 @@ class ScriptedModel:
         usage = Usage(model=self.name, input_tokens=1000, output_tokens=100)
         stop = self.stop_reasons.get(len(self.calls) - 1)
         return ModelTurn(content, stop or ("tool_use" if uses_tools else "end_turn"), usage)
+
+
+class ScriptedReader:
+    """Stands in for the recipe reader (the Paste door's one Haiku call). Queue answers
+    in `answers`; None means "no usable answer" (refused, cut off, malformed). An
+    unscripted call fails the test, so no test can reach the real Claude."""
+
+    def __init__(self) -> None:
+        self.answers: list[Any] = []  # RecipeReading | None, in call order
+        self.calls: list[tuple[str, list[str]]] = []  # (text, cuisines) per call
+        self.photo_calls: list[list[tuple[str, int]]] = []  # per call: (type, bytes) each
+        self.document_calls: list[int] = []  # per call: how many PDF pages it was sent
+
+    async def read(self, text: str, cuisines: Sequence[str]) -> tuple[Any, Usage]:
+        self.calls.append((text, list(cuisines)))
+        return self._next()
+
+    async def read_photos(
+        self, photos: Sequence[Any], cuisines: Sequence[str]
+    ) -> tuple[Any, Usage]:
+        # Only what each photo is and its size: tests never keep the bytes either.
+        self.photo_calls.append([(p.media_type, len(p.data)) for p in photos])
+        return self._next()
+
+    async def read_document(self, pdf: bytes, cuisines: Sequence[str]) -> tuple[Any, Usage]:
+        import io
+
+        import pypdf
+
+        self.document_calls.append(len(pypdf.PdfReader(io.BytesIO(pdf)).pages))
+        return self._next()
+
+    def _next(self) -> tuple[Any, Usage]:
+        if not self.answers:
+            raise AssertionError("the recipe reader was called more times than scripted")
+        return self.answers.pop(0), Usage(model="scripted", input_tokens=500, output_tokens=200)
+
+
+class ScriptedFetcher:
+    """Stands in for the Link door's page fetcher. `pages` maps a link to (final URL,
+    HTML) or to an exception to raise. Any other link fails the test: no test may
+    touch the network."""
+
+    def __init__(self) -> None:
+        self.pages: dict[str, Any] = {}
+        self.calls: list[str] = []
+
+    async def fetch(self, url: str) -> Any:
+        from app.web_fetch import Page
+
+        self.calls.append(url)
+        if url not in self.pages:
+            raise AssertionError(f"unscripted fetch: {url}")
+        answer = self.pages[url]
+        if isinstance(answer, Exception):
+            raise answer
+        final, html = answer
+        return Page(url=final, html=html)
