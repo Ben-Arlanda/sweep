@@ -162,8 +162,18 @@ SCENARIOS: tuple[Scenario, ...] = (
         "swap-one-day-then-approve",
         "After the Proposal, swap the second day only, then approve.",
         Setup(kitchen=kitchen("after a big shop"), mode=PlanMode.NEW, days=(1, 2, 3)),
-        (NEW_PLAN, Say("Swap {1} for something vegetarian, keep the rest."), Approve()),
+        # Not "for something vegetarian": Haiku once found that day already was, and
+        # rightly changed nothing (2026-11-16). The ask has to be one that always applies.
+        (NEW_PLAN, Say("Swap {1} for a different dinner, keep the rest."), Approve()),
         (*A_PLAN, meal_count(3), changed_only_day(1), final_status("approved")),
+    ),
+    Scenario(
+        "no-change-still-approvable",
+        "The Member chats instead of approving, and nothing needs changing: the plan must "
+        "still be there to approve (the gap Haiku found, fixed by graph.reshow).",
+        Setup(mode=PlanMode.NEW, days=(1, 2, 3)),
+        (NEW_PLAN, Say("Looks good, no changes needed."), Approve()),
+        (*A_PLAN, meal_count(3), final_status("approved")),
     ),
     Scenario(
         "reject-then-quicker",

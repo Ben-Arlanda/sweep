@@ -45,6 +45,8 @@ class ScriptedModel:
     def __init__(self, steps: Sequence[Step | list[dict[str, Any]]] = ()) -> None:
         self.steps = list(steps)
         self.calls: list[Messages] = []  # what the model was sent, per call
+        # Call number (from 0) → stop reason, to fake a "refusal" or "max_tokens".
+        self.stop_reasons: dict[int, str] = {}
 
     async def respond(
         self,
@@ -64,4 +66,5 @@ class ScriptedModel:
                 on_text(block["text"])
         uses_tools = any(b["type"] == "tool_use" for b in content)
         usage = Usage(model=self.name, input_tokens=1000, output_tokens=100)
-        return ModelTurn(content, "tool_use" if uses_tools else "end_turn", usage)
+        stop = self.stop_reasons.get(len(self.calls) - 1)
+        return ModelTurn(content, stop or ("tool_use" if uses_tools else "end_turn"), usage)

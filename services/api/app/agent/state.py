@@ -54,6 +54,9 @@ class AgentState(TypedDict):
     # Where each Proposal sits in the chat: {"id", "at": how many messages came before}.
     # Append-only like `messages`, so the chat history can show every Proposal in place.
     proposal_marks: Annotated[list[dict[str, Any]], operator.add]
+    # This turn answers a Proposal the Member chatted about instead of deciding (it was
+    # superseded). Such a turn must end with a Proposal again: see graph.reshow.
+    revising: NotRequired[bool]
     replan_count: NotRequired[int]
     tool_calls: NotRequired[int]
     stop: NotRequired[str | None]  # why this turn ended early, if it did

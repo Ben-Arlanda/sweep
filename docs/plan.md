@@ -454,6 +454,8 @@ Known gaps from 6c: tapping Cooked or Undo swaps the button, so keyboard focus d
 - **Langfuse Cloud** (free tier), off unless `LANGFUSE_*` keys are set; eval runs tagged by Scenario, model and run. Only test Households exist today; revisit before real users (privacy note or self-host in slice 11). The product owner creates the account.
 - **Eval data:** its own database `sweep_eval` (migrations, a fresh Household per Scenario), recipes and embeddings copied from the dev database, and a disk cache for search-text embeddings (`evals/.cache/`, keyed by Voyage model + text) because Voyage's free tier allows 3 requests a minute.
 
+**First live runs** (2026-11-16, 15 Scenarios × 3): Sonnet 45/45, $1.64 (3.7¢ per passing plan); Haiku 44/45, $0.12 (0.3¢). 0 replans on either. Haiku's one failure found two things: the swap Scenario's wording could already be true (fixed), and a follow-up that changes nothing left only a superseded Proposal (fixed in the graph: `reshow`, ADR 0014; new Scenario `no-change-still-approvable`). The checks are a safety floor, not a quality score: whether Haiku's plans are as good is for 8b.
+
 **Slice 8a steps** (`feature/agent-evals`; build test-first):
 
 1. **Cost:** split token kinds in `ModelTurn`, `app/llm_costs.py`, a structured log line per call; Haiku-safe agent calls.
