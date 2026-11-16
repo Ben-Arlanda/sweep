@@ -4,10 +4,13 @@ import { View } from 'react-native';
 import { ChoiceChips } from '@/components/ChoiceChips';
 import { Hero, HeroSearch } from '@/components/Hero';
 import { Button, ErrorText, Loading, Screen, SectionLabel, Text } from '@/components/ui';
+import { AddRecipeSheet } from '@/features/imports/AddRecipeSheet';
+import { ruleBreakText } from '@/features/imports/ruleBreaks';
 import { CourseTiles } from '@/features/recipes/CourseTiles';
 import { COURSES, type Course } from '@/features/recipes/courses';
 import { RecipeRow } from '@/features/recipes/RecipeRow';
 import { ApiError } from '@/lib/api/client';
+import { useImportedRecipes } from '@/lib/api/imports';
 import { useDebounced, useRecipeBrowse, useRecipeSearch } from '@/lib/api/recipes';
 import { useTheme } from '@/theme/useTheme';
 
@@ -52,6 +55,7 @@ export default function RecipesScreen() {
         </Hero>
       }
     >
+      {searching ? null : <YourRecipes />}
       <FilterGroup label="Ready in">
         <ChoiceChips
           label="Ready in"
@@ -102,6 +106,40 @@ function SearchResults({ search }: { search: ReturnType<typeof useRecipeSearch> 
       {search.data.map((r) => (
         <RecipeRow key={r.id} recipe={r} />
       ))}
+    </View>
+  );
+}
+
+/**
+ * This Household's own recipes, with + Add. Hidden while searching: search already
+ * includes them, ranked with everything else.
+ */
+function YourRecipes() {
+  const t = useTheme();
+  const mine = useImportedRecipes();
+  const [adding, setAdding] = useState(false);
+  return (
+    <View style={{ gap: t.space.sm }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <SectionLabel>Your recipes</SectionLabel>
+        <Button
+          title="+ Add"
+          accessibilityLabel="Add a recipe"
+          variant="secondary"
+          compact
+          onPress={() => setAdding(true)}
+        />
+      </View>
+      {mine.isError ? <ErrorText message={mine.error.message} /> : null}
+      {mine.data?.length === 0 ? (
+        <Text muted>
+          Bring in the recipes you already cook: paste one, snap a cookbook page, or add a link.
+        </Text>
+      ) : null}
+      {mine.data?.map((r) => (
+        <RecipeRow key={r.id} recipe={r} note={ruleBreakText(r.rule_breaks)} />
+      ))}
+      {adding ? <AddRecipeSheet onClose={() => setAdding(false)} /> : null}
     </View>
   );
 }

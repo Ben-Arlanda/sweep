@@ -150,7 +150,8 @@ function ListContent({ list }: { list: ListDetail }) {
       ) : null}
       {linking ? (
         <LinkSheet
-          item={linking}
+          name={linking.text}
+          current={linking.ingredient}
           onPick={(ingredient) => {
             actions.link(linking.id, ingredient);
             toast({

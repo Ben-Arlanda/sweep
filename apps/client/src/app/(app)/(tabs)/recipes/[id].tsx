@@ -1,12 +1,17 @@
 import { router, useLocalSearchParams } from 'expo-router';
+import { randomUUID } from 'expo-crypto';
 import { useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { Linking, Pressable, View } from 'react-native';
 
+import { ConfirmDialog } from '@/components/ConfirmDialog';
 import { FoodThumb } from '@/components/FoodThumb';
 import { Tag } from '@/components/Pill';
 import { Button, Card, ErrorText, Loading, Screen, SectionLabel, Text } from '@/components/ui';
+import { hostOf } from '@/features/imports/ReviewScreen';
+import { ruleBreakHint, ruleBreakText } from '@/features/imports/ruleBreaks';
 import { addText, haveSummary, matchLine, type Have } from '@/features/recipes/kitchenMatch';
 import { recipeMeta } from '@/features/recipes/RecipeRow';
+import { useImportedRecipeActions, useImportedRecipes } from '@/lib/api/imports';
 import { useKitchen } from '@/lib/api/kitchen';
 import { useList, useListActions } from '@/lib/api/lists';
 import { isNotFound, useRecipe } from '@/lib/api/recipes';
@@ -92,6 +97,23 @@ export default function RecipeScreen() {
         ) : null}
       </View>
 
+      {r.kind === 'imported' ? <YoursActions id={r.id} title={r.title} /> : null}
+
+      {!r.method && r.source_url ? (
+        <View style={{ gap: t.space.sm }}>
+          <SectionLabel>Method</SectionLabel>
+          <Pressable
+            accessibilityRole="link"
+            onPress={() => Linking.openURL(r.source_url as string)}
+            style={{ minHeight: t.touchTarget, justifyContent: 'center' }}
+          >
+            <Text style={{ textDecorationLine: 'underline' }}>
+              Method on {hostOf(r.source_url)}
+            </Text>
+          </Pressable>
+        </View>
+      ) : null}
+
       {r.method ? (
         <View style={{ gap: t.space.sm }}>
           <SectionLabel>Method</SectionLabel>
@@ -107,9 +129,70 @@ export default function RecipeScreen() {
       ) : null}
 
       <Text variant="caption" muted>
-        {r.licence === 'Sweep original' ? 'A Sweep recipe.' : `From ${r.attribution}.`}
+        {r.kind === 'imported'
+          ? "Your Household's recipe. Only your Household can see it."
+          : r.licence === 'Sweep original'
+            ? 'A Sweep recipe.'
+            : `From ${r.attribution}.`}
       </Text>
     </Screen>
+  );
+}
+
+/**
+ * An Imported Recipe: why a Dietary Rule can't be checked (if so), and Edit / Delete.
+ * Any Member can do either. Delete asks first: its Planned Meals go with it.
+ */
+function YoursActions({ id, title }: { id: string; title: string }) {
+  const t = useTheme();
+  const mine = useImportedRecipes();
+  const { remove } = useImportedRecipeActions();
+  const [asking, setAsking] = useState(false);
+  const ruleBreaks = mine.data?.find((m) => m.id === id)?.rule_breaks ?? [];
+  return (
+    <View style={{ gap: t.space.sm }}>
+      {ruleBreakText(ruleBreaks) ? <Text>{ruleBreakText(ruleBreaks)}</Text> : null}
+      {ruleBreakHint(ruleBreaks) ? (
+        <Text variant="caption" muted>
+          {ruleBreakHint(ruleBreaks)}
+        </Text>
+      ) : null}
+      <View style={{ flexDirection: 'row', gap: t.space.sm }}>
+        <Button
+          title="Edit"
+          variant="secondary"
+          compact
+          accessibilityLabel={`Edit ${title}`}
+          onPress={() => router.push({ pathname: '/recipes/review', params: { edit: id } })}
+        />
+        <Button
+          title="Delete"
+          variant="danger"
+          compact
+          accessibilityLabel={`Delete ${title}`}
+          onPress={() => setAsking(true)}
+        />
+      </View>
+      {asking ? (
+        <ConfirmDialog
+          title={`Delete ${title}?`}
+          message="It goes for everyone in your Household, and so do any meals planned with it."
+          confirm="Delete recipe"
+          busy={remove.isPending}
+          onCancel={() => setAsking(false)}
+          onConfirm={async () => {
+            try {
+              await remove.mutateAsync({ id, idempotencyKey: randomUUID() });
+              setAsking(false);
+              router.replace('/recipes');
+            } catch {
+              setAsking(false);
+            }
+          }}
+        />
+      ) : null}
+      <ErrorText message={remove.error?.message} />
+    </View>
   );
 }
 

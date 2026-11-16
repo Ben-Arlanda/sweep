@@ -109,11 +109,7 @@ export function Card({
   style?: StyleProp<ViewStyle>;
 }) {
   const t = useTheme();
-  const backgroundColor = inverse
-    ? t.colors.inverse
-    : tint
-      ? t.tints[tint].bg
-      : t.colors.surface;
+  const backgroundColor = inverse ? t.colors.inverse : tint ? t.tints[tint].bg : t.colors.surface;
   return (
     <View
       style={[
@@ -199,7 +195,9 @@ export function Button({
       {loading ? (
         <ActivityIndicator color={fg} aria-hidden />
       ) : (
-        <RNText style={[t.type.label, { color: fg, fontFamily: t.fonts.displayBold, fontSize: 16 }]}>
+        <RNText
+          style={[t.type.label, { color: fg, fontFamily: t.fonts.displayBold, fontSize: 16 }]}
+        >
           {title}
         </RNText>
       )}
@@ -212,6 +210,7 @@ export function Field({
   error,
   ref,
   hideLabel,
+  style,
   ...props
 }: TextInputProps & {
   label: string;
@@ -248,6 +247,7 @@ export function Field({
             color: t.colors.text,
             backgroundColor: t.colors.surface,
           },
+          style, // added to the look above (e.g. a taller multiline box), not instead of it
         ]}
         {...props}
       />
