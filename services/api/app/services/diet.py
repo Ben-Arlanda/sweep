@@ -4,8 +4,9 @@ Two places use them (CONTEXT.md, plan §7):
 - search: recipes that break a Rule are filtered out in SQL, so the agent never sees them
 - validate: every Planned Meal is checked again here before a Proposal is shown
 
-Fails safe: when any Rule is set, a line we couldn't match to an Ingredient counts as
-breaking it, because we can't tell what's in "1 jar mystery sauce".
+Fails closed: when any Rule is set, a line we can't check counts as breaking it. That's
+a line we couldn't match ("1 jar mystery sauce"), or one linked to a Household
+Ingredient: a Member made "satay sauce", and Sweep has no idea what's in it.
 """
 
 import uuid
@@ -68,6 +69,9 @@ def check_recipe(recipe: Recipe, rules: DietaryRules) -> RuleCheck:
             continue
         if ingredient.id in rules.excluded_ingredient_ids:
             check.breaks.append(f"{ingredient.name} (excluded)")
+            continue
+        if ingredient.is_household_ingredient:  # only Imported Recipes link to these
+            check.breaks.append(f"{ingredient.name} (couldn't check)")
             continue
         broken = _diets_broken(CONTAINS.get(ingredient.name, frozenset()), rules.diets)
         check.breaks.extend(f"{ingredient.name} ({_label(d)})" for d in broken)

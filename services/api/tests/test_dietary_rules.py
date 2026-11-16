@@ -93,6 +93,34 @@ def test_an_excluded_ingredient_breaks_the_rule() -> None:
     assert check.breaks == ["mushrooms (excluded)"]
 
 
+def with_household_ingredient(name: str) -> Recipe:
+    """A recipe with one line linked to a Household Ingredient: one a Member made, so
+    Sweep has no idea what's in it."""
+    satay = Ingredient(id=uuid.uuid4(), name=name, household_id=uuid.uuid4())
+    line = RecipeIngredient(
+        position=0, raw_text=f"3 tbsp {name}", ingredient=satay, needs_review=False, optional=False
+    )
+    return Recipe(title="Test", ingredients=[line])
+
+
+def test_a_household_ingredient_cant_be_checked_so_the_recipe_fails_closed() -> None:
+    check = check_recipe(with_household_ingredient("satay sauce"), rules(Diet.VEGETARIAN))
+    assert check.breaks == ["satay sauce (couldn't check)"]
+
+
+def test_household_ingredients_dont_matter_without_rules() -> None:
+    assert check_recipe(with_household_ingredient("satay sauce"), rules()).breaks == []
+
+
+def test_an_excluded_household_ingredient_says_excluded() -> None:
+    dish = with_household_ingredient("satay sauce")
+    satay = dish.ingredients[0].ingredient
+    assert satay is not None
+    assert check_recipe(dish, rules(excluded=frozenset({satay.id}))).breaks == [
+        "satay sauce (excluded)"
+    ]
+
+
 def test_vegan_excludes_eggs_and_honey_but_vegetarian_allows_them() -> None:
     dish = recipe(("eggs", "2 eggs"), ("honey", "1 tbsp honey"))
     assert check_recipe(dish, rules(Diet.VEGETARIAN)).breaks == []
@@ -223,6 +251,81 @@ async def test_a_recipe_with_an_unmatched_line_is_hidden_when_rules_are_set(
     assert "Mystery stew" in await titles(client, fake_issuer)
     await put(client, fake_issuer, RULES, {"diets": ["vegan"]})
     assert await titles(client, fake_issuer) == ["Chickpea salad"]
+
+
+def insert_imported(db: Engine, household_id: str, title: str, lines: list[str | None]) -> None:
+    """An Imported Recipe straight into the database (4d's import routes come next).
+    Each line is an Ingredient id, or None for a line nothing matched."""
+    recipe_id = uuid.uuid4()
+    with db.begin() as conn:
+        conn.execute(
+            text(
+                "INSERT INTO recipes (id, kind, household_id, title, summary, course, servings,"
+                " licence, attribution, created_at)"
+                " VALUES (:id, 'imported', :hh, :title, '', 'main', 4, 'private', 'Home', now())"
+            ),
+            {"id": recipe_id, "hh": household_id, "title": title},
+        )
+        for n, ingredient in enumerate(lines):
+            conn.execute(
+                text(
+                    "INSERT INTO recipe_ingredients (id, recipe_id, position, raw_text,"
+                    " ingredient_id, optional, parse_method, needs_review)"
+                    " VALUES (:id, :r, :n, :raw, :i, false, 'rule', :review)"
+                ),
+                {
+                    "id": uuid.uuid4(),
+                    "r": recipe_id,
+                    "n": n,
+                    "raw": f"line {n}",
+                    "i": ingredient,
+                    "review": ingredient is None,
+                },
+            )
+
+
+async def make_satay_household(client: httpx.AsyncClient, issuer: FakeIssuer, db: Engine) -> None:
+    """Ana's Household, with two Imported Recipes: one uses a Household Ingredient
+    (satay sauce), one uses only starters (onion)."""
+    home = await create_household(client, issuer, "ana")
+    made = await client.post(
+        "/ingredients", json={"name": "satay sauce"}, headers=issuer.headers("ana") | idem()
+    )
+    assert made.status_code == 200, made.text
+    hh = home["household"]["id"]
+    insert_imported(db, hh, "Satay noodles", [made.json()["id"]])
+    insert_imported(db, hh, "Onion soup", [await ingredient_id(db, "onion")])
+
+
+async def test_a_household_ingredient_hides_the_recipe_once_rules_are_set(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, load: Loader, db: Engine
+) -> None:
+    await load([SALAD])
+    await make_satay_household(client, fake_issuer, db)
+    assert await titles(client, fake_issuer) == ["Chickpea salad", "Onion soup", "Satay noodles"]
+
+    await put(client, fake_issuer, RULES, {"diets": ["vegetarian"]})
+    # Search runs through the same filter (_filtered); these rows have no embeddings.
+    assert await titles(client, fake_issuer) == ["Chickpea salad", "Onion soup"]
+
+
+async def test_your_recipes_lists_every_imported_recipe_with_why_its_hidden(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, load: Loader, db: Engine
+) -> None:
+    await load([SALAD])
+    await make_satay_household(client, fake_issuer, db)
+    await put(client, fake_issuer, RULES, {"diets": ["vegetarian"]})
+
+    response = await client.get("/recipes/imported", headers=fake_issuer.headers("ana"))
+    assert response.status_code == 200, response.text
+    found = {r["title"]: r["rule_breaks"] for r in response.json()}
+    # Seed Recipes aren't "yours"; hidden ones are still listed, with the reason.
+    assert found == {"Satay noodles": ["satay sauce (couldn't check)"], "Onion soup": []}
+
+    # Another Household sees none of them.
+    await create_household(client, fake_issuer, "ben", name="Ben's")
+    other = await client.get("/recipes/imported", headers=fake_issuer.headers("ben"))
+    assert other.json() == []
 
 
 def test_parmesan_needs_a_label_check_for_vegetarians() -> None:

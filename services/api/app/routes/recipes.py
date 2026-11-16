@@ -1,4 +1,5 @@
-"""HTTP routes for the Recipe Knowledge Base: browse, search, and read one recipe."""
+"""HTTP routes for the Recipe Knowledge Base: browse, search, read one recipe, and list
+the Household's own Imported Recipes."""
 
 import uuid
 from typing import Annotated, cast
@@ -9,7 +10,7 @@ from app import errors
 from app.deps import MemberDep, SessionDep
 from app.embeddings import Embedder, EmbeddingUnavailable
 from app.models import Course
-from app.schemas import RecipeOut, RecipeSummaryOut
+from app.schemas import ImportedRecipeOut, RecipeOut, RecipeSummaryOut
 from app.services import recipes
 from app.services.recipes import SEARCH_LIMIT
 
@@ -53,10 +54,21 @@ async def list_or_search(
     ]
 
 
-# Before /{recipe_id}: routes match in order, and "cuisines" isn't a recipe id.
+# Before /{recipe_id}: routes match in order, and "cuisines" and "imported" aren't ids.
 @router.get("/cuisines")
 async def list_cuisines(ctx: MemberDep, session: SessionDep) -> list[str]:
     return await recipes.cuisines(session, ctx.household.id)
+
+
+@router.get("/imported")
+async def list_imported(ctx: MemberDep, session: SessionDep) -> list[ImportedRecipeOut]:
+    """ "Your recipes": every one, even those the Dietary Rules hide, with the reason."""
+    return [
+        ImportedRecipeOut(
+            **RecipeSummaryOut.model_validate(r).model_dump(), rule_breaks=check.breaks
+        )
+        for r, check in await recipes.imported(session, ctx.household.id)
+    ]
 
 
 @router.get("/{recipe_id}")

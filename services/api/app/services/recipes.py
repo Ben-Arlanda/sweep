@@ -165,8 +165,9 @@ class RecipeFilters:
     cuisine: str | None = None
     course: Course | None = None  # None: every Course
     exclude_ingredient_ids: Sequence[uuid.UUID] = ()
-    # Set when Dietary Rules apply: a line we couldn't match might break them (fail safe).
-    exclude_unmatched: bool = False
+    # Set when Dietary Rules apply: a line we can't check might break them (fail closed).
+    # Same lines as diet.check_recipe: unmatched, or linked to a Household Ingredient.
+    exclude_uncheckable: bool = False
 
 
 def _visible_to(household_id: uuid.UUID) -> Select[Recipe]:
@@ -206,10 +207,15 @@ def _filtered(query: Select[Recipe], filters: RecipeFilters) -> Select[Recipe]:
                 RecipeIngredient.ingredient_id.in_(filters.exclude_ingredient_ids),
             )
         )
-    if filters.exclude_unmatched:
+    if filters.exclude_uncheckable:
+        household_made = select(Ingredient.id).where(Ingredient.household_id.is_not(None))
         query = query.where(
             ~exists().where(
-                RecipeIngredient.recipe_id == Recipe.id, RecipeIngredient.needs_review.is_(True)
+                RecipeIngredient.recipe_id == Recipe.id,
+                or_(
+                    RecipeIngredient.needs_review.is_(True),
+                    RecipeIngredient.ingredient_id.in_(household_made),
+                ),
             )
         )
     return query
@@ -276,6 +282,23 @@ async def search(
     return [(recipe, 1 - float(d)) for recipe, d in rows]
 
 
+async def imported(
+    session: AsyncSession, household_id: uuid.UUID
+) -> list[tuple[Recipe, diet.RuleCheck]]:
+    """This Household's Imported Recipes, newest first, each with its Rule check.
+
+    Not filtered by the Rules, unlike everything else here: this is the Household's own
+    list ("Your recipes"), so a recipe the Rules hide still shows, with the reason.
+    """
+    rules = await diet.get_rules(session, household_id)
+    found = await session.execute(
+        select(Recipe)
+        .where(Recipe.household_id == household_id, Recipe.kind == RecipeKind.IMPORTED)
+        .order_by(Recipe.created_at.desc(), Recipe.id)
+    )
+    return [(r, diet.check_recipe(r, rules)) for r in found.scalars()]
+
+
 async def get_recipe(
     session: AsyncSession, household_id: uuid.UUID, recipe_id: uuid.UUID
 ) -> Recipe:
@@ -308,7 +331,7 @@ async def filters_for(
         cuisine=cuisine,
         course=course,
         exclude_ingredient_ids=sorted(set(exclude_ingredient_ids) | banned),
-        exclude_unmatched=rules.active,
+        exclude_uncheckable=rules.active,
     )
 
 

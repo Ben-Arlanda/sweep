@@ -266,6 +266,13 @@ class RecipeSummaryOut(BaseModel):
     score: float | None = None
 
 
+class ImportedRecipeOut(RecipeSummaryOut):
+    """One of "Your recipes". `rule_breaks` empty = plannable; otherwise why the Dietary
+    Rules hide it from search and plans: "satay sauce (couldn't check)"."""
+
+    rule_breaks: list[str]
+
+
 class RecipeIngredientOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
