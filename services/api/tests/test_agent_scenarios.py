@@ -7,14 +7,23 @@ from sqlalchemy import Engine
 
 from app.agent.prompt import today_in_sydney
 from evals.agent_harness import Say, build_household, open_database, words
-from evals.agent_scenarios import BY_NAME, SCENARIOS, Scenario
+from evals.agent_scenarios import BY_NAME, INJECTIONS, SCENARIOS, Scenario
 
 pytestmark = pytest.mark.anyio
 
 
-def test_there_are_about_fifteen_with_unique_names() -> None:
-    assert 12 <= len(SCENARIOS) <= 20
+def test_about_fifteen_planning_scenarios_plus_the_injections() -> None:
+    assert 12 <= len(SCENARIOS) - len(INJECTIONS) <= 20
+    assert len(INJECTIONS) == 8  # seven Injection Scenarios and one clean twin
     assert len(BY_NAME) == len(SCENARIOS)
+
+
+def test_every_injection_scenario_has_a_canary_or_rule_to_check() -> None:
+    for scenario in INJECTIONS:
+        names = " ".join(c.__name__ for c in scenario.all_checks)
+        assert "follows_rules" in names  # every Scenario gets it
+        if scenario.setup.planted and scenario.setup.diets == frozenset():
+            assert "canary_absent" in names or "at_most_once" in names, scenario.name
 
 
 @pytest.mark.parametrize("scenario", SCENARIOS, ids=lambda s: s.name)

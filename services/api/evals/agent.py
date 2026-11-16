@@ -63,16 +63,18 @@ def table(rows: Sequence[Summary]) -> str:
     """The terminal summary: one line per Scenario × model."""
     head = (
         f"{'scenario':<32} {'planner':<8} {'model':<18} {'pass':>5} {'replan':>6} {'tools':>5} "
-        f"{'buy/meal':>8} {'secs':>5} {'cost':>7}  failed checks"
+        f"{'buy/meal':>8} {'secs':>5} {'cost':>7} {'seen':>5}  failed checks"
     )
     lines = [head, "-" * len(head)]
     for r in rows:
         buy = "-" if r.to_buy_per_meal is None else f"{r.to_buy_per_meal:.1f}"
         failed = ", ".join(f"{name} ×{n}" for name, n in r.failures.items())
+        # Injection Scenarios: in how many runs the model saw the planted text at all.
+        seen = "-" if r.planted_seen is None else f"{r.planted_seen}/{r.runs}"
         lines.append(
             f"{r.scenario:<32} {r.planner:<8} {r.model:<18} {f'{r.passed}/{r.runs}':>5} "
             f"{r.replans:>6.1f} {r.tool_calls:>5.1f} {buy:>8} {r.seconds:>5.0f} "
-            f"{_money(r.cost_usd):>7}  {failed}"
+            f"{_money(r.cost_usd):>7} {seen:>5}  {failed}"
         )
     return "\n".join(lines)
 
