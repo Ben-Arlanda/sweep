@@ -38,6 +38,8 @@ ERROR_STATUS: dict[type[errors.DomainError], int] = {
     errors.AlreadyInHousehold: 409,
     errors.Conflict: 409,
     errors.LimitReached: 409,
+    errors.TurnInProgress: 409,
+    errors.RateLimited: 429,
     errors.IdempotencyKeyReused: 422,
     errors.InvalidInput: 422,
     errors.Unavailable: 503,
@@ -47,7 +49,12 @@ ERROR_STATUS: dict[type[errors.DomainError], int] = {
 async def handle_domain_error(request: Request, exc: Exception) -> JSONResponse:
     assert isinstance(exc, errors.DomainError)
     status_code = ERROR_STATUS.get(type(exc), 400)
-    return JSONResponse(status_code=status_code, content={"code": exc.code, "detail": exc.message})
+    headers = {"Retry-After": str(exc.retry_after)} if isinstance(exc, errors.RateLimited) else None
+    return JSONResponse(
+        status_code=status_code,
+        content={"code": exc.code, "detail": exc.message},
+        headers=headers,
+    )
 
 
 def default_embedder(app_settings: Settings) -> Embedder | None:

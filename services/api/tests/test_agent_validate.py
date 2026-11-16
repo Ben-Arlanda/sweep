@@ -3,8 +3,8 @@
 import uuid
 from datetime import date
 
-from app.agent.state import Draft
-from app.agent.validate import build_proposal, validate_draft
+from app.agent.state import Draft, DraftAddition
+from app.agent.validate import build_proposal, explain_additions, validate_draft
 from app.data.diet import Diet
 from app.models import Ingredient, Recipe, RecipeIngredient
 from app.services.diet import DietaryRules
@@ -93,3 +93,78 @@ def test_the_proposal_drops_meals_that_still_have_problems() -> None:
     # Brand-dependent ingredients are surfaced, not hidden.
     assert proposal["check_label"] == ["Dal: stock cubes (vegetarian)"]
     assert build_proposal(d, RECIPES, DietaryRules(), [], "x")["check_label"] == []
+
+
+# --- List Addition reasons (slice 10) ----------------------------------------------------
+
+
+def addition(name: str, ingredient: Ingredient | None = None) -> DraftAddition:
+    return DraftAddition(
+        name=name,
+        quantity=None,
+        unit=None,
+        ingredient_id=str(ingredient.id) if ingredient else None,
+    )
+
+
+def ingredient_of(r: Recipe, name: str) -> Ingredient:
+    found = next(
+        line.ingredient
+        for line in r.ingredients
+        if line.ingredient is not None and line.ingredient.name == name
+    )
+    assert found is not None
+    return found
+
+
+def reasons(
+    *additions: DraftAddition, said: tuple[str, ...] = ("plan two dinners",)
+) -> list[tuple[str, list[str]]]:
+    meals = [("2026-11-16", CURRY), ("2026-11-17", DAL)]
+    names = {
+        str(line.ingredient.id): line.ingredient.name
+        for _, r in meals
+        for line in r.ingredients
+        if line.ingredient
+    }
+    explained = explain_additions(list(additions), meals, list(said), names)
+    return [(a["reason"], a["for_meals"]) for a in explained]
+
+
+def test_an_addition_a_planned_meal_uses_is_for_that_meal() -> None:
+    onion = ingredient_of(CURRY, "onion")
+    lentils = ingredient_of(DAL, "red lentils")
+
+    got = reasons(addition("brown onion", onion), addition("lentils", lentils))
+
+    # Matched by the Ingredient, not the words: the agent wrote "brown onion".
+    assert got == [("meal", ["Chicken curry"]), ("meal", ["Dal"])]
+
+
+def test_an_ingredient_used_by_two_meals_names_both() -> None:
+    # CURRY and DAL are different Recipe objects with their own "onion" Ingredient; the
+    # app shares one Ingredient row, so give DAL's onion the same id here.
+    onion = ingredient_of(CURRY, "onion")
+    ingredient_of(DAL, "onion").id = onion.id
+
+    assert reasons(addition("onion", onion)) == [("meal", ["Chicken curry", "Dal"])]
+
+
+def test_an_addition_the_member_asked_for_is_explained() -> None:
+    said = ("plan two dinners", "Also add MILK and a couple of avocados please")
+
+    got = reasons(addition("milk"), addition("avocado"), addition("Bananas"), said=said)
+
+    assert got == [("asked", []), ("asked", []), ("unexplained", [])]
+
+
+def test_asked_for_means_whole_words() -> None:
+    """ "rice" is not asked for by "price" or "licorice"."""
+    said = ("keep the price down, and the kids like licorice",)
+
+    assert reasons(addition("rice"), said=said) == [("unexplained", [])]
+
+
+def test_an_injected_addition_is_unexplained() -> None:
+    """Planted text asked for wine. The Member didn't, and no meal uses it."""
+    assert reasons(addition("wine")) == [("unexplained", [])]

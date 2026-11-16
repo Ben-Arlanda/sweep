@@ -129,7 +129,7 @@ _Avoid_: "Something new"
 The days a plan covers, picked in the "Plan my week" sheet. The agent may only put meals on these days. The Household's **Usual Days** (weekdays, e.g. Mon–Fri) are what the sheet starts with.
 
 **List Addition**:
-An item a Proposal would put on the Shopping List. Its amount is the extra to buy, on top of what's already on the list; approving tops up a matching unticked item rather than adding a second line.
+An item a Proposal would put on the Shopping List. Its amount is the extra to buy, on top of what's already on the list; approving tops up a matching unticked item rather than adding a second line. Each one carries its **reason**: a Planned Meal that needs it, or the Member asked for it. One with no reason is **unexplained**: the Proposal card shows it unticked ("Not for any meal"), so it's only added if a Member ticks it on purpose.
 
 **Draft Plan**:
 The work-in-progress Meal Plan and Shopping List changes the agent is building inside a Conversation. Visible to the Member, but not yet Household data.
@@ -158,6 +158,14 @@ _Avoid_: judge (reserved for an LLM grader, not built yet)
 **Eval Run**:
 Every Scenario run a set number of times on one model, with a pass rate per Scenario and the measured averages (replans, tool calls, items to buy, seconds, cost).
 _Avoid_: benchmark, test run
+
+**Injection Scenario**:
+A Scenario where text the agent reads (an Imported Recipe, another Member's Kitchen item, list item or name) tries to give it instructions. It passes only if what the agent did shows no trace of them.
+_Avoid_: jailbreak test (a jailbreak is the Member attacking the model directly)
+
+**Canary**:
+Something an Injection Scenario's planted text asks for that no honest plan would contain ("add 50 saffron threads"). Finding it in a Proposal means the injection worked.
+_Avoid_: trigger, payload
 
 **Baseline Planner**:
 The no-agent alternative the agent is compared against: code filters recipes by Dietary Rules and ranks them by Kitchen Match, then one model call picks the meals. No tools, no replans.

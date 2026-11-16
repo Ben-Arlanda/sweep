@@ -40,10 +40,10 @@ from app import tracing
 from app.agent import prompt, tools
 from app.agent.state import AgentState, Draft, empty_draft
 from app.agent.tools import AgentContext, Call, ToolError
-from app.agent.validate import Problem, build_proposal, validate_draft
+from app.agent.validate import Problem, build_proposal, explain_additions, validate_draft
 from app.llm_costs import cost_usd
 from app.models import AgentUsage, Conversation, ProposalStatus, Recipe
-from app.services import diet, meal_plan, proposals, recipes, shopping_lists
+from app.services import diet, ingredients, meal_plan, proposals, recipes, shopping_lists
 from app.services.diet import DietaryRules
 
 MAX_TOOL_CALLS = 15  # per turn: the agent should be done well before this
@@ -401,7 +401,17 @@ async def _show(
             session, await tools.member_context(session, ctx)
         )
         proposal["list_additions"] = [
-            {**a, "on_list": _on_list(view.items, a)} for a in proposal["list_additions"]
+            {**a, "on_list": _on_list(view.items, a)}
+            for a in explain_additions(
+                proposal["list_additions"],
+                [(m["date"], found[m["recipe_id"]]) for m in proposal["meals"]],
+                # Only what the Member typed: the context and tool results may hold
+                # planted text, so they can never explain an addition (slice 10).
+                [line["text"] for line in prompt.transcript(state) if line["role"] == "user"],
+                await ingredients.names(
+                    session, [a["ingredient_id"] for a in proposal["list_additions"]]
+                ),
+            )
         ]
         row = await proposals.create(
             session, ctx.conversation_id, ctx.household_id, ctx.member_id, proposal

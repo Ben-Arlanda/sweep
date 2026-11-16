@@ -559,6 +559,22 @@ class AgentUsage(Base):
     output_tokens: Mapped[int] = mapped_column(Integer, default=0)
 
 
+class AgentTurn(Base):
+    """One chat message the agent answered, for the rate limits (slice 10): one turn at
+    a time per Member, and at most 30 an hour. In Postgres so every API copy agrees."""
+
+    __tablename__ = "agent_turns"
+    __table_args__ = (Index("ix_agent_turns_member_started", "member_id", "started_at"),)
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    member_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("members.id", ondelete="CASCADE"))
+    conversation_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("conversations.id", ondelete="CASCADE")
+    )
+    started_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+
 class ProposalStatus(StrEnum):
     PENDING = "pending"  # waiting for the Member
     APPROVED = "approved"

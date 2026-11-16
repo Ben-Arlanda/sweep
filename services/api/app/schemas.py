@@ -28,11 +28,16 @@ from app.models import (
     Role,
 )
 from app.services.ingredients import normalise
+from app.text import ONE_LINE
 
-HouseholdName = Annotated[
-    str, StringConstraints(strip_whitespace=True, min_length=1, max_length=100)
-]
-DisplayName = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=80)]
+
+# Trimming runs before ONE_LINE, so a pasted trailing newline is simply removed.
+def _name(max_length: int) -> StringConstraints:
+    return StringConstraints(strip_whitespace=True, min_length=1, max_length=max_length)
+
+
+HouseholdName = Annotated[str, _name(100), ONE_LINE]
+DisplayName = Annotated[str, _name(80), ONE_LINE]
 
 
 class CreateHouseholdIn(BaseModel):
@@ -84,9 +89,9 @@ class ErrorOut(BaseModel):
 
 # --- Shopping Lists ----------------------------------------------------------------
 
-ShopName = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=40)]
-ItemText = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=200)]
-Unit = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=20)]
+ShopName = Annotated[str, _name(40), ONE_LINE]
+ItemText = Annotated[str, _name(200), ONE_LINE]
+Unit = Annotated[str, _name(20), ONE_LINE]
 # Sent and returned as a string ("1.5"), so no float rounding on either side.
 # Postgres hands back 1.500 for NUMERIC(10, 3); trim the trailing zeros.
 Quantity = Annotated[
@@ -96,8 +101,11 @@ Quantity = Annotated[
 ]
 
 
+IngredientName = Annotated[str, _name(80), ONE_LINE]
+
+
 class IngredientIn(BaseModel):
-    name: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=80)]
+    name: IngredientName
 
     @field_validator("name")
     @classmethod
@@ -281,7 +289,7 @@ class RecipeOut(RecipeSummaryOut):
 
 # --- Dietary Rules and Preferences ----------------------------------------------------
 
-Cuisine = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=40)]
+Cuisine = Annotated[str, _name(40), ONE_LINE]
 
 
 class DietaryRulesIn(BaseModel):
@@ -394,6 +402,11 @@ class DraftAdditionOut(BaseModel):
     # On a Proposal: how much of it is already on the Shopping List ("200 g"), since an
     # addition is the extra on top (ADR 0016). None when it isn't there.
     on_list: str | None = None
+    # On a Proposal (slice 10): "meal" (for_meals uses it), "asked" (the Member named it)
+    # or "unexplained" (shown unticked: "Not for any meal"). None on a Draft, and on
+    # Proposals saved before reasons existed.
+    reason: Literal["meal", "asked", "unexplained"] | None = None
+    for_meals: list[str] = []
 
 
 class DraftOut(BaseModel):

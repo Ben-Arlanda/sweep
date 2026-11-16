@@ -47,6 +47,22 @@ class LimitReached(DomainError):
     code = "limit_reached"
 
 
+class TurnInProgress(DomainError):
+    """The Member's last message is still being answered (one turn at a time)."""
+
+    code = "turn_in_progress"
+
+
+class RateLimited(DomainError):
+    """Too many messages for now. `retry_after`: seconds until one is allowed again."""
+
+    code = "rate_limited"
+
+    def __init__(self, message: str, retry_after: int) -> None:
+        super().__init__(message)
+        self.retry_after = retry_after
+
+
 class IdempotencyKeyReused(DomainError):
     code = "idempotency_key_reused"
 

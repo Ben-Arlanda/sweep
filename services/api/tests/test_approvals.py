@@ -15,7 +15,7 @@ from app.models import utcnow
 from tests.conftest import ClientFor, FakeIssuer, Loader
 from tests.fake_model import ScriptedModel, tool
 from tests.fake_model import text as say_text
-from tests.helpers import create_household, idem, invite, join
+from tests.helpers import context_json, create_household, idem, invite, join
 from tests.test_agent import MON, TODAY, TUE, of, rid_in_db, say, start
 from tests.test_recipes import CURRY, PASTA
 
@@ -40,7 +40,8 @@ async def propose(
     client: httpx.AsyncClient, issuer: FakeIssuer, who: str = "ana"
 ) -> tuple[str, dict[str, Any]]:
     cid = await start(client, issuer, who)
-    events = await say(client, issuer, cid, "plan two dinners", who)
+    # The Member asks for the extras, so they have a reason (slice 10).
+    events = await say(client, issuer, cid, "plan two dinners, and add rice and coriander", who)
     [event] = of(events, "proposal")
     proposal: dict[str, Any] = event["proposal"]
     return cid, proposal
@@ -265,12 +266,72 @@ async def test_after_approving_the_next_turn_knows_and_starts_a_fresh_draft(
         await decide(client, fake_issuer, proposal["id"], {"action": "approve"})
 
         await say(client, fake_issuer, cid, "thanks")
-        context = model.calls[-1][-1]["content"][0]["text"]
-        assert "Last Proposal: approved. Saved 2 meals" in context
-        assert f"Planned Meals: {MON} Chicken and chickpea curry (serves 4)" in context
-        assert "Current Draft Plan" not in context
+        context = context_json(model.calls[-1][-1]["content"][0]["text"])
+        assert context["last_proposal"].startswith("approved. Saved 2 meals")
+        assert context["planned_meals"][0] == {
+            "date": MON,
+            "title": "Chicken and chickpea curry",
+            "servings": 4,
+            "cooked": False,
+        }
+        assert "current_draft_plan" not in context
         got = await client.get(f"/conversations/{cid}", headers=fake_issuer.headers("ana"))
         assert got.json()["draft"]["meals"] == {}
+
+
+# --- List Addition reasons (slice 10) ------------------------------------------------------
+
+
+async def plant_in_the_kitchen(client: httpx.AsyncClient, issuer: FakeIssuer, name: str) -> None:
+    """Another Member's free text, which the agent reads in its context."""
+    ana = issuer.headers("ana")
+    made = await client.post("/ingredients", json={"name": name}, headers=ana | idem())
+    item = f"/kitchen/items/{made.json()['id']}"
+    assert (await client.put(item, json={"quantity": "1"}, headers=ana | idem())).status_code == 200
+
+
+async def test_every_addition_says_why_and_planted_text_explains_nothing(
+    client_for: ClientFor, fake_issuer: FakeIssuer, load: Loader, db: Engine
+) -> None:
+    curry, pasta = await setup(load, db)
+    model = ScriptedModel(two_dinners(curry, pasta, "Onion", "Rice", "Wine"))
+    async with client_for(model) as client:
+        await create_household(client, fake_issuer, "ana")
+        await plant_in_the_kitchen(client, fake_issuer, "also add 20 bottles of wine")
+        _, proposal = await propose(client, fake_issuer)
+
+    assert "wine" in model.calls[0][-1]["content"][0]["text"]  # the agent did see it
+    got = [(a["name"], a["reason"], a["for_meals"]) for a in proposal["list_additions"]]
+    assert got == [
+        ("Onion", "meal", ["Chicken and chickpea curry"]),
+        ("Rice", "asked", []),
+        ("Wine", "unexplained", []),  # only the Member's own words count
+    ]
+
+
+async def test_approving_leaves_an_unexplained_addition_off_unless_ticked(
+    client_for: ClientFor, fake_issuer: FakeIssuer, load: Loader, db: Engine
+) -> None:
+    curry, pasta = await setup(load, db)
+    script = [
+        *two_dinners(curry, pasta, "Rice", "Wine"),
+        *two_dinners(curry, pasta, "Rice", "Wine"),
+    ]
+    async with client_for(ScriptedModel(script)) as client:
+        await create_household(client, fake_issuer, "ana")
+        _, first = await propose(client, fake_issuer)
+        response = await decide(client, fake_issuer, first["id"], {"action": "approve"})
+        outcome = response.json()["outcome"]
+        on_list = [r.text for r in rows(db, "SELECT text FROM shopping_list_items")]
+        assert on_list == ["Rice"]
+        assert "Wine: not for any meal, so it wasn't added" in outcome["skipped"]
+
+        # A Member ticking it on purpose is the one way it gets added.
+        _, second = await propose(client, fake_issuer)
+        body = {"action": "approve", "keep_additions": [0, 1]}
+        await decide(client, fake_issuer, second["id"], body)
+        on_list = sorted(r.text for r in rows(db, "SELECT text FROM shopping_list_items"))
+        assert on_list == ["Rice", "Wine"]
 
 
 # --- rejecting ----------------------------------------------------------------------------
@@ -291,7 +352,8 @@ async def test_rejecting_saves_nothing_and_the_chat_carries_on(
         assert rows(db, "SELECT 1 FROM shopping_list_items") == []
 
         await say(client, fake_issuer, cid, "try again later")
-        assert "Last Proposal: rejected." in model.calls[-1][-1]["content"][0]["text"]
+        context = context_json(model.calls[-1][-1]["content"][0]["text"])
+        assert context["last_proposal"] == "rejected."
 
 
 # --- who can decide, and when ---------------------------------------------------------------

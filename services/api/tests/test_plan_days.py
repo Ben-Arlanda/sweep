@@ -6,6 +6,7 @@ Household's usual weekdays are remembered with its Preferences.
 
 from collections.abc import Mapping
 from datetime import timedelta
+from typing import Any
 
 import httpx
 import pytest
@@ -15,7 +16,7 @@ from app.agent.prompt import SYSTEM, today_in_sydney
 from tests.conftest import ClientFor, FakeIssuer, Loader
 from tests.fake_model import ScriptedModel, tool
 from tests.fake_model import text as say_text
-from tests.helpers import create_household, idem
+from tests.helpers import context_json, create_household, idem
 from tests.test_agent import of, rid_in_db, say
 from tests.test_recipes import CURRY, PASTA
 
@@ -158,14 +159,13 @@ async def started(
     return cid
 
 
-def context_of(model: ScriptedModel, call: int = 0) -> str:
-    text_block: str = model.calls[call][-1]["content"][0]["text"]
-    return text_block
+def context_of(model: ScriptedModel, call: int = 0) -> dict[str, Any]:
+    return context_json(model.calls[call][-1]["content"][0]["text"])
 
 
 @pytest.mark.parametrize(
     ("mode", "expected"),
-    [("kitchen", "Plan mode: cook from my Kitchen"), ("new", "Plan mode: new recipes to shop for")],
+    [("kitchen", "cook from my Kitchen"), ("new", "new recipes to shop for")],
 )
 async def test_every_turn_says_the_mode_and_the_days(
     client_for: ClientFor, fake_issuer: FakeIssuer, mode: str, expected: str
@@ -179,10 +179,10 @@ async def test_every_turn_says_the_mode_and_the_days(
 
     for call in (0, 1):
         context = context_of(model, call)
-        assert expected in context
+        assert context["plan_mode"].startswith(expected)
         # With the weekday, so the model doesn't have to work it out.
-        named = ", ".join(f"{TODAY + timedelta(days=n):%a} {day(n)}" for n in (1, 2))
-        assert f"Plan these days only (one dinner each): {named}" in context
+        named = [f"{TODAY + timedelta(days=n):%a} {day(n)}" for n in (1, 2)]
+        assert context["plan_these_days_only"] == named
 
 
 async def test_a_free_chat_has_no_mode_or_days_in_its_context(
@@ -193,14 +193,15 @@ async def test_a_free_chat_has_no_mode_or_days_in_its_context(
         await create_household(client, fake_issuer, "ana")
         cid = await started(client, fake_issuer, None)
         await say(client, fake_issuer, cid, "hi")
-    assert "Plan mode" not in context_of(model)
-    assert "Plan these days" not in context_of(model)
+    assert "plan_mode" not in context_of(model)
+    assert "plan_these_days_only" not in context_of(model)
 
 
 def test_the_fixed_prompt_explains_both_modes_and_the_days() -> None:
-    assert "Plan mode: new recipes" in SYSTEM
+    # The prompt names the context's keys, so renaming one must update the prompt.
+    assert 'plan_mode is "new recipes to shop for' in SYSTEM
     assert "search_recipes" in SYSTEM
-    assert "Plan these days only" in SYSTEM
+    assert "plan_these_days_only" in SYSTEM
 
 
 async def test_validate_sends_back_a_meal_on_a_day_that_was_not_picked(

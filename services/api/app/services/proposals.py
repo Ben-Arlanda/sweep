@@ -192,6 +192,9 @@ async def commit(
       is skipped and the rest saved
     - a meal on a day that already has one replaces it, unless that one was Cooked
     - an addition whose Ingredient (or name) is already unticked on the list is skipped
+    - with no `keep_additions`, an unexplained addition (no meal uses it, the Member
+      didn't ask for it) is left off: only a Member ticking it on purpose adds it
+      (slice 10). Proposals saved before reasons existed have none and are all kept.
     """
     hid = ctx.household.id
     # Lock order matches the rest of the app: Kitchen (Household row), then the list.
@@ -208,13 +211,17 @@ async def commit(
 
     payload = proposal.payload
     meals = [m for m in payload["meals"] if keep_meals is None or m["date"] in keep_meals]
-    kept_additions = [
-        i
-        for i in range(len(payload["list_additions"]))
-        if keep_additions is None or i in keep_additions
-    ]
-    additions = [payload["list_additions"][i] for i in kept_additions]
     skipped: list[str] = []
+    kept_additions = []
+    for i, item in enumerate(payload["list_additions"]):
+        if keep_additions is not None:
+            if i in keep_additions:
+                kept_additions.append(i)
+        elif item.get("reason") == "unexplained":
+            skipped.append(f"{item['name']}: not for any meal, so it wasn't added")
+        else:
+            kept_additions.append(i)
+    additions = [payload["list_additions"][i] for i in kept_additions]
 
     # Meals: re-check against today's recipes and Dietary Rules.
     found = await recipes.get_many(session, hid, [m["recipe_id"] for m in meals])

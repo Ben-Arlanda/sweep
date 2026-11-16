@@ -114,7 +114,7 @@ def embedding_text(recipe: Recipe) -> str:
     )
 
 
-def _hash(text: str) -> bytes:
+def content_hash(text: str) -> bytes:
     return hashlib.sha256(text.encode()).digest()
 
 
@@ -137,7 +137,7 @@ async def embed_missing(session: AsyncSession, embedder: Embedder, limit: int | 
     todo = []
     for recipe in recipes:
         text = embedding_text(recipe)
-        if stored.get(recipe.id) != _hash(text):
+        if stored.get(recipe.id) != content_hash(text):
             todo.append((recipe.id, text))
     todo = todo[:limit] if limit is not None else todo
     if not todo:
@@ -145,7 +145,7 @@ async def embed_missing(session: AsyncSession, embedder: Embedder, limit: int | 
 
     vectors = await embedder.embed([text for _, text in todo], "document")
     for (recipe_id, text), vector in zip(todo, vectors, strict=True):
-        values = {"content_hash": _hash(text), "embedding": vector}
+        values = {"content_hash": content_hash(text), "embedding": vector}
         await session.execute(
             insert(RecipeEmbedding)
             .values(recipe_id=recipe_id, model=embedder.model, **values)

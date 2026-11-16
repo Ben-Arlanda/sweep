@@ -16,6 +16,7 @@ from fastapi.responses import StreamingResponse
 from pydantic import RootModel
 
 from app import errors
+from app.agent.prompt import transcript
 from app.deps import MemberDep, SessionDep
 from app.routes.proposals import proposal_fields, proposal_out
 from app.schemas import (
@@ -28,7 +29,7 @@ from app.schemas import (
     SendMessageIn,
     TurnEvent,
 )
-from app.services import conversations
+from app.services import conversations, turn_limits
 from app.services.conversations import Agent
 
 router = APIRouter(prefix="/conversations", tags=["agent"])
@@ -72,7 +73,7 @@ async def get(
         created_at=conversation.created_at,
         plan_mode=conversation.plan_mode,
         plan_days=conversation.plan_days,
-        messages=[ChatLine.model_validate(line) for line in conversations.transcript(state)],
+        messages=[ChatLine.model_validate(line) for line in transcript(state)],
         draft=DraftOut.model_validate(d) if (d := state.get("draft")) else None,
         proposal=proposal_out(current) if current is not None else None,
         proposals=[
@@ -105,13 +106,18 @@ async def send(
     ctx: MemberDep,
     session: SessionDep,
 ) -> EventStreamResponse:
-    # Check access and configuration before the stream starts, so they're normal errors.
+    # Check access, configuration and the rate limits before the stream starts, so
+    # they're normal errors (403/404, 503, 409 or 429), not events inside a 200.
     conversation = await conversations.get(session, ctx, conversation_id)
     agent = _agent(request)
+    turn_id = await turn_limits.start(session, ctx.member.id, conversation.id)
 
     async def events() -> AsyncIterator[str]:
-        async for event in agent.run_turn(conversation, body.text):
-            yield f"event: {event['type']}\ndata: {json.dumps(event, default=str)}\n\n"
+        try:
+            async for event in agent.run_turn(conversation, body.text):
+                yield f"event: {event['type']}\ndata: {json.dumps(event, default=str)}\n\n"
+        finally:  # also when the Member closes the app mid-reply
+            await turn_limits.finish(agent.sessionmaker, turn_id)
 
     return EventStreamResponse(
         events(),
