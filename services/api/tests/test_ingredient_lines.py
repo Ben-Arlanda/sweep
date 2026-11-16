@@ -45,6 +45,49 @@ INDEX = IngredientIndex.from_seed(INGREDIENTS)
         ("3 sheets puff pastry", "puff pastry", D("3"), "sheet", None),
         ("300 g cooked prawns", "cooked prawns", D("300"), "g", None),  # sold cooked
         ("Eggs", "eggs", None, None, None),
+        # RecipeTin Eats style (print-to-PDF, 2026-11-17): metric first, imperial after a
+        # slash. Keep the metric amount; the imperial one is the same thing.
+        (
+            "4 x 180g/6 oz salmon fillets, skin on or off, doesn't matter (Note 1)",
+            "salmon fillet",
+            D("720"),
+            "g",
+            "skin on or off, doesn't matter; Note 1",
+        ),
+        (
+            "200g/ 7 oz cherry tomatoes (or grape tomatoes, 1 Aussie punnet)",
+            "cherry tomatoes",
+            D("200"),
+            "g",
+            "or grape tomatoes, 1 Aussie punnet",
+        ),
+        ("500g/1 lb beef mince", "beef mince", D("500"), "g", None),
+        ("1/2 tsp cooking salt / kosher salt", "salt", D("0.5"), "tsp", None),
+        ("1 tsp lemon zest (1 lemon)", "lemons", D("1"), "tsp", "1 lemon"),
+        ("1 tbsp lemon juice", "lemons", D("1"), "tbsp", None),
+        ("Lemon wedges or slices, optional", "lemons", None, None, None),
+        ("2 tbsp lime juice", "limes", D("2"), "tbsp", None),
+        ("1 tsp white sesame seeds", "sesame seeds", D("1"), "tsp", None),
+        (
+            "1/2 tsp black sesame seeds (or more white)",
+            "sesame seeds",
+            D("0.5"),
+            "tsp",
+            "or more white",
+        ),
+        ("Olive oil spray", "olive oil", None, None, None),
+        (
+            "1/3 cup pickled jalapeno, roughly chopped",
+            "pickled jalapenos",
+            D("0.333"),
+            "cup",
+            "roughly chopped",
+        ),
+        ("2 jalapeños, sliced", "jalapenos", D("2"), None, "sliced"),
+        ("1.5 kg pork ribs", "pork ribs", D("1.5"), "kg", None),
+        ("1 tbsp apple cider vinegar", "apple cider vinegar", D("1"), "tbsp", None),
+        ("1 packet taco seasoning", "taco seasoning", D("1"), None, None),
+        ("8 taco shells", "taco shells", D("8"), None, None),
     ],
 )
 def test_reads_quantity_unit_name_and_note(
@@ -215,3 +258,9 @@ async def test_llm_answers_are_checked_against_our_lists() -> None:
     assert dragon.ingredient is None and dragon.needs_review
     assert butter.ingredient is not None and butter.ingredient.name == "butter"
     assert (butter.unit, butter.base_quantity) == (None, None)  # 3 of what? we don't know
+
+
+def test_a_beef_stock_cube_is_left_for_a_person() -> None:
+    # "stock cubes" are only "check the label" for meat, so linking a *beef* stock cube
+    # to them would let it past a vegetarian Rule. Not linked fails closed instead.
+    assert parse_line("1 beef stock cube, crumbled", INDEX).needs_review

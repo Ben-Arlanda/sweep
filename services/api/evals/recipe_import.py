@@ -36,6 +36,7 @@ Paste prompt, a scan goes as a document), so this measures what a Member would g
 import argparse
 import asyncio
 import json
+import logging
 import re
 import sys
 import unicodedata
@@ -50,13 +51,12 @@ from app.config import settings
 from app.db import make_engine, make_sessionmaker
 from app.llm import ClaudeRecipeReader
 from app.llm_costs import PRICES_CHECKED, Usage, cost_usd
-from app.schemas import MAX_PASTE_CHARS
 from app.services.ingredient_lines import IngredientIndex, index_from_db, parse_line
 from app.services.recipe_import import (
-    MIN_PDF_TEXT,
     Photo,
     RecipeReading,
     appears_in,
+    paste_text_from_pdf,
     photo_type,
 )
 from app.text import clean_line
@@ -118,8 +118,8 @@ async def read(reader: ClaudeRecipeReader, case: dict[str, Any]) -> Read:
         reading, usage = await reader.read_photos(photos, CUISINES)
         return reading, usage, f"{len(photos)} photo(s)", None
     contents = await pdf_text.read_pdf(files[0])
-    text = contents.text.strip()[:MAX_PASTE_CHARS]
-    if len("".join(text.split())) >= MIN_PDF_TEXT:
+    text = paste_text_from_pdf(contents)
+    if text is not None:
         reading, usage = await reader.read(text, CUISINES)
         return reading, usage, f"PDF text ({contents.pages} pages)", text
     reading, usage = await reader.read_document(contents.first_pages, CUISINES)
@@ -132,8 +132,11 @@ def grade(
     index: IngredientIndex,
     text: str | None,
 ) -> dict[str, Any]:
-    if reading is None or not reading.found_recipe:
-        return {"read": False, "expected_refusal": case.get("found", True) is False}
+    if reading is None:  # the call failed or was cut off: not the model refusing
+        return {"read": False, "no_answer": True, "expected_refusal": False}
+    if not reading.found_recipe:
+        refusal_expected = case.get("found", True) is False
+        return {"read": False, "no_answer": False, "expected_refusal": refusal_expected}
     lines = [clean_line(line, 300) for line in reading.ingredient_lines if line.strip()]
     got = Counter(_same(line) for line in lines)  # a Counter: "1 egg" can be there twice
     want = Counter(_same(line) for line in case.get("lines", []))
@@ -141,6 +144,7 @@ def grade(
     as_wanted = {_same(line): line for line in case.get("lines", [])}
     result: dict[str, Any] = {
         "read": True,
+        "no_answer": False,
         "expected_refusal": False,
         "title": _same(clean_line(reading.title, 200))
         in [_same(t) for t in _as_list(case.get("title", ""))],
@@ -174,6 +178,9 @@ def passed(result: dict[str, Any]) -> bool:
 def show(name: str, how: str, result: dict[str, Any], cost: Decimal | None) -> None:
     price = f"${cost:.4f}" if cost is not None else "$?"
     print(f"\n{'✓' if passed(result) else '✗'} {name}  ({how}, {price})")
+    if result["no_answer"]:
+        print("   no answer: the call failed or was cut off (see the warning above)")
+        return
     if not result["read"]:
         print("   refused: not a recipe" + (" (as expected)" if result["expected_refusal"] else ""))
         return
@@ -238,6 +245,8 @@ async def main(cases: list[dict[str, Any]], repeats: int, max_spend: Decimal) ->
 
 
 def cli() -> int:
+    # The reader logs why a call failed ("request refused (400)"); show it in the report.
+    logging.basicConfig(level=logging.WARNING, format="   ! %(name)s: %(message)s")
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("--list", action="store_true", help="list the cases and stop (free)")
     parser.add_argument("--only", help="comma-separated case names")

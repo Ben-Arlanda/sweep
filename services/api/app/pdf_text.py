@@ -41,6 +41,25 @@ class _Locked(Exception):
     pass
 
 
+def rejoin_split_lines(text: str) -> str:
+    """Put back lines a print-to-PDF broke in two. Recipe sites print the name and the
+    note in separate boxes, so pypdf gives "2 garlic cloves ⏎ , grated (Note 3)", and a
+    reader takes the second half for a stray line. A line starting with "," or "(" is
+    never a line of its own, so it goes back on the end of the one before.
+
+    Plain rules on purpose: free, and the same answer every time.
+    """
+    out: list[str] = []
+    for line in text.split("\n"):
+        rest = line.strip()
+        if out and out[-1].strip() and rest.startswith((",", "(")):
+            space = "" if rest.startswith(",") else " "  # "fillets, skin on"; "mustard (Note 2)"
+            out[-1] = f"{out[-1].rstrip()}{space}{rest}"
+        else:
+            out.append(line)
+    return "\n".join(out)
+
+
 # --- Running something in a child process, with a time limit -----------------------------
 
 

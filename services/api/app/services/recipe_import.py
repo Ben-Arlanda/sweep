@@ -181,6 +181,13 @@ async def from_photos(
 MIN_PDF_TEXT = 40  # characters, not counting spaces
 
 
+def paste_text_from_pdf(contents: pdf_text.PdfContents) -> str | None:
+    """The text a PDF sends down the Paste path, or None for a scan (no text layer).
+    The eval calls this too, so it grades what the app really does."""
+    text = pdf_text.rejoin_split_lines(contents.text.strip())
+    return text[:MAX_PASTE_CHARS] if len("".join(text.split())) >= MIN_PDF_TEXT else None
+
+
 async def from_pdf(
     session: AsyncSession,
     household_id: uuid.UUID,
@@ -190,9 +197,9 @@ async def from_pdf(
     """Read once and never stored. A PDF with text takes the Paste path (every line
     checked against that text); a scanned one goes to the model as a document."""
     contents = await pdf_text.read_pdf(data)
-    text = contents.text.strip()
-    if len("".join(text.split())) >= MIN_PDF_TEXT:
-        return await from_paste(session, household_id, reader, text[:MAX_PASTE_CHARS])
+    text = paste_text_from_pdf(contents)
+    if text is not None:
+        return await from_paste(session, household_id, reader, text)
     known = await recipes.cuisines(session, household_id)
     reading, usage = await reader.read_document(contents.first_pages, known)
     return await _finish(

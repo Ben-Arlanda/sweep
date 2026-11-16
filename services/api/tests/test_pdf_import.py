@@ -13,7 +13,7 @@ import pypdf
 import pytest
 
 from app import errors
-from app.pdf_text import MAX_PAGES, read_pdf, run_isolated
+from app.pdf_text import MAX_PAGES, read_pdf, rejoin_split_lines, run_isolated
 from tests.conftest import FakeIssuer
 from tests.fake_model import ScriptedReader
 from tests.helpers import create_household
@@ -26,6 +26,19 @@ FILE = "/recipes/imports/file"
 
 
 # --- Reading the PDF (pypdf, in a child process) ---------------------------------------
+
+
+def test_split_lines_from_a_print_to_pdf_are_joined_back() -> None:
+    # What pypdf gives for a RecipeTin print-out: the rest of a line starts the next one.
+    text = "4 x 180g salmon fillets \n, skin on (Note 1)\n1 tsp dijon mustard \n(Note 2)\n1 lemon"
+    assert rejoin_split_lines(text) == (
+        "4 x 180g salmon fillets, skin on (Note 1)\n1 tsp dijon mustard (Note 2)\n1 lemon"
+    )
+
+
+def test_ordinary_lines_are_left_alone() -> None:
+    text = "Ingredients\n500g beef mince\n\n1. Brown the mince."
+    assert rejoin_split_lines(text) == text
 
 
 async def test_a_pdf_with_text_gives_its_text() -> None:

@@ -142,6 +142,13 @@ def core_name(text: str) -> str:
 _FRACTIONS = {"½": "1/2", "⅓": "1/3", "⅔": "2/3", "¼": "1/4", "¾": "3/4", "⅛": "1/8"}
 # Fractions first, or "1/2" would match as just "1".
 _NUMBER = r"\d+/\d+|\d+(?:[.,]\d+)?(?:\s+\d+/\d+)?"
+# "180g/6 oz", "500g/1 lb", "250ml/1 cup": a metric amount, then the same in imperial.
+# The imperial one is dropped (it's the same thing, and we keep metric).
+_IMPERIAL_TWIN = re.compile(
+    rf"(?P<metric>(?:{_NUMBER})\s*(?:g|kg|ml|l))\s*/\s*(?:{_NUMBER})\s*"
+    r"(?:fl\.?\s*oz|oz|lbs?|cups?|pints?|quarts?)\b",
+    re.IGNORECASE,
+)
 _AMOUNT = re.compile(
     rf"^(?:(?P<times>\d+)\s*x\s+)?(?P<qty>{_NUMBER})(?:\s*(?:-|–|to)\s*(?P<upper>{_NUMBER}))?"
 )
@@ -192,6 +199,7 @@ def parse_line(text: str, index: IngredientIndex) -> ParsedLine:
     work = raw
     for symbol, fraction in _FRACTIONS.items():  # "1½" → "1 1/2"
         work = re.sub(rf"(\d){symbol}", rf"\1 {fraction}", work).replace(symbol, fraction)
+    work = _IMPERIAL_TWIN.sub(r"\g<metric>", work)
 
     notes = [n.strip() for n in re.findall(r"\(([^)]*)\)", work)]
     work = re.sub(r"\([^)]*\)", " ", work)
@@ -289,6 +297,8 @@ def _second_look(
     note = "; ".join(part for part in (" ".join(leading), " ".join(trailing)) if part) or None
 
     name = " ".join(words).replace("-", " ")  # "extra-virgin" → "extra virgin"
+    # "cooking salt / kosher salt" is a choice, like "or" (but never "1/2": letters only)
+    name = re.sub(r"(?<=[^\W\d])\s*/\s*(?=[^\W\d])", " or ", name)
     candidates = [name]
     if " or " in name:  # "spinach or kale"; "chicken or vegetable stock" → chicken stock
         first, second = name.split(" or ", 1)
