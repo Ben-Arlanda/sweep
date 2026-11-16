@@ -151,11 +151,21 @@ class ClaudeRecipeReviewer:
 SERVER_FALLBACK_MODELS = ("claude-sonnet-5-5", "claude-opus-5-5", "claude-fable-5-2")
 
 
+# Adaptive thinking (Claude decides how much), returned as a short summary instead of
+# the default "omitted" (empty blocks): same tokens billed, and traces show the
+# reasoning behind each step. The chat never shows it (text blocks only).
+THINKING = {"type": "adaptive", "display": "summarized"}
+
+
 def agent_request_options(model: str) -> dict[str, Any]:
     """The extra request options this model supports."""
+    options: dict[str, Any] = {"thinking": THINKING}
     if model.startswith(SERVER_FALLBACK_MODELS):
-        return {"betas": ["server-side-fallback-2026-07-01"], "fallbacks": "default"}
-    return {}
+        options |= {"betas": ["server-side-fallback-2026-07-01"], "fallbacks": "default"}
+    return options
+
+
+MAX_TOKENS = 16000
 
 
 class ClaudeAgentModel:
@@ -166,8 +176,9 @@ class ClaudeAgentModel:
       since a valid shape can hold a wrong value)
     - tool_choice stays "auto": Sonnet 5.5 doesn't allow forcing a tool call, so the
       prompt says when to call propose_plan
-    - thinking is left at the default (adaptive): Claude decides when to think. Its
-      thinking blocks go back into the history unchanged, as the API requires
+    - adaptive thinking: Claude decides when to think, and returns a summary of it for
+      traces (see THINKING). Its thinking blocks go back into the history unchanged,
+      as the API requires
     - fallbacks="default": if a safety check declines a request, the API retries it on a
       fallback model inside the same call instead of just stopping (only on models that
       have one: see agent_request_options)
@@ -179,6 +190,7 @@ class ClaudeAgentModel:
         self._client = anthropic.AsyncAnthropic(api_key=api_key, max_retries=2, timeout=60.0)
         self.name = model
         self._effort = effort
+        self.parameters: dict[str, Any] = {"max_tokens": MAX_TOKENS, "effort": effort}
 
     async def respond(
         self,
@@ -195,7 +207,7 @@ class ClaudeAgentModel:
         try:
             async with self._client.beta.messages.stream(
                 model=self.name,
-                max_tokens=16000,
+                max_tokens=MAX_TOKENS,
                 system=system,
                 tools=strict_tools,  # type: ignore[arg-type]
                 messages=list(messages),  # type: ignore[arg-type]

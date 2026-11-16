@@ -19,7 +19,7 @@ from langgraph.types import Command
 from sqlalchemy import delete, select, text
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
 
-from app import errors
+from app import errors, tracing
 from app.agent import graph
 from app.agent.checkpoints import Checkpoints
 from app.agent.model import AgentModel, ModelUnavailable
@@ -125,6 +125,9 @@ class Agent:
         self.embedder = embedder
         self.daily_token_budget = daily_token_budget
         self._graph: Graph | None = None
+        # Extra trace labels, e.g. the eval Scenario a run belongs to (app/tracing.py).
+        self.trace_tags: list[str] = []
+        self.trace_metadata: dict[str, Any] = {}
 
     async def graph(self) -> Graph:
         if self._graph is None:
@@ -175,10 +178,54 @@ class Agent:
         proposal = snapshot.values.get("proposal") or {}
         return proposal.get("id")
 
+    def _trace(self, name: str, conversation: Conversation, input: Any) -> Any:
+        """The root of one trace: a chat turn or a decision, in the Conversation's session."""
+        mode = conversation.plan_mode.value if conversation.plan_mode else "chat"
+        return tracing.turn(
+            name,
+            session_id=str(conversation.id),
+            user_id=str(conversation.member_id),
+            input=input,
+            tags=[f"mode:{mode}", *self.trace_tags],
+            metadata={"household_id": str(conversation.household_id), **self.trace_metadata},
+        )
+
     async def run_turn(
         self, conversation: Conversation, user_text: str
     ) -> AsyncIterator[dict[str, Any]]:
         compiled = await self.graph()
+        with self._trace(tracing.TURN, conversation, user_text) as root:
+            reply: list[str] = []
+            proposal: dict[str, Any] | None = None
+            error: str | None = None
+            async for event in self._turn_events(compiled, conversation, user_text):
+                if event["type"] == "text":
+                    reply.append(event["text"])
+                elif event["type"] == "proposal":
+                    proposal = event["proposal"]
+                elif event["type"] == "error":
+                    error = event["message"]
+                yield event
+            # What a reviewer needs at a glance: what the Member saw.
+            root.update(
+                output={
+                    "reply": "".join(reply),
+                    "proposal": (
+                        {
+                            "summary": proposal["summary"],
+                            "meals": [f"{m['date']} {m['title']}" for m in proposal["meals"]],
+                        }
+                        if proposal
+                        else None
+                    ),
+                },
+                level="ERROR" if error else None,
+                status_message=error,
+            )
+
+    async def _turn_events(
+        self, compiled: Graph, conversation: Conversation, user_text: str
+    ) -> AsyncIterator[dict[str, Any]]:
         async with self._one_at_a_time(conversation.id) as got:
             if not got:
                 yield {"type": "error", "message": "Still answering your last message."}
@@ -219,12 +266,14 @@ class Agent:
                 raise errors.Conflict("Still answering your last message. Try again shortly.")
             if await self.waiting_on(conversation.id) != str(proposal_id):
                 raise errors.Conflict("This plan is no longer waiting for an answer")
-            async with asyncio.timeout(TURN_TIMEOUT_SECONDS):
-                await compiled.ainvoke(
-                    Command(resume=decision),
-                    _config(conversation.id),
-                    context=self._context(conversation),
-                )
+            with self._trace(tracing.DECIDE, conversation, decision) as root:
+                async with asyncio.timeout(TURN_TIMEOUT_SECONDS):
+                    await compiled.ainvoke(
+                        Command(resume=decision),
+                        _config(conversation.id),
+                        context=self._context(conversation),
+                    )
+                root.update(output={"proposal_id": str(proposal_id), "action": decision["action"]})
 
     async def forget_member(self, session: AsyncSession, member_id: uuid.UUID) -> None:
         """Account deletion: drop the Member's conversations and their saved state.

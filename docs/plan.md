@@ -467,7 +467,7 @@ Known gaps from 6c: tapping Cooked or Undo swaps the button, so keyboard focus d
 **Slice 8b steps** (`feature/agent-evals-baseline`):
 
 1. **Baseline Planner**, graded by the same Graders.
-2. **Langfuse Cloud tracing** (the product owner creates the account first).
+2. **Langfuse Cloud tracing** (the product owner creates the account first). Done 2026-11-16 on `feature/agent-tracing` with the Langfuse agent skill (ADR 0017): hand-written observations in `app/tracing.py`, our own cost, only our spans exported. The first live trace caught the Anthropic SDK's duplicate generation spans (cost counted twice); fixed and re-audited: Langfuse cost = eval cost exactly.
 3. **Comparison report** (agent / baseline × Sonnet / Haiku) and an ADR on the result.
 
 Experiments (`experiments/`, any time after slice 4):

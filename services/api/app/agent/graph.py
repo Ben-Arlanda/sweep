@@ -24,6 +24,7 @@ it.
 import json
 import uuid
 from collections.abc import Mapping
+from dataclasses import dataclass
 from datetime import date
 from typing import Any
 
@@ -35,10 +36,12 @@ from pydantic import ValidationError
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app import tracing
 from app.agent import prompt, tools
 from app.agent.state import AgentState, Draft, empty_draft
 from app.agent.tools import AgentContext, Call, ToolError
 from app.agent.validate import Problem, build_proposal, validate_draft
+from app.llm_costs import cost_usd
 from app.models import AgentUsage, Conversation, ProposalStatus, Recipe
 from app.services import diet, meal_plan, proposals, recipes, shopping_lists
 from app.services.diet import DietaryRules
@@ -105,7 +108,9 @@ async def load_context(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
             )
             return {**reset, "stop": "budget"}
         draft = state.get("draft") or empty_draft()
-        context = await prompt.household_context(session, agent, draft)
+        with tracing.observe("load-household-context", as_type="retriever") as obs:
+            context = await prompt.household_context(session, agent, draft)
+            obs.update(output=context)
 
     messages = []
     dangling = _dangling_results(state.get("messages", []))
@@ -120,12 +125,36 @@ async def load_context(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
 
 async def agent(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
     ctx = runtime.context
-    turn = await ctx.model.respond(
-        prompt.SYSTEM,
-        tools.specs(),
-        state["messages"],
-        on_text=lambda text: _write(runtime, {"type": "text", "text": text}),
-    )
+    with tracing.observe(
+        tracing.GENERATION,
+        as_type="generation",
+        # What the model saw, in order: the fixed system prompt, then the history.
+        input=[{"role": "system", "content": prompt.SYSTEM}, *state["messages"]],
+        metadata={"tools": [t["name"] for t in tools.specs()]},
+        model=ctx.model.name,
+        model_parameters=dict(ctx.model.parameters),
+    ) as generation:
+        turn = await ctx.model.respond(
+            prompt.SYSTEM,
+            tools.specs(),
+            state["messages"],
+            on_text=lambda text: _write(runtime, {"type": "text", "text": text}),
+        )
+        usage, cost = turn.usage, cost_usd(turn.usage)
+        generation.update(
+            output=turn.content,  # text, tool calls and thinking blocks, as returned
+            model=usage.model,  # who actually answered (a fallback can differ)
+            usage_details={
+                "input": usage.input_tokens,
+                "output": usage.output_tokens,
+                "cache_read_input_tokens": usage.cache_read_tokens,
+                "cache_creation_input_tokens": usage.cache_write_tokens,
+            },
+            # Our own price table (app/llm_costs.py), so Langfuse and the evals agree.
+            cost_details={"total": float(cost)} if cost is not None else None,
+            metadata={"stop_reason": turn.stop_reason},
+            level="WARNING" if turn.stop_reason in ("refusal", "max_tokens") else None,
+        )
     async with ctx.sessionmaker() as session:
         await session.execute(
             insert(AgentUsage)
@@ -184,6 +213,56 @@ def _result(tool_use_id: str, content: Any, *, error: bool = False) -> dict[str,
     return block
 
 
+# Tools that only look something up: traced as `retriever`, the rest as `tool`.
+LOOKUPS = frozenset(
+    {
+        "recipes_from_kitchen",
+        "search_recipes",
+        "get_recipe",
+        "get_kitchen",
+        "get_household_preferences",
+        "get_shopping_list",
+    }
+)
+
+
+@dataclass(frozen=True)
+class ToolCall:
+    """What one tool call produced: a result for the model, or (propose_plan) a
+    hand-off to validate, and maybe a new Draft."""
+
+    result: dict[str, Any] | None = None
+    pending: dict[str, str] | None = None
+    draft: Draft | None = None
+
+
+async def _call_tool(ctx: AgentContext, draft: Draft, use: dict[str, Any], count: int) -> ToolCall:
+    name, use_id = use["name"], use["id"]
+    if count > MAX_TOOL_CALLS:
+        message = "Tool limit reached for this turn. Propose or reply now."
+        return ToolCall(_result(use_id, message, error=True))
+    tool = tools.BY_NAME.get(name)
+    if tool is None:
+        return ToolCall(_result(use_id, f"Unknown tool {name!r}", error=True))
+    try:
+        args = tool.args.model_validate(use.get("input", {}))
+    except ValidationError as error:
+        # Tell the agent exactly what was wrong, so it can fix its call.
+        problems = "; ".join(
+            f"{'.'.join(map(str, e['loc'])) or 'input'}: {e['msg']}" for e in error.errors()
+        )
+        return ToolCall(_result(use_id, f"Invalid arguments: {problems}", error=True))
+    if tool.run is None:  # propose_plan: validate answers it
+        return ToolCall(pending={"tool_use_id": use_id, "summary": args.summary})  # type: ignore[attr-defined]
+    async with ctx.sessionmaker() as session:
+        call = Call(session, await tools.member_context(session, ctx), ctx, draft)
+        try:
+            outcome = await tool.run(call, args)
+        except ToolError as error:
+            return ToolCall(_result(use_id, str(error), error=True))
+    return ToolCall(_result(use_id, outcome.result), draft=outcome.draft)
+
+
 async def run_tools(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
     ctx = runtime.context
     draft: Draft = state["draft"]
@@ -193,42 +272,28 @@ async def run_tools(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
 
     for use in _tool_uses(state):
         count += 1
-        name, use_id = use["name"], use["id"]
+        name = use["name"]
         _write(runtime, {"type": "tool", "name": name})
-        if count > MAX_TOOL_CALLS:
-            results.append(
-                _result(
-                    use_id, "Tool limit reached for this turn. Propose or reply now.", error=True
-                )
-            )
-            continue
-        tool = tools.BY_NAME.get(name)
-        if tool is None:
-            results.append(_result(use_id, f"Unknown tool {name!r}", error=True))
-            continue
-        try:
-            args = tool.args.model_validate(use.get("input", {}))
-        except ValidationError as error:
-            # Tell the agent exactly what was wrong, so it can fix its call.
-            problems = "; ".join(
-                f"{'.'.join(map(str, e['loc'])) or 'input'}: {e['msg']}" for e in error.errors()
-            )
-            results.append(_result(use_id, f"Invalid arguments: {problems}", error=True))
-            continue
-        if tool.run is None:  # propose_plan: validate answers it
-            pending = {"tool_use_id": use_id, "summary": args.summary}  # type: ignore[attr-defined]
-            continue
-        async with ctx.sessionmaker() as session:
-            call = Call(session, await tools.member_context(session, ctx), ctx, draft)
-            try:
-                outcome = await tool.run(call, args)
-            except ToolError as error:
-                results.append(_result(use_id, str(error), error=True))
-                continue
-        if outcome.draft is not None:
-            draft = outcome.draft
+        # One observation per call, a sibling of the generation that asked for it.
+        with tracing.observe(
+            name,
+            as_type="retriever" if name in LOOKUPS else "tool",
+            input=use.get("input", {}),
+            metadata={"tool_use_id": use["id"]},
+        ) as obs:
+            done = await _call_tool(ctx, draft, use, count)
+            if done.pending is not None:
+                pending = done.pending
+                obs.update(output="handed to validate-plan")
+            elif done.result is not None and done.result.get("is_error"):
+                obs.update(level="ERROR", status_message=str(done.result["content"])[:500])
+            elif done.result is not None:
+                obs.update(output=done.result["content"])
+        if done.result is not None:
+            results.append(done.result)
+        if done.draft is not None:
+            draft = done.draft
             _write(runtime, {"type": "draft", "draft": draft})
-        results.append(_result(use_id, outcome.result))
 
     update: dict[str, Any] = {"tool_calls": count, "draft": draft}
     if pending is not None:
@@ -263,7 +328,13 @@ async def validate(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
         found = await recipes.get_many(session, ctx.household_id, ids)
         rules = await diet.get_rules(session, ctx.household_id)
         conversation = await session.get_one(Conversation, ctx.conversation_id)
-    problems = validate_draft(draft, found, rules, ctx.today, conversation.plan_days)
+    with tracing.observe("validate-plan", as_type="guardrail", input=draft) as obs:
+        problems = validate_draft(draft, found, rules, ctx.today, conversation.plan_days)
+        obs.update(
+            output=[p.message for p in problems] or "passed",
+            metadata={"replans_so_far": state.get("replan_count", 0)},
+            level="WARNING" if problems else None,
+        )
     replans = state.get("replan_count", 0)
     results = list(state.get("pending_results", []))
     update: dict[str, Any] = {"pending_proposal": None, "pending_results": []}
@@ -356,7 +427,9 @@ async def reshow(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
         found = await recipes.get_many(session, ctx.household_id, ids)
         rules = await diet.get_rules(session, ctx.household_id)
         conversation = await session.get_one(Conversation, ctx.conversation_id)
-    problems = validate_draft(draft, found, rules, ctx.today, conversation.plan_days)
+    with tracing.observe("reshow-plan", as_type="guardrail", input=draft) as obs:
+        problems = validate_draft(draft, found, rules, ctx.today, conversation.plan_days)
+        obs.update(output=[p.message for p in problems] or "passed")
     proposal = await _show(state, runtime, draft, found, rules, problems, RESHOW_SUMMARY)
     return {
         "proposal": proposal,
@@ -427,18 +500,24 @@ async def commit(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
     decision = state.get("decision") or {}
     proposal = state.get("proposal")
     assert proposal is not None
-    async with ctx.sessionmaker() as session:
-        member = await tools.member_context(session, ctx)
-        outcome = await proposals.commit(
-            session,
-            member,
-            uuid.UUID(proposal["id"]),
-            decision.get("keep_meals"),
-            decision.get("keep_additions"),
-            ctx.today,
-        )
-        await session.commit()
-    del outcome  # stored on the Proposal; the decision route reads it from there
+    with tracing.observe(
+        "save-approved-plan",
+        input={k: decision.get(k) for k in ("keep_meals", "keep_additions")},
+        metadata={"proposal_id": proposal["id"]},
+    ) as obs:
+        async with ctx.sessionmaker() as session:
+            member = await tools.member_context(session, ctx)
+            outcome = await proposals.commit(
+                session,
+                member,
+                uuid.UUID(proposal["id"]),
+                decision.get("keep_meals"),
+                decision.get("keep_additions"),
+                ctx.today,
+            )
+            await session.commit()
+        # Stored on the Proposal; the decision route reads it from there.
+        obs.update(output=outcome)
     # The plan is Household data now; the next request starts a fresh Draft.
     return {"draft": empty_draft(), "proposal": None, "decision": None}
 

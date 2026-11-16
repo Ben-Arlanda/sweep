@@ -133,6 +133,7 @@ class RunRecord:
     seconds: float
     # Part of `seconds` spent waiting on Voyage (our free tier's rate limit, not the agent).
     embedding_seconds: float = 0.0
+    session_id: str = ""  # the Conversation id: its Langfuse session, when tracing is on
     crashed: str | None = None  # the harness itself failed (not the agent)
 
     @property
@@ -157,6 +158,7 @@ class RecordingModel:
     def __init__(self, inner: AgentModel) -> None:
         self.inner = inner
         self.name = inner.name
+        self.parameters = inner.parameters
         self.turns: list[ModelTurn] = []
 
     async def respond(
@@ -453,6 +455,7 @@ async def run_scenario(
     name: str,
     setup: Setup,
     steps: Sequence[Step],
+    trace_metadata: dict[str, Any] | None = None,
 ) -> RunRecord:
     """Run one Scenario once. Never raises for the agent's mistakes: they're the result."""
     started = time.monotonic()
@@ -464,6 +467,9 @@ async def run_scenario(
     agent = Agent(
         recording, db.checkpoints, db.engine, db.sessionmaker, embedder, EVAL_TOKEN_BUDGET
     )
+    # Tags stay low-cardinality (filterable); run-specific values go in metadata.
+    agent.trace_tags = ["eval", f"scenario:{name}"]
+    agent.trace_metadata = {"scenario": name, **(trace_metadata or {})}
     today = today_in_sydney()
     async with db.sessionmaker() as session:
         identity, _, conversation_id = await build_household(session, setup, today)
@@ -494,6 +500,7 @@ async def run_scenario(
         chosen_days=tuple(d.isoformat() for d in days) if days is not None else None,
         today=today.isoformat(),
         usages=tuple(t.usage for t in recording.turns),
+        session_id=str(conversation_id),
         seconds=time.monotonic() - started,
         embedding_seconds=(
             cached.seconds - embedded_before if isinstance(cached, CachedEmbedder) else 0.0

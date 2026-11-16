@@ -39,6 +39,13 @@ class Settings(BaseSettings):
     # How hard it thinks. "medium" is the suggested start for multi-step tool use on
     # Sonnet 5.5; the agent evals (slice 8) decide whether to change it.
     agent_effort: str = "medium"
+    # Langfuse tracing (slice 8b, app/tracing.py). Off unless both keys are set; tests
+    # force it off with LANGFUSE_TRACING=false so a local .env never sends test traces.
+    langfuse_public_key: SecretStr | None = None
+    langfuse_secret_key: SecretStr | None = None
+    langfuse_base_url: str = "https://cloud.langfuse.com"  # EU region
+    langfuse_tracing: bool = True
+    langfuse_environment: str = "development"
     # Tokens (in + out) one Household may use per day, so one user can't run up the bill.
     agent_daily_token_budget: int = 300_000
 

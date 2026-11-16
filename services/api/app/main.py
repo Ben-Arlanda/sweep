@@ -7,7 +7,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from app import errors
+from app import errors, tracing
 from app.agent.checkpoints import Checkpoints
 from app.agent.model import AgentModel
 from app.auth import TokenVerifier
@@ -90,7 +90,11 @@ def create_app(
         listener = asyncio.create_task(listen(app_settings.database_url, hub))
         if app.state.agent is not None:
             await checkpoints.setup()  # before any request: see app/agent/checkpoints.py
+        # Here, not in create_app: tests build apps without running startup, and must
+        # never send traces (app/tracing.py).
+        tracing.configure(app_settings)
         yield
+        tracing.shutdown()  # send what's buffered before the process exits
         listener.cancel()
         with contextlib.suppress(asyncio.CancelledError):
             await listener
