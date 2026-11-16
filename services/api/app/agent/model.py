@@ -8,6 +8,8 @@ from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from typing import Any, Protocol
 
+from app.llm_costs import Usage
+
 
 @dataclass(frozen=True)
 class ModelTurn:
@@ -15,8 +17,7 @@ class ModelTurn:
     # They go back into the history unchanged.
     content: list[dict[str, Any]]
     stop_reason: str  # "end_turn", "tool_use", "refusal", "max_tokens"...
-    input_tokens: int
-    output_tokens: int
+    usage: Usage  # tokens by kind, so the call can be priced (app/llm_costs.py)
 
 
 class AgentModel(Protocol):

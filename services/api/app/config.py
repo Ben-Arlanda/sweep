@@ -17,6 +17,8 @@ class Settings(BaseSettings):
 
     database_url: str = "postgresql://sweep:sweep@localhost:5433/sweep"
     test_database_url: str = "postgresql://sweep:sweep@localhost:5433/sweep_test"
+    # Agent evals (slice 8): its own database, so evals never touch dev data.
+    eval_database_url: str = "postgresql://sweep:sweep@localhost:5433/sweep_eval"
     # Origins allowed to call the API from a browser (Expo web dev server by default).
     cors_origins: list[str] = ["http://localhost:8081"]
     # JSON list, e.g. AUTH_ISSUERS='[{"issuer": "https://x.clerk.accounts.dev",

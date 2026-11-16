@@ -141,6 +141,24 @@ A Proposal is *pending* until it's approved or rejected. It becomes *superseded*
 A Member's decision on a Proposal: approve (optionally after unticking some meals or list additions) or reject. Recorded permanently. Bigger edits happen in the Conversation, which produces a new Proposal.
 _Avoid_: confirmation (Confirmed means something else)
 
+### Evaluation
+
+**Scenario**:
+One agent test case: a starting Household (Dietary Rules, Kitchen, chosen days and mode), the Member's messages, and the checks the result must pass.
+_Avoid_: test case, prompt (a Scenario is more than the message)
+
+**Grader**:
+A deterministic check that scores one run from what the agent did (the Proposal, tool calls, tokens), never from what it said. Either must-pass or measured.
+_Avoid_: judge (reserved for an LLM grader, not built yet)
+
+**Eval Run**:
+Every Scenario run a set number of times on one model, with a pass rate per Scenario and the measured averages (replans, tool calls, items to buy, seconds, cost).
+_Avoid_: benchmark, test run
+
+**Baseline Planner**:
+The no-agent alternative the agent is compared against: code filters recipes by Dietary Rules and ranks them by Kitchen Match, then one model call picks the meals. No tools, no replans.
+_Avoid_: simple agent (it isn't one)
+
 ## Relationships
 
 - A **Household** has many **Members**, one **Kitchen**, one **Shopping List** and one **Meal Plan** per week

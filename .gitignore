@@ -58,3 +58,7 @@ AI_LEARNING_ROADMAP.md
 
 # ---------- Claude Code ----------
 .claude/settings.local.json
+
+# Agent evals (slice 8): run results and the search-embedding cache
+services/api/evals/results/
+services/api/evals/.cache/

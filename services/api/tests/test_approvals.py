@@ -89,18 +89,83 @@ async def test_chatting_instead_of_deciding_supersedes_the_proposal(
     client_for: ClientFor, fake_issuer: FakeIssuer, load: Loader, db: Engine
 ) -> None:
     curry, pasta = await setup(load, db)
-    model = ScriptedModel([*two_dinners(curry, pasta), [say_text("Sure, which day?")]])
+    model = ScriptedModel(
+        [
+            *two_dinners(curry, pasta),
+            [tool("remove_planned_meal", date=TUE)],
+            [tool("propose_plan", summary="Just Monday.")],
+        ]
+    )
     async with client_for(model) as client:
         await create_household(client, fake_issuer, "ana")
         cid, proposal = await propose(client, fake_issuer)
 
-        events = await say(client, fake_issuer, cid, "actually, change something")
-        assert of(events, "text")[0]["text"] == "Sure, which day?"
-        [row] = rows(db, "SELECT status FROM proposals")
-        assert row.status == "superseded"
+        events = await say(client, fake_issuer, cid, "drop Tuesday")
+        [new] = of(events, "proposal")
+        assert [m["date"] for m in new["proposal"]["meals"]] == [MON]
+        assert [r.status for r in rows(db, "SELECT status FROM proposals ORDER BY created_at")] == [
+            "superseded",
+            "pending",
+        ]
         # A superseded Proposal can't be approved any more.
         response = await decide(client, fake_issuer, proposal["id"], {"action": "approve"})
         assert response.status_code == 409
+
+
+async def test_a_follow_up_that_changes_nothing_shows_the_plan_again(
+    client_for: ClientFor, fake_issuer: FakeIssuer, load: Loader, db: Engine
+) -> None:
+    # Found by the slice 8 eval: Haiku answered "Wednesday is already vegetarian" and
+    # proposed nothing, leaving only a superseded plan. Now the unchanged Draft comes
+    # back as a new Proposal, with no model call, so there's always one to approve.
+    curry, pasta = await setup(load, db)
+    model = ScriptedModel([*two_dinners(curry, pasta), [say_text("Tuesday is already pasta.")]])
+    async with client_for(model) as client:
+        await create_household(client, fake_issuer, "ana")
+        cid, proposal = await propose(client, fake_issuer)
+
+        events = await say(client, fake_issuer, cid, "make Tuesday pasta")
+        assert of(events, "text")[0]["text"] == "Tuesday is already pasta."
+        [again] = of(events, "proposal")
+        assert again["proposal"]["id"] != proposal["id"]
+        assert again["proposal"]["meals"] == proposal["meals"]
+        assert len(model.calls) == 3  # two to plan, one to answer: re-showing is plain code
+
+        response = await decide(client, fake_issuer, again["proposal"]["id"], {"action": "approve"})
+        assert response.status_code == 200, response.text
+        assert len(rows(db, "SELECT 1 FROM planned_meals")) == 2
+
+
+async def test_a_plain_chat_turn_does_not_invent_a_proposal(
+    client_for: ClientFor, fake_issuer: FakeIssuer, load: Loader, db: Engine
+) -> None:
+    curry, pasta = await setup(load, db)
+    model = ScriptedModel(
+        [
+            [tool("set_planned_meal", date=MON, recipe_id=curry, servings=4)],
+            [say_text("I've started a plan. Want more days?")],
+        ]
+    )
+    async with client_for(model) as client:
+        await create_household(client, fake_issuer, "ana")
+        cid = await start(client, fake_issuer)
+        events = await say(client, fake_issuer, cid, "start a plan")
+        # Not a follow-up to a Proposal: the Draft stays a draft until the agent proposes.
+        assert of(events, "proposal") == []
+        assert rows(db, "SELECT 1 FROM proposals") == []
+
+
+async def test_a_refusal_during_a_follow_up_does_not_reshow(
+    client_for: ClientFor, fake_issuer: FakeIssuer, load: Loader, db: Engine
+) -> None:
+    curry, pasta = await setup(load, db)
+    refuse = ScriptedModel([*two_dinners(curry, pasta), [say_text("No.")]])
+    refuse.stop_reasons = {2: "refusal"}  # the third call is refused
+    async with client_for(refuse) as client:
+        await create_household(client, fake_issuer, "ana")
+        cid, _ = await propose(client, fake_issuer)
+        events = await say(client, fake_issuer, cid, "something odd")
+        assert of(events, "proposal") == []
 
 
 # --- approving ----------------------------------------------------------------------------

@@ -23,6 +23,7 @@ it.
 
 import json
 import uuid
+from collections.abc import Mapping
 from datetime import date
 from typing import Any
 
@@ -37,9 +38,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.agent import prompt, tools
 from app.agent.state import AgentState, Draft, empty_draft
 from app.agent.tools import AgentContext, Call, ToolError
-from app.agent.validate import build_proposal, validate_draft
-from app.models import AgentUsage, Conversation, ProposalStatus
+from app.agent.validate import Problem, build_proposal, validate_draft
+from app.models import AgentUsage, Conversation, ProposalStatus, Recipe
 from app.services import diet, meal_plan, proposals, recipes, shopping_lists
+from app.services.diet import DietaryRules
 
 MAX_TOOL_CALLS = 15  # per turn: the agent should be done well before this
 MAX_REPLANS = 2  # times validate sends a plan back before showing the best attempt
@@ -81,6 +83,8 @@ def _dangling_results(messages: list[dict[str, Any]]) -> list[dict[str, Any]]:
 async def load_context(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
     agent = runtime.context
     reset: dict[str, Any] = {
+        # Straight from approve with a chat message: this turn revises that Proposal.
+        "revising": (state.get("decision") or {}).get("action") == "message",
         "tool_calls": 0,
         "replan_count": 0,
         "proposal": None,
@@ -128,14 +132,16 @@ async def agent(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
             .values(
                 household_id=ctx.household_id,
                 day=ctx.today,
-                input_tokens=turn.input_tokens,
-                output_tokens=turn.output_tokens,
+                input_tokens=turn.usage.all_input,
+                output_tokens=turn.usage.output_tokens,
             )
             .on_conflict_do_update(
                 index_elements=["household_id", "day"],
                 set_={
-                    "input_tokens": AgentUsage.input_tokens + turn.input_tokens,
-                    "output_tokens": AgentUsage.output_tokens + turn.output_tokens,
+                    # Every input token, cached or not: the budget is a safety limit,
+                    # so it errs on the side of counting too much.
+                    "input_tokens": AgentUsage.input_tokens + turn.usage.all_input,
+                    "output_tokens": AgentUsage.output_tokens + turn.usage.output_tokens,
                 },
             )
         )
@@ -158,8 +164,12 @@ def _tool_uses(state: AgentState) -> list[dict[str, Any]]:
 
 
 def after_agent(state: AgentState) -> str:
-    if state.get("stop") or not _tool_uses(state):
+    if state.get("stop"):
         return END
+    if not _tool_uses(state):
+        draft = state.get("draft") or empty_draft()
+        has_plan = bool(draft["meals"] or draft["list_additions"])
+        return "reshow" if state.get("revising") and has_plan else END
     return "tools"
 
 
@@ -279,7 +289,29 @@ async def validate(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
         )
         return {**update, "messages": [{"role": "user", "content": results}], "stop": "empty"}
 
-    proposal = build_proposal(draft, found, rules, problems, pending["summary"])
+    proposal = await _show(state, runtime, draft, found, rules, problems, pending["summary"])
+    results.append(_result(pending["tool_use_id"], "Shown to the Member. Wait for their reply."))
+    return {
+        **update,
+        "messages": [{"role": "user", "content": results}],
+        "proposal": proposal,
+        "proposal_marks": [{"id": proposal["id"], "at": len(state["messages"])}],
+        "revising": False,
+    }
+
+
+async def _show(
+    state: AgentState,
+    runtime: Runtime_,
+    draft: Draft,
+    found: Mapping[str, Recipe],
+    rules: DietaryRules,
+    problems: list[Problem],
+    summary: str,
+) -> dict[str, Any]:
+    """Save the Draft as a Proposal and show it. Shared by validate and reshow."""
+    ctx = runtime.context
+    proposal = build_proposal(draft, found, rules, problems, summary)
     async with ctx.sessionmaker() as session:
         # Say on the card which days already have a dinner that this would replace.
         days = [date.fromisoformat(m["date"]) for m in proposal["meals"]]
@@ -305,14 +337,36 @@ async def validate(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
         )
         await session.commit()
     proposal = {**proposal, "id": str(row.id), "status": row.status.value}
-    results.append(_result(pending["tool_use_id"], "Shown to the Member. Wait for their reply."))
     _write(runtime, {"type": "proposal", "proposal": proposal})
+    return proposal
+
+
+RESHOW_SUMMARY = "Here's the plan again, unchanged."
+
+
+async def reshow(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
+    """The Member chatted about a Proposal (superseding it) and the agent answered
+    without proposing again, e.g. "Wednesday is already vegetarian". Show the Draft
+    again so there's always a plan to approve. Plain code, no model call, and the same
+    checks as validate: anything that now breaks a Rule is left out and listed."""
+    ctx = runtime.context
+    draft = state["draft"]
+    async with ctx.sessionmaker() as session:
+        ids = [m["recipe_id"] for m in draft["meals"].values()]
+        found = await recipes.get_many(session, ctx.household_id, ids)
+        rules = await diet.get_rules(session, ctx.household_id)
+        conversation = await session.get_one(Conversation, ctx.conversation_id)
+    problems = validate_draft(draft, found, rules, ctx.today, conversation.plan_days)
+    proposal = await _show(state, runtime, draft, found, rules, problems, RESHOW_SUMMARY)
     return {
-        **update,
-        "messages": [{"role": "user", "content": results}],
         "proposal": proposal,
         "proposal_marks": [{"id": proposal["id"], "at": len(state["messages"])}],
+        "revising": False,
     }
+
+
+def after_reshow(state: AgentState) -> str:
+    return "approve" if state.get("proposal") is not None else END
 
 
 def _on_list(items: Any, addition: dict[str, Any]) -> str | None:
@@ -399,6 +453,7 @@ def build(checkpointer: Checkpointer) -> CompiledStateGraph[AgentState, AgentCon
     graph.add_node("agent", agent)
     graph.add_node("tools", run_tools)
     graph.add_node("validate", validate)
+    graph.add_node("reshow", reshow)
     graph.add_node("approve", approve)
     graph.add_node("commit", commit)
     graph.add_edge(START, "load_context")
@@ -406,6 +461,7 @@ def build(checkpointer: Checkpointer) -> CompiledStateGraph[AgentState, AgentCon
     graph.add_conditional_edges("agent", after_agent)
     graph.add_conditional_edges("tools", after_tools)
     graph.add_conditional_edges("validate", after_validate)
+    graph.add_conditional_edges("reshow", after_reshow)
     graph.add_conditional_edges("approve", after_approve)
     graph.add_edge("commit", END)
     return graph.compile(checkpointer=checkpointer)

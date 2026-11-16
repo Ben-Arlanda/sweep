@@ -9,6 +9,7 @@ lists (see app.services.ingredient_lines._apply_reading).
 """
 
 import logging
+import time
 from collections.abc import Callable, Sequence
 from typing import Any, cast
 
@@ -17,6 +18,7 @@ from pydantic import BaseModel, ValidationError
 
 from app.agent.model import ModelTurn, ModelUnavailable
 from app.data.recipes import SeedRecipe
+from app.llm_costs import Usage, cost_usd
 from app.services.ingredient_lines import LineReading
 from app.services.recipe_review import Review, as_text
 
@@ -144,6 +146,18 @@ class ClaudeRecipeReviewer:
         return response.parsed_output
 
 
+# Models that can retry a declined request on a fallback model inside the same call.
+# Haiku 5.5 can't: sending `fallbacks` to it is a 400.
+SERVER_FALLBACK_MODELS = ("claude-sonnet-5-5", "claude-opus-5-5", "claude-fable-5-2")
+
+
+def agent_request_options(model: str) -> dict[str, Any]:
+    """The extra request options this model supports."""
+    if model.startswith(SERVER_FALLBACK_MODELS):
+        return {"betas": ["server-side-fallback-2026-07-01"], "fallbacks": "default"}
+    return {}
+
+
 class ClaudeAgentModel:
     """The planning agent's model: Claude with tools, streamed.
 
@@ -155,7 +169,8 @@ class ClaudeAgentModel:
     - thinking is left at the default (adaptive): Claude decides when to think. Its
       thinking blocks go back into the history unchanged, as the API requires
     - fallbacks="default": if a safety check declines a request, the API retries it on a
-      fallback model inside the same call instead of just stopping
+      fallback model inside the same call instead of just stopping (only on models that
+      have one: see agent_request_options)
     - cache_control: the unchanging start (tools + system prompt + earlier turns) is
       cached, so each step of a turn pays full price only for what's new
     """
@@ -176,6 +191,7 @@ class ClaudeAgentModel:
             {**t, "input_schema": anthropic.transform_schema(t["input_schema"]), "strict": True}
             for t in tools
         ]
+        started = time.monotonic()
         try:
             async with self._client.beta.messages.stream(
                 model=self.name,
@@ -185,8 +201,7 @@ class ClaudeAgentModel:
                 messages=list(messages),  # type: ignore[arg-type]
                 output_config={"effort": cast(Any, self._effort)},
                 cache_control={"type": "ephemeral"},
-                betas=["server-side-fallback-2026-07-01"],
-                fallbacks="default",
+                **agent_request_options(self.name),
             ) as stream:
                 async for event in stream:
                     if event.type == "text":
@@ -200,21 +215,30 @@ class ClaudeAgentModel:
                 log.warning("agent model server error: %s", error.status_code)
                 raise ModelUnavailable from error
             raise  # a 400 is our bug (bad history or schema): fail loudly
-        log.info(
-            "agent: %s, stop=%s, %d in (%d cached) / %d out tokens",
-            message.model,
-            message.stop_reason,
-            message.usage.input_tokens,
-            message.usage.cache_read_input_tokens or 0,
-            message.usage.output_tokens,
+        usage = Usage(
+            model=message.model,
+            input_tokens=message.usage.input_tokens,
+            output_tokens=message.usage.output_tokens,
+            cache_read_tokens=message.usage.cache_read_input_tokens or 0,
+            cache_write_tokens=message.usage.cache_creation_input_tokens or 0,
         )
-        cached = (message.usage.cache_read_input_tokens or 0) + (
-            message.usage.cache_creation_input_tokens or 0
+        cost = cost_usd(usage)
+        # One line per call, key=value so it's easy to grep and to parse.
+        log.info(
+            "llm_call kind=agent model=%s stop=%s in=%d cache_read=%d cache_write=%d out=%d "
+            "cost_usd=%s seconds=%.2f",
+            usage.model,
+            message.stop_reason,
+            usage.input_tokens,
+            usage.cache_read_tokens,
+            usage.cache_write_tokens,
+            usage.output_tokens,
+            f"{cost:.5f}" if cost is not None else "unknown",
+            time.monotonic() - started,
         )
         return ModelTurn(
             # exclude_none: send back exactly the fields the API sent, nothing extra.
             content=[b.model_dump(mode="json", exclude_none=True) for b in message.content],
             stop_reason=message.stop_reason or "end_turn",
-            input_tokens=message.usage.input_tokens + cached,
-            output_tokens=message.usage.output_tokens,
+            usage=usage,
         )

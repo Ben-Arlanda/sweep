@@ -291,7 +291,7 @@ Ranking boosts: Imported Recipes, recipes that use Kitchen items, recipes the Ho
 
 GitHub Actions:
 - `pr-checks.yml`: frontend + backend lint, type check and tests. No paid LLM calls.
-- `evals.yml`: manual trigger + nightly, with a spend cap. Results saved as artifacts.
+- `evals.yml` (later, optional): manual trigger only, with a spend cap. No nightly run (slice 8 decision).
 - `deploy.yml`: on merge to `main` (later).
 
 ---
@@ -443,13 +443,40 @@ Known gaps from 6c: tapping Cooked or Undo swaps the button, so keyboard focus d
 - Agent additions go to the one list, untagged. Only the Member who started the Conversation can approve. The confirmation after approval is plain code, not an LLM call.
 - The Meal Plan screen opens from Home, not a new tab.
 
+**Slice 8 decisions** (2026-11-15, grilled with the product owner):
+- **Live model calls, run by hand only:** `uv run python -m evals.agent --model sonnet|haiku --repeats 3 --max-spend 5`. No nightly CI eval (it would re-measure an unchanged prompt for money). Graders are tested free in pytest on scripted runs. Say before each live batch.
+- **Sonnet 5.5 vs Haiku 5.5 on the same Scenarios** (the model-tier half of E5; Bedrock stays in slice 11). Haiku 5.5 is ~20× cheaper ($0.10 / $0.50 per M tokens vs $2 / $10) but has no server-side refusal fallback, so model calls send `fallbacks` only where supported. Compare cost per *passing* plan, not per call.
+- **"Just tonight" offers options, then the Member picks** (product owner, 2026-11-16, after the first live smoke run): the agent may list a few Kitchen-first dinners and ask; the pick becomes a one-meal Proposal for today. The Scenario sends both messages.
+- **~15 Scenarios** as Python data in `evals/agent_scenarios.py`: plain planning (4), Dietary Rules incl. a Rule vs Preference conflict (4), Kitchen (3), follow-ups: swap a day, reject → revise (2), awkward: impossible request, a tool error (2). Prompt injection cases wait for slice 10.
+- **Graders read what the agent did**, never its text. Must-pass (any failure fails the run): recipe ids exist, no Dietary Rule broken in the final Proposal, meals only on the chosen days, right count, a Proposal was made, expected tools called. Measured: replans needed (the honest measure of the model, since validate guarantees the final Proposal), tool calls, items to buy per meal, seconds, tokens and cost. Report: pass rate per Scenario × model ("2/3") plus averages; JSON in `evals/results/` (git-ignored). No LLM-as-judge yet.
+- **Baseline Planner, strong version:** recipes filtered by Dietary Rules in SQL and sorted by Kitchen Match (top ~60, same code as the app), one structured-output call, no tools, no replans. Single-message Scenarios only (follow-ups show "n/a").
+- **Cost:** `ModelTurn` reports input, cache read, cache write and output tokens separately (the daily budget still adds them all up). Prices in one module, `app/llm_costs.py` (not "pricing": ADR 0010 is about grocery prices), with the date checked. One structured log line per call. No new table: Langfuse is the per-call record.
+- **Langfuse Cloud** (free tier), off unless `LANGFUSE_*` keys are set; eval runs tagged by Scenario, model and run. Only test Households exist today; revisit before real users (privacy note or self-host in slice 11). The product owner creates the account.
+- **Eval data:** its own database `sweep_eval` (migrations, a fresh Household per Scenario), recipes and embeddings copied from the dev database, and a disk cache for search-text embeddings (`evals/.cache/`, keyed by Voyage model + text) because Voyage's free tier allows 3 requests a minute.
+
+**First live runs** (2026-11-16, 15 Scenarios × 3): Sonnet 45/45, $1.64 (3.7¢ per passing plan); Haiku 44/45, $0.12 (0.3¢). 0 replans on either. Haiku's one failure found two things: the swap Scenario's wording could already be true (fixed), and a follow-up that changes nothing left only a superseded Proposal (fixed in the graph: `reshow`, ADR 0014; new Scenario `no-change-still-approvable`). The checks are a safety floor, not a quality score: whether Haiku's plans are as good is for 8b.
+
+**Slice 8a steps** (`feature/agent-evals`; build test-first):
+
+1. **Cost:** split token kinds in `ModelTurn`, `app/llm_costs.py`, a structured log line per call; Haiku-safe agent calls.
+2. **Harness:** `sweep_eval` setup with copied recipes and embeddings, cached embedder, a runner that builds each Scenario's Household and drives the real graph (approve or reject for follow-ups).
+3. **Graders:** must-pass and measured, each tested on scripted runs.
+4. **Scenarios:** the ~15, with a scripted smoke test so CI proves each one sets up.
+5. **CLI and first live runs:** terminal table and JSON results; Sonnet (~$1–3) and Haiku (~15¢) after saying so.
+
+**Slice 8b steps** (`feature/agent-evals-baseline`):
+
+1. **Baseline Planner**, graded by the same Graders.
+2. **Langfuse Cloud tracing** (the product owner creates the account first).
+3. **Comparison report** (agent / baseline × Sonnet / Haiku) and an ADR on the result.
+
 Experiments (`experiments/`, any time after slice 4):
 
 - **E1** MCP server: `services/mcp` exposes read + draft tools over the same services. Start with stdio (Claude Desktop/Code), then streamable HTTP protected by **OAuth 2.1** (authorisation code + PKCE, token checking, scopes mapped to read vs draft tools). This is the main OAuth learning exercise. Write up how it differs from native tool calling. *(MCP & tool calling)*
 - **E1b** Hand-built OAuth/OIDC login (Google via `expo-auth-session`, PKCE, refresh tokens) in a throwaway screen, to see every step that Clerk hides *(Security)*
 - **E2** Collaborative filtering vs content-based recommendations *(Applied ML)*
 - **E4** Multi-agent split (planner + shopper) vs single agent, on the same evals *(Agentic AI)*
-- **E5** Model comparison: Anthropic API vs Bedrock, and across Claude model tiers, on the same evals (cost, latency, quality) *(LLM engineering)*
+- **E5** Model comparison: Anthropic API vs Bedrock on the same evals (cost, latency, quality). The Claude model-tier half (Sonnet vs Haiku) moved into slice 8. *(LLM engineering)*
 
 Every roadmap checkbox has a home in the table above or in E1, E1b, E2, E4, E5. (E3, basket optimisation, was dropped with pricing.)
 
