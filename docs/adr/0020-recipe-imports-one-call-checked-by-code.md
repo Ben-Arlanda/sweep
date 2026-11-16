@@ -25,6 +25,8 @@ Slice 4d lets a Household bring in its own favourite recipes, from wherever they
 
 - First run, Haiku ×3, 2026-11-17: **33/39 for 2.2¢** (about 0.06¢ an import). Both Canaries stayed out every time. All 6 failures were the two print-outs. A print-to-PDF splits a line's note onto the next line (`2 garlic cloves ⏎ , grated (Note 3)`) and Haiku dropped those halves, and the matcher didn't know `180g/6 oz` amounts.
 - Fixed by **rules, not prompting:** lines starting with `,` or `(` are joined back on, the metric half of `180g/6 oz` is kept, `A / B` is read as `A or B`, and there are new starters. Not linked on those PDFs dropped from 14 to 1, and 0 of the 4,373 Seed Recipe lines changed.
+- Final run, Haiku ×3, 2026-11-17: **36/39 for 2.2¢**. Every made-up case, both injection cases, the photos and the scan passed all 3 times. The 3 failures are the print-outs' scrambled layout: a time taken from the optional marinade, a line set apart from the list missed twice, and one null servings. Each shows on the review screen for a person to fix.
+- **Injection Scenarios** (slice 10, ADR 0019) re-run on Haiku ×3 after 4d: **24/24** for about 6¢. Every Canary stayed out and no Rule broke.
 - Photos read well on Haiku (11/11 lines on a 2-page cookbook recipe), so **no Sonnet** for photos.
 
 ## Consequences
