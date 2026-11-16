@@ -18,9 +18,10 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import errors
+from app.embeddings import Embedder
 from app.models import Ingredient, ParseMethod, Recipe, RecipeIngredient, RecipeKind
 from app.schemas import ImportedLineIn, ImportedRecipeIn
-from app.services import diet, ingredients
+from app.services import diet, ingredients, recipes
 from app.services.households import MemberContext
 from app.services.ingredient_lines import (
     IngredientIndex,
@@ -100,7 +101,9 @@ def _fill(recipe: Recipe, body: ImportedRecipeIn) -> None:
     recipe.source_url = body.source_url
 
 
-async def save(session: AsyncSession, ctx: MemberContext, body: ImportedRecipeIn) -> Recipe:
+async def save(
+    session: AsyncSession, ctx: MemberContext, body: ImportedRecipeIn, embedder: Embedder | None
+) -> Recipe:
     lines = await read_lines(session, ctx.household.id, body.lines)
     recipe = Recipe(
         kind=RecipeKind.IMPORTED,
@@ -113,6 +116,7 @@ async def save(session: AsyncSession, ctx: MemberContext, body: ImportedRecipeIn
     _fill(recipe, body)
     session.add(recipe)
     await session.flush()
+    await recipes.embed_after_save(session, embedder)  # for search; never fails the Save
     return recipe
 
 
@@ -134,7 +138,11 @@ async def _own(session: AsyncSession, household_id: uuid.UUID, recipe_id: uuid.U
 
 
 async def update(
-    session: AsyncSession, ctx: MemberContext, recipe_id: uuid.UUID, body: ImportedRecipeIn
+    session: AsyncSession,
+    ctx: MemberContext,
+    recipe_id: uuid.UUID,
+    body: ImportedRecipeIn,
+    embedder: Embedder | None,
 ) -> Recipe:
     """Replace the whole recipe (the review screen sends everything). Any Member may."""
     recipe = await _own(session, ctx.household.id, recipe_id)
@@ -144,6 +152,7 @@ async def update(
     recipe.ingredients.extend(lines)
     _fill(recipe, body)
     await session.flush()
+    await recipes.embed_after_save(session, embedder)  # its text changed: a new vector
     return recipe
 
 

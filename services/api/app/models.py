@@ -562,6 +562,20 @@ class AgentUsage(Base):
     output_tokens: Mapped[int] = mapped_column(Integer, default=0)
 
 
+class RecipeImport(Base):
+    """One attempt at the paste, photo, file or link door (slice 4d), for the limit of
+    20 an hour per Member. Attempts, not successes: a failed one cost us work too.
+    Typing a recipe isn't recorded: it has no limit."""
+
+    __tablename__ = "recipe_imports"
+    __table_args__ = (Index("ix_recipe_imports_member_started", "member_id", "started_at"),)
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    member_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("members.id", ondelete="CASCADE"))
+    door: Mapped[str] = mapped_column(String(10))  # paste, photo, file, link
+    started_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+
+
 class AgentTurn(Base):
     """One chat message the agent answered, for the rate limits (slice 10): one turn at
     a time per Member, and at most 30 an hour. In Postgres so every API copy agrees."""

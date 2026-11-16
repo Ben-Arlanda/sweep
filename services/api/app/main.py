@@ -27,6 +27,7 @@ from app.routes import (
     recipes,
     shopping_lists,
 )
+from app.services import recipes as recipe_service
 from app.services.conversations import Agent
 from app.services.recipe_import import PageFetcher, RecipeReader
 from app.web_fetch import SafeFetcher
@@ -112,7 +113,18 @@ def create_app(
         # Here, not in create_app: tests build apps without running startup, and must
         # never send traces (app/tracing.py).
         tracing.configure(app_settings)
+        # Imported Recipes a Save couldn't embed (slice 4d): in the background, so a
+        # slow embedding service never delays the API starting.
+        catch_up = (
+            asyncio.create_task(
+                recipe_service.catch_up_imported(app.state.sessionmaker, app.state.embedder)
+            )
+            if app.state.embedder is not None
+            else None
+        )
         yield
+        if catch_up is not None:
+            catch_up.cancel()
         tracing.shutdown()  # send what's buffered before the process exits
         listener.cancel()
         with contextlib.suppress(asyncio.CancelledError):
@@ -129,6 +141,8 @@ def create_app(
     )
     app.state.embedder = embedder or default_embedder(app_settings)
     app.state.recipe_reader = recipe_reader or default_recipe_reader(app_settings)
+    # One budget per Household per day, shared by the agent and the import doors.
+    app.state.daily_token_budget = app_settings.agent_daily_token_budget
     app.state.page_fetcher = page_fetcher or SafeFetcher()  # needs no key: always on
     checkpoints = Checkpoints(app_settings.database_url)
     model = agent_model or default_agent_model(app_settings)

@@ -5,6 +5,7 @@ import uuid
 from typing import Annotated, cast
 
 from fastapi import APIRouter, File, Query, Request, Response, UploadFile, status
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import errors
 from app.deps import MemberDep, SessionDep
@@ -26,7 +27,9 @@ from app.schemas import (
     RecipeOut,
     RecipeSummaryOut,
 )
-from app.services import imported_recipes, recipe_import, recipes
+from app.services import import_limits, imported_recipes, recipe_import, recipes
+from app.services.households import MemberContext
+from app.services.import_limits import Door, MeteredReader
 from app.services.recipe_import import (
     MAX_PHOTO_BYTES,
     MAX_PHOTOS,
@@ -112,9 +115,7 @@ async def read_paste(
     body: PasteIn, request: Request, ctx: MemberDep, session: SessionDep
 ) -> ImportDraftOut:
     """The Paste door: one model call reads the text into a draft. Stores nothing."""
-    reader = cast(RecipeReader | None, request.app.state.recipe_reader)
-    if reader is None:
-        raise errors.Unavailable("Pasting recipes isn't configured on this server")
+    reader = await _metered_reader(request, session, ctx, "paste")
     draft = await recipe_import.from_paste(session, ctx.household.id, reader, body.text)
     return _draft_out(draft)
 
@@ -128,9 +129,7 @@ async def read_photos(
 ) -> ImportDraftOut:
     """The Photo door: one model call reads the photos into a draft. Nothing is stored:
     the bytes live only for this request (and every line comes back marked Check)."""
-    reader = cast(RecipeReader | None, request.app.state.recipe_reader)
-    if reader is None:
-        raise errors.Unavailable("Reading photos isn't configured on this server")
+    reader = await _metered_reader(request, session, ctx, "photo")
     if not 1 <= len(photos) <= MAX_PHOTOS:
         raise errors.InvalidInput(f"Add 1 to {MAX_PHOTOS} photos of the recipe.")
     read: list[Photo] = []
@@ -154,9 +153,7 @@ async def read_file(
     file: Annotated[UploadFile, File(description="One PDF; the first 10 pages are read")],
 ) -> ImportDraftOut:
     """The File door (PDF only). Nothing is stored: the bytes live only for this request."""
-    reader = cast(RecipeReader | None, request.app.state.recipe_reader)
-    if reader is None:
-        raise errors.Unavailable("Reading files isn't configured on this server")
+    reader = await _metered_reader(request, session, ctx, "file")
     data = await file.read(MAX_PDF_BYTES + 1)  # one byte over is enough to tell
     draft = await recipe_import.from_pdf(session, ctx.household.id, reader, data)
     return _draft_out(draft)
@@ -167,9 +164,23 @@ async def read_link(
     body: LinkIn, request: Request, ctx: MemberDep, session: SessionDep
 ) -> ImportDraftOut:
     """The Link door: the page's own recipe data, read by code. Stores nothing."""
+    await import_limits.start(session, ctx, "link", daily_budget=None)  # no model: no tokens
     fetcher = cast(PageFetcher, request.app.state.page_fetcher)
     draft = await recipe_import.from_link(session, ctx.household.id, fetcher, body.url)
     return _draft_out(draft)
+
+
+async def _metered_reader(
+    request: Request, session: AsyncSession, ctx: MemberContext, door: Door
+) -> MeteredReader:
+    """The reader for a model door, once the limits allow it: the attempt is recorded,
+    and every call's tokens will count toward today's budget."""
+    reader = cast(RecipeReader | None, request.app.state.recipe_reader)
+    if reader is None:
+        raise errors.Unavailable("Reading recipes isn't configured on this server")
+    budget = cast(int, request.app.state.daily_token_budget)
+    await import_limits.start(session, ctx, door, daily_budget=budget)
+    return MeteredReader(reader, request.app.state.sessionmaker, ctx.household.id)
 
 
 def _draft_out(draft: Draft) -> ImportDraftOut:
@@ -201,7 +212,8 @@ async def save_imported(
     """Save from the review screen (every door ends here)."""
 
     async def work() -> RecipeOut:
-        return RecipeOut.model_validate(await imported_recipes.save(session, ctx, body))
+        embedder = cast(Embedder | None, request.app.state.embedder)
+        return RecipeOut.model_validate(await imported_recipes.save(session, ctx, body, embedder))
 
     return await idempotent(request, session, ctx, key, work, status.HTTP_201_CREATED)
 
@@ -216,7 +228,8 @@ async def update_imported(
     key: IdempotencyKeyHeader,
 ) -> Response:
     async def work() -> RecipeOut:
-        recipe = await imported_recipes.update(session, ctx, recipe_id, body)
+        embedder = cast(Embedder | None, request.app.state.embedder)
+        recipe = await imported_recipes.update(session, ctx, recipe_id, body, embedder)
         return RecipeOut.model_validate(recipe)
 
     return await idempotent(request, session, ctx, key, work)

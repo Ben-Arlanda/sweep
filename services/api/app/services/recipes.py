@@ -6,20 +6,24 @@ recipe because it happened to be "similar". Similarity only decides the order.
 """
 
 import hashlib
+import logging
 import uuid
 from collections.abc import Sequence
 from dataclasses import dataclass, field
 
-from sqlalchemy import Select, exists, func, or_, select
+import anyio
+from sqlalchemy import ColumnElement, Select, exists, func, or_, select
 from sqlalchemy.dialects.postgresql import insert
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from app import errors
 from app.data.recipes import ATTRIBUTION, LICENCE, SeedRecipe
-from app.embeddings import Embedder
+from app.embeddings import Embedder, EmbeddingUnavailable
 from app.models import Course, Ingredient, Recipe, RecipeEmbedding, RecipeIngredient, RecipeKind
 from app.services import diet
 from app.services.ingredient_lines import IngredientIndex, normalise_lines
+
+log = logging.getLogger(__name__)
 
 SEARCH_LIMIT = 20
 
@@ -118,13 +122,15 @@ def content_hash(text: str) -> bytes:
     return hashlib.sha256(text.encode()).digest()
 
 
-async def embed_missing(session: AsyncSession, embedder: Embedder, limit: int | None = None) -> int:
-    """Embed recipes that have no vector for this model, or whose text has changed.
-
-    `limit` caps how many in one go, so a caller can commit between chunks and a failure
-    halfway loses nothing: the next run picks up whatever is still missing.
-    """
-    recipes = (await session.execute(select(Recipe))).scalars().all()
+async def _missing(
+    session: AsyncSession,
+    embedder: Embedder,
+    only: ColumnElement[bool] | None,
+    limit: int | None,
+) -> list[tuple[uuid.UUID, str]]:
+    """(recipe id, text) for recipes with no vector for this model, or a stale one."""
+    query = select(Recipe) if only is None else select(Recipe).where(only)
+    found = (await session.execute(query)).scalars().all()
     stored = dict(
         (
             await session.execute(
@@ -135,15 +141,19 @@ async def embed_missing(session: AsyncSession, embedder: Embedder, limit: int | 
         ).all()
     )
     todo = []
-    for recipe in recipes:
+    for recipe in found:
         text = embedding_text(recipe)
         if stored.get(recipe.id) != content_hash(text):
             todo.append((recipe.id, text))
-    todo = todo[:limit] if limit is not None else todo
-    if not todo:
-        return 0
+    return todo[:limit] if limit is not None else todo
 
-    vectors = await embedder.embed([text for _, text in todo], "document")
+
+async def _store(
+    session: AsyncSession,
+    embedder: Embedder,
+    todo: list[tuple[uuid.UUID, str]],
+    vectors: list[list[float]],
+) -> None:
     for (recipe_id, text), vector in zip(todo, vectors, strict=True):
         values = {"content_hash": content_hash(text), "embedding": vector}
         await session.execute(
@@ -151,7 +161,73 @@ async def embed_missing(session: AsyncSession, embedder: Embedder, limit: int | 
             .values(recipe_id=recipe_id, model=embedder.model, **values)
             .on_conflict_do_update(index_elements=["recipe_id", "model"], set_=values)
         )
+
+
+async def embed_missing(
+    session: AsyncSession,
+    embedder: Embedder,
+    limit: int | None = None,
+    only: ColumnElement[bool] | None = None,
+) -> int:
+    """Embed recipes that have no vector for this model, or whose text has changed.
+
+    `limit` caps how many in one go, so a caller can commit between chunks and a failure
+    halfway loses nothing: the next run picks up whatever is still missing. `only`
+    narrows which recipes are looked at (Recipe.kind == IMPORTED after a Save).
+    """
+    todo = await _missing(session, embedder, only, limit)
+    if not todo:
+        return 0
+    vectors = await embedder.embed([text for _, text in todo], "document")
+    await _store(session, embedder, todo, vectors)
     return len(todo)
+
+
+# Someone is waiting on Save, so the embedding gets this long and no more.
+EMBED_ON_SAVE_SECONDS = 5.0
+# Imported Recipes embedded per call: the new one plus any that an earlier Save missed.
+CATCH_UP_BATCH = 20
+IMPORTED_ONLY: ColumnElement[bool] = Recipe.kind == RecipeKind.IMPORTED
+
+
+async def embed_after_save(session: AsyncSession, embedder: Embedder | None) -> int:
+    """After an Imported Recipe is saved or edited: one embedding call, briefly, for it
+    and any other Imported Recipe still missing a vector. Never fails the Save: without
+    a vector it can still be browsed and planned by Kitchen Match, and the next Save
+    (or the API starting) tries again. No job queue until slice 11."""
+    if embedder is None:
+        return 0
+    await session.flush()  # the new lines must be visible to the query below
+    todo = await _missing(session, embedder, IMPORTED_ONLY, CATCH_UP_BATCH)
+    if not todo:
+        return 0
+    try:
+        with anyio.fail_after(EMBED_ON_SAVE_SECONDS):
+            vectors = await embedder.embed([text for _, text in todo], "document")
+    except (EmbeddingUnavailable, TimeoutError) as error:
+        log.warning("embedding after save skipped (%s): caught up later", type(error).__name__)
+        return 0
+    await _store(session, embedder, todo, vectors)
+    return len(todo)
+
+
+async def catch_up_imported(
+    sessionmaker: async_sessionmaker[AsyncSession], embedder: Embedder
+) -> int:
+    """At API start: embed every Imported Recipe still missing a vector, in batches,
+    committing each. Stops quietly at the first failure: the next start tries again."""
+    done = 0
+    try:
+        while True:
+            async with sessionmaker() as session:
+                count = await embed_missing(session, embedder, CATCH_UP_BATCH, IMPORTED_ONLY)
+                await session.commit()
+            done += count
+            if count < CATCH_UP_BATCH:
+                return done
+    except EmbeddingUnavailable as error:
+        log.warning("embedding catch-up stopped: %s", error)
+        return done
 
 
 # --- Reading and searching --------------------------------------------------------------
