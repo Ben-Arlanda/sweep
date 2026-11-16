@@ -203,7 +203,7 @@ export function hasChanges(start: ReviewForm, now: ReviewForm): boolean {
 }
 
 const UNIT =
-  /^(g|kg|ml|l|cups?|tbsp|tsp|tablespoons?|teaspoons?|x|pinch|handful|bunch|cloves?|cans?|tins?|of)$/i;
+  /^(g|kg|ml|l|cups?|tbsp|tsp|tablespoons?|teaspoons?|x|pinch|handful|bunch|cloves?|cans?|tins?|jars?|packets?|sachets?|bottles?|of)$/i;
 
 /** What the Link sheet's search starts with: the line without its amount, unit or note. */
 export function searchGuess(line: string): string {

@@ -228,6 +228,8 @@ describe('searchGuess', () => {
     ['4 x 180g salmon fillets', 'salmon fillets'],
     ['½ cup pickled jalapeño', 'pickled jalapeño'],
     ['Parsley, to serve', 'Parsley'],
+    ['1 packet mystery spice mix', 'mystery spice mix'], // found in the browser check
+    ['2 jars roasted peppers', 'roasted peppers'],
     ['3', '3'], // nothing left: keep what was written
   ])('%j → %j', (line, guess) => {
     expect(searchGuess(line)).toBe(guess);

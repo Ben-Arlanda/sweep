@@ -26,6 +26,7 @@ export function LinkSheet({
   hint = `Sweep will remember this for ${name} next time.`,
   allowNone = true,
   startQuery = name,
+  label = `Kitchen link for ${name}`,
 }: {
   name: string; // what the Member wrote: "Chocolate", "2 shallots, sliced"
   current: Ingredient | null;
@@ -35,6 +36,7 @@ export function LinkSheet({
   hint?: string;
   allowNone?: boolean;
   startQuery?: string; // what the search box starts with
+  label?: string; // the dialog's name for screen readers
 }) {
   const t = useTheme();
   const [query, setQuery] = useState(startQuery);
@@ -47,7 +49,7 @@ export function LinkSheet({
   }
 
   return (
-    <Sheet label={`Kitchen link for ${name}`} title={title} onClose={onClose}>
+    <Sheet label={label} title={title} onClose={onClose}>
       <Text variant="caption" muted>
         {hint}
       </Text>

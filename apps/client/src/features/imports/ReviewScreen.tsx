@@ -200,6 +200,7 @@ export function ReviewScreen({
         <LinkSheet
           name={linking.rawText}
           startQuery={searchGuess(linking.rawText)}
+          label={`Ingredient for ${linking.rawText}`}
           current={linking.ingredient}
           title={`Which Ingredient is "${linking.rawText}"?`}
           hint="Sweep uses it to check your Kitchen and Dietary Rules, and for the Shopping List."
