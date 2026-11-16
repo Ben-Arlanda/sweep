@@ -10,6 +10,7 @@ from outside, so their text could try to give orders (prompt injection).
 """
 
 import json
+from collections.abc import Mapping
 from datetime import date, timedelta
 from typing import Any
 from zoneinfo import ZoneInfo
@@ -173,6 +174,30 @@ def user_message(context: str, text: str) -> dict[str, Any]:
         "role": "user",
         "content": [{"type": "text", "text": context}, {"type": "text", "text": text}],
     }
+
+
+def transcript(state: Mapping[str, Any]) -> list[dict[str, str]]:
+    """The chat as the Member saw it: their words and the agent's replies, in order.
+    Leaves out the Household context, tool calls and tool results, and narration: text
+    the agent wrote in the same message as a tool call. The app shows narration as a
+    passing status while streaming, so a reload looks the same as the live chat."""
+    out: list[dict[str, str]] = []
+    for message in state.get("messages", []):
+        blocks = message["content"]
+        if isinstance(blocks, list) and any(
+            isinstance(b, dict) and b.get("type") == "tool_use" for b in blocks
+        ):
+            continue
+        texts = [
+            b["text"]
+            for b in message["content"]
+            if isinstance(b, dict)
+            and b.get("type") == "text"
+            and not b["text"].startswith(f"<{CONTEXT_TAG}>")
+        ]
+        if texts:
+            out.append({"role": message["role"], "text": "\n".join(texts)})
+    return out
 
 
 def today_in_sydney() -> date:

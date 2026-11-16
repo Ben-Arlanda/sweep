@@ -12,6 +12,7 @@ near-miss ("chocolate" should be dark chocolate) with a link.
 
 import re
 import uuid
+from collections.abc import Sequence
 
 from sqlalchemy import ColumnElement, delete, or_, select
 from sqlalchemy.dialects.postgresql import insert
@@ -204,3 +205,14 @@ async def get(
             select(Ingredient).where(Ingredient.id == ingredient_id, visible_to(household_id))
         )
     ).scalar_one_or_none()
+
+
+async def names(session: AsyncSession, ids: Sequence[str | None]) -> dict[str, str]:
+    """Ingredient id → name for the ids given (None and unknown ids are left out)."""
+    wanted = {uuid.UUID(i) for i in ids if i is not None}
+    if not wanted:
+        return {}
+    found = await session.execute(
+        select(Ingredient.id, Ingredient.name).where(Ingredient.id.in_(wanted))
+    )
+    return {str(iid): name for iid, name in found.all()}

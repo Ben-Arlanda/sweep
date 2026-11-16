@@ -402,6 +402,11 @@ class DraftAdditionOut(BaseModel):
     # On a Proposal: how much of it is already on the Shopping List ("200 g"), since an
     # addition is the extra on top (ADR 0016). None when it isn't there.
     on_list: str | None = None
+    # On a Proposal (slice 10): "meal" (for_meals uses it), "asked" (the Member named it)
+    # or "unexplained" (shown unticked: "Not for any meal"). None on a Draft, and on
+    # Proposals saved before reasons existed.
+    reason: Literal["meal", "asked", "unexplained"] | None = None
+    for_meals: list[str] = []
 
 
 class DraftOut(BaseModel):

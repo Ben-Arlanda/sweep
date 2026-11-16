@@ -16,6 +16,7 @@ from fastapi.responses import StreamingResponse
 from pydantic import RootModel
 
 from app import errors
+from app.agent.prompt import transcript
 from app.deps import MemberDep, SessionDep
 from app.routes.proposals import proposal_fields, proposal_out
 from app.schemas import (
@@ -72,7 +73,7 @@ async def get(
         created_at=conversation.created_at,
         plan_mode=conversation.plan_mode,
         plan_days=conversation.plan_days,
-        messages=[ChatLine.model_validate(line) for line in conversations.transcript(state)],
+        messages=[ChatLine.model_validate(line) for line in transcript(state)],
         draft=DraftOut.model_validate(d) if (d := state.get("draft")) else None,
         proposal=proposal_out(current) if current is not None else None,
         proposals=[

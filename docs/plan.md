@@ -505,7 +505,7 @@ Known gaps from 6c: tapping Cooked or Undo swaps the button, so keyboard focus d
 
 1. **Names are one line:** reject newlines and control characters in every Member-typed name.
 2. **Context as JSON:** the household context becomes a JSON object; same facts, quoted values. Done 2026-11-16, with `<` and `>` escaped so a value can't close the tag. Live Haiku re-run: 51/51 (17 Scenarios × 3), 0 replans, 14¢; tool calls and input tokens about the same as before (9.0 vs 9.1 per Scenario, +3% tokens).
-3. **Addition reasons:** each List Addition gets a reason when the Proposal is built (Planned Meal, or named in the Member's own messages); unexplained ones are marked, and the API returns the reason.
+3. **Addition reasons:** each List Addition gets a reason when the Proposal is built (Planned Meal, or named in the Member's own messages); unexplained ones are marked, and the API returns the reason. Done 2026-11-16: `explain_additions` (plain code) gives `reason` = `meal` (a kept meal's recipe uses its Ingredient; `for_meals` names them), `asked` (its name or Ingredient name, singular or plural, as whole words in the Member's own messages from `transcript`) or `unexplained`. Approve without `keep_additions` leaves unexplained ones off and says so in `skipped`; only an explicit tick adds one, so an old client can't add them by accident.
 4. **Rate limits:** an `agent_turns` table; one turn at a time per Member (`409`), 30 messages an hour (`429` + `Retry-After`).
 5. **Injection Scenarios and Graders:** `canary_absent`, `additions_explained`, the seven Scenarios, a harness hook to insert Imported Recipes and raw rows. Then a live Haiku run (ask first).
 

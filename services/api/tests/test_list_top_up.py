@@ -48,7 +48,8 @@ async def propose_and_approve(
     client: httpx.AsyncClient, issuer: FakeIssuer
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     cid = await start(client, issuer)
-    [event] = of(await say(client, issuer, cid, "plan the curry"), "proposal")
+    # Coriander isn't in the curry: the Member asks for it, so it has a reason (slice 10).
+    [event] = of(await say(client, issuer, cid, "plan the curry, plus coriander"), "proposal")
     proposal: dict[str, Any] = event["proposal"]
     response = await decide(client, issuer, proposal["id"], {"action": "approve"})
     assert response.status_code == 200, response.text

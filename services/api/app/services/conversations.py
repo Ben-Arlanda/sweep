@@ -23,7 +23,7 @@ from app import errors, tracing
 from app.agent import graph
 from app.agent.checkpoints import Checkpoints
 from app.agent.model import AgentModel, ModelUnavailable
-from app.agent.prompt import CONTEXT_TAG, today_in_sydney
+from app.agent.prompt import today_in_sydney, transcript
 from app.agent.state import AgentState
 from app.agent.tools import AgentContext
 from app.embeddings import Embedder
@@ -307,27 +307,3 @@ async def proposals_of(session: AsyncSession, conversation_id: uuid.UUID) -> lis
         .order_by(Proposal.created_at, Proposal.id)
     )
     return list(found.scalars())
-
-
-def transcript(state: dict[str, Any]) -> list[dict[str, str]]:
-    """The chat as the Member saw it: their words and the agent's replies, in order.
-    Leaves out the Household context, tool calls and tool results, and narration: text
-    the agent wrote in the same message as a tool call. The app shows narration as a
-    passing status while streaming, so a reload looks the same as the live chat."""
-    out: list[dict[str, str]] = []
-    for message in state.get("messages", []):
-        blocks = message["content"]
-        if isinstance(blocks, list) and any(
-            isinstance(b, dict) and b.get("type") == "tool_use" for b in blocks
-        ):
-            continue
-        texts = [
-            b["text"]
-            for b in message["content"]
-            if isinstance(b, dict)
-            and b.get("type") == "text"
-            and not b["text"].startswith(f"<{CONTEXT_TAG}>")
-        ]
-        if texts:
-            out.append({"role": message["role"], "text": "\n".join(texts)})
-    return out
