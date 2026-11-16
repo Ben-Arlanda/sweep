@@ -134,6 +134,7 @@ class RunRecord:
     # Part of `seconds` spent waiting on Voyage (our free tier's rate limit, not the agent).
     embedding_seconds: float = 0.0
     session_id: str = ""  # the Conversation id: its Langfuse session, when tracing is on
+    planner: str = "agent"  # or "baseline" (evals/baseline.py)
     crashed: str | None = None  # the harness itself failed (not the agent)
 
     @property

@@ -258,6 +258,7 @@ class Summary:
     """One Scenario on one model, over its repeats."""
 
     scenario: str
+    planner: str
     model: str
     passed: int
     runs: int
@@ -274,17 +275,19 @@ def _avg(values: Sequence[float]) -> float:
 
 
 def summarise(graded: Iterable[Graded]) -> list[Summary]:
-    groups: dict[tuple[str, str], list[Graded]] = {}
+    groups: dict[tuple[str, str, str], list[Graded]] = {}
     for g in graded:
-        groups.setdefault((g.record.scenario, g.record.model), []).append(g)
+        key = (g.record.scenario, g.record.planner, g.record.model)
+        groups.setdefault(key, []).append(g)
     rows = []
-    for (scenario, model), runs in groups.items():
+    for (scenario, planner, model), runs in groups.items():
         m = [g.measures for g in runs]
         to_buy = [x.to_buy_per_meal for x in m if x.to_buy_per_meal is not None]
         costs = [x.cost_usd for x in m]
         rows.append(
             Summary(
                 scenario=scenario,
+                planner=planner,
                 model=model,
                 passed=sum(g.passed for g in runs),
                 runs=len(runs),
