@@ -44,7 +44,8 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
         "ml",
         D("0.92"),
         True,
-        ("canola oil", "cooking oil", "cooking oil spray", "oil spray"),
+        # Plain "oil" in a recipe means a neutral cooking oil.
+        ("canola oil", "cooking oil", "cooking oil spray", "oil spray", "oil"),
     ),
     SeedIngredient("plain flour", "pantry", "g", D("0.53"), True, ("all-purpose flour", "flour")),
     SeedIngredient("white sugar", "pantry", "g", D("0.85"), True, ("sugar", "granulated sugar")),
@@ -408,4 +409,6 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
     SeedIngredient("almond milk", "drinks", "ml", D("1.0"), False, ()),
     SeedIngredient("almond butter", "pantry", "g", None, False, ()),
     SeedIngredient("oranges", "produce", "count", None, False, ("orange", "orange segments")),
+    # From a real cookbook photo (2026-11-16).
+    SeedIngredient("curry leaves", "produce", "count", None, False, ("curry leaf",)),
 )

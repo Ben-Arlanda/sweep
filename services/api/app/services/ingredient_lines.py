@@ -82,16 +82,22 @@ UNIT_WORDS: dict[str, str] = {
     **dict.fromkeys(("kilo", "kilos", "kilogram", "kilograms"), "kg"),
     **dict.fromkeys(("millilitre", "millilitres", "milliliter", "milliliters"), "ml"),
     **dict.fromkeys(("litre", "litres", "liter", "liters"), "l"),
-    "cups": "cup",
+    **dict.fromkeys(("cups", "cupful", "cupfuls", "teacupful", "teacupfuls"), "cup"),
     **dict.fromkeys(("tablespoon", "tablespoons", "tbs", "tbsps", "tbl"), "tbsp"),
+    # Older cookbooks and typed-up family recipes: "1 tablespoonful of curry powder"
+    **dict.fromkeys(("tablespoonful", "tablespoonfuls", "tablespoonsful"), "tbsp"),
+    **dict.fromkeys(("teaspoonful", "teaspoonfuls", "teaspoonsful"), "tsp"),
     **dict.fromkeys(("teaspoon", "teaspoons", "tsps"), "tsp"),
+    # A length ("2 cm piece ginger"): kept as written, never converted to a weight.
+    **dict.fromkeys(("cm", "centimetre", "centimetres"), "cm"),
+    **dict.fromkeys(("inch", "inches"), "inch"),
     **dict.fromkeys(("bunches",), "bunch"),
     "heads": "head",
     **dict.fromkeys(("clove", "cloves"), "clove"),
     **dict.fromkeys(("pinch", "pinches"), "pinch"),
     **dict.fromkeys(("handful", "handfuls"), "handful"),
     **dict.fromkeys(("slice", "slices"), "slice"),
-    **dict.fromkeys(("sprig", "sprigs"), "sprig"),
+    **dict.fromkeys(("sprig", "sprigs", "strand", "strands"), "sprig"),  # "4 strands of coriander"
     **dict.fromkeys(("stalk", "stalks"), "stalk"),
     **dict.fromkeys(("sheet", "sheets"), "sheet"),
     **dict.fromkeys(("rasher", "rashers"), "rasher"),
@@ -106,6 +112,7 @@ STORED_UNITS = sorted({*UNIT_WORDS.values(), *TRAILING_MEASURES.values()})
 DESCRIPTORS = {"large", "small", "medium", "fresh", "ripe", "boiling", "cold", "warm", "hot"}
 # Container words left in front of the name after a weight: "400 g can chickpeas".
 CONTAINERS = {"can", "cans", "tin", "tins", "jar", "jars", "packet", "packets", "of"}
+CONTAINERS |= {"cube", "cubes", "piece", "pieces"}  # "2 cm piece ginger", "1 inch cube of"
 # "4 cups cooked rice": the Ingredient is rice, but the amount isn't an amount you'd buy.
 PREPARED = {"cooked", "leftover"}
 # Things recipes list but nobody shops for.
@@ -274,9 +281,9 @@ def _second_look(
         word = words.pop(0)
         if _clean_word(word) in PREP_WORDS:
             leading.append(word)
-    trailing: list[str] = []  # "onion finely chopped", "parmesan to serve"
+    trailing: list[str] = []  # "onion finely chopped", "parmesan to serve", "if you can"
     for i, word in enumerate(words[1:], start=1):
-        if _clean_word(word) in PREP_WORDS or _clean_word(word) == "to":
+        if _clean_word(word) in PREP_WORDS or _clean_word(word) in ("to", "if"):
             words, trailing = words[:i], words[i:]
             break
     note = "; ".join(part for part in (" ".join(leading), " ".join(trailing)) if part) or None

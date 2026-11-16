@@ -111,17 +111,31 @@ def test_converts_to_the_ingredients_own_unit_only_when_honest(
         ("1 cup instant polenta", "polenta", D("1"), "cup", None),
         ("70 g greek-style yoghurt", "greek yoghurt", D("70"), "g", None),
         ("80 gm mixed olives", "kalamata olives", D("80"), "g", None),  # "gm" for grams
+        # Older cookbooks and typed-up family recipes (a real cookbook photo, 2026-11-16)
+        ("1 tablespoonful of curry powder", "curry powder", D("1"), "tbsp", None),
+        ("1 teaspoonful of salt", "salt", D("1"), "tsp", None),
+        ("3 tablespoonfuls of yoghurt", "greek yoghurt", D("3"), "tbsp", None),
+        ("1 teacupful of water", None, D("1"), "cup", None),
+        ("2 tablespoonfuls of oil", "vegetable oil", D("2"), "tbsp", None),
+        ("5 strands of coriander, chopped", "coriander", D("5"), "sprig", "chopped"),
+        ("1 inch cube of ginger, grated", "ginger", D("1"), "inch", "grated"),
+        ("2 cm piece ginger", "ginger", D("2"), "cm", None),
+        ("6 curry leaves if you can get them", "curry leaves", D("6"), None, "if you can get them"),
         ("salt flakes, to serve", "salt", None, None, "to serve"),
         ("cooking oil spray", "vegetable oil", None, None, None),
     ],
 )
 def test_reads_lines_the_way_recipe_websites_write_them(
-    text: str, ingredient: str, quantity: Decimal | None, unit: str | None, note: str | None
+    text: str,
+    ingredient: str | None,
+    quantity: Decimal | None,
+    unit: str | None,
+    note: str | None,
 ) -> None:
     line = parse_line(text, INDEX)
-    assert line.ingredient is not None, f"no Ingredient for {text!r}"
-    assert line.ingredient.name == ingredient
+    assert (line.ingredient.name if line.ingredient else None) == ingredient, text
     assert (line.quantity, line.unit, line.note) == (quantity, unit, note)
+    assert not line.needs_review
 
 
 def test_the_new_rules_only_run_when_the_old_ones_found_nothing() -> None:
