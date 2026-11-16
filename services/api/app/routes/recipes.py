@@ -11,6 +11,7 @@ from app.deps import MemberDep, SessionDep
 from app.embeddings import Embedder, EmbeddingUnavailable
 from app.idempotency import IdempotencyKeyHeader
 from app.models import Course
+from app.pdf_text import MAX_PDF_BYTES
 from app.routes.common import idempotent
 from app.schemas import (
     DraftLineOut,
@@ -142,6 +143,22 @@ async def read_photos(
             raise errors.InvalidInput("Photos must be JPEG, PNG or WebP.")
         read.append(Photo(media_type=kind, data=data))
     draft = await recipe_import.from_photos(session, ctx.household.id, reader, read)
+    return _draft_out(draft)
+
+
+@router.post("/imports/file")
+async def read_file(
+    request: Request,
+    ctx: MemberDep,
+    session: SessionDep,
+    file: Annotated[UploadFile, File(description="One PDF; the first 10 pages are read")],
+) -> ImportDraftOut:
+    """The File door (PDF only). Nothing is stored: the bytes live only for this request."""
+    reader = cast(RecipeReader | None, request.app.state.recipe_reader)
+    if reader is None:
+        raise errors.Unavailable("Reading files isn't configured on this server")
+    data = await file.read(MAX_PDF_BYTES + 1)  # one byte over is enough to tell
+    draft = await recipe_import.from_pdf(session, ctx.household.id, reader, data)
     return _draft_out(draft)
 
 

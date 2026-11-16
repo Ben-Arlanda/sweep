@@ -1,4 +1,4 @@
-"""Reading a recipe into a draft for the review screen (slice 4d: Paste, Photo and Link).
+"""Reading a recipe into a draft for the review screen (slice 4d: Paste, Photo, File, Link).
 
 Link: plain code reads the page's schema.org data (app.services.recipe_jsonld); no
 model ever reads a web page. Paste:
@@ -25,10 +25,10 @@ from typing import Literal, Protocol
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app import errors
+from app import errors, pdf_text
 from app.llm_costs import Usage
 from app.models import Course, RecipeIngredient
-from app.schemas import MAX_METHOD_STEPS, MAX_RECIPE_LINES, ImportedLineIn
+from app.schemas import MAX_METHOD_STEPS, MAX_PASTE_CHARS, MAX_RECIPE_LINES, ImportedLineIn
 from app.services import imported_recipes, recipe_jsonld, recipes
 from app.text import clean_line
 from app.web_fetch import Page, check_url
@@ -83,6 +83,10 @@ class RecipeReader(Protocol):
 
     async def read_photos(
         self, photos: Sequence[Photo], cuisines: Sequence[str]
+    ) -> tuple[RecipeReading | None, Usage]: ...
+
+    async def read_document(
+        self, pdf: bytes, cuisines: Sequence[str]
     ) -> tuple[RecipeReading | None, Usage]: ...
 
 
@@ -167,6 +171,35 @@ async def from_photos(
         known,
         check=lambda line: True,
         not_a_recipe="That doesn't look like a recipe. Try a clearer photo, or paste the text.",
+    )
+
+
+# Less text than this is a scan with a stray caption ("Scanned by CamScanner", a page
+# number), not a recipe's text. A short recipe card still has more.
+MIN_PDF_TEXT = 40  # characters, not counting spaces
+
+
+async def from_pdf(
+    session: AsyncSession,
+    household_id: uuid.UUID,
+    reader: RecipeReader,
+    data: bytes,
+) -> Draft:
+    """Read once and never stored. A PDF with text takes the Paste path (every line
+    checked against that text); a scanned one goes to the model as a document."""
+    contents = await pdf_text.read_pdf(data)
+    text = contents.text.strip()
+    if len("".join(text.split())) >= MIN_PDF_TEXT:
+        return await from_paste(session, household_id, reader, text[:MAX_PASTE_CHARS])
+    known = await recipes.cuisines(session, household_id)
+    reading, usage = await reader.read_document(contents.first_pages, known)
+    return await _finish(
+        session,
+        household_id,
+        (reading, usage),
+        known,
+        check=lambda line: True,  # read from page images: a person checks every line
+        not_a_recipe="That doesn't look like a recipe. Try another file, or paste the text.",
     )
 
 

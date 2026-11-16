@@ -437,6 +437,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/recipes/imports/file": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Read File
+         * @description The File door (PDF only). Nothing is stored: the bytes live only for this request.
+         */
+        post: operations["read_file_recipes_imports_file_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/recipes/imports/link": {
         parameters: {
             query?: never;
@@ -715,6 +735,14 @@ export interface components {
          * @enum {string}
          */
         AddedBy: "member" | "agent";
+        /** Body_read_file_recipes_imports_file_post */
+        Body_read_file_recipes_imports_file_post: {
+            /**
+             * File
+             * @description One PDF; the first 10 pages are read
+             */
+            file: string;
+        };
         /** Body_read_photos_recipes_imports_photo_post */
         Body_read_photos_recipes_imports_photo_post: {
             /**
@@ -2500,6 +2528,39 @@ export interface operations {
         requestBody: {
             content: {
                 "multipart/form-data": components["schemas"]["Body_read_photos_recipes_imports_photo_post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ImportDraftOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    read_file_recipes_imports_file_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_read_file_recipes_imports_file_post"];
             };
         };
         responses: {

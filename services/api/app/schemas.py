@@ -541,6 +541,7 @@ class SendMessageIn(BaseModel):
 
 RecipeLine = Annotated[str, _name(300), ONE_LINE]  # an ingredient line, as written
 MAX_RECIPE_LINES, MAX_METHOD_STEPS = 60, 40
+MAX_PASTE_CHARS = 20_000  # about 5 long recipes; text pulled from a PDF is cut to this too
 
 
 # The same rules the Link door fetches by: plain https, no credentials, no odd ports.
@@ -579,7 +580,9 @@ class ImportedRecipeIn(BaseModel):
 class PasteIn(BaseModel):
     """Pasted recipe text. Line breaks are kept: they're how recipes are laid out."""
 
-    text: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=20_000)]
+    text: Annotated[
+        str, StringConstraints(strip_whitespace=True, min_length=1, max_length=MAX_PASTE_CHARS)
+    ]
 
 
 class DraftLineOut(RecipeIngredientOut):

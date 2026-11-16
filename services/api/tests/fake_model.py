@@ -80,6 +80,7 @@ class ScriptedReader:
         self.answers: list[Any] = []  # RecipeReading | None, in call order
         self.calls: list[tuple[str, list[str]]] = []  # (text, cuisines) per call
         self.photo_calls: list[list[tuple[str, int]]] = []  # per call: (type, bytes) each
+        self.document_calls: list[int] = []  # per call: how many PDF pages it was sent
 
     async def read(self, text: str, cuisines: Sequence[str]) -> tuple[Any, Usage]:
         self.calls.append((text, list(cuisines)))
@@ -90,6 +91,14 @@ class ScriptedReader:
     ) -> tuple[Any, Usage]:
         # Only what each photo is and its size: tests never keep the bytes either.
         self.photo_calls.append([(p.media_type, len(p.data)) for p in photos])
+        return self._next()
+
+    async def read_document(self, pdf: bytes, cuisines: Sequence[str]) -> tuple[Any, Usage]:
+        import io
+
+        import pypdf
+
+        self.document_calls.append(len(pypdf.PdfReader(io.BytesIO(pdf)).pages))
         return self._next()
 
     def _next(self) -> tuple[Any, Usage]:

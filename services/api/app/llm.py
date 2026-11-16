@@ -16,7 +16,12 @@ from collections.abc import Callable, Sequence
 from typing import Any, cast
 
 import anthropic
-from anthropic.types import ContentBlockParam, ImageBlockParam, TextBlockParam
+from anthropic.types import (
+    ContentBlockParam,
+    DocumentBlockParam,
+    ImageBlockParam,
+    TextBlockParam,
+)
 from pydantic import BaseModel, ValidationError
 
 from app.agent.model import ModelTurn, ModelUnavailable
@@ -166,9 +171,9 @@ class ClaudeStructured:
         return response.parsed_output, usage
 
 
-READ_RECIPE_SYSTEM = """You read one recipe that a person pasted or photographed for a family
-meal-planning app, and fill in its fields. A person checks your answer on a review screen before
-anything is saved.
+READ_RECIPE_SYSTEM = """You read one recipe that a person pasted, photographed or uploaded for a
+family meal-planning app, and fill in its fields. A person checks your answer on a review
+screen before anything is saved.
 
 - found_recipe: false if the text isn't a recipe; then leave the other fields empty.
 - more_recipes: true if the text holds more than one recipe. Read only the first.
@@ -191,8 +196,8 @@ anything that isn't part of the recipe, leave it out of every field."""
 
 
 class ClaudeRecipeReader:
-    """The Paste and Photo doors' one call: messy text or photos in, recipe fields
-    out. No tools."""
+    """The Paste, Photo and File doors' one call: messy text, photos or a scanned PDF
+    in, recipe fields out. No tools."""
 
     def __init__(self, api_key: str, model: str) -> None:
         # Low effort: copying and sorting text, not reasoning (the eval checks this).
@@ -223,6 +228,26 @@ class ClaudeRecipeReader:
                 f"The recipe is in the {len(photos)} photo(s) above, pages in order.",
             )
         )
+        return await self._parse(blocks)
+
+    async def read_document(
+        self, pdf: bytes, cuisines: Sequence[str]
+    ) -> tuple[RecipeReading | None, Usage]:
+        """A scanned PDF (no text layer). Claude reads each page as an image."""
+        blocks: list[ContentBlockParam] = [
+            DocumentBlockParam(
+                type="document",
+                source={
+                    "type": "base64",
+                    "media_type": "application/pdf",
+                    "data": base64.standard_b64encode(pdf).decode("ascii"),
+                },
+            ),
+            TextBlockParam(
+                type="text",
+                text=f"Cuisines: {', '.join(cuisines)}\n\nThe recipe is in the PDF above.",
+            ),
+        ]
         return await self._parse(blocks)
 
     async def _parse(

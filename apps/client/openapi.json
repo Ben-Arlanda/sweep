@@ -1579,6 +1579,53 @@
         ]
       }
     },
+    "/recipes/imports/file": {
+      "post": {
+        "tags": [
+          "recipes"
+        ],
+        "summary": "Read File",
+        "description": "The File door (PDF only). Nothing is stored: the bytes live only for this request.",
+        "operationId": "read_file_recipes_imports_file_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_read_file_recipes_imports_file_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportDraftOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
     "/recipes/imports/link": {
       "post": {
         "tags": [
@@ -2614,6 +2661,21 @@
           "agent"
         ],
         "title": "AddedBy"
+      },
+      "Body_read_file_recipes_imports_file_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File",
+            "description": "One PDF; the first 10 pages are read"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_read_file_recipes_imports_file_post"
       },
       "Body_read_photos_recipes_imports_photo_post": {
         "properties": {
