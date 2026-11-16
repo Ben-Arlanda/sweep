@@ -22,11 +22,13 @@ from evals.agent_graders import (
     Check,
     called,
     changed_only_day,
+    course_on_day,
     final_status,
     meal_count,
     nothing_dropped,
     on_today,
     on_weekdays,
+    only_courses,
     proposal_made,
     revised_after_reject,
     uses_kitchen_item,
@@ -42,10 +44,12 @@ class Scenario:
     setup: Setup
     steps: tuple[Step, ...]
     checks: tuple[Check, ...] = ()
+    # Planned Meals are dinners: mains only, unless the Member asks for another Course.
+    courses: tuple[str, ...] = ("main",)
 
     @property
     def all_checks(self) -> tuple[Check, ...]:
-        return DEFAULT_CHECKS + self.checks
+        return DEFAULT_CHECKS + (only_courses(*self.courses),) + self.checks
 
     def checks_for(self, planner: str) -> tuple[Check, ...]:
         """The Baseline Planner has no tools, so checks about tool calls don't apply."""
@@ -137,6 +141,15 @@ SCENARIOS: tuple[Scenario, ...] = (
         Setup(diets=frozenset({Diet.VEGETARIAN}), mode=PlanMode.NEW, days=(1, 2)),
         (Say("Plan new recipes to shop for, for {days}. We'd love a steak night on {0}."),),
         (proposal_made,),
+    ),
+    Scenario(
+        "pancakes-on-a-day",
+        "The Member names a dish that isn't a main. It's planned on that day; the other "
+        "days stay mains.",
+        Setup(mode=PlanMode.NEW, days=(1, 2, 3)),
+        (Say("Plan new recipes to shop for, for {days}. Pancakes on {1}, the kids love them."),),
+        (*A_PLAN, meal_count(3), course_on_day(1, "breakfast")),
+        courses=("main", "breakfast"),
     ),
     # --- The Kitchen -------------------------------------------------------------------
     Scenario(

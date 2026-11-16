@@ -12,6 +12,8 @@ from pathlib import Path
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from app.models import Course
+
 DIR = Path(__file__).parent
 LICENCE = "Sweep original"
 ATTRIBUTION = "Sweep"
@@ -23,6 +25,7 @@ class SeedRecipe(BaseModel):
     slug: str = Field(pattern=r"^[a-z0-9]+(-[a-z0-9]+)*$", max_length=100)
     title: str = Field(min_length=1, max_length=200)
     cuisine: str = Field(pattern=r"^[a-z-]+$", max_length=40)
+    course: Course
     servings: int = Field(gt=0, le=24)
     minutes: int = Field(gt=0, le=24 * 60)
     summary: str = Field(min_length=1, max_length=500)

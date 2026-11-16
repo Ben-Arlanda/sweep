@@ -8,6 +8,7 @@ from fastapi import APIRouter, Query, Request
 from app import errors
 from app.deps import MemberDep, SessionDep
 from app.embeddings import Embedder, EmbeddingUnavailable
+from app.models import Course
 from app.schemas import RecipeOut, RecipeSummaryOut
 from app.services import recipes
 from app.services.recipes import SEARCH_LIMIT
@@ -23,6 +24,7 @@ async def list_or_search(
     q: Annotated[str | None, Query(max_length=200, description="What you feel like")] = None,
     cuisine: Annotated[str | None, Query(max_length=40)] = None,
     max_minutes: Annotated[int | None, Query(gt=0, le=1440)] = None,
+    course: Course | None = None,
     exclude_ingredient: Annotated[list[uuid.UUID], Query(max_length=50)] = [],  # noqa: B006
     limit: Annotated[int, Query(gt=0, le=50)] = SEARCH_LIMIT,
     offset: Annotated[int, Query(ge=0, le=10_000, description="Browsing only")] = 0,
@@ -31,7 +33,7 @@ async def list_or_search(
     at a time (`offset`). Search has no pages: past the top results, matches get weak."""
     household_id = ctx.household.id
     filters = await recipes.filters_for(
-        session, household_id, max_minutes, cuisine, exclude_ingredient
+        session, household_id, max_minutes, cuisine, exclude_ingredient, course
     )
     query = (q or "").strip()
     if not query:

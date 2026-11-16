@@ -9,6 +9,7 @@ def recipe(**overrides: object) -> SeedRecipe:
         "slug": "garlic-chicken",
         "title": "Garlic chicken",
         "cuisine": "australian",
+        "course": "main",
         "servings": 4,
         "minutes": 30,
         "summary": "Chicken thighs fried with garlic.",

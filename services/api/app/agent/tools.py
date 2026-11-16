@@ -17,7 +17,7 @@ from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from datetime import date
 from decimal import Decimal
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
@@ -26,7 +26,7 @@ from app import errors
 from app.agent.model import AgentModel
 from app.agent.state import Draft, DraftAddition, DraftMeal
 from app.embeddings import Embedder, EmbeddingUnavailable
-from app.models import Household, Ingredient, Member, Recipe, utcnow
+from app.models import Course, Household, Ingredient, Member, Recipe, utcnow
 from app.services import diet, ingredients, kitchen, kitchen_match, recipes, shopping_lists
 from app.services.households import MemberContext
 from app.units import convert
@@ -84,6 +84,11 @@ class SearchArgs(Args):
     must_use_ingredients: list[str] = Field(
         default=[], max_length=5, description="Ingredient names every result must use"
     )
+    course: Course | Literal["any"] = Field(
+        default=Course.MAIN,
+        description="main for dinners (the default). Another Course, or any, only when "
+        "the Member names a dish or kind of dish that isn't a main",
+    )
 
 
 def _summary(recipe: Recipe, rules: diet.DietaryRules) -> dict[str, Any]:
@@ -92,6 +97,7 @@ def _summary(recipe: Recipe, rules: diet.DietaryRules) -> dict[str, Any]:
         "recipe_id": str(recipe.id),
         "title": recipe.title,
         "cuisine": recipe.cuisine,
+        "course": recipe.course,
         "minutes": recipe.total_minutes,
         "servings": recipe.servings,
         "summary": recipe.summary,
@@ -115,7 +121,10 @@ async def search_recipes(call: Call, args: SearchArgs) -> Outcome:
             named.append(found.name)
         else:
             must.append(found.id)
-    filters = await recipes.filters_for(call.session, hid, args.max_minutes, args.cuisine)
+    course = None if args.course == "any" else args.course
+    filters = await recipes.filters_for(
+        call.session, hid, args.max_minutes, args.cuisine, course=course
+    )
     try:
         # Fetch extra when filtering afterwards, so we still have enough to return.
         limit = SEARCH_RESULTS * (4 if must or named else 1)
@@ -151,9 +160,12 @@ async def recipes_from_kitchen(call: Call, args: FromKitchenArgs) -> Outcome:
     """Kitchen-first (ADR 0013): the app ranks by what the Household has, fewest things to
     buy first; the agent picks among the results. Dietary Rules apply in SQL, as in
     search_recipes. With a query, search by meaning picks candidates and the Kitchen
-    orders them (hybrid search with a deterministic re-ranker)."""
+    orders them (hybrid search with a deterministic re-ranker). Mains only: a Planned
+    Meal is a dinner, and small dishes (toasties, sides) otherwise win on "fewest to buy"."""
     hid = call.agent.household_id
-    filters = await recipes.filters_for(call.session, hid, args.max_minutes, args.cuisine)
+    filters = await recipes.filters_for(
+        call.session, hid, args.max_minutes, args.cuisine, course=Course.MAIN
+    )
     among: list[uuid.UUID] | None = None
     if args.query:
         if call.agent.embedder is None:

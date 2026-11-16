@@ -18,7 +18,15 @@ from pydantic import (
 
 from app.data.diet import Diet
 from app.data.places import Place
-from app.models import AddedBy, ChangeSource, PlanMode, ProposalStatus, RecipeKind, Role
+from app.models import (
+    AddedBy,
+    ChangeSource,
+    Course,
+    PlanMode,
+    ProposalStatus,
+    RecipeKind,
+    Role,
+)
 from app.services.ingredients import normalise
 
 HouseholdName = Annotated[
@@ -243,6 +251,7 @@ class RecipeSummaryOut(BaseModel):
     title: str
     summary: str
     cuisine: str | None
+    course: Course
     servings: int
     total_minutes: int | None
     # How close to the search (1 = identical meaning). Only set for a search.

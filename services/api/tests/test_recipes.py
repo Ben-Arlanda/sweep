@@ -5,6 +5,7 @@ from typing import Any
 
 import httpx
 import pytest
+from pydantic import ValidationError
 from sqlalchemy import Engine, text
 from sqlalchemy.exc import IntegrityError
 
@@ -13,6 +14,7 @@ from app.data.recipes import SeedRecipe, load_seed_recipes
 from app.db import make_engine, make_sessionmaker
 from app.embeddings import HashingEmbedder
 from app.main import create_app
+from app.models import Course
 from app.services import recipes
 from app.services.ingredient_lines import index_from_db
 from tests.conftest import FakeIssuer, Loader
@@ -21,11 +23,19 @@ from tests.helpers import create_household
 pytestmark = pytest.mark.anyio
 
 
-def seed(slug: str, title: str, minutes: int, cuisine: str, lines: list[str]) -> SeedRecipe:
+def seed(
+    slug: str,
+    title: str,
+    minutes: int,
+    cuisine: str,
+    lines: list[str],
+    course: Course = Course.MAIN,
+) -> SeedRecipe:
     return SeedRecipe(
         slug=slug,
         title=title,
         cuisine=cuisine,
+        course=course,
         servings=4,
         minutes=minutes,
         summary=title,
@@ -47,6 +57,14 @@ PASTA = seed(
     20,
     "italian",
     ["400 g pasta", "400 g can canned tomatoes", "2 cloves garlic", "50 g parmesan"],
+)
+PAVLOVA = seed(
+    "pavlova",
+    "Pavlova",
+    120,
+    "australian",
+    ["4 egg whites", "1 cup caster sugar", "300 ml thickened cream"],
+    Course.DESSERT,
 )
 STIR_FRY = seed(
     "beef-stir-fry",
@@ -143,6 +161,47 @@ async def test_filters_are_hard_limits_not_hints(
     ]
 
 
+def test_a_seed_recipe_must_say_its_course() -> None:
+    # Every recipe has exactly one Course; the loader refuses a recipe without one.
+    fields = CURRY.model_dump(exclude={"course"})
+    with pytest.raises(ValidationError):
+        SeedRecipe(**fields)
+    with pytest.raises(ValidationError):
+        SeedRecipe(**fields, course="snack")  # type: ignore[arg-type]
+
+
+def test_every_seed_file_recipe_has_a_course_and_most_are_mains() -> None:
+    seeds = load_seed_recipes()
+    by_course = {c: sum(s.course == c for s in seeds) for c in Course}
+    assert all(by_course.values()), by_course  # every Course is used
+    assert by_course[Course.MAIN] > len(seeds) / 2  # it's a dinner app
+
+
+async def test_course_is_a_hard_filter_and_comes_back_on_each_recipe(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, load: Loader
+) -> None:
+    await load([CURRY, PASTA, PAVLOVA])
+    await create_household(client, fake_issuer, "ana")
+
+    browse = await get(client, fake_issuer, "/recipes", course="dessert")
+    assert [(r["title"], r["course"]) for r in browse.json()] == [("Pavlova", "dessert")]
+
+    # Search too: the curry is closer in meaning, but it isn't a dessert.
+    found = await get(client, fake_issuer, "/recipes", q="chicken curry", course="dessert")
+    assert [r["title"] for r in found.json()] == ["Pavlova"]
+
+    everything = await get(client, fake_issuer, "/recipes")
+    assert len(everything.json()) == 3  # no Course given: all of them
+    bad = await get(client, fake_issuer, "/recipes", course="snack")
+    assert bad.status_code == 422
+
+
+async def test_the_database_requires_a_course(db: Engine, load: Loader) -> None:
+    await load([CURRY])
+    with db.connect() as conn, pytest.raises(IntegrityError):
+        conn.execute(text("UPDATE recipes SET course = NULL"))
+
+
 async def test_browsing_without_a_query_lists_by_title(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer, load: Loader
 ) -> None:
@@ -208,9 +267,9 @@ async def test_imported_recipes_are_private_to_their_household(
     with db.begin() as conn:
         conn.execute(
             text(
-                "INSERT INTO recipes (id, kind, household_id, title, summary, servings,"
+                "INSERT INTO recipes (id, kind, household_id, title, summary, course, servings,"
                 " licence, attribution, created_at)"
-                " VALUES (:id, 'imported', :hh, 'Nonna''s lasagne', 'Family recipe', 6,"
+                " VALUES (:id, 'imported', :hh, 'Nonna''s lasagne', 'Family recipe', 'main', 6,"
                 " 'unknown', 'nonna.example', now())"
             ),
             {"id": recipe_id, "hh": mine["household"]["id"]},

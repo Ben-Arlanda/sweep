@@ -1,8 +1,9 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { ChevronRight, ShoppingBasket } from 'lucide-react-native';
 import { Link, type Href } from 'expo-router';
 import type { ReactNode } from 'react';
 import { View } from 'react-native';
 
+import { Icon } from '@/components/Icon';
 import { PressableScale } from '@/components/PressableScale';
 import { ErrorText, Text } from '@/components/ui';
 import { WeekStrip, type StripMeal } from '@/features/mealPlan/WeekStrip';
@@ -70,18 +71,13 @@ function ToBuy({ count }: { count: number }) {
           justifyContent: 'center',
         }}
       >
-        <MaterialCommunityIcons name="basket-outline" size={22} color={t.tints.mint.onPill} />
+        <Icon icon={ShoppingBasket} color={t.tints.mint.onPill} />
       </View>
       <View style={{ flex: 1 }}>
         <Text variant="heading">{count} to buy</Text>
         <Text muted>Shopping List</Text>
       </View>
-      <MaterialCommunityIcons
-        name="chevron-right"
-        size={22}
-        color={t.colors.textMuted}
-        aria-hidden
-      />
+      <Icon icon={ChevronRight} color={t.colors.textMuted} />
     </View>
   );
 }

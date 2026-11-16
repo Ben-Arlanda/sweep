@@ -40,6 +40,10 @@ _Avoid_: store, supermarket (in code and UI), list
 The collection of recipes the app can search, recommend and plan from.
 _Avoid_: recipe database, cookbook
 
+**Course**:
+What a recipe is for: *main*, *side*, *dessert* (sweet things and baking, incl. snacks like bliss balls or scones), *breakfast* or *lunch* (sandwiches, wraps, rolls, toasties). Every recipe has exactly one. A Planned Meal is a dinner, so plans offer mains unless the Member names a dish or kind of dish that isn't one ("pancakes on Friday", "something sweet"). A borderline recipe gets the Course it fits best.
+_Avoid_: category (Ingredients have categories), meal type
+
 ### Ingredients and the Kitchen
 
 **Ingredient**:

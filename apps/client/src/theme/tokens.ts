@@ -224,3 +224,9 @@ export const tabBarHeight = 64;
 
 /** Minimum tappable size (Apple HIG 44pt). Applies to every button and row. */
 export const touchTarget = 44;
+
+/**
+ * Lucide icon line weights. Thinner than Lucide's default (2) to suit Urbanist; the
+ * selected tab uses the heavier one, since Lucide has no filled icons.
+ */
+export const iconStroke = { regular: 1.5, strong: 2.25 } as const;

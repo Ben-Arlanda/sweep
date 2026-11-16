@@ -8,27 +8,36 @@
 import { keepPreviousData, useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
+import type { Course } from '@/features/recipes/courses';
+
 import { api, ApiError, unwrap } from './client';
 
 export const PAGE = 30;
 
 export const recipeKeys = {
   all: ['recipes'] as const,
-  browse: (maxMinutes: number | null) => ['recipes', 'browse', maxMinutes] as const,
-  search: (q: string, maxMinutes: number | null) => ['recipes', 'search', q, maxMinutes] as const,
+  browse: (f: RecipeFilters) => ['recipes', 'browse', f.maxMinutes, f.course] as const,
+  search: (q: string, f: RecipeFilters) =>
+    ['recipes', 'search', q, f.maxMinutes, f.course] as const,
   one: (id: string) => ['recipes', 'one', id] as const,
 };
 
-const query = (maxMinutes: number | null) => (maxMinutes ? { max_minutes: maxMinutes } : {});
+/** The Recipes screen's chips. `null` means no limit. */
+export type RecipeFilters = { maxMinutes: number | null; course: Course | null };
+
+const query = ({ maxMinutes, course }: RecipeFilters) => ({
+  ...(maxMinutes ? { max_minutes: maxMinutes } : {}),
+  ...(course ? { course } : {}),
+});
 
 /** All recipes by title, a page at a time. */
-export function useRecipeBrowse(maxMinutes: number | null, enabled: boolean) {
+export function useRecipeBrowse(filters: RecipeFilters, enabled: boolean) {
   return useInfiniteQuery({
-    queryKey: recipeKeys.browse(maxMinutes),
+    queryKey: recipeKeys.browse(filters),
     queryFn: async ({ pageParam }) =>
       unwrap(
         await api.GET('/recipes', {
-          params: { query: { ...query(maxMinutes), limit: PAGE, offset: pageParam } },
+          params: { query: { ...query(filters), limit: PAGE, offset: pageParam } },
         }),
       ),
     initialPageParam: 0,
@@ -40,11 +49,11 @@ export function useRecipeBrowse(maxMinutes: number | null, enabled: boolean) {
 }
 
 /** Recipes closest in meaning to `q`, best first. */
-export function useRecipeSearch(q: string, maxMinutes: number | null) {
+export function useRecipeSearch(q: string, filters: RecipeFilters) {
   return useQuery({
-    queryKey: recipeKeys.search(q, maxMinutes),
+    queryKey: recipeKeys.search(q, filters),
     queryFn: async () =>
-      unwrap(await api.GET('/recipes', { params: { query: { q, ...query(maxMinutes) } } })),
+      unwrap(await api.GET('/recipes', { params: { query: { q, ...query(filters) } } })),
     enabled: q.length >= 2,
     placeholderData: keepPreviousData, // keep old results on screen while new ones load
     staleTime: 10 * 60_000,

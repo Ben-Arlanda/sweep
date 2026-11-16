@@ -173,6 +173,37 @@ def changed_only_day(index: int) -> Check:
     return check
 
 
+def only_courses(*courses: str) -> Check:
+    """Planned Meals are dinners: mains only, unless the Scenario asked for another Course
+    ("pancakes on Friday"). Every Proposal counts, since the Member saw each one."""
+
+    @_named(f"only_courses({', '.join(courses)})")
+    def check(record: RunRecord) -> tuple[bool, str]:
+        wrong = [
+            f"{m.title} ({m.course})"
+            for p in record.proposals
+            for m in p.meals
+            if m.course is not None and m.course not in courses
+        ]
+        return not wrong, "not allowed here: " + ", ".join(wrong)
+
+    return check
+
+
+def course_on_day(index: int, course: str) -> Check:
+    """The final Proposal has a recipe of this Course on the Scenario's day `index`."""
+
+    @_named(f"course_on_day({index}, {course})")
+    def check(record: RunRecord) -> tuple[bool, str]:
+        if record.chosen_days is None:
+            return False, "the Scenario has no chosen days"
+        day = record.chosen_days[index]
+        got = [m.course for m in _final_meals(record) if m.date == day]
+        return course in got, f"{day} has {got or 'nothing'}"
+
+    return check
+
+
 @_named("on_today")
 def on_today(record: RunRecord) -> tuple[bool, str]:
     """ "Just tonight": every meal is today."""
