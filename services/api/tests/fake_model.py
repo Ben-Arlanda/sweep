@@ -79,9 +79,20 @@ class ScriptedReader:
     def __init__(self) -> None:
         self.answers: list[Any] = []  # RecipeReading | None, in call order
         self.calls: list[tuple[str, list[str]]] = []  # (text, cuisines) per call
+        self.photo_calls: list[list[tuple[str, int]]] = []  # per call: (type, bytes) each
 
     async def read(self, text: str, cuisines: Sequence[str]) -> tuple[Any, Usage]:
         self.calls.append((text, list(cuisines)))
+        return self._next()
+
+    async def read_photos(
+        self, photos: Sequence[Any], cuisines: Sequence[str]
+    ) -> tuple[Any, Usage]:
+        # Only what each photo is and its size: tests never keep the bytes either.
+        self.photo_calls.append([(p.media_type, len(p.data)) for p in photos])
+        return self._next()
+
+    def _next(self) -> tuple[Any, Usage]:
         if not self.answers:
             raise AssertionError("the recipe reader was called more times than scripted")
         return self.answers.pop(0), Usage(model="scripted", input_tokens=500, output_tokens=200)

@@ -4,7 +4,7 @@ Household's own Imported Recipes (list, read lines, save, edit, delete)."""
 import uuid
 from typing import Annotated, cast
 
-from fastapi import APIRouter, Query, Request, Response, status
+from fastapi import APIRouter, File, Query, Request, Response, UploadFile, status
 
 from app import errors
 from app.deps import MemberDep, SessionDep
@@ -26,7 +26,15 @@ from app.schemas import (
     RecipeSummaryOut,
 )
 from app.services import imported_recipes, recipe_import, recipes
-from app.services.recipe_import import Draft, PageFetcher, RecipeReader
+from app.services.recipe_import import (
+    MAX_PHOTO_BYTES,
+    MAX_PHOTOS,
+    Draft,
+    PageFetcher,
+    Photo,
+    RecipeReader,
+    photo_type,
+)
 from app.services.recipes import SEARCH_LIMIT
 
 router = APIRouter(prefix="/recipes", tags=["recipes"])
@@ -107,6 +115,33 @@ async def read_paste(
     if reader is None:
         raise errors.Unavailable("Pasting recipes isn't configured on this server")
     draft = await recipe_import.from_paste(session, ctx.household.id, reader, body.text)
+    return _draft_out(draft)
+
+
+@router.post("/imports/photo")
+async def read_photos(
+    request: Request,
+    ctx: MemberDep,
+    session: SessionDep,
+    photos: Annotated[list[UploadFile], File(description="1 to 3 photos, pages in order")],
+) -> ImportDraftOut:
+    """The Photo door: one model call reads the photos into a draft. Nothing is stored:
+    the bytes live only for this request (and every line comes back marked Check)."""
+    reader = cast(RecipeReader | None, request.app.state.recipe_reader)
+    if reader is None:
+        raise errors.Unavailable("Reading photos isn't configured on this server")
+    if not 1 <= len(photos) <= MAX_PHOTOS:
+        raise errors.InvalidInput(f"Add 1 to {MAX_PHOTOS} photos of the recipe.")
+    read: list[Photo] = []
+    for upload in photos:
+        data = await upload.read(MAX_PHOTO_BYTES + 1)  # one byte over is enough to tell
+        if len(data) > MAX_PHOTO_BYTES:
+            raise errors.InvalidInput("Each photo can be up to 5 MB.")
+        kind = photo_type(data)
+        if kind is None:
+            raise errors.InvalidInput("Photos must be JPEG, PNG or WebP.")
+        read.append(Photo(media_type=kind, data=data))
+    draft = await recipe_import.from_photos(session, ctx.household.id, reader, read)
     return _draft_out(draft)
 
 

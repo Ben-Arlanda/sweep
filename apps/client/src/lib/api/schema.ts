@@ -416,6 +416,27 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/recipes/imports/photo": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Read Photos
+         * @description The Photo door: one model call reads the photos into a draft. Nothing is stored:
+         *     the bytes live only for this request (and every line comes back marked Check).
+         */
+        post: operations["read_photos_recipes_imports_photo_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/recipes/imports/link": {
         parameters: {
             query?: never;
@@ -694,6 +715,14 @@ export interface components {
          * @enum {string}
          */
         AddedBy: "member" | "agent";
+        /** Body_read_photos_recipes_imports_photo_post */
+        Body_read_photos_recipes_imports_photo_post: {
+            /**
+             * Photos
+             * @description 1 to 3 photos, pages in order
+             */
+            photos: string[];
+        };
         /**
          * ChangeSource
          * @description What last changed a Kitchen quantity. Feeds the calculated status (ADR 0003).
@@ -2438,6 +2467,39 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": components["schemas"]["PasteIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ImportDraftOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    read_photos_recipes_imports_photo_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_read_photos_recipes_imports_photo_post"];
             };
         };
         responses: {

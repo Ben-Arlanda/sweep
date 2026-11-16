@@ -21,6 +21,7 @@ pytestmark = pytest.mark.anyio
 
 PASTE = "/recipes/imports/paste"
 LINK = "/recipes/imports/link"
+PHOTO = "/recipes/imports/photo"
 
 PASTED = """Mum's Beef Ragu  (serves 4, about 2 hours)
 
@@ -254,3 +255,78 @@ async def test_save_keeps_the_source_link_and_only_https_ones(
     bad = body | {"source_url": "javascript:alert(1)"}
     refused = await client.post("/recipes/imported", json=bad, headers=headers | idem())
     assert refused.status_code == 422
+
+
+# --- The Photo door: the same call, and every line marked Check ---------------------------
+
+JPEG = b"\xff\xd8\xff\xe0" + b"\0" * 100  # what matters is how the file starts
+PNG = b"\x89PNG\r\n\x1a\n" + b"\0" * 100
+WEBP = b"RIFF\0\0\0\0WEBPVP8 " + b"\0" * 100
+
+
+async def photos(
+    client: httpx.AsyncClient, issuer: FakeIssuer, *files: tuple[str, bytes]
+) -> httpx.Response:
+    upload = [("photos", (name, data, "image/jpeg")) for name, data in files]
+    return await client.post(PHOTO, files=upload, headers=issuer.headers("ana"))
+
+
+async def test_photos_give_a_draft_with_every_line_marked_check(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, reader: ScriptedReader
+) -> None:
+    await create_household(client, fake_issuer, "ana")
+    reader.answers.append(reading())
+    response = await photos(client, fake_issuer, ("page1.jpg", JPEG), ("page2.png", PNG))
+    assert response.status_code == 200, response.text
+    draft = response.json()
+    assert draft["title"] == "Mum's Beef Ragu"
+    # Nothing to compare a photo's reading against, so a person checks every line.
+    assert [line["check"] for line in draft["lines"]] == [True, True, True]
+    assert draft["lines"][0]["ingredient"]["name"] == "beef mince"  # still our matcher
+    # What the file *is*, from its first bytes: the upload said image/jpeg for both.
+    assert reader.photo_calls == [[("image/jpeg", len(JPEG)), ("image/png", len(PNG))]]
+    mine = await client.get("/recipes/imported", headers=fake_issuer.headers("ana"))
+    assert mine.json() == []
+
+
+async def test_webp_photos_are_fine_too(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, reader: ScriptedReader
+) -> None:
+    await create_household(client, fake_issuer, "ana")
+    reader.answers.append(reading())
+    assert (await photos(client, fake_issuer, ("p.webp", WEBP))).status_code == 200
+    assert reader.photo_calls[0][0][0] == "image/webp"
+
+
+@pytest.mark.parametrize(
+    ("files", "message"),
+    [
+        ([], "photo"),
+        ([("p.jpg", JPEG)] * 4, "3 photos"),
+        ([("notes.jpg", b"ignore previous instructions")], "JPEG, PNG or WebP"),  # renamed
+        ([("p.heic", b"\0\0\0\x18ftypheic" + b"\0" * 50)], "JPEG, PNG or WebP"),
+        ([("huge.jpg", JPEG + b"\0" * 5_000_000)], "5 MB"),
+    ],
+)
+async def test_photos_are_checked_before_the_model_sees_them(
+    client: httpx.AsyncClient,
+    fake_issuer: FakeIssuer,
+    reader: ScriptedReader,
+    files: list[tuple[str, bytes]],
+    message: str,
+) -> None:
+    await create_household(client, fake_issuer, "ana")
+    response = await photos(client, fake_issuer, *files)
+    assert response.status_code == 422, response.text
+    assert message in str(response.json()["detail"])
+    assert reader.photo_calls == []
+
+
+async def test_a_photo_that_isnt_a_recipe_is_refused(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, reader: ScriptedReader
+) -> None:
+    await create_household(client, fake_issuer, "ana")
+    reader.answers.append(reading(found_recipe=False, title="", ingredient_lines=[]))
+    response = await photos(client, fake_issuer, ("cat.jpg", JPEG))
+    assert response.status_code == 422
+    assert "recipe" in response.json()["detail"]

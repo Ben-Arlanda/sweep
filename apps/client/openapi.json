@@ -1532,6 +1532,53 @@
         ]
       }
     },
+    "/recipes/imports/photo": {
+      "post": {
+        "tags": [
+          "recipes"
+        ],
+        "summary": "Read Photos",
+        "description": "The Photo door: one model call reads the photos into a draft. Nothing is stored:\nthe bytes live only for this request (and every line comes back marked Check).",
+        "operationId": "read_photos_recipes_imports_photo_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_read_photos_recipes_imports_photo_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportDraftOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
     "/recipes/imports/link": {
       "post": {
         "tags": [
@@ -2567,6 +2614,24 @@
           "agent"
         ],
         "title": "AddedBy"
+      },
+      "Body_read_photos_recipes_imports_photo_post": {
+        "properties": {
+          "photos": {
+            "items": {
+              "type": "string",
+              "contentMediaType": "application/octet-stream"
+            },
+            "type": "array",
+            "title": "Photos",
+            "description": "1 to 3 photos, pages in order"
+          }
+        },
+        "type": "object",
+        "required": [
+          "photos"
+        ],
+        "title": "Body_read_photos_recipes_imports_photo_post"
       },
       "ChangeSource": {
         "type": "string",

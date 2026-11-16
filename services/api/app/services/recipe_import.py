@@ -1,4 +1,4 @@
-"""Reading a recipe into a draft for the review screen (slice 4d: the Paste and Link doors).
+"""Reading a recipe into a draft for the review screen (slice 4d: Paste, Photo and Link).
 
 Link: plain code reads the page's schema.org data (app.services.recipe_jsonld); no
 model ever reads a web page. Paste:
@@ -18,9 +18,9 @@ app.services.imported_recipes, the same as a typed recipe.
 
 import unicodedata
 import uuid
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
-from typing import Protocol
+from typing import Literal, Protocol
 
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -48,6 +48,30 @@ class RecipeReading(BaseModel):
     method: list[str]
 
 
+MAX_PHOTOS, MAX_PHOTO_BYTES = 3, 5_000_000  # the phone resizes to ~1,600 px first
+
+
+PhotoType = Literal["image/jpeg", "image/png", "image/webp"]
+
+
+@dataclass(frozen=True)
+class Photo:
+    media_type: PhotoType  # from the file's first bytes, never its name or upload type
+    data: bytes
+
+
+def photo_type(data: bytes) -> PhotoType | None:
+    """What an image really is, from how the file starts ("magic bytes"). Only the
+    types Claude reads; an iPhone's HEIC is turned into JPEG on the phone."""
+    if data.startswith(b"\xff\xd8\xff"):
+        return "image/jpeg"
+    if data.startswith(b"\x89PNG\r\n\x1a\n"):
+        return "image/png"
+    if data[:4] == b"RIFF" and data[8:12] == b"WEBP":
+        return "image/webp"
+    return None
+
+
 class PageFetcher(Protocol):
     async def fetch(self, url: str) -> Page: ...
 
@@ -55,6 +79,10 @@ class PageFetcher(Protocol):
 class RecipeReader(Protocol):
     async def read(
         self, text: str, cuisines: Sequence[str]
+    ) -> tuple[RecipeReading | None, Usage]: ...
+
+    async def read_photos(
+        self, photos: Sequence[Photo], cuisines: Sequence[str]
     ) -> tuple[RecipeReading | None, Usage]: ...
 
 
@@ -109,6 +137,50 @@ async def from_paste(
     text = text.strip()
     known = await recipes.cuisines(session, household_id)
     reading, usage = await reader.read(text, known)
+    # A line not in the text word for word: the model reworded it, or made it up.
+    return await _finish(
+        session,
+        household_id,
+        (reading, usage),
+        known,
+        check=lambda line: not appears_in(line, text),
+        not_a_recipe="That doesn't look like a recipe. Paste the title, ingredients and method.",
+    )
+
+
+async def from_photos(
+    session: AsyncSession,
+    household_id: uuid.UUID,
+    reader: RecipeReader,
+    photos: Sequence[Photo],
+) -> Draft:
+    """Read once and never stored: the bytes only live for this request."""
+    if not 1 <= len(photos) <= MAX_PHOTOS:
+        raise errors.InvalidInput(f"Add 1 to {MAX_PHOTOS} photos of the recipe.")
+    known = await recipes.cuisines(session, household_id)
+    reading, usage = await reader.read_photos(photos, known)
+    # No text to compare against, so every line is for a person to check.
+    return await _finish(
+        session,
+        household_id,
+        (reading, usage),
+        known,
+        check=lambda line: True,
+        not_a_recipe="That doesn't look like a recipe. Try a clearer photo, or paste the text.",
+    )
+
+
+async def _finish(
+    session: AsyncSession,
+    household_id: uuid.UUID,
+    answer: tuple[RecipeReading | None, Usage],
+    known: list[str],
+    *,
+    check: Callable[[str], bool],  # per line: True = mark it "Check"
+    not_a_recipe: str,
+) -> Draft:
+    """What every door that uses the model shares, once it has answered."""
+    reading, usage = answer
     if reading is None:
         raise errors.Unavailable(
             "Sweep couldn't read that recipe just now. Try again, or type it in."
@@ -117,9 +189,7 @@ async def from_paste(
     lines = [clean_line(line, 300) for line in reading.ingredient_lines]
     lines = [line for line in lines if line][:MAX_RECIPE_LINES]
     if not reading.found_recipe or not title or not lines:
-        raise errors.InvalidInput(
-            "That doesn't look like a recipe. Paste the title, ingredients and method."
-        )
+        raise errors.InvalidInput(not_a_recipe)
 
     matched = await imported_recipes.read_lines(
         session, household_id, [ImportedLineIn(raw_text=line) for line in lines]
@@ -133,7 +203,7 @@ async def from_paste(
         course=reading.course,
         cuisine=cuisine if cuisine in known else None,
         lines=matched,
-        check=[not appears_in(line, text) for line in lines],
+        check=[check(line) for line in lines],
         method=method or None,
         more_recipes=reading.more_recipes,
         usage=usage,
