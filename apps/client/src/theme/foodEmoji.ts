@@ -279,6 +279,20 @@ export const INGREDIENT_EMOJI: Record<string, string> = {
   // Drinks
   'red wine': '🍷',
   'white wine': '🥂',
+  // Added with slice 4d's starters (link import and recipe import evals).
+  squid: '🦑',
+  'fennel seeds': '🌿',
+  'chia seeds': '🌱',
+  'almond milk': '🥛',
+  'almond butter': '🥜',
+  oranges: '🍊',
+  'curry leaves': '🌿',
+  jalapenos: '🌶️',
+  'pickled jalapenos': '🫙',
+  'pork ribs': '🍖',
+  'apple cider vinegar': '🍎',
+  'taco seasoning': '🧂',
+  'taco shells': '🌮',
 };
 
 export const CATEGORY_EMOJI: Record<string, string> = {
@@ -311,18 +325,39 @@ const RECIPE_RULES: [RegExp, string][] = [
   [/pizza|focaccia/, '🍕'],
   [/burger|sloppy joe/, '🍔'],
   [/curry|dhal|dal\b|masala|korma|vindaloo|madras|rogan josh|tikka|biryani|aloo|paneer/, '🍛'],
-  [/laksa|pho|ramen|udon|noodle|pad thai|pad see ew|hokkien|mee goreng|kway teow|pancit|spaetzle|japchae/, '🍜'],
+  [
+    /laksa|pho|ramen|udon|noodle|pad thai|pad see ew|hokkien|mee goreng|kway teow|pancit|spaetzle|japchae/,
+    '🍜',
+  ],
   [/dumpling|rice paper/, '🥟'],
   [/sushi|poke/, '🍣'],
-  [/fried rice|nasi goreng|nasi lemak|bibimbap|risotto|paella|pilaf|rice bowl|jambalaya|spanakorizo|mujadara|congee|chicken rice|fideua/, '🍚'],
-  [/spaghetti|pasta|penne|linguine|lasagne|gnocchi|carbonara|mac and cheese|cannelloni|bolognese|ziti|puttanesca|alla norma|alfredo|chilli mac|pastitsio/, '🍝'],
-  [/soup|chowder|stew|tagine|bourguignon|osso buco|minestrone|gazpacho|chilli|hotpot|borscht|goulash|casserole|jjigae|harira|rendang|adobo|chasseur|ribollita|avgolemono|pho ga/, '🍲'],
+  [
+    /fried rice|nasi goreng|nasi lemak|bibimbap|risotto|paella|pilaf|rice bowl|jambalaya|spanakorizo|mujadara|congee|chicken rice|fideua/,
+    '🍚',
+  ],
+  [
+    /spaghetti|pasta|penne|linguine|lasagne|gnocchi|carbonara|mac and cheese|cannelloni|bolognese|ziti|puttanesca|alla norma|alfredo|chilli mac|pastitsio/,
+    '🍝',
+  ],
+  [
+    /soup|chowder|stew|tagine|bourguignon|osso buco|minestrone|gazpacho|chilli|hotpot|borscht|goulash|casserole|jjigae|harira|rendang|adobo|chasseur|ribollita|avgolemono|pho ga/,
+    '🍲',
+  ],
   [/fruit salad/, '🍓'],
   [/salad|slaw|tabbouleh|fattoush|panzanella|gado gado|nicoise|esquites|larb/, '🥗'],
-  [/sandwich|toastie|croque|wrap|shawarma|souvlaki|roll(s)?\b|baguette|jaffle|banh mi|gyros|melts?\b|blt/, '🥪'],
-  [/omelette|frittata|scrambled|eggs benedict|shakshuka|tortilla\b|fry-up|huevos|cilbir|\beggs?\b|rosti|hash/, '🍳'],
+  [
+    /sandwich|toastie|croque|wrap|shawarma|souvlaki|roll(s)?\b|baguette|jaffle|banh mi|gyros|melts?\b|blt/,
+    '🥪',
+  ],
+  [
+    /omelette|frittata|scrambled|eggs benedict|shakshuka|tortilla\b|fry-up|huevos|cilbir|\beggs?\b|rosti|hash/,
+    '🍳',
+  ],
   [/pancake|french toast|hotcake|pikelet|crepe|dutch baby|okonomiyaki|pajeon|banh xeo/, '🥞'],
-  [/porridge|muesli|granola|smoothie bowl|parfait|yoghurt|oats|raita|tzatziki|custard|creme brulee/, '🥣'],
+  [
+    /porridge|muesli|granola|smoothie bowl|parfait|yoghurt|oats|raita|tzatziki|custard|creme brulee/,
+    '🥣',
+  ],
   [/smoothie|lassi/, '🥤'],
   [/brownie|chocolate|choc\b|choc-|mousse|lamington|tiramisu|truffle|bliss ball/, '🍫'],
   [/cake|cupcake|muffin|banana bread|scone|sponge/, '🧁'],
