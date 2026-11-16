@@ -5,6 +5,7 @@ import { ChoiceChips } from '@/components/ChoiceChips';
 import { Hero, HeroSearch } from '@/components/Hero';
 import { Button, ErrorText, Loading, Screen, SectionLabel, Text } from '@/components/ui';
 import { AddRecipeSheet } from '@/features/imports/AddRecipeSheet';
+import { ruleBreakText } from '@/features/imports/ruleBreaks';
 import { CourseTiles } from '@/features/recipes/CourseTiles';
 import { COURSES, type Course } from '@/features/recipes/courses';
 import { RecipeRow } from '@/features/recipes/RecipeRow';
@@ -136,7 +137,7 @@ function YourRecipes() {
         </Text>
       ) : null}
       {mine.data?.map((r) => (
-        <RecipeRow key={r.id} recipe={r} note={r.rule_breaks[0]} />
+        <RecipeRow key={r.id} recipe={r} note={ruleBreakText(r.rule_breaks)} />
       ))}
       {adding ? <AddRecipeSheet onClose={() => setAdding(false)} /> : null}
     </View>
