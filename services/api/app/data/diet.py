@@ -62,7 +62,7 @@ _SEAFOOD = (
 _DAIRY = (
     "milk, butter, cheddar cheese, parmesan, mozzarella, feta, greek yoghurt, "
     "thickened cream, sour cream, ricotta, cream cheese, mascarpone, halloumi, paneer, "
-    "gruyere, blue cheese, basil pesto"
+    "gruyere, blue cheese, basil pesto, goat cheese"
 )
 _EGG = "eggs, egg noodles, mayonnaise, sponge finger biscuits"
 # In Australia oats can't be sold as gluten free, so rolled oats and granola count.
@@ -100,8 +100,9 @@ CHECK_LABEL: dict[str, frozenset[Contains]] = _invert(
         # traditionally made with animal rennet (not vegetarian); pesto has parmesan.
         M: "stock cubes, vegetable stock, parmesan, gruyere, basil pesto",
         S: "kimchi, green curry paste, red curry paste, laksa paste, tom yum paste",
-        D: "dark chocolate, chocolate chips, puff pastry, shortcrust pastry",
-        E: "lasagne sheets, pasta",
+        # Many gluten-free breads use milk or egg.
+        D: "dark chocolate, chocolate chips, puff pastry, shortcrust pastry, gluten free bread",
+        E: "lasagne sheets, pasta, gluten free bread",
         G: (
             "stock cubes, chicken stock, beef stock, vegetable stock, sausages, chorizo, "
             "ham, worcestershire sauce, oyster sauce, hoisin sauce, miso paste, "

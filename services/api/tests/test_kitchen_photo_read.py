@@ -91,7 +91,7 @@ async def test_a_staple_has_no_amount(
     assert got["salt"]["in_kitchen"] == {"staple": True, "have": True}
 
 
-async def test_unknown_names_are_not_linked_and_start_unticked(
+async def test_unknown_names_are_not_linked_and_never_made_by_reading(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer, reader: ScriptedReader, db: Engine
 ) -> None:
     await create_household(client, fake_issuer, "ana")
@@ -100,7 +100,6 @@ async def test_unknown_names_are_not_linked_and_start_unticked(
     got = rows((await send(client, fake_issuer, ("a.jpg", JPEG))).json())
 
     assert got["yuzu kosho"]["ingredient"] is None
-    assert got["yuzu kosho"]["ticked"] is False
     with db.connect() as conn:  # a model's guess never makes an Ingredient
         made = conn.execute(text("SELECT count(*) FROM ingredients WHERE name = 'yuzu kosho'"))
         assert made.scalar() == 0
@@ -241,3 +240,46 @@ async def test_the_photo_attempt_counts_toward_recipe_imports(
     with db.connect() as conn:
         doors = conn.execute(text("SELECT door FROM recipe_imports")).scalars().all()
     assert doors == ["kitchen"]
+
+
+@pytest.mark.parametrize(
+    ("seen_as", "starter"),
+    [
+        ("gluten free bread", "gluten free bread"),
+        ("gluten-free bread", "gluten free bread"),
+        ("sliced bread", "bread"),
+        ("dairy-free spread", "dairy free spread"),
+        ("dairy-free margarine", "dairy free spread"),
+        ("marinated goat cheese", "goat cheese"),
+        ("celery salt", "celery salt"),
+        ("cayenne pepper", "cayenne pepper"),
+        ("ground sage", "dried sage"),
+    ],
+)
+async def test_what_the_eval_photos_showed_now_links(
+    client: httpx.AsyncClient,
+    fake_issuer: FakeIssuer,
+    reader: ScriptedReader,
+    seen_as: str,
+    starter: str,
+) -> None:
+    # The names Haiku gave for the product owner's photos (ADR 0023 results).
+    await create_household(client, fake_issuer, "ana")
+    reader.answers.append(seen((seen_as, None)))
+
+    got = rows((await send(client, fake_issuer, ("a.jpg", JPEG))).json())
+
+    assert got[seen_as]["ingredient"]["name"] == starter
+
+
+async def test_not_linked_rows_start_ticked_too(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, reader: ScriptedReader
+) -> None:
+    # The eval found no invented items in 12 runs, so a name Sweep doesn't know is kept
+    # by default (as a Household Ingredient on apply); the Member unticks a misread.
+    await create_household(client, fake_issuer, "ana")
+    reader.answers.append(seen(("yuzu kosho", None)))
+
+    got = rows((await send(client, fake_issuer, ("a.jpg", JPEG))).json())
+
+    assert got["yuzu kosho"]["ticked"] is True

@@ -6,7 +6,8 @@ code then trusts the answer only as far as it can check it:
 - names are cleaned to one line; the model's count is kept only for Ingredients the
   Kitchen counts (eggs, onions), never turned into grams, and never for a Staple
 - names are matched by our own matcher, which never creates an Ingredient here: a
-  misread name stays Not linked and unticked
+  name Sweep doesn't know stays Not linked (ticked; applying it makes a Household
+  Ingredient)
 - each row says what the Kitchen has now, so the Member sees "4 in Kitchen, photo shows 6"
 
 Nothing is written or stored. The approved rows go to `kitchen.apply_photo`.
@@ -58,9 +59,9 @@ class PhotoRow:
     tracked: KitchenItem | None  # what the Kitchen has now, if Tracked
     staple: HouseholdStaple | None  # or if it's a Staple
 
-    @property
-    def ticked(self) -> bool:
-        return self.ingredient is not None
+    # Every row starts ticked, Not linked too: the eval found no invented items in 12 runs
+    # (ADR 0023), so a name Sweep doesn't know is kept, and a person unticks a misread.
+    ticked: bool = True
 
 
 async def from_photos(
