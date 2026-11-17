@@ -125,6 +125,7 @@ class IngredientOut(BaseModel):
     name: str
     category: str
     default_unit: str
+    grams_per_ml: Decimal | None = None  # known density: weight and volume convert
     is_household_ingredient: bool  # created by this Household (ADR 0012), not a starter
 
 
@@ -209,9 +210,11 @@ class ShoppingListDetailOut(ShoppingListOut):
 
 
 class SetQuantityIn(BaseModel):
-    """`null` means "we have some; amount not recorded"."""
+    """`null` means "we have some; amount not recorded". `unit` (g, kg, ml, L, count…)
+    is converted to the Ingredient's own unit; left out, it already is."""
 
     quantity: Quantity | None
+    unit: Annotated[str, StringConstraints(max_length=12)] | None = None
 
 
 class SetStapleIn(BaseModel):
@@ -241,6 +244,8 @@ class StapleOut(BaseModel):
     have: bool  # not Out (Running low still counts as have)
     place: Place
     stock: Stock
+    quantity: Quantity | None  # a note (ADR 0024); the planner doesn't use it
+    unit: str  # the Ingredient's own unit
 
 
 class PlaceIn(BaseModel):

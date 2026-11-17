@@ -243,6 +243,96 @@ async def test_an_unknown_stock_is_rejected(
     assert (await set_stock(client, fake_issuer, salt, "gone")).status_code == 422
 
 
+# --- Amounts: typed in any unit that converts, kept in the Ingredient's own unit -------
+
+
+async def set_staple_amount(
+    client: httpx.AsyncClient, issuer: FakeIssuer, iid: str, body: dict[str, Any]
+) -> httpx.Response:
+    return await client.put(
+        f"/kitchen/staples/{iid}/amount", json=body, headers=issuer.headers("ana") | idem()
+    )
+
+
+def staple_row(cab: dict[str, Any], name: str) -> dict[str, Any]:
+    rows: list[dict[str, Any]] = [s for s in cab["staples"] if s["ingredient"]["name"] == name]
+    return rows[0]
+
+
+async def test_a_staple_can_note_an_amount_but_stays_have(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer
+) -> None:
+    # A note for people: the planner still treats a Staple as "have" (ADR 0024).
+    await create_household(client, fake_issuer, "ana")
+    salt = await ingredient_id(client, fake_issuer, "ana", "salt")
+
+    response = await set_staple_amount(client, fake_issuer, salt, {"quantity": "0.5", "unit": "kg"})
+
+    assert response.status_code == 200, response.text
+    row = staple_row(await kitchen(client, fake_issuer, "ana"), "salt")
+    assert (row["quantity"], row["unit"], row["have"]) == ("500", "g", True)
+
+
+async def test_a_staple_amount_can_be_cleared(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer
+) -> None:
+    await create_household(client, fake_issuer, "ana")
+    salt = await ingredient_id(client, fake_issuer, "ana", "salt")
+    await set_staple_amount(client, fake_issuer, salt, {"quantity": "100", "unit": "g"})
+
+    await set_staple_amount(client, fake_issuer, salt, {"quantity": None, "unit": None})
+
+    assert staple_row(await kitchen(client, fake_issuer, "ana"), "salt")["quantity"] is None
+
+
+async def test_a_non_staple_amount_can_be_typed_in_a_bigger_unit(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer
+) -> None:
+    await create_household(client, fake_issuer, "ana")
+    pasta = await ingredient_id(client, fake_issuer, "ana", "pasta")
+
+    response = await client.put(
+        f"/kitchen/items/{pasta}",
+        json={"quantity": "1.5", "unit": "kg"},
+        headers=fake_issuer.headers("ana") | idem(),
+    )
+
+    assert response.status_code == 200, response.text
+    assert (response.json()["quantity"], response.json()["unit"]) == ("1500", "g")
+
+
+async def test_an_amount_that_doesnt_convert_is_rejected(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer
+) -> None:
+    # 3 "count" of salt can't honestly become grams.
+    await create_household(client, fake_issuer, "ana")
+    salt = await ingredient_id(client, fake_issuer, "ana", "salt")
+
+    response = await set_staple_amount(
+        client, fake_issuer, salt, {"quantity": "3", "unit": "count"}
+    )
+
+    assert response.status_code == 422
+    assert staple_row(await kitchen(client, fake_issuer, "ana"), "salt")["quantity"] is None
+
+
+async def test_making_it_a_staple_keeps_its_amount(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer
+) -> None:
+    await create_household(client, fake_issuer, "ana")
+    pasta = await ingredient_id(client, fake_issuer, "ana", "pasta")
+    await set_amount(client, fake_issuer, pasta, "750")
+
+    await client.put(
+        f"/kitchen/staples/{pasta}",
+        json={"have": True},
+        headers=fake_issuer.headers("ana") | idem(),
+    )
+
+    row = staple_row(await kitchen(client, fake_issuer, "ana"), "pasta")
+    assert (row["quantity"], row["unit"]) == ("750", "g")
+
+
 async def test_remove_is_still_just_remove(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer
 ) -> None:

@@ -979,6 +979,76 @@
         }
       }
     },
+    "/kitchen/staples/{ingredient_id}/amount": {
+      "put": {
+        "tags": [
+          "kitchen"
+        ],
+        "summary": "Set Staple Amount",
+        "description": "A Staple's amount: a note for people (ADR 0024). null clears it.",
+        "operationId": "set_staple_amount_kitchen_staples__ingredient_id__amount_put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "ingredient_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Ingredient Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetQuantityIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StapleOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/kitchen/places/{ingredient_id}": {
       "put": {
         "tags": [
@@ -4413,6 +4483,17 @@
             "type": "string",
             "title": "Default Unit"
           },
+          "grams_per_ml": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grams Per Ml"
+          },
           "is_household_ingredient": {
             "type": "boolean",
             "title": "Is Household Ingredient"
@@ -5851,6 +5932,18 @@
               }
             ],
             "title": "Quantity"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 12
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
           }
         },
         "type": "object",
@@ -5858,7 +5951,7 @@
           "quantity"
         ],
         "title": "SetQuantityIn",
-        "description": "`null` means \"we have some; amount not recorded\"."
+        "description": "`null` means \"we have some; amount not recorded\". `unit` (g, kg, ml, L, count\u2026)\nis converted to the Ingredient's own unit; left out, it already is."
       },
       "SetStapleIn": {
         "properties": {
@@ -5985,6 +6078,21 @@
               "out"
             ],
             "title": "Stock"
+          },
+          "quantity": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quantity"
+          },
+          "unit": {
+            "type": "string",
+            "title": "Unit"
           }
         },
         "type": "object",
@@ -5992,7 +6100,9 @@
           "ingredient",
           "have",
           "place",
-          "stock"
+          "stock",
+          "quantity",
+          "unit"
         ],
         "title": "StapleOut"
       },

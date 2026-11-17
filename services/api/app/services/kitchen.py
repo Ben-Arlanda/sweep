@@ -119,17 +119,31 @@ async def get_kitchen(session: AsyncSession, ctx: MemberContext) -> KitchenView:
 # --- Manual edits ----------------------------------------------------------------------
 
 
+def _in_own_unit(
+    ingredient: Ingredient, quantity: Decimal | None, unit: str | None
+) -> Decimal | None:
+    """`quantity unit` in the Ingredient's own unit; no unit means it already is."""
+    if quantity is None or unit is None:
+        return quantity
+    amount = convert(quantity, unit, ingredient.default_unit, ingredient.grams_per_ml)
+    if amount is None:
+        raise InvalidInput(f"{ingredient.name} can't be measured in {unit}")
+    return amount
+
+
 async def set_tracked(
     session: AsyncSession,
     ctx: MemberContext,
     ingredient_id: uuid.UUID,
     quantity: Decimal | None,
+    unit: str | None = None,
 ) -> KitchenItem:
     """A Member says how much there is (None = "some"). That's a confirmation."""
     await _bump(session, ctx.household.id)
     ingredient = await _ingredient(session, ctx.household.id, ingredient_id)
+    quantity = _in_own_unit(ingredient, quantity, unit)
     if await _staple(session, ctx.household.id, ingredient.id) is not None:
-        raise Conflict(f"{ingredient.name} is a Staple, so it has no quantity")
+        raise Conflict(f"{ingredient.name} is a Staple: set its amount on the Staple")
     now = utcnow()
     item = await _tracked(session, ctx.household.id, ingredient.id)
     if item is None:
@@ -167,9 +181,27 @@ async def set_staple(
         if tracked is not None:
             staple.place = tracked.place  # keep where the Household moved it
             staple.low = tracked.low
-            await session.delete(tracked)  # a Staple carries no quantity
+            staple.quantity = tracked.quantity  # kept as a note
+            await session.delete(tracked)
         session.add(staple)
     staple.ran_out_at = None if have else (staple.ran_out_at or utcnow())
+    await session.flush()
+    return staple
+
+
+async def set_staple_amount(
+    session: AsyncSession,
+    ctx: MemberContext,
+    ingredient_id: uuid.UUID,
+    quantity: Decimal | None,
+    unit: str | None,
+) -> HouseholdStaple:
+    """A Staple's "10 g": a note for people, never used in maths (ADR 0024)."""
+    await _bump(session, ctx.household.id)
+    staple = await _staple(session, ctx.household.id, ingredient_id)
+    if staple is None:
+        raise NotFound("That isn't a Staple in your Kitchen")
+    staple.quantity = _in_own_unit(staple.ingredient, quantity, unit)
     await session.flush()
     return staple
 

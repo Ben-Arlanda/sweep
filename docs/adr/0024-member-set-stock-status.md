@@ -11,7 +11,7 @@ The Kitchen redesign (mockups in `docs/design/kitchen-redesign/`) shows every it
 - Every Kitchen item has a **stock status the Member sets**: In stock, Running low or Out. It's stored (`low`, `ran_out_at`), not calculated.
 - **Staple → Out** puts it on the Shopping List straight away (Undo toast). **Non-staple → Out** stays in the Kitchen as Out and only *offers* to add it ("Add to list?" toast).
 - Out Non-staples are kept apart in the Kitchen view (`tracked_out`), so the planner, the agent and recipe matching never count them as "have". Running low still counts as have; the agent is told it's low.
-- Amounts stay as they were: Staples have none, Non-staples keep base units (g, ml, count).
+- Staples may note an amount ("10 g"), kept in the Ingredient's own unit like Non-staples; it's for people only, the planner still treats a Staple as "have". Amounts can be typed in any unit that honestly converts (kg → g; ml ↔ g only with a known density). No package units ("¼ jar").
 - Confirmed / Estimated / Unknown is still calculated (ADR 0003) and sent to the agent, but no longer shown on screen.
 - Buying it (ticking it off the list) or a Kitchen Photo clears Out and Running low.
 

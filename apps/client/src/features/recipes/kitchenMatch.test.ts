@@ -63,12 +63,21 @@ const kitchen: Kitchen = {
     },
   ],
   staples: [
-    { ingredient: ingredient('salt', 'salt'), have: true, place: 'cupboard', stock: 'in_stock' },
+    {
+      ingredient: ingredient('salt', 'salt'),
+      have: true,
+      place: 'cupboard',
+      stock: 'in_stock',
+      quantity: null,
+      unit: 'g',
+    },
     {
       ingredient: ingredient('flour', 'plain flour'),
       have: false,
       place: 'cupboard',
       stock: 'out',
+      quantity: null,
+      unit: 'g',
     },
   ],
 };

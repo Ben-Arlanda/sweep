@@ -28,6 +28,8 @@ const staple = (
   have: stock !== 'out',
   place,
   stock,
+  quantity: name === 'dried sage' ? '10' : null,
+  unit: 'g',
 });
 
 const rows = toRows({
@@ -35,6 +37,7 @@ const rows = toRows({
   staples: [
     staple('chilli flakes', 'spices', 'out'),
     staple('celery salt', 'spices', 'in_stock'),
+    staple('dried sage', 'spices', 'in_stock'),
     staple('ground nutmeg', 'spices', 'low'),
     staple('milk', 'dairy', 'in_stock', 'fridge'),
     staple('finger lime', 'mystery', 'in_stock'),
@@ -48,21 +51,22 @@ test('Ran out: a Staple goes on the list, a Non-staple asks, anything else does 
   expect(afterStockChange({ staple: true, stock: 'in_stock' }, 'low')).toBe('none');
 });
 
-test('Staples have no amount; Non-staples show theirs in real units', () => {
+test('amounts read in real units; a Staple without one shows nothing', () => {
   const amount = Object.fromEntries(rows.map((r) => [r.name, r.amount]));
   expect(amount['Celery salt']).toBeNull();
+  expect(amount['Dried sage']).toBe('10 g');
   expect(amount['Plain flour']).toBe('500 g');
 });
 
 test('summary counts every item across both tabs', () => {
-  expect(summary(rows)).toEqual({ total: 7, in_stock: 3, low: 2, out: 2 });
+  expect(summary(rows)).toEqual({ total: 8, in_stock: 4, low: 2, out: 2 });
 });
 
 test('Staples tab groups by category, In stock → Low → Out inside each', () => {
   const shown = sections(rows, { tab: 'staples', place: 'all', stock: null });
 
   expect(shown.map((s) => [s.label, s.rows.map((r) => r.name)])).toEqual([
-    ['Spices & Seasoning', ['Celery salt', 'Ground nutmeg', 'Chilli flakes']],
+    ['Spices & Seasoning', ['Celery salt', 'Dried sage', 'Ground nutmeg', 'Chilli flakes']],
     ['Dairy & Eggs', ['Milk']],
     ['Other', ['Finger lime']],
   ]);

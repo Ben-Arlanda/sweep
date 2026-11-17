@@ -306,6 +306,8 @@ class HouseholdStaple(Base):
     ingredient: Mapped[Ingredient] = relationship(lazy="joined")
     ran_out_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     low: Mapped[bool] = mapped_column(default=False, server_default="false")  # ADR 0024
+    # "10 g": a note in the Ingredient's own unit; the planner still treats it as "have".
+    quantity: Mapped[Decimal | None] = mapped_column(Numeric(12, 3))
     # Where the Household keeps it, if not the default for its category (ADR 0011).
     place: Mapped[Place | None] = mapped_column(str_enum(Place, "staple_place"))
 
