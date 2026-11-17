@@ -175,6 +175,10 @@ _Avoid_: trigger, payload
 The no-agent alternative the agent is compared against: code filters recipes by Dietary Rules and ranks them by Kitchen Match, then one model call picks the meals. No tools, no replans.
 _Avoid_: simple agent (it isn't one)
 
+**Retrieval Set**:
+Hand-labelled recipe searches: each query with the Seed Recipes that should come back for it. Used to compare search methods, never the agent.
+_Avoid_: Scenario (that's an agent test), benchmark
+
 ## Relationships
 
 - A **Household** has many **Members**, one **Kitchen**, one **Shopping List** and one **Meal Plan** per week
