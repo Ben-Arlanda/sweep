@@ -218,6 +218,27 @@ class SetStapleIn(BaseModel):
     have: bool
 
 
+Stock = Literal["in_stock", "low", "out"]
+PackUnit = Literal["jar", "pkt", "box", "bottle", "bag", "tin", "tube"]
+
+
+class SetStockIn(BaseModel):
+    stock: Stock
+
+
+class SetPackIn(BaseModel):
+    """A Staple's "¼ jar". Both or neither (null + null clears it)."""
+
+    quantity: Annotated[Decimal, Field(gt=0, le=99)] | None
+    unit: PackUnit | None
+
+    @model_validator(mode="after")
+    def both_or_neither(self) -> Self:
+        if (self.quantity is None) != (self.unit is None):
+            raise ValueError("Give both an amount and a unit, or neither")
+        return self
+
+
 class KitchenItemOut(BaseModel):
     ingredient: IngredientOut
     quantity: Quantity | None
@@ -226,12 +247,16 @@ class KitchenItemOut(BaseModel):
     last_change_source: ChangeSource
     last_confirmed_at: datetime
     place: Place
+    stock: Stock  # the Member's say (ADR 0024); `status` is how much we trust the amount
 
 
 class StapleOut(BaseModel):
     ingredient: IngredientOut
-    have: bool
+    have: bool  # not Out (Running low still counts as have)
     place: Place
+    stock: Stock
+    pack_quantity: Quantity | None  # "¼ jar": a note, never used in maths
+    pack_unit: PackUnit | None
 
 
 class PlaceIn(BaseModel):
@@ -244,15 +269,21 @@ class PlaceOut(BaseModel):
 
 class KitchenOut(BaseModel):
     version: int
-    tracked: list[KitchenItemOut]
+    tracked: list[KitchenItemOut]  # Out Non-staples included, with stock "out"
     staples: list[StapleOut]
 
 
-class UsedUpOut(BaseModel):
+class OnListOut(BaseModel):
     """Where it went on the Shopping List, so the app can offer Undo."""
 
     list_id: uuid.UUID
     list_item_id: uuid.UUID | None  # None: already on the list unticked, nothing added
+
+
+class StockOut(BaseModel):
+    stock: Stock
+    list_id: uuid.UUID | None  # set when a Staple ran out and went on the list
+    list_item_id: uuid.UUID | None
 
 
 class InKitchenTrackedOut(BaseModel):

@@ -25,15 +25,19 @@ from app.schemas import (
     KitchenOut,
     KitchenPhotoApplyIn,
     KitchenPhotoOut,
+    OnListOut,
+    PackUnit,
     PhotoRowOut,
     PlaceIn,
     PlaceOut,
+    SetPackIn,
     SetQuantityIn,
     SetStapleIn,
+    SetStockIn,
     StapleOut,
-    UsedUpOut,
+    StockOut,
 )
-from app.services import import_limits, ingredients, kitchen, kitchen_photos, used_up
+from app.services import import_limits, ingredients, kitchen, kitchen_photos, stock
 from app.services.import_limits import MeteredKitchenReader
 from app.services.kitchen import PhotoItem
 from app.services.kitchen_photos import KitchenPhotoReader, PhotoRow
@@ -50,6 +54,7 @@ def tracked_out(item: KitchenItem) -> KitchenItemOut:
         last_change_source=item.last_change_source,
         last_confirmed_at=item.last_confirmed_at,
         place=kitchen.place_of(item),
+        stock=kitchen.stock_of(item).value,
     )
 
 
@@ -58,7 +63,14 @@ def staple_out(staple: HouseholdStaple) -> StapleOut:
         ingredient=IngredientOut.model_validate(staple.ingredient),
         have=staple.ran_out_at is None,
         place=kitchen.place_of(staple),
+        stock=kitchen.stock_of(staple).value,
+        pack_quantity=staple.pack_quantity,
+        pack_unit=cast(PackUnit | None, staple.pack_unit),
     )
+
+
+def _by_name(item: KitchenItem) -> tuple[str, str]:
+    return (item.ingredient.category, item.ingredient.name)
 
 
 @router.get("/kitchen")
@@ -66,7 +78,7 @@ async def get_kitchen(ctx: MemberDep, session: SessionDep) -> KitchenOut:
     view = await kitchen.get_kitchen(session, ctx)
     return KitchenOut(
         version=view.version,
-        tracked=[tracked_out(i) for i in view.tracked],
+        tracked=[tracked_out(i) for i in sorted(view.tracked + view.tracked_out, key=_by_name)],
         staples=[staple_out(s) for s in view.staples],
     )
 
@@ -177,19 +189,61 @@ async def add_ingredient(
     return await idempotent(request, session, ctx, key, work)
 
 
-@router.post("/kitchen/used-up/{ingredient_id}", response_model=UsedUpOut)
-async def mark_used_up(
+@router.put("/kitchen/stock/{ingredient_id}", response_model=StockOut)
+async def set_stock(
+    ingredient_id: uuid.UUID,
+    body: SetStockIn,
+    request: Request,
+    ctx: MemberDep,
+    session: SessionDep,
+    key: IdempotencyKeyHeader,
+) -> Response:
+    """In stock / Running low / Out (ADR 0024). A Staple set to Out also goes on the list."""
+
+    async def work() -> StockOut:
+        done = await stock.set_stock(session, ctx, ingredient_id, kitchen.Stock(body.stock))
+        on = done.on_list
+        return StockOut(
+            stock=done.stock.value,
+            list_id=on.list_id if on else None,
+            list_item_id=on.list_item_id if on else None,
+        )
+
+    return await idempotent(request, session, ctx, key, work)
+
+
+@router.post("/kitchen/to-list/{ingredient_id}", response_model=OnListOut)
+async def add_to_list(
     ingredient_id: uuid.UUID,
     request: Request,
     ctx: MemberDep,
     session: SessionDep,
     key: IdempotencyKeyHeader,
 ) -> Response:
-    """Used up (Tracked) or Ran out (Staple): out of the Kitchen and onto the list."""
+    """ "Add to list" for something in the Kitchen; skipped if already on it unticked."""
 
-    async def work() -> UsedUpOut:
-        done = await used_up.used_up(session, ctx, ingredient_id)
-        return UsedUpOut(list_id=done.list_id, list_item_id=done.list_item_id)
+    async def work() -> OnListOut:
+        done = await stock.to_list(session, ctx, ingredient_id)
+        return OnListOut(list_id=done.list_id, list_item_id=done.list_item_id)
+
+    return await idempotent(request, session, ctx, key, work)
+
+
+@router.put("/kitchen/staples/{ingredient_id}/pack", response_model=StapleOut)
+async def set_pack(
+    ingredient_id: uuid.UUID,
+    body: SetPackIn,
+    request: Request,
+    ctx: MemberDep,
+    session: SessionDep,
+    key: IdempotencyKeyHeader,
+) -> Response:
+    """A Staple's package amount ("¼ jar"), a note for people only (ADR 0024)."""
+
+    async def work() -> StapleOut:
+        return staple_out(
+            await kitchen.set_pack(session, ctx, ingredient_id, body.quantity, body.unit)
+        )
 
     return await idempotent(request, session, ctx, key, work)
 
