@@ -34,6 +34,7 @@ import {
 import { useRef, useState } from 'react';
 import {
   Pressable,
+  ScrollView,
   Switch,
   TextInput,
   useWindowDimensions,
@@ -338,12 +339,15 @@ export default function KitchenScreen() {
         />
       </View>
 
-      <View
+      {/* Swipes sideways when it doesn't fit (big text sizes), so labels never wrap. */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
         accessibilityRole="radiogroup"
         accessibilityLabel="Where"
-        style={{ flexDirection: 'row', gap: 6 }}
+        contentContainerStyle={{ gap: 6 }}
       >
-        <PlaceChip label="All" on={place === 'all'} onPress={() => setPlace('all')} narrow />
+        <PlaceChip label="All" on={place === 'all'} onPress={() => setPlace('all')} />
         {PLACES.map((p) => (
           <PlaceChip
             key={p.place}
@@ -353,7 +357,7 @@ export default function KitchenScreen() {
             onPress={() => setPlace(p.place as PlaceFilter)}
           />
         ))}
-      </View>
+      </ScrollView>
 
       {shown.length === 0 ? (
         <Text muted>
@@ -581,8 +585,8 @@ function TabButton({
         gap: t.space.sm,
       }}
     >
-      <Icon icon={icon} size={20} color={fg} />
-      <Text variant="label" style={{ color: fg, fontSize: 16 }}>
+      <Icon icon={icon} size={18} color={fg} />
+      <Text variant="label" numberOfLines={1} style={{ color: fg, fontSize: 15, flexShrink: 1 }}>
         {label}
       </Text>
     </Pressable>
@@ -593,13 +597,11 @@ function PlaceChip({
   label,
   icon,
   on,
-  narrow,
   onPress,
 }: {
   label: string;
   icon?: LucideIcon;
   on: boolean;
-  narrow?: boolean;
   onPress: () => void;
 }) {
   const t = useTheme();
@@ -609,10 +611,9 @@ function PlaceChip({
       accessibilityState={{ checked: on }}
       onPress={onPress}
       style={({ pressed }) => ({
-        flex: narrow ? undefined : 1,
-        minWidth: narrow ? 56 : undefined,
+        minWidth: 56,
         minHeight: t.touchTarget,
-        paddingHorizontal: t.space.sm,
+        paddingHorizontal: t.space.md,
         borderRadius: t.radius.pill,
         borderWidth: 1.5,
         borderColor: on ? t.colors.action : t.colors.border,
@@ -625,7 +626,11 @@ function PlaceChip({
       })}
     >
       {icon ? <Icon icon={icon} size={16} color={on ? t.colors.onAction : t.colors.text} /> : null}
-      <Text variant="label" style={{ color: on ? t.colors.onAction : t.colors.text }}>
+      <Text
+        variant="label"
+        numberOfLines={1}
+        style={{ color: on ? t.colors.onAction : t.colors.text }}
+      >
         {label}
       </Text>
     </Pressable>
@@ -1256,6 +1261,7 @@ function ItemSheet({
             accessibilityRole="radiogroup"
             style={{
               flexDirection: 'row',
+              flexWrap: 'wrap', // big text sizes: wrap to a second row, never mid-word
               gap: 6,
               paddingHorizontal: t.space.md,
               paddingBottom: t.space.md,
