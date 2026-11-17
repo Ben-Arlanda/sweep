@@ -248,6 +248,51 @@ class KitchenOut(BaseModel):
     staples: list[StapleOut]
 
 
+class InKitchenTrackedOut(BaseModel):
+    quantity: Quantity | None
+    unit: str
+    status: Literal["confirmed", "estimated", "unknown"]
+
+
+class InKitchenStapleOut(BaseModel):
+    staple: Literal[True] = True
+    have: bool
+
+
+class PhotoRowOut(BaseModel):
+    """One thing seen in a Kitchen Photo, for the review screen (ADR 0023)."""
+
+    name: str  # as the model named it
+    ingredient: IngredientOut | None  # None: Not linked
+    quantity: Quantity | None  # suggested, in the Ingredient's unit; None: "have some"
+    ticked: bool  # where the review starts: Not linked rows start unticked
+    in_kitchen: InKitchenTrackedOut | InKitchenStapleOut | None  # None: new
+
+
+class PhotoItemIn(BaseModel):
+    """One ticked row: a known Ingredient, or a Not linked name the Member ticked."""
+
+    ingredient_id: uuid.UUID | None = None
+    name: IngredientName | None = None
+    quantity: Quantity | None  # in the Ingredient's own unit; null: "have some"
+
+    @model_validator(mode="after")
+    def _one_of(self) -> Self:
+        if (self.ingredient_id is None) == (self.name is None):
+            raise ValueError("Give an ingredient_id or a name, not both")
+        return self
+
+
+class KitchenPhotoApplyIn(BaseModel):
+    place: Place
+    items: list[PhotoItemIn] = Field(min_length=1, max_length=60)
+
+
+class KitchenPhotoOut(BaseModel):
+    place: Place
+    rows: list[PhotoRowOut]
+
+
 # --- Recipes -----------------------------------------------------------------------
 
 # An amount we report (never accept), sent as a string so no precision is lost.

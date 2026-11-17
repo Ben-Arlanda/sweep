@@ -6,25 +6,36 @@ PUT to pasta's address, and repeating it is harmless.
 """
 
 import uuid
+from typing import Annotated, cast
 
-from fastapi import APIRouter, Query, Request, Response, status
+from fastapi import APIRouter, File, Form, Query, Request, Response, UploadFile, status
 
+from app import errors
+from app.data.places import Place
 from app.deps import MemberDep, SessionDep
 from app.idempotency import IdempotencyKeyHeader
 from app.models import HouseholdStaple, KitchenItem, utcnow
-from app.routes.common import idempotent
+from app.routes.common import checked_photos, idempotent
 from app.schemas import (
     IngredientIn,
     IngredientOut,
+    InKitchenStapleOut,
+    InKitchenTrackedOut,
     KitchenItemOut,
     KitchenOut,
+    KitchenPhotoApplyIn,
+    KitchenPhotoOut,
+    PhotoRowOut,
     PlaceIn,
     PlaceOut,
     SetQuantityIn,
     SetStapleIn,
     StapleOut,
 )
-from app.services import ingredients, kitchen
+from app.services import import_limits, ingredients, kitchen, kitchen_photos
+from app.services.import_limits import MeteredKitchenReader
+from app.services.kitchen import PhotoItem
+from app.services.kitchen_photos import KitchenPhotoReader, PhotoRow
 
 router = APIRouter(tags=["kitchen"])
 
@@ -163,3 +174,73 @@ async def add_ingredient(
         return IngredientOut.model_validate(found)
 
     return await idempotent(request, session, ctx, key, work)
+
+
+# --- Kitchen Photos (ADR 0023) ---------------------------------------------------------
+
+
+@router.post("/kitchen/photos")
+async def read_kitchen_photos(
+    request: Request,
+    ctx: MemberDep,
+    session: SessionDep,
+    photos: Annotated[list[UploadFile], File(description="1 to 3 photos of items laid out")],
+    place: Annotated[Place, Form(description="Where the items came from")],
+) -> KitchenPhotoOut:
+    """Rows for the review screen. Nothing is written: the bytes live only for this
+    request, and the Kitchen changes only when the Member applies the rows."""
+    inner = cast(KitchenPhotoReader | None, request.app.state.kitchen_reader)
+    if inner is None:
+        raise errors.Unavailable("Reading photos isn't configured on this server")
+    budget = cast(int, request.app.state.daily_token_budget)
+    await import_limits.start(session, ctx, "kitchen", daily_budget=budget)
+    reader = MeteredKitchenReader(inner, request.app.state.sessionmaker, ctx.household.id)
+    read = await checked_photos(photos, "")
+    rows, _ = await kitchen_photos.from_photos(session, ctx.household.id, reader, read, place)
+    return KitchenPhotoOut(place=place, rows=[_row_out(row) for row in rows])
+
+
+@router.post("/kitchen/photos/apply", response_model=KitchenOut)
+async def apply_kitchen_photos(
+    body: KitchenPhotoApplyIn,
+    request: Request,
+    ctx: MemberDep,
+    session: SessionDep,
+    key: IdempotencyKeyHeader,
+) -> Response:
+    """The ticked rows, all in one transaction. A ticked Not linked name is the Member's
+    choice, so it may become a Household Ingredient. Returns the Kitchen as it is now."""
+
+    async def work() -> KitchenOut:
+        items: list[PhotoItem] = []
+        for row in body.items:
+            iid = row.ingredient_id
+            if iid is None:
+                assert row.name is not None  # PhotoItemIn guarantees one of the two
+                made = await ingredients.resolve(session, ctx.household.id, row.name, create=True)
+                assert made is not None  # IngredientName guarantees a usable name
+                iid = made.id
+            items.append(PhotoItem(iid, row.quantity))
+        await kitchen.apply_photo(session, ctx.household.id, body.place, items)
+        return await get_kitchen(ctx, session)
+
+    return await idempotent(request, session, ctx, key, work)
+
+
+def _row_out(row: PhotoRow) -> PhotoRowOut:
+    in_kitchen: InKitchenTrackedOut | InKitchenStapleOut | None = None
+    if row.staple is not None:
+        in_kitchen = InKitchenStapleOut(have=row.staple.ran_out_at is None)
+    elif row.tracked is not None:
+        in_kitchen = InKitchenTrackedOut(
+            quantity=row.tracked.quantity,
+            unit=row.tracked.ingredient.default_unit,
+            status=kitchen.status_of(row.tracked, utcnow()).value,
+        )
+    return PhotoRowOut(
+        name=row.name,
+        ingredient=IngredientOut.model_validate(row.ingredient) if row.ingredient else None,
+        quantity=row.quantity,
+        ticked=row.ticked,
+        in_kitchen=in_kitchen,
+    )

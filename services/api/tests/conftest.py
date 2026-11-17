@@ -149,6 +149,7 @@ async def client(
         agent_model=ScriptedModel(),
         recipe_reader=reader,
         page_fetcher=fetcher,
+        kitchen_reader=reader,
     )
     transport = httpx.ASGITransport(app=app)
     async with httpx.AsyncClient(transport=transport, base_url="http://test") as http:
@@ -189,6 +190,7 @@ def client_for(database_url: str, db: Engine, fake_issuer: FakeIssuer) -> Client
             embedder=HashingEmbedder(),
             agent_model=model,
             recipe_reader=ScriptedReader(),
+            kitchen_reader=ScriptedReader(),
             page_fetcher=ScriptedFetcher(),
         )
         transport = httpx.ASGITransport(app=app)

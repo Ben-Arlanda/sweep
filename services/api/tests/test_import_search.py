@@ -56,6 +56,7 @@ async def app_client(
         embedder=embedder,
         agent_model=ScriptedModel(),
         recipe_reader=ScriptedReader(),
+        kitchen_reader=ScriptedReader(),
         page_fetcher=ScriptedFetcher(),
     )
     transport = httpx.ASGITransport(app=app)

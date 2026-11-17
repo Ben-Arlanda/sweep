@@ -41,6 +41,24 @@ def test_eggs_are_not_dairy() -> None:
     assert "dairy" not in CONTAINS["eggs"]
 
 
+def test_the_kitchen_photo_starters_are_flagged_by_what_they_are() -> None:
+    # Added 2026-11-17 after the Kitchen Photo eval (ADR 0023). They sit next to bread
+    # and butter, so the mistake to avoid is flagging them like bread and butter.
+    assert "dairy" in CONTAINS["goat cheese"]
+    assert "gluten" not in CONTAINS.get("gluten free bread", frozenset())
+    assert "dairy" not in CONTAINS.get("dairy free spread", frozenset())
+    assert "animal" not in CONTAINS.get("dairy free spread", frozenset())
+    # Many gluten-free breads use egg or milk: brand by brand.
+    assert {"egg", "dairy"} <= CHECK_LABEL["gluten free bread"]
+
+
+def test_gluten_free_bread_passes_a_gluten_free_rule() -> None:
+    check = check_recipe(
+        recipe(("gluten free bread", "4 slices gluten free bread")), rules(Diet.GLUTEN_FREE)
+    )
+    assert check.breaks == [] and check.check_label == []
+
+
 # --- Checking one recipe (pure code, no database) -----------------------------------
 
 
