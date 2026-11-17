@@ -14,7 +14,8 @@ product owner's own photos):
      "items": {"eggs": 6, "milk": null}, "maybe": ["butter"], "canary": "wine"}
 
 `items`: what is clearly in the photos, by starter Ingredient name (or the plain name
-when Sweep has no starter for it), with the count a person would see (null: not graded).
+when Sweep has no starter for it, with alternatives: "goat cheese|chevre"), with the
+count a person would see (null: not graded).
 `maybe`: half hidden or hard to tell; listing them or not are both fine.
 
 Each answer goes through the app's own `kitchen_photos.from_photos` (our matcher and
@@ -66,25 +67,31 @@ class Row:
 
 
 def _same(name: str) -> str:
-    return " ".join(name.casefold().split())
+    return " ".join(name.casefold().replace("-", " ").split())
 
 
 def grade(case: dict[str, Any], rows: list[Row] | None) -> dict[str, Any]:
-    want: dict[str, int | None] = {_same(k): v for k, v in case["items"].items()}
-    maybe = {_same(m) for m in case.get("maybe", [])}
+    # A key may name alternatives ("bread|gluten free bread"); the first is how it's reported.
+    want: dict[str, int | None] = {}
+    alias: dict[str, str] = {}
+    for key, count in case["items"].items():
+        names = [_same(n) for n in key.split("|")]
+        want[names[0]] = count
+        alias.update({n: names[0] for n in names})
+    maybe = {_same(n) for m in case.get("maybe", []) for n in m.split("|")}
     if rows is None:  # the call failed: not the model's answer
         return {"no_answer": True, "found": [], "invented": [], "missed": sorted(want)}
     found: dict[str, Row] = {}
     invented: list[str] = []
     for row in rows:
         key = next(
-            (k for k in (_same(row.ingredient or ""), _same(row.name)) if k in want or k in maybe),
+            (k for k in (_same(row.ingredient or ""), _same(row.name)) if k in alias or k in maybe),
             None,
         )
         if key is None:
             invented.append(row.name)
-        elif key in want:
-            found.setdefault(key, row)
+        elif key in alias:
+            found.setdefault(alias[key], row)
     counts_wrong = []
     for key, row in sorted(found.items()):
         expected = want[key]

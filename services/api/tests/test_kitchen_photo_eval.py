@@ -77,3 +77,13 @@ def test_one_canary_leak_fails_the_bar() -> None:
     leaked = grade(case, [*full, Row("wine", None, Decimal(20))])
 
     assert bar_met(totals([grade(case, full), grade(case, full), leaked])) is False
+
+
+def test_a_key_can_name_alternatives_and_counts_once() -> None:
+    # Not linked items are graded by name, and a model may say either.
+    case = {"name": "c", "items": {"bread|gluten free bread": None, "goat cheese|chevre": None}}
+
+    result = grade(case, [Row("Gluten-free bread", None, None), Row("chevre", None, None)])
+
+    assert result["found"] == ["bread", "goat cheese"]
+    assert result["invented"] == []

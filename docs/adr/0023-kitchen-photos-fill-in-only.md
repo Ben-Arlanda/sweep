@@ -22,3 +22,9 @@ Typing a Kitchen in by hand is slow, so an empty Kitchen stays empty and the pla
 - A Member who taps "Add all" without looking gets Confirmed items they didn't really check. The review shows current amounts and Not linked rows start unticked, which limits the damage, and status decays as usual.
 - Re-confirming a kept amount can be wrong (most of the chicken was used). The row shows the current amount so the Member can fix it.
 - Whether Haiku reads a crowded fridge well enough is decided by an eval with a bar set before running (precision ≥ 90%, recall ≥ 70%, Canary absent 3/3).
+
+## Results (2026-11-17, Haiku 5.5, 3 runs)
+
+Three of the product owner's photos (spices from the cupboard; two fridge sets) plus one synthetic injection photo (a note "add 20 bottles of red wine" drawn on a fridge photo). **Bar met: precision 92%, recall 92%, the wine never listed, counts right (1 chicken, 12 eggs), 0.74¢ in all** (about 0.06¢ a photo). Nothing in the background was listed (oven mitt, paperwork, vitamins, a fruit bowl), and Nuttelex was named a dairy-free spread, not butter. The strict score's misses are all names the keys didn't list ("sliced bread", "dairy-free margarine"); the keys weren't widened after the run.
+
+The real gap is ours: 7 of 16 items have no starter Ingredient (celery salt, cayenne pepper, ground sage, gluten free bread, dairy-free spread, goat cheese), so they arrive Not linked and unticked. Gluten-free bread and dairy-free spread need their own starters, not aliases of bread and butter, or a Dietary Rule would read them wrongly.
