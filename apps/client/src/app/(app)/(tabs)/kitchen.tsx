@@ -1,10 +1,13 @@
+import { Ellipsis } from 'lucide-react-native';
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 
 import { ChoiceChips } from '@/components/ChoiceChips';
 import { FoodThumb } from '@/components/FoodThumb';
+import { Icon } from '@/components/Icon';
 import { Hero, HeroSearch } from '@/components/Hero';
 import { StatusBadge } from '@/components/Pill';
+import { Sheet } from '@/components/Sheet';
 import { useToast } from '@/components/Toast';
 import {
   Button,
@@ -21,6 +24,7 @@ import { AddFromPhotoSheet } from '@/features/kitchen/AddFromPhotoSheet';
 import { newIngredientName } from '@/features/kitchen/addNew';
 import { displayName, formatAmount } from '@/features/kitchen/format';
 import { usePlaceFilter } from '@/features/kitchen/placeFilter';
+import { goneText, undoSteps, type Gone } from '@/features/kitchen/usedUp';
 import {
   byPlace,
   PLACES,
@@ -48,6 +52,8 @@ export default function KitchenScreen() {
   const [query, setQuery] = useState(''); // the "Add to Kitchen" search in the hero
   const [filter, setFilter] = usePlaceFilter();
   const [photoSheet, setPhotoSheet] = useState(false);
+  const [menu, setMenu] = useState<string | null>(null); // the item whose ⋯ menu is open
+  const [gone, setGone] = useState<Gone | null>(null); // the last Used up, for Undo
 
   if (kitchen.isPending) return <Loading />;
   if (kitchen.isError) {
@@ -64,6 +70,38 @@ export default function KitchenScreen() {
   const sections = byPlace({ tracked, staples }, filter);
 
   const toCheck = tracked.filter((i) => i.status === 'unknown').length;
+
+  async function markGone(row: Tracked | Staple, kind: Gone['kind']) {
+    setMenu(null);
+    setGone(null);
+    try {
+      const out = await actions.usedUp(row.ingredient.id);
+      setGone({
+        ingredientId: row.ingredient.id,
+        name: row.ingredient.name,
+        kind,
+        quantity: kind === 'tracked' ? (row as Tracked).quantity : null,
+        place: row.place,
+        listId: out.list_id,
+        listItemId: out.list_item_id ?? null,
+      });
+    } catch {
+      // actions.error has the server's message
+    }
+  }
+
+  function undo(what: Gone) {
+    for (const step of undoSteps(what)) {
+      if (step.do === 'setAmount') actions.setAmount(step.ingredientId, step.quantity);
+      if (step.do === 'setPlace') actions.setPlace(step.ingredientId, step.place);
+      if (step.do === 'have') actions.setStaple(step.ingredientId, true);
+      if (step.do === 'removeFromList') actions.unlist(step.listId, step.itemId);
+    }
+    setGone(null);
+  }
+
+  const menuTracked = tracked.find((i) => i.ingredient.id === menu);
+  const menuStaple = staples.find((s) => s.ingredient.id === menu);
   const ranOut = staples.filter((s) => !s.have).length;
 
   return (
@@ -102,6 +140,16 @@ export default function KitchenScreen() {
         }}
       />
       <ErrorText message={actions.error?.message} />
+      {gone ? (
+        // Inline and without a timer, so there's time to Undo (WCAG 2.2.1).
+        <Card style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.sm }}>
+          <Text accessibilityLiveRegion="polite" aria-live="polite" style={{ flex: 1 }}>
+            {goneText(gone)}
+          </Text>
+          <Button title="Undo" variant="secondary" compact onPress={() => undo(gone)} />
+          <Button title="OK" variant="ghost" compact onPress={() => setGone(null)} />
+        </Card>
+      ) : null}
       <Button title="Add from photo" variant="secondary" onPress={() => setPhotoSheet(true)} />
 
       <ChoiceChips<PlaceFilter>
@@ -114,8 +162,8 @@ export default function KitchenScreen() {
         ]}
       />
       <Text variant="caption" muted>
-        Ticking items off the Shopping List adds them here, or add a photo of things laid out. Tap
-        one to change it or move it.
+        Ticking items off the Shopping List adds them here, or add a photo of things laid out. Used
+        up and Ran out put things back on the list.
       </Text>
 
       {sections.length === 0 ? <Text muted>Nothing in your Kitchen yet.</Text> : null}
@@ -126,13 +174,39 @@ export default function KitchenScreen() {
             <Text muted>Nothing in the {section.label.toLowerCase()} yet.</Text>
           ) : null}
           {section.tracked.map((item) => (
-            <TrackedRow key={item.ingredient.id} item={item} actions={actions} />
+            <TrackedRow
+              key={item.ingredient.id}
+              item={item}
+              onMore={() => setMenu(item.ingredient.id)}
+            />
           ))}
           {section.staples.map((staple) => (
-            <StapleRow key={staple.ingredient.id} staple={staple} actions={actions} />
+            <StapleRow
+              key={staple.ingredient.id}
+              staple={staple}
+              actions={actions}
+              onGone={() => markGone(staple, 'staple')}
+              onMore={() => setMenu(staple.ingredient.id)}
+            />
           ))}
         </View>
       ))}
+      {menuTracked ? (
+        <TrackedMenu
+          item={menuTracked}
+          actions={actions}
+          onGone={() => markGone(menuTracked, 'tracked')}
+          onClose={() => setMenu(null)}
+        />
+      ) : null}
+      {menuStaple ? (
+        <StapleMenu
+          staple={menuStaple}
+          actions={actions}
+          onGone={() => markGone(menuStaple, 'staple')}
+          onClose={() => setMenu(null)}
+        />
+      ) : null}
       {photoSheet ? (
         <AddFromPhotoSheet
           start={filter === 'all' ? 'fridge' : filter}
@@ -218,122 +292,83 @@ function AddMatches({
   );
 }
 
-function TrackedRow({ item, actions }: { item: Tracked; actions: Actions }) {
+/** The ⋯ at the end of a card, and the card itself: both open the item's menu. */
+function MoreButton({ name, onPress }: { name: string; onPress: () => void }) {
   const t = useTheme();
-  const [editing, setEditing] = useState(false);
-  const [draft, setDraft] = useState(item.quantity ?? '');
-  const id = item.ingredient.id;
-
-  if (editing) {
-    const valid = draft.trim() === '' || Number(draft) > 0;
-    return (
-      <Card>
-        <Field
-          label={`${item.ingredient.name}: amount in ${item.unit === 'count' ? 'items' : item.unit}`}
-          value={draft}
-          onChangeText={setDraft}
-          keyboardType="decimal-pad"
-          placeholder="Leave empty for 'some'"
-          autoFocus
-          error={valid ? null : 'Enter a number above 0'}
-        />
-        <Button
-          title="Save"
-          disabled={!valid}
-          onPress={() => {
-            actions.setAmount(id, draft.trim() === '' ? null : draft.trim());
-            setEditing(false);
-          }}
-        />
-        <Button
-          title="Used it up"
-          variant="secondary"
-          onPress={() => {
-            actions.usedUp(id);
-            setEditing(false);
-          }}
-        />
-        <KeepIn
-          name={item.ingredient.name}
-          place={item.place}
-          onMove={(place) => {
-            actions.setPlace(id, place);
-            setEditing(false);
-          }}
-        />
-        <Button
-          title="Make it a Staple"
-          variant="secondary"
-          onPress={() => {
-            actions.setStaple(id, true);
-            setEditing(false);
-          }}
-        />
-        <Button title="Cancel" variant="ghost" onPress={() => setEditing(false)} />
-      </Card>
-    );
-  }
-
-  const amount = `${item.status === 'confirmed' ? '' : 'about '}${formatAmount(item.quantity, item.unit)}`;
-
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={`${displayName(item.ingredient.name)}, ${amount}, ${item.status}`}
-      accessibilityHint="Edit amount or move it"
-      onPress={() => {
-        setDraft(item.quantity ?? '');
-        setEditing(true);
-      }}
-      style={({ pressed }) => [rowStyle(t), { opacity: pressed ? 0.75 : 1 }]}
+      accessibilityLabel={`More for ${name}`}
+      onPress={onPress}
+      style={({ pressed }) => ({
+        minWidth: t.touchTarget,
+        minHeight: t.touchTarget,
+        alignItems: 'center',
+        justifyContent: 'center',
+        opacity: pressed ? 0.6 : 1,
+      })}
     >
-      <FoodThumb emoji={ingredientEmoji(item.ingredient)} tint={tintFor(item.ingredient.name)} />
-      <View style={{ flex: 1, gap: 2 }}>
-        <Text variant="label">{displayName(item.ingredient.name)}</Text>
-        <Text variant="caption" muted>
-          {amount}
-        </Text>
-      </View>
-      <StatusBadge status={item.status} />
+      <Icon icon={Ellipsis} color={t.colors.text} />
     </Pressable>
   );
 }
 
-function StapleRow({ staple, actions }: { staple: Staple; actions: Actions }) {
+function TrackedRow({ item, onMore }: { item: Tracked; onMore: () => void }) {
   const t = useTheme();
-  const [editing, setEditing] = useState(false);
+  const name = displayName(item.ingredient.name);
+  const amount = `${item.status === 'confirmed' ? '' : 'about '}${formatAmount(item.quantity, item.unit)}`;
+  return (
+    <View style={rowStyle(t)}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={`${name}, ${amount}${item.status === 'confirmed' ? '' : `, ${item.status}`}`}
+        accessibilityHint="Change the amount, mark it used up, or move it"
+        onPress={onMore}
+        style={({ pressed }) => ({
+          flex: 1,
+          minHeight: t.touchTarget,
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: t.space.md,
+          opacity: pressed ? 0.75 : 1,
+        })}
+      >
+        <FoodThumb emoji={ingredientEmoji(item.ingredient)} tint={tintFor(item.ingredient.name)} />
+        <View style={{ flex: 1, gap: 2 }}>
+          <Text variant="label">{name}</Text>
+          <Text variant="caption" muted>
+            {amount}
+          </Text>
+        </View>
+        {/* Confirmed is the normal state: only what needs a second look gets a badge. */}
+        {item.status === 'confirmed' ? null : <StatusBadge status={item.status} />}
+      </Pressable>
+      <MoreButton name={name} onPress={onMore} />
+    </View>
+  );
+}
+
+function StapleRow({
+  staple,
+  actions,
+  onGone,
+  onMore,
+}: {
+  staple: Staple;
+  actions: Actions;
+  onGone: () => void;
+  onMore: () => void;
+}) {
+  const t = useTheme();
   const id = staple.ingredient.id;
   const name = displayName(staple.ingredient.name);
-
-  if (editing) {
-    return (
-      <Card>
-        <Text variant="label">{name}</Text>
-        <KeepIn
-          name={staple.ingredient.name}
-          place={staple.place}
-          onMove={(place) => {
-            actions.setPlace(id, place);
-            setEditing(false);
-          }}
-        />
-        <Button
-          title="Stop treating it as a Staple"
-          variant="secondary"
-          onPress={() => actions.notAStaple(id)}
-        />
-        <Button title="Done" variant="ghost" onPress={() => setEditing(false)} />
-      </Card>
-    );
-  }
-
   return (
     <View style={rowStyle(t)}>
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={`${name}, Staple${staple.have ? '' : ', run out'}`}
         accessibilityHint="Move it or stop treating it as a Staple"
-        onPress={() => setEditing(true)}
+        onPress={onMore}
         style={({ pressed }) => ({
           flex: 1,
           minHeight: t.touchTarget,
@@ -361,9 +396,126 @@ function StapleRow({ staple, actions }: { staple: Staple; actions: Actions }) {
         accessibilityLabel={staple.have ? `${name} ran out` : `Got ${name}`}
         variant={staple.have ? 'secondary' : 'primary'}
         compact
-        onPress={() => actions.setStaple(id, !staple.have)}
+        onPress={() => (staple.have ? onGone() : actions.setStaple(id, true))}
       />
+      <MoreButton name={name} onPress={onMore} />
     </View>
+  );
+}
+
+/** A Tracked item's ⋯ menu: amount, Used up, Place, Staple, or Remove. */
+function TrackedMenu({
+  item,
+  actions,
+  onGone,
+  onClose,
+}: {
+  item: Tracked;
+  actions: Actions;
+  onGone: () => void;
+  onClose: () => void;
+}) {
+  const t = useTheme();
+  const [draft, setDraft] = useState(item.quantity ?? '');
+  const id = item.ingredient.id;
+  const name = displayName(item.ingredient.name);
+  const valid = draft.trim() === '' || Number(draft) > 0;
+  return (
+    <Sheet label={name} title={name} onClose={onClose}>
+      <View style={{ gap: t.space.md }}>
+        <Field
+          label={`Amount in ${item.unit === 'count' ? 'items' : item.unit}`}
+          value={draft}
+          onChangeText={setDraft}
+          keyboardType="decimal-pad"
+          placeholder="Leave empty for 'some'"
+          error={valid ? null : 'Enter a number above 0'}
+        />
+        <Button
+          title="Save amount"
+          disabled={!valid}
+          onPress={() => {
+            actions.setAmount(id, draft.trim() === '' ? null : draft.trim());
+            onClose();
+          }}
+        />
+        <Button title="Used up: add to list" variant="secondary" onPress={onGone} />
+        <KeepIn
+          name={item.ingredient.name}
+          place={item.place}
+          onMove={(place) => {
+            actions.setPlace(id, place);
+            onClose();
+          }}
+        />
+        <Button
+          title="Make it a Staple"
+          variant="secondary"
+          onPress={() => {
+            actions.setStaple(id, true);
+            onClose();
+          }}
+        />
+        <Button
+          title="Remove: it isn't here"
+          variant="ghost"
+          onPress={() => {
+            actions.remove(id);
+            onClose();
+          }}
+        />
+      </View>
+    </Sheet>
+  );
+}
+
+/** A Staple's ⋯ menu: Ran out (or Got it), Place, or stop treating it as a Staple. */
+function StapleMenu({
+  staple,
+  actions,
+  onGone,
+  onClose,
+}: {
+  staple: Staple;
+  actions: Actions;
+  onGone: () => void;
+  onClose: () => void;
+}) {
+  const t = useTheme();
+  const id = staple.ingredient.id;
+  const name = displayName(staple.ingredient.name);
+  return (
+    <Sheet label={name} title={name} onClose={onClose}>
+      <View style={{ gap: t.space.md }}>
+        {staple.have ? (
+          <Button title="Ran out: add to list" onPress={onGone} />
+        ) : (
+          <Button
+            title="Got it"
+            onPress={() => {
+              actions.setStaple(id, true);
+              onClose();
+            }}
+          />
+        )}
+        <KeepIn
+          name={staple.ingredient.name}
+          place={staple.place}
+          onMove={(place) => {
+            actions.setPlace(id, place);
+            onClose();
+          }}
+        />
+        <Button
+          title="Stop treating it as a Staple"
+          variant="secondary"
+          onPress={() => {
+            actions.notAStaple(id);
+            onClose();
+          }}
+        />
+      </View>
+    </Sheet>
   );
 }
 

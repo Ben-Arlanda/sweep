@@ -31,8 +31,9 @@ from app.schemas import (
     SetQuantityIn,
     SetStapleIn,
     StapleOut,
+    UsedUpOut,
 )
-from app.services import import_limits, ingredients, kitchen, kitchen_photos
+from app.services import import_limits, ingredients, kitchen, kitchen_photos, used_up
 from app.services.import_limits import MeteredKitchenReader
 from app.services.kitchen import PhotoItem
 from app.services.kitchen_photos import KitchenPhotoReader, PhotoRow
@@ -172,6 +173,23 @@ async def add_ingredient(
         found = await ingredients.resolve(session, ctx.household.id, body.name, create=True)
         assert found is not None  # IngredientIn guarantees a usable name
         return IngredientOut.model_validate(found)
+
+    return await idempotent(request, session, ctx, key, work)
+
+
+@router.post("/kitchen/used-up/{ingredient_id}", response_model=UsedUpOut)
+async def mark_used_up(
+    ingredient_id: uuid.UUID,
+    request: Request,
+    ctx: MemberDep,
+    session: SessionDep,
+    key: IdempotencyKeyHeader,
+) -> Response:
+    """Used up (Tracked) or Ran out (Staple): out of the Kitchen and onto the list."""
+
+    async def work() -> UsedUpOut:
+        done = await used_up.used_up(session, ctx, ingredient_id)
+        return UsedUpOut(list_id=done.list_id, list_item_id=done.list_item_id)
 
     return await idempotent(request, session, ctx, key, work)
 

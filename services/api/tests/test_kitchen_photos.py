@@ -199,12 +199,12 @@ async def test_nothing_missing_from_the_photo_is_removed(
 ) -> None:
     household = await home(client, fake_issuer)
     eggs = await ingredient_id(client, fake_issuer, "alice", "eggs")
-    milk = await ingredient_id(client, fake_issuer, "alice", "milk")
-    await set_amount(client, fake_issuer, milk, "1000")
+    cream = await ingredient_id(client, fake_issuer, "alice", "thickened cream")
+    await set_amount(client, fake_issuer, cream, "1000")
 
     await apply(household, Place.FRIDGE, [(eggs, "6")])
 
-    assert tracked(await kitchen(client, fake_issuer, "alice"))["milk"][0] == "1000"
+    assert tracked(await kitchen(client, fake_issuer, "alice"))["thickened cream"][0] == "1000"
 
 
 async def test_one_photo_bumps_the_kitchen_version_once(
@@ -212,10 +212,10 @@ async def test_one_photo_bumps_the_kitchen_version_once(
 ) -> None:
     household = await home(client, fake_issuer)
     eggs = await ingredient_id(client, fake_issuer, "alice", "eggs")
-    milk = await ingredient_id(client, fake_issuer, "alice", "milk")
+    cream = await ingredient_id(client, fake_issuer, "alice", "thickened cream")
     before = (await kitchen(client, fake_issuer, "alice"))["version"]
 
-    await apply(household, Place.FRIDGE, [(eggs, "6"), (milk, None)])
+    await apply(household, Place.FRIDGE, [(eggs, "6"), (cream, None)])
 
     assert (await kitchen(client, fake_issuer, "alice"))["version"] == before + 1
 

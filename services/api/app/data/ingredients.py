@@ -120,7 +120,8 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
     SeedIngredient("peanut butter", "pantry", "g", None, False, ()),
     SeedIngredient("honey", "pantry", "g", D("1.42"), False, ()),
     # Dairy and eggs
-    SeedIngredient("milk", "dairy", "ml", D("1.03"), False, ("full cream milk", "whole milk")),
+    # A Staple: used a little at a time in meals nobody plans (breakfast, coffee).
+    SeedIngredient("milk", "dairy", "ml", D("1.03"), True, ("full cream milk", "whole milk")),
     SeedIngredient("butter", "dairy", "g", D("0.96"), False, ("unsalted butter", "salted butter")),
     # Its own starter, never an alias of butter: butter is flagged dairy (ADR 0023).
     SeedIngredient(

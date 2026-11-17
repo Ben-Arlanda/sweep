@@ -110,8 +110,8 @@ async def test_rows_say_what_the_kitchen_has_now(
 ) -> None:
     await create_household(client, fake_issuer, "ana")
     eggs = await ingredient_id(client, fake_issuer, "ana", "eggs")
-    milk = await ingredient_id(client, fake_issuer, "ana", "milk")
-    for iid, quantity in ((eggs, "4"), (milk, "1000")):
+    cream = await ingredient_id(client, fake_issuer, "ana", "thickened cream")
+    for iid, quantity in ((eggs, "4"), (cream, "1000")):
         response = await client.put(
             f"/kitchen/items/{iid}",
             json={"quantity": quantity},
@@ -121,14 +121,18 @@ async def test_rows_say_what_the_kitchen_has_now(
     with db.begin() as conn:
         conn.execute(
             text("UPDATE kitchen_items SET last_confirmed_at = :t WHERE ingredient_id = :i"),
-            {"t": utcnow() - timedelta(days=20), "i": milk},
+            {"t": utcnow() - timedelta(days=20), "i": cream},
         )
-    reader.answers.append(seen(("eggs", 6), ("milk", None), ("butter", None)))
+    reader.answers.append(seen(("eggs", 6), ("thickened cream", None), ("butter", None)))
 
     got = rows((await send(client, fake_issuer, ("a.jpg", JPEG))).json())
 
     assert got["eggs"]["in_kitchen"] == {"quantity": "4", "unit": "count", "status": "confirmed"}
-    assert got["milk"]["in_kitchen"] == {"quantity": "1000", "unit": "ml", "status": "unknown"}
+    assert got["thickened cream"]["in_kitchen"] == {
+        "quantity": "1000",
+        "unit": "ml",
+        "status": "unknown",
+    }
     assert got["butter"]["in_kitchen"] is None  # new
 
 
