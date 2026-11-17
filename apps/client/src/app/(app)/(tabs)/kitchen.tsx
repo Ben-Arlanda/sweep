@@ -34,7 +34,14 @@ import {
   type LucideIcon,
 } from 'lucide-react-native';
 import { useRef, useState } from 'react';
-import { Pressable, Switch, TextInput, View, type HostInstance } from 'react-native';
+import {
+  Pressable,
+  Switch,
+  TextInput,
+  useWindowDimensions,
+  View,
+  type HostInstance,
+} from 'react-native';
 
 import { FoodThumb } from '@/components/FoodThumb';
 import { Icon } from '@/components/Icon';
@@ -640,16 +647,16 @@ function StockBadge({ stock }: { stock: Stock }) {
       style={{
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 5,
-        paddingLeft: 6,
-        paddingRight: 10,
-        minHeight: 30,
+        gap: 4,
+        paddingLeft: 5,
+        paddingRight: 8,
+        minHeight: 24,
         borderRadius: t.radius.pill,
         backgroundColor: c.bg,
       }}
     >
-      <StockIcon stock={stock} size={16} />
-      <Text variant="label" style={{ color: c.fg, fontSize: 14 }}>
+      <StockIcon stock={stock} size={14} />
+      <Text variant="label" style={{ color: c.fg, fontSize: 12, lineHeight: 16 }}>
         {STOCK_LABEL[stock]}
       </Text>
     </View>
@@ -678,6 +685,9 @@ function ItemRow({
   onAdd: () => void;
 }) {
   const t = useTheme();
+  // Narrow phones (iPhone SE and mini): smaller picture, tighter gaps.
+  const compact = useWindowDimensions().width < 390;
+  const gap = compact ? t.space.sm : t.space.md;
   const badge = useRef<HostInstance>(null);
   const pill = useRef<HostInstance>(null);
   const more = useRef<HostInstance>(null);
@@ -690,15 +700,15 @@ function ItemRow({
       style={{
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 5,
-        minHeight: 34,
-        paddingHorizontal: t.space.md,
+        gap: 4,
+        minHeight: 32,
+        paddingHorizontal: t.space.sm + 2,
         borderRadius: t.radius.pill,
         backgroundColor: t.colors.actionSoft,
       }}
     >
-      <Icon icon={ShoppingCart} size={16} color={t.colors.onActionSoft} />
-      <Text variant="label" style={{ color: t.colors.onActionSoft, fontSize: 14 }}>
+      <Icon icon={ShoppingCart} size={14} color={t.colors.onActionSoft} />
+      <Text variant="label" style={{ color: t.colors.onActionSoft, fontSize: 13 }}>
         On list
       </Text>
     </View>
@@ -708,9 +718,9 @@ function ItemRow({
       style={{
         flexDirection: 'row',
         alignItems: 'center',
-        gap: t.space.md,
-        marginHorizontal: t.space.md,
-        paddingVertical: t.space.md,
+        gap,
+        marginHorizontal: compact ? t.space.sm : t.space.md,
+        paddingVertical: t.space.sm + 2,
         borderTopWidth: 1,
         borderTopColor: t.colors.border,
       }}
@@ -721,7 +731,7 @@ function ItemRow({
           minWidth: 0,
           flexDirection: 'row',
           alignItems: 'center',
-          gap: t.space.md,
+          gap,
         }}
       >
         <Pressable
@@ -734,15 +744,20 @@ function ItemRow({
           <FoodThumb
             emoji={ingredientEmoji(row.ingredient)}
             tint={tintFor(row.ingredient.name)}
-            size={56}
+            size={compact ? 40 : 48}
           />
         </Pressable>
         <View style={{ flex: 1, minWidth: 0, gap: 2, alignItems: 'flex-start' }}>
           <Pressable onPress={onOpen} accessible={false} focusable={false}>
-            <Text variant="label" numberOfLines={2} style={{ fontSize: 17, lineHeight: 22 }}>
+            <Text variant="label" numberOfLines={2} style={{ fontSize: 15, lineHeight: 19 }}>
               {row.name}
             </Text>
-            <Text variant="caption" muted>
+            <Text
+              variant="caption"
+              muted
+              numberOfLines={1}
+              style={{ fontSize: 12, lineHeight: 16 }}
+            >
               {row.staple ? 'Staple' : 'Non-staple'} · {placeLabel(row.place)}
             </Text>
           </Pressable>
@@ -751,8 +766,8 @@ function ItemRow({
             accessibilityRole="button"
             accessibilityLabel={`${row.name}: ${STOCK_LABEL[row.stock]}. Change stock status`}
             onPress={async () => onStatus(await measureAnchor(badge))}
-            hitSlop={{ top: 6, bottom: 6 }}
-            style={({ pressed }) => ({ marginTop: 4, opacity: pressed ? 0.7 : 1 })}
+            hitSlop={{ top: 10, bottom: 10, left: 4, right: 4 }} // 44 pt to tap
+            style={({ pressed }) => ({ marginTop: 3, opacity: pressed ? 0.7 : 1 })}
           >
             <StockBadge stock={row.stock} />
           </Pressable>
@@ -771,10 +786,11 @@ function ItemRow({
                 : `Add amount for ${row.name}`
             }
             onPress={async () => onMenu(await measureAnchor(pill))}
+            hitSlop={{ top: 4, bottom: 4 }}
             style={({ pressed }) => ({
-              minHeight: t.touchTarget,
-              minWidth: 76,
-              paddingHorizontal: t.space.md,
+              minHeight: 40,
+              minWidth: compact ? 56 : 64,
+              paddingHorizontal: t.space.sm + 2,
               borderRadius: t.radius.pill,
               borderWidth: 1.5,
               borderColor: row.amount ? t.colors.border : t.colors.textMuted,
@@ -783,16 +799,18 @@ function ItemRow({
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: t.space.md,
+              gap: t.space.sm,
               opacity: pressed ? 0.7 : 1,
             })}
           >
             {row.amount ? (
-              <Text style={{ fontSize: 16, fontVariant: ['tabular-nums'] }}>{row.amount}</Text>
+              <Text style={{ fontSize: 14, lineHeight: 18, fontVariant: ['tabular-nums'] }}>
+                {row.amount}
+              </Text>
             ) : (
               <>
-                <Icon icon={Minus} size={18} color={t.colors.textMuted} />
-                <Icon icon={CirclePlus} size={22} color={t.colors.text} />
+                <Icon icon={Minus} size={16} color={t.colors.textMuted} />
+                <Icon icon={CirclePlus} size={20} color={t.colors.text} />
               </>
             )}
           </Pressable>
@@ -805,18 +823,19 @@ function ItemRow({
               accessibilityRole="button"
               accessibilityLabel={`Add ${row.name} to your shopping list`}
               onPress={onAdd}
+              hitSlop={{ top: 4, bottom: 4 }}
               style={({ pressed }) => ({
                 flexDirection: 'row',
                 alignItems: 'center',
-                gap: 5,
-                minHeight: t.touchTarget,
-                paddingHorizontal: t.space.md,
+                gap: 4,
+                minHeight: 40,
+                paddingHorizontal: t.space.sm + 2,
                 borderRadius: t.radius.pill,
                 backgroundColor: pressed ? t.colors.actionPressed : t.colors.action,
               })}
             >
-              <Icon icon={ShoppingCart} size={16} color={t.colors.onAction} />
-              <Text variant="label" style={{ color: t.colors.onAction, fontSize: 14 }}>
+              <Icon icon={ShoppingCart} size={14} color={t.colors.onAction} />
+              <Text variant="label" style={{ color: t.colors.onAction, fontSize: 13 }}>
                 Add to list
               </Text>
             </Pressable>
@@ -829,7 +848,7 @@ function ItemRow({
         accessibilityLabel={`More for ${row.name}`}
         onPress={async () => onMenu(await measureAnchor(more))}
         style={({ pressed }) => ({
-          width: 32,
+          width: 28,
           minHeight: t.touchTarget,
           alignItems: 'center',
           justifyContent: 'center',
