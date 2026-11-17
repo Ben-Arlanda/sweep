@@ -1,18 +1,24 @@
-"""The Recipe Knowledge Base: loading Seed Recipes, embedding them, and searching (R1).
+"""The Recipe Knowledge Base: loading Seed Recipes, embedding them, and searching.
 
 R1 search (plan §9) = vector similarity + hard filters. The filters are plain SQL
 `WHERE` clauses, so they are exact: "under 30 minutes" can never return a 40-minute
 recipe because it happened to be "similar". Similarity only decides the order.
+
+R2 (slice 9) = Postgres full-text search over a weighted document per recipe, after the
+same filters. `fuse` merges ranked lists (R3, reciprocal rank fusion).
 """
 
 import hashlib
 import logging
+import re
 import uuid
-from collections.abc import Sequence
+from collections.abc import Hashable, Sequence
 from dataclasses import dataclass, field
+from typing import Any
 
 import anyio
 from sqlalchemy import ColumnElement, Select, exists, func, or_, select
+from sqlalchemy import text as sql
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
@@ -26,6 +32,8 @@ from app.services.ingredient_lines import IngredientIndex, normalise_lines
 log = logging.getLogger(__name__)
 
 SEARCH_LIMIT = 20
+MAX_QUERY_WORDS = 12  # a search box, not a document
+RRF_K = 60  # the usual default from the original paper (Cormack et al., 2009)
 
 
 # --- Loading Seed Recipes ---------------------------------------------------------------
@@ -97,7 +105,44 @@ async def upsert_seed_recipes(
         await session.delete(gone)
         report.removed += 1
     await session.flush()
+    # Every recipe, not just these: new aliases (migrations) change Imported ones too.
+    await refresh_search_documents(session)
     return report
+
+
+# --- Keyword search documents (R2) -------------------------------------------------------
+
+# One statement builds every recipe's keyword document, so seed loading, imports and edits
+# can't disagree about what's in it. Weights: A title, B Ingredient names and their
+# aliases (so "shrimp" finds prawns), C cuisine and summary. Unlinked lines use their
+# raw text, like embedding_text. The migration that added the column has a frozen copy.
+SEARCH_DOCUMENT_SQL = """
+UPDATE recipes AS r SET search_document =
+    setweight(to_tsvector('english', r.title), 'A')
+    || setweight(to_tsvector('english', coalesce((
+        SELECT string_agg(coalesce(i.name, ri.raw_text) || coalesce(' ' || (
+                   SELECT string_agg(a.alias, ' ') FROM ingredient_aliases AS a
+                   WHERE a.ingredient_id = i.id
+               ), ''), ' ')
+        FROM recipe_ingredients AS ri
+        LEFT JOIN ingredients AS i ON i.id = ri.ingredient_id
+        WHERE ri.recipe_id = r.id
+    ), '')), 'B')
+    || setweight(to_tsvector('english', coalesce(r.cuisine, '') || ' ' || r.summary), 'C')
+"""
+
+
+async def refresh_search_documents(
+    session: AsyncSession, recipe_ids: Sequence[uuid.UUID] | None = None
+) -> None:
+    """Rebuild the keyword documents of these recipes (all of them when None). Call
+    after a recipe's title, summary, cuisine or lines change, once they're flushed."""
+    if recipe_ids is None:
+        await session.execute(sql(SEARCH_DOCUMENT_SQL))
+    elif recipe_ids:
+        await session.execute(
+            sql(SEARCH_DOCUMENT_SQL + " WHERE r.id = ANY(:ids)"), {"ids": list(recipe_ids)}
+        )
 
 
 # --- Embeddings -------------------------------------------------------------------------
@@ -363,6 +408,55 @@ async def search(
     )
     rows = (await session.execute(query)).all()
     return [(recipe, 1 - float(d)) for recipe, d in rows]
+
+
+def _words(query: str) -> list[str]:
+    # Letters and digits only: what's left can't be tsquery syntax, and each word becomes
+    # a bound parameter anyway, never part of the SQL.
+    return re.findall(r"[^\W_]+", query.lower())[:MAX_QUERY_WORDS]
+
+
+async def keyword_search(
+    session: AsyncSession,
+    household_id: uuid.UUID,
+    query: str,
+    filters: RecipeFilters,
+    limit: int,
+) -> list[tuple[Recipe, float]]:
+    """R2: recipes containing any of the query's words (stemmed: "curries" finds curry),
+    best first by ts_rank_cd, after the same filters as search. Any word, not all:
+    websearch_to_tsquery ANDs words, and "cosy chicken dinner" would find nothing.
+    Stop words only, or no words, finds nothing. Never Adaptations (ADR 0021)."""
+    words = _words(query)
+    if not words:
+        return []
+    tsquery: ColumnElement[Any] = func.plainto_tsquery("english", words[0])
+    for word in words[1:]:
+        tsquery = tsquery.op("||")(func.plainto_tsquery("english", word))
+    rank = func.ts_rank_cd(Recipe.search_document, tsquery)
+    found = (
+        _filtered(visible_to(household_id), filters)
+        .where(Recipe.kind != RecipeKind.ADAPTATION, Recipe.search_document.op("@@")(tsquery))
+        .add_columns(rank)
+        .order_by(rank.desc(), Recipe.title, Recipe.id)
+        .limit(limit)
+    )
+    rows = (await session.execute(found)).all()
+    return [(recipe, float(score)) for recipe, score in rows]
+
+
+def fuse[T: Hashable](rankings: Sequence[Sequence[T]], k: int = RRF_K) -> list[tuple[T, float]]:
+    """Reciprocal rank fusion (R3): each list gives 1 / (k + rank) to every id in it, and
+    ids are ordered by their total. Only ranks count, never scores, so lists scored on
+    different scales (cosine similarity, ts_rank_cd) merge fairly. A bigger k flattens
+    the difference between rank 1 and rank 10. Ties: the earlier list's order wins."""
+    totals: dict[T, float] = {}
+    first_seen: dict[T, tuple[int, int]] = {}
+    for which, ranking in enumerate(rankings):
+        for rank, recipe_id in enumerate(ranking, start=1):
+            totals[recipe_id] = totals.get(recipe_id, 0.0) + 1 / (k + rank)
+            first_seen.setdefault(recipe_id, (rank, which))
+    return sorted(totals.items(), key=lambda item: (-item[1], first_seen[item[0]]))
 
 
 async def get_recipe(
