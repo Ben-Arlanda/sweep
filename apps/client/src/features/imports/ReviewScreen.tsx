@@ -23,6 +23,7 @@ import {
   linkLine,
   readLines,
   removeLine,
+  MAX_SUMMARY,
   saveProblems,
   searchGuess,
   toImportedRecipe,
@@ -111,6 +112,16 @@ export function ReviewScreen({
         onChangeText={(title) => set({ title })}
         maxLength={200}
         error={problems.title}
+      />
+      <Field
+        label="Description (optional)"
+        value={form.summary}
+        onChangeText={(summary) => set({ summary })}
+        multiline
+        maxLength={MAX_SUMMARY}
+        textAlignVertical="top"
+        style={{ minHeight: 72, paddingTop: t.space.sm }}
+        error={problems.summary}
       />
       <View style={{ flexDirection: 'row', gap: t.space.md }}>
         <View style={{ flex: 1 }}>

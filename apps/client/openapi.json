@@ -3751,6 +3751,17 @@
             "type": "string",
             "title": "Title"
           },
+          "summary": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Summary"
+          },
           "servings": {
             "anyOf": [
               {
@@ -3827,6 +3838,7 @@
         "type": "object",
         "required": [
           "title",
+          "summary",
           "servings",
           "total_minutes",
           "course",
@@ -3873,6 +3885,19 @@
             "maxLength": 200,
             "minLength": 1,
             "title": "Title"
+          },
+          "summary": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Summary"
           },
           "servings": {
             "type": "integer",

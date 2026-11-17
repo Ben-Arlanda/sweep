@@ -10,7 +10,6 @@
  */
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { randomUUID } from 'expo-crypto';
-import { Platform } from 'react-native';
 
 import type { ImportedRecipeIn } from '@/features/imports/review';
 
@@ -18,6 +17,9 @@ import { api, unwrap } from './client';
 import { mealPlanKeys } from './mealPlan';
 import { recipeKeys } from './recipes';
 import type { components } from './schema';
+import { appendFile, type PickedFile } from './upload';
+
+export type { PickedFile };
 
 export type ImportDraft = components['schemas']['ImportDraftOut'];
 export type ImportedRecipe = components['schemas']['ImportedRecipeOut'];
@@ -33,23 +35,6 @@ export function useImportedRecipes() {
     queryKey: importKeys.mine,
     queryFn: async () => unwrap(await api.GET('/recipes/imported')),
   });
-}
-
-/** A picked photo or PDF: where it is on the device, and what it is. */
-export type PickedFile = { uri: string; name: string; type: string };
-
-/**
- * React Native's FormData takes `{ uri, name, type }` and streams the file itself. A
- * browser's FormData needs the real bytes, so on web the file is fetched from its
- * `blob:` or `data:` URL first.
- */
-async function appendFile(form: FormData, field: string, file: PickedFile) {
-  if (Platform.OS === 'web') {
-    const blob = await (await fetch(file.uri)).blob();
-    form.append(field, new File([blob], file.name, { type: file.type }));
-  } else {
-    form.append(field, file as unknown as Blob);
-  }
 }
 
 // openapi-fetch would turn the body into JSON; FormData must go as it is, so the

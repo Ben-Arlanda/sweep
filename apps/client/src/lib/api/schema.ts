@@ -1116,6 +1116,8 @@ export interface components {
         ImportDraftOut: {
             /** Title */
             title: string;
+            /** Summary */
+            summary: string | null;
             /** Servings */
             servings: number | null;
             /** Total Minutes */
@@ -1147,6 +1149,8 @@ export interface components {
         ImportedRecipeIn: {
             /** Title */
             title: string;
+            /** Summary */
+            summary?: string | null;
             /** Servings */
             servings: number;
             /** Total Minutes */

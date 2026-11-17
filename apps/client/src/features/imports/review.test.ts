@@ -2,6 +2,7 @@ import type { components } from '@/lib/api/schema';
 
 import {
   addLine,
+  emptyForm,
   formFromDraft,
   formFromRecipe,
   hasChanges,
@@ -40,6 +41,7 @@ function line(raw: string, changes: Partial<DraftLine> = {}): DraftLine {
 
 const DRAFT: Draft = {
   title: "Mum's Beef Ragu",
+  summary: null,
   servings: 4,
   total_minutes: 120,
   course: 'main',
@@ -73,6 +75,35 @@ describe('formFromDraft', () => {
   it('gives every line its own key, even two the same', () => {
     const form = formFromDraft({ ...DRAFT, lines: [line('1 egg'), line('1 egg')] });
     expect(new Set(form.lines.map((l) => l.key)).size).toBe(2);
+  });
+});
+
+describe('the description', () => {
+  it('starts as what Sweep copied, or empty', () => {
+    expect(formFromDraft({ ...DRAFT, summary: 'Slow and rich.' }).summary).toBe('Slow and rich.');
+    expect(formFromDraft(DRAFT).summary).toBe('');
+    expect(emptyForm().summary).toBe('');
+  });
+
+  it('is sent as one paragraph, or null when empty', () => {
+    const form = formFromDraft(DRAFT);
+    expect(toImportedRecipe({ ...form, summary: '  Slow\n\nand  rich. ' }).summary).toBe(
+      'Slow and rich.',
+    );
+    expect(toImportedRecipe({ ...form, summary: '   ' }).summary).toBeNull();
+  });
+
+  it('is optional, up to 500 characters', () => {
+    const form = formFromDraft(DRAFT);
+    expect(saveProblems({ ...form, summary: '' })).toEqual({});
+    expect(saveProblems({ ...form, summary: 'x'.repeat(501) })).toEqual({
+      summary: 'Keep the description to 500 characters.',
+    });
+  });
+
+  it('a saved one comes back for editing, and editing it is a change', () => {
+    const start = formFromDraft(DRAFT);
+    expect(hasChanges(start, { ...start, summary: 'New.' })).toBe(true);
   });
 });
 
@@ -164,7 +195,7 @@ describe('editing a saved Imported Recipe', () => {
     id: 'r1',
     kind: 'imported',
     title: 'Ragu',
-    summary: '',
+    summary: 'Slow and rich.',
     cuisine: null,
     course: 'main',
     servings: 4,
@@ -187,6 +218,7 @@ describe('editing a saved Imported Recipe', () => {
       ingredient_id: 'i-onion',
     });
     expect(form.sourceUrl).toBe('https://example.com/ragu');
+    expect(form.summary).toBe('Slow and rich.');
   });
 
   it('shows Not linked still, but never Check (that was about the import)', () => {

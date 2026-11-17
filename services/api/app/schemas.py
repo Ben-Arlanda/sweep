@@ -616,6 +616,7 @@ class SendMessageIn(BaseModel):
 
 RecipeLine = Annotated[str, _name(300), ONE_LINE]  # an ingredient line, as written
 MAX_RECIPE_LINES, MAX_METHOD_STEPS = 60, 40
+MAX_SUMMARY = 500  # an Imported Recipe's description, as the column allows
 MAX_PASTE_CHARS = 20_000  # about 5 long recipes; text pulled from a PDF is cut to this too
 
 
@@ -640,6 +641,8 @@ class ImportedRecipeIn(BaseModel):
     servings, a Course and one line. The marks ("Check", "Not linked") never block."""
 
     title: Annotated[str, _name(200), ONE_LINE]
+    # The intro under the title. One paragraph: it reaches the agent, like every name.
+    summary: Annotated[str, _name(MAX_SUMMARY), ONE_LINE] | None = None
     servings: int = Field(gt=0, le=50)
     total_minutes: int | None = Field(default=None, gt=0, le=1440)
     course: Course
@@ -670,6 +673,7 @@ class ImportDraftOut(BaseModel):
     """What a door read, for the review screen. Nothing is stored until Save."""
 
     title: str
+    summary: str | None  # the intro, copied from the text or photo; None: none found
     servings: int | None  # None: the Member fills it in (Save needs it)
     total_minutes: int | None
     course: Course  # Sweep's guess, pre-selected and labelled as one
