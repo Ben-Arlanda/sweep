@@ -888,14 +888,7 @@ function ItemMenu({
         onPress={onMove}
         divider={!row.staple} // first item for Staples (no Change amount above)
       />
-      <MenuItem
-        icon={Archive}
-        label="Storage location"
-        detail={placeLabel(row.place)}
-        chevron
-        onPress={onEdit}
-        divider
-      />
+      <MenuItem icon={Archive} label="Storage location" chevron onPress={onEdit} divider />
       <MenuItem icon={Trash2} label="Remove item" danger onPress={onRemove} divider />
     </View>
   );
@@ -1209,14 +1202,20 @@ function ItemSheet({
         }}
       >
         <Icon icon={Leaf} size={22} color={t.colors.text} />
-        <Text style={{ flex: 1 }}>Make this a staple</Text>
-        <Switch
-          accessibilityLabel="Make this a staple"
-          value={staple}
-          onValueChange={setStaple}
-          trackColor={{ true: t.stock.in_stock.icon, false: t.colors.border }}
-          thumbColor="#ffffff"
-        />
+        <Text style={{ flex: 1, lineHeight: 22, includeFontPadding: false }}>
+          Make this a staple
+        </Text>
+        <View style={{ justifyContent: 'center', alignSelf: 'center' }}>
+          <Switch
+            accessibilityLabel="Make this a staple"
+            value={staple}
+            onValueChange={setStaple}
+            trackColor={{ true: t.stock.in_stock.icon, false: t.colors.switchOff }}
+            ios_backgroundColor={t.colors.switchOff} // iOS paints the off track from this
+            thumbColor="#ffffff"
+            style={{ marginVertical: 0 }}
+          />
+        </View>
       </View>
 
       <View

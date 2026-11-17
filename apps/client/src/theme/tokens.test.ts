@@ -65,6 +65,14 @@ describe.each(schemes)('%s stock colours (ADR 0024)', (scheme) => {
   });
 });
 
+describe.each(schemes)('%s controls are visible (3:1, WCAG 1.4.11)', (scheme) => {
+  it('a switch that is off', () => {
+    expect(contrastRatio(colors[scheme].switchOff, colors[scheme].surface)).toBeGreaterThanOrEqual(
+      3,
+    );
+  });
+});
+
 describe('welcome hero meets WCAG AA', () => {
   it.each([
     ['headline', hero.text, hero.background],
