@@ -6,7 +6,7 @@ as "parent + Swaps" put together on each read. That way everything that reads li
 cost: editing the parent later doesn't change its Adaptations.
 
 There is no route that creates one. Only an approved Proposal does (slice 5e step 3),
-after the Swap checks in code have passed.
+and `create` always runs the Swap checks itself, so no caller can skip them.
 """
 
 import uuid
@@ -19,7 +19,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app import errors
 from app.models import Recipe, RecipeIngredient, RecipeKind
 from app.schemas import ImportedLineIn
-from app.services import imported_recipes
+from app.services import diet, imported_recipes, swap_checks
 from app.services.recipes import visible_to
 
 TITLE_JOIN = " · "  # "Mum's ragu · with lentils"
@@ -95,6 +95,12 @@ async def create(
             lines.append(swapped)
         else:
             lines.append(_copy(line))
+
+    rules = await diet.get_rules(session, household_id)
+    pairs = [(by_position[p], new_lines[p]) for p in sorted(new_lines)]
+    problems = swap_checks.check(pairs, lines, rules)
+    if problems:
+        raise errors.SwapsRefused(problems)
 
     adaptation = Recipe(
         kind=RecipeKind.ADAPTATION,

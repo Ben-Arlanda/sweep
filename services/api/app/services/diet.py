@@ -24,6 +24,7 @@ from app.models import (
     HouseholdPreferences,
     Ingredient,
     Recipe,
+    RecipeIngredient,
 )
 from app.services import ingredients
 
@@ -58,10 +59,15 @@ def _diets_broken(flags: frozenset[Contains], diets: Iterable[Diet]) -> list[Die
 
 def check_recipe(recipe: Recipe, rules: DietaryRules) -> RuleCheck:
     """Which lines break the Rules, and which need a label check. Pure: no database."""
+    return check_lines(recipe.ingredients, rules)
+
+
+def check_lines(lines: Iterable[RecipeIngredient], rules: DietaryRules) -> RuleCheck:
+    """check_recipe for lines that aren't a stored recipe yet (an Adaptation's)."""
     check = RuleCheck()
     if not rules.active:
         return check
-    for line in recipe.ingredients:
+    for line in lines:
         ingredient = line.ingredient
         if ingredient is None:
             if line.needs_review:  # unlinked but not flagged = water, which is fine

@@ -183,3 +183,56 @@ async def test_the_database_keeps_kind_and_parent_in_step(db: Engine) -> None:
             )
         ).scalar_one()
         conn.execute(text("UPDATE recipes SET parent_recipe_id = id WHERE kind = 'seed'"))
+
+
+# --- The Swap checks run inside create (step 2): no caller can skip them -------------
+
+
+async def set_vegetarian(client: httpx.AsyncClient, issuer: FakeIssuer) -> None:
+    response = await client.put(
+        "/households/current/dietary-rules",
+        json={"diets": ["vegetarian"], "excluded_ingredient_ids": []},
+        headers=issuer.headers("ana") | idem(),
+    )
+    assert response.status_code == 200, response.text
+
+
+async def test_a_vegetarian_households_beef_favourite_can_become_meat_free(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, adapt: Adapt
+) -> None:
+    home = await create_household(client, fake_issuer, "ana")
+    await set_vegetarian(client, fake_issuer)
+    ragu = (await save(client, fake_issuer, nonna())).json()
+    made = await adapt(
+        home["household"]["id"], ragu["id"], [(0, "2 x 400g cans lentils")], "with lentils"
+    )
+    lines = (await get(client, fake_issuer, f"/recipes/{made}"))["ingredients"]
+    # Plain "lentils" is the red lentils alias; either way, linked and meat-free.
+    assert (lines[0]["ingredient"]["name"], lines[0]["replaces"]) == (
+        "red lentils",
+        "500 g beef mince",
+    )
+
+
+async def test_refused_swaps_store_nothing_and_say_why(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, load: Loader, db: Engine, adapt: Adapt
+) -> None:
+    await load([STIR_FRY])
+    home = await create_household(client, fake_issuer, "ana")
+    await set_vegetarian(client, fake_issuer)
+    parent = seed_id(db, "beef-stir-fry")
+    with pytest.raises(errors.SwapsRefused) as refused:
+        await adapt(
+            home["household"]["id"],
+            parent,
+            [(0, "500 g chicken thigh"), (1, "1 jar zorblax relish")],
+            "with chicken",
+        )
+    assert refused.value.problems == [
+        '"1 jar zorblax relish" isn\'t an Ingredient Sweep knows',
+        "The recipe still breaks the Dietary Rules: chicken thigh (vegetarian),"
+        " 1 jar zorblax relish (couldn't check)",
+    ]
+    with db.connect() as conn:
+        count = conn.execute(text("SELECT count(*) FROM recipes WHERE kind = 'adaptation'"))
+        assert count.scalar_one() == 0
