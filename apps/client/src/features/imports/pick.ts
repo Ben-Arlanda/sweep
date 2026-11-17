@@ -22,8 +22,10 @@ export function resizeFor(width: number, height: number) {
   return width >= height ? { width: LONGEST_SIDE } : { height: LONGEST_SIDE };
 }
 
-export function checkPhotoCount(n: number): string | null {
-  return n > MAX_PHOTOS ? 'Up to 3 photos, one recipe. Pick the pages again.' : null;
+const TOO_MANY = 'Up to 3 photos, one recipe. Pick the pages again.';
+
+export function checkPhotoCount(n: number, tooMany = TOO_MANY): string | null {
+  return n > MAX_PHOTOS ? tooMany : null;
 }
 
 export function checkPdf(file: { name: string; mimeType?: string; size?: number }): string | null {
@@ -37,18 +39,36 @@ export function checkPdf(file: { name: string; mimeType?: string; size?: number 
 
 export type Picked<T> = { ok: true; value: T } | { ok: false; error: string | null }; // null: cancelled
 
-/** Up to 3 photos of one recipe, pages in the order picked, each shrunk to JPEG. */
-export async function pickPhotos(): Promise<Picked<PickedFile[]>> {
-  const result = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: ['images'],
-    allowsMultipleSelection: true,
-    selectionLimit: MAX_PHOTOS, // the web picker can't enforce this, hence checkPhotoCount
-    orderedSelection: true,
-    quality: 1, // compressed once, below
-  });
+type PickOptions = { camera?: boolean; tooMany?: string };
+
+/**
+ * Up to 3 photos from the library, in the order picked, or one from the camera; each
+ * shrunk to JPEG. Recipes use the library (cookbook pages); the Kitchen offers both.
+ */
+export async function pickPhotos({ camera = false, tooMany = TOO_MANY }: PickOptions = {}): Promise<
+  Picked<PickedFile[]>
+> {
+  if (camera) {
+    const permission = await ImagePicker.requestCameraPermissionsAsync();
+    if (!permission.granted) {
+      return {
+        ok: false,
+        error: 'Sweep needs the camera for this. You can choose photos instead.',
+      };
+    }
+  }
+  const result = camera
+    ? await ImagePicker.launchCameraAsync({ mediaTypes: ['images'], quality: 1 })
+    : await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ['images'],
+        allowsMultipleSelection: true,
+        selectionLimit: MAX_PHOTOS, // the web picker can't enforce this, hence checkPhotoCount
+        orderedSelection: true,
+        quality: 1, // compressed once, below
+      });
   if (result.canceled) return { ok: false, error: null };
-  const tooMany = checkPhotoCount(result.assets.length);
-  if (tooMany) return { ok: false, error: tooMany };
+  const problem = checkPhotoCount(result.assets.length, tooMany);
+  if (problem) return { ok: false, error: problem };
 
   const photos: PickedFile[] = [];
   for (const [i, asset] of result.assets.entries()) {

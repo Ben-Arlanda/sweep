@@ -17,6 +17,7 @@ import {
   TAB_ROOT,
   Text,
 } from '@/components/ui';
+import { AddFromPhotoSheet } from '@/features/kitchen/AddFromPhotoSheet';
 import { newIngredientName } from '@/features/kitchen/addNew';
 import { displayName, formatAmount } from '@/features/kitchen/format';
 import { usePlaceFilter } from '@/features/kitchen/placeFilter';
@@ -46,6 +47,7 @@ export default function KitchenScreen() {
   const actions = useKitchenActions();
   const [query, setQuery] = useState(''); // the "Add to Kitchen" search in the hero
   const [filter, setFilter] = usePlaceFilter();
+  const [photoSheet, setPhotoSheet] = useState(false);
 
   if (kitchen.isPending) return <Loading />;
   if (kitchen.isError) {
@@ -100,6 +102,7 @@ export default function KitchenScreen() {
         }}
       />
       <ErrorText message={actions.error?.message} />
+      <Button title="Add from photo" variant="secondary" onPress={() => setPhotoSheet(true)} />
 
       <ChoiceChips<PlaceFilter>
         label="Show"
@@ -111,7 +114,8 @@ export default function KitchenScreen() {
         ]}
       />
       <Text variant="caption" muted>
-        Ticking items off the Shopping List adds them here. Tap one to change it or move it.
+        Ticking items off the Shopping List adds them here, or add a photo of things laid out. Tap
+        one to change it or move it.
       </Text>
 
       {sections.length === 0 ? <Text muted>Nothing in your Kitchen yet.</Text> : null}
@@ -129,6 +133,12 @@ export default function KitchenScreen() {
           ))}
         </View>
       ))}
+      {photoSheet ? (
+        <AddFromPhotoSheet
+          start={filter === 'all' ? 'fridge' : filter}
+          onClose={() => setPhotoSheet(false)}
+        />
+      ) : null}
     </Screen>
   );
 }

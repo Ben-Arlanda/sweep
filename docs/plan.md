@@ -613,7 +613,7 @@ Known gaps from 6c: tapping Cooked or Undo swaps the button, so keyboard focus d
 3. ✅ **Read:** `POST /kitchen/photos` (multipart, 1–3 files, Place) → one Haiku call → resolved rows with current Kitchen amounts (New / Already in your Kitchen, Not linked). Nothing written. Scripted-reader fixture for tests.
 4. ✅ **Apply:** `POST /kitchen/photos/apply` with the ticked rows; Household-scoped, validated, one transaction.
 5. ✅ **Eval:** `evals/kitchen_photos.py`, answer keys, injection photo; run Haiku ×3, report against the bar and cost.
-6. **Client (3e-b):** "Add from photo" + Sheet (Place chips, camera/library, resize), review screen, leave dialog; browser check and Lighthouse (dark).
+6. ✅ **Client (3e-b):** "Add from photo" + Sheet (Place chips, camera/library, resize), review screen, leave dialog; browser check and Lighthouse (dark).
 
 Experiments (`experiments/`, any time after slice 4):
 
