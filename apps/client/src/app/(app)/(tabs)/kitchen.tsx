@@ -659,7 +659,8 @@ function StockBadge({ stock }: { stock: Stock }) {
 /**
  * One item: picture, name, "Staple · Cupboard", and its status badge (tap to change).
  * On the right, the amount (tap for the ⋯ menu) and ⋯. An Out Non-staple also offers
- * Add to list; an Out Staple is already on the list, so it shows nothing extra.
+ * Add to list; an Out Staple went on the list by itself, so it shows "On list" instead
+ * of its amount, never a button.
  */
 function ItemRow({
   row,
@@ -680,7 +681,28 @@ function ItemRow({
   const badge = useRef<HostInstance>(null);
   const pill = useRef<HostInstance>(null);
   const more = useRef<HostInstance>(null);
-  const offerList = row.stock === 'out' && !row.staple;
+  const out = row.stock === 'out';
+  // Out Staples went on the list by themselves: "On list" replaces the amount, no button.
+  const stapleOnList = out && row.staple && onList;
+  const offerList = out && !row.staple;
+  const onListChip = (
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 5,
+        minHeight: 34,
+        paddingHorizontal: t.space.md,
+        borderRadius: t.radius.pill,
+        backgroundColor: t.colors.actionSoft,
+      }}
+    >
+      <Icon icon={ShoppingCart} size={16} color={t.colors.onActionSoft} />
+      <Text variant="label" style={{ color: t.colors.onActionSoft, fontSize: 14 }}>
+        On list
+      </Text>
+    </View>
+  );
   return (
     <View
       style={{
@@ -737,56 +759,47 @@ function ItemRow({
         </View>
       </View>
       <View style={{ alignItems: 'flex-end', gap: t.space.sm }}>
-        <Pressable
-          ref={pill}
-          accessibilityRole="button"
-          accessibilityLabel={
-            row.amount ? `${row.name} amount: ${row.amount}. Options` : `Add amount for ${row.name}`
-          }
-          onPress={async () => onMenu(await measureAnchor(pill))}
-          style={({ pressed }) => ({
-            minHeight: t.touchTarget,
-            minWidth: 76,
-            paddingHorizontal: t.space.md,
-            borderRadius: t.radius.pill,
-            borderWidth: 1.5,
-            borderColor: row.amount ? t.colors.border : t.colors.textMuted,
-            borderStyle: row.amount ? 'solid' : 'dashed', // dashed: nothing noted yet
-            backgroundColor: t.colors.surface,
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: t.space.md,
-            opacity: pressed ? 0.7 : 1,
-          })}
-        >
-          {row.amount ? (
-            <Text style={{ fontSize: 16, fontVariant: ['tabular-nums'] }}>{row.amount}</Text>
-          ) : (
-            <>
-              <Icon icon={Minus} size={18} color={t.colors.textMuted} />
-              <Icon icon={CirclePlus} size={22} color={t.colors.text} />
-            </>
-          )}
-        </Pressable>
+        {stapleOnList ? (
+          onListChip
+        ) : (
+          <Pressable
+            ref={pill}
+            accessibilityRole="button"
+            accessibilityLabel={
+              row.amount
+                ? `${row.name} amount: ${row.amount}. Options`
+                : `Add amount for ${row.name}`
+            }
+            onPress={async () => onMenu(await measureAnchor(pill))}
+            style={({ pressed }) => ({
+              minHeight: t.touchTarget,
+              minWidth: 76,
+              paddingHorizontal: t.space.md,
+              borderRadius: t.radius.pill,
+              borderWidth: 1.5,
+              borderColor: row.amount ? t.colors.border : t.colors.textMuted,
+              borderStyle: row.amount ? 'solid' : 'dashed', // dashed: nothing noted yet
+              backgroundColor: t.colors.surface,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: t.space.md,
+              opacity: pressed ? 0.7 : 1,
+            })}
+          >
+            {row.amount ? (
+              <Text style={{ fontSize: 16, fontVariant: ['tabular-nums'] }}>{row.amount}</Text>
+            ) : (
+              <>
+                <Icon icon={Minus} size={18} color={t.colors.textMuted} />
+                <Icon icon={CirclePlus} size={22} color={t.colors.text} />
+              </>
+            )}
+          </Pressable>
+        )}
         {offerList ? (
           onList ? (
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 5,
-                minHeight: 34,
-                paddingHorizontal: t.space.md,
-                borderRadius: t.radius.pill,
-                backgroundColor: t.colors.actionSoft,
-              }}
-            >
-              <Icon icon={ShoppingCart} size={16} color={t.colors.onActionSoft} />
-              <Text variant="label" style={{ color: t.colors.onActionSoft, fontSize: 14 }}>
-                On list
-              </Text>
-            </View>
+            onListChip
           ) : (
             <Pressable
               accessibilityRole="button"
