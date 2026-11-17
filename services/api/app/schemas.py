@@ -276,6 +276,20 @@ class ImportedRecipeOut(RecipeSummaryOut):
     rule_breaks: list[str]
 
 
+class SwapOut(BaseModel):
+    """One Swap of a Recipe Adaptation: the parent's line, and the line now in its place."""
+
+    replaces: str
+    raw_text: str
+
+
+class AdaptationOut(RecipeSummaryOut):
+    """One Adaptation, listed under its parent recipe, with its Swaps."""
+
+    parent_recipe_id: uuid.UUID
+    swaps: list[SwapOut]
+
+
 class RecipeIngredientOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
@@ -288,9 +302,11 @@ class RecipeIngredientOut(BaseModel):
     optional: bool
     needs_review: bool
     parse_method: ParseMethod  # "llm" = the review screen's "Check" mark
+    replaces: str | None = None  # Adaptations: the parent's line this Swap replaced
 
 
 class RecipeOut(RecipeSummaryOut):
+    parent_recipe_id: uuid.UUID | None  # set for a Recipe Adaptation
     ingredients: list[RecipeIngredientOut]
     method: list[str] | None
     source_url: str | None

@@ -246,7 +246,7 @@ class RecipeFilters:
     exclude_uncheckable: bool = False
 
 
-def _visible_to(household_id: uuid.UUID) -> Select[Recipe]:
+def visible_to(household_id: uuid.UUID) -> Select[Recipe]:
     # Seed Recipes are everyone's; Imported Recipes only their own Household's.
     return select(Recipe).where(
         or_(Recipe.household_id.is_(None), Recipe.household_id == household_id)
@@ -305,8 +305,10 @@ async def list_recipes(
     offset: int = 0,
 ) -> list[Recipe]:
     # Ordered by title, then id: a stable order, so pages never repeat or skip a recipe.
+    # Adaptations aren't listed on their own: they show under their parent (ADR 0021).
     query = (
-        _filtered(_visible_to(household_id), filters)
+        _filtered(visible_to(household_id), filters)
+        .where(Recipe.kind != RecipeKind.ADAPTATION)
         .order_by(Recipe.title, Recipe.id)
         .limit(limit)
         .offset(offset)
@@ -324,7 +326,7 @@ async def eligible(
 ) -> list[Recipe]:
     """Every recipe this Household may see that passes the filters (Dietary Rules
     included), with its lines. For Kitchen Match, which scores all of them."""
-    query = _filtered(_visible_to(household_id), filters)
+    query = _filtered(visible_to(household_id), filters)
     if among is not None:
         query = query.where(Recipe.id.in_(among))
     if exclude:
@@ -345,7 +347,7 @@ async def search(
     # Cosine distance: 0 = pointing the same way (same meaning), 2 = opposite.
     distance = RecipeEmbedding.embedding.cosine_distance(vector)
     query = (
-        _filtered(_visible_to(household_id), filters)
+        _filtered(visible_to(household_id), filters)
         .join(
             RecipeEmbedding,
             (RecipeEmbedding.recipe_id == Recipe.id) & (RecipeEmbedding.model == embedder.model),
@@ -362,7 +364,7 @@ async def get_recipe(
     session: AsyncSession, household_id: uuid.UUID, recipe_id: uuid.UUID
 ) -> Recipe:
     recipe = (
-        await session.execute(_visible_to(household_id).where(Recipe.id == recipe_id))
+        await session.execute(visible_to(household_id).where(Recipe.id == recipe_id))
     ).scalar_one_or_none()
     if recipe is None:
         # Same answer for "doesn't exist" and "another Household's": no existence leak.
@@ -407,5 +409,5 @@ async def get_many(
             continue  # an LLM-made-up id that isn't even a UUID
     if not ids:
         return {}
-    found = await session.execute(_visible_to(household_id).where(Recipe.id.in_(ids)))
+    found = await session.execute(visible_to(household_id).where(Recipe.id.in_(ids)))
     return {str(r.id): r for r in found.scalars()}

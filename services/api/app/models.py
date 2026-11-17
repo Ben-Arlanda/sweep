@@ -410,6 +410,7 @@ class Course(StrEnum):
 class RecipeKind(StrEnum):
     SEED = "seed"  # written for Sweep, shared by every Household
     IMPORTED = "imported"  # a Household's favourite: pasted, photo, link, file or typed (4d)
+    ADAPTATION = "adaptation"  # a Household's copy of another recipe with Swaps (5e)
 
 
 class ParseMethod(StrEnum):
@@ -426,18 +427,31 @@ class Recipe(Base):
     Seed Recipes have no Household (everyone sees them); Imported Recipes belong to one.
     The CHECK keeps those two facts in step, so a query can't accidentally share an
     Imported Recipe by forgetting a filter.
+
+    A Recipe Adaptation (ADR 0021) is a full copy of its parent's lines with some swapped,
+    so everything that reads lines (Rules, Shopping List, Kitchen Match) works unchanged.
+    It belongs to one Household, like an Imported Recipe, and goes when its parent goes.
     """
 
     __tablename__ = "recipes"
     __table_args__ = (
         CheckConstraint("(kind = 'seed') = (household_id IS NULL)", name="seed_has_no_household"),
         CheckConstraint("servings > 0", name="servings_positive"),
+        CheckConstraint(
+            "(kind = 'adaptation') = (parent_recipe_id IS NOT NULL)",
+            name="adaptation_has_parent",
+        ),
     )
 
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
     kind: Mapped[RecipeKind] = mapped_column(str_enum(RecipeKind, "recipe_kind"))
     household_id: Mapped[uuid.UUID | None] = mapped_column(
         ForeignKey("households.id", ondelete="CASCADE"), index=True
+    )
+    # The recipe an Adaptation was made from. CASCADE: deleting a favourite (or a Seed
+    # Recipe leaving the seed files) takes its Adaptations with it.
+    parent_recipe_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("recipes.id", ondelete="CASCADE"), index=True
     )
     # Stable name for Seed Recipes, so reloading the seed updates rows instead of adding.
     slug: Mapped[str | None] = mapped_column(String(100), unique=True)
@@ -488,6 +502,8 @@ class RecipeIngredient(Base):
     parse_method: Mapped[ParseMethod] = mapped_column(str_enum(ParseMethod, "parse_method"))
     # Set when nothing could match the line to an Ingredient (and it isn't just water).
     needs_review: Mapped[bool] = mapped_column(Boolean, default=False)
+    # Adaptations only: the parent's line this one swapped out. Set = this line is a Swap.
+    replaces: Mapped[str | None] = mapped_column(String(300))
 
 
 class RecipeEmbedding(Base):

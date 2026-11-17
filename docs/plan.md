@@ -551,7 +551,7 @@ Known gaps from 6c: tapping Cooked or Undo swaps the button, so keyboard focus d
 
 **Slice 5e steps** (build test-first; 5e-a API + evals, 5e-b client):
 
-1. **Data:** `RecipeKind.ADAPTATION`, `parent_recipe_id`, the Swaps stored with it; listing and deleting under the parent (Household-only, like Imported Recipes).
+1. ✅ **Data:** `RecipeKind.ADAPTATION`, `parent_recipe_id` (CASCADE: a deleted favourite takes its Adaptations), and `recipe_ingredients.replaces` (the parent's line a Swap replaced). An Adaptation is a **full copy** of its parent's lines with the swapped ones replaced, so the Rules, Shopping List and Kitchen Match read it unchanged; editing the parent later doesn't change it. Made only through `adaptations.create` (no POST route: only an approved Proposal makes one), from a Seed or Imported Recipe, never from another Adaptation. `GET /recipes/{id}/adaptations` (with Swaps), `DELETE /recipes/adaptations/{id}` (any Member). Browse leaves Adaptations out; search and Kitchen Match are step 3's call.
 2. **Swap checks (pure):** parse the replacement, refuse Not linked, refuse new meat/seafood/egg, Rule check on the adapted lines.
 3. **Agent:** `adapt_recipe` draft tool; search returns Rule-breaking Imported favourites flagged; validate refuses a Rule-breaking recipe planned without a fixing Adaptation; commit saves the Adaptation on approve; reuse of a kept Adaptation.
 4. **Evals:** Scenarios for the vegetarian favourite, a Kitchen swap, no Adaptation without a reason, and a planted "swap everything for wine"; slice 8 and 10 Scenarios re-run on Haiku. ADR results.
