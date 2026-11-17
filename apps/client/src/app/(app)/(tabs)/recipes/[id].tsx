@@ -10,11 +10,12 @@ import { Button, Card, ErrorText, Loading, Screen, SectionLabel, Text } from '@/
 import { hostOf } from '@/features/imports/ReviewScreen';
 import { ruleBreakHint, ruleBreakText } from '@/features/imports/ruleBreaks';
 import { addText, haveSummary, matchLine, type Have } from '@/features/recipes/kitchenMatch';
-import { recipeMeta } from '@/features/recipes/RecipeRow';
+import { swapLine, swapsOf } from '@/features/recipes/adaptations';
+import { RecipeRow, recipeMeta } from '@/features/recipes/RecipeRow';
 import { useImportedRecipeActions, useImportedRecipes } from '@/lib/api/imports';
 import { useKitchen } from '@/lib/api/kitchen';
 import { useList, useListActions } from '@/lib/api/lists';
-import { isNotFound, useRecipe } from '@/lib/api/recipes';
+import { isNotFound, useAdaptations, useDeleteAdaptation, useRecipe } from '@/lib/api/recipes';
 import type { components } from '@/lib/api/schema';
 import { ingredientEmoji, recipeEmoji } from '@/theme/foodEmoji';
 import { tintFor } from '@/theme/tint';
@@ -30,6 +31,9 @@ type List = components['schemas']['ShoppingListDetailOut'];
  *
  * Something you need shows "+ Need": one tap puts it on the Shopping List. Anything
  * already unticked on the list shows "On list", the same rule the planner uses.
+ *
+ * A Recipe Adaptation (ADR 0021) links back to its parent and lists its Swaps above the
+ * method, which is the parent's, unchanged. A parent lists its Household's Adaptations.
  */
 export default function RecipeScreen() {
   const t = useTheme();
@@ -64,6 +68,8 @@ export default function RecipeScreen() {
   const r = recipe.data;
   const tint = tintFor(r.title);
   const summary = kitchen.data ? haveSummary(r.ingredients, kitchen.data) : null;
+  const parentId = r.kind === 'adaptation' ? r.parent_recipe_id : null;
+  const swaps = swapsOf(r.ingredients);
 
   return (
     <Screen>
@@ -74,6 +80,7 @@ export default function RecipeScreen() {
         </Text>
         <Text>{r.summary}</Text>
         <Text variant="label">{recipeMeta(r)}</Text>
+        {parentId ? <AdaptedFrom parentId={parentId} /> : null}
         {summary && summary.total > 0 ? (
           <View style={{ marginTop: t.space.xs }}>
             <Tag kind={summary.have === summary.total ? 'action' : 'soft'}>
@@ -84,6 +91,8 @@ export default function RecipeScreen() {
           </View>
         ) : null}
       </Card>
+
+      {r.kind === 'adaptation' ? null : <Adaptations parentId={r.id} />}
 
       <View style={{ gap: t.space.sm }}>
         <SectionLabel>Ingredients</SectionLabel>
@@ -98,6 +107,18 @@ export default function RecipeScreen() {
       </View>
 
       {r.kind === 'imported' ? <YoursActions id={r.id} title={r.title} /> : null}
+
+      {swaps.length > 0 ? (
+        <View style={{ gap: t.space.sm }}>
+          <SectionLabel>Swaps</SectionLabel>
+          {swaps.map((swap) => (
+            <Text key={swap.replaces}>{swapLine(swap)}</Text>
+          ))}
+          <Text variant="caption" muted>
+            The method is the original recipe&apos;s, so it may still mention what was swapped.
+          </Text>
+        </View>
+      ) : null}
 
       {!r.method && r.source_url ? (
         <View style={{ gap: t.space.sm }}>
@@ -131,11 +152,90 @@ export default function RecipeScreen() {
       <Text variant="caption" muted>
         {r.kind === 'imported'
           ? "Your Household's recipe. Only your Household can see it."
-          : r.licence === 'Sweep original'
-            ? 'A Sweep recipe.'
-            : `From ${r.attribution}.`}
+          : r.kind === 'adaptation'
+            ? "Your Household's version. Only your Household can see it."
+            : r.licence === 'Sweep original'
+              ? 'A Sweep recipe.'
+              : `From ${r.attribution}.`}
       </Text>
+
+      {parentId ? <DeleteAdaptation id={r.id} title={r.title} parentId={parentId} /> : null}
     </Screen>
+  );
+}
+
+/** "Adapted from Mum's ragu", a link back. Waits quietly if the parent is still loading. */
+function AdaptedFrom({ parentId }: { parentId: string }) {
+  const t = useTheme();
+  const parent = useRecipe(parentId);
+  if (!parent.data) return null;
+  return (
+    <Pressable
+      accessibilityRole="link"
+      onPress={() => router.push({ pathname: '/recipes/[id]', params: { id: parentId } })}
+      style={{ minHeight: t.touchTarget, justifyContent: 'center' }}
+    >
+      <Text style={{ textDecorationLine: 'underline' }}>Adapted from {parent.data.title}</Text>
+    </Pressable>
+  );
+}
+
+/** The Household's Adaptations of this recipe, each with its Swaps. Hidden when there are none. */
+function Adaptations({ parentId }: { parentId: string }) {
+  const t = useTheme();
+  const kept = useAdaptations(parentId);
+  if (!kept.data?.length) return null;
+  return (
+    <View style={{ gap: t.space.sm }}>
+      <SectionLabel>Adaptations</SectionLabel>
+      {kept.data.map((a) => (
+        <RecipeRow key={a.id} recipe={a} note={a.swaps.map(swapLine).join('; ')} />
+      ))}
+    </View>
+  );
+}
+
+/** Any Member may delete an Adaptation. It asks first: meals planned with it go too. */
+function DeleteAdaptation({
+  id,
+  title,
+  parentId,
+}: {
+  id: string;
+  title: string;
+  parentId: string;
+}) {
+  const remove = useDeleteAdaptation();
+  const [asking, setAsking] = useState(false);
+  return (
+    <View>
+      <Button
+        title="Delete this version"
+        variant="danger"
+        compact
+        accessibilityLabel={`Delete ${title}`}
+        onPress={() => setAsking(true)}
+      />
+      {asking ? (
+        <ConfirmDialog
+          title={`Delete ${title}?`}
+          message="It goes for everyone in your Household, and so do any meals planned with it. The original recipe stays."
+          confirm="Delete version"
+          busy={remove.isPending}
+          onCancel={() => setAsking(false)}
+          onConfirm={async () => {
+            try {
+              await remove.mutateAsync({ id, idempotencyKey: randomUUID() });
+              setAsking(false);
+              router.replace({ pathname: '/recipes/[id]', params: { id: parentId } });
+            } catch {
+              setAsking(false);
+            }
+          }}
+        />
+      ) : null}
+      <ErrorText message={remove.error?.message} />
+    </View>
   );
 }
 

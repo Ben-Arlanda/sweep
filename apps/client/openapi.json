@@ -1792,6 +1792,111 @@
         }
       }
     },
+    "/recipes/{recipe_id}/adaptations": {
+      "get": {
+        "tags": [
+          "recipes"
+        ],
+        "summary": "List Adaptations",
+        "description": "This Household's Adaptations of a recipe, with their Swaps.",
+        "operationId": "list_adaptations_recipes__recipe_id__adaptations_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "recipe_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Recipe Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AdaptationOut"
+                  },
+                  "title": "Response List Adaptations Recipes  Recipe Id  Adaptations Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipes/adaptations/{recipe_id}": {
+      "delete": {
+        "tags": [
+          "recipes"
+        ],
+        "summary": "Delete Adaptation",
+        "operationId": "delete_adaptation_recipes_adaptations__recipe_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "recipe_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Recipe Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/recipes/{recipe_id}": {
       "get": {
         "tags": [
@@ -2575,6 +2680,93 @@
         ],
         "title": "AcceptInviteIn"
       },
+      "AdaptationOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/RecipeKind"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary"
+          },
+          "cuisine": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cuisine"
+          },
+          "course": {
+            "$ref": "#/components/schemas/Course"
+          },
+          "servings": {
+            "type": "integer",
+            "title": "Servings"
+          },
+          "total_minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Total Minutes"
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score"
+          },
+          "parent_recipe_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Parent Recipe Id"
+          },
+          "swaps": {
+            "items": {
+              "$ref": "#/components/schemas/SwapOut"
+            },
+            "type": "array",
+            "title": "Swaps"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "title",
+          "summary",
+          "cuisine",
+          "course",
+          "servings",
+          "total_minutes",
+          "parent_recipe_id",
+          "swaps"
+        ],
+        "title": "AdaptationOut",
+        "description": "One Adaptation, listed under its parent recipe, with its Swaps."
+      },
       "AddItemIn": {
         "properties": {
           "id": {
@@ -3305,6 +3497,17 @@
           },
           "parse_method": {
             "$ref": "#/components/schemas/ParseMethod"
+          },
+          "replaces": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Replaces"
           },
           "check": {
             "type": "boolean",
@@ -4476,6 +4679,28 @@
         ],
         "title": "PreferencesOut"
       },
+      "ProposalAdaptationOut": {
+        "properties": {
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "swaps": {
+            "items": {
+              "$ref": "#/components/schemas/ProposalSwapOut"
+            },
+            "type": "array",
+            "title": "Swaps"
+          }
+        },
+        "type": "object",
+        "required": [
+          "label",
+          "swaps"
+        ],
+        "title": "ProposalAdaptationOut",
+        "description": "A Recipe Adaptation proposed for this meal (ADR 0021): made on approval."
+      },
       "ProposalEvent": {
         "properties": {
           "type": {
@@ -4522,6 +4747,16 @@
               }
             ],
             "title": "Replaces"
+          },
+          "adaptation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProposalAdaptationOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "type": "object",
@@ -4684,6 +4919,29 @@
         ],
         "title": "ProposalStatus"
       },
+      "ProposalSwapOut": {
+        "properties": {
+          "position": {
+            "type": "integer",
+            "title": "Position"
+          },
+          "replaces": {
+            "type": "string",
+            "title": "Replaces"
+          },
+          "raw_text": {
+            "type": "string",
+            "title": "Raw Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "position",
+          "replaces",
+          "raw_text"
+        ],
+        "title": "ProposalSwapOut"
+      },
       "RecipeIngredientOut": {
         "properties": {
           "raw_text": {
@@ -4754,6 +5012,17 @@
           },
           "parse_method": {
             "$ref": "#/components/schemas/ParseMethod"
+          },
+          "replaces": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Replaces"
           }
         },
         "type": "object",
@@ -4774,7 +5043,8 @@
         "type": "string",
         "enum": [
           "seed",
-          "imported"
+          "imported",
+          "adaptation"
         ],
         "title": "RecipeKind"
       },
@@ -4836,6 +5106,18 @@
             ],
             "title": "Score"
           },
+          "parent_recipe_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Recipe Id"
+          },
           "ingredients": {
             "items": {
               "$ref": "#/components/schemas/RecipeIngredientOut"
@@ -4887,6 +5169,7 @@
           "course",
           "servings",
           "total_minutes",
+          "parent_recipe_id",
           "ingredients",
           "method",
           "source_url",
@@ -5157,6 +5440,25 @@
           "place"
         ],
         "title": "StapleOut"
+      },
+      "SwapOut": {
+        "properties": {
+          "replaces": {
+            "type": "string",
+            "title": "Replaces"
+          },
+          "raw_text": {
+            "type": "string",
+            "title": "Raw Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "replaces",
+          "raw_text"
+        ],
+        "title": "SwapOut",
+        "description": "One Swap of a Recipe Adaptation: the parent's line, and the line now in its place."
       },
       "TextEvent": {
         "properties": {

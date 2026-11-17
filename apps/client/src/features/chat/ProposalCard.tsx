@@ -3,6 +3,7 @@ import { Pressable, View } from 'react-native';
 
 import { Checkbox } from '@/components/Checkbox';
 import { Button, Card, ErrorText, Text } from '@/components/ui';
+import { adaptedTitle, swapLine } from '@/features/recipes/adaptations';
 import { useDecideProposal } from '@/lib/api/conversations';
 import { useTheme } from '@/theme/useTheme';
 
@@ -65,21 +66,28 @@ export function ProposalCard({
         <Section title="Meals">
           {shown.meals.map((meal) => {
             const day = formatDay(meal.date);
-            const what = `${meal.title} · serves ${meal.servings}`;
+            const what = `${adaptedTitle(meal)} · serves ${meal.servings}`;
             const replaces = meal.replaces ? `Replaces ${meal.replaces}` : null;
+            // One tick approves the Adaptation as a whole, so its Swaps sit in the row.
+            const swaps = meal.adaptation?.swaps.map(swapLine) ?? [];
             return (
               <TickRow
                 key={meal.date}
                 ticked={pending ? isMealKept(ticks, meal.date) : null}
                 disabled={!canAct}
                 onToggle={() => setTicks((now) => toggleMeal(now, meal.date))}
-                label={[day, what, replaces].filter(Boolean).join(', ')}
+                label={[day, what, ...swaps, replaces].filter(Boolean).join(', ')}
               >
                 <Text variant="label" style={{ minWidth: 92 }}>
                   {day}
                 </Text>
                 <View style={{ flexShrink: 1 }}>
                   <Text>{what}</Text>
+                  {swaps.map((line) => (
+                    <Text key={line} variant="caption">
+                      {line}
+                    </Text>
+                  ))}
                   {replaces ? (
                     <Text variant="caption" muted>
                       {replaces}
@@ -203,9 +211,7 @@ function keptSummary(kept: { meals: number; additions: number }) {
 
 /** An earlier plan in the chat history: one line saying what became of it. */
 export function PastProposal({ proposal }: { proposal: Proposal }) {
-  const meals = keptOf(proposal)
-    .meals.map((m) => m.title)
-    .join(', ');
+  const meals = keptOf(proposal).meals.map(adaptedTitle).join(', ');
   return (
     <Card style={{ gap: 4 }}>
       <Text variant="label">Sweep&apos;s plan · {statusLine(proposal)}</Text>

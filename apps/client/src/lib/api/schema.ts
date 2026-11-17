@@ -495,6 +495,43 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/recipes/{recipe_id}/adaptations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Adaptations
+         * @description This Household's Adaptations of a recipe, with their Swaps.
+         */
+        get: operations["list_adaptations_recipes__recipe_id__adaptations_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/recipes/adaptations/{recipe_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete Adaptation */
+        delete: operations["delete_adaptation_recipes_adaptations__recipe_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/recipes/{recipe_id}": {
         parameters: {
             query?: never;
@@ -714,6 +751,38 @@ export interface components {
         AcceptInviteIn: {
             /** Display Name */
             display_name: string;
+        };
+        /**
+         * AdaptationOut
+         * @description One Adaptation, listed under its parent recipe, with its Swaps.
+         */
+        AdaptationOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            kind: components["schemas"]["RecipeKind"];
+            /** Title */
+            title: string;
+            /** Summary */
+            summary: string;
+            /** Cuisine */
+            cuisine: string | null;
+            course: components["schemas"]["Course"];
+            /** Servings */
+            servings: number;
+            /** Total Minutes */
+            total_minutes: number | null;
+            /** Score */
+            score?: number | null;
+            /**
+             * Parent Recipe Id
+             * Format: uuid
+             */
+            parent_recipe_id: string;
+            /** Swaps */
+            swaps: components["schemas"]["SwapOut"][];
         };
         /** AddItemIn */
         AddItemIn: {
@@ -950,6 +1019,8 @@ export interface components {
             /** Needs Review */
             needs_review: boolean;
             parse_method: components["schemas"]["ParseMethod"];
+            /** Replaces */
+            replaces?: string | null;
             /** Check */
             check: boolean;
         };
@@ -1362,6 +1433,16 @@ export interface components {
             /** Plan Weekdays */
             plan_weekdays: number[];
         };
+        /**
+         * ProposalAdaptationOut
+         * @description A Recipe Adaptation proposed for this meal (ADR 0021): made on approval.
+         */
+        ProposalAdaptationOut: {
+            /** Label */
+            label: string;
+            /** Swaps */
+            swaps: components["schemas"]["ProposalSwapOut"][];
+        };
         /** ProposalEvent */
         ProposalEvent: {
             /**
@@ -1383,6 +1464,7 @@ export interface components {
             servings: number;
             /** Replaces */
             replaces?: string | null;
+            adaptation?: components["schemas"]["ProposalAdaptationOut"] | null;
         };
         /**
          * ProposalOut
@@ -1434,6 +1516,15 @@ export interface components {
          * @enum {string}
          */
         ProposalStatus: "pending" | "approved" | "rejected" | "superseded" | "expired";
+        /** ProposalSwapOut */
+        ProposalSwapOut: {
+            /** Position */
+            position: number;
+            /** Replaces */
+            replaces: string;
+            /** Raw Text */
+            raw_text: string;
+        };
         /** RecipeIngredientOut */
         RecipeIngredientOut: {
             /** Raw Text */
@@ -1452,12 +1543,14 @@ export interface components {
             /** Needs Review */
             needs_review: boolean;
             parse_method: components["schemas"]["ParseMethod"];
+            /** Replaces */
+            replaces?: string | null;
         };
         /**
          * RecipeKind
          * @enum {string}
          */
-        RecipeKind: "seed" | "imported";
+        RecipeKind: "seed" | "imported" | "adaptation";
         /** RecipeOut */
         RecipeOut: {
             /**
@@ -1479,6 +1572,8 @@ export interface components {
             total_minutes: number | null;
             /** Score */
             score?: number | null;
+            /** Parent Recipe Id */
+            parent_recipe_id: string | null;
             /** Ingredients */
             ingredients: components["schemas"]["RecipeIngredientOut"][];
             /** Method */
@@ -1587,6 +1682,16 @@ export interface components {
             /** Have */
             have: boolean;
             place: components["schemas"]["Place"];
+        };
+        /**
+         * SwapOut
+         * @description One Swap of a Recipe Adaptation: the parent's line, and the line now in its place.
+         */
+        SwapOut: {
+            /** Replaces */
+            replaces: string;
+            /** Raw Text */
+            raw_text: string;
         };
         /** TextEvent */
         TextEvent: {
@@ -2655,6 +2760,68 @@ export interface operations {
         };
     };
     delete_imported_recipes_imported__recipe_id__delete: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                recipe_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_adaptations_recipes__recipe_id__adaptations_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                recipe_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdaptationOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_adaptation_recipes_adaptations__recipe_id__delete: {
         parameters: {
             query?: never;
             header: {
