@@ -25,8 +25,6 @@ import {
   CircleX,
   ChevronRight,
   ChevronDown,
-  CirclePlus,
-  Minus,
   GlassWater,
   Layers,
   Weight,
@@ -665,9 +663,9 @@ function StockBadge({ stock }: { stock: Stock }) {
 
 /**
  * One item: picture, name, "Staple · Cupboard", and its status badge (tap to change).
- * On the right, the amount (tap for the ⋯ menu) and ⋯. An Out Non-staple also offers
- * Add to list; an Out Staple went on the list by itself, so it shows "On list" instead
- * of its amount, never a button.
+ * The status carries the decision; an amount, if noted (via ⋯), joins the subtitle.
+ * On the right: an Out Non-staple offers Add to list; an Out Staple went on the list by
+ * itself, so it shows "On list", never a button. Then ⋯.
  */
 function ItemRow({
   row,
@@ -689,9 +687,10 @@ function ItemRow({
   const compact = useWindowDimensions().width < 390;
   const gap = compact ? t.space.sm : t.space.md;
   const badge = useRef<HostInstance>(null);
-  const pill = useRef<HostInstance>(null);
   const more = useRef<HostInstance>(null);
   const out = row.stock === 'out';
+  // Amounts are optional detail (added via ⋯): shown only when one is noted.
+  const noted = row.quantity ? row.amount : null;
   // Out Staples went on the list by themselves: "On list" replaces the amount, no button.
   const stapleOnList = out && row.staple && onList;
   const offerList = out && !row.staple;
@@ -736,7 +735,7 @@ function ItemRow({
       >
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel={`${row.name}, ${row.staple ? 'Staple' : 'Non-staple'}, ${placeLabel(row.place)}${row.amount ? `, ${row.amount}` : ''}`}
+          accessibilityLabel={`${row.name}, ${row.staple ? 'Staple' : 'Non-staple'}, ${placeLabel(row.place)}${noted ? `, ${noted}` : ''}`}
           accessibilityHint="Edit amount, status, staple and storage"
           onPress={onOpen}
           style={({ pressed }) => ({ opacity: pressed ? 0.75 : 1 })}
@@ -758,7 +757,9 @@ function ItemRow({
               numberOfLines={1}
               style={{ fontSize: 12, lineHeight: 16 }}
             >
-              {row.staple ? 'Staple' : 'Non-staple'} · {placeLabel(row.place)}
+              {[row.staple ? 'Staple' : 'Non-staple', placeLabel(row.place), noted]
+                .filter(Boolean)
+                .join(' · ')}
             </Text>
           </Pressable>
           <Pressable
@@ -774,47 +775,7 @@ function ItemRow({
         </View>
       </View>
       <View style={{ alignItems: 'flex-end', gap: t.space.sm }}>
-        {stapleOnList ? (
-          onListChip
-        ) : (
-          <Pressable
-            ref={pill}
-            accessibilityRole="button"
-            accessibilityLabel={
-              row.amount
-                ? `${row.name} amount: ${row.amount}. Options`
-                : `Add amount for ${row.name}`
-            }
-            onPress={async () => onMenu(await measureAnchor(pill))}
-            hitSlop={{ top: 4, bottom: 4 }}
-            style={({ pressed }) => ({
-              minHeight: 40,
-              minWidth: compact ? 56 : 64,
-              paddingHorizontal: t.space.sm + 2,
-              borderRadius: t.radius.pill,
-              borderWidth: 1.5,
-              borderColor: row.amount ? t.colors.border : t.colors.textMuted,
-              borderStyle: row.amount ? 'solid' : 'dashed', // dashed: nothing noted yet
-              backgroundColor: t.colors.surface,
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: t.space.sm,
-              opacity: pressed ? 0.7 : 1,
-            })}
-          >
-            {row.amount ? (
-              <Text style={{ fontSize: 14, lineHeight: 18, fontVariant: ['tabular-nums'] }}>
-                {row.amount}
-              </Text>
-            ) : (
-              <>
-                <Icon icon={Minus} size={16} color={t.colors.textMuted} />
-                <Icon icon={CirclePlus} size={20} color={t.colors.text} />
-              </>
-            )}
-          </Pressable>
-        )}
+        {stapleOnList ? onListChip : null}
         {offerList ? (
           onList ? (
             onListChip
@@ -1096,45 +1057,44 @@ function ItemSheet({
         <Text variant="heading" accessibilityRole="header">
           Amount
         </Text>
-        <View
-          accessibilityRole="radiogroup"
-          accessibilityLabel="Measure by"
-          style={{ flexDirection: 'row', gap: t.space.sm }}
-        >
-          {KINDS.map(({ kind, label }) => {
-            const on = kindOf(unit) === kind;
-            const allowed = kinds.has(kind);
-            const fg = on ? t.colors.onInverse : t.colors.text;
-            return (
-              <Pressable
-                key={kind}
-                accessibilityRole="radio"
-                accessibilityState={{ checked: on, disabled: !allowed }}
-                accessibilityHint={allowed ? undefined : `${row.name} can't be measured this way`}
-                disabled={!allowed}
-                onPress={() => setUnit(UNITS[kind][0])}
-                style={{
-                  flex: 1,
-                  minHeight: 46,
-                  borderRadius: t.radius.pill,
-                  borderWidth: 1.5,
-                  borderColor: on ? t.colors.inverse : t.colors.border,
-                  backgroundColor: on ? t.colors.inverse : t.colors.surface,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 6,
-                  opacity: allowed ? 1 : 0.4,
-                }}
-              >
-                <Icon icon={KIND_ICON[kind]} size={18} color={fg} />
-                <Text variant="label" style={{ color: fg }}>
-                  {label}
-                </Text>
-              </Pressable>
-            );
-          })}
-        </View>
+        {/* Only the ways this Ingredient can be measured; a single way needs no choice. */}
+        {kinds.size > 1 ? (
+          <View
+            accessibilityRole="radiogroup"
+            accessibilityLabel="Measure by"
+            style={{ flexDirection: 'row', gap: t.space.sm }}
+          >
+            {KINDS.filter(({ kind }) => kinds.has(kind)).map(({ kind, label }) => {
+              const on = kindOf(unit) === kind;
+              const fg = on ? t.colors.onInverse : t.colors.text;
+              return (
+                <Pressable
+                  key={kind}
+                  accessibilityRole="radio"
+                  accessibilityState={{ checked: on }}
+                  onPress={() => setUnit(UNITS[kind][0])}
+                  style={{
+                    flex: 1,
+                    minHeight: 46,
+                    borderRadius: t.radius.pill,
+                    borderWidth: 1.5,
+                    borderColor: on ? t.colors.inverse : t.colors.border,
+                    backgroundColor: on ? t.colors.inverse : t.colors.surface,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 6,
+                  }}
+                >
+                  <Icon icon={KIND_ICON[kind]} size={18} color={fg} />
+                  <Text variant="label" style={{ color: fg }}>
+                    {label}
+                  </Text>
+                </Pressable>
+              );
+            })}
+          </View>
+        ) : null}
         <View style={{ flexDirection: 'row', gap: t.space.sm }}>
           <TextInput
             accessibilityLabel={`Amount in ${unitLabel(unit)}`}

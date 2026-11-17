@@ -20,3 +20,4 @@ The Kitchen redesign (mockups in `docs/design/kitchen-redesign/`) shows every it
 - Out Non-staples remember their place and amount, so "In stock" again is one tap.
 - Two statuses on a Tracked item (stock + trust) — the screen shows only the Member's.
 - Action toasts (Undo, Add to list) stay about 8 s and pause while touched or focused (WCAG 2.2.1); Undo is also safe to miss because the list item can be removed by hand.
+- Cards lead with the stock status; an amount is optional detail, added through ⋯ → Change amount and shown in the subtitle only when noted (user, 2026-11-18).
