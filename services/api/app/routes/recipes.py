@@ -192,6 +192,7 @@ def _draft_out(draft: Draft) -> ImportDraftOut:
     ]
     return ImportDraftOut(
         title=draft.title,
+        summary=draft.summary,
         servings=draft.servings,
         total_minutes=draft.total_minutes,
         course=draft.course,

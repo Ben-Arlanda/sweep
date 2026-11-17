@@ -96,6 +96,7 @@ async def read_lines(
 
 def _fill(recipe: Recipe, body: ImportedRecipeIn) -> None:
     recipe.title, recipe.course, recipe.cuisine = body.title, body.course, body.cuisine
+    recipe.summary = body.summary or ""
     recipe.servings, recipe.total_minutes = body.servings, body.total_minutes
     recipe.method = list(body.method) if body.method else None
     recipe.source_url = body.source_url
@@ -108,7 +109,6 @@ async def save(
     recipe = Recipe(
         kind=RecipeKind.IMPORTED,
         household_id=ctx.household.id,
-        summary="",
         licence=LICENCE,
         attribution=f"Added by {ctx.member.display_name}",
         ingredients=lines,

@@ -36,3 +36,7 @@ Slice 4d lets a Household bring in its own favourite recipes, from wherever they
 - **Some fields stay null:** when PDF text puts labels far from their numbers, Haiku may leave servings or time empty. That's an honest answer, and the review screen asks for them. One known wrong reading: a RecipeTin time taken from the optional marinade.
 - **"1 beef stock cube" stays Not linked** on purpose. As an alias of "stock cubes" (only "check the label" for meat) it would pass a vegetarian Rule.
 - **The eval must use the app's own steps**, never a copy. It now calls `paste_text_from_pdf`. A copy had once kept a fix from being measured.
+
+## Update 2026-11-17: the description
+
+Imported Recipes now keep the description a recipe opens with (its `summary`, shown under the title). The same call **copies** it, never writes it: from pasted text (and PDF text) it must pass the text-appears check or it's dropped; from a photo or scan a person reads it on the review screen, where it's an optional field. Links bring none: facts only, as above. The prompt also says a range ("Serves 4-6") means the first number, after dahl lost its servings in 3/3 runs. Re-run, Haiku ×3: **39/39 for 2.5¢**, both injection cases clean (the Canary check covers the description too).

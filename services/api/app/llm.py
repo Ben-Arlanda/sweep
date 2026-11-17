@@ -178,7 +178,10 @@ screen before anything is saved.
 - found_recipe: false if the text isn't a recipe; then leave the other fields empty.
 - more_recipes: true if the text holds more than one recipe. Read only the first.
 - title: the recipe's name, as written.
-- servings and total_minutes: as stated, or null. Don't estimate.
+- summary: the short description or introduction the recipe opens with (what the dish
+  is like), copied exactly as written. Null if there isn't one. Never write your own.
+- servings and total_minutes: as stated, or null. Don't estimate. For a range ("Serves
+  4-6"), the first number.
 - course: your best guess.
 - cuisine: one of the listed cuisines, or null if none fits.
 - ingredient_lines: copy each ingredient line exactly as written, character for

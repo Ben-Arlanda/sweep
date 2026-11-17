@@ -28,7 +28,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app import errors, pdf_text
 from app.llm_costs import Usage
 from app.models import Course, RecipeIngredient
-from app.schemas import MAX_METHOD_STEPS, MAX_PASTE_CHARS, MAX_RECIPE_LINES, ImportedLineIn
+from app.schemas import (
+    MAX_METHOD_STEPS,
+    MAX_PASTE_CHARS,
+    MAX_RECIPE_LINES,
+    MAX_SUMMARY,
+    ImportedLineIn,
+)
 from app.services import imported_recipes, recipe_jsonld, recipes
 from app.text import clean_line
 from app.web_fetch import Page, check_url
@@ -40,6 +46,7 @@ class RecipeReading(BaseModel):
     found_recipe: bool  # false: the text isn't a recipe
     more_recipes: bool  # the text holds more than one; only the first was read
     title: str
+    summary: str | None  # the intro, copied as written, or null
     servings: int | None
     total_minutes: int | None
     course: Course  # a guess: the review screen pre-selects it and says so
@@ -93,6 +100,7 @@ class RecipeReader(Protocol):
 @dataclass(frozen=True)
 class Draft:
     title: str
+    summary: str | None  # the intro: copied, never written (see _finish)
     servings: int | None
     total_minutes: int | None
     course: Course
@@ -151,6 +159,7 @@ async def from_paste(
         known,
         check=lambda line: not appears_in(line, text),
         not_a_recipe="That doesn't look like a recipe. Paste the title, ingredients and method.",
+        source_text=text,
     )
 
 
@@ -220,6 +229,7 @@ async def _finish(
     *,
     check: Callable[[str], bool],  # per line: True = mark it "Check"
     not_a_recipe: str,
+    source_text: str | None = None,  # pasted text; None for images
 ) -> Draft:
     """What every door that uses the model shares, once it has answered."""
     reading, usage = answer
@@ -238,8 +248,14 @@ async def _finish(
     )
     method = [step.strip()[:2000] for step in reading.method if step.strip()][:MAX_METHOD_STEPS]
     cuisine = reading.cuisine.strip().lower() if reading.cuisine else None
+    # Copied, never written: a description that isn't in pasted text is dropped. From
+    # an image there's nothing to compare, so the review screen shows it to a person.
+    summary = clean_line(reading.summary or "", MAX_SUMMARY) or None
+    if summary and source_text is not None and not appears_in(summary, source_text):
+        summary = None
     return Draft(
         title=title,
+        summary=summary,
         servings=_in_range(reading.servings, 50),
         total_minutes=_in_range(reading.total_minutes, 1440),
         course=reading.course,
@@ -275,6 +291,7 @@ async def from_link(
     )
     return Draft(
         title=found.title,
+        summary=None,  # facts only from a website (ADR 0020): its writing stays there
         servings=found.servings,
         total_minutes=found.total_minutes,
         course=found.course,
