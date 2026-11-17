@@ -5,18 +5,22 @@ as "parent + Swaps" put together on each read. That way everything that reads li
 (Dietary Rules, Shopping List, Kitchen Match, Mark as Cooked) needs no changes. The
 cost: editing the parent later doesn't change its Adaptations.
 
-There is no route that creates one. Only an approved Proposal does (slice 5e step 3),
-and `create` always runs the Swap checks itself, so no caller can skip them.
+Before approval an Adaptation exists only in the Draft Plan, as parent + Swaps.
+`preview` builds it in memory and runs the Swap checks; the agent's tool, validate and
+the commit all go through it, so the checks can't be skipped. There is no route that
+creates one: only an approved Proposal does.
 """
 
 import uuid
-from collections.abc import Sequence
+from collections import defaultdict
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import errors
+from app.agent.state import DraftMeal
 from app.models import Recipe, RecipeIngredient, RecipeKind
 from app.schemas import ImportedLineIn
 from app.services import diet, imported_recipes, swap_checks
@@ -34,7 +38,7 @@ class SwapIn:
     raw_text: str
 
 
-async def _parent(session: AsyncSession, household_id: uuid.UUID, recipe_id: uuid.UUID) -> Recipe:
+async def parent(session: AsyncSession, household_id: uuid.UUID, recipe_id: uuid.UUID) -> Recipe:
     """A Seed or Imported Recipe this Household can see. Not an Adaptation: a new one is
     always made from the original, so Swaps never stack up on each other."""
     recipe = (
@@ -65,21 +69,22 @@ def _copy(line: RecipeIngredient) -> RecipeIngredient:
     )
 
 
-async def create(
+async def preview(
     session: AsyncSession,
     household_id: uuid.UUID,
     parent_id: uuid.UUID,
     swaps: Sequence[SwapIn],
     label: str,
 ) -> Recipe:
-    """Store an Adaptation of `parent_id`. Each replacement line is read and matched the
-    same way as an Imported Recipe's (the Household's view of the Ingredients)."""
-    parent = await _parent(session, household_id, parent_id)
-    by_position = {line.position: line for line in parent.ingredients}
+    """The Adaptation, built in memory and not added to the session, after the Swap
+    checks pass (else `SwapsRefused`). Replacement lines are read and matched like an
+    Imported Recipe's (the Household's view of the Ingredients)."""
+    original = await parent(session, household_id, parent_id)
+    by_position = {line.position: line for line in original.ingredients}
     wanted = {swap.position: swap for swap in swaps}
     if not swaps or len(wanted) != len(swaps) or not wanted.keys() <= by_position.keys():
         raise errors.InvalidInput("Each Swap must replace a different line of the recipe.")
-    title = f"{parent.title}{TITLE_JOIN}{label}"
+    title = f"{original.title}{TITLE_JOIN}{label}"
     if len(title) > MAX_TITLE:
         raise errors.InvalidInput("That name is too long.")
 
@@ -102,25 +107,78 @@ async def create(
     if problems:
         raise errors.SwapsRefused(problems)
 
-    adaptation = Recipe(
+    return Recipe(
         kind=RecipeKind.ADAPTATION,
         household_id=household_id,
-        parent_recipe_id=parent.id,
+        parent_recipe_id=original.id,
         title=title,
-        summary=parent.summary,
-        cuisine=parent.cuisine,
-        course=parent.course,
-        servings=parent.servings,
-        total_minutes=parent.total_minutes,
-        method=list(parent.method) if parent.method is not None else None,
-        source_url=parent.source_url,
-        licence=parent.licence,
-        attribution=parent.attribution,
+        summary=original.summary,
+        cuisine=original.cuisine,
+        course=original.course,
+        servings=original.servings,
+        total_minutes=original.total_minutes,
+        method=list(original.method) if original.method is not None else None,
+        source_url=original.source_url,
+        licence=original.licence,
+        attribution=original.attribution,
         ingredients=lines,
     )
+
+
+def swaps_of(recipe: Recipe) -> list[tuple[str, str]]:
+    """(the line replaced, the new line) for each Swap, in recipe order."""
+    return [(line.replaces, line.raw_text) for line in recipe.ingredients if line.replaces]
+
+
+async def create(
+    session: AsyncSession,
+    household_id: uuid.UUID,
+    parent_id: uuid.UUID,
+    swaps: Sequence[SwapIn],
+    label: str,
+) -> Recipe:
+    """Store an Adaptation, or reuse a kept one with exactly the same Swaps (proposing
+    "with lentils" twice shouldn't leave two copies under the recipe)."""
+    adaptation = await preview(session, household_id, parent_id, swaps, label)
+    for kept in await for_parent(session, household_id, parent_id):
+        if swaps_of(kept) == swaps_of(adaptation):
+            return kept
     session.add(adaptation)
     await session.flush()
     return adaptation
+
+
+def swaps_in(meal: DraftMeal) -> list[SwapIn]:
+    adaptation = meal.get("adaptation")
+    swaps = adaptation["swaps"] if adaptation else []
+    return [SwapIn(s["position"], s["raw_text"]) for s in swaps]
+
+
+async def for_draft(
+    session: AsyncSession, household_id: uuid.UUID, meals: Mapping[str, DraftMeal]
+) -> tuple[dict[str, Recipe], dict[str, str]]:
+    """For the meals that carry an Adaptation: the adapted recipe by day, or why its
+    Swaps are refused by day. Rebuilt every time (validate, commit), against the
+    current recipes and Rules, because a Proposal can wait a day."""
+    adapted: dict[str, Recipe] = {}
+    refused: dict[str, str] = {}
+    for day, meal in meals.items():
+        adaptation = meal.get("adaptation")
+        if adaptation is None:
+            continue
+        try:
+            adapted[day] = await preview(
+                session,
+                household_id,
+                uuid.UUID(meal["recipe_id"]),
+                swaps_in(meal),
+                adaptation["label"],
+            )
+        except errors.SwapsRefused as error:
+            refused[day] = "; ".join(error.problems)
+        except (errors.NotFound, errors.InvalidInput, ValueError) as error:
+            refused[day] = getattr(error, "message", "the recipe can't be adapted")
+    return adapted, refused
 
 
 async def for_parent(
@@ -128,16 +186,29 @@ async def for_parent(
 ) -> list[Recipe]:
     """This Household's Adaptations of one recipe, oldest first. Empty for a recipe it
     can't see, so the answer gives nothing away about other Households."""
+    return (await kept_for(session, household_id, [parent_id])).get(parent_id, [])
+
+
+async def kept_for(
+    session: AsyncSession, household_id: uuid.UUID, parent_ids: Sequence[uuid.UUID]
+) -> dict[uuid.UUID, list[Recipe]]:
+    """Kept Adaptations of several recipes in one query, by parent, oldest first."""
+    if not parent_ids:
+        return {}
     found = await session.execute(
         select(Recipe)
         .where(
             Recipe.kind == RecipeKind.ADAPTATION,
             Recipe.household_id == household_id,
-            Recipe.parent_recipe_id == parent_id,
+            Recipe.parent_recipe_id.in_(parent_ids),
         )
         .order_by(Recipe.created_at, Recipe.id)
     )
-    return list(found.scalars())
+    out: dict[uuid.UUID, list[Recipe]] = defaultdict(list)
+    for recipe in found.scalars():
+        assert recipe.parent_recipe_id is not None
+        out[recipe.parent_recipe_id].append(recipe)
+    return dict(out)
 
 
 async def delete(session: AsyncSession, household_id: uuid.UUID, recipe_id: uuid.UUID) -> None:

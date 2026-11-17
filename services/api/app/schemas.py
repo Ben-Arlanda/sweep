@@ -443,13 +443,27 @@ class DraftOut(BaseModel):
     list_additions: list[DraftAdditionOut]
 
 
+class ProposalSwapOut(BaseModel):
+    position: int
+    replaces: str  # the parent's line
+    raw_text: str  # the line in its place
+
+
+class ProposalAdaptationOut(BaseModel):
+    """A Recipe Adaptation proposed for this meal (ADR 0021): made on approval."""
+
+    label: str
+    swaps: list[ProposalSwapOut]
+
+
 class ProposalMealOut(BaseModel):
     date: str
-    recipe_id: str
+    recipe_id: str  # with `adaptation`: the parent recipe
     title: str
     servings: int
     # The dinner already planned that day, which approving would replace.
     replaces: str | None = None
+    adaptation: ProposalAdaptationOut | None = None
 
 
 class ProposalOutcomeOut(BaseModel):

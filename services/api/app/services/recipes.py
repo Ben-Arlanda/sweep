@@ -244,6 +244,7 @@ class RecipeFilters:
     # Set when Dietary Rules apply: a line we can't check might break them (fail closed).
     # Same lines as diet.check_recipe: unmatched, or linked to a Household Ingredient.
     exclude_uncheckable: bool = False
+    only_kind: RecipeKind | None = None  # e.g. IMPORTED: the agent's flagged favourites
 
 
 def visible_to(household_id: uuid.UUID) -> Select[Recipe]:
@@ -270,6 +271,8 @@ async def cuisines(session: AsyncSession, household_id: uuid.UUID) -> list[str]:
 
 
 def _filtered(query: Select[Recipe], filters: RecipeFilters) -> Select[Recipe]:
+    if filters.only_kind is not None:
+        query = query.where(Recipe.kind == filters.only_kind)
     if filters.max_minutes is not None:
         query = query.where(Recipe.total_minutes <= filters.max_minutes)
     if filters.cuisine is not None:
@@ -342,12 +345,14 @@ async def search(
     filters: RecipeFilters,
     limit: int,
 ) -> list[tuple[Recipe, float]]:
-    """Recipes closest in meaning to `text`, best first, with a score (1 = identical)."""
+    """Recipes closest in meaning to `text`, best first, with a score (1 = identical).
+    Never Adaptations: they're found through their parent (ADR 0021)."""
     [vector] = await embedder.embed([text], "query")
     # Cosine distance: 0 = pointing the same way (same meaning), 2 = opposite.
     distance = RecipeEmbedding.embedding.cosine_distance(vector)
     query = (
         _filtered(visible_to(household_id), filters)
+        .where(Recipe.kind != RecipeKind.ADAPTATION)
         .join(
             RecipeEmbedding,
             (RecipeEmbedding.recipe_id == Recipe.id) & (RecipeEmbedding.model == embedder.model),
