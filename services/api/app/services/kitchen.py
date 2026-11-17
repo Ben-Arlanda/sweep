@@ -143,7 +143,7 @@ async def set_tracked(
     ingredient = await _ingredient(session, ctx.household.id, ingredient_id)
     quantity = _in_own_unit(ingredient, quantity, unit)
     if await _staple(session, ctx.household.id, ingredient.id) is not None:
-        raise Conflict(f"{ingredient.name} is a Staple: set its amount on the Staple")
+        raise Conflict(f"{ingredient.name} is a Staple, so it has no amount")
     now = utcnow()
     item = await _tracked(session, ctx.household.id, ingredient.id)
     if item is None:
@@ -181,27 +181,9 @@ async def set_staple(
         if tracked is not None:
             staple.place = tracked.place  # keep where the Household moved it
             staple.low = tracked.low
-            staple.quantity = tracked.quantity  # kept as a note
             await session.delete(tracked)
         session.add(staple)
     staple.ran_out_at = None if have else (staple.ran_out_at or utcnow())
-    await session.flush()
-    return staple
-
-
-async def set_staple_amount(
-    session: AsyncSession,
-    ctx: MemberContext,
-    ingredient_id: uuid.UUID,
-    quantity: Decimal | None,
-    unit: str | None,
-) -> HouseholdStaple:
-    """A Staple's "10 g": a note for people, never used in maths (ADR 0024)."""
-    await _bump(session, ctx.household.id)
-    staple = await _staple(session, ctx.household.id, ingredient_id)
-    if staple is None:
-        raise NotFound("That isn't a Staple in your Kitchen")
-    staple.quantity = _in_own_unit(staple.ingredient, quantity, unit)
     await session.flush()
     return staple
 

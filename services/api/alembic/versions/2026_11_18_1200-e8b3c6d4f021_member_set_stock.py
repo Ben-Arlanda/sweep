@@ -21,8 +21,6 @@ def upgrade() -> None:
     op.add_column(
         "household_staples", sa.Column("low", sa.Boolean(), server_default="false", nullable=False)
     )
-    # A Staple's amount: a note in the Ingredient's own unit, never used in maths.
-    op.add_column("household_staples", sa.Column("quantity", sa.Numeric(12, 3), nullable=True))
     op.add_column(
         "kitchen_items", sa.Column("ran_out_at", sa.DateTime(timezone=True), nullable=True)
     )
@@ -34,5 +32,4 @@ def upgrade() -> None:
 def downgrade() -> None:
     op.drop_column("kitchen_items", "low")
     op.drop_column("kitchen_items", "ran_out_at")
-    op.drop_column("household_staples", "quantity")
     op.drop_column("household_staples", "low")

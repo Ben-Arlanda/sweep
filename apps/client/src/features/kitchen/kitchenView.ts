@@ -20,7 +20,7 @@ export type KitchenRow = {
   staple: boolean;
   stock: Stock;
   place: Place;
-  /** "500 g", "1.5 kg"; "Some" for a Non-staple without one; null for a Staple without one. */
+  /** "500 g", "1.5 kg" or "Some" for a Non-staple; always null for a Staple. */
   amount: string | null;
   quantity: string | null; // in the Ingredient's own unit (g, ml or count)
   unit: string;
@@ -54,9 +54,9 @@ export function toRows(kitchen: { tracked: readonly Tracked[]; staples: readonly
       staple: true,
       stock: s.stock,
       place: s.place,
-      amount: s.quantity ? formatAmount(s.quantity, s.unit) : null,
-      quantity: s.quantity,
-      unit: s.unit,
+      amount: null, // Staples have no amount (ADR 0024)
+      quantity: null,
+      unit: s.ingredient.default_unit,
     })),
     ...kitchen.tracked.map((t) => ({
       id: t.ingredient.id,

@@ -979,76 +979,6 @@
         }
       }
     },
-    "/kitchen/staples/{ingredient_id}/amount": {
-      "put": {
-        "tags": [
-          "kitchen"
-        ],
-        "summary": "Set Staple Amount",
-        "description": "A Staple's amount: a note for people (ADR 0024). null clears it.",
-        "operationId": "set_staple_amount_kitchen_staples__ingredient_id__amount_put",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "ingredient_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "Ingredient Id"
-            }
-          },
-          {
-            "name": "Idempotency-Key",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 255,
-              "title": "Idempotency-Key"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SetQuantityIn"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StapleOut"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/kitchen/places/{ingredient_id}": {
       "put": {
         "tags": [
@@ -6078,21 +6008,6 @@
               "out"
             ],
             "title": "Stock"
-          },
-          "quantity": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Quantity"
-          },
-          "unit": {
-            "type": "string",
-            "title": "Unit"
           }
         },
         "type": "object",
@@ -6100,9 +6015,7 @@
           "ingredient",
           "have",
           "place",
-          "stock",
-          "quantity",
-          "unit"
+          "stock"
         ],
         "title": "StapleOut"
       },

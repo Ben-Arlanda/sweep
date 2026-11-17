@@ -228,7 +228,6 @@ export default function KitchenScreen() {
         if (row.staple) {
           actions.setStaple(row.id, true);
           actions.setPlace(row.id, row.place);
-          if (row.quantity) actions.setStapleAmount(row.id, row.quantity);
           if (row.stock !== 'in_stock') void actions.setStock(row.id, row.stock);
         } else undoToTracked(actions, row);
       },
@@ -286,18 +285,15 @@ export default function KitchenScreen() {
           accessibilityLabel="Add from photo"
           onPress={() => setPhotoSheet(true)}
           style={({ pressed }) => ({
-            flexDirection: 'row',
+            width: 52,
+            minHeight: 52,
             alignItems: 'center',
-            gap: t.space.sm,
-            paddingHorizontal: t.space.md,
-            borderRadius: t.radius.lg,
+            justifyContent: 'center',
+            borderRadius: t.radius.pill,
             backgroundColor: pressed ? t.colors.actionPressed : t.colors.action,
           })}
         >
-          <Icon icon={Camera} color={t.colors.onAction} />
-          <Text variant="label" style={{ color: t.colors.onAction, lineHeight: 17 }}>
-            {'Add from\nphoto'}
-          </Text>
+          <Icon icon={Camera} size={24} color={t.colors.onAction} />
         </Pressable>
       </View>
 
@@ -663,7 +659,7 @@ function StockBadge({ stock }: { stock: Stock }) {
 
 /**
  * One item: picture, name, "Staple · Cupboard", and its status badge (tap to change).
- * Just the name and status; an amount, if noted (via ⋯), shows small under the name.
+ * Just the name and status: amounts stay in the background (⋯ → Change amount).
  * On the right: an Out Non-staple offers Add to list; an Out Staple went on the list by
  * itself, so it shows "On list", never a button. Then ⋯.
  */
@@ -689,8 +685,6 @@ function ItemRow({
   const badge = useRef<HostInstance>(null);
   const more = useRef<HostInstance>(null);
   const out = row.stock === 'out';
-  // Amounts are optional detail (added via ⋯): shown only when one is noted.
-  const noted = row.quantity ? row.amount : null;
   // Out Staples went on the list by themselves: "On list" replaces the amount, no button.
   const stapleOnList = out && row.staple && onList;
   const offerList = out && !row.staple;
@@ -735,7 +729,7 @@ function ItemRow({
       >
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel={`${row.name}${noted ? `, ${noted}` : ''}`}
+          accessibilityLabel={row.name}
           accessibilityHint="Edit amount, status, staple and storage"
           onPress={onOpen}
           style={({ pressed }) => ({ opacity: pressed ? 0.75 : 1 })}
@@ -751,16 +745,6 @@ function ItemRow({
             <Text variant="label" numberOfLines={2} style={{ fontSize: 15, lineHeight: 19 }}>
               {row.name}
             </Text>
-            {noted ? (
-              <Text
-                variant="caption"
-                muted
-                numberOfLines={1}
-                style={{ fontSize: 12, lineHeight: 16 }}
-              >
-                {noted}
-              </Text>
-            ) : null}
           </Pressable>
           <Pressable
             ref={badge}
@@ -895,12 +879,14 @@ function ItemMenu({
       accessibilityRole="menu"
       style={{ marginHorizontal: -t.space.md, marginVertical: -t.space.xs }}
     >
-      <MenuItem icon={Pencil} label="Change amount" chevron onPress={onEdit} />
+      {!row.staple ? (
+        <MenuItem icon={Pencil} label="Change amount" chevron onPress={onEdit} />
+      ) : null}
       <MenuItem
         icon={Tag}
         label={row.staple ? 'Move to Non-staples' : 'Move to Staples'}
         onPress={onMove}
-        divider
+        divider={!row.staple} // first item for Staples (no Change amount above)
       />
       <MenuItem
         icon={Archive}
@@ -996,16 +982,17 @@ function ItemSheet({
   const amountChanged = (qty ?? '') !== start.value || unit !== start.unit;
 
   function save() {
-    const setAmountFor = staple ? actions.setStapleAmount : actions.setAmount;
     if (staple !== row.staple) {
       // Changing kind starts a fresh row, so set its amount, Place and status after.
       if (staple) actions.setStaple(row.id, true);
-      else actions.notAStaple(row.id);
-      if (!staple || amountChanged) setAmountFor(row.id, qty, unit);
+      else {
+        actions.notAStaple(row.id);
+        actions.setAmount(row.id, qty, unit);
+      }
       actions.setPlace(row.id, place);
       if (stock !== 'in_stock') void actions.setStock(row.id, stock);
     } else {
-      if (amountChanged) setAmountFor(row.id, qty, unit);
+      if (!staple && amountChanged) actions.setAmount(row.id, qty, unit);
       if (place !== row.place) actions.setPlace(row.id, place);
       if (stock !== row.stock)
         onStock(stock); // same rule as the badge
@@ -1053,124 +1040,127 @@ function ItemSheet({
 
   return (
     <Sheet label={row.name} title={row.name} header={header} onClose={onClose}>
-      <View style={{ gap: t.space.md }}>
-        <Text variant="heading" accessibilityRole="header">
-          Amount
-        </Text>
-        {/* Only the ways this Ingredient can be measured; a single way needs no choice. */}
-        {kinds.size > 1 ? (
-          <View
-            accessibilityRole="radiogroup"
-            accessibilityLabel="Measure by"
-            style={{ flexDirection: 'row', gap: t.space.sm }}
-          >
-            {KINDS.filter(({ kind }) => kinds.has(kind)).map(({ kind, label }) => {
-              const on = kindOf(unit) === kind;
-              const fg = on ? t.colors.onInverse : t.colors.text;
-              return (
-                <Pressable
-                  key={kind}
-                  accessibilityRole="radio"
-                  accessibilityState={{ checked: on }}
-                  onPress={() => setUnit(UNITS[kind][0])}
-                  style={{
-                    flex: 1,
-                    minHeight: 46,
-                    borderRadius: t.radius.pill,
-                    borderWidth: 1.5,
-                    borderColor: on ? t.colors.inverse : t.colors.border,
-                    backgroundColor: on ? t.colors.inverse : t.colors.surface,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: 6,
-                  }}
-                >
-                  <Icon icon={KIND_ICON[kind]} size={18} color={fg} />
-                  <Text variant="label" style={{ color: fg }}>
-                    {label}
-                  </Text>
-                </Pressable>
-              );
-            })}
-          </View>
-        ) : null}
-        <View style={{ flexDirection: 'row', gap: t.space.sm }}>
-          <TextInput
-            accessibilityLabel={`Amount in ${unitLabel(unit)}`}
-            value={value}
-            onChangeText={setValue}
-            keyboardType="decimal-pad"
-            placeholder={staple ? 'Not noted' : 'Some'}
-            placeholderTextColor={t.colors.textMuted}
-            style={[
-              t.type.heading,
-              {
-                flex: 2,
+      {/* Staples have no amount: their status is all Sweep needs (ADR 0024). */}
+      {!staple ? (
+        <View style={{ gap: t.space.md }}>
+          <Text variant="heading" accessibilityRole="header">
+            Amount
+          </Text>
+          {/* Only the ways this Ingredient can be measured; a single way needs no choice. */}
+          {kinds.size > 1 ? (
+            <View
+              accessibilityRole="radiogroup"
+              accessibilityLabel="Measure by"
+              style={{ flexDirection: 'row', gap: t.space.sm }}
+            >
+              {KINDS.filter(({ kind }) => kinds.has(kind)).map(({ kind, label }) => {
+                const on = kindOf(unit) === kind;
+                const fg = on ? t.colors.onInverse : t.colors.text;
+                return (
+                  <Pressable
+                    key={kind}
+                    accessibilityRole="radio"
+                    accessibilityState={{ checked: on }}
+                    onPress={() => setUnit(UNITS[kind][0])}
+                    style={{
+                      flex: 1,
+                      minHeight: 46,
+                      borderRadius: t.radius.pill,
+                      borderWidth: 1.5,
+                      borderColor: on ? t.colors.inverse : t.colors.border,
+                      backgroundColor: on ? t.colors.inverse : t.colors.surface,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: 6,
+                    }}
+                  >
+                    <Icon icon={KIND_ICON[kind]} size={18} color={fg} />
+                    <Text variant="label" style={{ color: fg }}>
+                      {label}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+            </View>
+          ) : null}
+          <View style={{ flexDirection: 'row', gap: t.space.sm }}>
+            <TextInput
+              accessibilityLabel={`Amount in ${unitLabel(unit)}`}
+              value={value}
+              onChangeText={setValue}
+              keyboardType="decimal-pad"
+              placeholder="Some"
+              placeholderTextColor={t.colors.textMuted}
+              style={[
+                t.type.heading,
+                {
+                  flex: 2,
+                  minHeight: 56,
+                  paddingHorizontal: t.space.lg,
+                  borderRadius: t.radius.md,
+                  borderWidth: 1.5,
+                  borderColor: valid ? t.colors.border : t.colors.danger,
+                  backgroundColor: t.colors.surface,
+                  color: t.colors.text,
+                },
+              ]}
+            />
+            <Pressable
+              ref={unitButton}
+              accessibilityRole="button"
+              accessibilityLabel={`Unit: ${unitLabel(unit)}. Change`}
+              disabled={UNITS[kindOf(unit)].length < 2}
+              onPress={async () => setUnitMenu(await measureAnchor(unitButton))}
+              style={{
+                flex: 1,
                 minHeight: 56,
                 paddingHorizontal: t.space.lg,
                 borderRadius: t.radius.md,
                 borderWidth: 1.5,
-                borderColor: valid ? t.colors.border : t.colors.danger,
+                borderColor: t.colors.border,
                 backgroundColor: t.colors.surface,
-                color: t.colors.text,
-              },
-            ]}
-          />
-          <Pressable
-            ref={unitButton}
-            accessibilityRole="button"
-            accessibilityLabel={`Unit: ${unitLabel(unit)}. Change`}
-            disabled={UNITS[kindOf(unit)].length < 2}
-            onPress={async () => setUnitMenu(await measureAnchor(unitButton))}
-            style={{
-              flex: 1,
-              minHeight: 56,
-              paddingHorizontal: t.space.lg,
-              borderRadius: t.radius.md,
-              borderWidth: 1.5,
-              borderColor: t.colors.border,
-              backgroundColor: t.colors.surface,
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}
-          >
-            <Text variant="heading">{unitLabel(unit)}</Text>
-            {UNITS[kindOf(unit)].length > 1 ? (
-              <Icon icon={ChevronDown} size={20} color={t.colors.text} strong />
-            ) : null}
-          </Pressable>
-        </View>
-        {valid ? null : <ErrorText message="Enter a number above 0, or leave it empty" />}
-        <View style={{ flexDirection: 'row', gap: t.space.sm, flexWrap: 'wrap' }}>
-          {quickPicks(unit).map((pick) => (
-            <Pressable
-              key={pick}
-              accessibilityRole="button"
-              accessibilityLabel={`${pick} ${unitLabel(unit)}`}
-              onPress={() => setValue(pick)}
-              style={({ pressed }) => ({
-                minHeight: t.touchTarget,
-                minWidth: 64,
-                paddingHorizontal: t.space.md,
-                borderRadius: t.radius.pill,
-                borderWidth: 1.5,
-                borderColor: value === pick ? t.colors.inverse : t.colors.border,
-                backgroundColor: t.colors.surface,
+                flexDirection: 'row',
                 alignItems: 'center',
-                justifyContent: 'center',
-                opacity: pressed ? 0.7 : 1,
-              })}
+                justifyContent: 'space-between',
+              }}
             >
-              <Text>
-                {pick}
-                {unit === 'count' ? '' : ` ${unit}`}
-              </Text>
+              <Text variant="heading">{unitLabel(unit)}</Text>
+              {UNITS[kindOf(unit)].length > 1 ? (
+                <Icon icon={ChevronDown} size={20} color={t.colors.text} strong />
+              ) : null}
             </Pressable>
-          ))}
+          </View>
+          {valid ? null : <ErrorText message="Enter a number above 0, or leave it empty" />}
+          <View style={{ flexDirection: 'row', gap: t.space.sm, flexWrap: 'wrap' }}>
+            {quickPicks(unit).map((pick) => (
+              <Pressable
+                key={pick}
+                accessibilityRole="button"
+                accessibilityLabel={`${pick} ${unitLabel(unit)}`}
+                onPress={() => setValue(pick)}
+                style={({ pressed }) => ({
+                  minHeight: t.touchTarget,
+                  minWidth: 64,
+                  paddingHorizontal: t.space.md,
+                  borderRadius: t.radius.pill,
+                  borderWidth: 1.5,
+                  borderColor: value === pick ? t.colors.inverse : t.colors.border,
+                  backgroundColor: t.colors.surface,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  opacity: pressed ? 0.7 : 1,
+                })}
+              >
+                <Text>
+                  {pick}
+                  {unit === 'count' ? '' : ` ${unit}`}
+                </Text>
+              </Pressable>
+            ))}
+          </View>
         </View>
-      </View>
+      ) : null}
 
       <View style={{ gap: t.space.md }}>
         <Text variant="heading" accessibilityRole="header">

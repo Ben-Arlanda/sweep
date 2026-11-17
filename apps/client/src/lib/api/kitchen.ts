@@ -28,7 +28,6 @@ const mutationKeys = {
   setPlace: ['kitchen', 'setPlace'] as const,
   addNew: ['kitchen', 'addNew'] as const,
   setStock: ['kitchen', 'setStock'] as const,
-  setStapleAmount: ['kitchen', 'setStapleAmount'] as const,
   toList: ['kitchen', 'toList'] as const,
   unlist: ['kitchen', 'unlist'] as const,
 };
@@ -64,16 +63,6 @@ export function registerKitchenMutations(queryClient: QueryClient) {
     mutationFn: async (v: SetTrackedVars) =>
       unwrap(
         await api.PUT('/kitchen/items/{ingredient_id}', {
-          params: { path: { ingredient_id: v.ingredientId }, header: header(v) },
-          body: { quantity: v.quantity, unit: v.unit ?? null },
-        }),
-      ),
-    ...settled,
-  });
-  queryClient.setMutationDefaults(mutationKeys.setStapleAmount, {
-    mutationFn: async (v: SetTrackedVars) =>
-      unwrap(
-        await api.PUT('/kitchen/staples/{ingredient_id}/amount', {
           params: { path: { ingredient_id: v.ingredientId }, header: header(v) },
           body: { quantity: v.quantity, unit: v.unit ?? null },
         }),
@@ -209,10 +198,6 @@ export function useKitchenActions() {
     mutationKey: mutationKeys.setTracked,
     scope,
   });
-  const setStapleAmount = useMutation<unknown, Error, SetTrackedVars>({
-    mutationKey: mutationKeys.setStapleAmount,
-    scope,
-  });
   const removeTracked = useMutation<unknown, Error, IngredientVars>({
     mutationKey: mutationKeys.removeTracked,
     scope,
@@ -249,7 +234,6 @@ export function useKitchenActions() {
   return {
     error:
       setTracked.error ??
-      setStapleAmount.error ??
       removeTracked.error ??
       setStaple.error ??
       removeStaple.error ??
@@ -261,9 +245,6 @@ export function useKitchenActions() {
     /** A Non-staple's amount; `unit` (kg, L…) is converted by the server. */
     setAmount: (ingredientId: string, quantity: string | null, unit?: string) =>
       setTracked.mutate({ ingredientId, quantity, unit, idempotencyKey: randomUUID() }),
-    /** A Staple's amount: a note only (ADR 0024). */
-    setStapleAmount: (ingredientId: string, quantity: string | null, unit?: string) =>
-      setStapleAmount.mutate({ ingredientId, quantity, unit, idempotencyKey: randomUUID() }),
     /** In stock / Running low / Out. Resolves with where a Staple went on the list. */
     setStock: (ingredientId: string, stock: Stock) =>
       setStock.mutateAsync({ ingredientId, stock, idempotencyKey: randomUUID() }),

@@ -28,8 +28,6 @@ const staple = (
   have: stock !== 'out',
   place,
   stock,
-  quantity: name === 'dried sage' ? '10' : null,
-  unit: 'g',
 });
 
 const rows = toRows({
@@ -51,10 +49,10 @@ test('Ran out: a Staple goes on the list, a Non-staple asks, anything else does 
   expect(afterStockChange({ staple: true, stock: 'in_stock' }, 'low')).toBe('none');
 });
 
-test('amounts read in real units; a Staple without one shows nothing', () => {
+test('Non-staples read in real units; Staples have no amount', () => {
   const amount = Object.fromEntries(rows.map((r) => [r.name, r.amount]));
   expect(amount['Celery salt']).toBeNull();
-  expect(amount['Dried sage']).toBe('10 g');
+  expect(amount['Dried sage']).toBeNull();
   expect(amount['Plain flour']).toBe('500 g');
 });
 

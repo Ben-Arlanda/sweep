@@ -62,8 +62,6 @@ def staple_out(staple: HouseholdStaple) -> StapleOut:
         have=staple.ran_out_at is None,
         place=kitchen.place_of(staple),
         stock=kitchen.stock_of(staple).value,
-        quantity=staple.quantity,
-        unit=staple.ingredient.default_unit,
     )
 
 
@@ -138,26 +136,6 @@ async def remove_staple(
         await kitchen.remove_staple(session, ctx, ingredient_id)
 
     return await idempotent(request, session, ctx, key, work, status.HTTP_204_NO_CONTENT)
-
-
-@router.put("/kitchen/staples/{ingredient_id}/amount", response_model=StapleOut)
-async def set_staple_amount(
-    ingredient_id: uuid.UUID,
-    body: SetQuantityIn,
-    request: Request,
-    ctx: MemberDep,
-    session: SessionDep,
-    key: IdempotencyKeyHeader,
-) -> Response:
-    """A Staple's amount: a note for people (ADR 0024). null clears it."""
-
-    async def work() -> StapleOut:
-        staple = await kitchen.set_staple_amount(
-            session, ctx, ingredient_id, body.quantity, body.unit
-        )
-        return staple_out(staple)
-
-    return await idempotent(request, session, ctx, key, work)
 
 
 @router.put("/kitchen/places/{ingredient_id}", response_model=PlaceOut)

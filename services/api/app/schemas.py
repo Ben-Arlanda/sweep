@@ -244,8 +244,6 @@ class StapleOut(BaseModel):
     have: bool  # not Out (Running low still counts as have)
     place: Place
     stock: Stock
-    quantity: Quantity | None  # a note (ADR 0024); the planner doesn't use it
-    unit: str  # the Ingredient's own unit
 
 
 class PlaceIn(BaseModel):
