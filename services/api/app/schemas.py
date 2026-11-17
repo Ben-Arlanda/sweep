@@ -248,6 +248,32 @@ class KitchenOut(BaseModel):
     staples: list[StapleOut]
 
 
+class InKitchenTrackedOut(BaseModel):
+    quantity: Quantity | None
+    unit: str
+    status: Literal["confirmed", "estimated", "unknown"]
+
+
+class InKitchenStapleOut(BaseModel):
+    staple: Literal[True] = True
+    have: bool
+
+
+class PhotoRowOut(BaseModel):
+    """One thing seen in a Kitchen Photo, for the review screen (ADR 0023)."""
+
+    name: str  # as the model named it
+    ingredient: IngredientOut | None  # None: Not linked
+    quantity: Quantity | None  # suggested, in the Ingredient's unit; None: "have some"
+    ticked: bool  # where the review starts: Not linked rows start unticked
+    in_kitchen: InKitchenTrackedOut | InKitchenStapleOut | None  # None: new
+
+
+class KitchenPhotoOut(BaseModel):
+    place: Place
+    rows: list[PhotoRowOut]
+
+
 # --- Recipes -----------------------------------------------------------------------
 
 # An amount we report (never accept), sent as a string so no precision is lost.

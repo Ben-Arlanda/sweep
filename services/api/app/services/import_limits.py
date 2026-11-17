@@ -23,10 +23,12 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from app import errors
 from app.agent.prompt import today_in_sydney
+from app.data.places import Place
 from app.llm_costs import Usage
 from app.models import RecipeImport, utcnow
 from app.services import token_budget
 from app.services.households import MemberContext
+from app.services.kitchen_photos import KitchenPhotoReader, KitchenPhotoReading
 from app.services.recipe_import import Photo, RecipeReader, RecipeReading
 
 MAX_PER_HOUR = 20
@@ -112,10 +114,36 @@ class MeteredReader:
     async def _count(
         self, answer: tuple[RecipeReading | None, Usage]
     ) -> tuple[RecipeReading | None, Usage]:
-        async with self._sessionmaker() as session:
-            await token_budget.add_usage(session, self._household_id, today_in_sydney(), answer[1])
-            await session.commit()
+        await _add_usage(self._sessionmaker, self._household_id, answer[1])
         return answer
+
+
+class MeteredKitchenReader:
+    """The Kitchen Photo reader, metered the same way."""
+
+    def __init__(
+        self,
+        inner: KitchenPhotoReader,
+        sessionmaker: async_sessionmaker[AsyncSession],
+        household_id: uuid.UUID,
+    ) -> None:
+        self._inner, self._sessionmaker, self._household_id = inner, sessionmaker, household_id
+
+    async def read_kitchen_photos(
+        self, photos: Sequence[Photo], place: Place
+    ) -> tuple[KitchenPhotoReading | None, Usage]:
+        answer = await self._inner.read_kitchen_photos(photos, place)
+        await _add_usage(self._sessionmaker, self._household_id, answer[1])
+        return answer
+
+
+async def _add_usage(
+    sessionmaker: async_sessionmaker[AsyncSession], household_id: uuid.UUID, usage: Usage
+) -> None:
+    """In a transaction of its own: the request's may roll back."""
+    async with sessionmaker() as session:
+        await token_budget.add_usage(session, household_id, today_in_sydney(), usage)
+        await session.commit()
 
 
 def _next_midnight(now: datetime) -> datetime:

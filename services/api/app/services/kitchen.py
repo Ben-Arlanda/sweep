@@ -423,6 +423,18 @@ async def restore_cooked(
         await _bump(session, household_id)
 
 
+async def tracked_of(
+    session: AsyncSession, household_id: uuid.UUID, ingredient_id: uuid.UUID
+) -> KitchenItem | None:
+    return await _tracked(session, household_id, ingredient_id)
+
+
+async def staple_of(
+    session: AsyncSession, household_id: uuid.UUID, ingredient_id: uuid.UUID
+) -> HouseholdStaple | None:
+    return await _staple(session, household_id, ingredient_id)
+
+
 # --- Internals -------------------------------------------------------------------------
 
 

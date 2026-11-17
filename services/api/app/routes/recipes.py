@@ -13,7 +13,7 @@ from app.embeddings import Embedder, EmbeddingUnavailable
 from app.idempotency import IdempotencyKeyHeader
 from app.models import Course
 from app.pdf_text import MAX_PDF_BYTES
-from app.routes.common import idempotent
+from app.routes.common import checked_photos, idempotent
 from app.schemas import (
     AdaptationOut,
     DraftLineOut,
@@ -32,15 +32,7 @@ from app.schemas import (
 from app.services import adaptations, import_limits, imported_recipes, recipe_import, recipes
 from app.services.households import MemberContext
 from app.services.import_limits import Door, MeteredReader
-from app.services.recipe_import import (
-    MAX_PHOTO_BYTES,
-    MAX_PHOTOS,
-    Draft,
-    PageFetcher,
-    Photo,
-    RecipeReader,
-    photo_type,
-)
+from app.services.recipe_import import Draft, PageFetcher, RecipeReader
 from app.services.recipes import SEARCH_LIMIT
 
 router = APIRouter(prefix="/recipes", tags=["recipes"])
@@ -132,17 +124,7 @@ async def read_photos(
     """The Photo door: one model call reads the photos into a draft. Nothing is stored:
     the bytes live only for this request (and every line comes back marked Check)."""
     reader = await _metered_reader(request, session, ctx, "photo")
-    if not 1 <= len(photos) <= MAX_PHOTOS:
-        raise errors.InvalidInput(f"Add 1 to {MAX_PHOTOS} photos of the recipe.")
-    read: list[Photo] = []
-    for upload in photos:
-        data = await upload.read(MAX_PHOTO_BYTES + 1)  # one byte over is enough to tell
-        if len(data) > MAX_PHOTO_BYTES:
-            raise errors.InvalidInput("Each photo can be up to 5 MB.")
-        kind = photo_type(data)
-        if kind is None:
-            raise errors.InvalidInput("Photos must be JPEG, PNG or WebP.")
-        read.append(Photo(media_type=kind, data=data))
+    read = await checked_photos(photos, " of the recipe")
     draft = await recipe_import.from_photos(session, ctx.household.id, reader, read)
     return _draft_out(draft)
 
