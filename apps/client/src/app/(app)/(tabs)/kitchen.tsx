@@ -25,6 +25,8 @@ import {
   CircleX,
   ChevronRight,
   ChevronDown,
+  CirclePlus,
+  Minus,
   GlassWater,
   Layers,
   Weight,
@@ -738,7 +740,9 @@ function ItemRow({
         <Pressable
           ref={pill}
           accessibilityRole="button"
-          accessibilityLabel={`${row.name} amount: ${row.amount ?? 'not set'}. Options`}
+          accessibilityLabel={
+            row.amount ? `${row.name} amount: ${row.amount}. Options` : `Add amount for ${row.name}`
+          }
           onPress={async () => onMenu(await measureAnchor(pill))}
           style={({ pressed }) => ({
             minHeight: t.touchTarget,
@@ -746,19 +750,23 @@ function ItemRow({
             paddingHorizontal: t.space.md,
             borderRadius: t.radius.pill,
             borderWidth: 1.5,
-            borderColor: t.colors.border,
+            borderColor: row.amount ? t.colors.border : t.colors.textMuted,
+            borderStyle: row.amount ? 'solid' : 'dashed', // dashed: nothing noted yet
             backgroundColor: t.colors.surface,
+            flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'center',
+            gap: t.space.md,
             opacity: pressed ? 0.7 : 1,
           })}
         >
           {row.amount ? (
             <Text style={{ fontSize: 16, fontVariant: ['tabular-nums'] }}>{row.amount}</Text>
           ) : (
-            <Text variant="caption" muted>
-              Add amount
-            </Text>
+            <>
+              <Icon icon={Minus} size={18} color={t.colors.textMuted} />
+              <Icon icon={CirclePlus} size={22} color={t.colors.text} />
+            </>
           )}
         </Pressable>
         {offerList ? (
