@@ -28,8 +28,8 @@ export function goneText(gone: Gone): string {
   const name = displayName(gone.name);
   if (gone.kind === 'tracked') {
     return gone.listItemId
-      ? `${name} used up, and on your list`
-      : `${name} used up. It was already on your list`;
+      ? `${name} finished, and on your list`
+      : `${name} finished. It was already on your list`;
   }
   return gone.listItemId
     ? `${name} ran out, and is on your list`

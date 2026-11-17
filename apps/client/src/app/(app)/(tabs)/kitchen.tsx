@@ -23,6 +23,7 @@ import {
 import { AddFromPhotoSheet } from '@/features/kitchen/AddFromPhotoSheet';
 import { newIngredientName } from '@/features/kitchen/addNew';
 import { displayName, formatAmount } from '@/features/kitchen/format';
+import { onListIds } from '@/features/kitchen/onList';
 import { usePlaceFilter } from '@/features/kitchen/placeFilter';
 import { goneText, undoSteps, type Gone } from '@/features/kitchen/usedUp';
 import {
@@ -34,6 +35,7 @@ import {
   type Tracked,
 } from '@/features/kitchen/places';
 import { useKitchen, useKitchenActions, useIngredientSearch } from '@/lib/api/kitchen';
+import { useList, useListActions } from '@/lib/api/lists';
 import { ingredientEmoji } from '@/theme/foodEmoji';
 import { tintFor } from '@/theme/tint';
 import { useTheme } from '@/theme/useTheme';
@@ -54,6 +56,11 @@ export default function KitchenScreen() {
   const [photoSheet, setPhotoSheet] = useState(false);
   const [menu, setMenu] = useState<string | null>(null); // the item whose ⋯ menu is open
   const [gone, setGone] = useState<Gone | null>(null); // the last Used up, for Undo
+  const list = useList();
+  const listActions = useListActions(list.data?.id ?? '');
+  // Tapped "+ List" here: the list learns the Ingredient only when the server answers,
+  // so remember the tap and say "On list" straight away (as the recipe screen does).
+  const [added, setAdded] = useState<Set<string>>(() => new Set());
 
   if (kitchen.isPending) return <Loading />;
   if (kitchen.isError) {
@@ -98,6 +105,12 @@ export default function KitchenScreen() {
       if (step.do === 'removeFromList') actions.unlist(step.listId, step.itemId);
     }
     setGone(null);
+  }
+
+  const onList = onListIds(list.data?.items);
+  function addToList(item: Tracked) {
+    listActions.addItem(displayName(item.ingredient.name));
+    setAdded((ids) => new Set(ids).add(item.ingredient.id));
   }
 
   const menuTracked = tracked.find((i) => i.ingredient.id === menu);
@@ -162,8 +175,8 @@ export default function KitchenScreen() {
         ]}
       />
       <Text variant="caption" muted>
-        Ticking items off the Shopping List adds them here, or add a photo of things laid out. Used
-        up and Ran out put things back on the list.
+        Ticking items off the Shopping List adds them here, or add a photo of things laid out.
+        Finished and Ran out put things back on the list.
       </Text>
 
       {sections.length === 0 ? <Text muted>Nothing in your Kitchen yet.</Text> : null}
@@ -177,6 +190,10 @@ export default function KitchenScreen() {
             <TrackedRow
               key={item.ingredient.id}
               item={item}
+              onList={onList.has(item.ingredient.id) || added.has(item.ingredient.id)}
+              canAdd={Boolean(list.data)}
+              onFinished={() => markGone(item, 'tracked')}
+              onAdd={() => addToList(item)}
               onMore={() => setMenu(item.ingredient.id)}
             />
           ))}
@@ -313,37 +330,80 @@ function MoreButton({ name, onPress }: { name: string; onPress: () => void }) {
   );
 }
 
-function TrackedRow({ item, onMore }: { item: Tracked; onMore: () => void }) {
+function TrackedRow({
+  item,
+  onList,
+  canAdd,
+  onFinished,
+  onAdd,
+  onMore,
+}: {
+  item: Tracked;
+  onList: boolean;
+  canAdd: boolean;
+  onFinished: () => void;
+  onAdd: () => void;
+  onMore: () => void;
+}) {
   const t = useTheme();
   const name = displayName(item.ingredient.name);
   const amount = `${item.status === 'confirmed' ? '' : 'about '}${formatAmount(item.quantity, item.unit)}`;
   return (
-    <View style={rowStyle(t)}>
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel={`${name}, ${amount}${item.status === 'confirmed' ? '' : `, ${item.status}`}`}
-        accessibilityHint="Change the amount, mark it used up, or move it"
-        onPress={onMore}
-        style={({ pressed }) => ({
-          flex: 1,
-          minHeight: t.touchTarget,
+    <View style={[rowStyle(t), { flexDirection: 'column', alignItems: 'stretch', gap: 0 }]}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.md }}>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={`${name}, ${amount}${item.status === 'confirmed' ? '' : `, ${item.status}`}`}
+          accessibilityHint="Change the amount, move it, or make it a Staple"
+          onPress={onMore}
+          style={({ pressed }) => ({
+            flex: 1,
+            minHeight: t.touchTarget,
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: t.space.md,
+            opacity: pressed ? 0.75 : 1,
+          })}
+        >
+          <FoodThumb
+            emoji={ingredientEmoji(item.ingredient)}
+            tint={tintFor(item.ingredient.name)}
+          />
+          <View style={{ flex: 1, gap: 2 }}>
+            <Text variant="label">{name}</Text>
+            <Text variant="caption" muted>
+              {amount}
+            </Text>
+          </View>
+          {/* Confirmed is the normal state: only what needs a second look gets a badge. */}
+          {item.status === 'confirmed' ? null : <StatusBadge status={item.status} />}
+        </Pressable>
+        <MoreButton name={name} onPress={onMore} />
+      </View>
+      <View
+        style={{
           flexDirection: 'row',
-          alignItems: 'center',
-          gap: t.space.md,
-          opacity: pressed ? 0.75 : 1,
-        })}
+          justifyContent: 'flex-end',
+          gap: t.space.sm,
+          paddingTop: t.space.xs,
+        }}
       >
-        <FoodThumb emoji={ingredientEmoji(item.ingredient)} tint={tintFor(item.ingredient.name)} />
-        <View style={{ flex: 1, gap: 2 }}>
-          <Text variant="label">{name}</Text>
-          <Text variant="caption" muted>
-            {amount}
-          </Text>
-        </View>
-        {/* Confirmed is the normal state: only what needs a second look gets a badge. */}
-        {item.status === 'confirmed' ? null : <StatusBadge status={item.status} />}
-      </Pressable>
-      <MoreButton name={name} onPress={onMore} />
+        <Button
+          title="Finished"
+          accessibilityLabel={`${name} finished: add to list`}
+          variant="secondary"
+          compact
+          onPress={onFinished}
+        />
+        <Button
+          title={onList ? 'On list' : '+ List'}
+          accessibilityLabel={onList ? `${name} is on your list` : `Add ${name} to your list`}
+          variant="secondary"
+          compact
+          disabled={onList || !canAdd}
+          onPress={onAdd}
+        />
+      </View>
     </View>
   );
 }
@@ -439,7 +499,7 @@ function TrackedMenu({
             onClose();
           }}
         />
-        <Button title="Used up: add to list" variant="secondary" onPress={onGone} />
+        <Button title="Finished: add to list" variant="secondary" onPress={onGone} />
         <KeepIn
           name={item.ingredient.name}
           place={item.place}

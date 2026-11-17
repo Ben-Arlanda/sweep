@@ -19,7 +19,7 @@ const milk: Gone = {
 
 describe('goneText', () => {
   it('says where it went', () => {
-    expect(goneText(cheese)).toBe('Goat cheese used up, and on your list');
+    expect(goneText(cheese)).toBe('Goat cheese finished, and on your list');
     expect(goneText(milk)).toBe('Milk ran out, and is on your list');
   });
   it('says so when it was already on the list', () => {
