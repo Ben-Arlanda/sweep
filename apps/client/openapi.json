@@ -1161,6 +1161,113 @@
         }
       }
     },
+    "/kitchen/photos": {
+      "post": {
+        "tags": [
+          "kitchen"
+        ],
+        "summary": "Read Kitchen Photos",
+        "description": "Rows for the review screen. Nothing is written: the bytes live only for this\nrequest, and the Kitchen changes only when the Member applies the rows.",
+        "operationId": "read_kitchen_photos_kitchen_photos_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_read_kitchen_photos_kitchen_photos_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KitchenPhotoOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/kitchen/photos/apply": {
+      "post": {
+        "tags": [
+          "kitchen"
+        ],
+        "summary": "Apply Kitchen Photos",
+        "description": "The ticked rows, all in one transaction. A ticked Not linked name is the Member's\nchoice, so it may become a Household Ingredient. Returns the Kitchen as it is now.",
+        "operationId": "apply_kitchen_photos_kitchen_photos_apply_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KitchenPhotoApplyIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KitchenOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/recipes": {
       "get": {
         "tags": [
@@ -2869,6 +2976,29 @@
         ],
         "title": "Body_read_file_recipes_imports_file_post"
       },
+      "Body_read_kitchen_photos_kitchen_photos_post": {
+        "properties": {
+          "photos": {
+            "items": {
+              "type": "string",
+              "contentMediaType": "application/octet-stream"
+            },
+            "type": "array",
+            "title": "Photos",
+            "description": "1 to 3 photos of items laid out"
+          },
+          "place": {
+            "$ref": "#/components/schemas/Place",
+            "description": "Where the items came from"
+          }
+        },
+        "type": "object",
+        "required": [
+          "photos",
+          "place"
+        ],
+        "title": "Body_read_kitchen_photos_kitchen_photos_post"
+      },
       "Body_read_photos_recipes_imports_photo_post": {
         "properties": {
           "photos": {
@@ -2892,7 +3022,8 @@
         "enum": [
           "purchase",
           "manual",
-          "cooked"
+          "cooked",
+          "photo"
         ],
         "title": "ChangeSource",
         "description": "What last changed a Kitchen quantity. Feeds the calculated status (ADR 0003)."
@@ -4064,6 +4195,60 @@
         "title": "ImportedRecipeOut",
         "description": "One of \"Your recipes\". `rule_breaks` empty = plannable; otherwise why the Dietary\nRules hide it from search and plans: \"satay sauce (couldn't check)\"."
       },
+      "InKitchenStapleOut": {
+        "properties": {
+          "staple": {
+            "type": "boolean",
+            "const": true,
+            "title": "Staple",
+            "default": true
+          },
+          "have": {
+            "type": "boolean",
+            "title": "Have"
+          }
+        },
+        "type": "object",
+        "required": [
+          "have"
+        ],
+        "title": "InKitchenStapleOut"
+      },
+      "InKitchenTrackedOut": {
+        "properties": {
+          "quantity": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quantity"
+          },
+          "unit": {
+            "type": "string",
+            "title": "Unit"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "confirmed",
+              "estimated",
+              "unknown"
+            ],
+            "title": "Status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "quantity",
+          "unit",
+          "status"
+        ],
+        "title": "InKitchenTrackedOut"
+      },
       "IngredientIn": {
         "properties": {
           "name": {
@@ -4336,6 +4521,48 @@
         ],
         "title": "KitchenOut"
       },
+      "KitchenPhotoApplyIn": {
+        "properties": {
+          "place": {
+            "$ref": "#/components/schemas/Place"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PhotoItemIn"
+            },
+            "type": "array",
+            "maxItems": 60,
+            "minItems": 1,
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "place",
+          "items"
+        ],
+        "title": "KitchenPhotoApplyIn"
+      },
+      "KitchenPhotoOut": {
+        "properties": {
+          "place": {
+            "$ref": "#/components/schemas/Place"
+          },
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/PhotoRowOut"
+            },
+            "type": "array",
+            "title": "Rows"
+          }
+        },
+        "type": "object",
+        "required": [
+          "place",
+          "rows"
+        ],
+        "title": "KitchenPhotoOut"
+      },
       "LinesIn": {
         "properties": {
           "lines": {
@@ -4481,6 +4708,113 @@
         ],
         "title": "PasteIn",
         "description": "Pasted recipe text. Line breaks are kept: they're how recipes are laid out."
+      },
+      "PhotoItemIn": {
+        "properties": {
+          "ingredient_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ingredient Id"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 80,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "quantity": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quantity"
+          }
+        },
+        "type": "object",
+        "required": [
+          "quantity"
+        ],
+        "title": "PhotoItemIn",
+        "description": "One ticked row: a known Ingredient, or a Not linked name the Member ticked."
+      },
+      "PhotoRowOut": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "ingredient": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IngredientOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "quantity": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quantity"
+          },
+          "ticked": {
+            "type": "boolean",
+            "title": "Ticked"
+          },
+          "in_kitchen": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/InKitchenTrackedOut"
+              },
+              {
+                "$ref": "#/components/schemas/InKitchenStapleOut"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "In Kitchen"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "ingredient",
+          "quantity",
+          "ticked",
+          "in_kitchen"
+        ],
+        "title": "PhotoRowOut",
+        "description": "One thing seen in a Kitchen Photo, for the review screen (ADR 0023)."
       },
       "Place": {
         "type": "string",
