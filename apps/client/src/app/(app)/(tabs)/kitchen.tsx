@@ -239,14 +239,9 @@ export default function KitchenScreen() {
 
   return (
     <Screen edges={TAB_ROOT}>
-      <View style={{ gap: t.space.xs }}>
-        <Text variant="display" accessibilityRole="header">
-          Kitchen
-        </Text>
-        <Text muted>
-          {sum.total} items · {sum.low} low · {sum.out} out
-        </Text>
-      </View>
+      <Text variant="display" accessibilityRole="header">
+        Kitchen
+      </Text>
 
       <View style={{ flexDirection: 'row', gap: t.space.sm }}>
         {STOCK_ORDER.map((stock) => (
@@ -663,7 +658,7 @@ function StockBadge({ stock }: { stock: Stock }) {
 
 /**
  * One item: picture, name, "Staple · Cupboard", and its status badge (tap to change).
- * The status carries the decision; an amount, if noted (via ⋯), joins the subtitle.
+ * Just the name and status; an amount, if noted (via ⋯), shows small under the name.
  * On the right: an Out Non-staple offers Add to list; an Out Staple went on the list by
  * itself, so it shows "On list", never a button. Then ⋯.
  */
@@ -735,7 +730,7 @@ function ItemRow({
       >
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel={`${row.name}, ${row.staple ? 'Staple' : 'Non-staple'}, ${placeLabel(row.place)}${noted ? `, ${noted}` : ''}`}
+          accessibilityLabel={`${row.name}${noted ? `, ${noted}` : ''}`}
           accessibilityHint="Edit amount, status, staple and storage"
           onPress={onOpen}
           style={({ pressed }) => ({ opacity: pressed ? 0.75 : 1 })}
@@ -751,16 +746,16 @@ function ItemRow({
             <Text variant="label" numberOfLines={2} style={{ fontSize: 15, lineHeight: 19 }}>
               {row.name}
             </Text>
-            <Text
-              variant="caption"
-              muted
-              numberOfLines={1}
-              style={{ fontSize: 12, lineHeight: 16 }}
-            >
-              {[row.staple ? 'Staple' : 'Non-staple', placeLabel(row.place), noted]
-                .filter(Boolean)
-                .join(' · ')}
-            </Text>
+            {noted ? (
+              <Text
+                variant="caption"
+                muted
+                numberOfLines={1}
+                style={{ fontSize: 12, lineHeight: 16 }}
+              >
+                {noted}
+              </Text>
+            ) : null}
           </Pressable>
           <Pressable
             ref={badge}
