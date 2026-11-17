@@ -14,6 +14,7 @@ import { useHousehold } from '@/lib/api/households';
 import { mealTap, useMealPlan, useMealPlanActions } from '@/lib/api/mealPlan';
 import { useTheme } from '@/theme/useTheme';
 
+import { AskSweep } from './AskSweep';
 import { homeState, needsNextWeek, usesLine, type HomeState } from './today';
 
 /**
@@ -22,7 +23,7 @@ import { homeState, needsNextWeek, usesLine, type HomeState } from './today';
  *
  * - planned: the dinner, See the recipe and Cooked (no photo: dropped as too complex);
  * - cooked: "Cooked ✓" with Undo (no timer, WCAG 2.2.1), then tomorrow;
- * - free / empty: the question, Plan my week and Just tonight.
+ * - free / empty: the question, the Ask Sweep box, Plan my week and Just tonight.
  */
 export function TodayHero({ me }: { me: MeOut }) {
   const week = useMealPlan(null);
@@ -71,8 +72,7 @@ export function TodayHero({ me }: { me: MeOut }) {
             : undefined
       }
     >
-      {/* "Plan my week" asks which days and what kind of plan (ADR 0015); "Just tonight"
-          is always Kitchen-first (ADR 0013). */}
+      <AskSweep />
       <Button title="Plan my week" onPress={() => setPlanning(true)} />
       <Button
         title="Just tonight"

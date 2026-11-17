@@ -1,6 +1,6 @@
 /**
- * How a plan starts. "Just tonight" (ADR 0013) and the "Plan my week" sheet (ADR 0015)
- * leave a one-off request here, then open the chat; the chat takes it (read and clear in
+ * How a plan starts. "Just tonight" (ADR 0013), the "Plan my week" sheet (ADR 0015) and
+ * the "Ask Sweep" box on Home leave a one-off request here, then open the chat; the chat takes it (read and clear in
  * one step) and sends the message in a new plan, shown like one the Member typed.
  *
  * From the sheet the request also carries the kind of plan and the days. The chat
@@ -17,6 +17,14 @@ export type Plan = { mode: PlanMode; days: string[] };
 export type Start = { text: string; plan: Plan | null };
 
 let pending: Start | null = null;
+
+/** The "Ask Sweep" box on Home. False when there's nothing to send. */
+export function requestAsk(text: string): boolean {
+  const words = text.trim();
+  if (!words) return false;
+  pending = { text: words, plan: null };
+  return true;
+}
 
 /** "Just tonight" on Home: always Kitchen-first, no sheet. */
 export function requestStart(_start: 'tonight'): void {

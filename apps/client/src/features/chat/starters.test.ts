@@ -1,5 +1,12 @@
 /// <reference types="jest" />
-import { planMessage, requestPlan, requestStart, SUGGESTIONS, takeStart } from './starters';
+import {
+  planMessage,
+  requestAsk,
+  requestPlan,
+  requestStart,
+  SUGGESTIONS,
+  takeStart,
+} from './starters';
 
 test('"Just tonight" starts a free chat with a Kitchen-first message', () => {
   requestStart('tonight');
@@ -33,6 +40,18 @@ test.each([
   ],
 ] as const)('the message names the days (%s, %j)', (mode, days, expected) => {
   expect(planMessage(mode, [...days])).toBe(expected);
+});
+
+test("asking from Home sends the Member's own words, trimmed, as a free chat", () => {
+  expect(requestAsk('  something with the leftover chicken \n')).toBe(true);
+
+  expect(takeStart()).toEqual({ text: 'something with the leftover chicken', plan: null });
+});
+
+test('asking with nothing typed starts nothing', () => {
+  expect(requestAsk('   \n ')).toBe(false);
+
+  expect(takeStart()).toBeNull();
 });
 
 test('a request is used once, so a reload or second visit sends nothing', () => {
