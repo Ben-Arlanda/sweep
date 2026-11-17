@@ -6,20 +6,6 @@
 
 export type Swap = { replaces: string; raw_text: string };
 
-/** Same join the server uses for the saved title (`adaptations.TITLE_JOIN`). */
-const TITLE_JOIN = ' · ';
-
-/**
- * A Proposal meal's name. Before approval the server sends the parent's title and the
- * label apart ("with brown lentils"); approving saves them joined, so show them joined.
- */
-export function adaptedTitle(meal: {
-  title: string;
-  adaptation?: { label: string } | null;
-}): string {
-  return meal.adaptation ? `${meal.title}${TITLE_JOIN}${meal.adaptation.label}` : meal.title;
-}
-
 /**
  * "400 g brown lentils instead of 500 g beef mince". Words, not an arrow: a screen reader
  * says "→" as "right arrow", and the new line first is what you'll actually buy.

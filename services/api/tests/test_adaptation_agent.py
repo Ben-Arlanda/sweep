@@ -270,7 +270,8 @@ async def test_an_addition_with_a_bracketed_note_still_links_and_is_explained(
     client_for: ClientFor, fake_issuer: FakeIssuer
 ) -> None:
     """Haiku wrote "brown lentils (canned)": unlinked, so it arrived unexplained and
-    unticked, and approving would have left out what the adapted meal needs."""
+    unticked, and approving would have left out what the adapted meal needs. And
+    "(canned, or dried)" in the browser check (2026-11-17): a comma inside the brackets."""
     model = ScriptedModel()
     async with client_for(model) as client:
         favourite = await vegetarian_with_favourite(client, fake_issuer)
@@ -279,7 +280,12 @@ async def test_an_addition_with_a_bracketed_note_still_links_and_is_explained(
                 adapt(favourite, ("500 g beef mince", LENTILS)),
                 tool(
                     "set_list_additions",
-                    items=[{"name": "brown lentils (canned)"}, {"name": "onion, diced"}],
+                    items=[
+                        {"name": "brown lentils (canned)"},
+                        {"name": "onion, diced"},
+                        {"name": "brown lentils (canned, or dried)"},
+                        {"name": "onion (brown), diced"},
+                    ],
                 ),
             ],
             [tool("propose_plan", summary="Lasagne.")],
@@ -288,10 +294,12 @@ async def test_an_addition_with_a_bracketed_note_still_links_and_is_explained(
             await say(client, fake_issuer, await start(client, fake_issuer), "x"), "proposal"
         )
 
-    lentils, onion = event["proposal"]["list_additions"]
+    lentils, onion, either, brown_onion = event["proposal"]["list_additions"]
     assert (lentils["name"], lentils["reason"]) == ("brown lentils (canned)", "meal")
     assert lentils["for_meals"] == ["Nonna's lasagne · with brown lentils"]
     assert (onion["name"], onion["reason"]) == ("onion, diced", "meal")  # a note after a comma
+    assert (either["name"], either["reason"]) == ("brown lentils (canned, or dried)", "meal")
+    assert brown_onion["reason"] == "meal"  # a bracket that isn't at the end
 
 
 async def test_the_name_is_written_by_code_not_the_model(

@@ -1,16 +1,7 @@
 /// <reference types="jest" />
-import { adaptedTitle, swapLine, swapsOf } from './adaptations';
+import { swapLine, swapsOf } from './adaptations';
 
 describe('Recipe Adaptations', () => {
-  it("names a proposed Adaptation the way it'll be saved", () => {
-    // The server sends the parent's title and the label separately (ADR 0021).
-    expect(adaptedTitle({ title: "Mum's ragu", adaptation: { label: 'with brown lentils' } })).toBe(
-      "Mum's ragu · with brown lentils",
-    );
-    expect(adaptedTitle({ title: "Mum's ragu", adaptation: null })).toBe("Mum's ragu");
-    expect(adaptedTitle({ title: "Mum's ragu" })).toBe("Mum's ragu");
-  });
-
   it('reads a Swap as plain words, new line first', () => {
     expect(swapLine({ replaces: '500 g beef mince', raw_text: '400 g brown lentils' })).toBe(
       '400 g brown lentils instead of 500 g beef mince',

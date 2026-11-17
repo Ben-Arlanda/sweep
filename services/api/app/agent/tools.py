@@ -44,7 +44,7 @@ from app.text import ONE_LINE
 from app.units import convert
 
 SEARCH_RESULTS = 8
-NOTE_IN_BRACKETS = re.compile(r"\s*\([^()]*\)\s*$")  # a trailing "(canned)"
+NOTE_IN_BRACKETS = re.compile(r"\s*\([^()]*\)")  # "(canned)", wherever it sits
 FLAGGED_FAVOURITES = 3  # Rule-breaking favourites added to a search (ADR 0021)
 KITCHEN_RESULTS = 10  # enough to pick a week of dinners with some choice
 CANDIDATES = 60  # meaning search's shortlist before the Kitchen re-ranks it
@@ -615,7 +615,8 @@ async def set_list_additions(call: Call, args: AdditionsArgs) -> Outcome:
         found = await ingredients.resolve(
             call.session, call.agent.household_id, item.name, create=False
         )
-        bare = NOTE_IN_BRACKETS.sub("", item.name.split(",")[0]).strip()
+        # Brackets before commas: "(canned, or dried)" holds a comma of its own.
+        bare = NOTE_IN_BRACKETS.sub("", item.name).split(",")[0].strip()
         if found is None and bare and bare != item.name:
             # "brown lentils (canned)", "beef steak, thinly sliced": the note hid the
             # Ingredient, so the addition came out unexplained and unticked (live runs,

@@ -3,7 +3,7 @@ import { Pressable, View } from 'react-native';
 
 import { Checkbox } from '@/components/Checkbox';
 import { Button, Card, ErrorText, Text } from '@/components/ui';
-import { adaptedTitle, swapLine } from '@/features/recipes/adaptations';
+import { swapLine } from '@/features/recipes/adaptations';
 import { useDecideProposal } from '@/lib/api/conversations';
 import { useTheme } from '@/theme/useTheme';
 
@@ -66,7 +66,8 @@ export function ProposalCard({
         <Section title="Meals">
           {shown.meals.map((meal) => {
             const day = formatDay(meal.date);
-            const what = `${adaptedTitle(meal)} · serves ${meal.servings}`;
+            // An adapted meal's title is already its saved name ("Mum's ragu · with lentils").
+            const what = `${meal.title} · serves ${meal.servings}`;
             const replaces = meal.replaces ? `Replaces ${meal.replaces}` : null;
             // One tick approves the Adaptation as a whole, so its Swaps sit in the row.
             const swaps = meal.adaptation?.swaps.map(swapLine) ?? [];
@@ -211,7 +212,9 @@ function keptSummary(kept: { meals: number; additions: number }) {
 
 /** An earlier plan in the chat history: one line saying what became of it. */
 export function PastProposal({ proposal }: { proposal: Proposal }) {
-  const meals = keptOf(proposal).meals.map(adaptedTitle).join(', ');
+  const meals = keptOf(proposal)
+    .meals.map((m) => m.title)
+    .join(', ');
   return (
     <Card style={{ gap: 4 }}>
       <Text variant="label">Sweep&apos;s plan · {statusLine(proposal)}</Text>
