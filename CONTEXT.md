@@ -86,8 +86,12 @@ A Household favourite a Member brought in (pasted, photographed, linked, uploade
 _Avoid_: saved recipe, user recipe
 
 **Recipe Adaptation**:
-A clearly labelled variation of an existing recipe (e.g. an ingredient swap), always linked to the recipe it came from.
-_Avoid_: generated recipe, AI recipe
+A clearly labelled variation of an existing recipe that swaps one or more ingredient lines for others (e.g. beef mince → lentils, cream → Greek yoghurt). The method isn't rewritten. Always linked to the recipe it came from. The planner proposes it inside a Proposal, and it's saved only when a Member approves.
+_Avoid_: generated recipe, AI recipe, substitution (a **Swap** is one line of an Adaptation)
+
+**Swap**:
+One line of a Recipe Adaptation: the original line and what replaces it. Checked by code: the replacement must be a known Ingredient, and the adapted recipe must pass the Household's Dietary Rules.
+_Avoid_: substitution, replacement
 
 ### Planning
 

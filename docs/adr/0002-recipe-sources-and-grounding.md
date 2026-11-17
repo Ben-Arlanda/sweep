@@ -50,7 +50,7 @@ crawlers, and taste.com.au prohibits automated collection without written permis
   meat has a safe cooking step), an LLM reviewer flags problems, and a person approves
   the flagged ones. What to write next comes from **gap logs**: searches and agent
   requests that found no good match. Recipes are never generated live for a user.
-- **Recipe Adaptations** stretch each recipe ("make it vegetarian", "for two").
+- **Recipe Adaptations** stretch each recipe ("make it vegetarian", "for two"). *(Built as Swaps only, see ADR 0021. "For two" is a Planned Meal's servings.)*
 - **Favourites** come in through one pipeline with several front doors. Each door only
   gets the text; parsing and the review screen are shared:
   1. "What do you usually cook?" at onboarding matches the meals people name to existing
