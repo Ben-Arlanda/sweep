@@ -24,7 +24,7 @@ from sqlalchemy import (
     UniqueConstraint,
     func,
 )
-from sqlalchemy.dialects.postgresql import ARRAY, JSONB
+from sqlalchemy.dialects.postgresql import ARRAY, JSONB, TSVECTOR
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.data.places import Place
@@ -471,11 +471,18 @@ class Recipe(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utcnow, server_default=func.now()
     )
+    # R2 keyword search (slice 9): title, Ingredient names + aliases, cuisine and summary,
+    # weighted. Written only by recipes.refresh_search_documents. Deferred: never loaded
+    # with the recipe, only searched.
+    search_document: Mapped[str | None] = mapped_column(TSVECTOR, deferred=True)
     ingredients: Mapped[list["RecipeIngredient"]] = relationship(
         order_by="RecipeIngredient.position",
         cascade="all, delete-orphan",
         lazy="selectin",  # one extra query for all ingredients of all loaded recipes
     )
+
+
+Index("ix_recipes_search_document", Recipe.search_document, postgresql_using="gin")
 
 
 class RecipeIngredient(Base):

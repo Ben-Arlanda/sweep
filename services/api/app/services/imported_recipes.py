@@ -116,6 +116,7 @@ async def save(
     _fill(recipe, body)
     session.add(recipe)
     await session.flush()
+    await recipes.refresh_search_documents(session, [recipe.id])
     await recipes.embed_after_save(session, embedder)  # for search; never fails the Save
     return recipe
 
@@ -152,6 +153,7 @@ async def update(
     recipe.ingredients.extend(lines)
     _fill(recipe, body)
     await session.flush()
+    await recipes.refresh_search_documents(session, [recipe.id])
     await recipes.embed_after_save(session, embedder)  # its text changed: a new vector
     return recipe
 
