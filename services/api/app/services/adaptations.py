@@ -26,8 +26,21 @@ from app.schemas import ImportedLineIn
 from app.services import diet, imported_recipes, swap_checks
 from app.services.recipes import visible_to
 
-TITLE_JOIN = " · "  # "Mum's ragu · with lentils"
+TITLE_JOIN = " · "  # "Mum's ragu · with brown lentils"
 MAX_TITLE = 200  # Recipe.title's column
+
+
+def label_for(lines: Sequence[RecipeIngredient]) -> str:
+    """The name after the title, written by code from the swapped-in Ingredients (which
+    the checks have linked): "with brown lentils", "with tofu and mushrooms". Never the
+    model's words: a live run let a planted "nut-free" claim into a label for cashews
+    (inject-lying-summary, 2026-11-17), and a label becomes a saved recipe's title."""
+    names = list(
+        dict.fromkeys(line.ingredient.name for line in lines if line.replaces and line.ingredient)
+    )
+    if len(names) <= 1:
+        return f"with {''.join(names) or 'swaps'}"
+    return f"with {', '.join(names[:-1])} and {names[-1]}"
 
 
 @dataclass(frozen=True)
@@ -74,7 +87,6 @@ async def preview(
     household_id: uuid.UUID,
     parent_id: uuid.UUID,
     swaps: Sequence[SwapIn],
-    label: str,
 ) -> Recipe:
     """The Adaptation, built in memory and not added to the session, after the Swap
     checks pass (else `SwapsRefused`). Replacement lines are read and matched like an
@@ -84,10 +96,6 @@ async def preview(
     wanted = {swap.position: swap for swap in swaps}
     if not swaps or len(wanted) != len(swaps) or not wanted.keys() <= by_position.keys():
         raise errors.InvalidInput("Each Swap must replace a different line of the recipe.")
-    title = f"{original.title}{TITLE_JOIN}{label}"
-    if len(title) > MAX_TITLE:
-        raise errors.InvalidInput("That name is too long.")
-
     replacements = await imported_recipes.read_lines(
         session, household_id, [ImportedLineIn(raw_text=s.raw_text) for s in wanted.values()]
     )
@@ -107,6 +115,9 @@ async def preview(
     if problems:
         raise errors.SwapsRefused(problems)
 
+    title = f"{original.title}{TITLE_JOIN}{label_for(lines)}"
+    if len(title) > MAX_TITLE:
+        title = f"{original.title[: MAX_TITLE - 20]}{TITLE_JOIN}adapted"
     return Recipe(
         kind=RecipeKind.ADAPTATION,
         household_id=household_id,
@@ -135,11 +146,10 @@ async def create(
     household_id: uuid.UUID,
     parent_id: uuid.UUID,
     swaps: Sequence[SwapIn],
-    label: str,
 ) -> Recipe:
     """Store an Adaptation, or reuse a kept one with exactly the same Swaps (proposing
     "with lentils" twice shouldn't leave two copies under the recipe)."""
-    adaptation = await preview(session, household_id, parent_id, swaps, label)
+    adaptation = await preview(session, household_id, parent_id, swaps)
     for kept in await for_parent(session, household_id, parent_id):
         if swaps_of(kept) == swaps_of(adaptation):
             return kept
@@ -172,7 +182,6 @@ async def for_draft(
                 household_id,
                 uuid.UUID(meal["recipe_id"]),
                 swaps_in(meal),
-                adaptation["label"],
             )
         except errors.SwapsRefused as error:
             refused[day] = "; ".join(error.problems)

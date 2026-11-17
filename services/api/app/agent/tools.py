@@ -11,6 +11,7 @@ Draft tools only change the Draft Plan in the agent's state. It's saved only aft
 Member approves, by plain code in app/services/proposals.py (ADR 0005).
 """
 
+import re
 import uuid
 from collections import defaultdict
 from collections.abc import Awaitable, Callable
@@ -43,6 +44,7 @@ from app.text import ONE_LINE
 from app.units import convert
 
 SEARCH_RESULTS = 8
+NOTE_IN_BRACKETS = re.compile(r"\s*\([^()]*\)\s*$")  # a trailing "(canned)"
 FLAGGED_FAVOURITES = 3  # Rule-breaking favourites added to a search (ADR 0021)
 KITCHEN_RESULTS = 10  # enough to pick a week of dinners with some choice
 CANDIDATES = 60  # meaning search's shortlist before the Kitchen re-ranks it
@@ -339,6 +341,14 @@ class MealRef(Args):
     servings: int = Field(gt=0, le=20)
 
 
+async def _draft_adaptations(call: Call) -> dict[str, Recipe]:
+    """Parent id → its adapted recipe, for the Draft's adapted meals."""
+    built, _refused = await adaptations.for_draft(
+        call.session, call.agent.household_id, call.draft["meals"]
+    )
+    return {call.draft["meals"][day]["recipe_id"]: recipe for day, recipe in built.items()}
+
+
 class CoverageArgs(Args):
     meals: list[MealRef] = Field(min_length=1, max_length=14)
 
@@ -349,11 +359,19 @@ async def check_kitchen_coverage(call: Call, args: CoverageArgs) -> Outcome:
     units: dict[str, str] = {}
     unmeasured: set[str] = set()  # "salt to taste": needed, amount unknown
     found: dict[str, Ingredient] = {}
+    # A meal adapted in this Draft counts by its Swaps, not its parent as written:
+    # reading the parent once told Haiku chicken thigh was missing, and it re-planned
+    # the original over its own Adaptation (live run, 2026-11-17).
+    adapted = await _draft_adaptations(call)
     for meal in args.meals:
-        try:
-            recipe = await recipes.get_recipe(call.session, call.agent.household_id, meal.recipe_id)
-        except errors.NotFound as error:
-            raise ToolError(f"No recipe with id {meal.recipe_id}") from error
+        recipe = adapted.get(str(meal.recipe_id))
+        if recipe is None:
+            try:
+                recipe = await recipes.get_recipe(
+                    call.session, call.agent.household_id, meal.recipe_id
+                )
+            except errors.NotFound as error:
+                raise ToolError(f"No recipe with id {meal.recipe_id}") from error
         scale = Decimal(meal.servings) / Decimal(recipe.servings)
         for line in recipe.ingredients:
             if line.ingredient is None or line.optional:
@@ -516,9 +534,6 @@ class AdaptArgs(Args):
     date: date
     recipe_id: uuid.UUID = Field(description="The recipe as found: never an Adaptation's id")
     servings: int = Field(gt=0, le=20)
-    label: Annotated[str, ONE_LINE] = Field(
-        min_length=1, max_length=60, description="Short, after the title: 'with lentils'"
-    )
     swaps: list[SwapArg] = Field(min_length=1, max_length=10)
 
 
@@ -553,7 +568,6 @@ async def adapt_recipe(call: Call, args: AdaptArgs) -> Outcome:
             hid,
             parent.id,
             [adaptations.SwapIn(s["position"], s["raw_text"]) for s in swaps],
-            args.label,
         )
     except errors.SwapsRefused as error:
         listed = "\n".join(f"- {p}" for p in error.problems)
@@ -564,7 +578,8 @@ async def adapt_recipe(call: Call, args: AdaptArgs) -> Outcome:
         recipe_id=str(parent.id),
         servings=args.servings,
         title=adapted.title,
-        adaptation=DraftAdaptation(label=args.label, swaps=swaps),
+        # The label is code's ("with brown lentils"), never the model's: see label_for.
+        adaptation=DraftAdaptation(label=adaptations.label_for(adapted.ingredients), swaps=swaps),
     )
     rules = await diet.get_rules(call.session, hid)
     return Outcome(
@@ -600,6 +615,14 @@ async def set_list_additions(call: Call, args: AdditionsArgs) -> Outcome:
         found = await ingredients.resolve(
             call.session, call.agent.household_id, item.name, create=False
         )
+        bare = NOTE_IN_BRACKETS.sub("", item.name.split(",")[0]).strip()
+        if found is None and bare and bare != item.name:
+            # "brown lentils (canned)", "beef steak, thinly sliced": the note hid the
+            # Ingredient, so the addition came out unexplained and unticked (live runs,
+            # 2026-11-17). Only the matching drops the note; the name stays as written.
+            found = await ingredients.resolve(
+                call.session, call.agent.household_id, bare, create=False
+            )
         additions.append(
             DraftAddition(
                 name=item.name,

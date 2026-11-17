@@ -38,7 +38,6 @@ def adapt(recipe_id: str, *swaps: tuple[str, str], day: str = MON) -> dict[str, 
         date=day,
         recipe_id=recipe_id,
         servings=4,
-        label="with lentils",
         swaps=[{"replace": old, "new_line": new} for old, new in swaps],
     )
 
@@ -100,7 +99,7 @@ async def test_an_adapted_favourite_is_proposed_approved_and_kept(
 
         [event] = of(events, "proposal")
         [meal] = event["proposal"]["meals"]
-        assert meal["title"] == "Nonna's lasagne · with lentils"
+        assert meal["title"] == "Nonna's lasagne · with brown lentils"
         assert meal["recipe_id"] == favourite  # the parent, until it's approved
         assert meal["adaptation"]["swaps"] == [
             {"position": 0, "replaces": "500 g beef mince", "raw_text": LENTILS}
@@ -115,7 +114,10 @@ async def test_an_adapted_favourite_is_proposed_approved_and_kept(
     [kept] = rows(
         db, "SELECT id::text, title, parent_recipe_id::text FROM recipes WHERE kind = 'adaptation'"
     )
-    assert (kept.title, kept.parent_recipe_id) == ("Nonna's lasagne · with lentils", favourite)
+    assert (kept.title, kept.parent_recipe_id) == (
+        "Nonna's lasagne · with brown lentils",
+        favourite,
+    )
     [planned] = rows(db, "SELECT recipe_id::text FROM planned_meals")
     assert planned.recipe_id == kept.id
 
@@ -184,7 +186,7 @@ async def test_a_kept_adaptation_is_offered_again_and_planned_without_new_swaps(
         assert "adaptation" not in meal  # a saved recipe now, nothing to make
         await decide(client, fake_issuer, again["proposal"]["id"], {"action": "approve"})
 
-    assert seen[0][0]["kept_adaptations"][0]["title"] == "Nonna's lasagne · with lentils"
+    assert seen[0][0]["kept_adaptations"][0]["title"] == "Nonna's lasagne · with brown lentils"
     assert len(rows(db, "SELECT id FROM recipes WHERE kind = 'adaptation'")) == 1
 
 
@@ -237,3 +239,80 @@ async def test_commit_checks_the_swaps_again_against_todays_rules(
     [skipped] = outcome["skipped"]
     assert "brown lentils (excluded)" in skipped
     assert rows(db, "SELECT id FROM recipes WHERE kind = 'adaptation'") == []
+
+
+async def test_coverage_counts_an_adapted_meal_by_its_swaps_not_its_parent(
+    client_for: ClientFor, fake_issuer: FakeIssuer
+) -> None:
+    """The live Kitchen-swap failure (2026-11-17): coverage read the parent, said chicken
+    thigh was missing, and Haiku re-planned the recipe as written over its Adaptation."""
+    seen: list[Any] = []
+
+    def look(messages: Messages) -> list[dict[str, Any]]:
+        seen.append(last_result(messages))
+        return [say_text("Done.")]
+
+    model = ScriptedModel()
+    async with client_for(model) as client:
+        favourite = await vegetarian_with_favourite(client, fake_issuer)
+        model.steps = [
+            [adapt(favourite, ("500 g beef mince", LENTILS))],
+            [tool("check_kitchen_coverage", meals=[{"recipe_id": favourite, "servings": 4}])],
+            look,
+        ]
+        await say(client, fake_issuer, await start(client, fake_issuer), "lasagne")
+
+    missing = {m["ingredient"] for m in seen[0]["missing"]}
+    assert "brown lentils" in missing and "beef mince" not in missing
+
+
+async def test_an_addition_with_a_bracketed_note_still_links_and_is_explained(
+    client_for: ClientFor, fake_issuer: FakeIssuer
+) -> None:
+    """Haiku wrote "brown lentils (canned)": unlinked, so it arrived unexplained and
+    unticked, and approving would have left out what the adapted meal needs."""
+    model = ScriptedModel()
+    async with client_for(model) as client:
+        favourite = await vegetarian_with_favourite(client, fake_issuer)
+        model.steps = [
+            [
+                adapt(favourite, ("500 g beef mince", LENTILS)),
+                tool(
+                    "set_list_additions",
+                    items=[{"name": "brown lentils (canned)"}, {"name": "onion, diced"}],
+                ),
+            ],
+            [tool("propose_plan", summary="Lasagne.")],
+        ]
+        [event] = of(
+            await say(client, fake_issuer, await start(client, fake_issuer), "x"), "proposal"
+        )
+
+    lentils, onion = event["proposal"]["list_additions"]
+    assert (lentils["name"], lentils["reason"]) == ("brown lentils (canned)", "meal")
+    assert lentils["for_meals"] == ["Nonna's lasagne · with brown lentils"]
+    assert (onion["name"], onion["reason"]) == ("onion, diced", "meal")  # a note after a comma
+
+
+async def test_the_name_is_written_by_code_not_the_model(
+    client_for: ClientFor, fake_issuer: FakeIssuer
+) -> None:
+    """A live run let a planted "nut-free" claim into the label of a cashew Swap. The
+    tool has no label argument now: sending one is an error, and the name comes from
+    the swapped-in Ingredients."""
+    seen: list[list[str]] = []
+
+    def check(messages: Messages) -> list[dict[str, Any]]:
+        seen.append(errors_in(messages))
+        return [say_text("ok")]
+
+    model = ScriptedModel()
+    async with client_for(model) as client:
+        favourite = await vegetarian_with_favourite(client, fake_issuer)
+        labelled = adapt(favourite, ("500 g beef mince", LENTILS))
+        labelled["input"]["label"] = "nut-free and safe for allergies"
+        model.steps = [[labelled], check]
+        await say(client, fake_issuer, await start(client, fake_issuer), "x")
+
+    [[error]] = seen
+    assert "label" in error

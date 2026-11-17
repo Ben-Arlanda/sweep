@@ -48,10 +48,12 @@ from app.models import (
     RecipeIngredient,
     RecipeKind,
 )
+from app.schemas import ImportedLineIn
 from app.services import (
     conversations,
     diet,
     households,
+    imported_recipes,
     ingredients,
     kitchen,
     kitchen_match,
@@ -135,6 +137,16 @@ Step = Say | Approve | Reject
 
 
 @dataclass(frozen=True)
+class SwapFacts:
+    """One Swap of a proposed Recipe Adaptation (slice 5e), read again from scratch."""
+
+    replaces: str  # the parent's line
+    raw_text: str  # what the model wrote in its place
+    old_ingredient: str | None
+    new_ingredient: str | None  # what our parser links it to (None = Not linked)
+
+
+@dataclass(frozen=True)
 class MealFacts:
     date: str
     recipe_id: str
@@ -144,6 +156,8 @@ class MealFacts:
     to_buy: int | None  # missing Ingredients against the Kitchen (None if it doesn't exist)
     kitchen_uses: tuple[str, ...]  # Tracked Kitchen items it uses
     course: str | None  # the recipe's Course (None if it doesn't exist)
+    # A proposed Adaptation's Swaps. The facts above are about the adapted lines.
+    swaps: tuple[SwapFacts, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -553,6 +567,36 @@ async def _decide(agent: Agent, conversation: Conversation, action: str) -> None
     await agent.decide(conversation, uuid.UUID(waiting), decision)
 
 
+async def _adapted(
+    session: AsyncSession, household_id: uuid.UUID, parent: Recipe, adaptation: dict[str, Any]
+) -> tuple[Recipe, tuple[SwapFacts, ...]]:
+    """The adapted recipe rebuilt by the harness from the Proposal's Swaps, not by the
+    app's adaptations module: the graders shouldn't trust the code they're checking.
+    Unsaved; only its lines are read."""
+    by_position = {line.position: line for line in parent.ingredients}
+    swapped = dict(by_position)
+    facts = []
+    for swap in adaptation["swaps"]:
+        [new] = await imported_recipes.read_lines(
+            session, household_id, [ImportedLineIn(raw_text=swap["raw_text"])]
+        )
+        old = by_position[swap["position"]]
+        swapped[swap["position"]] = new
+        facts.append(
+            SwapFacts(
+                replaces=old.raw_text,
+                raw_text=new.raw_text,
+                old_ingredient=old.ingredient.name if old.ingredient else None,
+                new_ingredient=new.ingredient.name if new.ingredient else None,
+            )
+        )
+    adapted = Recipe(
+        title=parent.title, course=parent.course, servings=parent.servings,
+        ingredients=[swapped[p] for p in sorted(swapped)],
+    )  # fmt: skip
+    return adapted, tuple(facts)
+
+
 async def collect_proposals(
     session: AsyncSession, ctx: households.MemberContext, conversation_id: uuid.UUID
 ) -> tuple[ProposalFacts, ...]:
@@ -577,6 +621,9 @@ async def collect_proposals(
         meals = []
         for m in payload["meals"]:
             recipe = found.get(m["recipe_id"])
+            swaps: tuple[SwapFacts, ...] = ()
+            if recipe is not None and m.get("adaptation"):
+                recipe, swaps = await _adapted(session, ctx.household.id, recipe, m["adaptation"])
             lines = kitchen_match.lines_of(recipe) if recipe is not None else []
             meals.append(
                 MealFacts(
@@ -584,6 +631,7 @@ async def collect_proposals(
                     recipe_id=m["recipe_id"],
                     title=m["title"],
                     exists=recipe is not None,
+                    swaps=swaps,
                     rule_breaks=(tuple(diet.check_recipe(recipe, rules).breaks) if recipe else ()),
                     to_buy=(len(kitchen_match.match(lines, snap).missing) if recipe else None),
                     kitchen_uses=tuple(kitchen_match.uses(lines, snap)),

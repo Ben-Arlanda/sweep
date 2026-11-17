@@ -286,10 +286,7 @@ async def commit(
         if meal["date"] in adapted:  # approving makes the Adaptation (or reuses a kept one)
             planned = draft["meals"][meal["date"]]
             assert "adaptation" in planned
-            kept = await adaptations.create(
-                session, hid, recipe_id, adaptations.swaps_in(planned),
-                planned["adaptation"]["label"],
-            )  # fmt: skip
+            kept = await adaptations.create(session, hid, recipe_id, adaptations.swaps_in(planned))
             recipe_id = kept.id
         if current is not None:
             current.recipe_id = recipe_id

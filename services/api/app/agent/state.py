@@ -17,7 +17,7 @@ class DraftAdaptation(TypedDict):
     """A Recipe Adaptation proposed for one meal (ADR 0021). Not saved until approved:
     validate and commit rebuild it from the parent and run the Swap checks each time."""
 
-    label: str  # "with lentils"
+    label: str  # "with brown lentils": written by code (adaptations.label_for)
     swaps: list[DraftSwap]
 
 

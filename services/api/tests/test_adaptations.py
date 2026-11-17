@@ -31,9 +31,7 @@ Adapt = Callable[..., Awaitable[str]]
 def adapt(database_url: str, db: Engine) -> Adapt:
     """Make an Adaptation the way an approved Proposal will, and return its id."""
 
-    async def run(
-        household_id: str, parent_id: str, swaps: Sequence[tuple[int, str]], label: str
-    ) -> str:
+    async def run(household_id: str, parent_id: str, swaps: Sequence[tuple[int, str]]) -> str:
         engine = make_engine(database_url)
         try:
             async with make_sessionmaker(engine)() as session:
@@ -42,7 +40,6 @@ def adapt(database_url: str, db: Engine) -> Adapt:
                     uuid.UUID(household_id),
                     uuid.UUID(parent_id),
                     [adaptations.SwapIn(position, line) for position, line in swaps],
-                    label,
                 )
                 await session.commit()
                 return str(made.id)
@@ -70,7 +67,7 @@ async def test_an_adaptation_is_a_private_copy_with_its_swaps(
     await load([STIR_FRY])
     home = await create_household(client, fake_issuer, "ana")
     parent = seed_id(db, "beef-stir-fry")
-    made = await adapt(home["household"]["id"], parent, [(0, "400 g firm tofu")], "with tofu")
+    made = await adapt(home["household"]["id"], parent, [(0, "400 g firm tofu")])
 
     recipe = await get(client, fake_issuer, f"/recipes/{made}")
     assert (recipe["kind"], recipe["parent_recipe_id"]) == ("adaptation", parent)
@@ -99,7 +96,7 @@ async def test_adaptations_list_under_their_parent_not_in_browse(
     await load([STIR_FRY, PASTA])
     home = await create_household(client, fake_issuer, "ana")
     parent = seed_id(db, "beef-stir-fry")
-    made = await adapt(home["household"]["id"], parent, [(0, "400 g firm tofu")], "with tofu")
+    made = await adapt(home["household"]["id"], parent, [(0, "400 g firm tofu")])
 
     under = await get(client, fake_issuer, f"/recipes/{parent}/adaptations")
     assert [(a["id"], a["swaps"]) for a in under] == [
@@ -120,7 +117,7 @@ async def test_any_member_can_delete_one_and_only_their_households(
     await join(client, fake_issuer, "cal", await invite(client, fake_issuer, "ana"))
     await create_household(client, fake_issuer, "ben", name="Ben's")
     parent = seed_id(db, "beef-stir-fry")
-    made = await adapt(home["household"]["id"], parent, [(0, "400 g firm tofu")], "with tofu")
+    made = await adapt(home["household"]["id"], parent, [(0, "400 g firm tofu")])
 
     path = f"/recipes/adaptations/{made}"
     # Not another Household's, and not a Seed Recipe through this door.
@@ -139,9 +136,7 @@ async def test_deleting_a_favourite_deletes_its_adaptations(
 ) -> None:
     home = await create_household(client, fake_issuer, "ana")
     favourite = (await save(client, fake_issuer, nonna())).json()
-    made = await adapt(
-        home["household"]["id"], favourite["id"], [(0, "2 x 400g cans lentils")], "with lentils"
-    )
+    made = await adapt(home["household"]["id"], favourite["id"], [(0, "2 x 400g cans lentils")])
 
     headers = fake_issuer.headers("ana")
     deleted = await client.delete(f"/recipes/imported/{favourite['id']}", headers=headers | idem())
@@ -157,17 +152,15 @@ async def test_only_a_visible_seed_or_imported_recipe_can_be_adapted(
     ben = await create_household(client, fake_issuer, "ben", name="Ben's")
     bens_favourite = (await save(client, fake_issuer, nonna(), who="ben")).json()
     made = await adapt(
-        home["household"]["id"], seed_id(db, "beef-stir-fry"), [(0, "400 g firm tofu")], "with tofu"
+        home["household"]["id"], seed_id(db, "beef-stir-fry"), [(0, "400 g firm tofu")]
     )
 
     for parent in [bens_favourite["id"], made, str(uuid.uuid4())]:  # not theirs; an Adaptation
         with pytest.raises(errors.NotFound):
-            await adapt(home["household"]["id"], parent, [(0, "400 g firm tofu")], "with tofu")
+            await adapt(home["household"]["id"], parent, [(0, "400 g firm tofu")])
     # A Swap must point at a line the parent has.
     with pytest.raises(errors.InvalidInput):
-        await adapt(
-            ben["household"]["id"], bens_favourite["id"], [(9, "400 g firm tofu")], "with tofu"
-        )
+        await adapt(ben["household"]["id"], bens_favourite["id"], [(9, "400 g firm tofu")])
 
 
 async def test_the_database_keeps_kind_and_parent_in_step(db: Engine) -> None:
@@ -203,9 +196,7 @@ async def test_a_vegetarian_households_beef_favourite_can_become_meat_free(
     home = await create_household(client, fake_issuer, "ana")
     await set_vegetarian(client, fake_issuer)
     ragu = (await save(client, fake_issuer, nonna())).json()
-    made = await adapt(
-        home["household"]["id"], ragu["id"], [(0, "2 x 400g cans lentils")], "with lentils"
-    )
+    made = await adapt(home["household"]["id"], ragu["id"], [(0, "2 x 400g cans lentils")])
     lines = (await get(client, fake_issuer, f"/recipes/{made}"))["ingredients"]
     # Plain "lentils" is the red lentils alias; either way, linked and meat-free.
     assert (lines[0]["ingredient"]["name"], lines[0]["replaces"]) == (
@@ -226,7 +217,6 @@ async def test_refused_swaps_store_nothing_and_say_why(
             home["household"]["id"],
             parent,
             [(0, "500 g chicken thigh"), (1, "1 jar zorblax relish")],
-            "with chicken",
         )
     assert refused.value.problems == [
         '"1 jar zorblax relish" isn\'t an Ingredient Sweep knows',
