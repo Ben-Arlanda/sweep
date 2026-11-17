@@ -4,11 +4,11 @@ Date: 2026-11-17. Status: accepted. Builds on ADR 0003 (precision tiers), 0011 (
 
 ## Context
 
-Typing a Kitchen in by hand is slow, so an empty Kitchen stays empty and the planner has little to start from. A photo of the fridge, freezer or cupboard can suggest items instead. But the Kitchen drives what the planner thinks a Household has, a model will misread some items, and a photo is untrusted input (a note on the fridge can try to give orders).
+Typing a Kitchen in by hand is slow, so an empty Kitchen stays empty and the planner has little to start from. A photo can suggest items instead. Photos of the inside of a fridge or cupboard are hard to read (hidden items, glare, labels facing away), so a Kitchen Photo is of **items taken out of one Place and laid out**, then put back. But the Kitchen drives what the planner thinks a Household has, a model will misread some items, and a photo is untrusted input (a note on the fridge can try to give orders).
 
 ## Decision
 
-- **Fill-in only.** A Kitchen Photo adds or refreshes items and never removes them. A photo can show that something is there, not that it's gone. Hidden items would otherwise be marked run out, which is the "confidently wrong" Kitchen ADR 0003 warns about.
+- **Fill-in only.** A Kitchen Photo adds or refreshes items and never removes them. The Member only took some things out, so a photo can show that something is there, not that it's gone. Treating absence as "run out" would make the "confidently wrong" Kitchen ADR 0003 warns about.
 - **A Member approves a pre-ticked list** before anything changes. The happy path is one tap.
 - **The Member picks the Place first.** New items go there; existing items keep their Place.
 - **Approved items are Confirmed**, with change source `photo`: a person checked them, while Estimated means the app calculated it.
@@ -17,6 +17,7 @@ Typing a Kitchen in by hand is slow, so an empty Kitchen stays empty and the pla
 
 ## Consequences
 
+- **Photos of a fresh shop aren't supported** (their counts would need to add, not replace). Ticking the Shopping List already covers purchases, and one rule is simpler. If a Member does photograph a fresh shop, the row shows "4 in Kitchen, photo shows 6" so they can fix it.
 - Run-out items still need a tap or a Cooked meal. A stocktake (with each removal ticked by hand) can come later, one Place at a time.
 - A Member who taps "Add all" without looking gets Confirmed items they didn't really check. The review shows current amounts and Not linked rows start unticked, which limits the damage, and status decays as usual.
 - Re-confirming a kept amount can be wrong (most of the chicken was used). The row shows the current amount so the Member can fix it.

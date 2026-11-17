@@ -29,7 +29,7 @@ Where an Ingredient is kept in the Kitchen: Fridge, Freezer or Cupboard. Every I
 _Avoid_: location, storage, shelf
 
 **Kitchen Photo**:
-A photo of a fridge, freezer or cupboard that Sweep reads to suggest Kitchen items. It only adds or refreshes items, never removes them, and nothing changes until a Member approves the list.
+A photo of items taken out of one Place (fridge, freezer or cupboard) and laid out, which Sweep reads to suggest Kitchen items. Its counts are totals (what the Household has), not new purchases. It only adds or refreshes items, never removes them, and nothing changes until a Member approves the list.
 _Avoid_: scan, inventory photo
 
 **Shopping List**:
