@@ -12,15 +12,22 @@ from dataclasses import dataclass
 from datetime import date, timedelta
 from typing import Any, Literal
 
-from app.agent.state import Draft, DraftAddition
-from app.models import Recipe
+from app.agent.state import Draft, DraftAddition, DraftMeal
+from app.models import Recipe, RecipeKind
 from app.services.diet import DietaryRules, check_recipe
 from app.services.ingredients import normalise, variants
 
 PLAN_DAYS = 14  # a Draft Plan covers today and the next 13 days
 MAX_SERVINGS = 20
 
-ProblemKind = Literal["empty", "unknown_recipe", "rule", "servings", "date"]
+ProblemKind = Literal["empty", "unknown_recipe", "rule", "swap", "servings", "date"]
+NO_REFUSALS: Mapping[str, str] = {}
+NO_ADAPTATIONS: Mapping[str, Recipe] = {}
+# What a Rule-breaking favourite needs, said to the agent (ADR 0021).
+ONLY_AS_ADAPTATION = (
+    "It's a Household favourite: plan it only as an Adaptation, with adapt_recipe "
+    "swapping the lines that break the Rules"
+)
 
 
 @dataclass(frozen=True)
@@ -30,15 +37,29 @@ class Problem:
     date: str | None = None
 
 
+def meal_recipe(
+    day: str, meal: DraftMeal, recipes: Mapping[str, Recipe], adapted: Mapping[str, Recipe]
+) -> Recipe | None:
+    """What this meal would cook: its Adaptation if it has one, else the recipe by id.
+    A meal with an Adaptation never falls back to the parent as written."""
+    if "adaptation" in meal:
+        return adapted.get(day)
+    return recipes.get(meal["recipe_id"])
+
+
 def validate_draft(
     draft: Draft,
     recipes: Mapping[str, Recipe],
     rules: DietaryRules,
     today: date,
     plan_days: Sequence[date] | None = None,
+    adapted: Mapping[str, Recipe] = NO_ADAPTATIONS,
+    refused: Mapping[str, str] = NO_REFUSALS,
 ) -> list[Problem]:
     """Everything wrong with the draft. `recipes`: the ones this Household can see.
-    `plan_days`: the days picked in the "Plan my week" sheet, if any (ADR 0015)."""
+    `plan_days`: the days picked in the "Plan my week" sheet, if any (ADR 0015).
+    `adapted` / `refused`: by day, each proposed Adaptation built and checked by
+    adaptations.for_draft, or why its Swaps were refused."""
     picked = {d.isoformat() for d in plan_days} if plan_days is not None else None
     if not draft["meals"] and not draft["list_additions"]:
         return [Problem("empty", "The plan is empty: add meals or list items first.")]
@@ -46,7 +67,10 @@ def validate_draft(
     problems: list[Problem] = []
     last_day = today + timedelta(days=PLAN_DAYS - 1)
     for day, meal in sorted(draft["meals"].items()):
-        recipe = recipes.get(meal["recipe_id"])
+        if day in refused:
+            problems.append(Problem("swap", f"{day}: Swaps refused: {refused[day]}", day))
+            continue
+        recipe = meal_recipe(day, meal, recipes, adapted)
         if recipe is None:
             # Grounding: only recipes that exist in the Recipe Knowledge Base.
             problems.append(
@@ -67,7 +91,10 @@ def validate_draft(
         check = check_recipe(recipe, rules)
         if not check.ok:
             breaks = ", ".join(check.breaks)
-            problems.append(Problem("rule", f"{day}: {recipe.title} breaks {breaks}", day))
+            message = f"{day}: {recipe.title} breaks {breaks}"
+            if recipe.kind == RecipeKind.IMPORTED:
+                message += f". {ONLY_AS_ADAPTATION}"
+            problems.append(Problem("rule", message, day))
     return problems
 
 
@@ -77,23 +104,38 @@ def build_proposal(
     rules: DietaryRules,
     problems: list[Problem],
     summary: str,
+    adapted: Mapping[str, Recipe] = NO_ADAPTATIONS,
 ) -> dict[str, Any]:
-    """What the Member sees. Meals with a problem are left out and listed in `dropped`."""
+    """What the Member sees. Meals with a problem are left out and listed in `dropped`.
+    An adapted meal keeps its parent's `recipe_id` and carries its Swaps, so the card
+    can show them and commit can make (or reuse) the Adaptation on approval."""
     bad_days = {p.date for p in problems if p.date is not None}
     meals: list[dict[str, Any]] = []
     check_label: list[str] = []
     for day, meal in sorted(draft["meals"].items()):
-        recipe = recipes.get(meal["recipe_id"])
+        recipe = meal_recipe(day, meal, recipes, adapted)
         if day in bad_days or recipe is None:
             continue
-        meals.append(
-            {
-                "date": day,
-                "recipe_id": meal["recipe_id"],
-                "title": recipe.title,
-                "servings": meal["servings"],
+        shown: dict[str, Any] = {
+            "date": day,
+            "recipe_id": meal["recipe_id"],
+            "title": recipe.title,
+            "servings": meal["servings"],
+        }
+        if "adaptation" in meal:
+            shown["adaptation"] = {
+                "label": meal["adaptation"]["label"],
+                "swaps": [
+                    {
+                        "position": line.position,
+                        "replaces": line.replaces,
+                        "raw_text": line.raw_text,
+                    }
+                    for line in recipe.ingredients
+                    if line.replaces is not None
+                ],
             }
-        )
+        meals.append(shown)
         check_label.extend(f"{recipe.title}: {c}" for c in check_recipe(recipe, rules).check_label)
     return {
         "summary": summary,

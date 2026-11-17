@@ -17,10 +17,19 @@ from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import errors
-from app.agent.state import Draft, DraftMeal
+from app.agent.state import Draft, DraftAdaptation, DraftMeal, DraftSwap
 from app.agent.validate import validate_draft
 from app.models import Actor, AddedBy, PlannedMeal, Proposal, ProposalStatus, utcnow
-from app.services import audit, diet, ingredients, kitchen, meal_plan, recipes, shopping_lists
+from app.services import (
+    adaptations,
+    audit,
+    diet,
+    ingredients,
+    kitchen,
+    meal_plan,
+    recipes,
+    shopping_lists,
+)
 from app.services.households import MemberContext
 from app.units import top_up
 
@@ -145,6 +154,21 @@ async def latest_decision(session: AsyncSession, conversation_id: uuid.UUID) -> 
 # --- commit ----------------------------------------------------------------------------
 
 
+def _draft_meal(meal: dict[str, Any]) -> DraftMeal:
+    """A Proposal's meal back as a Draft meal, Swaps included (ADR 0021)."""
+    out = DraftMeal(recipe_id=meal["recipe_id"], servings=meal["servings"])
+    adaptation = meal.get("adaptation")
+    if adaptation is not None:
+        out["adaptation"] = DraftAdaptation(
+            label=adaptation["label"],
+            swaps=[
+                DraftSwap(position=s["position"], raw_text=s["raw_text"])
+                for s in adaptation["swaps"]
+            ],
+        )
+    return out
+
+
 def _plural(n: int, word: str) -> str:
     return f"{n} {word}{'' if n == 1 else 's'}"
 
@@ -223,16 +247,13 @@ async def commit(
             kept_additions.append(i)
     additions = [payload["list_additions"][i] for i in kept_additions]
 
-    # Meals: re-check against today's recipes and Dietary Rules.
+    # Meals: re-check against today's recipes and Dietary Rules, Swaps included.
     found = await recipes.get_many(session, hid, [m["recipe_id"] for m in meals])
     rules = await diet.get_rules(session, hid)
-    draft = Draft(
-        meals={
-            m["date"]: DraftMeal(recipe_id=m["recipe_id"], servings=m["servings"]) for m in meals
-        },
-        list_additions=[],
-    )
-    problems = {p.date: p for p in validate_draft(draft, found, rules, today) if p.date is not None}
+    draft = Draft(meals={m["date"]: _draft_meal(m) for m in meals}, list_additions=[])
+    adapted, refused = await adaptations.for_draft(session, hid, draft["meals"])
+    checked = validate_draft(draft, found, rules, today, adapted=adapted, refused=refused)
+    problems = {p.date: p for p in checked if p.date is not None}
     days = [date.fromisoformat(m["date"]) for m in meals]
     existing = (
         {
@@ -251,6 +272,7 @@ async def commit(
             reason = {
                 "unknown_recipe": f"{day:%a}: {title} is no longer in the recipe library",
                 "date": f"{day:%a}: {title}, that day has passed",
+                "swap": f"{day:%a}: {title} can't be made now: {refused.get(meal['date'])}",
             }.get(problem.kind, problem.message)
             skipped.append(reason)
             continue
@@ -260,8 +282,14 @@ async def commit(
                 f"{day:%a}: {current.recipe.title} was already cooked, so {title} wasn't added"
             )
             continue
+        recipe_id = uuid.UUID(meal["recipe_id"])
+        if meal["date"] in adapted:  # approving makes the Adaptation (or reuses a kept one)
+            planned = draft["meals"][meal["date"]]
+            assert "adaptation" in planned
+            kept = await adaptations.create(session, hid, recipe_id, adaptations.swaps_in(planned))
+            recipe_id = kept.id
         if current is not None:
-            current.recipe_id = uuid.UUID(meal["recipe_id"])
+            current.recipe_id = recipe_id
             current.servings = meal["servings"]
             current.proposal_id = proposal.id
         else:
@@ -269,7 +297,7 @@ async def commit(
                 PlannedMeal(
                     household_id=hid,
                     date=day,
-                    recipe_id=uuid.UUID(meal["recipe_id"]),
+                    recipe_id=recipe_id,
                     servings=meal["servings"],
                     proposal_id=proposal.id,
                 )

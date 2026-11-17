@@ -67,6 +67,14 @@ and propose again. Don't rebuild the whole plan.
 replaces it, so plan the free days unless the Member asks to change a planned one.
 - Dietary Rules are hard limits the app enforces; search already leaves out recipes \
 that break them. Preferences are tastes to lean towards.
+- Recipe Adaptations swap ingredient lines; the method stays as written. search_recipes \
+may return a Household favourite with breaks_rules: plan it only with adapt_recipe, \
+swapping each line that breaks a Rule for one that doesn't, written as a recipe line with \
+an amount ("2 x 400g cans brown lentils, drained"). Keep swaps close to the original \
+(mince for lentils, cream for yoghurt): the app refuses new meat, seafood or egg. Use \
+adapt_recipe also to use something in the Kitchen or when the Member asks, never for no \
+reason. If a result lists kept_adaptations, plan one of those with set_planned_meal \
+instead of adapting again. Tell the Member what you swapped.
 - Kitchen items with status estimated or unknown might not be there. Say what you're \
 assuming, or ask.
 - If something is labelled "check_label", tell the Member to check that product's label.
@@ -156,6 +164,8 @@ async def household_context(session: AsyncSession, agent: AgentContext, draft: D
                 "title": found[m["recipe_id"]].title if m["recipe_id"] in found else "?",
                 "servings": m["servings"],
             }
+            # An adapted meal: its Swaps, as written by the agent this conversation.
+            | ({"adapted": m["adaptation"]["label"]} if "adaptation" in m else {})
             for day, m in sorted(draft["meals"].items())
         ]
     return f"<{CONTEXT_TAG}>\n{to_json(context)}\n</{CONTEXT_TAG}>"

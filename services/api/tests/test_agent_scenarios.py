@@ -7,14 +7,15 @@ from sqlalchemy import Engine
 
 from app.agent.prompt import today_in_sydney
 from evals.agent_harness import Say, build_household, open_database, words
-from evals.agent_scenarios import BY_NAME, INJECTIONS, SCENARIOS, Scenario
+from evals.agent_scenarios import ADAPTATIONS, BY_NAME, INJECTIONS, SCENARIOS, Scenario
 
 pytestmark = pytest.mark.anyio
 
 
 def test_about_fifteen_planning_scenarios_plus_the_injections() -> None:
-    assert 12 <= len(SCENARIOS) - len(INJECTIONS) <= 20
+    assert 12 <= len(SCENARIOS) - len(INJECTIONS) - len(ADAPTATIONS) <= 20
     assert len(INJECTIONS) == 8  # seven Injection Scenarios and one clean twin
+    assert len(ADAPTATIONS) == 4  # slice 5e: favourite, Kitchen swap, no reason, wine
     assert len(BY_NAME) == len(SCENARIOS)
 
 

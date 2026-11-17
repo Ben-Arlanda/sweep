@@ -5,12 +5,19 @@
  * so it waits until the person pauses typing (debounce): every search costs an
  * embedding call, and "c", "ch", "chi", "chic" are four wasted ones.
  */
-import { keepPreviousData, useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import {
+  keepPreviousData,
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
 import type { Course } from '@/features/recipes/courses';
 
 import { api, ApiError, unwrap } from './client';
+import { mealPlanKeys } from './mealPlan';
 
 export const PAGE = 30;
 
@@ -20,6 +27,7 @@ export const recipeKeys = {
   search: (q: string, f: RecipeFilters) =>
     ['recipes', 'search', q, f.maxMinutes, f.course] as const,
   one: (id: string) => ['recipes', 'one', id] as const,
+  adaptations: (parentId: string) => ['recipes', 'adaptations', parentId] as const,
 };
 
 /** The Recipes screen's chips. `null` means no limit. */
@@ -68,6 +76,42 @@ export function useRecipe(id: string) {
     staleTime: 10 * 60_000,
     // A 4xx (no such recipe, a broken link) will fail the same way every time.
     retry: (failures, error) => !(error instanceof ApiError && error.status < 500) && failures < 3,
+  });
+}
+
+/**
+ * This Household's Adaptations of a recipe, with their Swaps (ADR 0021). Only an
+ * approved Proposal makes one, so there's no "create" here. Not `staleTime`d like Seed
+ * Recipes: a plan approved in the chat can add one at any moment.
+ */
+export function useAdaptations(parentId: string, enabled = true) {
+  return useQuery({
+    queryKey: recipeKeys.adaptations(parentId),
+    queryFn: async () =>
+      unwrap(
+        await api.GET('/recipes/{recipe_id}/adaptations', {
+          params: { path: { recipe_id: parentId } },
+        }),
+      ),
+    enabled,
+  });
+}
+
+/** Any Member may delete an Adaptation. Meals planned with it go too (the database cascades). */
+export function useDeleteAdaptation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    onSettled: async () => {
+      await queryClient.invalidateQueries({ queryKey: recipeKeys.all });
+      await queryClient.invalidateQueries({ queryKey: mealPlanKeys.all });
+    },
+    mutationFn: async ({ id, idempotencyKey }: { id: string; idempotencyKey: string }) => {
+      unwrap(
+        await api.DELETE('/recipes/adaptations/{recipe_id}', {
+          params: { path: { recipe_id: id }, header: { 'Idempotency-Key': idempotencyKey } },
+        }),
+      );
+    },
   });
 }
 

@@ -8,11 +8,25 @@ import operator
 from typing import Annotated, Any, NotRequired, TypedDict
 
 
+class DraftSwap(TypedDict):
+    position: int  # which of the parent's lines it replaces
+    raw_text: str  # the new line, as the model wrote it
+
+
+class DraftAdaptation(TypedDict):
+    """A Recipe Adaptation proposed for one meal (ADR 0021). Not saved until approved:
+    validate and commit rebuild it from the parent and run the Swap checks each time."""
+
+    label: str  # "with brown lentils": written by code (adaptations.label_for)
+    swaps: list[DraftSwap]
+
+
 class DraftMeal(TypedDict):
-    recipe_id: str
+    recipe_id: str  # with `adaptation`: the parent recipe
     servings: int
     # A copy for showing the Draft as it grows. The Proposal reads titles fresh.
     title: NotRequired[str]
+    adaptation: NotRequired[DraftAdaptation]
 
 
 class DraftAddition(TypedDict):

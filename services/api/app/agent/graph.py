@@ -42,6 +42,7 @@ from app.agent.validate import Problem, build_proposal, explain_additions, valid
 from app.llm_costs import cost_usd
 from app.models import Conversation, ProposalStatus, Recipe
 from app.services import (
+    adaptations,
     diet,
     ingredients,
     meal_plan,
@@ -312,8 +313,11 @@ async def validate(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
         found = await recipes.get_many(session, ctx.household_id, ids)
         rules = await diet.get_rules(session, ctx.household_id)
         conversation = await session.get_one(Conversation, ctx.conversation_id)
+        adapted, refused = await adaptations.for_draft(session, ctx.household_id, draft["meals"])
     with tracing.observe("validate-plan", as_type="guardrail", input=draft) as obs:
-        problems = validate_draft(draft, found, rules, ctx.today, conversation.plan_days)
+        problems = validate_draft(
+            draft, found, rules, ctx.today, conversation.plan_days, adapted, refused
+        )
         obs.update(
             output=[p.message for p in problems] or "passed",
             metadata={"replans_so_far": state.get("replan_count", 0)},
@@ -344,7 +348,9 @@ async def validate(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
         )
         return {**update, "messages": [{"role": "user", "content": results}], "stop": "empty"}
 
-    proposal = await _show(state, runtime, draft, found, rules, problems, pending["summary"])
+    proposal = await _show(
+        state, runtime, draft, found, rules, problems, pending["summary"], adapted
+    )
     results.append(_result(pending["tool_use_id"], "Shown to the Member. Wait for their reply."))
     return {
         **update,
@@ -363,10 +369,11 @@ async def _show(
     rules: DietaryRules,
     problems: list[Problem],
     summary: str,
+    adapted: Mapping[str, Recipe],
 ) -> dict[str, Any]:
     """Save the Draft as a Proposal and show it. Shared by validate and reshow."""
     ctx = runtime.context
-    proposal = build_proposal(draft, found, rules, problems, summary)
+    proposal = build_proposal(draft, found, rules, problems, summary, adapted)
     async with ctx.sessionmaker() as session:
         # Say on the card which days already have a dinner that this would replace.
         days = [date.fromisoformat(m["date"]) for m in proposal["meals"]]
@@ -388,7 +395,11 @@ async def _show(
             {**a, "on_list": _on_list(view.items, a)}
             for a in explain_additions(
                 proposal["list_additions"],
-                [(m["date"], found[m["recipe_id"]]) for m in proposal["meals"]],
+                # What each meal would cook: an adapted meal's lentils explain lentils.
+                [
+                    (m["date"], adapted.get(m["date"]) or found[m["recipe_id"]])
+                    for m in proposal["meals"]
+                ],
                 # Only what the Member typed: the context and tool results may hold
                 # planted text, so they can never explain an addition (slice 10).
                 [line["text"] for line in prompt.transcript(state) if line["role"] == "user"],
@@ -421,10 +432,13 @@ async def reshow(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
         found = await recipes.get_many(session, ctx.household_id, ids)
         rules = await diet.get_rules(session, ctx.household_id)
         conversation = await session.get_one(Conversation, ctx.conversation_id)
+        adapted, refused = await adaptations.for_draft(session, ctx.household_id, draft["meals"])
     with tracing.observe("reshow-plan", as_type="guardrail", input=draft) as obs:
-        problems = validate_draft(draft, found, rules, ctx.today, conversation.plan_days)
+        problems = validate_draft(
+            draft, found, rules, ctx.today, conversation.plan_days, adapted, refused
+        )
         obs.update(output=[p.message for p in problems] or "passed")
-    proposal = await _show(state, runtime, draft, found, rules, problems, RESHOW_SUMMARY)
+    proposal = await _show(state, runtime, draft, found, rules, problems, RESHOW_SUMMARY, adapted)
     return {
         "proposal": proposal,
         "proposal_marks": [{"id": proposal["id"], "at": len(state["messages"])}],

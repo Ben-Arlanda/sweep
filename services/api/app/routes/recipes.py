@@ -15,6 +15,7 @@ from app.models import Course
 from app.pdf_text import MAX_PDF_BYTES
 from app.routes.common import idempotent
 from app.schemas import (
+    AdaptationOut,
     DraftLineOut,
     ImportDraftOut,
     ImportedLineIn,
@@ -26,8 +27,9 @@ from app.schemas import (
     RecipeIngredientOut,
     RecipeOut,
     RecipeSummaryOut,
+    SwapOut,
 )
-from app.services import import_limits, imported_recipes, recipe_import, recipes
+from app.services import adaptations, import_limits, imported_recipes, recipe_import, recipes
 from app.services.households import MemberContext
 from app.services.import_limits import Door, MeteredReader
 from app.services.recipe_import import (
@@ -245,6 +247,40 @@ async def delete_imported(
 ) -> Response:
     async def work() -> None:
         await imported_recipes.delete(session, ctx, recipe_id)
+
+    return await idempotent(request, session, ctx, key, work, status.HTTP_204_NO_CONTENT)
+
+
+# Recipe Adaptations (ADR 0021). No POST: only an approved Proposal makes one.
+@router.get("/{recipe_id}/adaptations")
+async def list_adaptations(
+    recipe_id: uuid.UUID, ctx: MemberDep, session: SessionDep
+) -> list[AdaptationOut]:
+    """This Household's Adaptations of a recipe, with their Swaps."""
+    return [
+        AdaptationOut(
+            **RecipeSummaryOut.model_validate(a).model_dump(),
+            parent_recipe_id=recipe_id,
+            swaps=[
+                SwapOut(replaces=line.replaces, raw_text=line.raw_text)
+                for line in a.ingredients
+                if line.replaces is not None
+            ],
+        )
+        for a in await adaptations.for_parent(session, ctx.household.id, recipe_id)
+    ]
+
+
+@router.delete("/adaptations/{recipe_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_adaptation(
+    recipe_id: uuid.UUID,
+    request: Request,
+    ctx: MemberDep,
+    session: SessionDep,
+    key: IdempotencyKeyHeader,
+) -> Response:
+    async def work() -> None:
+        await adaptations.delete(session, ctx.household.id, recipe_id)
 
     return await idempotent(request, session, ctx, key, work, status.HTTP_204_NO_CONTENT)
 

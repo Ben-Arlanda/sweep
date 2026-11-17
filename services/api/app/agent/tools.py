@@ -11,6 +11,7 @@ Draft tools only change the Draft Plan in the agent's state. It's saved only aft
 Member approves, by plain code in app/services/proposals.py (ADR 0005).
 """
 
+import re
 import uuid
 from collections import defaultdict
 from collections.abc import Awaitable, Callable
@@ -24,15 +25,27 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from app import errors
 from app.agent.model import AgentModel
-from app.agent.state import Draft, DraftAddition, DraftMeal
+from app.agent.state import Draft, DraftAdaptation, DraftAddition, DraftMeal, DraftSwap
+from app.agent.validate import ONLY_AS_ADAPTATION
 from app.embeddings import Embedder, EmbeddingUnavailable
-from app.models import Course, Household, Ingredient, Member, Recipe, utcnow
-from app.services import diet, ingredients, kitchen, kitchen_match, recipes, shopping_lists
+from app.models import Course, Household, Ingredient, Member, Recipe, RecipeKind, utcnow
+from app.schemas import RecipeLine
+from app.services import (
+    adaptations,
+    diet,
+    ingredients,
+    kitchen,
+    kitchen_match,
+    recipes,
+    shopping_lists,
+)
 from app.services.households import MemberContext
 from app.text import ONE_LINE
 from app.units import convert
 
 SEARCH_RESULTS = 8
+NOTE_IN_BRACKETS = re.compile(r"\s*\([^()]*\)")  # "(canned)", wherever it sits
+FLAGGED_FAVOURITES = 3  # Rule-breaking favourites added to a search (ADR 0021)
 KITCHEN_RESULTS = 10  # enough to pick a week of dinners with some choice
 CANDIDATES = 60  # meaning search's shortlist before the Kitchen re-ranks it
 
@@ -107,8 +120,11 @@ def _summary(recipe: Recipe, rules: diet.DietaryRules) -> dict[str, Any]:
 
 
 async def search_recipes(call: Call, args: SearchArgs) -> Outcome:
-    """Dietary Rules are applied in SQL by filters_for: the agent never sees a recipe
-    that breaks one, so it can't pick one."""
+    """Dietary Rules are applied in SQL by filters_for, so results fit them. One
+    exception (ADR 0021): the Household's own favourites that break a Rule come after,
+    flagged with `breaks_rules`, because they can still be planned as an Adaptation.
+    set_planned_meal and validate refuse them as written. Each result also lists its
+    kept Adaptations that fit the Rules."""
     if call.agent.embedder is None:
         raise ToolError("Recipe search isn't available right now")
     hid = call.agent.household_id
@@ -132,16 +148,58 @@ async def search_recipes(call: Call, args: SearchArgs) -> Outcome:
         found_recipes = await recipes.search(
             call.session, hid, call.agent.embedder, args.query, filters, limit
         )
+        rules = await diet.get_rules(call.session, hid)
+        flagged = (
+            await recipes.search(
+                call.session,
+                hid,
+                call.agent.embedder,
+                args.query,
+                # Not the Rules: these are the favourites they hide. Imported only:
+                # Rule-breaking Seed Recipes stay hidden (plenty of others fit).
+                recipes.RecipeFilters(
+                    max_minutes=args.max_minutes,
+                    cuisine=args.cuisine,
+                    course=course,
+                    only_kind=RecipeKind.IMPORTED,
+                ),
+                limit,
+            )
+            if rules.active
+            else []
+        )
     except EmbeddingUnavailable as error:
         raise ToolError("Recipe search is unavailable right now") from error
-    rules = await diet.get_rules(call.session, hid)
-    matches = [
-        r
-        for r, _score in found_recipes
-        if set(must) <= {line.ingredient_id for line in r.ingredients}
-        and all(kitchen_match.mentions(r, name) for name in named)
-    ]
-    return Outcome([_summary(r, rules) for r in matches[:SEARCH_RESULTS]])
+
+    def wanted(r: Recipe) -> bool:
+        return set(must) <= {line.ingredient_id for line in r.ingredients} and all(
+            kitchen_match.mentions(r, name) for name in named
+        )
+
+    matches = [r for r, _score in found_recipes if wanted(r)][:SEARCH_RESULTS]
+    breaking = [
+        (r, check)
+        for r, _score in flagged
+        if wanted(r) and not (check := diet.check_recipe(r, rules)).ok
+    ][:FLAGGED_FAVOURITES]
+    kept = await adaptations.kept_for(
+        call.session, hid, [r.id for r in matches] + [r.id for r, _ in breaking]
+    )
+
+    def with_kept(r: Recipe) -> dict[str, Any]:
+        out = _summary(r, rules)
+        fits = [a for a in kept.get(r.id, []) if diet.check_recipe(a, rules).ok]
+        if fits:  # plan one of these with set_planned_meal: no new Swaps needed
+            out["kept_adaptations"] = [{"recipe_id": str(a.id), "title": a.title} for a in fits]
+        return out
+
+    return Outcome(
+        [with_kept(r) for r in matches]
+        + [
+            with_kept(r) | {"breaks_rules": check.breaks, "plannable_only_as": ONLY_AS_ADAPTATION}
+            for r, check in breaking
+        ]
+    )
 
 
 class FromKitchenArgs(Args):
@@ -283,6 +341,14 @@ class MealRef(Args):
     servings: int = Field(gt=0, le=20)
 
 
+async def _draft_adaptations(call: Call) -> dict[str, Recipe]:
+    """Parent id → its adapted recipe, for the Draft's adapted meals."""
+    built, _refused = await adaptations.for_draft(
+        call.session, call.agent.household_id, call.draft["meals"]
+    )
+    return {call.draft["meals"][day]["recipe_id"]: recipe for day, recipe in built.items()}
+
+
 class CoverageArgs(Args):
     meals: list[MealRef] = Field(min_length=1, max_length=14)
 
@@ -293,11 +359,19 @@ async def check_kitchen_coverage(call: Call, args: CoverageArgs) -> Outcome:
     units: dict[str, str] = {}
     unmeasured: set[str] = set()  # "salt to taste": needed, amount unknown
     found: dict[str, Ingredient] = {}
+    # A meal adapted in this Draft counts by its Swaps, not its parent as written:
+    # reading the parent once told Haiku chicken thigh was missing, and it re-planned
+    # the original over its own Adaptation (live run, 2026-11-17).
+    adapted = await _draft_adaptations(call)
     for meal in args.meals:
-        try:
-            recipe = await recipes.get_recipe(call.session, call.agent.household_id, meal.recipe_id)
-        except errors.NotFound as error:
-            raise ToolError(f"No recipe with id {meal.recipe_id}") from error
+        recipe = adapted.get(str(meal.recipe_id))
+        if recipe is None:
+            try:
+                recipe = await recipes.get_recipe(
+                    call.session, call.agent.household_id, meal.recipe_id
+                )
+            except errors.NotFound as error:
+                raise ToolError(f"No recipe with id {meal.recipe_id}") from error
         scale = Decimal(meal.servings) / Decimal(recipe.servings)
         for line in recipe.ingredients:
             if line.ingredient is None or line.optional:
@@ -419,7 +493,10 @@ async def set_planned_meal(call: Call, args: SetMealArgs) -> Outcome:
         raise ToolError(f"No recipe with id {args.recipe_id}: use one from search") from error
     check = diet.check_recipe(recipe, await diet.get_rules(call.session, call.agent.household_id))
     if not check.ok:
-        raise ToolError(f"{recipe.title} breaks the Dietary Rules: {', '.join(check.breaks)}")
+        message = f"{recipe.title} breaks the Dietary Rules: {', '.join(check.breaks)}"
+        if recipe.kind == RecipeKind.IMPORTED:
+            message += f". {ONLY_AS_ADAPTATION}."
+        raise ToolError(message)
     meals = {
         **call.draft["meals"],
         args.date.isoformat(): DraftMeal(
@@ -443,6 +520,83 @@ async def remove_planned_meal(call: Call, args: RemoveMealArgs) -> Outcome:
     return Outcome({"ok": True}, Draft(meals=meals, list_additions=call.draft["list_additions"]))
 
 
+class SwapArg(Args):
+    replace: str = Field(
+        min_length=1, max_length=300, description="One of the recipe's lines, exactly as written"
+    )
+    new_line: RecipeLine = Field(
+        description="What replaces it, written as a recipe line with an amount, e.g. "
+        "'2 x 400g cans brown lentils, drained'"
+    )
+
+
+class AdaptArgs(Args):
+    date: date
+    recipe_id: uuid.UUID = Field(description="The recipe as found: never an Adaptation's id")
+    servings: int = Field(gt=0, le=20)
+    swaps: list[SwapArg] = Field(min_length=1, max_length=10)
+
+
+def _same_line(a: str, b: str) -> bool:
+    return " ".join(a.split()).casefold() == " ".join(b.split()).casefold()
+
+
+async def adapt_recipe(call: Call, args: AdaptArgs) -> Outcome:
+    """Put a Recipe Adaptation on a date in the Draft Plan (ADR 0021). The Swaps are
+    checked by code now (adaptations.preview) and again at validate and on approval.
+    Nothing is saved until the Member approves."""
+    hid = call.agent.household_id
+    try:
+        parent = await adaptations.parent(call.session, hid, args.recipe_id)
+    except errors.NotFound as error:
+        raise ToolError(
+            f"No recipe with id {args.recipe_id} that can be adapted: use one from search "
+            "(to plan a kept Adaptation as it is, use set_planned_meal)"
+        ) from error
+    swaps: list[DraftSwap] = []
+    for swap in args.swaps:
+        at = [
+            line.position for line in parent.ingredients if _same_line(line.raw_text, swap.replace)
+        ]
+        if not at:
+            lines = "; ".join(f'"{line.raw_text}"' for line in parent.ingredients)
+            raise ToolError(f'"{swap.replace}" isn\'t a line of {parent.title}. Its lines: {lines}')
+        swaps.append(DraftSwap(position=at[0], raw_text=swap.new_line))
+    try:
+        adapted = await adaptations.preview(
+            call.session,
+            hid,
+            parent.id,
+            [adaptations.SwapIn(s["position"], s["raw_text"]) for s in swaps],
+        )
+    except errors.SwapsRefused as error:
+        listed = "\n".join(f"- {p}" for p in error.problems)
+        raise ToolError(f"Swaps refused, nothing changed:\n{listed}") from error
+    except errors.InvalidInput as error:
+        raise ToolError(error.message) from error
+    meal = DraftMeal(
+        recipe_id=str(parent.id),
+        servings=args.servings,
+        title=adapted.title,
+        # The label is code's ("with brown lentils"), never the model's: see label_for.
+        adaptation=DraftAdaptation(label=adaptations.label_for(adapted.ingredients), swaps=swaps),
+    )
+    rules = await diet.get_rules(call.session, hid)
+    return Outcome(
+        {
+            "ok": True,
+            "date": args.date.isoformat(),
+            "title": adapted.title,
+            "swaps": [{"replaces": old, "now": new} for old, new in adaptations.swaps_of(adapted)],
+            "check_label": diet.check_recipe(adapted, rules).check_label,
+        },
+        Draft(
+            meals={**call.draft["meals"], args.date.isoformat(): meal},
+            list_additions=call.draft["list_additions"],
+        ),
+    )
+
+
 class Addition(Args):
     # One line, like a name a Member types: once approved it is a list item, and so
     # part of the context of later turns.
@@ -461,6 +615,15 @@ async def set_list_additions(call: Call, args: AdditionsArgs) -> Outcome:
         found = await ingredients.resolve(
             call.session, call.agent.household_id, item.name, create=False
         )
+        # Brackets before commas: "(canned, or dried)" holds a comma of its own.
+        bare = NOTE_IN_BRACKETS.sub("", item.name).split(",")[0].strip()
+        if found is None and bare and bare != item.name:
+            # "brown lentils (canned)", "beef steak, thinly sliced": the note hid the
+            # Ingredient, so the addition came out unexplained and unticked (live runs,
+            # 2026-11-17). Only the matching drops the note; the name stays as written.
+            found = await ingredients.resolve(
+                call.session, call.agent.household_id, bare, create=False
+            )
         additions.append(
             DraftAddition(
                 name=item.name,
@@ -538,6 +701,16 @@ TOOLS: tuple[Tool, ...] = (
         "Put a recipe on a date in the Draft Plan (replaces that date's meal).",
         SetMealArgs,
         set_planned_meal,
+    ),
+    Tool(
+        "adapt_recipe",
+        "Put a Recipe Adaptation on a date in the Draft Plan: the recipe with some "
+        "ingredient lines swapped (the method stays as written). Use it to fix a favourite "
+        "that breaks the Dietary Rules, to use something in the Kitchen, or when the "
+        "Member asks; never for no reason. The app checks every Swap and says why one is "
+        "refused.",
+        AdaptArgs,
+        adapt_recipe,
     ),
     Tool(
         "remove_planned_meal",

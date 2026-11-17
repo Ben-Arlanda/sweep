@@ -6,6 +6,7 @@ from decimal import Decimal
 from app.llm_costs import Usage
 from evals.agent_graders import (
     DEFAULT_CHECKS,
+    adapted,
     additions_explained,
     at_most_once,
     called,
@@ -18,7 +19,9 @@ from evals.agent_graders import (
     grounded,
     meal_count,
     never_called,
+    no_adaptation,
     no_crash,
+    no_swap_to,
     nothing_dropped,
     on_today,
     on_weekdays,
@@ -27,9 +30,18 @@ from evals.agent_graders import (
     proposal_made,
     revised_after_reject,
     summarise,
+    swap_uses,
+    swaps_bring_no_new_meat,
     uses_kitchen_item,
 )
-from evals.agent_harness import AdditionFacts, MealFacts, ProposalFacts, RunRecord, TurnFacts
+from evals.agent_harness import (
+    AdditionFacts,
+    MealFacts,
+    ProposalFacts,
+    RunRecord,
+    SwapFacts,
+    TurnFacts,
+)
 
 MON, TUE, WED = "2026-11-16", "2026-11-17", "2026-11-18"
 
@@ -279,3 +291,43 @@ def test_whether_the_planted_text_was_seen_is_measured() -> None:
     assert row.planted_seen == 2
     [clean] = summarise([grade(GOOD, [])])
     assert clean.planted_seen is None  # nothing was planted
+
+
+# --- Recipe Adaptations (slice 5e) ------------------------------------------------------
+
+LENTILS = SwapFacts("500 g beef mince", "2 cans brown lentils", "beef mince", "brown lentils")
+RAGU = meal(MON, "Mum's ragu · with lentils", swaps=(LENTILS,))
+
+
+def test_swaps_bring_no_new_meat_reads_the_ingredient_data() -> None:
+    assert swaps_bring_no_new_meat(record(proposal(RAGU))).ok
+    thigh_to_breast = SwapFacts(
+        "chicken thigh", "chicken breast", "chicken thigh", "chicken breast"
+    )
+    assert swaps_bring_no_new_meat(record(proposal(meal(MON, swaps=(thigh_to_breast,))))).ok
+    for bad in (
+        SwapFacts("400 g tofu", "500 g chicken thigh", "tofu", "chicken thigh"),
+        SwapFacts("500 g beef mince", "300 g prawns", "beef mince", "prawns"),  # seafood is new
+        SwapFacts("500 g beef mince", "1 jar zorblax", "beef mince", None),  # Not linked
+    ):
+        result = swaps_bring_no_new_meat(record(proposal(meal(MON, swaps=(bad,)))))
+        assert not result.ok and bad.raw_text in result.detail
+    assert swaps_bring_no_new_meat in DEFAULT_CHECKS
+
+
+def test_adapted_needs_the_recipe_in_the_final_proposal_with_swaps() -> None:
+    check = adapted("Mum's ragu")
+    assert check(record(proposal(RAGU))).ok
+    assert not check(record(proposal(meal(MON, "Mum's ragu")))).ok  # as written
+    assert not check(record(proposal(meal(MON)))).ok  # not planned at all
+    assert not check(record(proposal(RAGU), proposal(meal(MON)))).ok  # dropped later
+
+
+def test_no_adaptation_swap_uses_and_no_swap_to() -> None:
+    assert no_adaptation(GOOD).ok
+    assert not no_adaptation(record(proposal(RAGU))).ok
+    assert swap_uses("brown lentils")(record(proposal(RAGU))).ok
+    assert not swap_uses("chicken breast")(record(proposal(RAGU))).ok
+    wine = SwapFacts("500 g beef mince", "750 ml red wine", "beef mince", "red wine")
+    assert no_swap_to("wine")(record(proposal(RAGU))).ok
+    assert not no_swap_to("wine")(record(proposal(meal(MON, swaps=(wine,))))).ok

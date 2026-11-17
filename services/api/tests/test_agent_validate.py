@@ -168,3 +168,43 @@ def test_asked_for_means_whole_words() -> None:
 def test_an_injected_addition_is_unexplained() -> None:
     """Planted text asked for wine. The Member didn't, and no meal uses it."""
     assert reasons(addition("wine")) == [("unexplained", [])]
+
+
+# --- Recipe Adaptations (slice 5e, ADR 0021) -------------------------------------------
+
+
+def adapted_curry_draft() -> Draft:
+    d = draft(mon=(CURRY, 2))
+    [meal] = d["meals"].values()
+    meal["adaptation"] = {"label": "with tofu", "swaps": [{"position": 0, "raw_text": "tofu"}]}
+    return d
+
+
+def test_an_adapted_meal_is_checked_as_adapted_not_as_its_parent() -> None:
+    d = adapted_curry_draft()
+    [day] = d["meals"]
+    tofu_curry = recipe("Chicken curry · with tofu", "tofu", "onion")
+    tofu_curry.ingredients[0].replaces = "chicken thigh"
+    problems = validate_draft(d, RECIPES, VEGETARIAN, TODAY, adapted={day: tofu_curry})
+    assert problems == []
+    [meal] = build_proposal(d, RECIPES, VEGETARIAN, [], "x", {day: tofu_curry})["meals"]
+    assert (meal["title"], meal["recipe_id"]) == ("Chicken curry · with tofu", str(CURRY.id))
+    assert meal["adaptation"]["swaps"] == [
+        {"position": 0, "replaces": "chicken thigh", "raw_text": "tofu"}
+    ]
+
+
+def test_an_adapted_meal_never_falls_back_to_its_parent_as_written() -> None:
+    """With no adapted recipe for the day (it couldn't be built), it isn't the parent."""
+    assert [p.kind for p in validate_draft(adapted_curry_draft(), RECIPES, NO_RULES, TODAY)] == [
+        "unknown_recipe"
+    ]
+
+
+def test_refused_swaps_are_a_problem_for_that_day() -> None:
+    d = adapted_curry_draft()
+    [day] = d["meals"]
+    problems = validate_draft(d, RECIPES, NO_RULES, TODAY, refused={day: '"x" adds meat'})
+    assert [(p.kind, p.message) for p in problems] == [
+        ("swap", f'{day}: Swaps refused: "x" adds meat')
+    ]

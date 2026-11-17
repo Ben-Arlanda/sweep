@@ -3,6 +3,7 @@ import { Pressable, View } from 'react-native';
 
 import { Checkbox } from '@/components/Checkbox';
 import { Button, Card, ErrorText, Text } from '@/components/ui';
+import { swapLine } from '@/features/recipes/adaptations';
 import { useDecideProposal } from '@/lib/api/conversations';
 import { useTheme } from '@/theme/useTheme';
 
@@ -65,21 +66,29 @@ export function ProposalCard({
         <Section title="Meals">
           {shown.meals.map((meal) => {
             const day = formatDay(meal.date);
+            // An adapted meal's title is already its saved name ("Mum's ragu · with lentils").
             const what = `${meal.title} · serves ${meal.servings}`;
             const replaces = meal.replaces ? `Replaces ${meal.replaces}` : null;
+            // One tick approves the Adaptation as a whole, so its Swaps sit in the row.
+            const swaps = meal.adaptation?.swaps.map(swapLine) ?? [];
             return (
               <TickRow
                 key={meal.date}
                 ticked={pending ? isMealKept(ticks, meal.date) : null}
                 disabled={!canAct}
                 onToggle={() => setTicks((now) => toggleMeal(now, meal.date))}
-                label={[day, what, replaces].filter(Boolean).join(', ')}
+                label={[day, what, ...swaps, replaces].filter(Boolean).join(', ')}
               >
                 <Text variant="label" style={{ minWidth: 92 }}>
                   {day}
                 </Text>
                 <View style={{ flexShrink: 1 }}>
                   <Text>{what}</Text>
+                  {swaps.map((line) => (
+                    <Text key={line} variant="caption">
+                      {line}
+                    </Text>
+                  ))}
                   {replaces ? (
                     <Text variant="caption" muted>
                       {replaces}

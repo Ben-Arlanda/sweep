@@ -43,6 +43,15 @@ class InvalidInput(DomainError):
     code = "invalid_input"
 
 
+class SwapsRefused(InvalidInput):
+    """A Recipe Adaptation's Swaps failed the checks in code. `problems` lists every
+    reason, written by code, so the agent can fix them all in one more try."""
+
+    def __init__(self, problems: list[str]) -> None:
+        super().__init__("; ".join(problems))
+        self.problems = problems
+
+
 class LimitReached(DomainError):
     code = "limit_reached"
 
