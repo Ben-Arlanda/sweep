@@ -36,7 +36,7 @@ export function AskSweep() {
       <Icon icon={Sparkles} size={20} color={t.colors.onHero} />
       <TextInput
         accessibilityLabel="Ask Sweep"
-        placeholder="Ask Sweep for dinner ideas…"
+        placeholder="Ask for dinner ideas…"
         placeholderTextColor={t.colors.onHeroMuted}
         value={text}
         onChangeText={setText}

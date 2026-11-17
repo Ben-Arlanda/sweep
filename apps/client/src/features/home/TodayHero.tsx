@@ -26,6 +26,7 @@ import { homeState, needsNextWeek, usesLine, type HomeState } from './today';
  * - free / empty: the question, the Ask Sweep box, Plan my week and Just tonight.
  */
 export function TodayHero({ me }: { me: MeOut }) {
+  const t = useTheme();
   const week = useMealPlan(null);
   const today = week.data?.today;
   const next = useMealPlan(
@@ -73,16 +74,21 @@ export function TodayHero({ me }: { me: MeOut }) {
       }
     >
       <AskSweep />
-      <Button title="Plan my week" onPress={() => setPlanning(true)} />
-      <Button
-        title="Just tonight"
-        variant="secondary"
-        compact
-        onPress={() => {
-          requestStart('tonight');
-          router.push('/plan');
-        }}
-      />
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.sm }}>
+        <View style={{ flexGrow: 1, flexBasis: 150 }}>
+          <Button title="Plan my week" onPress={() => setPlanning(true)} />
+        </View>
+        <View style={{ flexGrow: 1, flexBasis: 150 }}>
+          <Button
+            title="Just tonight"
+            variant="secondary"
+            onPress={() => {
+              requestStart('tonight');
+              router.push('/plan');
+            }}
+          />
+        </View>
+      </View>
       <ErrorText message={week.error?.message} />
       {sheet}
     </Hero>
