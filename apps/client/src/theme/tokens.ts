@@ -149,6 +149,26 @@ export const statusColors: Record<'light' | 'dark', Record<StatusName, StatusCol
 };
 
 /**
+ * Stock the Member sets (ADR 0024): green In stock, amber Running low, red Out. `tile` is
+ * the summary tile, `bg`/`fg` the badge, `icon` the symbol (graphics need only 3:1).
+ */
+export type StockName = 'in_stock' | 'low' | 'out';
+export type StockColors = { tile: string; bg: string; fg: string; icon: string };
+
+export const stockColors: Record<'light' | 'dark', Record<StockName, StockColors>> = {
+  light: {
+    in_stock: { tile: '#e6f5df', bg: '#e1f2d9', fg: '#1d5e27', icon: '#2f8f3c' },
+    low: { tile: '#fff3dc', bg: '#ffefd0', fg: '#7f4400', icon: '#c46f00' },
+    out: { tile: '#fde4e1', bg: '#fde0dc', fg: palette.red700, icon: '#d6342a' },
+  },
+  dark: {
+    in_stock: { tile: '#1c3020', bg: '#22402a', fg: '#bfe8c3', icon: '#6fd17d' },
+    low: { tile: '#38290f', bg: '#4a3510', fg: '#ffd98a', icon: '#f2a93b' },
+    out: { tile: '#3e1d19', bg: '#4a1f19', fg: palette.red300, icon: '#ff7a6b' },
+  },
+};
+
+/**
  * The welcome hero: always ink with a lime glow, in light and dark mode alike, like the
  * website hero. It's the one place the brand is shown "full volume".
  */

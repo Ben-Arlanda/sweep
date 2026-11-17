@@ -59,9 +59,6 @@ class Stock(StrEnum):
     OUT = "out"
 
 
-PACK_UNITS = ("jar", "pkt", "box", "bottle", "bag", "tin", "tube")
-
-
 def stock_of(row: KitchenItem | HouseholdStaple) -> Stock:
     if row.ran_out_at is not None:
         return Stock.OUT
@@ -195,24 +192,6 @@ async def set_stock(
         row.last_confirmed_at = row.updated_at = utcnow()
     await session.flush()
     return row
-
-
-async def set_pack(
-    session: AsyncSession,
-    ctx: MemberContext,
-    ingredient_id: uuid.UUID,
-    quantity: Decimal | None,
-    unit: str | None,
-) -> HouseholdStaple:
-    """A Staple's "¼ jar" note. Both or neither; never used in maths."""
-    await _bump(session, ctx.household.id)
-    staple = await _staple(session, ctx.household.id, ingredient_id)
-    if staple is None:
-        raise NotFound("Only Staples have a package amount")
-    staple.pack_quantity = quantity
-    staple.pack_unit = unit
-    await session.flush()
-    return staple
 
 
 def place_of(row: KitchenItem | HouseholdStaple) -> Place:

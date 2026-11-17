@@ -26,11 +26,9 @@ from app.schemas import (
     KitchenPhotoApplyIn,
     KitchenPhotoOut,
     OnListOut,
-    PackUnit,
     PhotoRowOut,
     PlaceIn,
     PlaceOut,
-    SetPackIn,
     SetQuantityIn,
     SetStapleIn,
     SetStockIn,
@@ -64,8 +62,6 @@ def staple_out(staple: HouseholdStaple) -> StapleOut:
         have=staple.ran_out_at is None,
         place=kitchen.place_of(staple),
         stock=kitchen.stock_of(staple).value,
-        pack_quantity=staple.pack_quantity,
-        pack_unit=cast(PackUnit | None, staple.pack_unit),
     )
 
 
@@ -225,25 +221,6 @@ async def add_to_list(
     async def work() -> OnListOut:
         done = await stock.to_list(session, ctx, ingredient_id)
         return OnListOut(list_id=done.list_id, list_item_id=done.list_item_id)
-
-    return await idempotent(request, session, ctx, key, work)
-
-
-@router.put("/kitchen/staples/{ingredient_id}/pack", response_model=StapleOut)
-async def set_pack(
-    ingredient_id: uuid.UUID,
-    body: SetPackIn,
-    request: Request,
-    ctx: MemberDep,
-    session: SessionDep,
-    key: IdempotencyKeyHeader,
-) -> Response:
-    """A Staple's package amount ("¼ jar"), a note for people only (ADR 0024)."""
-
-    async def work() -> StapleOut:
-        return staple_out(
-            await kitchen.set_pack(session, ctx, ingredient_id, body.quantity, body.unit)
-        )
 
     return await idempotent(request, session, ctx, key, work)
 

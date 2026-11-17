@@ -1,6 +1,6 @@
 import { contrastRatio } from './contrast';
 import { initials, tintFor } from './tint';
-import { colors, hero, statusColors, TINT_NAMES, tints } from './tokens';
+import { colors, hero, statusColors, stockColors, TINT_NAMES, tints } from './tokens';
 
 const AA = 4.5;
 const schemes = ['light', 'dark'] as const;
@@ -51,6 +51,17 @@ describe.each(schemes)('%s theme meets WCAG AA for text', (scheme) => {
     // A transparent badge sits on the card surface.
     const bg = s.bg === 'transparent' ? c.surface : s.bg;
     expect(contrastRatio(s.fg, bg)).toBeGreaterThanOrEqual(AA);
+  });
+});
+
+describe.each(schemes)('%s stock colours (ADR 0024)', (scheme) => {
+  const c = colors[scheme];
+  it.each(['in_stock', 'low', 'out'] as const)('%s badge, tile text and icon', (name) => {
+    const s = stockColors[scheme][name];
+    expect(contrastRatio(s.fg, s.bg)).toBeGreaterThanOrEqual(AA);
+    expect(contrastRatio(c.text, s.tile)).toBeGreaterThanOrEqual(AA);
+    expect(contrastRatio(s.icon, s.tile)).toBeGreaterThanOrEqual(3);
+    expect(contrastRatio(s.icon, c.surface)).toBeGreaterThanOrEqual(3);
   });
 });
 

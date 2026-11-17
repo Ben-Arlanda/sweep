@@ -313,7 +313,27 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/kitchen/used-up/{ingredient_id}": {
+    "/kitchen/stock/{ingredient_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Set Stock
+         * @description In stock / Running low / Out (ADR 0024). A Staple set to Out also goes on the list.
+         */
+        put: operations["set_stock_kitchen_stock__ingredient_id__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/kitchen/to-list/{ingredient_id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -323,10 +343,10 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * Mark Used Up
-         * @description Used up (Tracked) or Ran out (Staple): out of the Kitchen and onto the list.
+         * Add To List
+         * @description "Add to list" for something in the Kitchen; skipped if already on it unticked.
          */
-        post: operations["mark_used_up_kitchen_used_up__ingredient_id__post"];
+        post: operations["add_to_list_kitchen_to_list__ingredient_id__post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1369,6 +1389,11 @@ export interface components {
              */
             last_confirmed_at: string;
             place: components["schemas"]["Place"];
+            /**
+             * Stock
+             * @enum {string}
+             */
+            stock: "in_stock" | "low" | "out";
         };
         /** KitchenOut */
         KitchenOut: {
@@ -1449,6 +1474,19 @@ export interface components {
              * Format: date-time
              */
             joined_at: string;
+        };
+        /**
+         * OnListOut
+         * @description Where it went on the Shopping List, so the app can offer Undo.
+         */
+        OnListOut: {
+            /**
+             * List Id
+             * Format: uuid
+             */
+            list_id: string;
+            /** List Item Id */
+            list_item_id: string | null;
         };
         /**
          * ParseMethod
@@ -1783,6 +1821,14 @@ export interface components {
             /** Have */
             have: boolean;
         };
+        /** SetStockIn */
+        SetStockIn: {
+            /**
+             * Stock
+             * @enum {string}
+             */
+            stock: "in_stock" | "low" | "out";
+        };
         /** ShopIn */
         ShopIn: {
             /** Name */
@@ -1820,6 +1866,23 @@ export interface components {
             /** Have */
             have: boolean;
             place: components["schemas"]["Place"];
+            /**
+             * Stock
+             * @enum {string}
+             */
+            stock: "in_stock" | "low" | "out";
+        };
+        /** StockOut */
+        StockOut: {
+            /**
+             * Stock
+             * @enum {string}
+             */
+            stock: "in_stock" | "low" | "out";
+            /** List Id */
+            list_id: string | null;
+            /** List Item Id */
+            list_item_id: string | null;
         };
         /**
          * SwapOut
@@ -1857,19 +1920,6 @@ export interface components {
          *     for the generated TypeScript to include every event type.
          */
         TurnEvents: components["schemas"]["TextEvent"] | components["schemas"]["ToolEvent"] | components["schemas"]["DraftEvent"] | components["schemas"]["ReplanEvent"] | components["schemas"]["ProposalEvent"] | components["schemas"]["DoneEvent"] | components["schemas"]["ErrorEvent"];
-        /**
-         * UsedUpOut
-         * @description Where it went on the Shopping List, so the app can offer Undo.
-         */
-        UsedUpOut: {
-            /**
-             * List Id
-             * Format: uuid
-             */
-            list_id: string;
-            /** List Item Id */
-            list_item_id: string | null;
-        };
         /** ValidationError */
         ValidationError: {
             /** Location */
@@ -2594,7 +2644,44 @@ export interface operations {
             };
         };
     };
-    mark_used_up_kitchen_used_up__ingredient_id__post: {
+    set_stock_kitchen_stock__ingredient_id__put: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                ingredient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SetStockIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StockOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    add_to_list_kitchen_to_list__ingredient_id__post: {
         parameters: {
             query?: never;
             header: {
@@ -2613,7 +2700,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["UsedUpOut"];
+                    "application/json": components["schemas"]["OnListOut"];
                 };
             };
             /** @description Validation Error */

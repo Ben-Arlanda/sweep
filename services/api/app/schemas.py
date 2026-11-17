@@ -219,24 +219,10 @@ class SetStapleIn(BaseModel):
 
 
 Stock = Literal["in_stock", "low", "out"]
-PackUnit = Literal["jar", "pkt", "box", "bottle", "bag", "tin", "tube"]
 
 
 class SetStockIn(BaseModel):
     stock: Stock
-
-
-class SetPackIn(BaseModel):
-    """A Staple's "¼ jar". Both or neither (null + null clears it)."""
-
-    quantity: Annotated[Decimal, Field(gt=0, le=99)] | None
-    unit: PackUnit | None
-
-    @model_validator(mode="after")
-    def both_or_neither(self) -> Self:
-        if (self.quantity is None) != (self.unit is None):
-            raise ValueError("Give both an amount and a unit, or neither")
-        return self
 
 
 class KitchenItemOut(BaseModel):
@@ -255,8 +241,6 @@ class StapleOut(BaseModel):
     have: bool  # not Out (Running low still counts as have)
     place: Place
     stock: Stock
-    pack_quantity: Quantity | None  # "¼ jar": a note, never used in maths
-    pack_unit: PackUnit | None
 
 
 class PlaceIn(BaseModel):

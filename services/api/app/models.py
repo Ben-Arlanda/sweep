@@ -297,12 +297,7 @@ class HouseholdStaple(Base):
     """
 
     __tablename__ = "household_staples"
-    __table_args__ = (
-        PrimaryKeyConstraint("household_id", "ingredient_id"),
-        CheckConstraint(
-            "(pack_quantity IS NULL) = (pack_unit IS NULL)", name="pack_both_or_neither"
-        ),
-    )
+    __table_args__ = (PrimaryKeyConstraint("household_id", "ingredient_id"),)
 
     household_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("households.id", ondelete="CASCADE"))
     ingredient_id: Mapped[uuid.UUID] = mapped_column(
@@ -313,9 +308,6 @@ class HouseholdStaple(Base):
     low: Mapped[bool] = mapped_column(default=False, server_default="false")  # ADR 0024
     # Where the Household keeps it, if not the default for its category (ADR 0011).
     place: Mapped[Place | None] = mapped_column(str_enum(Place, "staple_place"))
-    # "¼ jar": a note for people, never used in maths (ADR 0024).
-    pack_quantity: Mapped[Decimal | None] = mapped_column(Numeric(5, 2))
-    pack_unit: Mapped[str | None] = mapped_column(String(12))
 
 
 class KitchenItem(Base):
