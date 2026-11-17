@@ -180,7 +180,7 @@ export function Button({
       onPressOut={() => setPressed(false)}
       disabled={inactive}
       style={{
-        minHeight: t.touchTarget + 4,
+        minHeight: t.touchTarget,
         borderRadius: t.radius.pill,
         paddingHorizontal: t.space.xl,
         alignItems: 'center',
