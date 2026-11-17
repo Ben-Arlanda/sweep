@@ -24,7 +24,7 @@ from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.data.places import Place, default_place
-from app.errors import Conflict, NotFound
+from app.errors import Conflict, InvalidInput, NotFound
 from app.models import (
     ChangeSource,
     Household,
@@ -272,6 +272,59 @@ async def undo_purchase(
     existing.updated_at = utcnow()
     if existing.quantity == 0:
         await session.delete(existing)
+
+
+# --- Kitchen Photos (ADR 0023) ---------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class PhotoItem:
+    """One approved row: the Ingredient and how much there is (None = "have some")."""
+
+    ingredient_id: uuid.UUID
+    quantity: Decimal | None
+
+
+async def apply_photo(
+    session: AsyncSession, household_id: uuid.UUID, place: Place, items: list[PhotoItem]
+) -> None:
+    """Approved rows from a Kitchen Photo of items taken out of `place`.
+
+    The photo shows the total, so an amount replaces (never adds). No amount keeps a
+    trusted one and turns an Unknown one into "have some". Never removes, and only new
+    items go to `place`.
+    """
+    seen = [item.ingredient_id for item in items]
+    if len(seen) != len(set(seen)):
+        raise InvalidInput("Each Ingredient can only be listed once")
+    if any(item.quantity is not None and item.quantity < 0 for item in items):
+        raise InvalidInput("An amount can't be negative")
+    await _bump(session, household_id)
+    now = utcnow()
+    for item in items:
+        ingredient = await _ingredient(session, household_id, item.ingredient_id)
+        staple = await _staple(session, household_id, ingredient.id)
+        if staple is not None:
+            staple.ran_out_at = None  # a Staple has no amount
+            continue
+        existing = await _tracked(session, household_id, ingredient.id)
+        if existing is None:
+            moved = place != default_place(ingredient.name, ingredient.category)
+            existing = KitchenItem(
+                household_id=household_id,
+                ingredient=ingredient,
+                quantity=item.quantity,
+                place=place if moved else None,
+            )
+            session.add(existing)
+        elif item.quantity is not None:
+            existing.quantity = item.quantity
+        elif status_of(existing, now) == Status.UNKNOWN:
+            existing.quantity = None
+        existing.last_change_source = ChangeSource.PHOTO
+        existing.last_confirmed_at = now
+        existing.updated_at = now
+    await session.flush()
 
 
 # --- Mark as Cooked ----------------------------------------------------------------------

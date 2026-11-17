@@ -47,6 +47,7 @@ class ChangeSource(StrEnum):
     PURCHASE = "purchase"  # ticked off a Shopping List
     MANUAL = "manual"  # a Member set it
     COOKED = "cooked"  # deducted by Mark as Cooked (slice 6)
+    PHOTO = "photo"  # approved from a Kitchen Photo (ADR 0023)
 
 
 class AddedBy(StrEnum):
