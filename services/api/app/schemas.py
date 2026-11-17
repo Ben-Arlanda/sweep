@@ -269,6 +269,25 @@ class PhotoRowOut(BaseModel):
     in_kitchen: InKitchenTrackedOut | InKitchenStapleOut | None  # None: new
 
 
+class PhotoItemIn(BaseModel):
+    """One ticked row: a known Ingredient, or a Not linked name the Member ticked."""
+
+    ingredient_id: uuid.UUID | None = None
+    name: IngredientName | None = None
+    quantity: Quantity | None  # in the Ingredient's own unit; null: "have some"
+
+    @model_validator(mode="after")
+    def _one_of(self) -> Self:
+        if (self.ingredient_id is None) == (self.name is None):
+            raise ValueError("Give an ingredient_id or a name, not both")
+        return self
+
+
+class KitchenPhotoApplyIn(BaseModel):
+    place: Place
+    items: list[PhotoItemIn] = Field(min_length=1, max_length=60)
+
+
 class KitchenPhotoOut(BaseModel):
     place: Place
     rows: list[PhotoRowOut]

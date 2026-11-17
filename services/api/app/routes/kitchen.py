@@ -23,6 +23,7 @@ from app.schemas import (
     InKitchenTrackedOut,
     KitchenItemOut,
     KitchenOut,
+    KitchenPhotoApplyIn,
     KitchenPhotoOut,
     PhotoRowOut,
     PlaceIn,
@@ -33,6 +34,7 @@ from app.schemas import (
 )
 from app.services import import_limits, ingredients, kitchen, kitchen_photos
 from app.services.import_limits import MeteredKitchenReader
+from app.services.kitchen import PhotoItem
 from app.services.kitchen_photos import KitchenPhotoReader, PhotoRow
 
 router = APIRouter(tags=["kitchen"])
@@ -196,6 +198,33 @@ async def read_kitchen_photos(
     read = await checked_photos(photos, "")
     rows, _ = await kitchen_photos.from_photos(session, ctx.household.id, reader, read, place)
     return KitchenPhotoOut(place=place, rows=[_row_out(row) for row in rows])
+
+
+@router.post("/kitchen/photos/apply", response_model=KitchenOut)
+async def apply_kitchen_photos(
+    body: KitchenPhotoApplyIn,
+    request: Request,
+    ctx: MemberDep,
+    session: SessionDep,
+    key: IdempotencyKeyHeader,
+) -> Response:
+    """The ticked rows, all in one transaction. A ticked Not linked name is the Member's
+    choice, so it may become a Household Ingredient. Returns the Kitchen as it is now."""
+
+    async def work() -> KitchenOut:
+        items: list[PhotoItem] = []
+        for row in body.items:
+            iid = row.ingredient_id
+            if iid is None:
+                assert row.name is not None  # PhotoItemIn guarantees one of the two
+                made = await ingredients.resolve(session, ctx.household.id, row.name, create=True)
+                assert made is not None  # IngredientName guarantees a usable name
+                iid = made.id
+            items.append(PhotoItem(iid, row.quantity))
+        await kitchen.apply_photo(session, ctx.household.id, body.place, items)
+        return await get_kitchen(ctx, session)
+
+    return await idempotent(request, session, ctx, key, work)
 
 
 def _row_out(row: PhotoRow) -> PhotoRowOut:
