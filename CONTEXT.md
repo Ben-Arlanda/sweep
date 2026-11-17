@@ -28,6 +28,10 @@ _Avoid_: cabinet (the old name, ADR 0011), kitchen inventory, pantry, stock
 Where an Ingredient is kept in the Kitchen: Fridge, Freezer or Cupboard. Every Ingredient has a default Place (from its category); a Household can move an item.
 _Avoid_: location, storage, shelf
 
+**Kitchen Photo**:
+A photo of a fridge, freezer or cupboard that Sweep reads to suggest Kitchen items. It only adds or refreshes items, never removes them, and nothing changes until a Member approves the list.
+_Avoid_: scan, inventory photo
+
 **Shopping List**:
 The one list of items the Household intends to buy, shared across Members' devices. A Household has exactly one.
 _Avoid_: grocery list, basket, lists (there is only one)
@@ -67,7 +71,7 @@ An Ingredient whose quantity the Kitchen records because it decides whether a me
 _Avoid_: inventory item
 
 **Confirmed**:
-A Kitchen quantity a Member recently stated or that came from ticking off a Shopping List item.
+A Kitchen quantity a Member recently stated, approved from a Kitchen Photo, or that came from ticking off a Shopping List item.
 
 **Estimated**:
 A Kitchen quantity the app calculated, e.g. by deducting a Cooked meal. Always shown as an estimate.
