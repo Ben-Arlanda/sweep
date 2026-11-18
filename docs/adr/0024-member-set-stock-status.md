@@ -4,7 +4,7 @@ Date: 2026-11-17 · Status: Accepted · Amends ADR 0003
 
 ## Context
 
-The Kitchen redesign (mockups in `docs/design/kitchen-redesign/`) shows every item with an In stock / Running low / Out badge that the Member taps to change, and Out items that stay on screen with an "Add to list" button. ADR 0003 only had Staples as have / run out and Tracked items as an amount with a calculated trust status, and "Finished" deleted the Tracked row.
+The Kitchen redesign (mockups shared in chat, not kept in the repo) shows every item with an In stock / Running low / Out badge that the Member taps to change, and Out items that stay on screen with an "Add to list" button. ADR 0003 only had Staples as have / run out and Tracked items as an amount with a calculated trust status, and "Finished" deleted the Tracked row.
 
 ## Decision
 
