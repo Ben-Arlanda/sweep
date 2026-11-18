@@ -1,11 +1,15 @@
+import { Ellipsis, Link2, Store, Trash2 } from 'lucide-react-native';
 import { useRef, useState } from 'react';
-import { Pressable, View, type TextInputInstance } from 'react-native';
-import Animated, { FadeInDown, ReduceMotion } from 'react-native-reanimated';
+import { Pressable, View, type HostInstance, type TextInputInstance } from 'react-native';
+import Animated, { FadeInDown, FadeOut, ReduceMotion } from 'react-native-reanimated';
 
 import { AvatarStack } from '@/components/Avatar';
 import { Checkbox } from '@/components/Checkbox';
 import { ChoiceChips } from '@/components/ChoiceChips';
-import { Pill, Tag } from '@/components/Pill';
+import { Icon } from '@/components/Icon';
+import { MenuItem } from '@/components/MenuItem';
+import { Pill } from '@/components/Pill';
+import { measureAnchor, Popover, type Anchor } from '@/components/Popover';
 import { useToast } from '@/components/Toast';
 import {
   Button,
@@ -39,8 +43,9 @@ const ALL = 'all';
 
 /**
  * The Household's Shopping List (one per Household, ADR 0009), made for using in a shop
- * with one hand: big tap targets, the add box at the top, and ticked items sinking into
- * "In the trolley". Filter by Shop when you're standing in one.
+ * with one hand: big tap targets, the add box at the top. Ticking an item takes it off
+ * the list (with Undo); ••• holds its Shop, Kitchen link and Remove. Filter by Shop when
+ * you're standing in one.
  */
 export default function ListScreen() {
   const list = useList();
@@ -62,22 +67,18 @@ function ListContent({ list }: { list: ListDetail }) {
   const { members, byId } = useMembers();
   const [filter, setFilter] = useState<ShopFilter>(ALL);
   const toast = useToast();
-  // Which item's Shop sheet or Kitchen link sheet is open, if any.
+  // Which item's ••• menu, Shop sheet or Kitchen link sheet is open, if any.
+  const [menu, setMenu] = useState<{ item: Item; anchor: Anchor } | null>(null);
   const [tagging, setTagging] = useState<Item | null>(null);
   const [linking, setLinking] = useState<Item | null>(null);
 
   const { shops } = list;
   // A Shop deleted on another phone while we were filtering by it: show everything.
   const shown = filter === ALL ? ALL : (knownShop(filter, shops) ?? ALL);
-  const { toBuy, inTrolley } = shoppingOrder(filterByShop(list.items, shown));
+  // Ticked items are off the list: no "In the trolley" section (Undo brings one back).
+  const { toBuy } = shoppingOrder(filterByShop(list.items, shown));
   const at = shown === ALL ? '' : ` at ${shopName(shops, shown)}`;
-
-  const summary = [
-    toBuy.length === 0 ? `Nothing left to buy${at}` : `${toBuy.length} to buy${at}`,
-    inTrolley.length > 0 ? `${inTrolley.length} in the trolley` : null,
-  ]
-    .filter(Boolean)
-    .join(' · ');
+  const summary = toBuy.length === 0 ? `Nothing left to buy${at}` : `${toBuy.length} to buy${at}`;
 
   const row = (item: Item, i: number) => (
     <ItemRow
@@ -87,8 +88,7 @@ function ListContent({ list }: { list: ListDetail }) {
       actions={actions}
       members={byId}
       shops={shops}
-      onTag={setTagging}
-      onLink={setLinking}
+      onMenu={(anchor) => setMenu({ item, anchor })}
     />
   );
 
@@ -132,11 +132,31 @@ function ListContent({ list }: { list: ListDetail }) {
         {toBuy.map(row)}
       </View>
 
-      {inTrolley.length > 0 ? (
-        <View style={{ gap: t.space.sm }}>
-          <SectionLabel>In the trolley</SectionLabel>
-          {inTrolley.map(row)}
-        </View>
+      {menu ? (
+        <Popover
+          anchor={menu.anchor}
+          label={`${menu.item.text} options`}
+          width={260}
+          onClose={() => setMenu(null)}
+        >
+          <ItemMenu
+            item={menu.item}
+            shop={shopName(shops, menu.item.shop_id)}
+            onShop={() => {
+              setMenu(null);
+              setTagging(menu.item);
+            }}
+            onLink={() => {
+              setMenu(null);
+              setLinking(menu.item);
+            }}
+            onRemove={() => {
+              setMenu(null);
+              actions.deleteItem(menu.item.id);
+              toast({ tag: 'List', text: `Removed ${menu.item.text}` });
+            }}
+          />
+        </Popover>
       ) : null}
 
       {tagging ? (
@@ -170,7 +190,7 @@ function ListContent({ list }: { list: ListDetail }) {
 
 type Actions = ReturnType<typeof useListActions>;
 
-/** The add box. New items are "any shop"; tag one with its Shop button. */
+/** The add box. New items are "any shop"; pick one from the item's ••• menu. */
 function AddItem({ onAdd }: { onAdd: (text: string) => void }) {
   const [text, setText] = useState('');
   const input = useRef<TextInputInstance>(null);
@@ -198,9 +218,10 @@ function AddItem({ onAdd }: { onAdd: (text: string) => void }) {
 }
 
 /**
- * One item. The whole row is the checkbox (a big target for one thumb in a shop); Shop,
- * Link and ✕ are separate buttons. Ticking an item linked to an Ingredient also stocks the
- * Kitchen (ADR 0003), so we say so with a toast: that's the loop, made visible.
+ * One item. The whole row is the checkbox (a big target for one thumb in a shop): ticking
+ * takes it off the list, with Undo. Ticking an item linked to an Ingredient also stocks
+ * the Kitchen (ADR 0003), so the toast says so: that's the loop, made visible. ••• opens
+ * Shop, Kitchen link and Remove (which doesn't stock the Kitchen).
  */
 function ItemRow({
   item,
@@ -208,42 +229,42 @@ function ItemRow({
   actions,
   members,
   shops,
-  onTag,
-  onLink,
+  onMenu,
 }: {
   item: Item;
   index: number;
   actions: Actions;
   members: Map<string, MemberOut>;
   shops: readonly Shop[];
-  onTag: (item: Item) => void;
-  onLink: (item: Item) => void;
+  onMenu: (anchor: Anchor) => void;
 }) {
   const t = useTheme();
   const toast = useToast();
+  const more = useRef<HostInstance>(null);
   const amount = [item.quantity, item.unit].filter(Boolean).join(' ');
   const tint = tintFor(item.ingredient?.name ?? item.text);
   const addedBy = item.added_by_member_id ? members.get(item.added_by_member_id) : undefined;
-  const tickedBy = item.checked_by ? members.get(item.checked_by) : undefined;
   const shop = shopName(shops, item.shop_id);
 
   const caption = [
+    shop,
     item.ingredient ? `Kitchen: ${item.ingredient.name}` : null,
     addedBy ? `added by ${addedBy.display_name}` : null,
   ]
     .filter(Boolean)
     .join(' · ');
 
-  function toggle() {
-    const checked = !item.checked;
+  function tick() {
     // Send what the Member *sees* as the new state, not "toggle" (ADR 0004).
-    actions.setChecked(item.id, checked);
-    if (checked && item.ingredient) {
-      toast({
-        tag: 'Kitchen',
-        text: `Added ${amount ? `${amount} ` : ''}${item.ingredient.name}`,
-      });
-    }
+    actions.setChecked(item.id, true);
+    toast({
+      kind: 'undo',
+      text: `Ticked off ${item.text}`,
+      detail: item.ingredient
+        ? `Added ${amount ? `${amount} ` : ''}${item.ingredient.name} to your Kitchen`
+        : undefined,
+      onUndo: () => actions.setChecked(item.id, false),
+    });
   }
 
   return (
@@ -254,125 +275,98 @@ function ItemRow({
         .springify()
         .damping(18)
         .reduceMotion(ReduceMotion.System)}
+      exiting={FadeOut.duration(180).reduceMotion(ReduceMotion.System)}
     >
-      {/* Ticked rows aren't dimmed with opacity: that would drop the captions below AA
-          contrast. The strike-through and the tick already say "done". */}
       <View
         style={{
           flexDirection: 'row',
-          // On a narrow phone (320px) the Shop and ✕ buttons drop to their own line,
-          // so the item name keeps room to read.
-          flexWrap: 'wrap',
           alignItems: 'center',
           backgroundColor: t.colors.surface,
           borderRadius: t.radius.md,
           boxShadow: t.shadow.card,
         }}
       >
-        {/* No custom label: the visible text ("Milk, added by Alice, ✓ Bob, 2 L") is the
+        {/* No custom label: the visible text ("Milk, Coles, added by Alice, 2 L") is the
             name, so voice control users can say exactly what they see (WCAG 2.5.3). */}
         <Pressable
           accessibilityRole="checkbox"
-          accessibilityState={{ checked: item.checked }}
-          aria-checked={item.checked}
-          onPress={toggle}
+          accessibilityState={{ checked: false }}
+          aria-checked={false}
+          onPress={tick}
           style={({ pressed }) => ({
-            flexGrow: 1,
-            flexBasis: 200,
+            flex: 1,
             minHeight: t.touchTarget + 12,
             flexDirection: 'row',
             alignItems: 'center',
             gap: t.space.md,
             paddingVertical: t.space.sm,
-            paddingHorizontal: t.space.sm,
+            paddingLeft: t.space.sm,
             opacity: pressed ? 0.75 : 1,
           })}
         >
+          <Checkbox checked={false} />
           <FoodThumb emoji={ingredientEmoji(item.ingredient)} tint={tint} />
           <View style={{ flex: 1, gap: 2 }}>
-            <Text
-              variant="label"
-              muted={item.checked}
-              style={{
-                textDecorationLine: item.checked ? 'line-through' : 'none',
-              }}
-            >
-              {item.text}
-            </Text>
+            <Text variant="label">{item.text}</Text>
             {caption ? (
               <Text variant="caption" muted numberOfLines={2}>
                 {caption}
               </Text>
             ) : null}
-            {item.checked && tickedBy ? (
-              <Tag tint={tintFor(tickedBy.id)}>{`✓ ${tickedBy.display_name}`}</Tag>
-            ) : null}
           </View>
           {amount ? <Pill tint={tint}>{amount}</Pill> : null}
-          <Checkbox checked={item.checked} />
         </Pressable>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 'auto' }}>
-          {/* The Shop label is its own button, so tagging never ticks the item. Its name
-            starts with the visible text ("Coles", "+ Shop"), for voice control. */}
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={
-              shop ? `${shop}: change shop for ${item.text}` : `Shop: choose one for ${item.text}`
-            }
-            onPress={() => onTag(item)}
-            style={({ pressed }) => ({
-              minWidth: t.touchTarget,
-              minHeight: t.touchTarget,
-              paddingHorizontal: t.space.sm,
-              alignItems: 'center',
-              justifyContent: 'center',
-              opacity: pressed ? 0.6 : 1,
-            })}
-          >
-            {shop ? (
-              <Tag tint={tintFor(shop)}>{shop}</Tag>
-            ) : (
-              <Text variant="caption" muted>
-                + Shop
-              </Text>
-            )}
-          </Pressable>
-          {/* "Link" fixes what the item is in the Kitchen (ADR 0012). Visible text first in
-              its name, for voice control, like the Shop button. */}
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={`Link: choose what ${item.text} is in the Kitchen`}
-            onPress={() => onLink(item)}
-            style={({ pressed }) => ({
-              minWidth: t.touchTarget,
-              minHeight: t.touchTarget,
-              paddingHorizontal: t.space.sm,
-              alignItems: 'center',
-              justifyContent: 'center',
-              opacity: pressed ? 0.6 : 1,
-            })}
-          >
-            <Text variant="caption" muted>
-              Link
-            </Text>
-          </Pressable>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={`Remove ${item.text}`}
-            onPress={() => actions.deleteItem(item.id)}
-            style={({ pressed }) => ({
-              minWidth: t.touchTarget,
-              minHeight: t.touchTarget,
-              alignItems: 'center',
-              justifyContent: 'center',
-              opacity: pressed ? 0.5 : 1,
-            })}
-          >
-            <Text muted>✕</Text>
-          </Pressable>
-        </View>
+        <Pressable
+          ref={more}
+          accessibilityRole="button"
+          accessibilityLabel={`More for ${item.text}`}
+          onPress={async () => onMenu(await measureAnchor(more))}
+          style={({ pressed }) => ({
+            width: t.touchTarget,
+            minHeight: t.touchTarget,
+            alignItems: 'center',
+            justifyContent: 'center',
+            opacity: pressed ? 0.6 : 1,
+          })}
+        >
+          <Icon icon={Ellipsis} color={t.colors.text} strong />
+        </Pressable>
       </View>
     </Animated.View>
+  );
+}
+
+/** ••• on an item: its Shop, what it is in the Kitchen (ADR 0012), and Remove. */
+function ItemMenu({
+  item,
+  shop,
+  onShop,
+  onLink,
+  onRemove,
+}: {
+  item: Item;
+  shop: string | null;
+  onShop: () => void;
+  onLink: () => void;
+  onRemove: () => void;
+}) {
+  const t = useTheme();
+  return (
+    <View
+      accessibilityRole="menu"
+      style={{ marginHorizontal: -t.space.md, marginVertical: -t.space.xs }}
+    >
+      <MenuItem icon={Store} label="Shop" detail={shop ?? 'Any shop'} chevron onPress={onShop} />
+      <MenuItem
+        icon={Link2}
+        label="Kitchen link"
+        detail={item.ingredient?.name ?? 'None'}
+        chevron
+        divider
+        onPress={onLink}
+      />
+      <MenuItem icon={Trash2} label="Remove from list" danger divider onPress={onRemove} />
+    </View>
   );
 }
 

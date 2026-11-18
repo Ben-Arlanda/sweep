@@ -43,6 +43,7 @@ import {
 } from 'react-native';
 
 import { FoodThumb } from '@/components/FoodThumb';
+import { MenuItem } from '@/components/MenuItem';
 import { Icon } from '@/components/Icon';
 import { measureAnchor, Popover, type Anchor } from '@/components/Popover';
 import { Sheet } from '@/components/Sheet';
@@ -893,52 +894,6 @@ function ItemMenu({
       <MenuItem icon={Archive} label="Storage location" chevron onPress={onEdit} divider />
       <MenuItem icon={Trash2} label="Remove item" danger onPress={onRemove} divider />
     </View>
-  );
-}
-
-function MenuItem({
-  icon,
-  label,
-  detail,
-  chevron,
-  danger,
-  divider,
-  onPress,
-}: {
-  icon: LucideIcon;
-  label: string;
-  detail?: string;
-  chevron?: boolean;
-  danger?: boolean;
-  divider?: boolean;
-  onPress: () => void;
-}) {
-  const t = useTheme();
-  const color = danger ? t.colors.danger : t.colors.text;
-  return (
-    <Pressable
-      accessibilityRole="menuitem"
-      onPress={onPress}
-      style={({ pressed }) => ({
-        minHeight: 50,
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: t.space.md,
-        paddingHorizontal: t.space.lg,
-        borderTopWidth: divider ? 1 : 0,
-        borderTopColor: t.colors.border,
-        backgroundColor: pressed ? t.colors.background : 'transparent',
-      })}
-    >
-      <Icon icon={icon} size={20} color={color} />
-      <Text style={{ flex: 1, color }}>{label}</Text>
-      {detail ? (
-        <Text variant="caption" muted>
-          {detail}
-        </Text>
-      ) : null}
-      {chevron ? <Icon icon={ChevronRight} size={16} color={t.colors.text} /> : null}
-    </Pressable>
   );
 }
 
