@@ -22,7 +22,7 @@ import { RecipeRow } from '@/features/recipes/RecipeRow';
 import { ApiError } from '@/lib/api/client';
 import { useImportedRecipes } from '@/lib/api/imports';
 import { useDinnerIdeas } from '@/lib/api/planning';
-import { useDebounced, useRecipeCount, useRecipeSearch } from '@/lib/api/recipes';
+import { useDebounced, useRecipeSearch } from '@/lib/api/recipes';
 import { PageColors } from '@/theme/PageColors';
 import { useTheme } from '@/theme/useTheme';
 
@@ -165,14 +165,12 @@ function Tile({
 }
 
 /**
- * Browse: a card into All recipes (courses, filters, sort), with the real count. A card,
+ * Browse: a card into All recipes (courses, filters, sort). A card,
  * not a lone heading, so this section has a body like the ones under it.
  */
 function Browse() {
   const t = useTheme();
-  const count = useRecipeCount({ maxMinutes: null, course: null });
-  const label =
-    count.data !== undefined ? `Browse all ${count.data} recipes` : 'Browse all recipes';
+  const label = 'Browse all recipes';
   return (
     <PressableScale
       accessibilityRole="link"
