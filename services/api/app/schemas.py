@@ -448,6 +448,7 @@ class PlannedMealOut(BaseModel):
     recipe_id: uuid.UUID
     title: str
     servings: int
+    total_minutes: int | None  # the recipe's, for "25 min" on the Plan tab
     cooked_at: datetime | None
     cooked_by: uuid.UUID | None
     # Before Cooked: Tracked items in the Kitchen it uses. After: what Cooked took out.

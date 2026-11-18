@@ -237,3 +237,19 @@ async def test_once_cooked_it_says_what_was_taken_out(
 
     undone = await cooked(client, fake_issuer, mid, undo=True)
     assert undone.json()["kitchen_uses"] == ["chicken thigh", "chickpeas", "onion"]
+
+
+async def test_a_planned_meal_says_how_long_it_takes(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, load: Loader, db: Engine
+) -> None:
+    """The Plan tab shows "25 min · Serves 4" per day, so the time comes with the meal."""
+    await load([CURRY, PASTA])
+    await create_household(client, fake_issuer, "ana")
+    plan(db, MON, "chicken-curry")
+    with db.begin() as conn:
+        conn.execute(text("UPDATE recipes SET total_minutes = 35 WHERE slug = 'chicken-curry'"))
+
+    body = (
+        await client.get("/meal-plan", params={"start": MON}, headers=fake_issuer.headers("ana"))
+    ).json()
+    assert body["meals"][0]["total_minutes"] == 35

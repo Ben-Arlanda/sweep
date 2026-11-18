@@ -5823,6 +5823,17 @@
             "type": "integer",
             "title": "Servings"
           },
+          "total_minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Total Minutes"
+          },
           "cooked_at": {
             "anyOf": [
               {
@@ -5862,6 +5873,7 @@
           "recipe_id",
           "title",
           "servings",
+          "total_minutes",
           "cooked_at",
           "cooked_by",
           "kitchen_uses"

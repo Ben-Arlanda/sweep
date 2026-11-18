@@ -40,6 +40,7 @@ def _meal_out(meal: PlannedMeal, kitchen_uses: list[str]) -> PlannedMealOut:
         recipe_id=meal.recipe_id,
         title=meal.recipe.title,
         servings=meal.servings,
+        total_minutes=meal.recipe.total_minutes,
         cooked_at=meal.cooked_at,
         cooked_by=meal.cooked_by,
         kitchen_uses=kitchen_uses,

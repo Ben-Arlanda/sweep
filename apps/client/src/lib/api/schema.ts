@@ -1775,6 +1775,8 @@ export interface components {
             title: string;
             /** Servings */
             servings: number;
+            /** Total Minutes */
+            total_minutes: number | null;
             /** Cooked At */
             cooked_at: string | null;
             /** Cooked By */
