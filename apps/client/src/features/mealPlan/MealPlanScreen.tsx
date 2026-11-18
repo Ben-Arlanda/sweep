@@ -15,6 +15,7 @@ import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 
 import { Icon } from '@/components/Icon';
+import { PageHeader } from '@/components/PageHeader';
 import { PressableScale } from '@/components/PressableScale';
 import { RecipeArt } from '@/components/RecipeArt';
 import { Sheet } from '@/components/Sheet';
@@ -69,14 +70,7 @@ export function MealPlanScreen() {
 
   return (
     <Screen edges={['top', 'left', 'right']} footer={footer}>
-      <Text
-        variant="heading"
-        role="heading"
-        aria-level={1}
-        style={{ textAlign: 'center', paddingTop: t.space.sm }}
-      >
-        Plan my week
-      </Text>
+      <PageHeader icon={CalendarDays} title="Plan my week" />
       <WeekToggle next={next} onChange={setNext} />
 
       {week.isPending || !today ? (

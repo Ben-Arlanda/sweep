@@ -36,6 +36,7 @@ import {
 import { FoodThumb } from '@/components/FoodThumb';
 import { CategoryAccordion, toggled } from '@/components/CategoryAccordion';
 import { MenuItem } from '@/components/MenuItem';
+import { PageHeader } from '@/components/PageHeader';
 import { SwipeToRemove } from '@/components/SwipeToRemove';
 import { Icon } from '@/components/Icon';
 import { measureAnchor, Popover, type Anchor } from '@/components/Popover';
@@ -257,9 +258,7 @@ export default function KitchenScreen() {
 
   return (
     <Screen edges={TAB_ROOT}>
-      <Text variant="display" accessibilityRole="header">
-        Kitchen
-      </Text>
+      <PageHeader icon={Refrigerator} title="Kitchen" />
 
       <View style={{ flexDirection: 'row', gap: t.space.sm }}>
         {STOCK_ORDER.map((stock) => (

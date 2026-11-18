@@ -14,6 +14,7 @@ import { Checkbox } from '@/components/Checkbox';
 import { ChoiceChips } from '@/components/ChoiceChips';
 import { Icon } from '@/components/Icon';
 import { MenuItem } from '@/components/MenuItem';
+import { PageHeader } from '@/components/PageHeader';
 import { Pill } from '@/components/Pill';
 import { measureAnchor, Popover, type Anchor } from '@/components/Popover';
 import { useToast } from '@/components/Toast';
@@ -89,20 +90,12 @@ function ListContent({ list }: { list: ListDetail }) {
 
   return (
     <Screen edges={TAB_ROOT}>
-      {/* A plain header on the page (no coloured card), a little lower than the notch. */}
-      <View style={{ gap: t.space.xs, paddingTop: t.space.lg }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.sm }}>
-          <Icon icon={ShoppingBasket} size={34} color={t.colors.text} />
-          <Text variant="title" accessibilityRole="header" style={{ flex: 1 }}>
-            Shopping List
-          </Text>
-          <AvatarStack members={members} size={28} />
-        </View>
-        <Text muted accessibilityLiveRegion="polite">
-          {summary}
-          {sync ? ` · ${sync}` : ''}
-        </Text>
-      </View>
+      <PageHeader
+        icon={ShoppingBasket}
+        title="Shopping List"
+        right={<AvatarStack members={members} size={28} />}
+        subtitle={`${summary}${sync ? ` · ${sync}` : ''}`}
+      />
 
       {shops.length > 0 ? (
         <ChoiceChips
