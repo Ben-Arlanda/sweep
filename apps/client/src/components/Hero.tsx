@@ -40,7 +40,9 @@ export function Hero({
         borderBottomLeftRadius: t.radius.hero,
         borderBottomRightRadius: t.radius.hero,
         paddingTop: insets.top + t.space.lg,
-        paddingBottom: t.space.xl,
+        // A see-through hero (the coloured pages) needs no bottom padding: the page's own
+        // gap then matches the space between cards. A coloured panel keeps its padding.
+        paddingBottom: t.colors.hero === 'transparent' ? 0 : t.space.xl,
         paddingLeft: Math.max(insets.left, t.space.lg),
         paddingRight: Math.max(insets.right, t.space.lg),
       }}
