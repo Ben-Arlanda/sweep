@@ -451,6 +451,21 @@ class PlannedMealOut(BaseModel):
     kitchen_uses: list[str]
 
 
+class PlanDayIn(BaseModel):
+    """Put this recipe on the day (Dinner Ideas): replaces an uncooked meal there."""
+
+    recipe_id: uuid.UUID
+
+
+class DinnerIdeaOut(RecipeSummaryOut):
+    """One Dinner Idea (ADR 0025): a recipe with its Kitchen Match."""
+
+    have: list[str]
+    maybe: list[str]  # Tracked items whose status is Unknown
+    missing: list[str]  # things to buy
+    kitchen_uses: list[str]  # Tracked items it uses that are there
+
+
 class MealPlanOut(BaseModel):
     """A week of Planned Meals, from `start`. `version` matches the change notices."""
 

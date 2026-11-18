@@ -13,7 +13,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app import errors
 from app.models import Household, Ingredient, PlannedMeal, utcnow
 from app.realtime import notify_change
-from app.services import audit, kitchen, kitchen_match
+from app.services import audit, diet, kitchen, kitchen_match, recipes
 from app.services.households import MemberContext
 
 ENTITY = "meal_plan"
@@ -149,3 +149,40 @@ async def undo_cooked(session: AsyncSession, ctx: MemberContext, meal_id: uuid.U
         member_id=ctx.member.id,
     )  # fmt: skip
     return meal
+
+
+async def plan_day(
+    session: AsyncSession, ctx: MemberContext, day: date, recipe_id: uuid.UUID, today: date
+) -> PlannedMeal:
+    """A Member puts a recipe on a day themselves (Dinner Ideas, ADR 0025): no Proposal,
+    like editing the plan by hand. The same checks as approving one: the day hasn't
+    passed, the recipe passes the Dietary Rules, and a Cooked day isn't replaced."""
+    hid = ctx.household.id
+    if day < today:
+        raise errors.InvalidInput("That day has passed")
+    recipe = await recipes.get_recipe(session, hid, recipe_id)
+    check = diet.check_recipe(recipe, await diet.get_rules(session, hid))
+    if not check.ok:
+        raise errors.Conflict(
+            f"{recipe.title} breaks your Dietary Rules: {', '.join(check.breaks)}"
+        )
+    found = await between(session, hid, day, day, for_update=True)
+    current = found[0] if found else None
+    if current is not None and current.cooked_at is not None:
+        raise errors.Conflict(f"{current.recipe.title} was already cooked that day")
+    servings = (await diet.get_preferences(session, hid)).household_size or recipe.servings
+    if current is None:
+        current = PlannedMeal(household_id=hid, date=day, recipe_id=recipe.id, servings=servings)
+        session.add(current)
+    else:
+        current.recipe_id = recipe.id
+        current.servings = servings
+        current.proposal_id = None
+    await session.flush()
+    await session.refresh(current, ["recipe"])
+    await bump(session, hid)
+    await audit.record(
+        session, hid, "meal.planned", "planned_meal", current.id,
+        member_id=ctx.member.id, detail={"date": day.isoformat(), "recipe_id": str(recipe.id)},
+    )  # fmt: skip
+    return current
