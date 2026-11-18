@@ -157,7 +157,8 @@ export function Card({
   );
 }
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'dark' | 'strong' | 'outline';
+type ButtonVariant =
+  'primary' | 'secondary' | 'ghost' | 'danger' | 'dark' | 'strong' | 'outline' | 'lavender';
 
 /**
  * Pill buttons. `primary` is lime: use one per screen, for the main thing to do next.
@@ -203,6 +204,7 @@ export function Button({
     strong: { bg: t.colors.strong, fg: t.colors.onStrong, border: 'transparent' },
     // A quiet second action (Undo): see-through, thin border, muted text.
     outline: { bg: 'transparent', fg: t.colors.textMuted, border: t.colors.border },
+    lavender: { bg: t.colors.lavender, fg: t.colors.onLavender, border: 'transparent' },
   };
   const { bg, fg, border } = look[variant];
 

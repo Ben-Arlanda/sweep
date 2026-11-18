@@ -300,18 +300,19 @@ function MealPlanCard({
             {day.meal ? <MealMeta meal={day.meal} /> : null}
           </View>
         </View>
-        {/* Each button gets an equal share of the row, so the margins either side match. */}
-        <View style={{ flexDirection: 'row', gap: t.space.sm }}>
+        {/* Equal shares side by side when both fit; otherwise each takes its own full row,
+            so "Mark as cooked" never squashes onto two lines. */}
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.sm }}>
           {day.meal ? (
-            <View style={{ flex: 1 }}>
+            <View style={{ flexGrow: 1, flexBasis: 170 }}>
               <Button
                 title="View recipe"
-                variant="strong"
+                variant="lavender"
                 onPress={() => day.meal && router.push(`/recipe/${day.meal.recipe_id}`)}
               />
             </View>
           ) : canPick(day.date, today) ? (
-            <View style={{ flex: 1 }}>
+            <View style={{ flexGrow: 1, flexBasis: 170 }}>
               <Button
                 title="Add a dinner"
                 variant="secondary"
@@ -320,7 +321,7 @@ function MealPlanCard({
             </View>
           ) : null}
           {day.meal && isToday ? (
-            <View style={{ flex: 1 }}>
+            <View style={{ flexGrow: 1, flexBasis: 170 }}>
               <CookedButton meal={day.meal} />
             </View>
           ) : null}
