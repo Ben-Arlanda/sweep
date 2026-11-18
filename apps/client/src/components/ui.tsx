@@ -96,18 +96,26 @@ export function Screen({
         {content}
       </ScrollView>
       {footer ? (
+        // The page colour with a soft shadow above, so the list scrolls "under" the bar.
         <View
           style={{
-            paddingHorizontal: t.space.lg,
-            paddingTop: t.space.sm,
-            paddingBottom: t.space.lg,
-            width: '100%',
-            maxWidth: 560,
-            alignSelf: 'center',
-            gap: t.space.xs,
+            backgroundColor: t.colors.background,
+            boxShadow: '0 -6px 14px -6px rgba(18, 21, 15, 0.22)',
           }}
         >
-          {footer}
+          <View
+            style={{
+              paddingHorizontal: t.space.lg,
+              paddingTop: t.space.md,
+              paddingBottom: t.space.lg,
+              width: '100%',
+              maxWidth: 560,
+              alignSelf: 'center',
+              gap: t.space.xs,
+            }}
+          >
+            {footer}
+          </View>
         </View>
       ) : null}
     </SafeAreaView>
