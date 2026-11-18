@@ -458,6 +458,11 @@ class PlanDayIn(BaseModel):
     """Put this recipe on the day (Dinner Ideas): replaces an uncooked meal there."""
 
     recipe_id: uuid.UUID
+    servings: int | None = Field(default=None, ge=1, le=24)  # None: Household size or the recipe's
+
+
+class CountOut(BaseModel):
+    count: int
 
 
 class DinnerIdeaOut(RecipeSummaryOut):

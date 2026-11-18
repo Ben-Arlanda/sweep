@@ -152,7 +152,12 @@ async def undo_cooked(session: AsyncSession, ctx: MemberContext, meal_id: uuid.U
 
 
 async def plan_day(
-    session: AsyncSession, ctx: MemberContext, day: date, recipe_id: uuid.UUID, today: date
+    session: AsyncSession,
+    ctx: MemberContext,
+    day: date,
+    recipe_id: uuid.UUID,
+    today: date,
+    servings: int | None = None,
 ) -> PlannedMeal:
     """A Member puts a recipe on a day themselves (Dinner Ideas, ADR 0025): no Proposal,
     like editing the plan by hand. The same checks as approving one: the day hasn't
@@ -170,7 +175,9 @@ async def plan_day(
     current = found[0] if found else None
     if current is not None and current.cooked_at is not None:
         raise errors.Conflict(f"{current.recipe.title} was already cooked that day")
-    servings = (await diet.get_preferences(session, hid)).household_size or recipe.servings
+    servings = (
+        servings or (await diet.get_preferences(session, hid)).household_size or recipe.servings
+    )
     if current is None:
         current = PlannedMeal(household_id=hid, date=day, recipe_id=recipe.id, servings=servings)
         session.add(current)

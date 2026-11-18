@@ -416,6 +416,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/recipes/count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Count
+         * @description How many recipes browsing would show with these filters (Dietary Rules apply).
+         */
+        get: operations["count_recipes_count_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/recipes/cuisines": {
         parameters: {
             query?: never;
@@ -1087,6 +1107,11 @@ export interface components {
             /** Plan Tweaks */
             plan_tweaks?: components["schemas"]["PlanTweak"][] | null;
         };
+        /** CountOut */
+        CountOut: {
+            /** Count */
+            count: number;
+        };
         /**
          * Course
          * @description What a recipe is for. Exactly one each; plans offer mains, because a Planned Meal
@@ -1618,6 +1643,12 @@ export interface components {
             joined_at: string;
         };
         /**
+         * Mood
+         * @description What the Member is in the mood for on the Dinner ideas setup (slice 6f).
+         * @enum {string}
+         */
+        Mood: "kitchen" | "surprise" | "specific";
+        /**
          * OnListOut
          * @description Where it went on the Shopping List, so the app can offer Undo.
          */
@@ -1694,6 +1725,8 @@ export interface components {
              * Format: uuid
              */
             recipe_id: string;
+            /** Servings */
+            servings?: number | null;
         };
         /**
          * PlanMode
@@ -2966,6 +2999,8 @@ export interface operations {
                 limit?: number;
                 /** @description Browsing only */
                 offset?: number;
+                /** @description Browsing only; search is by meaning */
+                sort?: "title" | "newest" | "recommended";
                 favourites?: boolean;
             };
             header?: never;
@@ -2981,6 +3016,40 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["RecipeSummaryOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    count_recipes_count_get: {
+        parameters: {
+            query?: {
+                cuisine?: string | null;
+                max_minutes?: number | null;
+                course?: components["schemas"]["Course"] | null;
+                favourites?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CountOut"];
                 };
             };
             /** @description Validation Error */
@@ -3823,6 +3892,9 @@ export interface operations {
                 nothing_to_buy?: boolean;
                 exclude?: string[];
                 limit?: number;
+                mood?: components["schemas"]["Mood"];
+                q?: string;
+                vegetarian?: boolean;
             };
             header?: never;
             path?: never;

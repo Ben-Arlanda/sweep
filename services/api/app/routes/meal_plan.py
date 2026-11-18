@@ -7,18 +7,20 @@ it. Both are "set", never "toggle", so a repeated tap can't flip it back.
 
 import uuid
 from datetime import date, timedelta
-from typing import Annotated
+from typing import Annotated, cast
 
 from fastapi import APIRouter, Query, Request, Response, status
 
+from app import errors
 from app.agent.prompt import today_in_sydney
 from app.deps import MemberDep, SessionDep
+from app.embeddings import Embedder
 from app.idempotency import IdempotencyKeyHeader
 from app.models import Household, PlannedMeal
 from app.routes.common import idempotent
 from app.schemas import DinnerIdeaOut, MealPlanOut, PlanDayIn, PlannedMealOut, RecipeSummaryOut
 from app.services import dinner_ideas, meal_plan
-from app.services.dinner_ideas import MAX_IDEAS
+from app.services.dinner_ideas import MAX_IDEAS, Mood
 
 router = APIRouter(tags=["meal-plan"])
 WEEK = timedelta(days=6)  # start plus six more days
@@ -62,19 +64,30 @@ async def get_week(ctx: MemberDep, session: SessionDep, start: date | None = Non
 
 @router.get("/dinner-ideas")
 async def get_dinner_ideas(
+    request: Request,
     ctx: MemberDep,
     session: SessionDep,
     max_minutes: Annotated[int | None, Query(gt=0, le=1440)] = None,
     nothing_to_buy: bool = False,
     exclude: Annotated[list[uuid.UUID], Query(max_length=60)] = [],  # noqa: B006
     limit: Annotated[int, Query(gt=0, le=MAX_IDEAS)] = 3,
+    mood: Mood = Mood.KITCHEN,
+    q: Annotated[str, Query(max_length=200)] = "",
+    vegetarian: bool = False,
 ) -> list[DinnerIdeaOut]:
     """Tonight's best Kitchen Matches, chosen by code (ADR 0025). No AI, no limits."""
-    found = await dinner_ideas.ideas(
+    if mood == Mood.SPECIFIC and not q.strip():
+        raise errors.InvalidInput("Say what you're in the mood for")
+    found = await dinner_ideas.for_mood(
         session,
         ctx,
+        cast(Embedder | None, request.app.state.embedder),
+        mood,
+        today=today_in_sydney(),
+        q=q.strip(),
         max_minutes=max_minutes,
         nothing_to_buy=nothing_to_buy,
+        vegetarian=vegetarian,
         exclude=exclude,
         limit=limit,
     )
@@ -107,7 +120,9 @@ async def plan_day(
     """A Member picks a recipe for a day (a Dinner Idea): planned directly, no Proposal."""
 
     async def work() -> PlannedMealOut:
-        meal = await meal_plan.plan_day(session, ctx, day, body.recipe_id, today_in_sydney())
+        meal = await meal_plan.plan_day(
+            session, ctx, day, body.recipe_id, today_in_sydney(), servings=body.servings
+        )
         [out] = await meals_out(session, ctx, [meal])
         return out
 

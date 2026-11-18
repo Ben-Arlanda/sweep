@@ -366,17 +366,32 @@ async def list_recipes(
     filters: RecipeFilters,
     limit: int,
     offset: int = 0,
+    *,
+    newest: bool = False,
 ) -> list[Recipe]:
-    # Ordered by title, then id: a stable order, so pages never repeat or skip a recipe.
+    # A to Z (or newest first), then id: a stable order, so pages never repeat or skip.
     # Adaptations aren't listed on their own: they show under their parent (ADR 0021).
+    order = (Recipe.created_at.desc(), Recipe.title) if newest else (Recipe.title,)
     query = (
         _filtered(visible_to(household_id), filters)
         .where(Recipe.kind != RecipeKind.ADAPTATION)
-        .order_by(Recipe.title, Recipe.id)
+        .order_by(*order, Recipe.id)
         .limit(limit)
         .offset(offset)
     )
     return list((await session.execute(query)).scalars())
+
+
+async def count_recipes(
+    session: AsyncSession, household_id: uuid.UUID, filters: RecipeFilters
+) -> int:
+    """How many list_recipes would page through (the "500 recipes" line)."""
+    found = (
+        _filtered(visible_to(household_id), filters)
+        .where(Recipe.kind != RecipeKind.ADAPTATION)
+        .subquery()
+    )
+    return (await session.execute(select(func.count()).select_from(found))).scalar_one()
 
 
 async def eligible(

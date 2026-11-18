@@ -3,7 +3,7 @@ Household's own Imported Recipes (list, read lines, save, edit, delete)."""
 
 import uuid
 from dataclasses import replace
-from typing import Annotated, cast
+from typing import Annotated, Literal, cast
 
 from fastapi import APIRouter, File, Query, Request, Response, UploadFile, status
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -12,11 +12,12 @@ from app import errors
 from app.deps import MemberDep, SessionDep
 from app.embeddings import Embedder
 from app.idempotency import IdempotencyKeyHeader
-from app.models import Course, Recipe
+from app.models import Course, Recipe, RecipeKind
 from app.pdf_text import MAX_PDF_BYTES
 from app.routes.common import checked_photos, idempotent
 from app.schemas import (
     AdaptationOut,
+    CountOut,
     DraftLineOut,
     ImportDraftOut,
     ImportedLineIn,
@@ -35,6 +36,7 @@ from app.services import (
     favourites,
     import_limits,
     imported_recipes,
+    kitchen_match,
     recipe_import,
     recipes,
 )
@@ -44,6 +46,8 @@ from app.services.recipe_import import Draft, PageFetcher, RecipeReader
 from app.services.recipes import SEARCH_LIMIT
 
 router = APIRouter(prefix="/recipes", tags=["recipes"])
+
+Sort = Literal["title", "newest", "recommended"]
 
 
 @router.get("")
@@ -58,6 +62,7 @@ async def list_or_search(
     exclude_ingredient: Annotated[list[uuid.UUID], Query(max_length=50)] = [],  # noqa: B006
     limit: Annotated[int, Query(gt=0, le=50)] = SEARCH_LIMIT,
     offset: Annotated[int, Query(ge=0, le=10_000, description="Browsing only")] = 0,
+    sort: Annotated[Sort, Query(description="Browsing only; search is by meaning")] = "title",
     favourites_only: Annotated[bool, Query(alias="favourites")] = False,
 ) -> list[RecipeSummaryOut]:
     """With `q`: recipes closest in meaning, best first. Without: all, by title, a page
@@ -71,7 +76,12 @@ async def list_or_search(
     hearted = await favourites.ids(session, household_id)
     query = (q or "").strip()
     if not query:
-        rows = await recipes.list_recipes(session, household_id, filters, limit, offset)
+        if sort == "recommended":
+            rows = (await _recommended(session, ctx, filters, offset + limit))[offset:]
+        else:
+            rows = await recipes.list_recipes(
+                session, household_id, filters, limit, offset, newest=sort == "newest"
+            )
         return [_summary(r, hearted) for r in rows]
 
     embedder = cast(Embedder | None, request.app.state.embedder)
@@ -79,6 +89,35 @@ async def list_or_search(
     return [
         _summary(r, hearted).model_copy(update={"score": round(score, 4)}) for r, score in found
     ]
+
+
+async def _recommended(
+    session: AsyncSession, ctx: MemberContext, filters: recipes.RecipeFilters, limit: int
+) -> list[Recipe]:
+    """Kitchen Match order (fewest things to buy, Favourites on ties), as Dinner Ideas."""
+    hid = ctx.household.id
+    snap = await kitchen_match.snapshot(session, ctx)
+    boosted = await favourites.boosted(session, hid)
+    ranked = await kitchen_match.rank(session, hid, snap, filters, favourites=boosted, limit=10_000)
+    shown = [r for r, _ in ranked if r.kind != RecipeKind.ADAPTATION]
+    return shown[:limit]
+
+
+@router.get("/count")
+async def count(
+    ctx: MemberDep,
+    session: SessionDep,
+    cuisine: Annotated[str | None, Query(max_length=40)] = None,
+    max_minutes: Annotated[int | None, Query(gt=0, le=1440)] = None,
+    course: Course | None = None,
+    favourites_only: Annotated[bool, Query(alias="favourites")] = False,
+) -> CountOut:
+    """How many recipes browsing would show with these filters (Dietary Rules apply)."""
+    hid = ctx.household.id
+    filters = await recipes.filters_for(session, hid, max_minutes, cuisine, course=course)
+    if favourites_only:
+        filters = replace(filters, favourites_of=hid)
+    return CountOut(count=await recipes.count_recipes(session, hid, filters))
 
 
 def _summary(recipe: Recipe, hearted: set[uuid.UUID]) -> RecipeSummaryOut:

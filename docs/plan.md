@@ -336,6 +336,7 @@ Each slice is a feature branch and a focused PR that works end to end.
 | 6d | `feature/list-additions-top-up` | List Additions are the extra on top of the Shopping List: coverage subtracts the list, approving tops up a matching unticked item, the card says what's already there (ADR 0016) | (product; deterministic guardrails) |
 | 6c | `feature/home-today` | Home "Today" showing tonight's Planned Meal (the Kitchen part moved to 3c) | (product) |
 | 6e | `feature/tonight-week-screens` | Plan my week and Just tonight on their own screens (Generating, Dinner Ideas, Review plan, saved); Swaps by code; Favourites (hearts) in ranking (ADR 0025) | (product; deterministic guardrails) |
+| 6f | `feature/recipes-journey-a`, `-b` | Recipes tab journey: Dinner ideas setup (mood, Ready in, Serves) on the shared Dinner Ideas screens, All recipes (courses, filters, sort, count) | (product; deterministic) |
 | 8 | `feature/agent-evals` | Scenario set, deterministic graders, baseline planner, Langfuse, cost tracking | Evaluation & observability |
 | 9 | `feature/retrieval-evals` | Retrieval Set (51 queries), R2 keyword, R3 fusion, R4 rerank, comparison report; R1 stays (ADR 0022) | Advanced RAG |
 | 3e | `feature/kitchen-photos` | Kitchen Photos: photos of a Place suggest Kitchen items, a pre-ticked review adds or refreshes them (never removes), photo eval with a pre-set bar (ADR 0023) | Multimodal input, AI security, evaluation |
@@ -631,6 +632,15 @@ Known gaps from 6c: tapping Cooked or Undo swaps the button, so keyboard focus d
 7. **Checks:** both test suites ✅ (API 847, client 329); web bundle builds ✅; browser walk-through of both flows, Lighthouse accessibility 100 (light) and 320 px reflow still to do (browser tools were unavailable).
 
 Also built: the sheet's This week chips are stored on the Conversation (`plan_tweaks`) and given to the agent as `this_plan_leans`. Picking a Dinner Idea is `PUT /meal-plan/days/{day}`; alternatives are `GET /proposals/{id}/alternatives?date=`; "Use my Kitchen" on Dinner Ideas means nothing to buy. The Just tonight tweak starts a free Conversation ("Dinner tonight: …") whose one-dinner Proposal is planned from the Ideas screen.
+
+
+**Slice 6f: Recipes journey** (`feature/recipes-journey-a` API, `-b` client, stacked on 6e; canvas https://claude.ai/artifact/CeW8ZwtM1gumCDJfpkxNi6, 2026-11-18). The Recipes tab gets a Dinner ideas tile, Favourites and See all. Decided: one Dinner Ideas flow (Just tonight and the Recipes tile share the screens; the tile adds a setup step). Moods are code: **Use my Kitchen** (today's ranking), **Surprise me** (candidates from liked cuisines, then Kitchen-ranked), **Something specific** (search by meaning, keyword fallback, then Kitchen-ranked). Quick and Vegetarian are one-off filters (vegetarian fails closed like a Rule); Healthy has no data, so it asks Sweep. Serves sets the Planned Meal's servings only (no scaling). All recipes: courses All/Mains/Sides/Desserts/Breakfast, Ready in, Cuisine, Favourites, sort Recommended (Kitchen Match) / Newest / A–Z, and a count.
+
+**Slice 6f steps** (build test-first):
+
+1. **API:** `/dinner-ideas` gains `mood` (`kitchen`|`surprise`|`specific`), `q`, `vegetarian`; `PUT /meal-plan/days/{day}` accepts `servings`; `GET /recipes` gains `sort` (`title`|`newest`|`recommended`) and `GET /recipes/count`.
+2. **Client:** Recipes main (tiles, browse chips, Recommended for you), All recipes, Dinner ideas setup, results as uniform cards (shared with Just tonight), Serves into planning.
+3. **Checks:** both suites; browser walk-through when the tools connect.
 
 Experiments (`experiments/`, any time after slice 4):
 

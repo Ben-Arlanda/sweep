@@ -1524,6 +1524,23 @@
             "description": "Browsing only"
           },
           {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "title",
+                "newest",
+                "recommended"
+              ],
+              "type": "string",
+              "description": "Browsing only; search is by meaning",
+              "default": "title",
+              "title": "Sort"
+            },
+            "description": "Browsing only; search is by meaning"
+          },
+          {
             "name": "favourites",
             "in": "query",
             "required": false,
@@ -1545,6 +1562,106 @@
                     "$ref": "#/components/schemas/RecipeSummaryOut"
                   },
                   "title": "Response List Or Search Recipes Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipes/count": {
+      "get": {
+        "tags": [
+          "recipes"
+        ],
+        "summary": "Count",
+        "description": "How many recipes browsing would show with these filters (Dietary Rules apply).",
+        "operationId": "count_recipes_count_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "cuisine",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 40
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Cuisine"
+            }
+          },
+          {
+            "name": "max_minutes",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 1440,
+                  "exclusiveMinimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Max Minutes"
+            }
+          },
+          {
+            "name": "course",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/Course"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Course"
+            }
+          },
+          {
+            "name": "favourites",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Favourites"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CountOut"
                 }
               }
             }
@@ -2930,6 +3047,36 @@
               "default": 3,
               "title": "Limit"
             }
+          },
+          {
+            "name": "mood",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/Mood",
+              "default": "kitchen"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 200,
+              "default": "",
+              "title": "Q"
+            }
+          },
+          {
+            "name": "vegetarian",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Vegetarian"
+            }
           }
         ],
         "responses": {
@@ -3797,6 +3944,19 @@
           "plan_days"
         ],
         "title": "ConversationOut"
+      },
+      "CountOut": {
+        "properties": {
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "count"
+        ],
+        "title": "CountOut"
       },
       "Course": {
         "type": "string",
@@ -5343,6 +5503,16 @@
         ],
         "title": "MemberOut"
       },
+      "Mood": {
+        "type": "string",
+        "enum": [
+          "kitchen",
+          "surprise",
+          "specific"
+        ],
+        "title": "Mood",
+        "description": "What the Member is in the mood for on the Dinner ideas setup (slice 6f)."
+      },
       "OnListOut": {
         "properties": {
           "list_id": {
@@ -5550,6 +5720,19 @@
             "type": "string",
             "format": "uuid",
             "title": "Recipe Id"
+          },
+          "servings": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 24.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Servings"
           }
         },
         "type": "object",
