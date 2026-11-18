@@ -47,16 +47,16 @@ export function TodayBelow() {
   );
 }
 
-function Card({ children, tint }: { children: React.ReactNode; tint?: boolean }) {
+function Card({ children }: { children: React.ReactNode }) {
   const t = useTheme();
   return (
     <View
       style={{
-        backgroundColor: tint ? t.colors.actionSoft : t.colors.surface,
+        backgroundColor: t.colors.surface,
         borderRadius: t.radius.lg,
         padding: t.space.md,
         gap: t.space.md,
-        boxShadow: tint ? undefined : t.shadow.card,
+        boxShadow: t.shadow.card,
       }}
     >
       {children}
@@ -213,23 +213,23 @@ function MealPlanCard({
     : `${parts.weekday} ${parts.day}`;
 
   return (
-    <Card tint>
+    <Card>
       <PressableScale
         accessibilityRole="link"
         accessibilityLabel={`Your meal plan, ${weekRange(monday)}, ${meals.length} dinners. Open the Plan tab`}
         onPress={() => router.push('/meal-plan')}
         style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.md, minHeight: 44 }}
       >
-        <Icon icon={CalendarDays} size={28} color={t.colors.onActionSoft} />
+        <Icon icon={CalendarDays} size={28} color={t.colors.text} />
         <View style={{ flex: 1 }}>
           <Text variant="heading" role="heading" aria-level={2}>
             Your meal plan
           </Text>
-          <Text variant="caption" style={{ color: t.colors.onActionSoft }}>
+          <Text variant="caption" muted>
             {weekRange(monday)} · {meals.length} {meals.length === 1 ? 'dinner' : 'dinners'}
           </Text>
         </View>
-        <Icon icon={ChevronRight} color={t.colors.onActionSoft} strong />
+        <Icon icon={ChevronRight} color={t.colors.text} strong />
       </PressableScale>
 
       <View accessibilityRole="tablist" style={{ flexDirection: 'row', gap: 4 }}>
@@ -249,6 +249,8 @@ function MealPlanCard({
                 gap: 4,
                 paddingVertical: 6,
                 borderRadius: t.radius.md,
+                borderWidth: 1,
+                borderColor: on ? t.colors.action : t.colors.border,
                 backgroundColor: on ? t.colors.action : t.colors.surface,
               }}
             >
@@ -266,7 +268,7 @@ function MealPlanCard({
                     width: 34,
                     height: 34,
                     borderRadius: 17,
-                    backgroundColor: t.colors.background,
+                    backgroundColor: t.colors.border,
                   }}
                 />
               )}
@@ -278,7 +280,8 @@ function MealPlanCard({
       <View
         accessibilityLiveRegion="polite"
         style={{
-          backgroundColor: t.colors.surface,
+          borderWidth: 1,
+          borderColor: t.colors.border,
           borderRadius: t.radius.md,
           padding: t.space.sm,
           gap: t.space.sm,
@@ -392,10 +395,15 @@ function RecipeIdeas() {
     <View style={{ gap: t.space.sm }}>
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
         <View style={{ flex: 1 }}>
-          <Text variant="heading" role="heading" aria-level={2}>
+          <Text
+            variant="heading"
+            role="heading"
+            aria-level={2}
+            style={{ color: t.colors.onBackground }}
+          >
             Recipe ideas for you
           </Text>
-          <Text variant="caption" muted>
+          <Text variant="caption" style={{ color: t.colors.onBackgroundMuted }}>
             Quick and easy ideas based on your Kitchen.
           </Text>
         </View>
@@ -411,10 +419,10 @@ function RecipeIdeas() {
             paddingLeft: t.space.sm,
           }}
         >
-          <Text variant="label" style={{ color: t.colors.tabSelected }}>
+          <Text variant="label" style={{ color: t.colors.onBackground }}>
             See all
           </Text>
-          <Icon icon={ChevronRight} size={16} color={t.colors.tabSelected} strong />
+          <Icon icon={ChevronRight} size={16} color={t.colors.onBackground} strong />
         </PressableScale>
       </View>
       {ideas.isPending ? <Loading /> : null}

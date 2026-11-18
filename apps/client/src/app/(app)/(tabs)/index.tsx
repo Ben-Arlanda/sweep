@@ -1,16 +1,32 @@
+import { useIsFocused } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
+
 import { Loading, Screen } from '@/components/ui';
 import { TodayBelow } from '@/features/home/TodayBelow';
 import { TodayHero } from '@/features/home/TodayHero';
 import { useMe } from '@/lib/api/households';
+import { homeColors } from '@/theme/tokens';
+import { ColorOverride } from '@/theme/useTheme';
 
-/** Home "Today" (slice 6c): tonight's dinner or the question, then the week and the list. */
+/**
+ * Home: tonight or the week, quick tiles and recipe ideas. Home has its own colours
+ * (`homeColors`): a blue page, no coloured hero, warm white cards. Light clock and
+ * battery icons on the blue while Home is showing.
+ */
 export default function HomeScreen() {
   const me = useMe();
-  // The (app) layout only shows the tabs once you're in a Household, so data is there.
-  if (!me.data) return <Loading />;
+  const focused = useIsFocused();
   return (
-    <Screen hero={<TodayHero me={me.data} />}>
-      <TodayBelow />
-    </Screen>
+    <ColorOverride.Provider value={homeColors}>
+      {focused ? <StatusBar style="light" /> : null}
+      {/* The (app) layout only shows the tabs once you're in a Household, so data is there. */}
+      {me.data ? (
+        <Screen hero={<TodayHero me={me.data} />}>
+          <TodayBelow />
+        </Screen>
+      ) : (
+        <Loading />
+      )}
+    </ColorOverride.Provider>
   );
 }

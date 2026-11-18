@@ -101,16 +101,16 @@ export function HeroSearch({ label, ...props }: TextInputProps & { label: string
         backgroundColor: t.colors.heroField,
         borderWidth: 1.5,
         // A clear ring while typing: the field's focus indicator (see the web rule above).
-        borderColor: focused ? t.colors.onHero : 'transparent',
+        borderColor: focused ? t.colors.text : 'transparent',
       }}
     >
-      <Icon icon={Search} color={t.colors.onHeroMuted} />
+      <Icon icon={Search} color={t.colors.textMuted} />
       <TextInput
         {...props}
         // react-native-web turns dataSet into a data-hero-search attribute (see above).
         {...({ dataSet: { heroSearch: '' } } as object)}
         accessibilityLabel={label}
-        placeholderTextColor={t.colors.onHeroMuted}
+        placeholderTextColor={t.colors.textMuted}
         onFocus={(e) => {
           setFocused(true);
           props.onFocus?.(e);
@@ -121,7 +121,7 @@ export function HeroSearch({ label, ...props }: TextInputProps & { label: string
         }}
         style={[
           inputText(t.type.body),
-          { flex: 1, minHeight: t.touchTarget, color: t.colors.onHero },
+          { flex: 1, minHeight: t.touchTarget, color: t.colors.text },
         ]}
       />
     </View>

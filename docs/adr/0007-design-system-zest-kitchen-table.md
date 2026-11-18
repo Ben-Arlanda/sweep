@@ -52,3 +52,9 @@ A **code-first** design system inside the client. There's no Figma library or St
 - Dark mode comes almost free, because roles have two values. The pastels needed hand-picked dark versions.
 - The marketing website (later) should reuse the same tokens, probably by moving `tokens.ts` into a shared package when that site exists. Not before.
 - App icon and splash artwork aren't designed yet. The splash background now uses the brand colours.
+
+## Update 2026-11-18: Home on blue, dark mode removed
+
+- **Dark mode is gone.** The app is always light; the Appearance setting was removed.
+- **Home has its own colours** (`homeColors`): a blue page (#2447C6), no coloured hero, warm white (paper) cards and fields. Text straight on the blue uses `onBackground` (white, 7.5:1) and `onBackgroundMuted` (#DBE3FF, 5.9:1); ink on the blue would fail AA. Lime buttons stay. Other screens may follow, one at a time, through the same `ColorOverride`.
+- Sheets and dialogs use their own `sheet` colour, so a screen's page colour never reaches them.

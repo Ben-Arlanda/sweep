@@ -60,7 +60,7 @@ export function Sheet({
           accessibilityViewIsModal
           style={{
             maxHeight: '85%',
-            backgroundColor: t.colors.background,
+            backgroundColor: t.colors.sheet,
             borderTopLeftRadius: t.radius.xl,
             borderTopRightRadius: t.radius.xl,
             paddingTop: t.space.sm,

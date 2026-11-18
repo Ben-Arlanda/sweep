@@ -7,7 +7,6 @@ import { router } from 'expo-router';
 
 import { Avatar } from '@/components/Avatar';
 import { Button, Card, ErrorText, Text } from '@/components/ui';
-import { AppearanceCard } from '@/features/household/AppearanceCard';
 import type { MeOut } from '@/lib/api/client';
 import {
   useCreateInvite,
@@ -18,7 +17,7 @@ import {
 import { clerkErrorMessage } from '@/lib/clerkErrors';
 import { useTheme } from '@/theme/useTheme';
 
-/** The Household tab: who's in it, inviting someone, appearance and your account. */
+/** Household settings: who's in it, inviting someone, and your account. */
 export function HouseholdSettings({ me }: { me: MeOut }) {
   const household = useHousehold(true);
   const isOwner = me.member.role === 'owner';
@@ -52,7 +51,6 @@ export function HouseholdSettings({ me }: { me: MeOut }) {
       </Card>
 
       {isOwner ? <InviteCard /> : null}
-      <AppearanceCard />
       <AccountCard />
     </>
   );

@@ -33,18 +33,18 @@ export function AskSweep() {
         backgroundColor: t.colors.heroField,
       }}
     >
-      <Icon icon={Sparkles} size={20} color={t.colors.onHero} />
+      <Icon icon={Sparkles} size={20} color={t.colors.text} />
       <TextInput
         accessibilityLabel="Ask Sweep"
         placeholder="Ask Sweep for dinner ideas…"
-        placeholderTextColor={t.colors.onHeroMuted}
+        placeholderTextColor={t.colors.textMuted}
         value={text}
         onChangeText={setText}
         maxLength={2000}
         returnKeyType="send"
         submitBehavior="blurAndSubmit"
         onSubmitEditing={send}
-        style={[t.type.body, { flex: 1, minHeight: t.touchTarget, color: t.colors.onHero }]}
+        style={[t.type.body, { flex: 1, minHeight: t.touchTarget, color: t.colors.text }]}
       />
       <PressableScale
         accessibilityRole="button"
@@ -58,11 +58,11 @@ export function AskSweep() {
           borderRadius: t.radius.pill,
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: t.colors.onHero,
+          backgroundColor: t.colors.text,
           opacity: canSend ? 1 : 0.35,
         }}
       >
-        <Icon icon={ArrowUp} size={20} color={t.colors.heroField} strong />
+        <Icon icon={ArrowUp} size={20} color={t.colors.surface} strong />
       </PressableScale>
     </View>
   );

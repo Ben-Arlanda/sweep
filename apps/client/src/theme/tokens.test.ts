@@ -1,6 +1,6 @@
 import { contrastRatio } from './contrast';
 import { initials, tintFor } from './tint';
-import { colors, hero, statusColors, stockColors, TINT_NAMES, tints } from './tokens';
+import { colors, hero, homeColors, statusColors, stockColors, TINT_NAMES, tints } from './tokens';
 
 const AA = 4.5;
 const schemes = ['light', 'dark'] as const;
@@ -114,5 +114,29 @@ describe('initials', () => {
     ['', ''],
   ])('%j → %j', (name, expected) => {
     expect(initials(name)).toBe(expected);
+  });
+});
+
+describe("Home's blue page (homeColors) meets WCAG AA", () => {
+  const c = { ...colors.light, ...homeColors };
+
+  it.each([
+    ['page text on the blue', c.onBackground, c.background],
+    ['muted page text on the blue', c.onBackgroundMuted, c.background],
+    ['hero title on the blue', c.onHero, c.background],
+    ['hero subtitle on the blue', c.onHeroMuted, c.background],
+    ['card text on warm white', c.text, c.surface],
+    ['muted card text on warm white', c.textMuted, c.surface],
+    ['field text on warm white', c.text, c.heroField],
+  ])('%s', (_name, fg, bg) => {
+    expect(contrastRatio(fg as string, bg as string)).toBeGreaterThanOrEqual(AA);
+  });
+
+  it('lime buttons stand out from the blue (3:1 for controls)', () => {
+    expect(contrastRatio(c.action, c.background)).toBeGreaterThanOrEqual(3);
+  });
+
+  it('ink text would fail on the blue, which is why onBackground exists', () => {
+    expect(contrastRatio(c.text, c.background)).toBeLessThan(AA);
   });
 });

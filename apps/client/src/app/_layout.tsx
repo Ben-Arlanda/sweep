@@ -16,7 +16,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { setTokenGetter } from '@/lib/api/client';
 import { CLERK_PUBLISHABLE_KEY } from '@/lib/config';
 import { CACHE_BUSTER, CACHE_MAX_AGE, makeQueryClient, persister } from '@/lib/queryClient';
-import { loadAppearance } from '@/theme/appearance';
 import { useScheme } from '@/theme/useTheme';
 
 // Keep the splash screen up until the brand fonts are ready, so text never flashes
@@ -43,15 +42,9 @@ export default function RootLayout() {
     Urbanist_600SemiBold,
     Urbanist_700Bold,
   });
-  // Also wait for the saved Appearance (dark/light), so the first screen isn't drawn in
-  // the wrong theme and then flipped.
-  const [appearanceLoaded, setAppearanceLoaded] = useState(false);
-  useEffect(() => {
-    void loadAppearance().finally(() => setAppearanceLoaded(true));
-  }, []);
   const scheme = useScheme();
   const fontsReady = fontsLoaded || Boolean(fontError); // on a font error, carry on with system fonts
-  const ready = fontsReady && appearanceLoaded;
+  const ready = fontsReady;
 
   useEffect(() => {
     if (ready) void SplashScreen.hideAsync();

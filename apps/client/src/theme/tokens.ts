@@ -70,6 +70,11 @@ export type ColorTokens = {
   /** The chef mascot's yellow, for anything drawn to match him. Ink text only on it. */
   chef: string;
   onChef: string;
+  /** Text straight on the page (not on a card): ink on paper; white on Home's blue. */
+  onBackground: string;
+  onBackgroundMuted: string;
+  /** Bottom sheets and dialogs: their own colour, so a screen's page colour can't reach them. */
+  sheet: string;
 };
 
 export const colors: Record<'light' | 'dark', ColorTokens> = {
@@ -96,6 +101,9 @@ export const colors: Record<'light' | 'dark', ColorTokens> = {
     heroField: palette.white,
     chef: palette.chef,
     onChef: palette.ink,
+    onBackground: palette.ink,
+    onBackgroundMuted: palette.stone600,
+    sheet: palette.paper,
   },
   dark: {
     background: palette.night900,
@@ -120,7 +128,26 @@ export const colors: Record<'light' | 'dark', ColorTokens> = {
     heroField: '#353b2e',
     chef: palette.chef,
     onChef: palette.ink,
+    onBackground: palette.mist100,
+    onBackgroundMuted: palette.mist400,
+    sheet: palette.night900,
   },
+};
+
+/**
+ * Home's colours (2026-11-18): a blue page with warm white cards and no coloured hero.
+ * Only Home for now; other screens may follow. White text on the blue is 7.5:1 and the
+ * pale blue 5.9:1 (tokens.test.ts), while ink on it would fail, hence onBackground.
+ */
+export const homeColors: Partial<ColorTokens> = {
+  background: '#2447c6',
+  surface: palette.paper,
+  hero: 'transparent',
+  onHero: palette.white,
+  onHeroMuted: '#dbe3ff',
+  heroField: palette.paper,
+  onBackground: palette.white,
+  onBackgroundMuted: '#dbe3ff',
 };
 
 /** The household pastels. `bg` for cards and thumbnails, `pill`/`onPill` for quantity pills. */

@@ -309,7 +309,7 @@ export function Loading() {
         backgroundColor: t.colors.background,
       }}
     >
-      <ActivityIndicator color={t.colors.text} size="large" accessibilityLabel="Loading" />
+      <ActivityIndicator color={t.colors.onBackground} size="large" accessibilityLabel="Loading" />
     </View>
   );
 }

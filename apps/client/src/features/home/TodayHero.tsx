@@ -163,7 +163,7 @@ function HouseholdRow({ me }: { me: MeOut }) {
           boxShadow: t.shadow.card,
         }}
       >
-        <Icon icon={Settings} color={t.colors.onHero} />
+        <Icon icon={Settings} color={t.colors.text} />
       </PressableScale>
     </View>
   );
