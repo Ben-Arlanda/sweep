@@ -172,6 +172,7 @@ export function Button({
   disabled,
   loading,
   compact,
+  tight,
   accessibilityLabel,
   icon,
 }: {
@@ -186,6 +187,8 @@ export function Button({
   loading?: boolean;
   /** Fits its text instead of filling the width. */
   compact?: boolean;
+  /** Less side padding, for two buttons sharing a row ("View recipe | Mark as cooked"). */
+  tight?: boolean;
 }) {
   const t = useTheme();
   const [pressed, setPressed] = useState(false);
@@ -221,7 +224,7 @@ export function Button({
       style={{
         minHeight: t.touchTarget,
         borderRadius: t.radius.pill,
-        paddingHorizontal: t.space.xl,
+        paddingHorizontal: tight ? t.space.md : t.space.xl,
         alignItems: 'center',
         justifyContent: 'center',
         alignSelf: compact ? 'flex-start' : 'stretch',

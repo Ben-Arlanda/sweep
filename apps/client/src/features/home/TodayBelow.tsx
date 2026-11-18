@@ -88,6 +88,7 @@ function CookedButton({ meal }: { meal: PlannedMeal }) {
     <>
       <Button
         title={isCooked ? 'Undo' : 'Mark as cooked'}
+        tight
         icon={isCooked ? Undo2 : undefined}
         accessibilityLabel={
           isCooked ? `Undo cooked for ${meal.title}` : `Mark ${meal.title} as cooked`
@@ -300,28 +301,30 @@ function MealPlanCard({
             {day.meal ? <MealMeta meal={day.meal} /> : null}
           </View>
         </View>
-        {/* Equal shares side by side when both fit; otherwise each takes its own full row,
-            so "Mark as cooked" never squashes onto two lines. */}
+        {/* Side by side in equal shares (tight padding so "Mark as cooked" fits); only on
+            the narrowest phones does each take its own full row. */}
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.sm }}>
           {day.meal ? (
-            <View style={{ flexGrow: 1, flexBasis: 170 }}>
+            <View style={{ flexGrow: 1, flexBasis: 140 }}>
               <Button
                 title="View recipe"
+                tight
                 variant="lavender"
                 onPress={() => day.meal && router.push(`/recipe/${day.meal.recipe_id}`)}
               />
             </View>
           ) : canPick(day.date, today) ? (
-            <View style={{ flexGrow: 1, flexBasis: 170 }}>
+            <View style={{ flexGrow: 1, flexBasis: 140 }}>
               <Button
                 title="Add a dinner"
+                tight
                 variant="secondary"
                 onPress={() => router.push({ pathname: '/tonight', params: { date: day.date } })}
               />
             </View>
           ) : null}
           {day.meal && isToday ? (
-            <View style={{ flexGrow: 1, flexBasis: 170 }}>
+            <View style={{ flexGrow: 1, flexBasis: 140 }}>
               <CookedButton meal={day.meal} />
             </View>
           ) : null}
