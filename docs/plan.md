@@ -622,13 +622,15 @@ Known gaps from 6c: tapping Cooked or Undo swaps the button, so keyboard focus d
 
 **Slice 6e steps** (build test-first):
 
-1. **Favourites:** `favourites` table (household, recipe, `hearted_by`, time); imports start hearted (migration hearts existing imports); `PUT/DELETE /recipes/{id}/favourite`; rename the import-only `FLAGGED_FAVOURITES` to "flagged imports".
-2. **Ranking:** `kitchen_match.rank` breaks ties on things to buy with Favourites (none Cooked in 7 days); results carry `favourite`; `recipes_from_kitchen` gains `only_favourites`; prompt line; New recipes mode unchanged.
-3. **Dinner Ideas:** `GET /dinner-ideas` (tonight, filters under-30 / Kitchen-only), and picking one saves a Planned Meal through the Meal Plan service.
-4. **Swap:** alternatives route for a Proposal day (excludes other days' recipes); `swap` resume → code node: change Draft, recalculate that day's List Additions, validate, supersede, new Proposal; next turn's context shows the current Draft.
-5. **Agent replies:** one or two sentences; eval check added.
-6. **Client:** Home (Plan my week lime), Plan my week sheet (preference chips), Generating (chef, steps from streamed tool events), Dinner Ideas, Review plan, swap screen, saved screens, Refine sheet + reply note, hearts (idea card, recipe header, Recipes list + Favourites filter), `RecipeArt`.
-7. **Checks:** both test suites; browser walk-through of both flows; Lighthouse accessibility 100 (light), 320 px reflow.
+1. ✅ **Favourites:** `favourites` table (household, recipe, `hearted_by`, time); imports start hearted (migration hearts existing imports); `PUT/DELETE /recipes/{id}/favourite`; rename the import-only `FLAGGED_FAVOURITES` to "flagged imports".
+2. ✅ **Ranking:** `kitchen_match.rank` breaks ties on things to buy with Favourites (none Cooked in 7 days); results carry `favourite`; `recipes_from_kitchen` gains `only_favourites`; prompt line; New recipes mode unchanged.
+3. ✅ **Dinner Ideas:** `GET /dinner-ideas` (tonight, filters under-30 / Kitchen-only), and picking one saves a Planned Meal through the Meal Plan service.
+4. ✅ **Swap:** alternatives route for a Proposal day (excludes other days' recipes); `swap` resume → code node: change Draft, recalculate that day's List Additions, validate, supersede, new Proposal; next turn's context shows the current Draft.
+5. ✅ **Agent replies:** one or two sentences; eval check added.
+6. ✅ **Client:** Home (Plan my week lime), Plan my week sheet (preference chips), Generating (chef, steps from streamed tool events), Dinner Ideas, Review plan, swap screen, saved screens, Refine sheet + reply note, hearts (idea card, recipe header, Recipes list + Favourites filter), `RecipeArt`.
+7. **Checks:** both test suites ✅ (API 847, client 329); web bundle builds ✅; browser walk-through of both flows, Lighthouse accessibility 100 (light) and 320 px reflow still to do (browser tools were unavailable).
+
+Also built: the sheet's This week chips are stored on the Conversation (`plan_tweaks`) and given to the agent as `this_plan_leans`. Picking a Dinner Idea is `PUT /meal-plan/days/{day}`; alternatives are `GET /proposals/{id}/alternatives?date=`; "Use my Kitchen" on Dinner Ideas means nothing to buy. The Just tonight tweak starts a free Conversation ("Dinner tonight: …") whose one-dinner Proposal is planned from the Ideas screen.
 
 Experiments (`experiments/`, any time after slice 4):
 
