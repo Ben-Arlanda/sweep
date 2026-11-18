@@ -242,7 +242,7 @@ function KitchenScreenContent() {
     else actions.remove(row.id);
     toast({
       kind: 'undo',
-      text: 'Removed from Kitchen',
+      text: 'Deleted from Kitchen',
       detail: row.name,
       onUndo: () => {
         if (row.staple) {

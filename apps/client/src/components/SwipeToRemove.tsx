@@ -9,7 +9,7 @@ import { Text } from '@/components/ui';
 import { useTheme } from '@/theme/useTheme';
 
 /**
- * Swipe a row left past ~40% of its width to remove it: a red Remove panel follows the
+ * Swipe a row left past ~40% of its width to remove it: a red Delete panel follows the
  * finger, then the row fades and the rows below glide up. Gestures can't be the only way
  * (WCAG 2.5.1), so the screen must offer the same Remove in a menu; the panel is hidden
  * from screen readers for that reason. Undo is the screen's job (a toast).
@@ -55,7 +55,7 @@ export function SwipeToRemove({
           >
             <Icon icon={Trash2} size={20} color={t.colors.danger} />
             <Text variant="label" style={{ color: t.colors.danger }}>
-              Remove
+              Delete
             </Text>
           </View>
         )}
