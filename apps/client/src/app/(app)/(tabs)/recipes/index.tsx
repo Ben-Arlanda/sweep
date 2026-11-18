@@ -1,6 +1,5 @@
 import { router } from 'expo-router';
 import {
-  Check,
   ChefHat,
   ChevronRight,
   Heart,
@@ -11,28 +10,19 @@ import {
 import { useState } from 'react';
 import { View } from 'react-native';
 
-import { HeartButton } from '@/components/HeartButton';
 import { Hero, HeroSearch } from '@/components/Hero';
 import { Icon } from '@/components/Icon';
 import { PressableScale } from '@/components/PressableScale';
-import { RecipeArt } from '@/components/RecipeArt';
 import { ErrorText, Loading, Screen, SectionLabel, Text } from '@/components/ui';
 import { AddRecipeSheet } from '@/features/imports/AddRecipeSheet';
 import { ruleBreakText } from '@/features/imports/ruleBreaks';
+import { IdeaTile, KITCHEN_FIRST } from '@/features/recipes/IdeaTile';
 import { RecipeRow } from '@/features/recipes/RecipeRow';
 import { ApiError } from '@/lib/api/client';
 import { useImportedRecipes } from '@/lib/api/imports';
-import { useDinnerIdeas, type DinnerIdea } from '@/lib/api/planning';
+import { useDinnerIdeas } from '@/lib/api/planning';
 import { useDebounced, useRecipeSearch } from '@/lib/api/recipes';
 import { useTheme } from '@/theme/useTheme';
-
-const KITCHEN_FIRST = {
-  mood: 'kitchen',
-  q: '',
-  lean: null,
-  maxMinutes: null,
-  serves: null,
-} as const;
 
 /**
  * The Recipes tab (slice 6f): search, three ways in (Dinner ideas, Add recipe,
@@ -229,69 +219,8 @@ function Recommended() {
       {ideas.isPending ? <Loading /> : null}
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.sm }}>
         {ideas.data?.map((idea) => (
-          <IdeaTile key={idea.id} idea={idea} />
+          <IdeaTile key={idea.id} idea={idea} path="/recipes/[id]" />
         ))}
-      </View>
-    </View>
-  );
-}
-
-function IdeaTile({ idea }: { idea: DinnerIdea }) {
-  const t = useTheme();
-  const ready = idea.missing.length === 0;
-  const meta = [idea.total_minutes ? `${idea.total_minutes} min` : null, `Serves ${idea.servings}`]
-    .filter(Boolean)
-    .join(' · ');
-  return (
-    <View
-      style={{
-        flexGrow: 1,
-        flexBasis: 140,
-        backgroundColor: t.colors.surface,
-        borderRadius: t.radius.lg,
-        overflow: 'hidden',
-        boxShadow: t.shadow.card,
-      }}
-    >
-      <PressableScale
-        accessibilityRole="link"
-        accessibilityLabel={`${idea.title}. ${meta}. ${ready ? 'Nothing to buy' : `${idea.missing.length} to buy`}`}
-        onPress={() => router.push({ pathname: '/recipes/[id]', params: { id: idea.id } })}
-      >
-        <View>
-          <RecipeArt title={idea.title} width="100%" height={104} radius={0} emojiSize={48} />
-          <View
-            style={{
-              position: 'absolute',
-              left: t.space.sm,
-              bottom: t.space.sm,
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: 2,
-              backgroundColor: ready ? t.colors.actionSoft : t.colors.surface,
-              borderRadius: t.radius.pill,
-              paddingHorizontal: t.space.sm,
-              paddingVertical: 2,
-            }}
-          >
-            {ready ? <Icon icon={Check} size={12} color={t.colors.onActionSoft} strong /> : null}
-            <Text
-              variant="caption"
-              style={{ color: ready ? t.colors.onActionSoft : t.colors.text }}
-            >
-              {ready ? `Uses ${idea.have.length} Kitchen` : `${idea.missing.length} to buy`}
-            </Text>
-          </View>
-        </View>
-        <View style={{ padding: t.space.sm, gap: 2 }}>
-          <Text variant="label">{idea.title}</Text>
-          <Text variant="caption" muted>
-            {meta}
-          </Text>
-        </View>
-      </PressableScale>
-      <View style={{ position: 'absolute', top: t.space.xs, right: t.space.xs }}>
-        <HeartButton recipeId={idea.id} title={idea.title} favourite={idea.favourite ?? false} />
       </View>
     </View>
   );
