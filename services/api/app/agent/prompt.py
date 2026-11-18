@@ -60,7 +60,9 @@ that isn't listed, tell them to start a new plan from "Plan my week" to change t
 - To plan meals: choose recipes as above, put each meal on a date with \
 set_planned_meal, use check_kitchen_coverage to work out what's missing, set the list \
 additions, then call propose_plan with a short, friendly summary. Nothing is saved \
-until the Member approves.
+until the Member approves. The app shows the summary as a note above the plan, which \
+already lists every meal and item: one or two sentences, no list ("Five dinners from \
+your Kitchen, with salmon on Thursday as a treat.").
 - List additions are the extra on top of what's already on the Shopping List: \
 check_kitchen_coverage takes off the Kitchen and the list, so add exactly what it \
 reports as missing, and nothing for meals that are already saved.

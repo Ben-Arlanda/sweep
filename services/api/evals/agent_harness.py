@@ -176,6 +176,7 @@ class ProposalFacts:
     dropped: tuple[str, ...]  # meals validate had to take out after the replans ran out
     list_additions: int
     additions: tuple[AdditionFacts, ...] = ()
+    summary: str = ""  # the note shown above the plan (ADR 0025)
 
 
 @dataclass(frozen=True)
@@ -658,6 +659,7 @@ async def collect_proposals(
                     )
                     for a in payload.get("list_additions", [])
                 ),
+                summary=payload.get("summary", ""),
             )
         )
     return tuple(out)
