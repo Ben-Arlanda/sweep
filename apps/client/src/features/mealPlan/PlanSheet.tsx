@@ -1,4 +1,5 @@
 import { randomUUID } from 'expo-crypto';
+import { router } from 'expo-router';
 import {
   Heart,
   Leaf,
@@ -15,7 +16,7 @@ import { Icon } from '@/components/Icon';
 import { Sheet } from '@/components/Sheet';
 import { Button, ErrorText, Text } from '@/components/ui';
 import { formatDay } from '@/features/chat/format';
-import type { PlanMode, PlanTweak } from '@/features/chat/starters';
+import { requestPlan, type PlanMode, type PlanTweak } from '@/features/chat/starters';
 import { usePreferences, useSavePlanWeekdays } from '@/lib/api/diet';
 import { useMealPlan } from '@/lib/api/mealPlan';
 import { useTheme } from '@/theme/useTheme';
@@ -29,6 +30,12 @@ const TWEAKS: { label: string; value: PlanTweak; icon: LucideIcon }[] = [
   { label: 'Vegetarian', value: 'vegetarian', icon: Leaf },
 ];
 const WEEKNIGHTS = [1, 2, 3, 4, 5];
+
+/** What every Plan my week sheet does with its answer: ask Sweep, then show the plan. */
+export function startPlan(mode: PlanMode, days: string[], tweaks: PlanTweak[]) {
+  requestPlan(mode, days, tweaks);
+  router.push('/plan-week');
+}
 const EVERY_DAY = [1, 2, 3, 4, 5, 6, 7];
 
 /**
@@ -46,11 +53,17 @@ export function PlanSheet({
   onClose,
   onPick,
   week: openOn,
+  title = 'Plan my week',
+  days: startDays,
 }: {
   onClose: () => void;
   onPick: (mode: PlanMode, days: string[], tweaks: PlanTweak[]) => void;
-  /** A Monday to open on, e.g. the week the Meal Plan screen shows. */
+  /** A Monday to open on, e.g. the week the Plan tab shows. */
   week?: string;
+  /** "Edit my week" or "Plan next week" when Home's button says so. */
+  title?: string;
+  /** Days to start ticked instead of the usual weekdays. */
+  days?: string[];
 }) {
   const t = useTheme();
   const today = useMealPlan(null).data?.today;
@@ -60,7 +73,7 @@ export function PlanSheet({
   const monday = chosenWeek ?? (today ? planWeekFor(today) : null);
   const week = useMealPlan(monday);
   // null = not touched yet, so it follows the usual weekdays once they've loaded.
-  const [touched, setTouched] = useState<string[] | null>(null);
+  const [touched, setTouched] = useState<string[] | null>(startDays ?? null);
   // "This week" chips (slice 6e): soft tastes for this plan only, never saved.
   const [tweaks, setTweaks] = useState<PlanTweak[]>([]);
   const [mode, setMode] = useState<PlanMode>('kitchen');
@@ -70,7 +83,7 @@ export function PlanSheet({
   const failed = week.error ?? prefs.error;
 
   return (
-    <Sheet label="Plan my week" title="Plan my week" onClose={onClose}>
+    <Sheet label={title} title={title} onClose={onClose}>
       {!ready ? (
         failed ? (
           <ErrorText message={failed.message} />

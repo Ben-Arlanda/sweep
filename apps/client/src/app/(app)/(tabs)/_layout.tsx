@@ -1,10 +1,10 @@
 import { Tabs } from 'expo-router/tabs';
 import {
   BookOpen,
+  CalendarDays,
   House,
   Refrigerator,
   ShoppingBasket,
-  Users,
   type LucideIcon,
 } from 'lucide-react-native';
 import { Text, View, type ColorValue } from 'react-native';
@@ -14,7 +14,8 @@ import { tabBarHeight } from '@/theme/tokens';
 import { useTheme } from '@/theme/useTheme';
 
 /**
- * The tab bar along the bottom: the five places you go most. Each tab shows an icon
+ * The tab bar along the bottom: the five places you go most. Household settings sit
+ * behind the cog on Home instead (ADR 0026). Each tab shows an icon
  * and a word (icons alone are guesswork for many people).
  *
  * The selected tab is shown three ways, so it never relies on colour alone (WCAG 1.4.1):
@@ -25,8 +26,8 @@ const TABS: { name: string; title: string; icon: LucideIcon }[] = [
   { name: 'index', title: 'Home', icon: House },
   { name: 'lists', title: 'Lists', icon: ShoppingBasket },
   { name: 'kitchen', title: 'Kitchen', icon: Refrigerator },
+  { name: 'meal-plan', title: 'Plan', icon: CalendarDays },
   { name: 'recipes', title: 'Recipes', icon: BookOpen },
-  { name: 'household', title: 'Household', icon: Users },
 ];
 
 export default function TabsLayout() {

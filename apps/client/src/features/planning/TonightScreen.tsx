@@ -20,6 +20,7 @@ import { RecipeArt } from '@/components/RecipeArt';
 import { Sheet } from '@/components/Sheet';
 import { Button, ErrorText, Text } from '@/components/ui';
 import { allKept, decisionFor } from '@/features/chat/decision';
+import { formatDay } from '@/features/chat/format';
 import { requestPlan } from '@/features/chat/starters';
 import { PlanSheet } from '@/features/mealPlan/PlanSheet';
 import { useDecideProposal } from '@/lib/api/conversations';
@@ -45,6 +46,8 @@ const TWEAKS = ['Make it quicker', 'More vegetarian'];
  * Two ways in: "Just tonight" on Home, or the Recipes tab's setup (slice 6f), whose mood,
  * Ready in and Serves arrive as route params. Choosing one opens its recipe to plan it.
  * Asking Sweep to tweak them (or "Healthy") starts a Conversation that answers here.
+ * A `date` param (the Plan tab's Swap or Add) plans that day instead of tonight; asking
+ * Sweep is left out then, because Sweep's pick is always for tonight.
  */
 export function TonightScreen() {
   const t = useTheme();
@@ -55,6 +58,9 @@ export function TonightScreen() {
   const [limit, setLimit] = useState(PAGE);
   const ideas = useDinnerIdeas(request, filter, limit);
   const today = useMealPlan(null).data?.today;
+  const forDate = typeof params.date === 'string' ? params.date : null;
+  const day = forDate ?? today ?? null;
+  const otherDay = forDate !== null && forDate !== today;
   const [elapsed, setElapsed] = useState(0);
   const run = usePlanRun();
   const decide = useDecideProposal(run.conversationId);
@@ -138,7 +144,7 @@ export function TonightScreen() {
         ideas={ideas.data ?? []}
         error={ideas.error?.message ?? null}
         filter={filter}
-        today={today ?? null}
+        today={day}
         serves={request.serves}
         canMore={(ideas.data?.length ?? 0) >= limit && limit < 12}
         onFilter={(f) => {
@@ -146,7 +152,7 @@ export function TonightScreen() {
           setLimit(PAGE);
         }}
         onMore={() => setLimit((l) => l + PAGE)}
-        onTweak={tweak}
+        onTweak={otherDay ? null : tweak}
       />
     );
   }
@@ -158,7 +164,12 @@ export function TonightScreen() {
     >
       <Stack.Screen
         options={{
-          title: fromSetup ? 'Dinner ideas' : 'Dinner tonight',
+          title:
+            otherDay && forDate
+              ? `Dinner for ${formatDay(forDate)}`
+              : fromSetup
+                ? 'Dinner ideas'
+                : 'Dinner tonight',
           headerRight: () => (
             <PressableScale
               accessibilityRole="button"
@@ -266,7 +277,8 @@ function Ideas({
   canMore: boolean;
   onFilter: (f: IdeaFilter) => void;
   onMore: () => void;
-  onTweak: (text: string) => void;
+  /** null: asking Sweep is off (planning a day other than tonight). */
+  onTweak: ((text: string) => void) | null;
 }) {
   const t = useTheme();
   return (
@@ -331,11 +343,13 @@ function Ideas({
         <IdeaCard key={idea.id} idea={idea} onOpen={() => openRecipe(idea, today, serves)} />
       ))}
 
-      <TweakBox onSend={onTweak} />
+      {onTweak ? <TweakBox onSend={onTweak} /> : null}
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.sm }}>
-        {TWEAKS.map((tw) => (
-          <Button key={tw} title={tw} variant="secondary" compact onPress={() => onTweak(tw)} />
-        ))}
+        {onTweak
+          ? TWEAKS.map((tw) => (
+              <Button key={tw} title={tw} variant="secondary" compact onPress={() => onTweak(tw)} />
+            ))
+          : null}
         {canMore ? (
           <Button title="More ideas" variant="secondary" compact onPress={onMore} />
         ) : null}
