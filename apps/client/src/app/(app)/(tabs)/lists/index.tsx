@@ -246,11 +246,7 @@ function ItemRow({
   const addedBy = item.added_by_member_id ? members.get(item.added_by_member_id) : undefined;
   const shop = shopName(shops, item.shop_id);
 
-  const caption = [
-    shop,
-    item.ingredient ? `Kitchen: ${item.ingredient.name}` : null,
-    addedBy ? `added by ${addedBy.display_name}` : null,
-  ]
+  const caption = [shop, addedBy ? `added by ${addedBy.display_name}` : null]
     .filter(Boolean)
     .join(' · ');
 
@@ -286,7 +282,7 @@ function ItemRow({
           boxShadow: t.shadow.card,
         }}
       >
-        {/* No custom label: the visible text ("Milk, Coles, added by Alice, 2 L") is the
+        {/* No custom label: the visible text ("Milk, Coles · added by Alice, 2 L") is the
             name, so voice control users can say exactly what they see (WCAG 2.5.3). */}
         <Pressable
           accessibilityRole="checkbox"
