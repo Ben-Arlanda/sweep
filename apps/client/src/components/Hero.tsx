@@ -20,8 +20,8 @@ export function Hero({
   aside,
   children,
 }: {
-  /** The screen's heading (one per screen, so it's marked as the header). */
-  title: ReactNode;
+  /** The screen's heading (one per screen, so it's marked as the header). Home has none. */
+  title?: ReactNode;
   /** A row above the title: who's in the Household, a small label, etc. */
   top?: ReactNode;
   subtitle?: ReactNode;
@@ -49,15 +49,23 @@ export function Hero({
     >
       <View style={{ width: '100%', maxWidth: 560, alignSelf: 'center', gap: t.space.lg }}>
         {top}
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.md }}>
-          <View style={{ flex: 1, gap: t.space.xs }}>
-            <Text variant="display" accessibilityRole="header" style={{ color: t.colors.onHero }}>
-              {title}
-            </Text>
-            {subtitle ? <Text style={{ color: t.colors.onHeroMuted }}>{subtitle}</Text> : null}
+        {title || subtitle || aside ? (
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.md }}>
+            <View style={{ flex: 1, gap: t.space.xs }}>
+              {title ? (
+                <Text
+                  variant="display"
+                  accessibilityRole="header"
+                  style={{ color: t.colors.onHero }}
+                >
+                  {title}
+                </Text>
+              ) : null}
+              {subtitle ? <Text style={{ color: t.colors.onHeroMuted }}>{subtitle}</Text> : null}
+            </View>
+            {aside}
           </View>
-          {aside}
-        </View>
+        ) : null}
         {children}
       </View>
     </View>

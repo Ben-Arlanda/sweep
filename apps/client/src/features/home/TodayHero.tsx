@@ -1,9 +1,10 @@
+import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { CalendarDays, ChefHat, Pencil, Settings } from 'lucide-react-native';
 import { useState } from 'react';
-import { Text as RNText, View } from 'react-native';
+import { View } from 'react-native';
+import { useReducedMotion } from 'react-native-reanimated';
 
-import { AvatarStack } from '@/components/Avatar';
 import { Hero, HeroLabel } from '@/components/Hero';
 import { Icon } from '@/components/Icon';
 import { PressableScale } from '@/components/PressableScale';
@@ -12,7 +13,6 @@ import { Button, ErrorText } from '@/components/ui';
 import { PlanSheet, startPlan } from '@/features/mealPlan/PlanSheet';
 import { addDays, mondayOf } from '@/features/mealPlan/week';
 import type { MeOut } from '@/lib/api/client';
-import { useHousehold } from '@/lib/api/households';
 import { mealTap, useMealPlan, useMealPlanActions } from '@/lib/api/mealPlan';
 import { useTheme } from '@/theme/useTheme';
 
@@ -21,7 +21,7 @@ import { EditPlanSheet } from './EditPlanSheet';
 import { homeCta, needsNextWeekForCta } from './today';
 
 /**
- * Home's hero (ADR 0026): always "What's cooking today?", Ask Sweep, and two buttons.
+ * Home's hero (ADR 0026): the chef and Household row, Ask Sweep, and two buttons.
  * Tonight's dinner and the week sit in cards below it, so the top never changes shape.
  * The lime button follows the plan (`homeCta`): Plan my week, Edit plan, then from
  * Friday Plan next week. It's never greyed out. Edit plan opens a menu: Edit this week
@@ -63,16 +63,7 @@ export function TodayHero({ me }: { me: MeOut }) {
   }
 
   return (
-    <Hero
-      top={<HouseholdRow me={me} />}
-      title={
-        <>
-          What&apos;s {/* Lime words, no pill: lime on Home's blue is about 5.9:1. */}
-          <RNText style={{ color: t.colors.action }}>cooking</RNText> today?
-        </>
-      }
-      subtitle="Your meals, kitchen and lists in one place."
-    >
+    <Hero top={<HouseholdRow me={me} />}>
       <AskSweep />
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.sm }}>
         <View style={{ flexGrow: 1, flexBasis: 150 }}>
@@ -132,10 +123,10 @@ export function TodayHero({ me }: { me: MeOut }) {
   );
 }
 
-/** Who's in the Household, and the cog: Household settings live behind it now. */
+/** The sweep chef, the Household's name, and the cog for Household settings. */
 function HouseholdRow({ me }: { me: MeOut }) {
   const t = useTheme();
-  const household = useHousehold(true);
+  const reduceMotion = useReducedMotion();
   const open = () => router.push('/household');
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.md }}>
@@ -145,7 +136,13 @@ function HouseholdRow({ me }: { me: MeOut }) {
         onPress={open}
         style={{ flex: 1, flexDirection: 'row', alignItems: 'center', gap: t.space.md }}
       >
-        <AvatarStack members={household.data?.members ?? [me.member]} size={40} />
+        <Image
+          aria-hidden
+          source={require('../../../assets/images/chef-blink.webp')}
+          style={{ width: 52, height: 52 }}
+          contentFit="contain"
+          autoplay={!reduceMotion}
+        />
         <View style={{ flex: 1 }}>
           <HeroLabel label="Household" value={me.household.name} />
         </View>
