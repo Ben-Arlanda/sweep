@@ -425,6 +425,24 @@ async def search(
     return [(recipe, 1 - float(d)) for recipe, d in rows]
 
 
+async def search_or_keywords(
+    session: AsyncSession,
+    household_id: uuid.UUID,
+    embedder: Embedder | None,
+    text: str,
+    filters: RecipeFilters,
+    limit: int,
+) -> list[tuple[Recipe, float]]:
+    """Search by meaning; with no embedder, or Voyage failing, by keyword (R2) instead.
+    Scores are on different scales then, so callers use the order, never the number."""
+    if embedder is not None:
+        try:
+            return await search(session, household_id, embedder, text, filters, limit)
+        except EmbeddingUnavailable as error:
+            log.warning("Search by meaning failed, using keywords: %s", error)
+    return await keyword_search(session, household_id, text, filters, limit)
+
+
 def _words(query: str) -> list[str]:
     # Letters and digits only: what's left can't be tsquery syntax, and each word becomes
     # a bound parameter anyway, never part of the SQL.

@@ -10,7 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import errors
 from app.deps import MemberDep, SessionDep
-from app.embeddings import Embedder, EmbeddingUnavailable
+from app.embeddings import Embedder
 from app.idempotency import IdempotencyKeyHeader
 from app.models import Course, Recipe
 from app.pdf_text import MAX_PDF_BYTES
@@ -75,12 +75,7 @@ async def list_or_search(
         return [_summary(r, hearted) for r in rows]
 
     embedder = cast(Embedder | None, request.app.state.embedder)
-    if embedder is None:
-        raise errors.Unavailable("Recipe search isn't configured on this server")
-    try:
-        found = await recipes.search(session, household_id, embedder, query, filters, limit)
-    except EmbeddingUnavailable as error:
-        raise errors.Unavailable("Recipe search is unavailable right now") from error
+    found = await recipes.search_or_keywords(session, household_id, embedder, query, filters, limit)
     return [
         _summary(r, hearted).model_copy(update={"score": round(score, 4)}) for r, score in found
     ]

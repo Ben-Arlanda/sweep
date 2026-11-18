@@ -27,7 +27,7 @@ from app import errors
 from app.agent.model import AgentModel
 from app.agent.state import Draft, DraftAdaptation, DraftAddition, DraftMeal, DraftSwap
 from app.agent.validate import ONLY_AS_ADAPTATION
-from app.embeddings import Embedder, EmbeddingUnavailable
+from app.embeddings import Embedder
 from app.models import (
     Conversation,
     Course,
@@ -135,9 +135,7 @@ async def search_recipes(call: Call, args: SearchArgs) -> Outcome:
     exception (ADR 0021): the Household's Imported Recipes that break a Rule come after,
     flagged with `breaks_rules`, because they can still be planned as an Adaptation.
     set_planned_meal and validate refuse them as written. Each result also lists its
-    kept Adaptations that fit the Rules."""
-    if call.agent.embedder is None:
-        raise ToolError("Recipe search isn't available right now")
+    kept Adaptations that fit the Rules. If Voyage is down, results come by keyword."""
     hid = call.agent.household_id
     must: list[uuid.UUID] = []
     named: list[str] = []  # Household Ingredients: Seed Recipes only name them in text
@@ -153,34 +151,31 @@ async def search_recipes(call: Call, args: SearchArgs) -> Outcome:
     filters = await recipes.filters_for(
         call.session, hid, args.max_minutes, args.cuisine, course=course
     )
-    try:
-        # Fetch extra when filtering afterwards, so we still have enough to return.
-        limit = SEARCH_RESULTS * (4 if must or named else 1)
-        found_recipes = await recipes.search(
-            call.session, hid, call.agent.embedder, args.query, filters, limit
+    # Fetch extra when filtering afterwards, so we still have enough to return.
+    limit = SEARCH_RESULTS * (4 if must or named else 1)
+    found_recipes = await recipes.search_or_keywords(
+        call.session, hid, call.agent.embedder, args.query, filters, limit
+    )
+    rules = await diet.get_rules(call.session, hid)
+    flagged = (
+        await recipes.search_or_keywords(
+            call.session,
+            hid,
+            call.agent.embedder,
+            args.query,
+            # Not the Rules: these are the imports they hide. Imported only:
+            # Rule-breaking Seed Recipes stay hidden (plenty of others fit).
+            recipes.RecipeFilters(
+                max_minutes=args.max_minutes,
+                cuisine=args.cuisine,
+                course=course,
+                only_kind=RecipeKind.IMPORTED,
+            ),
+            limit,
         )
-        rules = await diet.get_rules(call.session, hid)
-        flagged = (
-            await recipes.search(
-                call.session,
-                hid,
-                call.agent.embedder,
-                args.query,
-                # Not the Rules: these are the imports they hide. Imported only:
-                # Rule-breaking Seed Recipes stay hidden (plenty of others fit).
-                recipes.RecipeFilters(
-                    max_minutes=args.max_minutes,
-                    cuisine=args.cuisine,
-                    course=course,
-                    only_kind=RecipeKind.IMPORTED,
-                ),
-                limit,
-            )
-            if rules.active
-            else []
-        )
-    except EmbeddingUnavailable as error:
-        raise ToolError("Recipe search is unavailable right now") from error
+        if rules.active
+        else []
+    )
 
     def wanted(r: Recipe) -> bool:
         return set(must) <= {line.ingredient_id for line in r.ingredients} and all(
@@ -243,14 +238,9 @@ async def recipes_from_kitchen(call: Call, args: FromKitchenArgs) -> Outcome:
         filters = replace(filters, favourites_of=hid)
     among: list[uuid.UUID] | None = None
     if args.query:
-        if call.agent.embedder is None:
-            raise ToolError("Search by taste isn't available right now; try without a query")
-        try:
-            found = await recipes.search(
-                call.session, hid, call.agent.embedder, args.query, filters, CANDIDATES
-            )
-        except EmbeddingUnavailable as error:
-            raise ToolError("Search by taste is unavailable right now") from error
+        found = await recipes.search_or_keywords(
+            call.session, hid, call.agent.embedder, args.query, filters, CANDIDATES
+        )
         among = [r.id for r, _score in found]
     snap = await kitchen_match.snapshot(call.session, call.member)
     ranked = await kitchen_match.rank(
