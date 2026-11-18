@@ -12,6 +12,7 @@ from dataclasses import dataclass
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.embeddings import Embedder, EmbeddingUnavailable
 from app.models import Course, Recipe
 from app.services import favourites, kitchen_match, recipes
 from app.services.households import MemberContext
@@ -36,6 +37,7 @@ async def ideas(
     nothing_to_buy: bool = False,
     exclude: Sequence[uuid.UUID] = (),
     boost_favourites: bool = True,
+    among: Sequence[uuid.UUID] | None = None,
     limit: int = 3,
 ) -> list[Idea]:
     hid = ctx.household.id
@@ -47,6 +49,7 @@ async def ideas(
         hid,
         snap,
         filters,
+        among=among,
         exclude=exclude,
         favourites=boosted,
         # Filtering "nothing to buy" afterwards needs every candidate, not just the top.
@@ -59,3 +62,24 @@ async def ideas(
         Idea(r, m, kitchen_match.uses(kitchen_match.lines_of(r), snap), r.id in hearted)
         for r, m in ranked
     ]
+
+
+TASTE_CANDIDATES = 60
+
+
+async def by_taste(
+    session: AsyncSession, household_id: uuid.UUID, embedder: Embedder, cuisines: Sequence[str]
+) -> list[uuid.UUID] | None:
+    """New recipes mode: candidates by meaning from the Household's liked cuisines, which
+    the Kitchen then orders (the hybrid search recipes_from_kitchen uses). None when
+    they like nothing in particular, or search is down: every main is a candidate."""
+    if not cuisines:
+        return None
+    filters = await recipes.filters_for(session, household_id, course=Course.MAIN)
+    try:
+        found = await recipes.search(
+            session, household_id, embedder, " ".join(cuisines), filters, TASTE_CANDIDATES
+        )
+    except EmbeddingUnavailable:
+        return None
+    return [r.id for r, _ in found]

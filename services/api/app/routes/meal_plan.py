@@ -78,6 +78,10 @@ async def get_dinner_ideas(
         exclude=exclude,
         limit=limit,
     )
+    return ideas_out(found)
+
+
+def ideas_out(found: list[dinner_ideas.Idea]) -> list[DinnerIdeaOut]:
     return [
         DinnerIdeaOut(
             **RecipeSummaryOut.model_validate(i.recipe).model_dump(exclude={"favourite"}),

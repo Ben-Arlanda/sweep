@@ -33,6 +33,8 @@ from app.services.ingredients import normalise
 from app.text import ONE_LINE
 from app.web_fetch import check_url
 
+date_ = date  # for a field named `date`, which hides the type inside its class
+
 
 # Trimming runs before ONE_LINE, so a pasted trailing newline is simply removed.
 def _name(max_length: int) -> StringConstraints:
@@ -581,14 +583,24 @@ class ProposalOut(BaseModel):
 
 
 class DecisionIn(BaseModel):
-    """Approve (optionally with some meals or additions unticked) or reject.
+    """Approve (optionally with some meals or additions unticked), reject, or swap one
+    day's recipe for an alternative (ADR 0025: a new Proposal replaces this one).
 
     `keep_meals` / `keep_additions` list what stays ticked: dates of proposed meals, and
-    positions in `list_additions`. Leave one out to keep all of that kind."""
+    positions in `list_additions`. Leave one out to keep all of that kind. A swap needs
+    `date` (a day in the Proposal) and `recipe_id`."""
 
-    action: Literal["approve", "reject"]
+    action: Literal["approve", "reject", "swap"]
     keep_meals: list[date] | None = Field(default=None, max_length=14)
     keep_additions: list[int] | None = Field(default=None, max_length=60)
+    date: date_ | None = None
+    recipe_id: uuid.UUID | None = None
+
+    @model_validator(mode="after")
+    def _swap_says_what(self) -> Self:
+        if self.action == "swap" and (self.date is None or self.recipe_id is None):
+            raise ValueError("A swap needs a date and a recipe_id")
+        return self
 
 
 class ChatProposalOut(ProposalOut):
