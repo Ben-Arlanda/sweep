@@ -197,7 +197,7 @@ function AccountCard() {
           <Button title="Cancel" variant="secondary" onPress={() => setConfirming(false)} />
         </>
       ) : (
-        <Button title="Delete account" variant="ghost" onPress={() => setConfirming(true)} />
+        <Button title="Delete account" variant="danger" onPress={() => setConfirming(true)} />
       )}
       <ErrorText message={error} />
     </Card>
