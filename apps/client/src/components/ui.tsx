@@ -157,7 +157,7 @@ export function Card({
   );
 }
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'dark';
+type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'dark' | 'strong';
 
 /**
  * Pill buttons. `primary` is lime: use one per screen, for the main thing to do next.
@@ -200,6 +200,7 @@ export function Button({
     ghost: { bg: 'transparent', fg: t.colors.text, border: 'transparent' },
     danger: { bg: 'transparent', fg: t.colors.danger, border: t.colors.danger },
     dark: { bg: t.colors.tabSelected, fg: t.colors.surface, border: 'transparent' },
+    strong: { bg: t.colors.strong, fg: t.colors.onStrong, border: 'transparent' },
   };
   const { bg, fg, border } = look[variant];
 

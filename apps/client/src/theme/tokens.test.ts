@@ -37,6 +37,7 @@ describe.each(schemes)('%s theme meets WCAG AA for text', (scheme) => {
     ['button text on pressed lime', c.onAction, c.actionPressed],
     ['text on soft lime', c.onActionSoft, c.actionSoft],
     ['toast text', c.onInverse, c.inverse],
+    ['strong button text', c.onStrong, c.strong],
     ['danger on background', c.danger, c.background],
     ['danger on surface', c.danger, c.surface],
     ['danger on soft danger', c.danger, c.dangerSoft],

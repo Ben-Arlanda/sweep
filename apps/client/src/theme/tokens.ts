@@ -75,6 +75,9 @@ export type ColorTokens = {
   onBackgroundMuted: string;
   /** Bottom sheets and dialogs: their own colour, so a screen's page colour can't reach them. */
   sheet: string;
+  /** Near-black for one strong button (View recipe), white text on it. */
+  strong: string;
+  onStrong: string;
 };
 
 export const colors: Record<'light' | 'dark', ColorTokens> = {
@@ -104,6 +107,8 @@ export const colors: Record<'light' | 'dark', ColorTokens> = {
     onBackground: palette.ink,
     onBackgroundMuted: palette.stone600,
     sheet: palette.paper,
+    strong: '#171a14',
+    onStrong: palette.white,
   },
   dark: {
     background: palette.night900,
@@ -131,6 +136,8 @@ export const colors: Record<'light' | 'dark', ColorTokens> = {
     onBackground: palette.mist100,
     onBackgroundMuted: palette.mist400,
     sheet: palette.night900,
+    strong: '#171a14',
+    onStrong: palette.white,
   },
 };
 

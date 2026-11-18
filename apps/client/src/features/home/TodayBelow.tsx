@@ -304,7 +304,7 @@ function MealPlanCard({
             <View style={{ flex: 1 }}>
               <Button
                 title="View recipe"
-                variant="secondary"
+                variant="strong"
                 onPress={() => day.meal && router.push(`/recipe/${day.meal.recipe_id}`)}
               />
             </View>

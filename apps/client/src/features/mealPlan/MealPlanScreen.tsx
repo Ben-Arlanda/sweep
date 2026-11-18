@@ -405,7 +405,7 @@ function MealMenu({
         </Text>
         <Button
           title="View recipe"
-          variant="secondary"
+          variant="strong"
           onPress={() => {
             onClose();
             router.push(`/recipe/${meal.recipe_id}`);
