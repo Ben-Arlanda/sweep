@@ -78,6 +78,7 @@ function ListContent({ list }: { list: ListDetail }) {
   const { toBuy } = shoppingOrder(filterByShop(list.items, shown));
   const at = shown === ALL ? '' : ` at ${shopName(shops, shown)}`;
   const summary = toBuy.length === 0 ? `Nothing left to buy${at}` : `${toBuy.length} to buy${at}`;
+  const sync = useSyncStatus();
 
   const row = (item: Item, i: number) => (
     <ItemRow
@@ -106,7 +107,10 @@ function ListContent({ list }: { list: ListDetail }) {
           </Text>
           <AvatarStack members={members} size={28} />
         </View>
-        <Text accessibilityLiveRegion="polite">{summary}</Text>
+        <Text accessibilityLiveRegion="polite">
+          {summary}
+          {sync ? ` · ${sync}` : ''}
+        </Text>
       </Card>
 
       {shops.length > 0 ? (
@@ -121,7 +125,6 @@ function ListContent({ list }: { list: ListDetail }) {
         />
       ) : null}
 
-      <SyncStatus />
       <AddItem onAdd={actions.addItem} />
       <ErrorText message={actions.error?.message} />
 
@@ -361,16 +364,14 @@ function ItemMenu({
   );
 }
 
-/** Tells the Member their taps are safe even when the signal isn't. */
-function SyncStatus() {
+/**
+ * Tells the Member their taps are safe even when the signal isn't. Shown on the summary
+ * line, not a line of its own: appearing for a moment on every tick, a line above the
+ * add box pushed it down and back up.
+ */
+function useSyncStatus(): string | null {
   const pending = usePendingListChanges();
   const online = useIsOnline();
   if (pending === 0) return null;
-  return (
-    <Text variant="caption" muted accessibilityLiveRegion="polite">
-      {online
-        ? 'Saving…'
-        : `Offline. ${pending} ${pending === 1 ? 'change' : 'changes'} will sync when you're back online.`}
-    </Text>
-  );
+  return online ? 'Saving…' : `Offline: ${pending} to sync`;
 }
