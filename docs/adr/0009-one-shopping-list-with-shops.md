@@ -13,7 +13,7 @@ Slice 2 let a Household make several Shopping Lists. In practice a Household sho
 - **Shops belong to the Household.** Every Household starts with Coles, Woolies and Aldi; any Member can add, rename or delete one. Deleting a Shop returns its items to "any shop", so nothing is lost.
 - Shop changes bump the list's version and send the usual change notice, because they change how the list looks. Devices refetch one `GET /list` that includes items and Shops.
 - Item routes keep the list id in the path (`/lists/{id}/items/...`). The id still scopes the row lock, the version and the offline retry queue, so slice 2's sync design (ADR 0004) is unchanged.
-- UI: new items start as "any shop"; tag an item from a bottom sheet (its Shop button); filter by Shop, where a Shop filter also shows untagged items. (Shop chips under the add box were tried and removed: two identical rows of chips confused the screen.)
+- UI: new items start as "any shop"; tag an item from a bottom sheet (its Shop button); filter by Shop. *(2026-11-18: a Shop filter now shows only that Shop's items; "any shop" items appear only under All. Tag from the item's ••• menu.)* (Shop chips under the add box were tried and removed: two identical rows of chips confused the screen.)
 
 ## Consequences
 

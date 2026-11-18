@@ -11,15 +11,15 @@ export type Shop = ListDetail['shops'][number];
 export type ShopFilter = 'all' | string;
 
 /**
- * At Aldi you want the Aldi items *and* the ones you can buy anywhere, so a Shop filter
- * keeps untagged items. Hiding them would make it easy to forget the milk.
+ * A Shop filter shows only that Shop's items; untagged ("any shop") items are on All.
+ * Mixing them in made the filter look broken (user decision 2026-11-18, ADR 0009 note).
  */
 export function filterByShop<T extends Pick<Item, 'shop_id'>>(
   items: readonly T[],
   filter: ShopFilter,
 ): T[] {
   if (filter === 'all') return [...items];
-  return items.filter((item) => item.shop_id === null || item.shop_id === filter);
+  return items.filter((item) => item.shop_id === filter);
 }
 
 export function withItemShop(list: ListDetail, itemId: string, shopId: string | null): ListDetail {

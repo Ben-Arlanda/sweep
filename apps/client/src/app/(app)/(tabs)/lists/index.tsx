@@ -1,7 +1,12 @@
 import { Ellipsis, Link2, Store, Trash2 } from 'lucide-react-native';
 import { useRef, useState } from 'react';
 import { Pressable, View, type HostInstance, type TextInputInstance } from 'react-native';
-import Animated, { FadeInDown, FadeOut, ReduceMotion } from 'react-native-reanimated';
+import Animated, {
+  FadeInDown,
+  FadeOut,
+  LinearTransition,
+  ReduceMotion,
+} from 'react-native-reanimated';
 
 import { AvatarStack } from '@/components/Avatar';
 import { Checkbox } from '@/components/Checkbox';
@@ -25,14 +30,8 @@ import { useMembers } from '@/features/household/useMembers';
 import { shoppingOrder } from '@/features/lists/listCache';
 import { LinkSheet } from '@/features/lists/LinkSheet';
 import { ShopSheet } from '@/features/lists/ShopSheet';
-import {
-  filterByShop,
-  knownShop,
-  shopName,
-  type Shop,
-  type ShopFilter,
-} from '@/features/lists/shops';
-import type { Item, ListDetail, MemberOut } from '@/lib/api/client';
+import { filterByShop, knownShop, shopName, type ShopFilter } from '@/features/lists/shops';
+import type { Item, ListDetail } from '@/lib/api/client';
 import { useIsOnline, useList, useListActions, usePendingListChanges } from '@/lib/api/lists';
 import { tintFor } from '@/theme/tint';
 import { FoodThumb } from '@/components/FoodThumb';
@@ -64,7 +63,7 @@ export default function ListScreen() {
 function ListContent({ list }: { list: ListDetail }) {
   const t = useTheme();
   const actions = useListActions(list.id);
-  const { members, byId } = useMembers();
+  const { members } = useMembers();
   const [filter, setFilter] = useState<ShopFilter>(ALL);
   const toast = useToast();
   // Which item's ••• menu, Shop sheet or Kitchen link sheet is open, if any.
@@ -86,8 +85,8 @@ function ListContent({ list }: { list: ListDetail }) {
       item={item}
       index={i}
       actions={actions}
-      members={byId}
-      shops={shops}
+      // On a Shop's filter every row is that Shop, so its name would just repeat.
+      shop={shown === ALL ? shopName(shops, item.shop_id) : null}
       onMenu={(anchor) => setMenu({ item, anchor })}
     />
   );
@@ -227,15 +226,14 @@ function ItemRow({
   item,
   index,
   actions,
-  members,
-  shops,
+  shop,
   onMenu,
 }: {
   item: Item;
   index: number;
   actions: Actions;
-  members: Map<string, MemberOut>;
-  shops: readonly Shop[];
+  /** Shown under the name on All; null on a Shop's own filter or for "any shop". */
+  shop: string | null;
   onMenu: (anchor: Anchor) => void;
 }) {
   const t = useTheme();
@@ -243,12 +241,6 @@ function ItemRow({
   const more = useRef<HostInstance>(null);
   const amount = [item.quantity, item.unit].filter(Boolean).join(' ');
   const tint = tintFor(item.ingredient?.name ?? item.text);
-  const addedBy = item.added_by_member_id ? members.get(item.added_by_member_id) : undefined;
-  const shop = shopName(shops, item.shop_id);
-
-  const caption = [shop, addedBy ? `added by ${addedBy.display_name}` : null]
-    .filter(Boolean)
-    .join(' · ');
 
   function tick() {
     // Send what the Member *sees* as the new state, not "toggle" (ADR 0004).
@@ -271,7 +263,10 @@ function ItemRow({
         .springify()
         .damping(18)
         .reduceMotion(ReduceMotion.System)}
-      exiting={FadeOut.duration(180).reduceMotion(ReduceMotion.System)}
+      // A ticked row fades out while the rows under it glide up into its place, instead
+      // of the list jumping. Both follow the phone's reduce-motion setting.
+      exiting={FadeOut.duration(t.motion.duration.base).reduceMotion(ReduceMotion.System)}
+      layout={LinearTransition.springify().damping(20).reduceMotion(ReduceMotion.System)}
     >
       <View
         style={{
@@ -282,7 +277,7 @@ function ItemRow({
           boxShadow: t.shadow.card,
         }}
       >
-        {/* No custom label: the visible text ("Milk, Coles · added by Alice, 2 L") is the
+        {/* No custom label: the visible text ("Milk, Coles, 2 L") is the
             name, so voice control users can say exactly what they see (WCAG 2.5.3). */}
         <Pressable
           accessibilityRole="checkbox"
@@ -304,9 +299,9 @@ function ItemRow({
           <FoodThumb emoji={ingredientEmoji(item.ingredient)} tint={tint} />
           <View style={{ flex: 1, gap: 2 }}>
             <Text variant="label">{item.text}</Text>
-            {caption ? (
-              <Text variant="caption" muted numberOfLines={2}>
-                {caption}
+            {shop ? (
+              <Text variant="caption" muted>
+                {shop}
               </Text>
             ) : null}
           </View>
