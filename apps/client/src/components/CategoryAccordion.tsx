@@ -9,7 +9,7 @@ import {
   Refrigerator,
   Salad,
   Snowflake,
-  Sparkles,
+  Leaf,
   type LucideIcon,
 } from 'lucide-react-native';
 import type { ReactNode } from 'react';
@@ -20,7 +20,7 @@ import { Text } from '@/components/ui';
 import { useTheme } from '@/theme/useTheme';
 
 const CATEGORY_ICON: Record<string, LucideIcon> = {
-  spices: Sparkles,
+  spices: Leaf,
   pantry: Package,
   bakery: Croissant,
   produce: Salad,
