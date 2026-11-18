@@ -17,6 +17,7 @@ export function Hero({
   title,
   top,
   subtitle,
+  aside,
   children,
 }: {
   /** The screen's heading (one per screen, so it's marked as the header). */
@@ -24,6 +25,8 @@ export function Hero({
   /** A row above the title: who's in the Household, a small label, etc. */
   top?: ReactNode;
   subtitle?: ReactNode;
+  /** Beside the title, e.g. tonight's recipe picture on Home. */
+  aside?: ReactNode;
   /** Usually a HeroSearch. */
   children?: ReactNode;
 }) {
@@ -44,11 +47,14 @@ export function Hero({
     >
       <View style={{ width: '100%', maxWidth: 560, alignSelf: 'center', gap: t.space.lg }}>
         {top}
-        <View style={{ gap: t.space.xs }}>
-          <Text variant="display" accessibilityRole="header" style={{ color: t.colors.onHero }}>
-            {title}
-          </Text>
-          {subtitle ? <Text style={{ color: t.colors.onHeroMuted }}>{subtitle}</Text> : null}
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.md }}>
+          <View style={{ flex: 1, gap: t.space.xs }}>
+            <Text variant="display" accessibilityRole="header" style={{ color: t.colors.onHero }}>
+              {title}
+            </Text>
+            {subtitle ? <Text style={{ color: t.colors.onHeroMuted }}>{subtitle}</Text> : null}
+          </View>
+          {aside}
         </View>
         {children}
       </View>

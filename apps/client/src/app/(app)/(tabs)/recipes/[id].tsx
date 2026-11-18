@@ -1,4 +1,13 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { router, useLocalSearchParams } from 'expo-router';
+import {
+  ArrowLeftRight,
+  CalendarDays,
+  ChefHat,
+  Clock,
+  Users,
+  type LucideIcon,
+} from 'lucide-react-native';
 import { randomUUID } from 'expo-crypto';
 import { useState } from 'react';
 import { Linking, Pressable, View } from 'react-native';
@@ -6,14 +15,24 @@ import { Linking, Pressable, View } from 'react-native';
 import { ConfirmDialog } from '@/components/ConfirmDialog';
 import { FoodThumb } from '@/components/FoodThumb';
 import { HeartButton } from '@/components/HeartButton';
+import { Icon } from '@/components/Icon';
 import { Tag } from '@/components/Pill';
-import { Button, Card, ErrorText, Loading, Screen, SectionLabel, Text } from '@/components/ui';
+import { RecipeArt } from '@/components/RecipeArt';
+import { Button, ErrorText, Loading, Screen, SectionLabel, Text } from '@/components/ui';
 import { formatDay } from '@/features/chat/format';
 import { hostOf } from '@/features/imports/ReviewScreen';
 import { ruleBreakHint, ruleBreakText } from '@/features/imports/ruleBreaks';
-import { addText, haveSummary, matchLine, type Have } from '@/features/recipes/kitchenMatch';
+import { courseName, type Course } from '@/features/recipes/courses';
+import {
+  addText,
+  haveSummary,
+  matchLine,
+  minutesText,
+  type Have,
+} from '@/features/recipes/kitchenMatch';
 import { swapLine, swapsOf } from '@/features/recipes/adaptations';
-import { RecipeRow, recipeMeta } from '@/features/recipes/RecipeRow';
+import { RecipeRow } from '@/features/recipes/RecipeRow';
+import { conversationKeys, useDecideProposal } from '@/lib/api/conversations';
 import { useImportedRecipeActions, useImportedRecipes } from '@/lib/api/imports';
 import { useKitchen } from '@/lib/api/kitchen';
 import { useList, useListActions } from '@/lib/api/lists';
@@ -21,7 +40,7 @@ import { useMealPlan } from '@/lib/api/mealPlan';
 import { planTap, usePlanDay } from '@/lib/api/planning';
 import { isNotFound, useAdaptations, useDeleteAdaptation, useRecipe } from '@/lib/api/recipes';
 import type { components } from '@/lib/api/schema';
-import { ingredientEmoji, recipeEmoji } from '@/theme/foodEmoji';
+import { ingredientEmoji } from '@/theme/foodEmoji';
 import { tintFor } from '@/theme/tint';
 import { useTheme } from '@/theme/useTheme';
 
@@ -36,18 +55,25 @@ type List = components['schemas']['ShoppingListDetailOut'];
  * Something you need shows "+ Need": one tap puts it on the Shopping List. Anything
  * already unticked on the list shows "On list", the same rule the planner uses.
  *
- * A Recipe Adaptation (ADR 0021) links back to its parent and lists its Swaps above the
- * method, which is the parent's, unchanged. A parent lists its Household's Adaptations.
+ * Laid out as Ingredients / Steps / Notes tabs (slice 6e). A Recipe Adaptation (ADR 0021)
+ * links back to its parent; its Swaps and a parent's Adaptations are under Notes.
  */
 export default function RecipeScreen() {
   const t = useTheme();
   // `plan`: opened from Dinner Ideas to plan it for that day (slice 6e).
-  const { id, plan } = useLocalSearchParams<{ id: string; plan?: string }>();
+  // `swap` + `date`: opened from a plan's swap list to swap that day to this (ADR 0025).
+  const { id, plan, swap, date } = useLocalSearchParams<{
+    id: string;
+    plan?: string;
+    swap?: string;
+    date?: string;
+  }>();
   const recipe = useRecipe(id);
   // The Kitchen is optional here: if it fails to load, the recipe still shows.
   const kitchen = useKitchen();
   // Optional too: without the list, "Need" is just a label, with no + to add it.
   const list = useList();
+  const [tab, setTab] = useState<Tab>('ingredients');
 
   if (recipe.isPending) return <Loading />;
   if (recipe.isError && isNotFound(recipe.error)) {
@@ -71,112 +97,322 @@ export default function RecipeScreen() {
   }
 
   const r = recipe.data;
-  const tint = tintFor(r.title);
   const summary = kitchen.data ? haveSummary(r.ingredients, kitchen.data) : null;
   const parentId = r.kind === 'adaptation' ? r.parent_recipe_id : null;
   const swaps = swapsOf(r.ingredients);
+  const missing =
+    kitchen.data && list.data
+      ? r.ingredients.filter(
+          (line) => matchLine(line, kitchen.data, list.data.items)?.kind === 'need',
+        )
+      : [];
 
   return (
-    <Screen>
-      <Card tint={tint} style={{ gap: t.space.sm }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <FoodThumb emoji={recipeEmoji(r.title)} tint={tint} size={56} onWhite />
-          {r.kind === 'adaptation' ? null : (
+    <Screen
+      footer={
+        plan ? (
+          <PlanForDay date={plan} recipeId={r.id} title={r.title} />
+        ) : swap && date ? (
+          <SwapToThis proposalId={swap} date={date} recipeId={r.id} />
+        ) : null
+      }
+    >
+      {/* The picture slot (RecipeArt) with the heart and what it uses from the Kitchen. */}
+      <View>
+        <RecipeArt title={r.title} width="100%" height={200} radius={t.radius.xl} emojiSize={88} />
+        {r.kind === 'adaptation' ? null : (
+          <View style={{ position: 'absolute', top: t.space.md, right: t.space.md }}>
             <HeartButton recipeId={r.id} title={r.title} favourite={r.favourite ?? false} />
-          )}
-        </View>
-        <Text variant="title" accessibilityRole="header">
-          {r.title}
-        </Text>
-        {r.summary ? <Text>{r.summary}</Text> : null}
-        <Text variant="label">{recipeMeta(r)}</Text>
-        {parentId ? <AdaptedFrom parentId={parentId} /> : null}
-        {summary && summary.total > 0 ? (
-          <View style={{ marginTop: t.space.xs }}>
+          </View>
+        )}
+        {summary && summary.have > 0 ? (
+          <View style={{ position: 'absolute', left: t.space.md, bottom: t.space.md }}>
             <Tag kind={summary.have === summary.total ? 'action' : 'soft'}>
               {summary.have === summary.total
-                ? 'You have everything'
-                : `You have ${summary.have} of ${summary.total}`}
+                ? '✓ You have everything'
+                : `✓ Uses ${summary.have} Kitchen ${summary.have === 1 ? 'item' : 'items'}`}
             </Tag>
           </View>
         ) : null}
-      </Card>
-
-      {plan ? <PlanForDay date={plan} recipeId={r.id} title={r.title} /> : null}
-
-      {r.kind === 'adaptation' ? null : <Adaptations parentId={r.id} />}
-
-      <View style={{ gap: t.space.sm }}>
-        <SectionLabel>Ingredients</SectionLabel>
-        {r.ingredients.map((line, i) => (
-          <IngredientRow key={i} line={line} kitchen={kitchen.data} list={list.data} />
-        ))}
-        {kitchen.isError ? (
-          <Text variant="caption" muted>
-            Couldn&apos;t check the Kitchen just now.
-          </Text>
-        ) : null}
       </View>
 
-      {r.kind === 'imported' ? <YoursActions id={r.id} title={r.title} /> : null}
+      <View style={{ gap: t.space.sm }}>
+        <Text variant="title" accessibilityRole="header">
+          {r.title}
+        </Text>
+        <MetaRow recipe={r} />
+        {swap && date ? <SwappingPill proposalId={swap} date={date} /> : null}
+        {parentId ? <AdaptedFrom parentId={parentId} /> : null}
+      </View>
 
-      {swaps.length > 0 ? (
-        <View style={{ gap: t.space.sm }}>
-          <SectionLabel>Swaps</SectionLabel>
-          {swaps.map((swap) => (
-            <Text key={swap.replaces}>{swapLine(swap)}</Text>
-          ))}
-          <Text variant="caption" muted>
-            The method is the original recipe&apos;s, so it may still mention what was swapped.
-          </Text>
-        </View>
-      ) : null}
+      <Tabs value={tab} onChange={setTab} />
 
-      {!r.method && r.source_url ? (
+      {tab === 'ingredients' ? (
         <View style={{ gap: t.space.sm }}>
-          <SectionLabel>Method</SectionLabel>
-          <Pressable
-            accessibilityRole="link"
-            onPress={() => Linking.openURL(r.source_url as string)}
-            style={{ minHeight: t.touchTarget, justifyContent: 'center' }}
+          <View
+            style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
           >
-            <Text style={{ textDecorationLine: 'underline' }}>
-              Method on {hostOf(r.source_url)}
+            <Text variant="heading" role="heading" aria-level={2}>
+              Ingredients ({r.ingredients.length})
             </Text>
-          </Pressable>
-        </View>
-      ) : null}
-
-      {r.method ? (
-        <View style={{ gap: t.space.sm }}>
-          <SectionLabel>Method</SectionLabel>
-          {r.method.map((step, i) => (
-            <View key={i} style={{ flexDirection: 'row', gap: t.space.md }}>
-              <Text variant="heading" style={{ minWidth: 24 }}>
-                {i + 1}
-              </Text>
-              <Text style={{ flex: 1 }}>{step}</Text>
-            </View>
+            {missing.length > 0 && list.data ? (
+              <AddAllToList lines={missing} listId={list.data.id} />
+            ) : null}
+          </View>
+          {r.ingredients.map((line, i) => (
+            <IngredientRow key={i} line={line} kitchen={kitchen.data} list={list.data} />
           ))}
+          {kitchen.isError ? (
+            <Text variant="caption" muted>
+              Couldn&apos;t check the Kitchen just now.
+            </Text>
+          ) : null}
         </View>
       ) : null}
 
-      <Text variant="caption" muted>
-        {r.kind === 'imported'
-          ? "Your Household's recipe. Only your Household can see it."
-          : r.kind === 'adaptation'
-            ? "Your Household's version. Only your Household can see it."
-            : r.licence === 'Sweep original'
-              ? 'A Sweep recipe.'
-              : `From ${r.attribution}.`}
-      </Text>
+      {tab === 'steps' ? (
+        <View style={{ gap: t.space.md }}>
+          {swaps.length > 0 ? (
+            <Text variant="caption" muted>
+              The method is the original recipe&apos;s, so it may still mention what was swapped
+              (see Notes).
+            </Text>
+          ) : null}
+          {r.method ? (
+            r.method.map((step, i) => (
+              <View key={i} style={{ flexDirection: 'row', gap: t.space.md }}>
+                <Text variant="heading" style={{ minWidth: 24 }}>
+                  {i + 1}
+                </Text>
+                <Text style={{ flex: 1 }}>{step}</Text>
+              </View>
+            ))
+          ) : r.source_url ? (
+            <Pressable
+              accessibilityRole="link"
+              onPress={() => Linking.openURL(r.source_url as string)}
+              style={{ minHeight: t.touchTarget, justifyContent: 'center' }}
+            >
+              <Text style={{ textDecorationLine: 'underline' }}>
+                Method on {hostOf(r.source_url)}
+              </Text>
+            </Pressable>
+          ) : (
+            <Text muted>No method saved for this recipe.</Text>
+          )}
+        </View>
+      ) : null}
 
-      {parentId ? <DeleteAdaptation id={r.id} title={r.title} parentId={parentId} /> : null}
+      {tab === 'notes' ? (
+        <View style={{ gap: t.space.lg }}>
+          {r.summary ? <Text>{r.summary}</Text> : null}
+          {swaps.length > 0 ? (
+            <View style={{ gap: t.space.sm }}>
+              <SectionLabel>Swaps</SectionLabel>
+              {swaps.map((swap) => (
+                <Text key={swap.replaces}>{swapLine(swap)}</Text>
+              ))}
+            </View>
+          ) : null}
+          {r.kind === 'adaptation' ? null : <Adaptations parentId={r.id} />}
+          {r.kind === 'imported' ? <YoursActions id={r.id} title={r.title} /> : null}
+          <Text variant="caption" muted>
+            {r.kind === 'imported'
+              ? "Your Household's recipe. Only your Household can see it."
+              : r.kind === 'adaptation'
+                ? "Your Household's version. Only your Household can see it."
+                : r.licence === 'Sweep original'
+                  ? 'A Sweep recipe.'
+                  : `From ${r.attribution}.`}
+          </Text>
+          {parentId ? <DeleteAdaptation id={r.id} title={r.title} parentId={parentId} /> : null}
+        </View>
+      ) : null}
     </Screen>
   );
 }
 
-/** "Adapted from Mum's ragu", a link back. Waits quietly if the parent is still loading. */
+type Tab = 'ingredients' | 'steps' | 'notes';
+const TABS: { value: Tab; label: string }[] = [
+  { value: 'ingredients', label: 'Ingredients' },
+  { value: 'steps', label: 'Steps' },
+  { value: 'notes', label: 'Notes' },
+];
+
+/** Ingredients / Steps / Notes: a tab list, so screen readers say "tab, 1 of 3, selected". */
+function Tabs({ value, onChange }: { value: Tab; onChange: (tab: Tab) => void }) {
+  const t = useTheme();
+  return (
+    <View
+      accessibilityRole="tablist"
+      style={{
+        flexDirection: 'row',
+        gap: t.space.xs,
+        padding: t.space.xs,
+        borderRadius: t.radius.pill,
+        backgroundColor: t.colors.surface,
+        borderWidth: 1,
+        borderColor: t.colors.border,
+      }}
+    >
+      {TABS.map((tab) => {
+        const selected = tab.value === value;
+        return (
+          <Pressable
+            key={tab.value}
+            accessibilityRole="tab"
+            aria-selected={selected}
+            accessibilityState={{ selected }}
+            onPress={() => onChange(tab.value)}
+            style={{
+              flex: 1,
+              minHeight: t.touchTarget,
+              borderRadius: t.radius.pill,
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: selected ? t.colors.tabSelected : 'transparent',
+            }}
+          >
+            <Text variant="label" style={{ color: selected ? t.colors.surface : t.colors.text }}>
+              {tab.label}
+            </Text>
+          </Pressable>
+        );
+      })}
+    </View>
+  );
+}
+
+/** "Add to list": every ingredient marked Need, onto the Shopping List in one tap. */
+function AddAllToList({ lines, listId }: { lines: Line[]; listId: string }) {
+  const { addItem } = useListActions(listId);
+  const [done, setDone] = useState(false);
+  return (
+    <View accessibilityLiveRegion="polite">
+      <Button
+        title={done ? 'Added' : `Add ${lines.length} to list`}
+        accessibilityLabel={
+          done
+            ? 'Added to the Shopping List'
+            : `Add ${lines.length} things you need to the Shopping List`
+        }
+        variant="secondary"
+        compact
+        disabled={done}
+        onPress={() => {
+          lines.forEach((line) => addItem(addText(line)));
+          setDone(true);
+        }}
+      />
+    </View>
+  );
+}
+
+/** "25 min · Serves 4 · Main", each with its icon, as on the plan screens. */
+function MetaRow({
+  recipe,
+}: {
+  recipe: { total_minutes: number | null; servings: number; course: Course };
+}) {
+  const t = useTheme();
+  const parts: { icon: LucideIcon; text: string }[] = [
+    ...(recipe.total_minutes
+      ? [{ icon: Clock, text: minutesText(recipe.total_minutes) ?? '' }]
+      : []),
+    { icon: Users, text: `Serves ${recipe.servings}` },
+    { icon: ChefHat, text: courseName(recipe.course) },
+  ];
+  return (
+    <View style={{ flexDirection: 'row', flexWrap: 'wrap', columnGap: t.space.lg, rowGap: 4 }}>
+      {parts.map((p) => (
+        <View key={p.text} style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+          <Icon icon={p.icon} size={17} color={t.colors.text} />
+          <Text variant="label">{p.text}</Text>
+        </View>
+      ))}
+    </View>
+  );
+}
+
+/** Opened from a plan's swap list: which day and dinner this would replace. */
+function SwappingPill({ proposalId, date }: { proposalId: string; date: string }) {
+  const t = useTheme();
+  const replacing = useSwapTarget(proposalId, date);
+  return (
+    <View
+      style={{
+        alignSelf: 'flex-start',
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: t.space.xs,
+        paddingHorizontal: t.space.md,
+        paddingVertical: 6,
+        borderRadius: t.radius.pill,
+        backgroundColor: t.colors.surface,
+        borderWidth: 1,
+        borderColor: t.colors.border,
+      }}
+    >
+      <Icon icon={ArrowLeftRight} size={16} color={t.colors.text} />
+      <Text variant="caption">
+        Swapping {formatDay(date)}
+        {replacing ? ` · ${replacing}` : ''}
+      </Text>
+    </View>
+  );
+}
+
+/** The plan this swap is for, read from the open Conversation's cached plan. */
+function useSwapTarget(proposalId: string, date: string): string | null {
+  const queryClient = useQueryClient();
+  const found = queryClient
+    .getQueriesData<{
+      proposal: { id?: string | null; meals: { date: string; title: string }[] } | null;
+    }>({
+      queryKey: conversationKeys.all,
+    })
+    .map(([, data]) => data?.proposal)
+    .find((p) => p?.id === proposalId);
+  return found?.meals.find((m) => m.date === date)?.title ?? null;
+}
+
+/** "Swap to this meal": the swap answer to the waiting plan, then back to it. */
+function SwapToThis({
+  proposalId,
+  date,
+  recipeId,
+}: {
+  proposalId: string;
+  date: string;
+  recipeId: string;
+}) {
+  const decide = useDecideProposal(null);
+  const queryClient = useQueryClient();
+  return (
+    <>
+      <Button
+        title="Swap to this meal"
+        icon={ArrowLeftRight}
+        loading={decide.isPending}
+        onPress={() =>
+          decide.mutate(
+            { proposalId, decision: { action: 'swap', date, recipe_id: recipeId } },
+            {
+              onSuccess: async () => {
+                await queryClient.invalidateQueries({ queryKey: conversationKeys.all });
+                router.back();
+              },
+            },
+          )
+        }
+      />
+      <View accessibilityLiveRegion="polite">
+        <ErrorText message={decide.error?.message} />
+      </View>
+    </>
+  );
+}
+
 /** Opened from Dinner Ideas: plan this recipe for the day straight away (no Proposal). */
 function PlanForDay({ date, recipeId, title }: { date: string; recipeId: string; title: string }) {
   const planDay = usePlanDay();
@@ -185,6 +421,7 @@ function PlanForDay({ date, recipeId, title }: { date: string; recipeId: string;
     <View style={{ gap: 4 }}>
       <Button
         title={date === today ? 'Plan for tonight' : `Plan for ${formatDay(date)}`}
+        icon={CalendarDays}
         loading={planDay.isPending}
         onPress={() =>
           planDay.mutate(planTap(date, recipeId), {
@@ -200,6 +437,7 @@ function PlanForDay({ date, recipeId, title }: { date: string; recipeId: string;
   );
 }
 
+/** "Adapted from Mum's ragu", a link back. Waits quietly if the parent is still loading. */
 function AdaptedFrom({ parentId }: { parentId: string }) {
   const t = useTheme();
   const parent = useRecipe(parentId);
@@ -331,8 +569,21 @@ function YoursActions({ id, title }: { id: string; title: string }) {
   );
 }
 
+/** "Chicken breast": the Ingredient's name, capitalised; the line as written if unlinked. */
+function lineName(line: Line) {
+  const name = line.ingredient?.name;
+  return name ? name.charAt(0).toUpperCase() + name.slice(1) : line.raw_text;
+}
+
+/** "600 g", or the whole line when it has no amount we understood. */
+function lineAmount(line: Line) {
+  if (!line.ingredient) return null;
+  if (line.quantity === null) return line.raw_text;
+  return [line.quantity, line.unit].filter(Boolean).join(' ');
+}
+
 const HAVE_TEXT: Record<Have['kind'], string> = {
-  have: 'Have',
+  have: 'In your Kitchen',
   low: 'Low',
   check: 'Check',
   need: 'Need',
@@ -378,12 +629,10 @@ function IngredientRow({
       >
         <FoodThumb emoji={ingredientEmoji(line.ingredient)} tint={tintFor(name)} size={36} />
         <View style={{ flex: 1 }}>
-          <Text>{line.raw_text}</Text>
-          {line.optional ? (
-            <Text variant="caption" muted>
-              Optional
-            </Text>
-          ) : null}
+          <Text variant="label">{lineName(line)}</Text>
+          <Text variant="caption" muted>
+            {[lineAmount(line), line.optional ? 'optional' : null].filter(Boolean).join(' · ')}
+          </Text>
         </View>
       </View>
       {/* The live region reads "On list" out after a tap on +. */}

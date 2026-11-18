@@ -1,5 +1,13 @@
 import { router, Stack } from 'expo-router';
-import { ArrowUp, Check, Sparkles } from 'lucide-react-native';
+import {
+  ArrowUp,
+  BookOpen,
+  CalendarDays,
+  Check,
+  Clock,
+  Ellipsis,
+  Sparkles,
+} from 'lucide-react-native';
 import { useEffect, useState } from 'react';
 import { ScrollView, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,8 +17,11 @@ import { HeartButton } from '@/components/HeartButton';
 import { Icon } from '@/components/Icon';
 import { PressableScale } from '@/components/PressableScale';
 import { RecipeArt } from '@/components/RecipeArt';
+import { Sheet } from '@/components/Sheet';
 import { Button, ErrorText, Text } from '@/components/ui';
 import { allKept, decisionFor } from '@/features/chat/decision';
+import { requestPlan } from '@/features/chat/starters';
+import { PlanSheet } from '@/features/mealPlan/PlanSheet';
 import { useDecideProposal } from '@/lib/api/conversations';
 import { useMealPlan } from '@/lib/api/mealPlan';
 import { useDinnerIdeas, type DinnerIdea, type IdeaFilter } from '@/lib/api/planning';
@@ -43,6 +54,8 @@ export function TonightScreen() {
   const run = usePlanRun();
   const decide = useDecideProposal(run.conversationId);
   const [showIdeas, setShowIdeas] = useState(true);
+  const [menu, setMenu] = useState(false);
+  const [planning, setPlanning] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => setElapsed((e) => e + STEP_MS), STEP_MS);
@@ -127,9 +140,73 @@ export function TonightScreen() {
       edges={['left', 'right', 'bottom']}
       style={{ flex: 1, backgroundColor: t.colors.background }}
     >
-      <Stack.Screen options={{ title: 'Dinner tonight' }} />
+      <Stack.Screen
+        options={{
+          title: 'Dinner tonight',
+          headerRight: () => (
+            <PressableScale
+              accessibilityRole="button"
+              accessibilityLabel="More options"
+              onPress={() => setMenu(true)}
+              style={{
+                width: t.touchTarget,
+                height: t.touchTarget,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Icon icon={Ellipsis} color={t.colors.text} />
+            </PressableScale>
+          ),
+        }}
+      />
       {body()}
+      {menu ? (
+        <Sheet label="More options" title="More options" onClose={() => setMenu(false)}>
+          <View style={{ gap: t.space.sm }}>
+            <Button
+              title="Plan my week instead"
+              icon={CalendarDays}
+              variant="secondary"
+              onPress={() => {
+                setMenu(false);
+                setPlanning(true);
+              }}
+            />
+            <Button
+              title="Browse all recipes"
+              icon={BookOpen}
+              variant="secondary"
+              onPress={() => {
+                setMenu(false);
+                router.push('/recipes');
+              }}
+            />
+          </View>
+        </Sheet>
+      ) : null}
+      {planning ? (
+        <PlanSheet
+          onClose={() => setPlanning(false)}
+          onPick={(mode, days, tweaks) => {
+            requestPlan(mode, days, tweaks);
+            router.replace('/plan-week');
+          }}
+        />
+      ) : null}
     </SafeAreaView>
+  );
+}
+
+function IdeaMeta({ idea }: { idea: DinnerIdea }) {
+  const t = useTheme();
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+      <Icon icon={Clock} size={15} color={t.colors.textMuted} />
+      <Text variant="caption" muted style={{ flexShrink: 1 }}>
+        {ideaMeta(idea)}
+      </Text>
+    </View>
   );
 }
 
@@ -246,7 +323,7 @@ function Ideas({
               radius={t.radius.md}
               emojiSize={64}
             />
-            {main.kitchen_uses.length > 0 ? (
+            {main.have.length > 0 ? (
               <View
                 style={{
                   position: 'absolute',
@@ -263,7 +340,7 @@ function Ideas({
               >
                 <Icon icon={Check} size={14} color={t.colors.text} strong />
                 <Text variant="caption">
-                  Uses your {main.kitchen_uses.slice(0, 2).join(' and ')}
+                  Uses {main.have.length} Kitchen {main.have.length === 1 ? 'item' : 'items'}
                 </Text>
               </View>
             ) : null}
@@ -277,9 +354,7 @@ function Ideas({
           </View>
           <View style={{ paddingHorizontal: t.space.sm, gap: 2 }}>
             <Text variant="heading">{main.title}</Text>
-            <Text variant="caption" muted>
-              {ideaMeta(main)}
-            </Text>
+            <IdeaMeta idea={main} />
           </View>
           <Button
             title="Choose recipe →"
@@ -307,9 +382,7 @@ function Ideas({
               <RecipeArt title={idea.title} width="100%" height={76} radius={t.radius.md} />
               <View style={{ flex: 1, paddingHorizontal: 4 }}>
                 <Text variant="label">{idea.title}</Text>
-                <Text variant="caption" muted>
-                  {ideaMeta(idea)}
-                </Text>
+                <IdeaMeta idea={idea} />
               </View>
               <Button
                 title="Choose"

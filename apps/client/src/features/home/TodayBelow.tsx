@@ -30,7 +30,9 @@ export function TodayBelow() {
         >
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 8 }}>
             <Text variant="heading">This week</Text>
-            <Text muted>{meals.length} of 7 planned ›</Text>
+            <Text muted>
+              {meals.length} {meals.length === 1 ? 'dinner' : 'dinners'} planned ›
+            </Text>
           </View>
           <WeekStrip
             monday={week.data.start}

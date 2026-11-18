@@ -1,9 +1,13 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
+import { CalendarDays, ChefHat, Settings } from 'lucide-react-native';
 import { Pressable, View } from 'react-native';
 
 import { AvatarStack } from '@/components/Avatar';
 import { Hero, HeroLabel } from '@/components/Hero';
+import { Icon } from '@/components/Icon';
+import { PressableScale } from '@/components/PressableScale';
+import { RecipeArt } from '@/components/RecipeArt';
 import { Button, ErrorText, Highlight, Text } from '@/components/ui';
 import { requestPlan } from '@/features/chat/starters';
 import { formatDay } from '@/features/chat/format';
@@ -76,11 +80,12 @@ export function TodayHero({ me }: { me: MeOut }) {
       <AskSweep />
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.sm }}>
         <View style={{ flexGrow: 1, flexBasis: 150 }}>
-          <Button title="Plan my week" onPress={() => setPlanning(true)} />
+          <Button title="Plan my week" icon={CalendarDays} onPress={() => setPlanning(true)} />
         </View>
         <View style={{ flexGrow: 1, flexBasis: 150 }}>
           <Button
             title="Just tonight"
+            icon={ChefHat}
             variant="secondary"
             onPress={() => router.push('/tonight')}
           />
@@ -98,7 +103,24 @@ function HouseholdRow({ me }: { me: MeOut }) {
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.md }}>
       <AvatarStack members={household.data?.members ?? [me.member]} size={40} />
-      <HeroLabel label="Household" value={me.household.name} />
+      <View style={{ flex: 1 }}>
+        <HeroLabel label="Household" value={me.household.name} />
+      </View>
+      <PressableScale
+        accessibilityRole="link"
+        accessibilityLabel="Household settings"
+        onPress={() => router.push('/household')}
+        style={{
+          width: t.touchTarget,
+          height: t.touchTarget,
+          borderRadius: t.radius.pill,
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: t.colors.heroField,
+        }}
+      >
+        <Icon icon={Settings} color={t.colors.onHero} />
+      </PressableScale>
     </View>
   );
 }
@@ -139,6 +161,7 @@ function DinnerHero({
       }
       title={meal.title}
       subtitle={usesLine(meal)}
+      aside={<RecipeArt title={meal.title} width={84} />}
     >
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.sm }}>
         <Button

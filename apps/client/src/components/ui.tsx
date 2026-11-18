@@ -3,6 +3,7 @@
  * stays consistent and every colour, font and spacing value comes from the theme tokens.
  * Browse them all at /design (src/app/(app)/design.tsx).
  */
+import type { LucideIcon } from 'lucide-react-native';
 import { useState, type ReactNode, type Ref } from 'react';
 import {
   ActivityIndicator,
@@ -18,6 +19,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { Icon } from '@/components/Icon';
 import { PressableScale } from '@/components/PressableScale';
 import type { TintName } from '@/theme/tokens';
 import { inputText } from '@/theme/inputText';
@@ -54,6 +56,7 @@ export function Screen({
   children,
   edges = ['left', 'right'],
   hero,
+  footer,
 }: {
   children: ReactNode;
   /**
@@ -64,6 +67,8 @@ export function Screen({
   edges?: readonly ('top' | 'bottom' | 'left' | 'right')[];
   /** A <Hero>: full width at the top, scrolling with the page. It clears the notch itself. */
   hero?: ReactNode;
+  /** Stays at the bottom while the page scrolls, e.g. the screen's main button. */
+  footer?: ReactNode;
 }) {
   const t = useTheme();
   const content = (
@@ -90,6 +95,21 @@ export function Screen({
         {hero}
         {content}
       </ScrollView>
+      {footer ? (
+        <View
+          style={{
+            paddingHorizontal: t.space.lg,
+            paddingTop: t.space.sm,
+            paddingBottom: t.space.lg,
+            width: '100%',
+            maxWidth: 560,
+            alignSelf: 'center',
+            gap: t.space.xs,
+          }}
+        >
+          {footer}
+        </View>
+      ) : null}
     </SafeAreaView>
   );
 }
@@ -129,11 +149,12 @@ export function Card({
   );
 }
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
+type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'dark';
 
 /**
  * Pill buttons. `primary` is lime: use one per screen, for the main thing to do next.
- * Everything else is `secondary` (white), `ghost` (text only) or `danger`.
+ * Everything else is `secondary` (white), `ghost` (text only) or `danger`. `dark` is
+ * the deep green for a screen whose main step is "go and look" (Dinner planned!).
  */
 export function Button({
   title,
@@ -143,8 +164,11 @@ export function Button({
   loading,
   compact,
   accessibilityLabel,
+  icon,
 }: {
   title: string;
+  /** A small icon before the title. Decorative: the title names the button. */
+  icon?: LucideIcon;
   /** When the visible title needs more context, e.g. "Remove" → "Remove Bob". */
   accessibilityLabel?: string;
   onPress: () => void;
@@ -167,6 +191,7 @@ export function Button({
     secondary: { bg: t.colors.surface, fg: t.colors.text, border: t.colors.border },
     ghost: { bg: 'transparent', fg: t.colors.text, border: 'transparent' },
     danger: { bg: 'transparent', fg: t.colors.danger, border: t.colors.danger },
+    dark: { bg: t.colors.tabSelected, fg: t.colors.surface, border: 'transparent' },
   };
   const { bg, fg, border } = look[variant];
 
@@ -196,11 +221,14 @@ export function Button({
       {loading ? (
         <ActivityIndicator color={fg} aria-hidden />
       ) : (
-        <RNText
-          style={[t.type.label, { color: fg, fontFamily: t.fonts.displayBold, fontSize: 16 }]}
-        >
-          {title}
-        </RNText>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.sm }}>
+          {icon ? <Icon icon={icon} size={20} color={fg} /> : null}
+          <RNText
+            style={[t.type.label, { color: fg, fontFamily: t.fonts.displayBold, fontSize: 16 }]}
+          >
+            {title}
+          </RNText>
+        </View>
       )}
     </PressableScale>
   );

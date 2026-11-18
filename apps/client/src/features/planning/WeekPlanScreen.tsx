@@ -1,5 +1,12 @@
 import { router, Stack } from 'expo-router';
-import { ArrowLeftRight, MessageCircle, Sparkles } from 'lucide-react-native';
+import {
+  ArrowLeftRight,
+  ChevronRight,
+  Ellipsis,
+  MessageCircle,
+  RotateCcw,
+  Sparkles,
+} from 'lucide-react-native';
 import { useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -12,7 +19,11 @@ import { Button, ErrorText, Field, Text } from '@/components/ui';
 import { allKept, decisionFor } from '@/features/chat/decision';
 import { peekStart, takeStart } from '@/features/chat/starters';
 import type { Proposal } from '@/features/chat/turn';
+import { useQueries } from '@tanstack/react-query';
+
+import { api, unwrap } from '@/lib/api/client';
 import { useDecideProposal } from '@/lib/api/conversations';
+import { recipeKeys } from '@/lib/api/recipes';
 import { useAlternatives } from '@/lib/api/planning';
 import { INGREDIENT_EMOJI } from '@/theme/foodEmoji';
 import { useTheme } from '@/theme/useTheme';
@@ -28,6 +39,16 @@ const dayParts = (iso: string) => {
 };
 const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`;
 
+/** "5 dinners, Mon – Fri, starting from what's in your Kitchen." */
+function planLine(days: string[], mode: 'kitchen' | 'new') {
+  const first = dayParts(days[0]).weekday;
+  const last = dayParts(days[days.length - 1]).weekday;
+  const span = days.length === 1 ? first : `${first} – ${last}`;
+  const how =
+    mode === 'kitchen' ? "starting from what's in your Kitchen" : 'with new recipes to shop for';
+  return `${plural(days.length, 'dinner')}, ${span}, ${how}.`;
+}
+
 const REFINE_IDEAS = ['Make it quicker', 'More vegetarian', 'Use more of my Kitchen'];
 
 /**
@@ -41,7 +62,9 @@ export function WeekPlanScreen() {
   const t = useTheme();
   const run = usePlanRun();
   // Whether the sheet asked for a plan: known on the first render, taken in the effect.
-  const [started] = useState(() => Boolean(peekStart()?.plan));
+  const [startPlan] = useState(() => peekStart()?.plan ?? null);
+  const started = startPlan !== null;
+  const [menu, setMenu] = useState(false);
   const [swapDay, setSwapDay] = useState<string | null>(null);
   const [refining, setRefining] = useState(false);
   const decide = useDecideProposal(run.conversationId);
@@ -74,7 +97,9 @@ export function WeekPlanScreen() {
           subtitle={
             refining
               ? 'Sweep is making your changes.'
-              : 'Sweep is choosing dinners from your Kitchen and your Dietary Rules.'
+              : startPlan
+                ? planLine(startPlan.days, startPlan.mode)
+                : 'Sweep is choosing dinners from your Kitchen and your Dietary Rules.'
           }
           steps={stepsFor(WEEK_STEPS, run.tools, Boolean(run.turn?.proposal))}
           onCancel={() => router.back()}
@@ -138,9 +163,9 @@ export function WeekPlanScreen() {
           headerRight: () =>
             run.conversationId ? (
               <PressableScale
-                accessibilityRole="link"
-                accessibilityLabel="Open the conversation with Sweep"
-                onPress={() => router.push('/plan')}
+                accessibilityRole="button"
+                accessibilityLabel="More options"
+                onPress={() => setMenu(true)}
                 style={{
                   width: t.touchTarget,
                   height: t.touchTarget,
@@ -148,7 +173,7 @@ export function WeekPlanScreen() {
                   justifyContent: 'center',
                 }}
               >
-                <Icon icon={MessageCircle} color={t.colors.text} />
+                <Icon icon={Ellipsis} color={t.colors.text} />
               </PressableScale>
             ) : null,
         }}
@@ -172,6 +197,33 @@ export function WeekPlanScreen() {
             );
           }}
         />
+      ) : null}
+      {menu ? (
+        <Sheet label="More options" title="More options" onClose={() => setMenu(false)}>
+          <View style={{ gap: t.space.sm }}>
+            <Button
+              title="See the conversation"
+              icon={MessageCircle}
+              variant="secondary"
+              onPress={() => {
+                setMenu(false);
+                router.push('/plan');
+              }}
+            />
+            <Button
+              title="Start a new plan"
+              icon={RotateCcw}
+              variant="secondary"
+              onPress={() => {
+                setMenu(false);
+                // Closes this plan without saving it; Home has Plan my week.
+                if (proposal?.id)
+                  decide.mutate({ proposalId: proposal.id, decision: { action: 'reject' } });
+                router.dismissTo('/');
+              }}
+            />
+          </View>
+        </Sheet>
       ) : null}
       {refining ? (
         <RefineSheet
@@ -226,6 +278,7 @@ function Review({
   const t = useTheme();
   const [showList, setShowList] = useState(false);
   const items = proposal.list_additions;
+  const minutesOf = useMinutes(proposal.meals.map((m) => m.recipe_id));
   const emoji = items
     .map((a) => INGREDIENT_EMOJI[a.name.toLowerCase()])
     .filter(Boolean)
@@ -241,13 +294,35 @@ function Review({
         alignSelf: 'center',
       }}
     >
-      <Text variant="title" role="heading" aria-level={1}>
-        Here&apos;s your plan
-      </Text>
-      <Text variant="label" muted>
-        {plural(proposal.meals.length, 'dinner')} · {plural(items.length, 'thing')} to buy
-      </Text>
-      <Note text={note} />
+      <View
+        accessibilityLiveRegion="polite"
+        style={{
+          flexDirection: 'row',
+          gap: t.space.md,
+          alignItems: 'flex-start',
+          backgroundColor: t.colors.actionSoft,
+          borderRadius: t.radius.lg,
+          padding: t.space.lg,
+        }}
+      >
+        <Icon icon={Sparkles} color={t.colors.onActionSoft} />
+        <View style={{ flex: 1, gap: 2 }}>
+          <Text
+            variant="heading"
+            role="heading"
+            aria-level={1}
+            style={{ color: t.colors.onActionSoft }}
+          >
+            Here&apos;s your plan
+          </Text>
+          <Text variant="label" style={{ color: t.colors.onActionSoft }}>
+            {plural(proposal.meals.length, 'dinner')} · {plural(items.length, 'thing')} to buy
+          </Text>
+          <Text variant="caption" style={{ color: t.colors.onActionSoft }}>
+            {note}
+          </Text>
+        </View>
+      </View>
 
       <View style={{ gap: t.space.sm }}>
         {proposal.meals.map((meal) => {
@@ -280,6 +355,7 @@ function Review({
                 <Text variant="label">{meal.title}</Text>
                 <Text variant="caption" muted>
                   {[
+                    minutesOf[meal.recipe_id] ? `${minutesOf[meal.recipe_id]} min` : null,
                     `For ${meal.servings}`,
                     meal.adaptation?.label,
                     meal.replaces ? `replaces ${meal.replaces}` : null,
@@ -326,9 +402,9 @@ function Review({
               {plural(items.length, 'thing')} to buy
             </Text>
             <Text aria-hidden>{emoji}</Text>
-            <Text variant="caption" muted>
-              {showList ? 'Hide' : 'Show'}
-            </Text>
+            <View style={{ transform: [{ rotate: showList ? '90deg' : '0deg' }] }}>
+              <Icon icon={ChevronRight} color={t.colors.text} />
+            </View>
           </View>
           {showList
             ? items.map((a, i) => (
@@ -354,6 +430,19 @@ function Review({
       <Button title="Add to my week" loading={approving} onPress={onApprove} />
     </ScrollView>
   );
+}
+
+/** Each planned recipe's time (cached recipe reads; the plan itself doesn't carry it). */
+function useMinutes(ids: string[]): Record<string, number | null> {
+  const found = useQueries({
+    queries: ids.map((id) => ({
+      queryKey: recipeKeys.one(id),
+      queryFn: async () =>
+        unwrap(await api.GET('/recipes/{recipe_id}', { params: { path: { recipe_id: id } } })),
+      staleTime: 10 * 60_000,
+    })),
+  });
+  return Object.fromEntries(ids.map((id, i) => [id, found[i]?.data?.total_minutes ?? null]));
 }
 
 function SwapSheet({
@@ -401,7 +490,18 @@ function SwapSheet({
             }}
           >
             <RecipeArt title={idea.title} width={48} />
-            <View style={{ flex: 1 }}>
+            <PressableScale
+              accessibilityRole="link"
+              accessibilityLabel={`${idea.title}. See the recipe`}
+              onPress={() => {
+                onClose();
+                router.push({
+                  pathname: '/recipes/[id]',
+                  params: { id: idea.id, swap: proposal.id ?? '', date },
+                });
+              }}
+              style={{ flex: 1, minHeight: t.touchTarget, justifyContent: 'center' }}
+            >
               <Text variant="label">
                 {idea.title}
                 {idea.favourite ? ' ♥' : ''}
@@ -415,7 +515,7 @@ function SwapSheet({
                   .filter(Boolean)
                   .join(' · ')}
               </Text>
-            </View>
+            </PressableScale>
             <Button
               title="Swap"
               accessibilityLabel={`Swap to ${idea.title}`}

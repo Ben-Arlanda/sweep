@@ -1,6 +1,8 @@
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import {
   ArrowLeftRight,
+  CalendarDays,
+  ShoppingCart,
   CalendarCheck,
   ChevronRight,
   ShieldCheck,
@@ -81,10 +83,13 @@ export function PlannedScreen() {
 
         <Button
           title={week ? 'View my week' : 'View tonight’s meal'}
+          variant="dark"
+          icon={CalendarDays}
           onPress={() => (week ? router.replace('/meal-plan') : router.dismissTo('/'))}
         />
         <Button
           title="See Shopping List"
+          icon={ShoppingCart}
           variant="secondary"
           onPress={() => router.replace('/lists')}
         />
@@ -96,8 +101,8 @@ export function PlannedScreen() {
           <>
             <Next
               icon={ArrowLeftRight}
-              title="Change a dinner"
-              detail="Open your week"
+              title="Swap a meal"
+              detail="Change any dinner"
               onPress={() => router.replace('/meal-plan')}
             />
             <Next
