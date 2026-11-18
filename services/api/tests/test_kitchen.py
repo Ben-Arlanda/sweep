@@ -199,10 +199,10 @@ async def test_buying_more_adds_to_what_is_there(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer
 ) -> None:
     await create_household(client, fake_issuer, "alice")
-    await tick(client, fake_issuer, "alice", await add(client, fake_issuer, "alice", "2L milk"))
-    await tick(client, fake_issuer, "alice", await add(client, fake_issuer, "alice", "500ml milk"))
+    await tick(client, fake_issuer, "alice", await add(client, fake_issuer, "alice", "2L cream"))
+    await tick(client, fake_issuer, "alice", await add(client, fake_issuer, "alice", "500ml cream"))
 
-    assert tracked(await kitchen(client, fake_issuer, "alice"))["milk"] == (
+    assert tracked(await kitchen(client, fake_issuer, "alice"))["thickened cream"] == (
         "2500",
         "ml",
         "confirmed",

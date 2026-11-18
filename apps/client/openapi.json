@@ -1161,6 +1161,66 @@
         }
       }
     },
+    "/kitchen/used-up/{ingredient_id}": {
+      "post": {
+        "tags": [
+          "kitchen"
+        ],
+        "summary": "Mark Used Up",
+        "description": "Used up (Tracked) or Ran out (Staple): out of the Kitchen and onto the list.",
+        "operationId": "mark_used_up_kitchen_used_up__ingredient_id__post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "ingredient_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Ingredient Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsedUpOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/kitchen/photos": {
       "post": {
         "tags": [
@@ -5895,6 +5955,34 @@
             "tool": "#/components/schemas/ToolEvent"
           }
         }
+      },
+      "UsedUpOut": {
+        "properties": {
+          "list_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "List Id"
+          },
+          "list_item_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "List Item Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "list_id",
+          "list_item_id"
+        ],
+        "title": "UsedUpOut",
+        "description": "Where it went on the Shopping List, so the app can offer Undo."
       },
       "ValidationError": {
         "properties": {

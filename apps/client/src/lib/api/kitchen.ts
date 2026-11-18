@@ -10,6 +10,7 @@ import { keepPreviousData, useMutation, useQuery, type QueryClient } from '@tans
 import { randomUUID } from 'expo-crypto';
 
 import { api, ApiError, unwrap } from './client';
+import { listKeys } from './lists';
 import type { components } from './schema';
 
 type Place = components['schemas']['Place'];
@@ -26,6 +27,8 @@ const mutationKeys = {
   removeStaple: ['kitchen', 'removeStaple'] as const,
   setPlace: ['kitchen', 'setPlace'] as const,
   addNew: ['kitchen', 'addNew'] as const,
+  usedUp: ['kitchen', 'usedUp'] as const,
+  unlist: ['kitchen', 'unlist'] as const,
 };
 
 type Keyed = { idempotencyKey: string };
@@ -35,6 +38,8 @@ type SetStapleVars = Keyed & { ingredientId: string; have: boolean };
 type SetPlaceVars = Keyed & { ingredientId: string; place: Place | null };
 // Two requests, so two keys, both made at tap time: a retry repeats each one safely.
 type AddNewVars = { name: string; createKey: string; setKey: string };
+type UnlistVars = Keyed & { listId: string; itemId: string };
+export type UsedUpOut = components['schemas']['UsedUpOut'];
 
 const header = (v: Keyed) => ({ 'Idempotency-Key': v.idempotencyKey });
 const scope = { id: 'kitchen' };
@@ -97,6 +102,34 @@ export function registerKitchenMutations(queryClient: QueryClient) {
         }),
       ),
     ...settled,
+  });
+
+  // Used up / Ran out: out of the Kitchen and onto the Shopping List, in one request.
+  const kitchenAndList = {
+    retry: shouldRetry,
+    onSettled: () => {
+      void queryClient.invalidateQueries({ queryKey: kitchenKeys.all });
+      void queryClient.invalidateQueries({ queryKey: listKeys.all });
+    },
+  };
+  queryClient.setMutationDefaults(mutationKeys.usedUp, {
+    mutationFn: async (v: IngredientVars) =>
+      unwrap(
+        await api.POST('/kitchen/used-up/{ingredient_id}', {
+          params: { path: { ingredient_id: v.ingredientId }, header: header(v) },
+        }),
+      ),
+    ...kitchenAndList,
+  });
+  // Undo's half on the list: take off the item Used up added.
+  queryClient.setMutationDefaults(mutationKeys.unlist, {
+    mutationFn: async (v: UnlistVars) =>
+      unwrap(
+        await api.DELETE('/lists/{list_id}/items/{item_id}', {
+          params: { path: { list_id: v.listId, item_id: v.itemId }, header: header(v) },
+        }),
+      ),
+    ...kitchenAndList,
   });
 
   // "Add 'kale'": find or create the Household Ingredient, then put it in the Kitchen.
@@ -171,6 +204,11 @@ export function useKitchenActions() {
     mutationKey: mutationKeys.addNew,
     scope,
   });
+  const usedUp = useMutation<UsedUpOut, Error, IngredientVars>({
+    mutationKey: mutationKeys.usedUp,
+    scope,
+  });
+  const unlist = useMutation<unknown, Error, UnlistVars>({ mutationKey: mutationKeys.unlist, scope });
 
   return {
     error:
@@ -179,11 +217,20 @@ export function useKitchenActions() {
       setStaple.error ??
       removeStaple.error ??
       setPlace.error ??
-      addNew.error,
+      addNew.error ??
+      usedUp.error ??
+      unlist.error,
     setAmount: (ingredientId: string, quantity: string | null) =>
       setTracked.mutate({ ingredientId, quantity, idempotencyKey: randomUUID() }),
+    /** Used up (Tracked) or Ran out (Staple): onto the Shopping List too. Resolves with
+     * where it went, for Undo. */
     usedUp: (ingredientId: string) =>
+      usedUp.mutateAsync({ ingredientId, idempotencyKey: randomUUID() }),
+    /** "It isn't here" (a misread photo): out of the Kitchen, not onto the list. */
+    remove: (ingredientId: string) =>
       removeTracked.mutate({ ingredientId, idempotencyKey: randomUUID() }),
+    unlist: (listId: string, itemId: string) =>
+      unlist.mutate({ listId, itemId, idempotencyKey: randomUUID() }),
     setStaple: (ingredientId: string, have: boolean) =>
       setStaple.mutate({ ingredientId, have, idempotencyKey: randomUUID() }),
     notAStaple: (ingredientId: string) =>

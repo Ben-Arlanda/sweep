@@ -248,6 +248,13 @@ class KitchenOut(BaseModel):
     staples: list[StapleOut]
 
 
+class UsedUpOut(BaseModel):
+    """Where it went on the Shopping List, so the app can offer Undo."""
+
+    list_id: uuid.UUID
+    list_item_id: uuid.UUID | None  # None: already on the list unticked, nothing added
+
+
 class InKitchenTrackedOut(BaseModel):
     quantity: Quantity | None
     unit: str

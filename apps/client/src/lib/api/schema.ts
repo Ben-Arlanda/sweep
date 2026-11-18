@@ -313,6 +313,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/kitchen/used-up/{ingredient_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Mark Used Up
+         * @description Used up (Tracked) or Ran out (Staple): out of the Kitchen and onto the list.
+         */
+        post: operations["mark_used_up_kitchen_used_up__ingredient_id__post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/kitchen/photos": {
         parameters: {
             query?: never;
@@ -1837,6 +1857,19 @@ export interface components {
          *     for the generated TypeScript to include every event type.
          */
         TurnEvents: components["schemas"]["TextEvent"] | components["schemas"]["ToolEvent"] | components["schemas"]["DraftEvent"] | components["schemas"]["ReplanEvent"] | components["schemas"]["ProposalEvent"] | components["schemas"]["DoneEvent"] | components["schemas"]["ErrorEvent"];
+        /**
+         * UsedUpOut
+         * @description Where it went on the Shopping List, so the app can offer Undo.
+         */
+        UsedUpOut: {
+            /**
+             * List Id
+             * Format: uuid
+             */
+            list_id: string;
+            /** List Item Id */
+            list_item_id: string | null;
+        };
         /** ValidationError */
         ValidationError: {
             /** Location */
@@ -2548,6 +2581,39 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["IngredientOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    mark_used_up_kitchen_used_up__ingredient_id__post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                ingredient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UsedUpOut"];
                 };
             };
             /** @description Validation Error */

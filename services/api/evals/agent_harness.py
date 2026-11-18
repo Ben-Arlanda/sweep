@@ -430,7 +430,10 @@ async def build_household(
         await diet.set_rules(session, hid, DietaryRules(setup.diets, frozenset(ids.values())))
     await diet.set_preferences(session, hid, setup.household_size, setup.cuisines)
     for name, ingredient_id in (await _ingredient_ids(session, list(setup.kitchen))).items():
-        await kitchen.set_tracked(session, ctx, ingredient_id, setup.kitchen[name])
+        if await kitchen.staple_of(session, hid, ingredient_id) is not None:
+            await kitchen.set_staple(session, ctx, ingredient_id, have=True)  # milk: no amount
+        else:
+            await kitchen.set_tracked(session, ctx, ingredient_id, setup.kitchen[name])
     for name in (*setup.planted_kitchen, *setup.raw_kitchen):
         # The ORM, not the API: raw names skip the one-line check on purpose.
         planted = Ingredient(household_id=hid, name=name, category="other", default_unit="count")
