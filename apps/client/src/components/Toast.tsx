@@ -35,8 +35,6 @@ type AskToast = {
   tint: TintName;
   actionLabel: string;
   onAction: () => void;
-  /** Something already happened (e.g. removed from the Kitchen): the second button undoes it. */
-  onUndo?: () => void;
 };
 export type ToastMessage = PlainToast | UndoToast | AskToast;
 type ShowToast = (message: ToastMessage) => void;
@@ -142,7 +140,6 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               <AskCard
                 message={message}
                 onAction={() => (message.onAction(), hide())}
-                onSecond={message.onUndo ? () => (message.onUndo?.(), hide()) : hide}
                 onClose={hide}
               />
             ) : (
@@ -260,13 +257,10 @@ function UndoCard({
 function AskCard({
   message,
   onAction,
-  onSecond,
   onClose,
 }: {
   message: AskToast;
   onAction: () => void;
-  /** "Undo" when the toast has one, else "Not now" (which just closes it). */
-  onSecond: () => void;
   onClose: () => void;
 }) {
   const t = useTheme();
@@ -325,7 +319,7 @@ function AskCard({
         </Pressable>
         <Pressable
           accessibilityRole="button"
-          onPress={onSecond}
+          onPress={onClose}
           style={({ pressed }) => ({
             flex: 1,
             minHeight: 48,
@@ -337,9 +331,7 @@ function AskCard({
             opacity: pressed ? 0.7 : 1,
           })}
         >
-          <Text style={[t.type.label, { color: t.colors.text }]}>
-            {message.onUndo ? 'Undo' : 'Not now'}
-          </Text>
+          <Text style={[t.type.label, { color: t.colors.text }]}>Not now</Text>
         </Pressable>
       </View>
     </View>

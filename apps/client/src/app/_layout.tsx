@@ -11,6 +11,7 @@ import { Slot } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState, type ReactNode } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { setTokenGetter } from '@/lib/api/client';
 import { CLERK_PUBLISHABLE_KEY } from '@/lib/config';
@@ -59,22 +60,25 @@ export default function RootLayout() {
   if (!ready) return null;
 
   return (
-    <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY} tokenCache={tokenCache}>
-      {/* Clock and battery icons: light on our dark theme, dark on the light one. */}
-      <StatusBar style={scheme === 'dark' ? 'light' : 'dark'} />
-      <TokenBridge>
-        <PersistQueryClientProvider
-          client={queryClient}
-          persistOptions={{
-            persister,
-            buster: CACHE_BUSTER,
-            maxAge: CACHE_MAX_AGE,
-          }}
-        >
-          <Slot />
-        </PersistQueryClientProvider>
-      </TokenBridge>
-    </ClerkProvider>
+    // Gesture handler needs one root view for swipes (Kitchen rows).
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY} tokenCache={tokenCache}>
+        {/* Clock and battery icons: light on our dark theme, dark on the light one. */}
+        <StatusBar style={scheme === 'dark' ? 'light' : 'dark'} />
+        <TokenBridge>
+          <PersistQueryClientProvider
+            client={queryClient}
+            persistOptions={{
+              persister,
+              buster: CACHE_BUSTER,
+              maxAge: CACHE_MAX_AGE,
+            }}
+          >
+            <Slot />
+          </PersistQueryClientProvider>
+        </TokenBridge>
+      </ClerkProvider>
+    </GestureHandlerRootView>
   );
 }
 
