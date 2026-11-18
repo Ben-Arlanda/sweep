@@ -253,7 +253,7 @@ export default function KitchenScreen() {
   }
 
   /**
-   * Swipe left, or ••• Remove without adding to list: gone, nothing goes on the list. A Staple
+   * Swipe left: gone, nothing goes on the list. A Staple
    * stops being a Staple. Undo puts it back as it was.
    */
   function removeFromKitchen(row: KitchenRow) {
@@ -501,10 +501,6 @@ export default function KitchenScreen() {
             onRemoveItem={() => {
               setPopover(null);
               removeItem(popRow);
-            }}
-            onRemove={() => {
-              setPopover(null);
-              removeFromKitchen(popRow);
             }}
           />
         </Popover>
@@ -916,15 +912,12 @@ function ItemMenu({
   onEdit,
   onMove,
   onRemoveItem,
-  onRemove,
 }: {
   row: KitchenRow;
   onEdit: () => void;
   onMove: () => void;
   /** Staple → Out + on the list; Non-staple → removed, list offered. */
   onRemoveItem: () => void;
-  /** The swipe's twin: gone, nothing on the list. */
-  onRemove: () => void;
 }) {
   const t = useTheme();
   return (
@@ -943,13 +936,6 @@ function ItemMenu({
       />
       <MenuItem icon={Archive} label="Storage location" chevron onPress={onEdit} divider />
       <MenuItem icon={Trash2} label="Remove item" danger onPress={onRemoveItem} divider />
-      <MenuItem
-        icon={Trash2}
-        label="Remove without adding to list"
-        danger
-        onPress={onRemove}
-        divider
-      />
     </View>
   );
 }
