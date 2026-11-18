@@ -10,6 +10,7 @@ import { useTheme } from '@/theme/useTheme';
 
 import { courseName } from './courses';
 import { cuisineName, minutesText } from './kitchenMatch';
+import { useRecipePath } from './recipePath';
 
 type Summary = components['schemas']['RecipeSummaryOut'];
 
@@ -31,6 +32,7 @@ export function recipeMeta(r: Pick<Summary, 'course' | 'total_minutes' | 'servin
  */
 export function RecipeRow({ recipe, note }: { recipe: Summary; note?: string | null }) {
   const t = useTheme();
+  const pathname = useRecipePath();
   return (
     <View
       style={{
@@ -43,7 +45,7 @@ export function RecipeRow({ recipe, note }: { recipe: Summary; note?: string | n
         boxShadow: t.shadow.card,
       }}
     >
-      <Link href={{ pathname: '/recipes/[id]', params: { id: recipe.id } }} asChild>
+      <Link href={{ pathname, params: { id: recipe.id } }} asChild>
         <PressableScale
           accessibilityRole="link"
           style={{

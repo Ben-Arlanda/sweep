@@ -1,13 +1,15 @@
 import { router, Stack } from 'expo-router';
 import {
   ArrowLeftRight,
+  Check,
   ChevronRight,
   Ellipsis,
   MessageCircle,
   RotateCcw,
+  ShoppingCart,
   Sparkles,
 } from 'lucide-react-native';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
 import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -15,20 +17,23 @@ import { Icon } from '@/components/Icon';
 import { PressableScale } from '@/components/PressableScale';
 import { RecipeArt } from '@/components/RecipeArt';
 import { Sheet } from '@/components/Sheet';
+import { useToast } from '@/components/Toast';
 import { Button, ErrorText, Field, Text } from '@/components/ui';
-import { allKept, decisionFor } from '@/features/chat/decision';
+import { decisionFor } from '@/features/chat/decision';
 import { peekStart, takeStart } from '@/features/chat/starters';
 import type { Proposal } from '@/features/chat/turn';
 import { useQueries } from '@tanstack/react-query';
 
 import { api, unwrap } from '@/lib/api/client';
 import { useDecideProposal } from '@/lib/api/conversations';
+import { useList, useListActions } from '@/lib/api/lists';
 import { recipeKeys } from '@/lib/api/recipes';
 import { useAlternatives } from '@/lib/api/planning';
 import { INGREDIENT_EMOJI } from '@/theme/foodEmoji';
 import { useTheme } from '@/theme/useTheme';
 
 import { GeneratingView } from './GeneratingView';
+import { approveTicks, toAdd } from './quickAdd';
 import { stepsFor, WEEK_STEPS } from './steps';
 import { usePlanRun } from './usePlanRun';
 
@@ -67,6 +72,8 @@ export function WeekPlanScreen() {
   const [menu, setMenu] = useState(false);
   const [swapDay, setSwapDay] = useState<string | null>(null);
   const [refining, setRefining] = useState(false);
+  // Things to buy already put on the list from here ("800 g canned tomatoes").
+  const [listed, setListed] = useState<string[]>([]);
   const decide = useDecideProposal(run.conversationId);
 
   // The sheet's request, handed over once (a reload never re-sends a paid turn).
@@ -128,10 +135,14 @@ export function WeekPlanScreen() {
         note={run.replyFor(proposal.id) ?? proposal.summary}
         error={run.error ?? decide.error?.message ?? null}
         approving={decide.isPending}
+        listed={listed}
+        setListed={setListed}
         onSwap={setSwapDay}
         onRefine={() => setRefining(true)}
         onApprove={() => {
-          const decision = decisionFor(proposal, allKept());
+          const ticks = approveTicks(proposal, listed);
+          const decision = decisionFor(proposal, ticks);
+          const quickAdded = ticks.changedAdditions.length;
           if (!decision || !proposal.id) return;
           decide.mutate(
             { proposalId: proposal.id, decision },
@@ -142,7 +153,10 @@ export function WeekPlanScreen() {
                   params: {
                     kind: 'week',
                     meals: String(done.outcome?.saved_meals ?? proposal.meals.length),
-                    items: String(done.outcome?.added_items ?? proposal.list_additions.length),
+                    items: String(
+                      (done.outcome?.added_items ?? proposal.list_additions.length - quickAdded) +
+                        quickAdded,
+                    ),
                   },
                 }),
             },
@@ -263,6 +277,8 @@ function Review({
   note,
   error,
   approving,
+  listed,
+  setListed,
   onSwap,
   onRefine,
   onApprove,
@@ -271,6 +287,8 @@ function Review({
   note: string;
   error: string | null;
   approving: boolean;
+  listed: string[];
+  setListed: Dispatch<SetStateAction<string[]>>;
   onSwap: (date: string) => void;
   onRefine: () => void;
   onApprove: () => void;
@@ -349,7 +367,7 @@ function Review({
               <PressableScale
                 accessibilityRole="link"
                 accessibilityLabel={`${weekday} ${day}: ${meal.title}. See the recipe`}
-                onPress={() => router.push(`/recipes/${meal.recipe_id}`)}
+                onPress={() => router.push(`/recipe/${meal.recipe_id}`)}
                 style={{ flex: 1, minHeight: t.touchTarget, justifyContent: 'center' }}
               >
                 <Text variant="label">{meal.title}</Text>
@@ -383,21 +401,27 @@ function Review({
       </View>
 
       {items.length > 0 ? (
-        <PressableScale
-          accessibilityRole="button"
-          accessibilityState={{ expanded: showList }}
-          accessibilityLabel={`${plural(items.length, 'thing')} to buy`}
-          onPress={() => setShowList((v) => !v)}
+        <View
           style={{
             backgroundColor: t.colors.surface,
             borderRadius: t.radius.md,
             padding: t.space.md,
             gap: t.space.sm,
             boxShadow: t.shadow.card,
-            minHeight: t.touchTarget,
           }}
         >
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.sm }}>
+          <PressableScale
+            accessibilityRole="button"
+            accessibilityState={{ expanded: showList }}
+            accessibilityLabel={`${plural(items.length, 'thing')} to buy`}
+            onPress={() => setShowList((v) => !v)}
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: t.space.sm,
+              minHeight: t.touchTarget,
+            }}
+          >
             <Text variant="label" style={{ flex: 1 }}>
               {plural(items.length, 'thing')} to buy
             </Text>
@@ -405,7 +429,7 @@ function Review({
             <View style={{ transform: [{ rotate: showList ? '90deg' : '0deg' }] }}>
               <Icon icon={ChevronRight} color={t.colors.text} />
             </View>
-          </View>
+          </PressableScale>
           {showList
             ? items.map((a, i) => (
                 <Text key={i} variant="caption">
@@ -415,7 +439,10 @@ function Review({
                 </Text>
               ))
             : null}
-        </PressableScale>
+          {showList ? (
+            <AddToList proposal={proposal} listed={listed} setListed={setListed} />
+          ) : null}
+        </View>
       ) : null}
 
       {proposal.dropped.length > 0 ? (
@@ -429,6 +456,48 @@ function Review({
       <Button title="Refine with Sweep" variant="secondary" onPress={onRefine} />
       <Button title="Add to my week" loading={approving} onPress={onApprove} />
     </ScrollView>
+  );
+}
+
+/** The plan's things to buy onto the Shopping List now, without approving the plan. */
+function AddToList({
+  proposal,
+  listed,
+  setListed,
+}: {
+  proposal: Proposal;
+  listed: string[];
+  setListed: Dispatch<SetStateAction<string[]>>;
+}) {
+  const toast = useToast();
+  const list = useList();
+  const { addItem, deleteItem } = useListActions(list.data?.id ?? '');
+  const texts = toAdd(proposal, listed);
+  const done = texts.length === 0;
+  return (
+    <Button
+      title={done ? 'On your shopping list' : 'Add to shopping list'}
+      icon={done ? Check : ShoppingCart}
+      accessibilityLabel={
+        done ? 'On your shopping list' : `Add ${plural(texts.length, 'thing')} to shopping list`
+      }
+      variant="secondary"
+      compact
+      disabled={done || !list.data}
+      onPress={() => {
+        const ids = texts.map(addItem);
+        setListed((before) => [...before, ...texts]);
+        toast({
+          kind: 'undo',
+          text: 'Added to shopping list',
+          detail: plural(texts.length, 'thing'),
+          onUndo: () => {
+            ids.forEach(deleteItem);
+            setListed((before) => before.filter((text) => !texts.includes(text)));
+          },
+        });
+      }}
+    />
   );
 }
 
@@ -496,7 +565,7 @@ function SwapSheet({
               onPress={() => {
                 onClose();
                 router.push({
-                  pathname: '/recipes/[id]',
+                  pathname: '/recipe/[id]',
                   params: { id: idea.id, swap: proposal.id ?? '', date },
                 });
               }}

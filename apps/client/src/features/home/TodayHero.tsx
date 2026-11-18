@@ -168,7 +168,7 @@ function DinnerHero({
           title="See the recipe"
           variant={isCooked ? 'secondary' : 'primary'}
           compact
-          onPress={() => router.push(`/recipes/${meal.recipe_id}`)}
+          onPress={() => router.push(`/recipe/${meal.recipe_id}`)}
         />
         {isCooked ? (
           <Button
@@ -220,7 +220,7 @@ function Tomorrow({
       accessibilityLabel={
         meal ? `${when}: ${meal.title}. See the recipe` : `${when}: nothing planned yet. Plan it`
       }
-      onPress={meal ? () => router.push(`/recipes/${meal.recipe_id}`) : onPlan}
+      onPress={meal ? () => router.push(`/recipe/${meal.recipe_id}`) : onPlan}
       style={{
         flexDirection: 'row',
         flexWrap: 'wrap',

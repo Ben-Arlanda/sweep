@@ -222,7 +222,7 @@ function ideaMeta(idea: DinnerIdea) {
 
 function openRecipe(idea: DinnerIdea, today: string | null) {
   router.push({
-    pathname: '/recipes/[id]',
+    pathname: '/recipe/[id]',
     params: today ? { id: idea.id, plan: today } : { id: idea.id },
   });
 }
@@ -517,7 +517,7 @@ function SweepsPick({
         <PressableScale
           accessibilityRole="link"
           accessibilityLabel={`${title}. See the recipe`}
-          onPress={() => router.push(`/recipes/${recipeId}`)}
+          onPress={() => router.push(`/recipe/${recipeId}`)}
           style={{
             backgroundColor: t.colors.surface,
             borderRadius: t.radius.lg,

@@ -32,6 +32,7 @@ import {
 } from '@/features/recipes/kitchenMatch';
 import { swapLine, swapsOf } from '@/features/recipes/adaptations';
 import { RecipeRow } from '@/features/recipes/RecipeRow';
+import { useRecipePath } from '@/features/recipes/recipePath';
 import { conversationKeys, useDecideProposal } from '@/lib/api/conversations';
 import { useImportedRecipeActions, useImportedRecipes } from '@/lib/api/imports';
 import { useKitchen } from '@/lib/api/kitchen';
@@ -55,7 +56,7 @@ type List = components['schemas']['ShoppingListDetailOut'];
  * Something you need shows "+ Need": one tap puts it on the Shopping List. Anything
  * already unticked on the list shows "On list", the same rule the planner uses.
  *
- * Laid out as Ingredients / Steps / Notes tabs (slice 6e). A Recipe Adaptation (ADR 0021)
+ * Laid out as Ingredients / Method / Notes tabs (slice 6e). A Recipe Adaptation (ADR 0021)
  * links back to its parent; its Swaps and a parent's Adaptations are under Notes.
  */
 export default function RecipeScreen() {
@@ -170,7 +171,7 @@ export default function RecipeScreen() {
         </View>
       ) : null}
 
-      {tab === 'steps' ? (
+      {tab === 'method' ? (
         <View style={{ gap: t.space.md }}>
           {swaps.length > 0 ? (
             <Text variant="caption" muted>
@@ -232,14 +233,14 @@ export default function RecipeScreen() {
   );
 }
 
-type Tab = 'ingredients' | 'steps' | 'notes';
+type Tab = 'ingredients' | 'method' | 'notes';
 const TABS: { value: Tab; label: string }[] = [
   { value: 'ingredients', label: 'Ingredients' },
-  { value: 'steps', label: 'Steps' },
+  { value: 'method', label: 'Method' },
   { value: 'notes', label: 'Notes' },
 ];
 
-/** Ingredients / Steps / Notes: a tab list, so screen readers say "tab, 1 of 3, selected". */
+/** Ingredients / Method / Notes: a tab list, so screen readers say "tab, 1 of 3, selected". */
 function Tabs({ value, onChange }: { value: Tab; onChange: (tab: Tab) => void }) {
   const t = useTheme();
   return (
@@ -441,11 +442,12 @@ function PlanForDay({ date, recipeId, title }: { date: string; recipeId: string;
 function AdaptedFrom({ parentId }: { parentId: string }) {
   const t = useTheme();
   const parent = useRecipe(parentId);
+  const pathname = useRecipePath();
   if (!parent.data) return null;
   return (
     <Pressable
       accessibilityRole="link"
-      onPress={() => router.push({ pathname: '/recipes/[id]', params: { id: parentId } })}
+      onPress={() => router.push({ pathname, params: { id: parentId } })}
       style={{ minHeight: t.touchTarget, justifyContent: 'center' }}
     >
       <Text style={{ textDecorationLine: 'underline' }}>Adapted from {parent.data.title}</Text>
@@ -479,6 +481,7 @@ function DeleteAdaptation({
   parentId: string;
 }) {
   const remove = useDeleteAdaptation();
+  const pathname = useRecipePath();
   const [asking, setAsking] = useState(false);
   return (
     <View>
@@ -500,7 +503,7 @@ function DeleteAdaptation({
             try {
               await remove.mutateAsync({ id, idempotencyKey: randomUUID() });
               setAsking(false);
-              router.replace({ pathname: '/recipes/[id]', params: { id: parentId } });
+              router.replace({ pathname, params: { id: parentId } });
             } catch {
               setAsking(false);
             }

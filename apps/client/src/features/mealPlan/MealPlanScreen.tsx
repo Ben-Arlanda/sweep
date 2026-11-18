@@ -182,7 +182,7 @@ function Meal({ meal }: { meal: PlannedMeal }) {
       <Pressable
         accessibilityRole="link"
         accessibilityLabel={`${meal.title}, serves ${meal.servings}${isCooked ? ', cooked' : ''}`}
-        onPress={() => router.push(`/recipes/${meal.recipe_id}`)}
+        onPress={() => router.push(`/recipe/${meal.recipe_id}`)}
         style={{ minHeight: t.touchTarget, justifyContent: 'center' }}
       >
         <Text style={{ textDecorationLine: 'underline' }}>{meal.title}</Text>
