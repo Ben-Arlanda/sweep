@@ -1,14 +1,14 @@
 import { router } from 'expo-router';
 import { CalendarDays, ChefHat, Pencil, Settings } from 'lucide-react-native';
 import { useState } from 'react';
-import { View } from 'react-native';
+import { Text as RNText, View } from 'react-native';
 
 import { AvatarStack } from '@/components/Avatar';
 import { Hero, HeroLabel } from '@/components/Hero';
 import { Icon } from '@/components/Icon';
 import { PressableScale } from '@/components/PressableScale';
 import { ConfirmDialog } from '@/components/ConfirmDialog';
-import { Button, ErrorText, Highlight } from '@/components/ui';
+import { Button, ErrorText } from '@/components/ui';
 import { PlanSheet, startPlan } from '@/features/mealPlan/PlanSheet';
 import { addDays, mondayOf } from '@/features/mealPlan/week';
 import type { MeOut } from '@/lib/api/client';
@@ -67,7 +67,8 @@ export function TodayHero({ me }: { me: MeOut }) {
       top={<HouseholdRow me={me} />}
       title={
         <>
-          What&apos;s <Highlight>cooking</Highlight> today?
+          What&apos;s {/* Lime words, no pill: lime on Home's blue is about 5.9:1. */}
+          <RNText style={{ color: t.colors.action }}>cooking</RNText> today?
         </>
       }
       subtitle="Your meals, kitchen and lists in one place."

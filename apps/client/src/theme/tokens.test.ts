@@ -141,6 +141,10 @@ describe("Home's blue page (homeColors) meets WCAG AA", () => {
     expect(contrastRatio(fg as string, bg as string)).toBeGreaterThanOrEqual(AA);
   });
 
+  it('lime words in the Home title read on the blue (AA text)', () => {
+    expect(contrastRatio(c.action, c.background)).toBeGreaterThanOrEqual(AA);
+  });
+
   it('lime buttons stand out from the blue (3:1 for controls)', () => {
     expect(contrastRatio(c.action, c.background)).toBeGreaterThanOrEqual(3);
   });
