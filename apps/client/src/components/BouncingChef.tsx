@@ -12,13 +12,12 @@ import Animated, {
 } from 'react-native-reanimated';
 
 const BOUNCE_MS = 550; // up, then down: about one bounce a second
-// The picture's own background, so it sits on a matching circle in either theme.
-const CHEF_PAPER = '#fcf7f3';
 
 /**
- * Sweep's chef, bouncing while Sweep works (Generating screens). Squashes a little as it
- * lands and its shadow shrinks as it rises. Stands still when the phone asks for less
- * motion. Decorative: the heading beside it says what's happening.
+ * Sweep's chef, bouncing and blinking while Sweep works (Generating screens). Squashes a
+ * little as it lands and its shadow shrinks as it rises. The blink is an animated WebP
+ * cut out of the designer's GIF, so it sits on any background. Stands still, eyes open,
+ * when the phone asks for less motion. Decorative: the heading says what's happening.
  */
 export function BouncingChef({ size = 180 }: { size?: number }) {
   const reduceMotion = useReducedMotion();
@@ -61,18 +60,16 @@ export function BouncingChef({ size = 180 }: { size?: number }) {
           {
             width: size,
             height: size,
-            borderRadius: size / 2,
-            backgroundColor: CHEF_PAPER,
-            overflow: 'hidden',
             transformOrigin: 'bottom',
           },
           body,
         ]}
       >
         <Image
-          source={require('../../assets/images/chef.png')}
+          source={require('../../assets/images/chef-blink.webp')}
           style={{ width: size, height: size }}
-          contentFit="cover"
+          contentFit="contain"
+          autoplay={!reduceMotion}
         />
       </Animated.View>
       <Animated.View
