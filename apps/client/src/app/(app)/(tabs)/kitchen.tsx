@@ -1,24 +1,15 @@
 import {
   Archive,
-  Beef,
   Camera,
   Check,
-  ChevronUp,
   Container,
-  CupSoda,
-  Croissant,
   Ellipsis,
-  Fish,
   Leaf,
-  Milk,
-  Package,
   Pencil,
   Refrigerator,
-  Salad,
   Search,
   ShoppingCart,
   Snowflake,
-  Sparkles,
   Tag,
   Trash2,
   TriangleAlert,
@@ -43,6 +34,7 @@ import {
 } from 'react-native';
 
 import { FoodThumb } from '@/components/FoodThumb';
+import { CategoryAccordion, toggled } from '@/components/CategoryAccordion';
 import { MenuItem } from '@/components/MenuItem';
 import { SwipeToRemove } from '@/components/SwipeToRemove';
 import { Icon } from '@/components/Icon';
@@ -92,19 +84,6 @@ const PLACE_ICON: Record<Place, LucideIcon> = {
   fridge: Refrigerator,
   freezer: Snowflake,
   cupboard: Archive,
-};
-
-const CATEGORY_ICON: Record<string, LucideIcon> = {
-  spices: Sparkles,
-  pantry: Package,
-  bakery: Croissant,
-  produce: Salad,
-  dairy: Milk,
-  chilled: Refrigerator,
-  meat: Beef,
-  seafood: Fish,
-  frozen: Snowflake,
-  drinks: CupSoda,
 };
 
 const placeLabel = (place: Place) => PLACES.find((p) => p.place === place)?.label ?? place;
@@ -405,64 +384,31 @@ export default function KitchenScreen() {
       {shown.map((section) => {
         const open = !closed.has(section.category);
         return (
-          <View
+          <CategoryAccordion
             key={section.category}
-            style={{
-              backgroundColor: t.colors.surface,
-              borderRadius: t.radius.lg,
-              boxShadow: t.shadow.card,
-            }}
+            category={section.category}
+            label={section.label}
+            count={section.rows.length}
+            open={open}
+            onToggle={() => setClosed((now) => toggled(now, section.category))}
           >
-            <Pressable
-              accessibilityRole="button"
-              accessibilityState={{ expanded: open }}
-              accessibilityLabel={`${section.label}, ${section.rows.length} items`}
-              onPress={() =>
-                setClosed((now) => {
-                  const next = new Set(now);
-                  if (open) next.add(section.category);
-                  else next.delete(section.category);
-                  return next;
-                })
-              }
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: t.space.sm,
-                paddingHorizontal: t.space.lg,
-                minHeight: 56,
-              }}
-            >
-              <Icon icon={CATEGORY_ICON[section.category] ?? Package} color={t.colors.text} />
-              <Text variant="heading" accessibilityRole="header" style={{ fontSize: 18 }}>
-                {section.label}
-              </Text>
-              <Text variant="caption" muted style={{ flex: 1 }}>
-                {section.rows.length} items
-              </Text>
-              <View style={{ transform: [{ rotate: open ? '0deg' : '180deg' }] }}>
-                <Icon icon={ChevronUp} size={20} color={t.colors.text} strong />
-              </View>
-            </Pressable>
-            {open
-              ? section.rows.map((row) => (
-                  <SwipeToRemove
-                    key={row.id}
-                    background={t.colors.surface}
-                    onRemove={() => removeFromKitchen(row)}
-                  >
-                    <ItemRow
-                      row={row}
-                      onList={isOnList(row)}
-                      onStatus={(anchor) => setPopover({ id: row.id, kind: 'status', anchor })}
-                      onMenu={(anchor) => setPopover({ id: row.id, kind: 'menu', anchor })}
-                      onOpen={() => setSheet(row.id)}
-                      onAdd={() => void addToList(row)}
-                    />
-                  </SwipeToRemove>
-                ))
-              : null}
-          </View>
+            {section.rows.map((row) => (
+              <SwipeToRemove
+                key={row.id}
+                background={t.colors.surface}
+                onRemove={() => removeFromKitchen(row)}
+              >
+                <ItemRow
+                  row={row}
+                  onList={isOnList(row)}
+                  onStatus={(anchor) => setPopover({ id: row.id, kind: 'status', anchor })}
+                  onMenu={(anchor) => setPopover({ id: row.id, kind: 'menu', anchor })}
+                  onOpen={() => setSheet(row.id)}
+                  onAdd={() => void addToList(row)}
+                />
+              </SwipeToRemove>
+            ))}
+          </CategoryAccordion>
         );
       })}
 

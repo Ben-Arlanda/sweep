@@ -9,6 +9,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { AvatarStack } from '@/components/Avatar';
+import { CategoryAccordion, toggled } from '@/components/CategoryAccordion';
 import { Checkbox } from '@/components/Checkbox';
 import { ChoiceChips } from '@/components/ChoiceChips';
 import { Icon } from '@/components/Icon';
@@ -16,17 +17,9 @@ import { MenuItem } from '@/components/MenuItem';
 import { Pill } from '@/components/Pill';
 import { measureAnchor, Popover, type Anchor } from '@/components/Popover';
 import { useToast } from '@/components/Toast';
-import {
-  Button,
-  Card,
-  ErrorText,
-  Field,
-  Loading,
-  Screen,
-  SectionLabel,
-  Text,
-} from '@/components/ui';
+import { Button, Card, ErrorText, Field, Loading, Screen, Text } from '@/components/ui';
 import { useMembers } from '@/features/household/useMembers';
+import { listSections } from '@/features/lists/categories';
 import { shoppingOrder } from '@/features/lists/listCache';
 import { LinkSheet } from '@/features/lists/LinkSheet';
 import { ShopSheet } from '@/features/lists/ShopSheet';
@@ -70,6 +63,8 @@ function ListContent({ list }: { list: ListDetail }) {
   const [menu, setMenu] = useState<{ item: Item; anchor: Anchor } | null>(null);
   const [tagging, setTagging] = useState<Item | null>(null);
   const [linking, setLinking] = useState<Item | null>(null);
+  // Food categories folded away, by category (open by default).
+  const [closed, setClosed] = useState<Set<string>>(() => new Set());
 
   const { shops } = list;
   // A Shop deleted on another phone while we were filtering by it: show everything.
@@ -128,11 +123,27 @@ function ListContent({ list }: { list: ListDetail }) {
       <AddItem onAdd={actions.addItem} />
       <ErrorText message={actions.error?.message} />
 
-      <View style={{ gap: t.space.sm }}>
-        <SectionLabel>To buy</SectionLabel>
-        {toBuy.length === 0 ? <Text muted>Nothing left to buy. Nice work.</Text> : null}
-        {toBuy.map(row)}
-      </View>
+      {toBuy.length === 0 ? <Text muted>Nothing left to buy. Nice work.</Text> : null}
+      {listSections(toBuy).map((section) => (
+        // The whole card glides away when its last item is ticked, like a row does.
+        <Animated.View
+          key={section.category}
+          exiting={FadeOut.duration(t.motion.duration.base).reduceMotion(ReduceMotion.System)}
+          layout={LinearTransition.duration(t.motion.duration.base).reduceMotion(
+            ReduceMotion.System,
+          )}
+        >
+          <CategoryAccordion
+            category={section.category}
+            label={section.label}
+            count={section.items.length}
+            open={!closed.has(section.category)}
+            onToggle={() => setClosed((now) => toggled(now, section.category))}
+          >
+            {section.items.map(row)}
+          </CategoryAccordion>
+        </Animated.View>
+      ))}
 
       {menu ? (
         <Popover
@@ -275,9 +286,10 @@ function ItemRow({
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          backgroundColor: t.colors.surface,
-          borderRadius: t.radius.md,
-          boxShadow: t.shadow.card,
+          // A line between rows inside the category card, like the Kitchen's.
+          marginHorizontal: t.space.sm,
+          borderTopWidth: 1,
+          borderTopColor: t.colors.border,
         }}
       >
         {/* No custom label: the visible text ("Milk, Coles, 2 L") is the
