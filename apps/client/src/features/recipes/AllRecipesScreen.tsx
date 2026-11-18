@@ -138,7 +138,11 @@ export function AllRecipesScreen() {
       </View>
 
       {countText ? (
-        <Text variant="label" accessibilityLiveRegion="polite">
+        <Text
+          variant="label"
+          accessibilityLiveRegion="polite"
+          style={{ color: t.colors.onBackground }}
+        >
           {countText}
         </Text>
       ) : null}
@@ -218,10 +222,15 @@ function Results({
   error: string | null;
   empty: boolean;
 }) {
+  const t = useTheme();
   if (loading) return <Loading />;
   if (error) return <ErrorText message={error} />;
   if (empty)
-    return <Text muted>Nothing fits those filters. Try a longer time or another course.</Text>;
+    return (
+      <Text style={{ color: t.colors.onBackgroundMuted }}>
+        Nothing fits those filters. Try a longer time or another course.
+      </Text>
+    );
   return null;
 }
 
