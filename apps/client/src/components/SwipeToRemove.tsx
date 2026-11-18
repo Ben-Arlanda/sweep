@@ -30,15 +30,16 @@ export function SwipeToRemove({
   return (
     <Animated.View
       onLayout={(e) => setWidth(e.nativeEvent.layout.width)}
-      exiting={FadeOut.duration(t.motion.duration.base).reduceMotion(ReduceMotion.System)}
-      layout={LinearTransition.duration(t.motion.duration.base).reduceMotion(ReduceMotion.System)}
+      exiting={FadeOut.duration(t.motion.duration.fast).reduceMotion(ReduceMotion.System)}
+      layout={LinearTransition.duration(t.motion.duration.fast).reduceMotion(ReduceMotion.System)}
     >
       <ReanimatedSwipeable
         friction={1.2}
         overshootRight={false}
         rightThreshold={width > 0 ? width * 0.4 : 120}
         childrenContainerStyle={{ backgroundColor: background }}
-        onSwipeableOpen={onRemove}
+        // As soon as the finger lifts past the line, not after the panel finishes opening.
+        onSwipeableWillOpen={onRemove}
         renderRightActions={() => (
           <View
             aria-hidden
