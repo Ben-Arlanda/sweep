@@ -24,6 +24,7 @@ import { useToast } from '@/components/Toast';
 import { RecipeArt } from '@/components/RecipeArt';
 import { Button, ErrorText, Loading, Screen, SectionLabel, Text } from '@/components/ui';
 import { formatDay } from '@/features/chat/format';
+import { dayParts } from '@/features/mealPlan/week';
 import { hostOf } from '@/features/imports/ReviewScreen';
 import { ruleBreakHint, ruleBreakText } from '@/features/imports/ruleBreaks';
 import { courseName, type Course } from '@/features/recipes/courses';
@@ -482,9 +483,10 @@ function PlanForDay({
   return (
     <View style={{ gap: 4 }}>
       <View style={{ flexDirection: 'row', gap: t.space.sm }}>
-        <View style={{ flex: 1 }}>
+        {/* The main button gets more room, so "Plan for Sun 22" stays on one line. */}
+        <View style={{ flex: 1.3 }}>
           <Button
-            title={!day || day === today ? 'Cook tonight' : `Plan for ${formatDay(day)}`}
+            title={!day || day === today ? 'Cook tonight' : `Plan for ${dayLabel(day)}`}
             disabled={!day}
             loading={planDay.isPending && !picking}
             onPress={() => day && plan(day)}
@@ -761,4 +763,10 @@ function StatusPill({ have, name, onAdd }: { have: Have; name: string; onAdd?: (
       {pill}
     </Pressable>
   );
+}
+
+/** "Sun 22": no month, because only this week and next can be planned. */
+function dayLabel(iso: string): string {
+  const { weekday, day } = dayParts(iso);
+  return `${weekday} ${day}`;
 }
