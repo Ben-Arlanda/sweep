@@ -337,6 +337,7 @@ Each slice is a feature branch and a focused PR that works end to end.
 | 6c | `feature/home-today` | Home "Today" showing tonight's Planned Meal (the Kitchen part moved to 3c) | (product) |
 | 6e | `feature/tonight-week-screens` | Plan my week and Just tonight on their own screens (Generating, Dinner Ideas, Review plan, saved); Swaps by code; Favourites (hearts) in ranking (ADR 0025) | (product; deterministic guardrails) |
 | 6f | `feature/recipes-journey-a`, `-b` | Recipes tab journey: Dinner ideas setup (mood, Ready in, Serves) on the shared Dinner Ideas screens, All recipes (courses, filters, sort, count) | (product; deterministic) |
+| 6g | `feature/home-plan-tab` | Home "What's cooking today?": Tonight card or Your meal plan, the lime button that follows the plan (Plan my week / Edit my week / Plan next week), quick tiles, recipe ideas; the Plan tab (this/next week, ••• Cooked / Swap / Remove); Household behind the cog; the new lime chef (ADR 0026) | (product) |
 | 8 | `feature/agent-evals` | Scenario set, deterministic graders, baseline planner, Langfuse, cost tracking | Evaluation & observability |
 | 9 | `feature/retrieval-evals` | Retrieval Set (51 queries), R2 keyword, R3 fusion, R4 rerank, comparison report; R1 stays (ADR 0022) | Advanced RAG |
 | 3e | `feature/kitchen-photos` | Kitchen Photos: photos of a Place suggest Kitchen items, a pre-ticked review adds or refreshes them (never removes), photo eval with a pre-set bar (ADR 0023) | Multimodal input, AI security, evaluation |
@@ -445,7 +446,7 @@ Known gaps from 6c: tapping Cooked or Undo swaps the button, so keyboard focus d
 - **Approval = untick, then approve.** The Proposal card has a checkbox per Planned Meal and per list addition. Bigger changes go through chat, and the agent re-proposes (the earlier Proposal becomes *superseded*).
 - A Proposal meal on a day that already has a Planned Meal **replaces** it, and the card says so before approving. One dinner per day.
 - Agent additions go to the one list, untagged. Only the Member who started the Conversation can approve. The confirmation after approval is plain code, not an LLM call.
-- The Meal Plan screen opens from Home, not a new tab.
+- The Meal Plan screen opens from Home, not a new tab. *(Reversed 2026-11-18: it is now the Plan tab, ADR 0026.)*
 
 **Slice 8 decisions** (2026-11-15, grilled with the product owner):
 - **Live model calls, run by hand only:** `uv run python -m evals.agent --model sonnet|haiku --repeats 3 --max-spend 5`. No nightly CI eval (it would re-measure an unchanged prompt for money). Graders are tested free in pytest on scripted runs. Say before each live batch.
