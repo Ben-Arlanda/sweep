@@ -1,4 +1,4 @@
-import { Ellipsis, Link2, Store, Trash2 } from 'lucide-react-native';
+import { Ellipsis, Link2, ShoppingBasket, Store, Trash2 } from 'lucide-react-native';
 import { useRef, useState } from 'react';
 import { Pressable, View, type HostInstance, type TextInputInstance } from 'react-native';
 import Animated, {
@@ -17,7 +17,7 @@ import { MenuItem } from '@/components/MenuItem';
 import { Pill } from '@/components/Pill';
 import { measureAnchor, Popover, type Anchor } from '@/components/Popover';
 import { useToast } from '@/components/Toast';
-import { Button, Card, ErrorText, Field, Loading, Screen, Text } from '@/components/ui';
+import { Button, ErrorText, Field, Loading, Screen, TAB_ROOT, Text } from '@/components/ui';
 import { useMembers } from '@/features/household/useMembers';
 import { listSections } from '@/features/lists/categories';
 import { shoppingOrder } from '@/features/lists/listCache';
@@ -88,25 +88,21 @@ function ListContent({ list }: { list: ListDetail }) {
   );
 
   return (
-    <Screen>
-      <Card tint={tintFor(list.id)} style={{ gap: t.space.sm }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-            gap: t.space.md,
-          }}
-        >
-          <Text variant="title" accessibilityRole="header" style={{ flex: 1 }}>
+    <Screen edges={TAB_ROOT}>
+      {/* A plain header on the page (no coloured card), a little lower than the notch. */}
+      <View style={{ gap: t.space.xs, paddingTop: t.space.lg }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.sm }}>
+          <Icon icon={ShoppingBasket} size={28} color={t.colors.text} />
+          <Text variant="display" accessibilityRole="header" style={{ flex: 1 }}>
             Shopping List
           </Text>
           <AvatarStack members={members} size={28} />
         </View>
-        <Text accessibilityLiveRegion="polite">
+        <Text muted accessibilityLiveRegion="polite">
           {summary}
           {sync ? ` · ${sync}` : ''}
         </Text>
-      </Card>
+      </View>
 
       {shops.length > 0 ? (
         <ChoiceChips
