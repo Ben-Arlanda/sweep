@@ -565,7 +565,7 @@ function TabButton({
   onPress: () => void;
 }) {
   const t = useTheme();
-  // Selected: the In stock green, with the card colour as text (7:1 or better).
+  // Selected: deep green, with the card colour as text.
   const fg = on ? t.colors.surface : t.colors.text;
   return (
     <Pressable
@@ -576,7 +576,7 @@ function TabButton({
         flex: 1,
         minHeight: 46,
         borderRadius: t.radius.pill,
-        backgroundColor: on ? t.stock.in_stock.fg : 'transparent',
+        backgroundColor: on ? t.colors.tabSelected : 'transparent',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',

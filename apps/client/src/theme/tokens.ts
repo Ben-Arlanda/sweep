@@ -55,6 +55,8 @@ export type ColorTokens = {
   dangerSoft: string;
   /** A switch's track when off: dark enough to see on a card (3:1, like any control). */
   switchOff: string;
+  /** The selected Staples / Non-staples tab: deep green, card-coloured text on it. */
+  tabSelected: string;
   /**
    * The rounded panel at the top of the main screens. Pale lime on the light theme; on
    * the dark theme a lighter green-grey, so it still stands out from the page.
@@ -83,6 +85,7 @@ export const colors: Record<'light' | 'dark', ColorTokens> = {
     danger: palette.red600,
     dangerSoft: palette.red100,
     switchOff: '#8f8a7d',
+    tabSelected: '#174a20',
     hero: palette.limeSoft,
     onHero: palette.ink,
     onHeroMuted: '#4d5338',
@@ -104,6 +107,7 @@ export const colors: Record<'light' | 'dark', ColorTokens> = {
     danger: palette.red300,
     dangerSoft: '#4a1f19',
     switchOff: '#6b7262',
+    tabSelected: '#bfe8c3',
     hero: '#262b21',
     onHero: palette.mist100,
     onHeroMuted: '#bfc4b3',

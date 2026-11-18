@@ -68,7 +68,7 @@ describe.each(schemes)('%s stock colours (ADR 0024)', (scheme) => {
 describe.each(schemes)('%s controls are visible (3:1, WCAG 1.4.11)', (scheme) => {
   it('the selected Staples / Non-staples tab (text on green)', () => {
     expect(
-      contrastRatio(colors[scheme].surface, stockColors[scheme].in_stock.fg),
+      contrastRatio(colors[scheme].surface, colors[scheme].tabSelected),
     ).toBeGreaterThanOrEqual(4.5);
   });
 
