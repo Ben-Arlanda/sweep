@@ -190,7 +190,7 @@ function AccountCard() {
           </Text>
           <Button
             title="Yes, delete my account"
-            variant="danger"
+            variant="dangerSolid"
             loading={deleteMyData.isPending}
             onPress={deleteAccount}
           />

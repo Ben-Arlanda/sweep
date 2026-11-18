@@ -158,7 +158,15 @@ export function Card({
 }
 
 type ButtonVariant =
-  'primary' | 'secondary' | 'ghost' | 'danger' | 'dark' | 'strong' | 'outline' | 'lavender';
+  | 'primary'
+  | 'secondary'
+  | 'ghost'
+  | 'danger'
+  | 'dark'
+  | 'strong'
+  | 'outline'
+  | 'lavender'
+  | 'dangerSolid';
 
 /**
  * Pill buttons. `primary` is lime: use one per screen, for the main thing to do next.
@@ -208,6 +216,8 @@ export function Button({
     // A quiet second action (Undo): see-through, thin border, muted text.
     outline: { bg: 'transparent', fg: t.colors.textMuted, border: t.colors.border },
     lavender: { bg: t.colors.lavender, fg: t.colors.onLavender, border: 'transparent' },
+    // The step that actually deletes something: solid red, white text.
+    dangerSolid: { bg: t.colors.danger, fg: t.colors.onDanger, border: 'transparent' },
   };
   const { bg, fg, border } = look[variant];
 

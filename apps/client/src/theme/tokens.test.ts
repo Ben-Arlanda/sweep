@@ -39,6 +39,7 @@ describe.each(schemes)('%s theme meets WCAG AA for text', (scheme) => {
     ['toast text', c.onInverse, c.inverse],
     ['strong button text', c.onStrong, c.strong],
     ['lavender button text', c.onLavender, c.lavender],
+    ['solid danger button text', c.onDanger, c.danger],
     ['danger on background', c.danger, c.background],
     ['danger on surface', c.danger, c.surface],
     ['danger on soft danger', c.danger, c.dangerSoft],

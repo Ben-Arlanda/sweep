@@ -81,6 +81,8 @@ export type ColorTokens = {
   /** Soft lavender for a gentle button (Home's View recipe), ink text on it. */
   lavender: string;
   onLavender: string;
+  /** Text on a solid danger button ("Yes, delete my account"). */
+  onDanger: string;
 };
 
 export const colors: Record<'light' | 'dark', ColorTokens> = {
@@ -114,6 +116,7 @@ export const colors: Record<'light' | 'dark', ColorTokens> = {
     onStrong: palette.white,
     lavender: '#e9deff',
     onLavender: palette.ink,
+    onDanger: palette.white,
   },
   dark: {
     background: palette.night900,
@@ -145,6 +148,7 @@ export const colors: Record<'light' | 'dark', ColorTokens> = {
     onStrong: palette.white,
     lavender: '#e9deff',
     onLavender: palette.ink,
+    onDanger: palette.ink,
   },
 };
 
