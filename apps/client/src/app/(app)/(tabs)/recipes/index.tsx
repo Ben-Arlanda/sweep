@@ -30,9 +30,10 @@ export default function RecipesScreen() {
   const [text, setText] = useState('');
   const [maxMinutes, setMaxMinutes] = useState<number | null>(null);
   const [course, setCourse] = useState<Course | null>(null);
+  const [favourites, setFavourites] = useState(false);
   const q = useDebounced(text.trim());
   const searching = q.length >= 2;
-  const filters = { maxMinutes, course };
+  const filters = { maxMinutes, course, favourites };
 
   const search = useRecipeSearch(q, filters);
   const browse = useRecipeBrowse(filters, !searching);
@@ -56,6 +57,18 @@ export default function RecipesScreen() {
       }
     >
       {searching ? null : <YourRecipes />}
+      <FilterGroup label="Show">
+        <ChoiceChips
+          label="Show"
+          size="small"
+          options={[
+            { label: 'All recipes', value: false },
+            { label: 'Favourites', value: true },
+          ]}
+          value={favourites}
+          onChange={setFavourites}
+        />
+      </FilterGroup>
       <FilterGroup label="Ready in">
         <ChoiceChips
           label="Ready in"

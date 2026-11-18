@@ -5,7 +5,7 @@ import { Pressable, View } from 'react-native';
 import { AvatarStack } from '@/components/Avatar';
 import { Hero, HeroLabel } from '@/components/Hero';
 import { Button, ErrorText, Highlight, Text } from '@/components/ui';
-import { requestPlan, requestStart } from '@/features/chat/starters';
+import { requestPlan } from '@/features/chat/starters';
 import { formatDay } from '@/features/chat/format';
 import { PlanSheet } from '@/features/mealPlan/PlanSheet';
 import { addDays, mondayOf, type PlannedMeal } from '@/features/mealPlan/week';
@@ -43,9 +43,9 @@ export function TodayHero({ me }: { me: MeOut }) {
   const sheet = planning ? (
     <PlanSheet
       onClose={() => setPlanning(false)}
-      onPick={(mode, days) => {
-        requestPlan(mode, days);
-        router.push('/plan');
+      onPick={(mode, days, tweaks) => {
+        requestPlan(mode, days, tweaks);
+        router.push('/plan-week');
       }}
     />
   ) : null;
@@ -82,10 +82,7 @@ export function TodayHero({ me }: { me: MeOut }) {
           <Button
             title="Just tonight"
             variant="secondary"
-            onPress={() => {
-              requestStart('tonight');
-              router.push('/plan');
-            }}
+            onPress={() => router.push('/tonight')}
           />
         </View>
       </View>

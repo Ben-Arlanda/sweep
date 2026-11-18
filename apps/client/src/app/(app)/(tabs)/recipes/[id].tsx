@@ -5,8 +5,10 @@ import { Linking, Pressable, View } from 'react-native';
 
 import { ConfirmDialog } from '@/components/ConfirmDialog';
 import { FoodThumb } from '@/components/FoodThumb';
+import { HeartButton } from '@/components/HeartButton';
 import { Tag } from '@/components/Pill';
 import { Button, Card, ErrorText, Loading, Screen, SectionLabel, Text } from '@/components/ui';
+import { formatDay } from '@/features/chat/format';
 import { hostOf } from '@/features/imports/ReviewScreen';
 import { ruleBreakHint, ruleBreakText } from '@/features/imports/ruleBreaks';
 import { addText, haveSummary, matchLine, type Have } from '@/features/recipes/kitchenMatch';
@@ -15,6 +17,8 @@ import { RecipeRow, recipeMeta } from '@/features/recipes/RecipeRow';
 import { useImportedRecipeActions, useImportedRecipes } from '@/lib/api/imports';
 import { useKitchen } from '@/lib/api/kitchen';
 import { useList, useListActions } from '@/lib/api/lists';
+import { useMealPlan } from '@/lib/api/mealPlan';
+import { planTap, usePlanDay } from '@/lib/api/planning';
 import { isNotFound, useAdaptations, useDeleteAdaptation, useRecipe } from '@/lib/api/recipes';
 import type { components } from '@/lib/api/schema';
 import { ingredientEmoji, recipeEmoji } from '@/theme/foodEmoji';
@@ -37,7 +41,8 @@ type List = components['schemas']['ShoppingListDetailOut'];
  */
 export default function RecipeScreen() {
   const t = useTheme();
-  const { id } = useLocalSearchParams<{ id: string }>();
+  // `plan`: opened from Dinner Ideas to plan it for that day (slice 6e).
+  const { id, plan } = useLocalSearchParams<{ id: string; plan?: string }>();
   const recipe = useRecipe(id);
   // The Kitchen is optional here: if it fails to load, the recipe still shows.
   const kitchen = useKitchen();
@@ -74,7 +79,12 @@ export default function RecipeScreen() {
   return (
     <Screen>
       <Card tint={tint} style={{ gap: t.space.sm }}>
-        <FoodThumb emoji={recipeEmoji(r.title)} tint={tint} size={56} onWhite />
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <FoodThumb emoji={recipeEmoji(r.title)} tint={tint} size={56} onWhite />
+          {r.kind === 'adaptation' ? null : (
+            <HeartButton recipeId={r.id} title={r.title} favourite={r.favourite ?? false} />
+          )}
+        </View>
         <Text variant="title" accessibilityRole="header">
           {r.title}
         </Text>
@@ -91,6 +101,8 @@ export default function RecipeScreen() {
           </View>
         ) : null}
       </Card>
+
+      {plan ? <PlanForDay date={plan} recipeId={r.id} title={r.title} /> : null}
 
       {r.kind === 'adaptation' ? null : <Adaptations parentId={r.id} />}
 
@@ -165,6 +177,29 @@ export default function RecipeScreen() {
 }
 
 /** "Adapted from Mum's ragu", a link back. Waits quietly if the parent is still loading. */
+/** Opened from Dinner Ideas: plan this recipe for the day straight away (no Proposal). */
+function PlanForDay({ date, recipeId, title }: { date: string; recipeId: string; title: string }) {
+  const planDay = usePlanDay();
+  const today = useMealPlan(null).data?.today;
+  return (
+    <View style={{ gap: 4 }}>
+      <Button
+        title={date === today ? 'Plan for tonight' : `Plan for ${formatDay(date)}`}
+        loading={planDay.isPending}
+        onPress={() =>
+          planDay.mutate(planTap(date, recipeId), {
+            onSuccess: () =>
+              router.replace({ pathname: '/planned', params: { kind: 'tonight', title } }),
+          })
+        }
+      />
+      <View accessibilityLiveRegion="polite">
+        <ErrorText message={planDay.error?.message} />
+      </View>
+    </View>
+  );
+}
+
 function AdaptedFrom({ parentId }: { parentId: string }) {
   const t = useTheme();
   const parent = useRecipe(parentId);

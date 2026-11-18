@@ -118,7 +118,7 @@ export function MealPlanScreen() {
             onPick={(mode, days) => {
               setPicked([]);
               requestPlan(mode, days);
-              router.push('/plan');
+              router.push('/plan-week');
             }}
           />
         ) : null}

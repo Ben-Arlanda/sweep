@@ -12,12 +12,15 @@ export function Icon({
   size = 22,
   color,
   strong = false,
+  fill,
 }: {
   icon: LucideIcon;
   size?: number;
   color: string;
   /** The heavier line, for a selected state. */
   strong?: boolean;
+  /** Filled shape, e.g. a hearted heart. */
+  fill?: string;
 }) {
   // Hidden on the wrapping View: React Native maps aria-hidden to each platform's own
   // setting, while the SVG underneath would pass unknown props straight to the web DOM.
@@ -27,6 +30,7 @@ export function Icon({
         size={size}
         color={color}
         strokeWidth={strong ? iconStroke.strong : iconStroke.regular}
+        fill={fill ?? 'none'}
       />
     </View>
   );

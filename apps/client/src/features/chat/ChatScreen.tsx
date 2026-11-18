@@ -248,8 +248,8 @@ export function ChatScreen() {
       {planning ? (
         <PlanSheet
           onClose={() => setPlanning(false)}
-          onPick={(mode, days) =>
-            void send(planMessage(mode, days), { fresh: true, plan: { mode, days } })
+          onPick={(mode, days, tweaks) =>
+            void send(planMessage(mode, days), { fresh: true, plan: { mode, days, tweaks } })
           }
         />
       ) : null}

@@ -23,19 +23,25 @@ export const PAGE = 30;
 
 export const recipeKeys = {
   all: ['recipes'] as const,
-  browse: (f: RecipeFilters) => ['recipes', 'browse', f.maxMinutes, f.course] as const,
+  browse: (f: RecipeFilters) =>
+    ['recipes', 'browse', f.maxMinutes, f.course, f.favourites ?? false] as const,
   search: (q: string, f: RecipeFilters) =>
-    ['recipes', 'search', q, f.maxMinutes, f.course] as const,
+    ['recipes', 'search', q, f.maxMinutes, f.course, f.favourites ?? false] as const,
   one: (id: string) => ['recipes', 'one', id] as const,
   adaptations: (parentId: string) => ['recipes', 'adaptations', parentId] as const,
 };
 
-/** The Recipes screen's chips. `null` means no limit. */
-export type RecipeFilters = { maxMinutes: number | null; course: Course | null };
+/** The Recipes screen's chips. `null` means no limit. `favourites`: hearted only. */
+export type RecipeFilters = {
+  maxMinutes: number | null;
+  course: Course | null;
+  favourites?: boolean;
+};
 
-const query = ({ maxMinutes, course }: RecipeFilters) => ({
+const query = ({ maxMinutes, course, favourites }: RecipeFilters) => ({
   ...(maxMinutes ? { max_minutes: maxMinutes } : {}),
   ...(course ? { course } : {}),
+  ...(favourites ? { favourites: true } : {}),
 });
 
 /** All recipes by title, a page at a time. */

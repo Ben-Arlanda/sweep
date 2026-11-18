@@ -13,7 +13,9 @@
 import type { components } from '@/lib/api/schema';
 
 export type PlanMode = components['schemas']['PlanMode'];
-export type Plan = { mode: PlanMode; days: string[] };
+export type PlanTweak = components['schemas']['PlanTweak'];
+/** What the sheet picked: the kind of plan, the days, and this week's chips (slice 6e). */
+export type Plan = { mode: PlanMode; days: string[]; tweaks?: PlanTweak[] };
 export type Start = { text: string; plan: Plan | null };
 
 let pending: Start | null = null;
@@ -32,9 +34,17 @@ export function requestStart(_start: 'tonight'): void {
 }
 
 /** The "Plan my week" sheet, once the Member has picked the days and the kind of plan. */
-export function requestPlan(mode: PlanMode, days: string[]): void {
+export function requestPlan(mode: PlanMode, days: string[], tweaks: PlanTweak[] = []): void {
   const sorted = [...days].sort();
-  pending = { text: planMessage(mode, sorted), plan: { mode, days: sorted } };
+  pending = {
+    text: planMessage(mode, sorted),
+    plan: { mode, days: sorted, ...(tweaks.length ? { tweaks } : {}) },
+  };
+}
+
+/** The requested start, without taking it: for a screen to know on its first render. */
+export function peekStart(): Start | null {
+  return pending;
 }
 
 /** The requested start, once. Later calls return null until another request. */

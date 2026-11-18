@@ -489,7 +489,7 @@ class ConversationIn(BaseModel):
     mode: PlanMode | None = None
     days: list[date] | None = Field(default=None, min_length=1, max_length=14)
     # "This week" chips (slice 6e): for this plan only.
-    tweaks: list[PlanTweak] = Field(default=[], max_length=len(PlanTweak))
+    tweaks: list[PlanTweak] | None = Field(default=None, max_length=len(PlanTweak))
 
 
 class ConversationOut(BaseModel):

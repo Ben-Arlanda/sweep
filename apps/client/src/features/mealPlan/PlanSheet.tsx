@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, Pressable, View } from 'react-native';
 
 import { ChoiceChips } from '@/components/ChoiceChips';
 import { Sheet } from '@/components/Sheet';
 import { Button, ErrorText, Text } from '@/components/ui';
 import { formatDay } from '@/features/chat/format';
-import type { PlanMode } from '@/features/chat/starters';
+import type { PlanMode, PlanTweak } from '@/features/chat/starters';
 import { usePreferences } from '@/lib/api/diet';
 import { useMealPlan } from '@/lib/api/mealPlan';
 import { useTheme } from '@/theme/useTheme';
@@ -14,6 +14,11 @@ import { PlanChoices } from './PlanChoices';
 import { addDays, mondayOf, pickDays, planWeekFor } from './week';
 import { WeekStrip, type StripMeal } from './WeekStrip';
 
+const TWEAKS: { label: string; value: PlanTweak }[] = [
+  { label: 'Healthy', value: 'healthy' },
+  { label: 'Under 30 min', value: 'quick' },
+  { label: 'Vegetarian', value: 'vegetarian' },
+];
 const WEEKNIGHTS = [1, 2, 3, 4, 5];
 const EVERY_DAY = [1, 2, 3, 4, 5, 6, 7];
 
@@ -33,7 +38,7 @@ export function PlanSheet({
   week: openOn,
 }: {
   onClose: () => void;
-  onPick: (mode: PlanMode, days: string[]) => void;
+  onPick: (mode: PlanMode, days: string[], tweaks: PlanTweak[]) => void;
   /** A Monday to open on, e.g. the week the Meal Plan screen shows. */
   week?: string;
 }) {
@@ -46,6 +51,8 @@ export function PlanSheet({
   const week = useMealPlan(monday);
   // null = not touched yet, so it follows the usual weekdays once they've loaded.
   const [touched, setTouched] = useState<string[] | null>(null);
+  // "This week" chips (slice 6e): soft tastes for this plan only, never saved.
+  const [tweaks, setTweaks] = useState<PlanTweak[]>([]);
 
   const ready = today && monday && week.data && prefs.data;
   const failed = week.error ?? prefs.error;
@@ -142,6 +149,41 @@ export function PlanSheet({
             : `${count} · ✓ already planned (tick one to replace it)`}
         </Text>
 
+        <View style={{ gap: t.space.xs }}>
+          <Text variant="label">This week (optional)</Text>
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.sm }}>
+            {TWEAKS.map((tweak) => {
+              const on = tweaks.includes(tweak.value);
+              return (
+                <Pressable
+                  key={tweak.value}
+                  accessibilityRole="checkbox"
+                  aria-checked={on}
+                  accessibilityLabel={tweak.label}
+                  onPress={() =>
+                    setTweaks(
+                      on ? tweaks.filter((v) => v !== tweak.value) : [...tweaks, tweak.value],
+                    )
+                  }
+                  style={{
+                    minHeight: t.touchTarget,
+                    justifyContent: 'center',
+                    paddingHorizontal: t.space.md,
+                    borderRadius: t.radius.pill,
+                    borderWidth: 1,
+                    borderColor: on ? t.colors.inverse : t.colors.border,
+                    backgroundColor: on ? t.colors.inverse : t.colors.surface,
+                  }}
+                >
+                  <Text variant="label" style={{ color: on ? t.colors.onInverse : t.colors.text }}>
+                    {tweak.label}
+                  </Text>
+                </Pressable>
+              );
+            })}
+          </View>
+        </View>
+
         <PlanChoices
           monday={monday}
           today={today}
@@ -149,7 +191,7 @@ export function PlanSheet({
           picked={picked}
           onPick={(mode, days) => {
             onClose();
-            onPick(mode, days);
+            onPick(mode, days, tweaks);
           }}
         />
       </View>

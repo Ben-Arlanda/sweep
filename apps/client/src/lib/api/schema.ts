@@ -614,6 +614,24 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/recipes/{recipe_id}/favourite": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Heart */
+        put: operations["heart_recipes__recipe_id__favourite_put"];
+        post?: never;
+        /** Unheart */
+        delete: operations["unheart_recipes__recipe_id__favourite_delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/recipes/{recipe_id}": {
         parameters: {
             query?: never;
@@ -756,6 +774,28 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/proposals/{proposal_id}/alternatives": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Alternatives
+         * @description What a day of a pending Proposal could be swapped for (ADR 0025): the same code
+         *     as Dinner Ideas, leaving out the plan's recipes. In New recipes mode, candidates
+         *     come by taste (the Household's liked cuisines) and Favourites get no boost.
+         */
+        get: operations["alternatives_proposals__proposal_id__alternatives_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/meal-plan": {
         parameters: {
             query?: never;
@@ -766,6 +806,46 @@ export interface paths {
         /** Get Week */
         get: operations["get_week_meal_plan_get"];
         put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/dinner-ideas": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Dinner Ideas
+         * @description Tonight's best Kitchen Matches, chosen by code (ADR 0025). No AI, no limits.
+         */
+        get: operations["get_dinner_ideas_dinner_ideas_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/meal-plan/days/{day}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Plan Day
+         * @description A Member picks a recipe for a day (a Dinner Idea): planned directly, no Proposal.
+         */
+        put: operations["plan_day_meal_plan_days__day__put"];
         post?: never;
         delete?: never;
         options?: never;
@@ -858,6 +938,11 @@ export interface components {
             total_minutes: number | null;
             /** Score */
             score?: number | null;
+            /**
+             * Favourite
+             * @default false
+             */
+            favourite: boolean;
             /**
              * Parent Recipe Id
              * Format: uuid
@@ -963,6 +1048,8 @@ export interface components {
             plan_mode: components["schemas"]["PlanMode"] | null;
             /** Plan Days */
             plan_days: string[] | null;
+            /** Plan Tweaks */
+            plan_tweaks?: components["schemas"]["PlanTweak"][] | null;
             /** Messages */
             messages: components["schemas"]["ChatLine"][];
             draft: components["schemas"]["DraftOut"] | null;
@@ -979,6 +1066,8 @@ export interface components {
             mode?: components["schemas"]["PlanMode"] | null;
             /** Days */
             days?: string[] | null;
+            /** Tweaks */
+            tweaks?: components["schemas"]["PlanTweak"][] | null;
         };
         /** ConversationOut */
         ConversationOut: {
@@ -995,6 +1084,8 @@ export interface components {
             plan_mode: components["schemas"]["PlanMode"] | null;
             /** Plan Days */
             plan_days: string[] | null;
+            /** Plan Tweaks */
+            plan_tweaks?: components["schemas"]["PlanTweak"][] | null;
         };
         /**
          * Course
@@ -1012,21 +1103,27 @@ export interface components {
         };
         /**
          * DecisionIn
-         * @description Approve (optionally with some meals or additions unticked) or reject.
+         * @description Approve (optionally with some meals or additions unticked), reject, or swap one
+         *     day's recipe for an alternative (ADR 0025: a new Proposal replaces this one).
          *
          *     `keep_meals` / `keep_additions` list what stays ticked: dates of proposed meals, and
-         *     positions in `list_additions`. Leave one out to keep all of that kind.
+         *     positions in `list_additions`. Leave one out to keep all of that kind. A swap needs
+         *     `date` (a day in the Proposal) and `recipe_id`.
          */
         DecisionIn: {
             /**
              * Action
              * @enum {string}
              */
-            action: "approve" | "reject";
+            action: "approve" | "reject" | "swap";
             /** Keep Meals */
             keep_meals?: string[] | null;
             /** Keep Additions */
             keep_additions?: number[] | null;
+            /** Date */
+            date?: string | null;
+            /** Recipe Id */
+            recipe_id?: string | null;
         };
         /**
          * Diet
@@ -1055,6 +1152,44 @@ export interface components {
             diets: components["schemas"]["Diet"][];
             /** Excluded Ingredients */
             excluded_ingredients: components["schemas"]["IngredientOut"][];
+        };
+        /**
+         * DinnerIdeaOut
+         * @description One Dinner Idea (ADR 0025): a recipe with its Kitchen Match.
+         */
+        DinnerIdeaOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            kind: components["schemas"]["RecipeKind"];
+            /** Title */
+            title: string;
+            /** Summary */
+            summary: string;
+            /** Cuisine */
+            cuisine: string | null;
+            course: components["schemas"]["Course"];
+            /** Servings */
+            servings: number;
+            /** Total Minutes */
+            total_minutes: number | null;
+            /** Score */
+            score?: number | null;
+            /**
+             * Favourite
+             * @default false
+             */
+            favourite: boolean;
+            /** Have */
+            have: string[];
+            /** Maybe */
+            maybe: string[];
+            /** Missing */
+            missing: string[];
+            /** Kitchen Uses */
+            kitchen_uses: string[];
         };
         /** DoneEvent */
         DoneEvent: {
@@ -1282,6 +1417,11 @@ export interface components {
             total_minutes: number | null;
             /** Score */
             score?: number | null;
+            /**
+             * Favourite
+             * @default false
+             */
+            favourite: boolean;
             /** Rule Breaks */
             rule_breaks: string[];
         };
@@ -1545,11 +1685,28 @@ export interface components {
             place: components["schemas"]["Place"];
         };
         /**
+         * PlanDayIn
+         * @description Put this recipe on the day (Dinner Ideas): replaces an uncooked meal there.
+         */
+        PlanDayIn: {
+            /**
+             * Recipe Id
+             * Format: uuid
+             */
+            recipe_id: string;
+        };
+        /**
          * PlanMode
          * @description What kind of plan the Member asked for in the "Plan my week" sheet (ADR 0015).
          * @enum {string}
          */
         PlanMode: "kitchen" | "new";
+        /**
+         * PlanTweak
+         * @description The "This week" chips on the Plan my week sheet: Preferences for one plan.
+         * @enum {string}
+         */
+        PlanTweak: "healthy" | "quick" | "vegetarian";
         /**
          * PlanWeekdaysIn
          * @description The days the Household usually plans. Its own route, so saving them can't
@@ -1750,6 +1907,11 @@ export interface components {
             total_minutes: number | null;
             /** Score */
             score?: number | null;
+            /**
+             * Favourite
+             * @default false
+             */
+            favourite: boolean;
             /** Parent Recipe Id */
             parent_recipe_id: string | null;
             /** Ingredients */
@@ -1784,6 +1946,11 @@ export interface components {
             total_minutes: number | null;
             /** Score */
             score?: number | null;
+            /**
+             * Favourite
+             * @default false
+             */
+            favourite: boolean;
         };
         /** ReplanEvent */
         ReplanEvent: {
@@ -2799,6 +2966,7 @@ export interface operations {
                 limit?: number;
                 /** @description Browsing only */
                 offset?: number;
+                favourites?: boolean;
             };
             header?: never;
             path?: never;
@@ -3196,6 +3364,64 @@ export interface operations {
             };
         };
     };
+    heart_recipes__recipe_id__favourite_put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                recipe_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    unheart_recipes__recipe_id__favourite_delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                recipe_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     get_recipe_recipes__recipe_id__get: {
         parameters: {
             query?: never;
@@ -3526,6 +3752,39 @@ export interface operations {
             };
         };
     };
+    alternatives_proposals__proposal_id__alternatives_get: {
+        parameters: {
+            query: {
+                date: string;
+            };
+            header?: never;
+            path: {
+                proposal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DinnerIdeaOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     get_week_meal_plan_get: {
         parameters: {
             query?: {
@@ -3544,6 +3803,77 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["MealPlanOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_dinner_ideas_dinner_ideas_get: {
+        parameters: {
+            query?: {
+                max_minutes?: number | null;
+                nothing_to_buy?: boolean;
+                exclude?: string[];
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DinnerIdeaOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    plan_day_meal_plan_days__day__put: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                day: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PlanDayIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlannedMealOut"];
                 };
             };
             /** @description Validation Error */
