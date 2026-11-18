@@ -353,7 +353,7 @@ function ItemMenu({
       <MenuItem icon={Store} label="Shop" detail={shop ?? 'Any shop'} chevron onPress={onShop} />
       <MenuItem
         icon={Link2}
-        label="Kitchen link"
+        label="Link item"
         detail={item.ingredient?.name ?? 'None'}
         chevron
         divider
