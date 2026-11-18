@@ -171,7 +171,7 @@ function Tile({
   );
 }
 
-/** "Browse recipes" with See all: the filters live on All recipes. */
+/** "Browse recipes" with See all (a plain link, as on Home): the filters live on All recipes. */
 function Browse() {
   const t = useTheme();
   return (
@@ -188,15 +188,13 @@ function Browse() {
           alignItems: 'center',
           gap: 2,
           minHeight: t.touchTarget,
-          paddingHorizontal: t.space.md,
-          borderRadius: t.radius.pill,
-          backgroundColor: t.colors.tabSelected,
+          paddingLeft: t.space.sm,
         }}
       >
-        <Text variant="label" style={{ color: t.colors.surface }}>
+        <Text variant="label" style={{ color: t.colors.onBackground }}>
           See all
         </Text>
-        <Icon icon={ChevronRight} size={16} color={t.colors.surface} />
+        <Icon icon={ChevronRight} size={16} color={t.colors.onBackground} strong />
       </PressableScale>
     </View>
   );
