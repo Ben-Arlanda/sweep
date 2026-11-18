@@ -169,3 +169,10 @@ describe.each(Object.keys(PAGE_COLORS) as (keyof typeof PAGE_COLORS)[])(
     });
   },
 );
+
+describe('lime words in a large hero title (34pt: AA large text is 3:1)', () => {
+  it.each(['home', 'recipes'] as const)('read on the %s page', (page) => {
+    const c = { ...colors.light, ...PAGE_COLORS[page] };
+    expect(contrastRatio(c.action, c.background)).toBeGreaterThanOrEqual(3);
+  });
+});

@@ -8,7 +8,7 @@ import {
   type LucideIcon,
 } from 'lucide-react-native';
 import { useState } from 'react';
-import { View } from 'react-native';
+import { Text as RNText, View } from 'react-native';
 
 import { Hero, HeroSearch } from '@/components/Hero';
 import { Icon } from '@/components/Icon';
@@ -45,16 +45,8 @@ function RecipesScreenContent() {
           title={
             <>
               Find a recipe you’ll love to{' '}
-              <Text
-                variant="display"
-                style={{
-                  color: t.colors.onAction,
-                  backgroundColor: t.colors.action,
-                  borderRadius: t.radius.sm,
-                }}
-              >
-                {' cook '}
-              </Text>
+              {/* A lime word, no pill, as on Home (large text: 3:1 is enough, it's ~4.4:1). */}
+              <RNText style={{ color: t.colors.action }}>cook</RNText>
             </>
           }
           subtitle="Search, browse and save recipes, or add your own."
