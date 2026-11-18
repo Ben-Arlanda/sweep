@@ -49,7 +49,8 @@ import { isNotFound, useAdaptations, useDeleteAdaptation, useRecipe } from '@/li
 import type { components } from '@/lib/api/schema';
 import { ingredientEmoji } from '@/theme/foodEmoji';
 import { tintFor } from '@/theme/tint';
-import { useTheme } from '@/theme/useTheme';
+import { PageColors } from '@/theme/PageColors';
+import { useTheme, type Theme } from '@/theme/useTheme';
 
 type Line = components['schemas']['RecipeIngredientOut'];
 
@@ -63,7 +64,7 @@ type Line = components['schemas']['RecipeIngredientOut'];
  * Laid out as Ingredients / Method / Notes tabs (slice 6e). A Recipe Adaptation (ADR 0021)
  * links back to its parent; its Swaps and a parent's Adaptations are under Notes.
  */
-export default function RecipeScreen() {
+function RecipeContent() {
   const t = useTheme();
   // `plan`: opened from Dinner Ideas to plan it for that day (slice 6e).
   // `swap` + `date`: opened from a plan's swap list to swap that day to this (ADR 0025).
@@ -162,7 +163,7 @@ export default function RecipeScreen() {
       </View>
 
       <View style={{ gap: t.space.sm }}>
-        <Text variant="title" accessibilityRole="header">
+        <Text variant="title" accessibilityRole="header" style={{ color: t.colors.onBackground }}>
           {r.title}
         </Text>
         <MetaRow recipe={r} />
@@ -177,7 +178,12 @@ export default function RecipeScreen() {
           <View
             style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
           >
-            <Text variant="heading" role="heading" aria-level={2}>
+            <Text
+              variant="heading"
+              role="heading"
+              aria-level={2}
+              style={{ color: t.colors.onBackground }}
+            >
               Ingredients ({r.ingredients.length})
             </Text>
             {missing.length > 0 ? (
@@ -200,7 +206,7 @@ export default function RecipeScreen() {
             />
           ))}
           {kitchen.isError ? (
-            <Text variant="caption" muted>
+            <Text variant="caption" style={{ color: t.colors.onBackgroundMuted }}>
               Couldn&apos;t check the Kitchen just now.
             </Text>
           ) : null}
@@ -208,7 +214,7 @@ export default function RecipeScreen() {
       ) : null}
 
       {tab === 'method' ? (
-        <View style={{ gap: t.space.md }}>
+        <View style={cardStyle(t)}>
           {swaps.length > 0 ? (
             <Text variant="caption" muted>
               The method is the original recipe&apos;s, so it may still mention what was swapped
@@ -241,7 +247,7 @@ export default function RecipeScreen() {
       ) : null}
 
       {tab === 'notes' ? (
-        <View style={{ gap: t.space.lg }}>
+        <View style={[cardStyle(t), { gap: t.space.lg }]}>
           {r.summary ? <Text>{r.summary}</Text> : null}
           {swaps.length > 0 ? (
             <View style={{ gap: t.space.sm }}>
@@ -267,6 +273,17 @@ export default function RecipeScreen() {
       ) : null}
     </Screen>
   );
+}
+
+/** Method and Notes: a warm white card on the page, so long text stays ink on light. */
+function cardStyle(t: Theme) {
+  return {
+    gap: t.space.md,
+    padding: t.space.lg,
+    borderRadius: t.radius.lg,
+    backgroundColor: t.colors.surface,
+    boxShadow: t.shadow.card,
+  };
 }
 
 type Tab = 'ingredients' | 'method' | 'notes';
@@ -363,8 +380,10 @@ function MetaRow({
     <View style={{ flexDirection: 'row', flexWrap: 'wrap', columnGap: t.space.lg, rowGap: 4 }}>
       {parts.map((p) => (
         <View key={p.text} style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-          <Icon icon={p.icon} size={17} color={t.colors.text} />
-          <Text variant="label">{p.text}</Text>
+          <Icon icon={p.icon} size={17} color={t.colors.onBackground} />
+          <Text variant="label" style={{ color: t.colors.onBackground }}>
+            {p.text}
+          </Text>
         </View>
       ))}
     </View>
@@ -528,7 +547,9 @@ function AdaptedFrom({ parentId }: { parentId: string }) {
       onPress={() => router.push({ pathname, params: { id: parentId } })}
       style={{ minHeight: t.touchTarget, justifyContent: 'center' }}
     >
-      <Text style={{ textDecorationLine: 'underline' }}>Adapted from {parent.data.title}</Text>
+      <Text style={{ textDecorationLine: 'underline', color: t.colors.onBackground }}>
+        Adapted from {parent.data.title}
+      </Text>
     </Pressable>
   );
 }
@@ -768,4 +789,13 @@ function StatusPill({ have, name, onAdd }: { have: Have; name: string; onAdd?: (
 function dayLabel(iso: string): string {
   const { weekday, day } = dayParts(iso);
   return `${weekday} ${day}`;
+}
+
+/** The recipe page on the Recipes purple, header bar included (from any tab). */
+export default function RecipeScreen() {
+  return (
+    <PageColors page="recipes" header>
+      <RecipeContent />
+    </PageColors>
+  );
 }
