@@ -2,6 +2,7 @@
 Household's own Imported Recipes (list, read lines, save, edit, delete)."""
 
 import uuid
+from dataclasses import replace
 from typing import Annotated, cast
 
 from fastapi import APIRouter, File, Query, Request, Response, UploadFile, status
@@ -11,7 +12,7 @@ from app import errors
 from app.deps import MemberDep, SessionDep
 from app.embeddings import Embedder, EmbeddingUnavailable
 from app.idempotency import IdempotencyKeyHeader
-from app.models import Course
+from app.models import Course, Recipe
 from app.pdf_text import MAX_PDF_BYTES
 from app.routes.common import checked_photos, idempotent
 from app.schemas import (
@@ -29,7 +30,14 @@ from app.schemas import (
     RecipeSummaryOut,
     SwapOut,
 )
-from app.services import adaptations, import_limits, imported_recipes, recipe_import, recipes
+from app.services import (
+    adaptations,
+    favourites,
+    import_limits,
+    imported_recipes,
+    recipe_import,
+    recipes,
+)
 from app.services.households import MemberContext
 from app.services.import_limits import Door, MeteredReader
 from app.services.recipe_import import Draft, PageFetcher, RecipeReader
@@ -50,6 +58,7 @@ async def list_or_search(
     exclude_ingredient: Annotated[list[uuid.UUID], Query(max_length=50)] = [],  # noqa: B006
     limit: Annotated[int, Query(gt=0, le=50)] = SEARCH_LIMIT,
     offset: Annotated[int, Query(ge=0, le=10_000, description="Browsing only")] = 0,
+    favourites_only: Annotated[bool, Query(alias="favourites")] = False,
 ) -> list[RecipeSummaryOut]:
     """With `q`: recipes closest in meaning, best first. Without: all, by title, a page
     at a time (`offset`). Search has no pages: past the top results, matches get weak."""
@@ -57,10 +66,13 @@ async def list_or_search(
     filters = await recipes.filters_for(
         session, household_id, max_minutes, cuisine, exclude_ingredient, course
     )
+    if favourites_only:
+        filters = replace(filters, favourites_of=household_id)
+    hearted = await favourites.ids(session, household_id)
     query = (q or "").strip()
     if not query:
         rows = await recipes.list_recipes(session, household_id, filters, limit, offset)
-        return [RecipeSummaryOut.model_validate(r) for r in rows]
+        return [_summary(r, hearted) for r in rows]
 
     embedder = cast(Embedder | None, request.app.state.embedder)
     if embedder is None:
@@ -70,9 +82,14 @@ async def list_or_search(
     except EmbeddingUnavailable as error:
         raise errors.Unavailable("Recipe search is unavailable right now") from error
     return [
-        RecipeSummaryOut.model_validate(r).model_copy(update={"score": round(score, 4)})
-        for r, score in found
+        _summary(r, hearted).model_copy(update={"score": round(score, 4)}) for r, score in found
     ]
+
+
+def _summary(recipe: Recipe, hearted: set[uuid.UUID]) -> RecipeSummaryOut:
+    return RecipeSummaryOut.model_validate(recipe).model_copy(
+        update={"favourite": recipe.id in hearted}
+    )
 
 
 # Before GET /{recipe_id}: routes match in order, and "cuisines" and "imported" aren't ids.
@@ -84,10 +101,9 @@ async def list_cuisines(ctx: MemberDep, session: SessionDep) -> list[str]:
 @router.get("/imported")
 async def list_imported(ctx: MemberDep, session: SessionDep) -> list[ImportedRecipeOut]:
     """ "Your recipes": every one, even those the Dietary Rules hide, with the reason."""
+    hearted = await favourites.ids(session, ctx.household.id)
     return [
-        ImportedRecipeOut(
-            **RecipeSummaryOut.model_validate(r).model_dump(), rule_breaks=check.breaks
-        )
+        ImportedRecipeOut(**_summary(r, hearted).model_dump(), rule_breaks=check.breaks)
         for r, check in await imported_recipes.listed(session, ctx.household.id)
     ]
 
@@ -198,7 +214,8 @@ async def save_imported(
 
     async def work() -> RecipeOut:
         embedder = cast(Embedder | None, request.app.state.embedder)
-        return RecipeOut.model_validate(await imported_recipes.save(session, ctx, body, embedder))
+        recipe = await imported_recipes.save(session, ctx, body, embedder)
+        return RecipeOut.model_validate(recipe).model_copy(update={"favourite": True})
 
     return await idempotent(request, session, ctx, key, work, status.HTTP_201_CREATED)
 
@@ -215,7 +232,8 @@ async def update_imported(
     async def work() -> RecipeOut:
         embedder = cast(Embedder | None, request.app.state.embedder)
         recipe = await imported_recipes.update(session, ctx, recipe_id, body, embedder)
-        return RecipeOut.model_validate(recipe)
+        hearted = recipe.id in await favourites.ids(session, ctx.household.id)
+        return RecipeOut.model_validate(recipe).model_copy(update={"favourite": hearted})
 
     return await idempotent(request, session, ctx, key, work)
 
@@ -268,6 +286,21 @@ async def delete_adaptation(
     return await idempotent(request, session, ctx, key, work, status.HTTP_204_NO_CONTENT)
 
 
+# Favourites (ADR 0025). PUT and DELETE are idempotent by nature, so no Idempotency-Key.
+@router.put("/{recipe_id}/favourite", status_code=status.HTTP_204_NO_CONTENT)
+async def heart(recipe_id: uuid.UUID, ctx: MemberDep, session: SessionDep) -> None:
+    await favourites.heart(session, ctx, recipe_id)
+    await session.commit()
+
+
+@router.delete("/{recipe_id}/favourite", status_code=status.HTTP_204_NO_CONTENT)
+async def unheart(recipe_id: uuid.UUID, ctx: MemberDep, session: SessionDep) -> None:
+    await favourites.unheart(session, ctx, recipe_id)
+    await session.commit()
+
+
 @router.get("/{recipe_id}")
 async def get_recipe(recipe_id: uuid.UUID, ctx: MemberDep, session: SessionDep) -> RecipeOut:
-    return RecipeOut.model_validate(await recipes.get_recipe(session, ctx.household.id, recipe_id))
+    recipe = await recipes.get_recipe(session, ctx.household.id, recipe_id)
+    hearted = recipe.id in await favourites.ids(session, ctx.household.id)
+    return RecipeOut.model_validate(recipe).model_copy(update={"favourite": hearted})

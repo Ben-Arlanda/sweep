@@ -25,7 +25,15 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 from app import errors
 from app.data.recipes import ATTRIBUTION, LICENCE, SeedRecipe
 from app.embeddings import Embedder, EmbeddingUnavailable
-from app.models import Course, Ingredient, Recipe, RecipeEmbedding, RecipeIngredient, RecipeKind
+from app.models import (
+    Course,
+    Favourite,
+    Ingredient,
+    Recipe,
+    RecipeEmbedding,
+    RecipeIngredient,
+    RecipeKind,
+)
 from app.services import diet
 from app.services.ingredient_lines import IngredientIndex, normalise_lines
 
@@ -289,7 +297,8 @@ class RecipeFilters:
     # Set when Dietary Rules apply: a line we can't check might break them (fail closed).
     # Same lines as diet.check_recipe: unmatched, or linked to a Household Ingredient.
     exclude_uncheckable: bool = False
-    only_kind: RecipeKind | None = None  # e.g. IMPORTED: the agent's flagged favourites
+    only_kind: RecipeKind | None = None  # e.g. IMPORTED: the agent's flagged imports
+    favourites_of: uuid.UUID | None = None  # only this Household's Favourites
 
 
 def visible_to(household_id: uuid.UUID) -> Select[Recipe]:
@@ -318,6 +327,12 @@ async def cuisines(session: AsyncSession, household_id: uuid.UUID) -> list[str]:
 def _filtered(query: Select[Recipe], filters: RecipeFilters) -> Select[Recipe]:
     if filters.only_kind is not None:
         query = query.where(Recipe.kind == filters.only_kind)
+    if filters.favourites_of is not None:
+        query = query.where(
+            exists().where(
+                Favourite.recipe_id == Recipe.id, Favourite.household_id == filters.favourites_of
+            )
+        )
     if filters.max_minutes is not None:
         query = query.where(Recipe.total_minutes <= filters.max_minutes)
     if filters.cuisine is not None:

@@ -337,6 +337,7 @@ class RecipeSummaryOut(BaseModel):
     total_minutes: int | None
     # How close to the search (1 = identical meaning). Only set for a search.
     score: float | None = None
+    favourite: bool = False  # hearted by this Household (ADR 0025)
 
 
 class ImportedRecipeOut(RecipeSummaryOut):

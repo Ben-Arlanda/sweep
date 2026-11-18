@@ -15,7 +15,7 @@ import re
 import uuid
 from collections import defaultdict
 from collections.abc import Awaitable, Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import date
 from decimal import Decimal
 from typing import Annotated, Any, Literal
@@ -28,11 +28,22 @@ from app.agent.model import AgentModel
 from app.agent.state import Draft, DraftAdaptation, DraftAddition, DraftMeal, DraftSwap
 from app.agent.validate import ONLY_AS_ADAPTATION
 from app.embeddings import Embedder, EmbeddingUnavailable
-from app.models import Course, Household, Ingredient, Member, Recipe, RecipeKind, utcnow
+from app.models import (
+    Conversation,
+    Course,
+    Household,
+    Ingredient,
+    Member,
+    PlanMode,
+    Recipe,
+    RecipeKind,
+    utcnow,
+)
 from app.schemas import RecipeLine
 from app.services import (
     adaptations,
     diet,
+    favourites,
     ingredients,
     kitchen,
     kitchen_match,
@@ -45,7 +56,7 @@ from app.units import convert
 
 SEARCH_RESULTS = 8
 NOTE_IN_BRACKETS = re.compile(r"\s*\([^()]*\)")  # "(canned)", wherever it sits
-FLAGGED_FAVOURITES = 3  # Rule-breaking favourites added to a search (ADR 0021)
+FLAGGED_IMPORTS = 3  # Rule-breaking Imported Recipes added to a search (ADR 0021)
 KITCHEN_RESULTS = 10  # enough to pick a week of dinners with some choice
 CANDIDATES = 60  # meaning search's shortlist before the Kitchen re-ranks it
 
@@ -121,7 +132,7 @@ def _summary(recipe: Recipe, rules: diet.DietaryRules) -> dict[str, Any]:
 
 async def search_recipes(call: Call, args: SearchArgs) -> Outcome:
     """Dietary Rules are applied in SQL by filters_for, so results fit them. One
-    exception (ADR 0021): the Household's own favourites that break a Rule come after,
+    exception (ADR 0021): the Household's Imported Recipes that break a Rule come after,
     flagged with `breaks_rules`, because they can still be planned as an Adaptation.
     set_planned_meal and validate refuse them as written. Each result also lists its
     kept Adaptations that fit the Rules."""
@@ -155,7 +166,7 @@ async def search_recipes(call: Call, args: SearchArgs) -> Outcome:
                 hid,
                 call.agent.embedder,
                 args.query,
-                # Not the Rules: these are the favourites they hide. Imported only:
+                # Not the Rules: these are the imports they hide. Imported only:
                 # Rule-breaking Seed Recipes stay hidden (plenty of others fit).
                 recipes.RecipeFilters(
                     max_minutes=args.max_minutes,
@@ -181,7 +192,7 @@ async def search_recipes(call: Call, args: SearchArgs) -> Outcome:
         (r, check)
         for r, _score in flagged
         if wanted(r) and not (check := diet.check_recipe(r, rules)).ok
-    ][:FLAGGED_FAVOURITES]
+    ][:FLAGGED_IMPORTS]
     kept = await adaptations.kept_for(
         call.session, hid, [r.id for r in matches] + [r.id for r, _ in breaking]
     )
@@ -213,6 +224,9 @@ class FromKitchenArgs(Args):
     exclude_recipe_ids: list[uuid.UUID] = Field(
         default=[], max_length=60, description="Recipes already planned, for variety"
     )
+    only_favourites: bool = Field(
+        default=False, description="Only the Household's Favourites, when the Member asks"
+    )
 
 
 async def recipes_from_kitchen(call: Call, args: FromKitchenArgs) -> Outcome:
@@ -225,6 +239,8 @@ async def recipes_from_kitchen(call: Call, args: FromKitchenArgs) -> Outcome:
     filters = await recipes.filters_for(
         call.session, hid, args.max_minutes, args.cuisine, course=Course.MAIN
     )
+    if args.only_favourites:
+        filters = replace(filters, favourites_of=hid)
     among: list[uuid.UUID] | None = None
     if args.query:
         if call.agent.embedder is None:
@@ -244,16 +260,28 @@ async def recipes_from_kitchen(call: Call, args: FromKitchenArgs) -> Outcome:
         filters,
         among=among,
         exclude=args.exclude_recipe_ids,
+        favourites=await _tie_breakers(call),
         limit=KITCHEN_RESULTS,
     )
     rules = await diet.get_rules(call.session, hid)
+    hearted = await favourites.ids(call.session, hid)
     return Outcome(
         [
             _summary(r, rules)
             | {"have": list(m.have), "maybe": list(m.maybe), "missing": list(m.missing)}
+            | ({"favourite": True} if r.id in hearted else {})
             for r, m in ranked
         ]
     )
+
+
+async def _tie_breakers(call: Call) -> set[uuid.UUID]:
+    """The Favourites that win ties (ADR 0025), except in New recipes mode: the Member
+    asked for fresh dishes there."""
+    conversation = await call.session.get(Conversation, call.agent.conversation_id)
+    if conversation is not None and conversation.plan_mode == PlanMode.NEW:
+        return set()
+    return await favourites.boosted(call.session, call.agent.household_id)
 
 
 class RecipeArgs(Args):
@@ -706,10 +734,10 @@ TOOLS: tuple[Tool, ...] = (
     Tool(
         "adapt_recipe",
         "Put a Recipe Adaptation on a date in the Draft Plan: the recipe with some "
-        "ingredient lines swapped (the method stays as written). Use it to fix a favourite "
-        "that breaks the Dietary Rules, to use something in the Kitchen, or when the "
-        "Member asks; never for no reason. The app checks every Swap and says why one is "
-        "refused.",
+        "ingredient lines swapped (the method stays as written). Use it to fix one of the "
+        "Household's own recipes that breaks the Dietary Rules, to use something in the "
+        "Kitchen, or when the Member asks; never for no reason. The app checks every Swap "
+        "and says why one is refused.",
         AdaptArgs,
         adapt_recipe,
     ),

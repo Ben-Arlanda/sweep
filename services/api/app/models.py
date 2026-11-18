@@ -414,7 +414,7 @@ class Course(StrEnum):
 
 class RecipeKind(StrEnum):
     SEED = "seed"  # written for Sweep, shared by every Household
-    IMPORTED = "imported"  # a Household's favourite: pasted, photo, link, file or typed (4d)
+    IMPORTED = "imported"  # a Household's own: pasted, photo, link, file or typed (4d)
     ADAPTATION = "adaptation"  # a Household's copy of another recipe with Swaps (5e)
 
 
@@ -488,6 +488,26 @@ class Recipe(Base):
 
 
 Index("ix_recipes_search_document", Recipe.search_document, postgresql_using="gin")
+
+
+class Favourite(Base):
+    """A recipe the Household has hearted (ADR 0025). One heart per Household, so the
+    key is the pair; `hearted_by` is kept in case hearts become per Member later."""
+
+    __tablename__ = "favourites"
+
+    household_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("households.id", ondelete="CASCADE"), primary_key=True
+    )
+    recipe_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("recipes.id", ondelete="CASCADE"), primary_key=True, index=True
+    )
+    hearted_by: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("members.id", ondelete="SET NULL")
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utcnow, server_default=func.now()
+    )
 
 
 class RecipeIngredient(Base):

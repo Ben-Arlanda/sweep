@@ -25,7 +25,7 @@ NO_REFUSALS: Mapping[str, str] = {}
 NO_ADAPTATIONS: Mapping[str, Recipe] = {}
 # What a Rule-breaking favourite needs, said to the agent (ADR 0021).
 ONLY_AS_ADAPTATION = (
-    "It's a Household favourite: plan it only as an Adaptation, with adapt_recipe "
+    "It's the Household's own recipe: plan it only as an Adaptation, with adapt_recipe "
     "swapping the lines that break the Rules"
 )
 
