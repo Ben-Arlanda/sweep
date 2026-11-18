@@ -672,7 +672,14 @@ async def set_list_additions(call: Call, args: AdditionsArgs) -> Outcome:
 
 class ProposeArgs(Args):
     summary: str = Field(
-        min_length=1, max_length=1000, description="A short note to the Member about the plan"
+        min_length=1,
+        max_length=1000,
+        description=(
+            "One or two short sentences, under 200 characters, shown as a note above the "
+            "plan. The screen already lists every dinner, day and thing to buy: don't repeat "
+            "them. Say the gist and at most one thing to check, e.g. 'Five dinners from your "
+            "Kitchen, mostly quick ones. Check the stock cube label.'"
+        ),
     )
 
 
