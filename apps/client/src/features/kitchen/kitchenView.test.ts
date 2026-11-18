@@ -1,5 +1,5 @@
 /// <reference types="jest" />
-import { afterStockChange, sections, summary, toRows } from './kitchenView';
+import { afterRemove, afterStockChange, sections, summary, toRows } from './kitchenView';
 
 const ing = (name: string, category: string) => ({
   id: name,
@@ -84,4 +84,23 @@ test('Non-staples tab, a Place and a stock tile all narrow the list', () => {
       s.rows.map((r) => r.name),
     ),
   ).toEqual(['Ground nutmeg']);
+});
+
+describe('afterRemove (••• Remove or a swipe)', () => {
+  it('a Staple is marked Out, which puts it on the list: it stays a Staple', () => {
+    expect(afterRemove({ staple: true, stock: 'in_stock' }, false)).toBe('markOut');
+    expect(afterRemove({ staple: true, stock: 'low' }, true)).toBe('markOut');
+  });
+
+  it('a Staple that is already Out just goes on the list (or says it is there)', () => {
+    expect(afterRemove({ staple: true, stock: 'out' }, false)).toBe('addToList');
+  });
+
+  it('a Non-staple leaves the Kitchen and the toast offers the list', () => {
+    expect(afterRemove({ staple: false, stock: 'in_stock' }, false)).toBe('removeAndAsk');
+  });
+
+  it("doesn't offer the list for a Non-staple that's already on it", () => {
+    expect(afterRemove({ staple: false, stock: 'out' }, true)).toBe('remove');
+  });
 });

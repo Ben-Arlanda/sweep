@@ -65,6 +65,7 @@ import {
 import { newIngredientName } from '@/features/kitchen/addNew';
 import { displayName } from '@/features/kitchen/format';
 import {
+  afterRemove,
   afterStockChange,
   sections as toSections,
   STOCK_LABEL,
@@ -79,7 +80,7 @@ import { onListIds } from '@/features/kitchen/onList';
 import { usePlaceFilter } from '@/features/kitchen/placeFilter';
 import { PLACES, type Place, type PlaceFilter } from '@/features/kitchen/places';
 import { useIngredientSearch, useKitchen, useKitchenActions } from '@/lib/api/kitchen';
-import { useList } from '@/lib/api/lists';
+import { useList, useListActions } from '@/lib/api/lists';
 import { ingredientEmoji } from '@/theme/foodEmoji';
 import { tintFor } from '@/theme/tint';
 import { inputText } from '@/theme/inputText';
@@ -119,6 +120,7 @@ export default function KitchenScreen() {
   const kitchen = useKitchen();
   const actions = useKitchenActions();
   const list = useList();
+  const listActions = useListActions(list.data?.id ?? '');
   const [query, setQuery] = useState('');
   const [tab, setTab] = useState<Tab>('staples');
   const [place, setPlace] = usePlaceFilter();
@@ -220,14 +222,38 @@ export default function KitchenScreen() {
     });
   }
 
-  /** ••• Ran out: the same as setting the status to Out (Staple → on the list, else asked). */
-  function ranOut(row: KitchenRow) {
-    if (row.stock !== 'out') void changeStock(row, 'out');
-    else void addToList(row); // already Out: put it on the list (or say it's there)
+  /**
+   * ••• Remove item: follows the Out rule (`afterRemove`). A Staple is marked Out and goes
+   * on the list; a Non-staple leaves and the toast offers the list, with Undo.
+   */
+  function removeItem(row: KitchenRow) {
+    const effect = afterRemove(row, isOnList(row));
+    if (effect === 'markOut') return void changeStock(row, 'out'); // "Added to shopping list"
+    if (effect === 'addToList') return void addToList(row);
+    actions.remove(row.id);
+    const undo = () => undoToTracked(actions, row);
+    if (effect === 'remove') {
+      toast({ kind: 'undo', text: 'Removed from Kitchen', detail: row.name, onUndo: undo });
+      return;
+    }
+    toast({
+      kind: 'ask',
+      text: `Removed ${row.name.toLowerCase()}. Add it to your shopping list?`,
+      emoji: ingredientEmoji(row.ingredient),
+      tint: tintFor(row.ingredient.name),
+      actionLabel: 'Add to list',
+      // It's out of the Kitchen now, so it goes on through the list (linked by its name).
+      onAction: () => {
+        if (!list.data) return;
+        const name = row.ingredient.name;
+        listActions.addItem(name.charAt(0).toUpperCase() + name.slice(1));
+      },
+      onUndo: undo,
+    });
   }
 
   /**
-   * Swipe left, or ••• Remove from Kitchen: gone, nothing goes on the list. A Staple
+   * Swipe left, or ••• Remove without adding to list: gone, nothing goes on the list. A Staple
    * stops being a Staple. Undo puts it back as it was.
    */
   function removeFromKitchen(row: KitchenRow) {
@@ -472,9 +498,9 @@ export default function KitchenScreen() {
               setPopover(null);
               moveKind(popRow);
             }}
-            onRanOut={() => {
+            onRemoveItem={() => {
               setPopover(null);
-              ranOut(popRow);
+              removeItem(popRow);
             }}
             onRemove={() => {
               setPopover(null);
@@ -889,13 +915,15 @@ function ItemMenu({
   row,
   onEdit,
   onMove,
-  onRanOut,
+  onRemoveItem,
   onRemove,
 }: {
   row: KitchenRow;
   onEdit: () => void;
   onMove: () => void;
-  onRanOut: () => void;
+  /** Staple → Out + on the list; Non-staple → removed, list offered. */
+  onRemoveItem: () => void;
+  /** The swipe's twin: gone, nothing on the list. */
   onRemove: () => void;
 }) {
   const t = useTheme();
@@ -914,8 +942,14 @@ function ItemMenu({
         divider={!row.staple} // first item for Staples (no Change amount above)
       />
       <MenuItem icon={Archive} label="Storage location" chevron onPress={onEdit} divider />
-      <MenuItem icon={CircleX} label="Ran out" onPress={onRanOut} divider />
-      <MenuItem icon={Trash2} label="Remove from Kitchen" danger onPress={onRemove} divider />
+      <MenuItem icon={Trash2} label="Remove item" danger onPress={onRemoveItem} divider />
+      <MenuItem
+        icon={Trash2}
+        label="Remove without adding to list"
+        danger
+        onPress={onRemove}
+        divider
+      />
     </View>
   );
 }
