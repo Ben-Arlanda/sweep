@@ -174,6 +174,7 @@ export const PAGE_COLORS = {
   list: pageColors('#f4a48e', 'ink'),
   recipes: pageColors('#7450c7', 'white', '#f1ecfd'),
   plan: pageColors('#f6b94d', 'ink'),
+  household: pageColors('#183b76', 'white', '#dbe3ff'),
 };
 export type Page = keyof typeof PAGE_COLORS;
 export const homeColors = PAGE_COLORS.home;
