@@ -219,7 +219,7 @@ function Recommended() {
   return (
     <View style={{ gap: t.space.sm }}>
       <View>
-        <Text variant="title" role="heading" aria-level={2}>
+        <Text variant="heading" role="heading" aria-level={2}>
           Recommended for you
         </Text>
         <Text variant="caption" muted>
