@@ -60,7 +60,7 @@ export function PlanSheet({
   onPick: (mode: PlanMode, days: string[], tweaks: PlanTweak[]) => void;
   /** A Monday to open on, e.g. the week the Plan tab shows. */
   week?: string;
-  /** "Edit my week" or "Plan next week" when Home's button says so. */
+  /** e.g. "Plan next week" from Home, or "Edit my week" from the Plan tab. */
   title?: string;
   /** Days to start ticked instead of the usual weekdays. */
   days?: string[];

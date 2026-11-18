@@ -58,14 +58,14 @@ export function hasPlan(today: string, thisWeek: PlannedMeal[]): boolean {
 }
 
 export type HomeCta = {
-  label: 'Plan my week' | 'Edit my week' | 'Plan next week';
+  label: 'Plan my week' | 'Edit plan' | 'Plan next week';
   /** The Monday the Plan my week sheet opens on. */
   week: string;
 };
 
 /**
  * Home's lime button. Never greyed out: once the week is planned it becomes the next
- * useful thing (edit it, or from Friday, plan next week while that's still empty).
+ * useful thing (Edit plan, or from Friday, plan next week while that's still empty).
  */
 export function homeCta(opts: {
   today: string;
@@ -79,7 +79,7 @@ export function homeCta(opts: {
   if (isoWeekday(today) >= 5 && nextWeek?.length === 0) {
     return { label: 'Plan next week', week: addDays(monday, 7) };
   }
-  return { label: 'Edit my week', week: monday };
+  return { label: 'Edit plan', week: monday };
 }
 
 /** Next week is only needed for the button from Friday on (and tomorrow on Sundays). */

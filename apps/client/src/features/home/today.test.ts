@@ -117,9 +117,9 @@ describe('homeCta', () => {
     });
   });
 
-  it('is Edit my week once there is a plan, for this week', () => {
+  it('is Edit plan once there is a plan, for this week', () => {
     expect(homeCta({ today: WED, thisWeek: week })).toEqual({
-      label: 'Edit my week',
+      label: 'Edit plan',
       week: '2026-11-16',
     });
   });
@@ -131,13 +131,13 @@ describe('homeCta', () => {
     });
   });
 
-  it('goes back to Edit my week once next week has a dinner', () => {
+  it('goes back to Edit plan once next week has a dinner', () => {
     expect(homeCta({ today: FRI, thisWeek: week, nextWeek: [meal('2026-11-24')] })).toMatchObject({
-      label: 'Edit my week',
+      label: 'Edit plan',
     });
   });
 
-  it("says Edit my week while next week is loading, so it doesn't guess", () => {
-    expect(homeCta({ today: FRI, thisWeek: week })).toMatchObject({ label: 'Edit my week' });
+  it("says Edit plan while next week is loading, so it doesn't guess", () => {
+    expect(homeCta({ today: FRI, thisWeek: week })).toMatchObject({ label: 'Edit plan' });
   });
 });
