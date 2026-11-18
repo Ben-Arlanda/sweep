@@ -14,7 +14,7 @@ from app.auth import TokenVerifier
 from app.config import Settings, settings
 from app.db import make_engine, make_sessionmaker
 from app.embeddings import Embedder, VoyageEmbedder
-from app.llm import ClaudeAgentModel, ClaudeRecipeReader
+from app.llm import ClaudeAgentModel, ClaudeKitchenPhotoReader, ClaudeRecipeReader
 from app.realtime import Hub, listen
 from app.routes import (
     conversations,
@@ -29,6 +29,7 @@ from app.routes import (
 )
 from app.services import recipes as recipe_service
 from app.services.conversations import Agent
+from app.services.kitchen_photos import KitchenPhotoReader
 from app.services.recipe_import import PageFetcher, RecipeReader
 from app.web_fetch import SafeFetcher
 
@@ -86,6 +87,13 @@ def default_recipe_reader(app_settings: Settings) -> RecipeReader | None:
     return ClaudeRecipeReader(key.get_secret_value(), app_settings.import_model)
 
 
+def default_kitchen_reader(app_settings: Settings) -> KitchenPhotoReader | None:
+    key = app_settings.anthropic_api_key
+    if key is None:
+        return None  # Kitchen Photos are switched off; adding by hand still works
+    return ClaudeKitchenPhotoReader(key.get_secret_value(), app_settings.import_model)
+
+
 def create_app(
     app_settings: Settings | None = None,
     token_verifier: TokenVerifier | None = None,
@@ -93,6 +101,7 @@ def create_app(
     agent_model: AgentModel | None = None,
     recipe_reader: RecipeReader | None = None,
     page_fetcher: PageFetcher | None = None,
+    kitchen_reader: KitchenPhotoReader | None = None,
 ) -> FastAPI:
     """Build the app. Tests pass their own settings, a verifier that trusts a test key,
     a fake embedder, and scripted stand-ins for the agent model, the recipe reader and the
@@ -141,6 +150,7 @@ def create_app(
     )
     app.state.embedder = embedder or default_embedder(app_settings)
     app.state.recipe_reader = recipe_reader or default_recipe_reader(app_settings)
+    app.state.kitchen_reader = kitchen_reader or default_kitchen_reader(app_settings)
     # One budget per Household per day, shared by the agent and the import doors.
     app.state.daily_token_budget = app_settings.agent_daily_token_budget
     app.state.page_fetcher = page_fetcher or SafeFetcher()  # needs no key: always on

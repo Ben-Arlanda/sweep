@@ -39,6 +39,7 @@ const kitchen: Kitchen = {
       last_change_source: 'purchase',
       last_confirmed_at: '2026-11-14T00:00:00Z',
       place: 'fridge',
+      stock: 'in_stock' as const,
     },
     {
       ingredient: ingredient('rice', 'rice'),
@@ -48,6 +49,7 @@ const kitchen: Kitchen = {
       last_change_source: 'manual',
       last_confirmed_at: '2026-11-01T00:00:00Z',
       place: 'fridge',
+      stock: 'in_stock' as const,
     },
     {
       ingredient: ingredient('milk', 'milk', 'ml'),
@@ -57,11 +59,22 @@ const kitchen: Kitchen = {
       last_change_source: 'purchase',
       last_confirmed_at: '2026-09-01T00:00:00Z',
       place: 'fridge',
+      stock: 'in_stock' as const,
     },
   ],
   staples: [
-    { ingredient: ingredient('salt', 'salt'), have: true, place: 'cupboard' },
-    { ingredient: ingredient('flour', 'plain flour'), have: false, place: 'cupboard' },
+    {
+      ingredient: ingredient('salt', 'salt'),
+      have: true,
+      place: 'cupboard',
+      stock: 'in_stock',
+    },
+    {
+      ingredient: ingredient('flour', 'plain flour'),
+      have: false,
+      place: 'cupboard',
+      stock: 'out',
+    },
   ],
 };
 
@@ -90,6 +103,14 @@ test('Staples: have unless run out', () => {
   expect(matchLine(line({ ingredient: ingredient('flour', 'plain flour') }), kitchen)).toEqual({
     kind: 'need',
   });
+});
+
+test('a Non-staple marked Out: need, though it is still listed in the Kitchen', () => {
+  const out: Kitchen = {
+    ...kitchen,
+    tracked: kitchen.tracked.map((i) => ({ ...i, stock: 'out' as const })),
+  };
+  expect(matchLine(line({ base_quantity: '150' }), out)).toEqual({ kind: 'need' });
 });
 
 test('not in the Kitchen: need', () => {

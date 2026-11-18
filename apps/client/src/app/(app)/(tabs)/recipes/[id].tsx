@@ -78,7 +78,7 @@ export default function RecipeScreen() {
         <Text variant="title" accessibilityRole="header">
           {r.title}
         </Text>
-        <Text>{r.summary}</Text>
+        {r.summary ? <Text>{r.summary}</Text> : null}
         <Text variant="label">{recipeMeta(r)}</Text>
         {parentId ? <AdaptedFrom parentId={parentId} /> : null}
         {summary && summary.total > 0 ? (

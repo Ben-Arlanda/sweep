@@ -41,6 +41,7 @@ def reading(**changes: Any) -> RecipeReading:
         "found_recipe": True,
         "more_recipes": False,
         "title": "Mum's Beef Ragu",
+        "summary": None,
         "servings": 4,
         "total_minutes": 120,
         "course": Course.MAIN,

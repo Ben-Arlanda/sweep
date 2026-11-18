@@ -72,6 +72,10 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
         "chilli flakes", "spices", "g", None, True, ("red pepper flakes", "chili flakes")
     ),
     SeedIngredient("ground cinnamon", "spices", "g", None, True, ("cinnamon",)),
+    # Found by the Kitchen Photo eval (ADR 0023): Staples, so they don't go Unknown.
+    SeedIngredient("celery salt", "spices", "g", None, True, ()),
+    SeedIngredient("cayenne pepper", "spices", "g", None, True, ("cayenne",)),
+    SeedIngredient("dried sage", "spices", "g", None, True, ("ground sage", "rubbed sage")),
     SeedIngredient("stock cubes", "pantry", "count", None, True, ("bouillon cubes", "stock cube")),
     # Pantry, tracked: decides whether a meal is possible.
     SeedIngredient("pasta", "pantry", "g", None, False, ("spaghetti", "penne", "fusilli")),
@@ -101,14 +105,41 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
     SeedIngredient("coconut milk", "pantry", "ml", D("0.97"), False, ()),
     SeedIngredient("chicken stock", "pantry", "ml", D("1.0"), False, ("chicken broth",)),
     SeedIngredient(
-        "bread", "bakery", "count", None, False, ("loaf of bread", "sourdough", "crusty bread")
+        "bread",
+        "bakery",
+        "count",
+        None,
+        False,
+        ("loaf of bread", "sourdough", "crusty bread", "sliced bread"),
+    ),
+    # Its own starter, never an alias of bread: bread is flagged gluten (ADR 0023).
+    SeedIngredient(
+        "gluten free bread", "bakery", "count", None, False, ("gf bread", "gluten-free bread")
     ),
     SeedIngredient("tortillas", "bakery", "count", None, False, ("wraps",)),
     SeedIngredient("peanut butter", "pantry", "g", None, False, ()),
     SeedIngredient("honey", "pantry", "g", D("1.42"), False, ()),
     # Dairy and eggs
-    SeedIngredient("milk", "dairy", "ml", D("1.03"), False, ("full cream milk", "whole milk")),
+    # A Staple: used a little at a time in meals nobody plans (breakfast, coffee).
+    SeedIngredient("milk", "dairy", "ml", D("1.03"), True, ("full cream milk", "whole milk")),
     SeedIngredient("butter", "dairy", "g", D("0.96"), False, ("unsalted butter", "salted butter")),
+    # Its own starter, never an alias of butter: butter is flagged dairy (ADR 0023).
+    SeedIngredient(
+        "dairy free spread",
+        "chilled",
+        "g",
+        None,
+        False,
+        (
+            "dairy-free spread",
+            "dairy free margarine",
+            "dairy-free margarine",
+            "dairy free buttery spread",
+            "nuttelex",
+            "vegan spread",
+            "plant based spread",
+        ),
+    ),
     SeedIngredient(
         "eggs",
         "dairy",
@@ -123,6 +154,14 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
     SeedIngredient("parmesan", "dairy", "g", None, False, ("parmesan cheese", "parmigiano")),
     SeedIngredient("mozzarella", "dairy", "g", None, False, ("mozzarella cheese",)),
     SeedIngredient("feta", "dairy", "g", None, False, ("feta cheese",)),
+    SeedIngredient(
+        "goat cheese",
+        "dairy",
+        "g",
+        None,
+        False,
+        ("goats cheese", "goat's cheese", "marinated goat cheese", "chevre"),
+    ),
     SeedIngredient(
         "greek yoghurt",
         "dairy",

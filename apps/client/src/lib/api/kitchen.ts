@@ -10,6 +10,7 @@ import { keepPreviousData, useMutation, useQuery, type QueryClient } from '@tans
 import { randomUUID } from 'expo-crypto';
 
 import { api, ApiError, unwrap } from './client';
+import { listKeys } from './lists';
 import type { components } from './schema';
 
 type Place = components['schemas']['Place'];
@@ -26,15 +27,23 @@ const mutationKeys = {
   removeStaple: ['kitchen', 'removeStaple'] as const,
   setPlace: ['kitchen', 'setPlace'] as const,
   addNew: ['kitchen', 'addNew'] as const,
+  setStock: ['kitchen', 'setStock'] as const,
+  toList: ['kitchen', 'toList'] as const,
+  unlist: ['kitchen', 'unlist'] as const,
 };
 
 type Keyed = { idempotencyKey: string };
-type SetTrackedVars = Keyed & { ingredientId: string; quantity: string | null };
+type SetTrackedVars = Keyed & { ingredientId: string; quantity: string | null; unit?: string };
 type IngredientVars = Keyed & { ingredientId: string };
 type SetStapleVars = Keyed & { ingredientId: string; have: boolean };
 type SetPlaceVars = Keyed & { ingredientId: string; place: Place | null };
 // Two requests, so two keys, both made at tap time: a retry repeats each one safely.
 type AddNewVars = { name: string; createKey: string; setKey: string };
+type UnlistVars = Keyed & { listId: string; itemId: string };
+export type Stock = components['schemas']['SetStockIn']['stock'];
+type SetStockVars = Keyed & { ingredientId: string; stock: Stock };
+export type StockOut = components['schemas']['StockOut'];
+export type OnListOut = components['schemas']['OnListOut'];
 
 const header = (v: Keyed) => ({ 'Idempotency-Key': v.idempotencyKey });
 const scope = { id: 'kitchen' };
@@ -55,7 +64,7 @@ export function registerKitchenMutations(queryClient: QueryClient) {
       unwrap(
         await api.PUT('/kitchen/items/{ingredient_id}', {
           params: { path: { ingredient_id: v.ingredientId }, header: header(v) },
-          body: { quantity: v.quantity },
+          body: { quantity: v.quantity, unit: v.unit ?? null },
         }),
       ),
     ...settled,
@@ -97,6 +106,44 @@ export function registerKitchenMutations(queryClient: QueryClient) {
         }),
       ),
     ...settled,
+  });
+
+  // Stock status (ADR 0024). A Staple set to Out also lands on the list, so refresh both.
+  const kitchenAndList = {
+    retry: shouldRetry,
+    onSettled: () => {
+      void queryClient.invalidateQueries({ queryKey: kitchenKeys.all });
+      void queryClient.invalidateQueries({ queryKey: listKeys.all });
+    },
+  };
+  queryClient.setMutationDefaults(mutationKeys.setStock, {
+    mutationFn: async (v: SetStockVars) =>
+      unwrap(
+        await api.PUT('/kitchen/stock/{ingredient_id}', {
+          params: { path: { ingredient_id: v.ingredientId }, header: header(v) },
+          body: { stock: v.stock },
+        }),
+      ),
+    ...kitchenAndList,
+  });
+  queryClient.setMutationDefaults(mutationKeys.toList, {
+    mutationFn: async (v: IngredientVars) =>
+      unwrap(
+        await api.POST('/kitchen/to-list/{ingredient_id}', {
+          params: { path: { ingredient_id: v.ingredientId }, header: header(v) },
+        }),
+      ),
+    ...kitchenAndList,
+  });
+  // Undo's half on the list: take off the item a status change or Add to list added.
+  queryClient.setMutationDefaults(mutationKeys.unlist, {
+    mutationFn: async (v: UnlistVars) =>
+      unwrap(
+        await api.DELETE('/lists/{list_id}/items/{item_id}', {
+          params: { path: { list_id: v.listId, item_id: v.itemId }, header: header(v) },
+        }),
+      ),
+    ...kitchenAndList,
   });
 
   // "Add 'kale'": find or create the Household Ingredient, then put it in the Kitchen.
@@ -171,6 +218,18 @@ export function useKitchenActions() {
     mutationKey: mutationKeys.addNew,
     scope,
   });
+  const setStock = useMutation<StockOut, Error, SetStockVars>({
+    mutationKey: mutationKeys.setStock,
+    scope,
+  });
+  const toList = useMutation<OnListOut, Error, IngredientVars>({
+    mutationKey: mutationKeys.toList,
+    scope,
+  });
+  const unlist = useMutation<unknown, Error, UnlistVars>({
+    mutationKey: mutationKeys.unlist,
+    scope,
+  });
 
   return {
     error:
@@ -179,11 +238,24 @@ export function useKitchenActions() {
       setStaple.error ??
       removeStaple.error ??
       setPlace.error ??
-      addNew.error,
-    setAmount: (ingredientId: string, quantity: string | null) =>
-      setTracked.mutate({ ingredientId, quantity, idempotencyKey: randomUUID() }),
-    usedUp: (ingredientId: string) =>
+      addNew.error ??
+      setStock.error ??
+      toList.error ??
+      unlist.error,
+    /** A Non-staple's amount; `unit` (kg, L…) is converted by the server. */
+    setAmount: (ingredientId: string, quantity: string | null, unit?: string) =>
+      setTracked.mutate({ ingredientId, quantity, unit, idempotencyKey: randomUUID() }),
+    /** In stock / Running low / Out. Resolves with where a Staple went on the list. */
+    setStock: (ingredientId: string, stock: Stock) =>
+      setStock.mutateAsync({ ingredientId, stock, idempotencyKey: randomUUID() }),
+    /** "Add to list" for a Kitchen item. Resolves with where it went, for Undo. */
+    toList: (ingredientId: string) =>
+      toList.mutateAsync({ ingredientId, idempotencyKey: randomUUID() }),
+    /** "It isn't here" (a misread photo): out of the Kitchen, not onto the list. */
+    remove: (ingredientId: string) =>
       removeTracked.mutate({ ingredientId, idempotencyKey: randomUUID() }),
+    unlist: (listId: string, itemId: string) =>
+      unlist.mutate({ listId, itemId, idempotencyKey: randomUUID() }),
     setStaple: (ingredientId: string, have: boolean) =>
       setStaple.mutate({ ingredientId, have, idempotencyKey: randomUUID() }),
     notAStaple: (ingredientId: string) =>

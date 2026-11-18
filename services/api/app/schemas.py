@@ -125,6 +125,7 @@ class IngredientOut(BaseModel):
     name: str
     category: str
     default_unit: str
+    grams_per_ml: Decimal | None = None  # known density: weight and volume convert
     is_household_ingredient: bool  # created by this Household (ADR 0012), not a starter
 
 
@@ -209,13 +210,22 @@ class ShoppingListDetailOut(ShoppingListOut):
 
 
 class SetQuantityIn(BaseModel):
-    """`null` means "we have some; amount not recorded"."""
+    """`null` means "we have some; amount not recorded". `unit` (g, kg, ml, L, count…)
+    is converted to the Ingredient's own unit; left out, it already is."""
 
     quantity: Quantity | None
+    unit: Annotated[str, StringConstraints(max_length=12)] | None = None
 
 
 class SetStapleIn(BaseModel):
     have: bool
+
+
+Stock = Literal["in_stock", "low", "out"]
+
+
+class SetStockIn(BaseModel):
+    stock: Stock
 
 
 class KitchenItemOut(BaseModel):
@@ -226,12 +236,14 @@ class KitchenItemOut(BaseModel):
     last_change_source: ChangeSource
     last_confirmed_at: datetime
     place: Place
+    stock: Stock  # the Member's say (ADR 0024); `status` is how much we trust the amount
 
 
 class StapleOut(BaseModel):
     ingredient: IngredientOut
-    have: bool
+    have: bool  # not Out (Running low still counts as have)
     place: Place
+    stock: Stock
 
 
 class PlaceIn(BaseModel):
@@ -244,8 +256,66 @@ class PlaceOut(BaseModel):
 
 class KitchenOut(BaseModel):
     version: int
-    tracked: list[KitchenItemOut]
+    tracked: list[KitchenItemOut]  # Out Non-staples included, with stock "out"
     staples: list[StapleOut]
+
+
+class OnListOut(BaseModel):
+    """Where it went on the Shopping List, so the app can offer Undo."""
+
+    list_id: uuid.UUID
+    list_item_id: uuid.UUID | None  # None: already on the list unticked, nothing added
+
+
+class StockOut(BaseModel):
+    stock: Stock
+    list_id: uuid.UUID | None  # set when a Staple ran out and went on the list
+    list_item_id: uuid.UUID | None
+
+
+class InKitchenTrackedOut(BaseModel):
+    quantity: Quantity | None
+    unit: str
+    status: Literal["confirmed", "estimated", "unknown"]
+
+
+class InKitchenStapleOut(BaseModel):
+    staple: Literal[True] = True
+    have: bool
+
+
+class PhotoRowOut(BaseModel):
+    """One thing seen in a Kitchen Photo, for the review screen (ADR 0023)."""
+
+    name: str  # as the model named it
+    ingredient: IngredientOut | None  # None: Not linked
+    quantity: Quantity | None  # suggested, in the Ingredient's unit; None: "have some"
+    ticked: bool  # where the review starts: Not linked rows start unticked
+    in_kitchen: InKitchenTrackedOut | InKitchenStapleOut | None  # None: new
+
+
+class PhotoItemIn(BaseModel):
+    """One ticked row: a known Ingredient, or a Not linked name the Member ticked."""
+
+    ingredient_id: uuid.UUID | None = None
+    name: IngredientName | None = None
+    quantity: Quantity | None  # in the Ingredient's own unit; null: "have some"
+
+    @model_validator(mode="after")
+    def _one_of(self) -> Self:
+        if (self.ingredient_id is None) == (self.name is None):
+            raise ValueError("Give an ingredient_id or a name, not both")
+        return self
+
+
+class KitchenPhotoApplyIn(BaseModel):
+    place: Place
+    items: list[PhotoItemIn] = Field(min_length=1, max_length=60)
+
+
+class KitchenPhotoOut(BaseModel):
+    place: Place
+    rows: list[PhotoRowOut]
 
 
 # --- Recipes -----------------------------------------------------------------------
@@ -571,6 +641,7 @@ class SendMessageIn(BaseModel):
 
 RecipeLine = Annotated[str, _name(300), ONE_LINE]  # an ingredient line, as written
 MAX_RECIPE_LINES, MAX_METHOD_STEPS = 60, 40
+MAX_SUMMARY = 500  # an Imported Recipe's description, as the column allows
 MAX_PASTE_CHARS = 20_000  # about 5 long recipes; text pulled from a PDF is cut to this too
 
 
@@ -595,6 +666,8 @@ class ImportedRecipeIn(BaseModel):
     servings, a Course and one line. The marks ("Check", "Not linked") never block."""
 
     title: Annotated[str, _name(200), ONE_LINE]
+    # The intro under the title. One paragraph: it reaches the agent, like every name.
+    summary: Annotated[str, _name(MAX_SUMMARY), ONE_LINE] | None = None
     servings: int = Field(gt=0, le=50)
     total_minutes: int | None = Field(default=None, gt=0, le=1440)
     course: Course
@@ -625,6 +698,7 @@ class ImportDraftOut(BaseModel):
     """What a door read, for the review screen. Nothing is stored until Save."""
 
     title: str
+    summary: str | None  # the intro, copied from the text or photo; None: none found
     servings: int | None  # None: the Member fills it in (Save needs it)
     total_minutes: int | None
     course: Course  # Sweep's guess, pre-selected and labelled as one

@@ -20,6 +20,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PressableScale } from '@/components/PressableScale';
 import type { TintName } from '@/theme/tokens';
+import { inputText } from '@/theme/inputText';
 import { useTheme } from '@/theme/useTheme';
 
 type Variant = 'display' | 'title' | 'heading' | 'body' | 'label' | 'caption';
@@ -237,7 +238,7 @@ export function Field({
           props.onBlur?.(e);
         }}
         style={[
-          t.type.body,
+          props.multiline ? t.type.body : inputText(t.type.body), // multi-line keeps its line spacing
           {
             minHeight: t.touchTarget + 4,
             borderWidth: 1.5,

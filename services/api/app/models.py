@@ -47,6 +47,7 @@ class ChangeSource(StrEnum):
     PURCHASE = "purchase"  # ticked off a Shopping List
     MANUAL = "manual"  # a Member set it
     COOKED = "cooked"  # deducted by Mark as Cooked (slice 6)
+    PHOTO = "photo"  # approved from a Kitchen Photo (ADR 0023)
 
 
 class AddedBy(StrEnum):
@@ -304,6 +305,7 @@ class HouseholdStaple(Base):
     )
     ingredient: Mapped[Ingredient] = relationship(lazy="joined")
     ran_out_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    low: Mapped[bool] = mapped_column(default=False, server_default="false")  # ADR 0024
     # Where the Household keeps it, if not the default for its category (ADR 0011).
     place: Mapped[Place | None] = mapped_column(str_enum(Place, "staple_place"))
 
@@ -337,6 +339,9 @@ class KitchenItem(Base):
     last_confirmed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     # Where the Household keeps it, if not the default for its category (ADR 0011).
     place: Mapped[Place | None] = mapped_column(str_enum(Place, "kitchen_place"))
+    # Set by the Member (ADR 0024). Out rows stay on screen but never count as "have".
+    ran_out_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    low: Mapped[bool] = mapped_column(default=False, server_default="false")
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utcnow, server_default=func.now()
     )
@@ -586,8 +591,9 @@ class AgentUsage(Base):
 
 
 class RecipeImport(Base):
-    """One attempt at the paste, photo, file or link door (slice 4d), for the limit of
-    20 an hour per Member. Attempts, not successes: a failed one cost us work too.
+    """One attempt at the paste, photo, file or link door (slice 4d) or a Kitchen Photo
+    (door "kitchen", slice 3e), for the shared limit of 20 an hour per Member.
+    Attempts, not successes: a failed one cost us work too.
     Typing a recipe isn't recorded: it has no limit."""
 
     __tablename__ = "recipe_imports"
@@ -595,7 +601,7 @@ class RecipeImport(Base):
 
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
     member_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("members.id", ondelete="CASCADE"))
-    door: Mapped[str] = mapped_column(String(10))  # paste, photo, file, link
+    door: Mapped[str] = mapped_column(String(10))  # paste, photo, file, link, kitchen
     started_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
 
 

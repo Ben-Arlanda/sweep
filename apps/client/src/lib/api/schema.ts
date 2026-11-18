@@ -313,6 +313,88 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/kitchen/stock/{ingredient_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Set Stock
+         * @description In stock / Running low / Out (ADR 0024). A Staple set to Out also goes on the list.
+         */
+        put: operations["set_stock_kitchen_stock__ingredient_id__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/kitchen/to-list/{ingredient_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Add To List
+         * @description "Add to list" for something in the Kitchen; skipped if already on it unticked.
+         */
+        post: operations["add_to_list_kitchen_to_list__ingredient_id__post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/kitchen/photos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Read Kitchen Photos
+         * @description Rows for the review screen. Nothing is written: the bytes live only for this
+         *     request, and the Kitchen changes only when the Member applies the rows.
+         */
+        post: operations["read_kitchen_photos_kitchen_photos_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/kitchen/photos/apply": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Apply Kitchen Photos
+         * @description The ticked rows, all in one transaction. A ticked Not linked name is the Member's
+         *     choice, so it may become a Household Ingredient. Returns the Kitchen as it is now.
+         */
+        post: operations["apply_kitchen_photos_kitchen_photos_apply_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/recipes": {
         parameters: {
             query?: never;
@@ -812,6 +894,16 @@ export interface components {
              */
             file: string;
         };
+        /** Body_read_kitchen_photos_kitchen_photos_post */
+        Body_read_kitchen_photos_kitchen_photos_post: {
+            /**
+             * Photos
+             * @description 1 to 3 photos of items laid out
+             */
+            photos: string[];
+            /** @description Where the items came from */
+            place: components["schemas"]["Place"];
+        };
         /** Body_read_photos_recipes_imports_photo_post */
         Body_read_photos_recipes_imports_photo_post: {
             /**
@@ -825,7 +917,7 @@ export interface components {
          * @description What last changed a Kitchen quantity. Feeds the calculated status (ADR 0003).
          * @enum {string}
          */
-        ChangeSource: "purchase" | "manual" | "cooked";
+        ChangeSource: "purchase" | "manual" | "cooked" | "photo";
         /** ChatLine */
         ChatLine: {
             /**
@@ -1116,6 +1208,8 @@ export interface components {
         ImportDraftOut: {
             /** Title */
             title: string;
+            /** Summary */
+            summary: string | null;
             /** Servings */
             servings: number | null;
             /** Total Minutes */
@@ -1147,6 +1241,8 @@ export interface components {
         ImportedRecipeIn: {
             /** Title */
             title: string;
+            /** Summary */
+            summary?: string | null;
             /** Servings */
             servings: number;
             /** Total Minutes */
@@ -1189,6 +1285,29 @@ export interface components {
             /** Rule Breaks */
             rule_breaks: string[];
         };
+        /** InKitchenStapleOut */
+        InKitchenStapleOut: {
+            /**
+             * Staple
+             * @default true
+             * @constant
+             */
+            staple: true;
+            /** Have */
+            have: boolean;
+        };
+        /** InKitchenTrackedOut */
+        InKitchenTrackedOut: {
+            /** Quantity */
+            quantity: string | null;
+            /** Unit */
+            unit: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "confirmed" | "estimated" | "unknown";
+        };
         /** IngredientIn */
         IngredientIn: {
             /** Name */
@@ -1207,6 +1326,8 @@ export interface components {
             category: string;
             /** Default Unit */
             default_unit: string;
+            /** Grams Per Ml */
+            grams_per_ml?: string | null;
             /** Is Household Ingredient */
             is_household_ingredient: boolean;
         };
@@ -1270,6 +1391,11 @@ export interface components {
              */
             last_confirmed_at: string;
             place: components["schemas"]["Place"];
+            /**
+             * Stock
+             * @enum {string}
+             */
+            stock: "in_stock" | "low" | "out";
         };
         /** KitchenOut */
         KitchenOut: {
@@ -1279,6 +1405,18 @@ export interface components {
             tracked: components["schemas"]["KitchenItemOut"][];
             /** Staples */
             staples: components["schemas"]["StapleOut"][];
+        };
+        /** KitchenPhotoApplyIn */
+        KitchenPhotoApplyIn: {
+            place: components["schemas"]["Place"];
+            /** Items */
+            items: components["schemas"]["PhotoItemIn"][];
+        };
+        /** KitchenPhotoOut */
+        KitchenPhotoOut: {
+            place: components["schemas"]["Place"];
+            /** Rows */
+            rows: components["schemas"]["PhotoRowOut"][];
         };
         /**
          * LinesIn
@@ -1340,6 +1478,19 @@ export interface components {
             joined_at: string;
         };
         /**
+         * OnListOut
+         * @description Where it went on the Shopping List, so the app can offer Undo.
+         */
+        OnListOut: {
+            /**
+             * List Id
+             * Format: uuid
+             */
+            list_id: string;
+            /** List Item Id */
+            list_item_id: string | null;
+        };
+        /**
          * ParseMethod
          * @description How a recipe line was linked to its Ingredient.
          * @enum {string}
@@ -1352,6 +1503,33 @@ export interface components {
         PasteIn: {
             /** Text */
             text: string;
+        };
+        /**
+         * PhotoItemIn
+         * @description One ticked row: a known Ingredient, or a Not linked name the Member ticked.
+         */
+        PhotoItemIn: {
+            /** Ingredient Id */
+            ingredient_id?: string | null;
+            /** Name */
+            name?: string | null;
+            /** Quantity */
+            quantity: number | string | null;
+        };
+        /**
+         * PhotoRowOut
+         * @description One thing seen in a Kitchen Photo, for the review screen (ADR 0023).
+         */
+        PhotoRowOut: {
+            /** Name */
+            name: string;
+            ingredient: components["schemas"]["IngredientOut"] | null;
+            /** Quantity */
+            quantity: string | null;
+            /** Ticked */
+            ticked: boolean;
+            /** In Kitchen */
+            in_kitchen: components["schemas"]["InKitchenTrackedOut"] | components["schemas"]["InKitchenStapleOut"] | null;
         };
         /**
          * Place
@@ -1634,16 +1812,27 @@ export interface components {
         };
         /**
          * SetQuantityIn
-         * @description `null` means "we have some; amount not recorded".
+         * @description `null` means "we have some; amount not recorded". `unit` (g, kg, ml, L, count…)
+         *     is converted to the Ingredient's own unit; left out, it already is.
          */
         SetQuantityIn: {
             /** Quantity */
             quantity: number | string | null;
+            /** Unit */
+            unit?: string | null;
         };
         /** SetStapleIn */
         SetStapleIn: {
             /** Have */
             have: boolean;
+        };
+        /** SetStockIn */
+        SetStockIn: {
+            /**
+             * Stock
+             * @enum {string}
+             */
+            stock: "in_stock" | "low" | "out";
         };
         /** ShopIn */
         ShopIn: {
@@ -1682,6 +1871,23 @@ export interface components {
             /** Have */
             have: boolean;
             place: components["schemas"]["Place"];
+            /**
+             * Stock
+             * @enum {string}
+             */
+            stock: "in_stock" | "low" | "out";
+        };
+        /** StockOut */
+        StockOut: {
+            /**
+             * Stock
+             * @enum {string}
+             */
+            stock: "in_stock" | "low" | "out";
+            /** List Id */
+            list_id: string | null;
+            /** List Item Id */
+            list_item_id: string | null;
         };
         /**
          * SwapOut
@@ -2430,6 +2636,144 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["IngredientOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    set_stock_kitchen_stock__ingredient_id__put: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                ingredient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SetStockIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StockOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    add_to_list_kitchen_to_list__ingredient_id__post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                ingredient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OnListOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    read_kitchen_photos_kitchen_photos_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_read_kitchen_photos_kitchen_photos_post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["KitchenPhotoOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    apply_kitchen_photos_kitchen_photos_apply_post: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["KitchenPhotoApplyIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["KitchenOut"];
                 };
             };
             /** @description Validation Error */

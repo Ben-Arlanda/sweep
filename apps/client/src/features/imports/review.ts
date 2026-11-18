@@ -27,6 +27,7 @@ export type FormLine = {
 
 export type ReviewForm = {
   title: string;
+  summary: string; // the description under the title; optional
   servings: string; // as typed; checked by saveProblems
   minutes: string;
   course: Course | null;
@@ -60,6 +61,7 @@ const numberText = (n: number | null) => (n === null ? '' : String(n));
 export function formFromDraft(draft: Draft): ReviewForm {
   return {
     title: draft.title ?? '',
+    summary: draft.summary ?? '',
     servings: numberText(draft.servings),
     minutes: numberText(draft.total_minutes),
     course: draft.course,
@@ -76,6 +78,7 @@ export function formFromDraft(draft: Draft): ReviewForm {
 export function formFromRecipe(recipe: Recipe): ReviewForm {
   return {
     title: recipe.title,
+    summary: recipe.summary,
     servings: numberText(recipe.servings),
     minutes: numberText(recipe.total_minutes),
     course: recipe.course,
@@ -92,6 +95,7 @@ export function formFromRecipe(recipe: Recipe): ReviewForm {
 export function emptyForm(): ReviewForm {
   return {
     title: '',
+    summary: '',
     servings: '',
     minutes: '',
     course: null,
@@ -149,14 +153,22 @@ export function removeLine(form: ReviewForm, lineKey: string): ReviewForm {
 }
 
 export type Problems = Partial<
-  Record<'title' | 'servings' | 'minutes' | 'course' | 'lines', string>
+  Record<'title' | 'summary' | 'servings' | 'minutes' | 'course' | 'lines', string>
 >;
+
+export const MAX_SUMMARY = 500;
+
+/** One paragraph, as the server keeps it (it reaches the planner, like every name). */
+const oneParagraph = (text: string) => text.split(/\s+/).filter(Boolean).join(' ');
 
 const wholeNumber = (text: string) => (/^\d+$/.test(text.trim()) ? Number(text.trim()) : null);
 
 export function saveProblems(form: ReviewForm): Problems {
   const problems: Problems = {};
   if (!form.title.trim()) problems.title = 'Give it a name.';
+  if (oneParagraph(form.summary).length > MAX_SUMMARY) {
+    problems.summary = `Keep the description to ${MAX_SUMMARY} characters.`;
+  }
   const servings = wholeNumber(form.servings);
   if (servings === null || servings < 1 || servings > 50) {
     problems.servings = 'How many does it serve? A number from 1 to 50.';
@@ -177,6 +189,7 @@ export function toImportedRecipe(form: ReviewForm): ImportedRecipeIn {
   const method = (form.method ?? []).map((s) => s.trim()).filter(Boolean);
   return {
     title: form.title.trim(),
+    summary: oneParagraph(form.summary) || null,
     servings: Number(form.servings.trim()),
     total_minutes: form.minutes.trim() ? Number(form.minutes.trim()) : null,
     course: form.course as Course,
