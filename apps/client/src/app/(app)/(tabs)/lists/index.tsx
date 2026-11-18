@@ -264,9 +264,9 @@ function ItemRow({
         .damping(18)
         .reduceMotion(ReduceMotion.System)}
       // A ticked row fades out while the rows under it glide up into its place, instead
-      // of the list jumping. Both follow the phone's reduce-motion setting.
+      // of the list jumping (a straight glide, no spring). Both follow reduce motion.
       exiting={FadeOut.duration(t.motion.duration.base).reduceMotion(ReduceMotion.System)}
-      layout={LinearTransition.springify().damping(20).reduceMotion(ReduceMotion.System)}
+      layout={LinearTransition.duration(t.motion.duration.base).reduceMotion(ReduceMotion.System)}
     >
       <View
         style={{
