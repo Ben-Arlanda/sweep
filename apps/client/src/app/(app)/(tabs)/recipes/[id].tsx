@@ -4,7 +4,10 @@ import {
   ArrowLeftRight,
   CalendarDays,
   ChefHat,
+  CirclePlus,
   Clock,
+  Package,
+  ShoppingCart,
   Users,
   type LucideIcon,
 } from 'lucide-react-native';
@@ -17,6 +20,7 @@ import { FoodThumb } from '@/components/FoodThumb';
 import { HeartButton } from '@/components/HeartButton';
 import { Icon } from '@/components/Icon';
 import { Tag } from '@/components/Pill';
+import { useToast } from '@/components/Toast';
 import { RecipeArt } from '@/components/RecipeArt';
 import { Button, ErrorText, Loading, Screen, SectionLabel, Text } from '@/components/ui';
 import { formatDay } from '@/features/chat/format';
@@ -46,14 +50,12 @@ import { tintFor } from '@/theme/tint';
 import { useTheme } from '@/theme/useTheme';
 
 type Line = components['schemas']['RecipeIngredientOut'];
-type Kitchen = components['schemas']['KitchenOut'];
-type List = components['schemas']['ShoppingListDetailOut'];
 
 /**
  * One recipe, checked against the Kitchen: each ingredient says whether you have it.
  * That's the loop working: what you bought (Kitchen) meets what you could cook.
  *
- * Something you need shows "+ Need": one tap puts it on the Shopping List. Anything
+ * Something you need shows "Add to list": one tap puts it on the Shopping List. Anything
  * already unticked on the list shows "On list", the same rule the planner uses.
  *
  * Laid out as Ingredients / Method / Notes tabs (slice 6e). A Recipe Adaptation (ADR 0021)
@@ -75,6 +77,7 @@ export default function RecipeScreen() {
   // Optional too: without the list, "Need" is just a label, with no + to add it.
   const list = useList();
   const [tab, setTab] = useState<Tab>('ingredients');
+  const need = useNeedActions(list.data?.id ?? '');
 
   if (recipe.isPending) return <Loading />;
   if (recipe.isError && isNotFound(recipe.error)) {
@@ -101,12 +104,16 @@ export default function RecipeScreen() {
   const summary = kitchen.data ? haveSummary(r.ingredients, kitchen.data) : null;
   const parentId = r.kind === 'adaptation' ? r.parent_recipe_id : null;
   const swaps = swapsOf(r.ingredients);
-  const missing =
-    kitchen.data && list.data
-      ? r.ingredients.filter(
-          (line) => matchLine(line, kitchen.data, list.data.items)?.kind === 'need',
-        )
-      : [];
+  const statusOf = (line: Line, i: number): Have | null => {
+    const match = kitchen.data ? matchLine(line, kitchen.data, list.data?.items) : null;
+    // Just tapped: the list hasn't come back with it linked yet, but it's on there.
+    return match?.kind === 'need' && need.added.has(i) ? { kind: 'onList' } : match;
+  };
+  const missing = list.data
+    ? r.ingredients
+        .map((line, i) => ({ line, i }))
+        .filter(({ line, i }) => statusOf(line, i)?.kind === 'need')
+    : [];
 
   return (
     <Screen
@@ -156,12 +163,24 @@ export default function RecipeScreen() {
             <Text variant="heading" role="heading" aria-level={2}>
               Ingredients ({r.ingredients.length})
             </Text>
-            {missing.length > 0 && list.data ? (
-              <AddAllToList lines={missing} listId={list.data.id} />
+            {missing.length > 0 ? (
+              <Button
+                title={`Add ${missing.length} missing`}
+                accessibilityLabel={`Add ${missing.length} missing ingredients to the shopping list`}
+                icon={ShoppingCart}
+                variant="secondary"
+                compact
+                onPress={() => need.add(missing)}
+              />
             ) : null}
           </View>
           {r.ingredients.map((line, i) => (
-            <IngredientRow key={i} line={line} kitchen={kitchen.data} list={list.data} />
+            <IngredientRow
+              key={i}
+              line={line}
+              have={statusOf(line, i)}
+              onAdd={list.data ? () => need.add([{ line, i }]) : undefined}
+            />
           ))}
           {kitchen.isError ? (
             <Text variant="caption" muted>
@@ -284,29 +303,29 @@ function Tabs({ value, onChange }: { value: Tab; onChange: (tab: Tab) => void })
   );
 }
 
-/** "Add to list": every ingredient marked Need, onto the Shopping List in one tap. */
-function AddAllToList({ lines, listId }: { lines: Line[]; listId: string }) {
-  const { addItem } = useListActions(listId);
-  const [done, setDone] = useState(false);
-  return (
-    <View accessibilityLiveRegion="polite">
-      <Button
-        title={done ? 'Added' : `Add ${lines.length} to list`}
-        accessibilityLabel={
-          done
-            ? 'Added to the Shopping List'
-            : `Add ${lines.length} things you need to the Shopping List`
-        }
-        variant="secondary"
-        compact
-        disabled={done}
-        onPress={() => {
-          lines.forEach((line) => addItem(addText(line)));
-          setDone(true);
-        }}
-      />
-    </View>
-  );
+/**
+ * "Add to list" and "Add 2 missing": onto the Shopping List (queued if offline), then
+ * the same "Added to shopping list" toast as the Kitchen, with Undo.
+ */
+function useNeedActions(listId: string) {
+  const toast = useToast();
+  const { addItem, deleteItem } = useListActions(listId);
+  const [added, setAdded] = useState<Set<number>>(new Set());
+  function add(lines: { line: Line; i: number }[]) {
+    const ids = lines.map(({ line }) => addItem(addText(line)));
+    const which = lines.map(({ i }) => i);
+    setAdded((before) => new Set([...before, ...which]));
+    toast({
+      kind: 'undo',
+      text: 'Added to shopping list',
+      detail: lines.length === 1 ? lineName(lines[0].line) : `${lines.length} ingredients`,
+      onUndo: () => {
+        ids.forEach(deleteItem);
+        setAdded((before) => new Set([...before].filter((i) => !which.includes(i))));
+      },
+    });
+  }
+  return { added, add };
 }
 
 /** "25 min · Serves 4 · Main", each with its icon, as on the plan screens. */
@@ -585,52 +604,46 @@ function lineAmount(line: Line) {
   return [line.quantity, line.unit].filter(Boolean).join(' ');
 }
 
-const HAVE_TEXT: Record<Have['kind'], string> = {
-  have: 'In your Kitchen',
-  low: 'Low',
-  check: 'Check',
-  need: 'Need',
-  onList: 'On list',
-};
-
+/**
+ * One ingredient as a card: what it is, how much, and where it stands. "Add to list"
+ * is the only one you can tap; the others just say how things are.
+ */
 function IngredientRow({
   line,
-  kitchen,
-  list,
+  have,
+  onAdd,
 }: {
   line: Line;
-  kitchen: Kitchen | undefined;
-  list: List | undefined;
+  have: Have | null;
+  onAdd?: () => void;
 }) {
   const t = useTheme();
-  // Between the tap and the list coming back from the server, the new item has no
-  // Ingredient yet, so `matchLine` can't see it. Remember the tap so it says "On list"
-  // straight away.
-  const [added, setAdded] = useState(false);
-  const match = kitchen ? matchLine(line, kitchen, list?.items) : null;
-  const have: Have | null = added && match?.kind === 'need' ? { kind: 'onList' } : match;
   const name = line.ingredient?.name ?? line.raw_text;
-  const label = have ? (have.kind === 'low' ? `Have ${have.have}` : HAVE_TEXT[have.kind]) : null;
-
   return (
     <View
       style={{
-        minHeight: t.touchTarget,
+        minHeight: t.touchTarget + 16,
         flexDirection: 'row',
         alignItems: 'center',
         gap: t.space.md,
+        backgroundColor: t.colors.surface,
+        borderRadius: t.radius.md,
+        borderWidth: 1,
+        borderColor: t.colors.border,
+        paddingVertical: t.space.sm,
+        paddingLeft: t.space.sm,
+        paddingRight: t.space.sm,
       }}
     >
       <View
         accessible
-        // The status ("Have", "On list", "+ Need") is read from the tag beside it, which
-        // sits in a live region, so it's announced when it changes.
+        // The status is read from the pill beside it, a live region, so changes are announced.
         accessibilityLabel={[line.raw_text, line.optional ? 'optional' : null]
           .filter(Boolean)
           .join(', ')}
         style={{ flex: 1, flexDirection: 'row', alignItems: 'center', gap: t.space.md }}
       >
-        <FoodThumb emoji={ingredientEmoji(line.ingredient)} tint={tintFor(name)} size={36} />
+        <FoodThumb emoji={ingredientEmoji(line.ingredient)} tint={tintFor(name)} size={44} />
         <View style={{ flex: 1 }}>
           <Text variant="label">{lineName(line)}</Text>
           <Text variant="caption" muted>
@@ -638,42 +651,56 @@ function IngredientRow({
           </Text>
         </View>
       </View>
-      {/* The live region reads "On list" out after a tap on +. */}
-      <View accessibilityLiveRegion="polite" style={{ alignSelf: 'center' }}>
-        {have?.kind === 'need' && list ? (
-          <AddToList line={line} listId={list.id} onAdded={() => setAdded(true)} />
-        ) : have && label ? (
-          <View>
-            <Tag
-              kind={have.kind === 'need' ? 'need' : 'soft'}
-              tint={have.kind === 'have' ? 'mint' : undefined}
-            >
-              {label}
-            </Tag>
-          </View>
-        ) : null}
+      <View accessibilityLiveRegion="polite">
+        {have ? <StatusPill have={have} name={name} onAdd={onAdd} /> : null}
       </View>
     </View>
   );
 }
 
-/** "+ Need": puts this ingredient on the Shopping List (queued if offline, like any add). */
-function AddToList({ line, listId, onAdded }: { line: Line; listId: string; onAdded: () => void }) {
+/** In kitchen (lime), Add to list (red, tappable), On list (grey), or Low / Check. */
+function StatusPill({ have, name, onAdd }: { have: Have; name: string; onAdd?: () => void }) {
   const t = useTheme();
-  const { addItem } = useListActions(listId);
-  const text = addText(line);
+  const look = {
+    have: { icon: Package, text: 'In kitchen', bg: t.colors.actionSoft, fg: t.colors.onActionSoft },
+    need: { icon: CirclePlus, text: 'Add to list', bg: t.colors.dangerSoft, fg: t.colors.danger },
+    onList: { icon: ShoppingCart, text: 'On list', bg: t.colors.border, fg: t.colors.text },
+    low: {
+      icon: Package,
+      text: have.kind === 'low' ? `Have ${have.have}` : '',
+      bg: t.colors.border,
+      fg: t.colors.text,
+    },
+    check: { icon: Package, text: 'Check', bg: t.colors.border, fg: t.colors.text },
+  }[have.kind];
+  const pill = (
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: t.space.xs,
+        backgroundColor: look.bg,
+        borderRadius: t.radius.pill,
+        paddingHorizontal: t.space.md,
+        minHeight: 36,
+      }}
+    >
+      <Icon icon={look.icon} color={look.fg} size={18} />
+      <Text variant="label" style={{ color: look.fg }}>
+        {look.text}
+      </Text>
+    </View>
+  );
+  if (have.kind !== 'need' || !onAdd) return pill;
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={`Need. Add ${text} to the Shopping List`}
-      onPress={() => {
-        addItem(text);
-        onAdded();
-      }}
-      // A 44pt target around the small pill (the pill alone is too small to tap).
-      style={{ minHeight: t.touchTarget, minWidth: t.touchTarget, justifyContent: 'center' }}
+      accessibilityLabel={`Add ${name} to the shopping list`}
+      onPress={onAdd}
+      // A 44pt target around the 36pt pill.
+      style={{ minHeight: t.touchTarget, justifyContent: 'center' }}
     >
-      <Tag kind="need">+ Need</Tag>
+      {pill}
     </Pressable>
   );
 }
