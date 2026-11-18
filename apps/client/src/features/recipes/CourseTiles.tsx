@@ -52,7 +52,7 @@ export function CourseTiles({
     >
       {TILES.map((course) => {
         const selected = course.value === value;
-        const color = selected ? t.colors.onInverse : t.colors.text;
+        const color = selected ? t.colors.onAction : t.colors.text; // ink on lime
         return (
           <Pressable
             key={course.value ?? 'all'}
@@ -67,8 +67,8 @@ export function CourseTiles({
               minHeight: 60,
               borderRadius: t.radius.lg - 2,
               borderWidth: 1,
-              borderColor: selected ? t.colors.inverse : t.colors.border,
-              backgroundColor: selected ? t.colors.inverse : t.colors.surface,
+              borderColor: selected ? t.colors.action : t.colors.border,
+              backgroundColor: selected ? t.colors.action : t.colors.surface,
               alignItems: 'center',
               justifyContent: 'center',
               gap: t.space.xs,
