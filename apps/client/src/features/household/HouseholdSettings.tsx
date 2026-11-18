@@ -45,7 +45,7 @@ export function HouseholdSettings({ me }: { me: MeOut }) {
         </Text>
         <Button
           title="Dietary Rules & Preferences"
-          variant="secondary"
+          variant="lavender"
           onPress={() => router.push('/dietary-rules')}
         />
       </Card>
