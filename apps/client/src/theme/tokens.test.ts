@@ -1,6 +1,15 @@
 import { contrastRatio } from './contrast';
 import { initials, tintFor } from './tint';
-import { colors, hero, homeColors, statusColors, stockColors, TINT_NAMES, tints } from './tokens';
+import {
+  colors,
+  hero,
+  homeColors,
+  PAGE_COLORS,
+  statusColors,
+  stockColors,
+  TINT_NAMES,
+  tints,
+} from './tokens';
 
 const AA = 4.5;
 const schemes = ['light', 'dark'] as const;
@@ -140,3 +149,19 @@ describe("Home's blue page (homeColors) meets WCAG AA", () => {
     expect(contrastRatio(c.text, c.background)).toBeLessThan(AA);
   });
 });
+
+describe.each(Object.keys(PAGE_COLORS) as (keyof typeof PAGE_COLORS)[])(
+  'the %s page colour meets WCAG AA',
+  (page) => {
+    const c = { ...colors.light, ...PAGE_COLORS[page] };
+    it.each([
+      ['page text', c.onBackground, c.background],
+      ['muted page text', c.onBackgroundMuted, c.background],
+      ['hero title', c.onHero, c.background],
+      ['hero subtitle', c.onHeroMuted, c.background],
+      ['card text on warm white', c.text, c.surface],
+    ])('%s', (_name, fg, bg) => {
+      expect(contrastRatio(fg as string, bg as string)).toBeGreaterThanOrEqual(AA);
+    });
+  },
+);

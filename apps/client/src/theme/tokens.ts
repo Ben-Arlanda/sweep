@@ -14,7 +14,7 @@
  * Contrast for every text/background pair is checked in tokens.test.ts.
  */
 
-const palette = {
+export const palette = {
   lime: '#d8f23c',
   limePressed: '#c5de25',
   limeSoft: '#eef8b8',
@@ -135,20 +135,34 @@ export const colors: Record<'light' | 'dark', ColorTokens> = {
 };
 
 /**
- * Home's colours (2026-11-18): a blue page with warm white cards and no coloured hero.
- * Only Home for now; other screens may follow. White text on the blue is 7.5:1 and the
- * pale blue 5.9:1 (tokens.test.ts), while ink on it would fail, hence onBackground.
+ * Each main screen's page colour (2026-11-18): no coloured hero, warm white (paper)
+ * cards and fields on top. Text straight on the page is white on the darker colours and
+ * ink on the lighter ones, whichever passes AA (checked in tokens.test.ts).
  */
-export const homeColors: Partial<ColorTokens> = {
-  background: '#2447c6',
-  surface: palette.paper,
-  hero: 'transparent',
-  onHero: palette.white,
-  onHeroMuted: '#dbe3ff',
-  heroField: palette.paper,
-  onBackground: palette.white,
-  onBackgroundMuted: '#dbe3ff',
+function pageColors(background: string, text: 'white' | 'ink', muted?: string) {
+  const on = text === 'white' ? palette.white : palette.ink;
+  const onMuted = muted ?? (text === 'white' ? palette.white : palette.ink700);
+  return {
+    background,
+    surface: palette.paper,
+    hero: 'transparent',
+    onHero: on,
+    onHeroMuted: onMuted,
+    heroField: palette.paper,
+    onBackground: on,
+    onBackgroundMuted: onMuted,
+  } satisfies Partial<ColorTokens>;
+}
+
+export const PAGE_COLORS = {
+  home: pageColors('#2447c6', 'white', '#dbe3ff'),
+  kitchen: pageColors('#007f73', 'white'), // white is only 4.9:1 here, so no paler muted
+  list: pageColors('#f4a48e', 'ink'),
+  recipes: pageColors('#7450c7', 'white', '#f1ecfd'),
+  plan: pageColors('#f6b94d', 'ink'),
 };
+export type Page = keyof typeof PAGE_COLORS;
+export const homeColors = PAGE_COLORS.home;
 
 /** The household pastels. `bg` for cards and thumbnails, `pill`/`onPill` for quantity pills. */
 export const TINT_NAMES = ['butter', 'blush', 'mint', 'sky', 'lilac'] as const;

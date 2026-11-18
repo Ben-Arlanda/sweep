@@ -13,7 +13,7 @@ import { View } from 'react-native';
 import { Hero, HeroSearch } from '@/components/Hero';
 import { Icon } from '@/components/Icon';
 import { PressableScale } from '@/components/PressableScale';
-import { ErrorText, Loading, Screen, SectionLabel, Text } from '@/components/ui';
+import { ErrorText, Loading, Screen, Text } from '@/components/ui';
 import { AddRecipeSheet } from '@/features/imports/AddRecipeSheet';
 import { ruleBreakText } from '@/features/imports/ruleBreaks';
 import { IdeaTile, KITCHEN_FIRST } from '@/features/recipes/IdeaTile';
@@ -22,6 +22,7 @@ import { ApiError } from '@/lib/api/client';
 import { useImportedRecipes } from '@/lib/api/imports';
 import { useDinnerIdeas } from '@/lib/api/planning';
 import { useDebounced, useRecipeSearch } from '@/lib/api/recipes';
+import { PageColors } from '@/theme/PageColors';
 import { useTheme } from '@/theme/useTheme';
 
 /**
@@ -29,7 +30,7 @@ import { useTheme } from '@/theme/useTheme';
  * Favourites), shortcuts into All recipes, and what fits the Kitchen now. Typing a
  * search swaps the sections for results, ranked by meaning.
  */
-export default function RecipesScreen() {
+function RecipesScreenContent() {
   const t = useTheme();
   const [text, setText] = useState('');
   const [adding, setAdding] = useState(false);
@@ -175,7 +176,7 @@ function Browse() {
   const t = useTheme();
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-      <Text variant="title" role="heading" aria-level={2}>
+      <Text variant="title" role="heading" aria-level={2} style={{ color: t.colors.onBackground }}>
         Browse recipes
       </Text>
       <PressableScale
@@ -209,10 +210,15 @@ function Recommended() {
   return (
     <View style={{ gap: t.space.sm }}>
       <View>
-        <Text variant="heading" role="heading" aria-level={2}>
+        <Text
+          variant="heading"
+          role="heading"
+          aria-level={2}
+          style={{ color: t.colors.onBackground }}
+        >
           Recommended for you
         </Text>
-        <Text variant="caption" muted>
+        <Text variant="caption" style={{ color: t.colors.onBackgroundMuted }}>
           From your Kitchen and Dietary Rules.
         </Text>
       </View>
@@ -243,8 +249,22 @@ function SearchResults({ search }: { search: ReturnType<typeof useRecipeSearch> 
   }
   return (
     <View style={{ gap: t.space.sm }}>
-      <SectionLabel>Best matches</SectionLabel>
-      {search.data.length === 0 ? <Text muted>Nothing fits that. Try other words.</Text> : null}
+      <Text
+        variant="caption"
+        style={{
+          color: t.colors.onBackgroundMuted,
+          fontFamily: t.fonts.bold,
+          letterSpacing: 1.2,
+          textTransform: 'uppercase',
+        }}
+      >
+        Best matches
+      </Text>
+      {search.data.length === 0 ? (
+        <Text style={{ color: t.colors.onBackgroundMuted }}>
+          Nothing fits that. Try other words.
+        </Text>
+      ) : null}
       {search.data.map((r) => (
         <RecipeRow key={r.id} recipe={r} />
       ))}
@@ -262,12 +282,21 @@ function YourRecipes() {
   if (!mine.data?.length) return mine.isError ? <ErrorText message={mine.error.message} /> : null;
   return (
     <View style={{ gap: t.space.sm }}>
-      <Text variant="title" role="heading" aria-level={2}>
+      <Text variant="title" role="heading" aria-level={2} style={{ color: t.colors.onBackground }}>
         Your recipes
       </Text>
       {mine.data.map((r) => (
         <RecipeRow key={r.id} recipe={r} note={ruleBreakText(r.rule_breaks)} />
       ))}
     </View>
+  );
+}
+
+/** The recipes tab on its own page colour (PAGE_COLORS). */
+export default function RecipesScreen() {
+  return (
+    <PageColors page="recipes">
+      <RecipesScreenContent />
+    </PageColors>
   );
 }

@@ -289,10 +289,24 @@ export function Field({
   );
 }
 
+/** On its own soft-red pill, so it reads on any page colour as well as on cards. */
 export function ErrorText({ message }: { message: string | null | undefined }) {
+  const t = useTheme();
   if (!message) return null;
   return (
-    <Text variant="caption" danger accessibilityRole="alert">
+    <Text
+      variant="caption"
+      danger
+      accessibilityRole="alert"
+      style={{
+        alignSelf: 'flex-start',
+        backgroundColor: t.colors.dangerSoft,
+        borderRadius: t.radius.sm,
+        paddingHorizontal: t.space.sm,
+        paddingVertical: 2,
+        overflow: 'hidden',
+      }}
+    >
       {message}
     </Text>
   );

@@ -8,7 +8,8 @@ import { useTheme } from '@/theme/useTheme';
 
 /**
  * The header on a plain tab screen (Kitchen, Shopping List, Plan): the tab's icon, the
- * title at "title" size, optional things on the right, and a line under it. One
+ * title at "title" size, optional things on the right, and a line under it, in the
+ * page's text colour (white or ink, whichever its PAGE_COLORS passes AA with). One
  * component, so every tab's header is the same size and sits at the same height.
  */
 export function PageHeader({
@@ -27,14 +28,18 @@ export function PageHeader({
   return (
     <View style={{ gap: t.space.xs, paddingTop: t.space.lg }}>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.sm }}>
-        <Icon icon={icon} size={34} color={t.colors.text} />
-        <Text variant="title" accessibilityRole="header" style={{ flex: 1 }}>
+        <Icon icon={icon} size={34} color={t.colors.onBackground} />
+        <Text
+          variant="title"
+          accessibilityRole="header"
+          style={{ flex: 1, color: t.colors.onBackground }}
+        >
           {title}
         </Text>
         {right}
       </View>
       {subtitle ? (
-        <Text muted accessibilityLiveRegion="polite">
+        <Text accessibilityLiveRegion="polite" style={{ color: t.colors.onBackgroundMuted }}>
           {subtitle}
         </Text>
       ) : null}

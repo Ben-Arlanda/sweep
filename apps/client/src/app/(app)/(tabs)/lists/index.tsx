@@ -30,6 +30,7 @@ import { useIsOnline, useList, useListActions, usePendingListChanges } from '@/l
 import { tintFor } from '@/theme/tint';
 import { FoodThumb } from '@/components/FoodThumb';
 import { ingredientEmoji } from '@/theme/foodEmoji';
+import { PageColors } from '@/theme/PageColors';
 import { useTheme } from '@/theme/useTheme';
 
 const ALL = 'all';
@@ -40,7 +41,7 @@ const ALL = 'all';
  * the list (with Undo); ••• holds its Shop, Kitchen link and Remove. Filter by Shop when
  * you're standing in one.
  */
-export default function ListScreen() {
+function ListScreenContent() {
   const list = useList();
   if (list.isPending) return <Loading />;
   if (list.isError) {
@@ -112,7 +113,9 @@ function ListContent({ list }: { list: ListDetail }) {
       <AddItem onAdd={actions.addItem} />
       <ErrorText message={actions.error?.message} />
 
-      {toBuy.length === 0 ? <Text muted>Nothing left to buy. Nice work.</Text> : null}
+      {toBuy.length === 0 ? (
+        <Text style={{ color: t.colors.onBackgroundMuted }}>Nothing left to buy. Nice work.</Text>
+      ) : null}
       {listSections(toBuy).map((section) => (
         // The whole card glides away when its last item is ticked, like a row does.
         <Animated.View
@@ -375,4 +378,13 @@ function useSyncStatus(): string | null {
   const online = useIsOnline();
   if (pending === 0) return null;
   return online ? 'Saving…' : `Offline: ${pending} to sync`;
+}
+
+/** The list tab on its own page colour (PAGE_COLORS). */
+export default function ListScreen() {
+  return (
+    <PageColors page="list">
+      <ListScreenContent />
+    </PageColors>
+  );
 }

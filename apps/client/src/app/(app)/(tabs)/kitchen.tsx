@@ -77,6 +77,7 @@ import { useList, useListActions } from '@/lib/api/lists';
 import { ingredientEmoji } from '@/theme/foodEmoji';
 import { tintFor } from '@/theme/tint';
 import { inputText } from '@/theme/inputText';
+import { PageColors } from '@/theme/PageColors';
 import { useTheme, type Theme } from '@/theme/useTheme';
 
 type Actions = ReturnType<typeof useKitchenActions>;
@@ -94,7 +95,7 @@ const placeLabel = (place: Place) => PLACES.find((p) => p.place === place)?.labe
  * grouped by category. Each item has a status the Member sets from its badge: a Staple
  * that runs out goes on the Shopping List at once (Undo), a Non-staple only asks.
  */
-export default function KitchenScreen() {
+function KitchenScreenContent() {
   const t = useTheme();
   const toast = useToast();
   const kitchen = useKitchen();
@@ -373,7 +374,7 @@ export default function KitchenScreen() {
       </ScrollView>
 
       {shown.length === 0 ? (
-        <Text muted>
+        <Text style={{ color: t.colors.onBackgroundMuted }}>
           {rows.length === 0
             ? 'Nothing in your Kitchen yet.'
             : 'Nothing here. Try another tab or filter.'}
@@ -1341,5 +1342,14 @@ function MatchRow({
         <Text muted> · {note}</Text>
       </Text>
     </Pressable>
+  );
+}
+
+/** The kitchen tab on its own page colour (PAGE_COLORS). */
+export default function KitchenScreen() {
+  return (
+    <PageColors page="kitchen">
+      <KitchenScreenContent />
+    </PageColors>
   );
 }

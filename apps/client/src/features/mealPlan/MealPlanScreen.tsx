@@ -98,8 +98,12 @@ export function MealPlanScreen() {
                 gap: t.space.sm,
               }}
             >
-              <Icon icon={CalendarDays} size={18} color={t.colors.text} />
-              <Text variant="label" accessibilityLiveRegion="polite">
+              <Icon icon={CalendarDays} size={18} color={t.colors.onBackground} />
+              <Text
+                variant="label"
+                accessibilityLiveRegion="polite"
+                style={{ color: t.colors.onBackground }}
+              >
                 {weekRange(week.data.start)}
               </Text>
             </View>
