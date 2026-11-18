@@ -15,8 +15,8 @@ const BOUNCE_MS = 550; // up, then down: about one bounce a second
 
 /**
  * Sweep's chef, bouncing and blinking while Sweep works (Generating screens). Squashes a
- * little as it lands and its shadow shrinks as it rises. The blink is an animated WebP
- * cut out of the designer's GIF, so it sits on any background. Stands still, eyes open,
+ * little as it lands and its shadow shrinks as it rises. The wink is an animated WebP
+ * made from the designer's GIF (the lime chef, 2026-11-18), so it sits on any background. Stands still, eyes open,
  * when the phone asks for less motion. Decorative: the heading says what's happening.
  */
 export function BouncingChef({ size = 180 }: { size?: number }) {
@@ -79,7 +79,7 @@ export function BouncingChef({ size = 180 }: { size?: number }) {
             height: 14,
             marginTop: 6,
             borderRadius: 999,
-            backgroundColor: '#8a7a50',
+            backgroundColor: '#5d6155', // a soft grey: reads as a shadow under the lime chef
           },
           shadow,
         ]}
