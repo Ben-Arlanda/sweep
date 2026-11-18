@@ -14,6 +14,9 @@ import { useTheme } from '@/theme/useTheme';
 
 import { TILES, type Course } from './courses';
 
+// Width shares: "All" needs little room and "Breakfast" the most, so neither squashes.
+const SHARE: Partial<Record<Course | 'all', number>> = { all: 0.7, breakfast: 1.3 };
+
 const ICONS: Record<Course, LucideIcon> = {
   main: Utensils,
   side: Salad,
@@ -24,8 +27,8 @@ const ICONS: Record<Course, LucideIcon> = {
 
 /**
  * The Course filter: one row of five tiles (All and four Courses), an icon over the
- * word. The tiles share the width equally, so the row never wraps or runs off a small
- * phone.
+ * word. The tiles share the width by how long their word is, so the row never wraps or
+ * runs off a small phone and "Breakfast" isn't squashed.
  *
  * For screen readers it's a radio group, like ChoiceChips. Each tile is named by its
  * word; the icon is decorative.
@@ -58,8 +61,9 @@ export function CourseTiles({
             accessibilityLabel={course.label}
             onPress={() => onChange(course.value)}
             style={({ pressed }) => ({
-              flex: 1,
+              flex: SHARE[course.value ?? 'all'] ?? 1,
               minWidth: 0,
+              paddingHorizontal: 2,
               minHeight: 60,
               borderRadius: t.radius.lg - 2,
               borderWidth: 1,
