@@ -1,5 +1,6 @@
 import { router } from 'expo-router';
 import {
+  BookOpen,
   ChefHat,
   ChevronRight,
   Heart,
@@ -21,7 +22,7 @@ import { RecipeRow } from '@/features/recipes/RecipeRow';
 import { ApiError } from '@/lib/api/client';
 import { useImportedRecipes } from '@/lib/api/imports';
 import { useDinnerIdeas } from '@/lib/api/planning';
-import { useDebounced, useRecipeSearch } from '@/lib/api/recipes';
+import { useDebounced, useRecipeCount, useRecipeSearch } from '@/lib/api/recipes';
 import { PageColors } from '@/theme/PageColors';
 import { useTheme } from '@/theme/useTheme';
 
@@ -163,32 +164,40 @@ function Tile({
   );
 }
 
-/** "Browse recipes" with See all (a plain link, as on Home): the filters live on All recipes. */
+/**
+ * Browse: a card into All recipes (courses, filters, sort), with the real count. A card,
+ * not a lone heading, so this section has a body like the ones under it.
+ */
 function Browse() {
   const t = useTheme();
+  const count = useRecipeCount({ maxMinutes: null, course: null });
+  const label =
+    count.data !== undefined ? `Browse all ${count.data} recipes` : 'Browse all recipes';
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-      <Text variant="title" role="heading" aria-level={2} style={{ color: t.colors.onBackground }}>
-        Browse recipes
-      </Text>
-      <PressableScale
-        accessibilityRole="link"
-        accessibilityLabel="See all recipes"
-        onPress={() => router.push('/recipes/all')}
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: 2,
-          minHeight: t.touchTarget,
-          paddingLeft: t.space.sm,
-        }}
-      >
-        <Text variant="label" style={{ color: t.colors.onBackground }}>
-          See all
+    <PressableScale
+      accessibilityRole="link"
+      accessibilityLabel={`${label}: courses, filters and sort`}
+      onPress={() => router.push('/recipes/all')}
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: t.space.md,
+        minHeight: 64,
+        paddingHorizontal: t.space.lg,
+        borderRadius: t.radius.lg,
+        backgroundColor: t.colors.surface,
+        boxShadow: t.shadow.card,
+      }}
+    >
+      <Icon icon={BookOpen} size={26} color={t.colors.text} />
+      <View style={{ flex: 1 }}>
+        <Text variant="label">{label}</Text>
+        <Text variant="caption" muted>
+          Courses, filters and sort
         </Text>
-        <Icon icon={ChevronRight} size={16} color={t.colors.onBackground} strong />
-      </PressableScale>
-    </View>
+      </View>
+      <Icon icon={ChevronRight} size={20} color={t.colors.text} strong />
+    </PressableScale>
   );
 }
 
