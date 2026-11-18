@@ -92,8 +92,8 @@ function ListContent({ list }: { list: ListDetail }) {
       {/* A plain header on the page (no coloured card), a little lower than the notch. */}
       <View style={{ gap: t.space.xs, paddingTop: t.space.lg }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.sm }}>
-          <Icon icon={ShoppingBasket} size={28} color={t.colors.text} />
-          <Text variant="display" accessibilityRole="header" style={{ flex: 1 }}>
+          <Icon icon={ShoppingBasket} size={34} color={t.colors.text} />
+          <Text variant="title" accessibilityRole="header" style={{ flex: 1 }}>
             Shopping List
           </Text>
           <AvatarStack members={members} size={28} />
