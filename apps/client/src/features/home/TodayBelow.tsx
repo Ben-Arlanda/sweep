@@ -8,6 +8,7 @@ import {
   Refrigerator,
   ShoppingBasket,
   Sparkles,
+  Undo2,
   type LucideIcon,
 } from 'lucide-react-native';
 import { useState } from 'react';
@@ -86,11 +87,12 @@ function CookedButton({ meal }: { meal: PlannedMeal }) {
   return (
     <>
       <Button
-        title={isCooked ? 'Undo' : 'Cooked'}
+        title={isCooked ? 'Undo' : 'Mark as cooked'}
+        icon={isCooked ? Undo2 : undefined}
         accessibilityLabel={
           isCooked ? `Undo cooked for ${meal.title}` : `Mark ${meal.title} as cooked`
         }
-        variant={isCooked ? 'ghost' : 'dark'}
+        variant={isCooked ? 'outline' : 'dark'}
         loading={busy}
         disabled={busy}
         onPress={() => (isCooked ? undoCooked : cooked).mutate(mealTap(meal.id))}
