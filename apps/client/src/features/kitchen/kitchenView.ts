@@ -45,6 +45,17 @@ export function afterStockChange(row: { staple: boolean; stock: Stock }, next: S
   return row.staple ? ('addedToList' as const) : ('askToAdd' as const);
 }
 
+/**
+ * What removing an item does (••• Remove item, or a swipe). Removing means "it's gone",
+ * so it follows the Out rule: a Staple is marked Out, which puts it on the list and keeps
+ * it a Staple (buying it sets it back In stock). A Non-staple leaves the Kitchen and the
+ * toast offers to add it, unless it's already on the list.
+ */
+export function afterRemove(row: { staple: boolean; stock: Stock }, onList: boolean) {
+  if (row.staple) return row.stock === 'out' ? ('addToList' as const) : ('markOut' as const);
+  return onList ? ('remove' as const) : ('removeAndAsk' as const);
+}
+
 export function toRows(kitchen: { tracked: readonly Tracked[]; staples: readonly Staple[] }) {
   const rows: KitchenRow[] = [
     ...kitchen.staples.map((s) => ({

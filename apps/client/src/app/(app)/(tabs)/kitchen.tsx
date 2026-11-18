@@ -64,6 +64,7 @@ import {
 import { newIngredientName } from '@/features/kitchen/addNew';
 import { displayName } from '@/features/kitchen/format';
 import {
+  afterRemove,
   afterStockChange,
   sections as toSections,
   STOCK_LABEL,
@@ -78,7 +79,7 @@ import { onListIds } from '@/features/kitchen/onList';
 import { usePlaceFilter } from '@/features/kitchen/placeFilter';
 import { PLACES, type Place, type PlaceFilter } from '@/features/kitchen/places';
 import { useIngredientSearch, useKitchen, useKitchenActions } from '@/lib/api/kitchen';
-import { useList } from '@/lib/api/lists';
+import { useList, useListActions } from '@/lib/api/lists';
 import { ingredientEmoji } from '@/theme/foodEmoji';
 import { tintFor } from '@/theme/tint';
 import { inputText } from '@/theme/inputText';
@@ -118,6 +119,7 @@ export default function KitchenScreen() {
   const kitchen = useKitchen();
   const actions = useKitchenActions();
   const list = useList();
+  const listActions = useListActions(list.data?.id ?? '');
   const [query, setQuery] = useState('');
   const [tab, setTab] = useState<Tab>('staples');
   const [place, setPlace] = usePlaceFilter();
@@ -219,20 +221,30 @@ export default function KitchenScreen() {
     });
   }
 
+  /** ••• Remove item (and the swipe): follows the Out rule, see `afterRemove`. */
   function remove(row: KitchenRow) {
-    if (row.staple) actions.notAStaple(row.id);
-    else actions.remove(row.id);
+    const effect = afterRemove(row, isOnList(row));
+    if (effect === 'markOut') return void changeStock(row, 'out'); // "Added to shopping list"
+    if (effect === 'addToList') return void addToList(row);
+    actions.remove(row.id);
+    const undo = () => undoToTracked(actions, row);
+    if (effect === 'remove') {
+      toast({ kind: 'undo', text: 'Removed from Kitchen', detail: row.name, onUndo: undo });
+      return;
+    }
     toast({
-      kind: 'undo',
-      text: 'Removed from Kitchen',
-      detail: row.name,
-      onUndo: () => {
-        if (row.staple) {
-          actions.setStaple(row.id, true);
-          actions.setPlace(row.id, row.place);
-          if (row.stock !== 'in_stock') void actions.setStock(row.id, row.stock);
-        } else undoToTracked(actions, row);
+      kind: 'ask',
+      text: `Removed ${row.name.toLowerCase()}. Add it to your shopping list?`,
+      emoji: ingredientEmoji(row.ingredient),
+      tint: tintFor(row.ingredient.name),
+      actionLabel: 'Add to list',
+      // It's out of the Kitchen now, so it goes on through the list (linked by its name).
+      onAction: () => {
+        if (!list.data) return;
+        const name = row.ingredient.name;
+        listActions.addItem(name.charAt(0).toUpperCase() + name.slice(1));
       },
+      onUndo: undo,
     });
   }
 
