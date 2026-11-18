@@ -1,5 +1,6 @@
 import {
   CakeSlice,
+  LayoutGrid,
   EggFried,
   Salad,
   Sandwich,
@@ -11,7 +12,7 @@ import { Pressable, Text, useWindowDimensions, View } from 'react-native';
 import { Icon } from '@/components/Icon';
 import { useTheme } from '@/theme/useTheme';
 
-import { COURSES, tapCourse, type Course } from './courses';
+import { TILES, type Course } from './courses';
 
 const ICONS: Record<Course, LucideIcon> = {
   main: Utensils,
@@ -22,9 +23,9 @@ const ICONS: Record<Course, LucideIcon> = {
 };
 
 /**
- * The Course filter: one row of five tiles, an icon over the word. The tiles share the
- * width equally, so the row never wraps or runs off a small phone. There's no "All"
- * tile: tapping the chosen one again shows every Course.
+ * The Course filter: one row of five tiles (All and four Courses), an icon over the
+ * word. The tiles share the width equally, so the row never wraps or runs off a small
+ * phone.
  *
  * For screen readers it's a radio group, like ChoiceChips. Each tile is named by its
  * word; the icon is decorative.
@@ -46,17 +47,16 @@ export function CourseTiles({
       accessibilityLabel="Course"
       style={{ flexDirection: 'row', gap: t.space.xs + 2 }}
     >
-      {COURSES.map((course) => {
+      {TILES.map((course) => {
         const selected = course.value === value;
         const color = selected ? t.colors.onInverse : t.colors.text;
         return (
           <Pressable
-            key={course.value}
+            key={course.value ?? 'all'}
             accessibilityRole="radio"
             aria-checked={selected}
             accessibilityLabel={course.label}
-            accessibilityHint={selected ? 'Tap again to show every course' : undefined}
-            onPress={() => onChange(tapCourse(value, course.value))}
+            onPress={() => onChange(course.value)}
             style={({ pressed }) => ({
               flex: 1,
               minWidth: 0,
@@ -72,7 +72,11 @@ export function CourseTiles({
               opacity: pressed ? 0.75 : 1,
             })}
           >
-            <Icon icon={ICONS[course.value]} size={narrow ? 20 : 22} color={color} />
+            <Icon
+              icon={course.value ? ICONS[course.value] : LayoutGrid}
+              size={narrow ? 20 : 22}
+              color={color}
+            />
             <Text
               numberOfLines={1}
               style={{

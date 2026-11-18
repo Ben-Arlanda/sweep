@@ -21,7 +21,8 @@ export function courseName(course: Course): string {
   return COURSES.find((c) => c.value === course)?.one ?? course;
 }
 
-/** The filter after a tap. There's no "All" tile: tapping the chosen one clears it. */
-export function tapCourse(current: Course | null, tapped: Course): Course | null {
-  return current === tapped ? null : tapped;
-}
+/** The All recipes tiles (slice 6f): All, then the four big Courses. Lunch shows under All. */
+export const TILES: { value: Course | null; label: string }[] = [
+  { value: null, label: 'All' },
+  ...COURSES.filter((c) => c.value !== 'lunch'),
+];

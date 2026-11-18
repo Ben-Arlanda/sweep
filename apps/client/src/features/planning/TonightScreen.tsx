@@ -1,4 +1,4 @@
-import { router, Stack } from 'expo-router';
+import { router, Stack, useLocalSearchParams } from 'expo-router';
 import {
   ArrowUp,
   BookOpen,
@@ -8,7 +8,7 @@ import {
   Ellipsis,
   Sparkles,
 } from 'lucide-react-native';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ScrollView, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -24,10 +24,11 @@ import { requestPlan } from '@/features/chat/starters';
 import { PlanSheet } from '@/features/mealPlan/PlanSheet';
 import { useDecideProposal } from '@/lib/api/conversations';
 import { useMealPlan } from '@/lib/api/mealPlan';
-import { useDinnerIdeas, type DinnerIdea, type IdeaFilter } from '@/lib/api/planning';
+import { useDinnerIdeas, type DinnerIdea } from '@/lib/api/planning';
 import { useTheme } from '@/theme/useTheme';
 
 import { GeneratingView } from './GeneratingView';
+import { fromParams, type IdeaFilter, type IdeaRequest } from './ideaRequest';
 import { stepsFor, TONIGHT_STEPS } from './steps';
 import { usePlanRun } from './usePlanRun';
 
@@ -40,15 +41,19 @@ const PAGE = 3;
 const TWEAKS = ['Make it quicker', 'More vegetarian'];
 
 /**
- * "Just tonight" (slice 6e, ADR 0025): Dinner Ideas chosen by code from the Kitchen and
- * Dietary Rules. Choosing one opens its recipe to plan it. Asking Sweep to tweak them
- * starts a Conversation, which answers here with one dinner to plan.
+ * Dinner Ideas (slice 6e, ADR 0025): chosen by code from the Kitchen and Dietary Rules.
+ * Two ways in: "Just tonight" on Home, or the Recipes tab's setup (slice 6f), whose mood,
+ * Ready in and Serves arrive as route params. Choosing one opens its recipe to plan it.
+ * Asking Sweep to tweak them (or "Healthy") starts a Conversation that answers here.
  */
 export function TonightScreen() {
   const t = useTheme();
+  const params = useLocalSearchParams();
+  const [request] = useState<IdeaRequest>(() => fromParams(params));
+  const fromSetup = params.mood !== undefined;
   const [filter, setFilter] = useState<IdeaFilter>('all');
   const [limit, setLimit] = useState(PAGE);
-  const ideas = useDinnerIdeas(filter, limit);
+  const ideas = useDinnerIdeas(request, filter, limit);
   const today = useMealPlan(null).data?.today;
   const [elapsed, setElapsed] = useState(0);
   const run = usePlanRun();
@@ -67,6 +72,16 @@ export function TonightScreen() {
     setShowIdeas(false);
     void run.send(`Dinner tonight: ${text}`, null);
   }
+
+  // Healthy has no data to filter on, so the setup's "Healthy" asks Sweep, once.
+  const asked = useRef(false);
+  useEffect(() => {
+    if (request.lean !== 'healthy' || asked.current) return;
+    asked.current = true;
+    tweak('something healthy');
+    // tweak is new every render; this runs once, on opening.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function body() {
     if (intro) {
@@ -124,6 +139,7 @@ export function TonightScreen() {
         error={ideas.error?.message ?? null}
         filter={filter}
         today={today ?? null}
+        serves={request.serves}
         canMore={(ideas.data?.length ?? 0) >= limit && limit < 12}
         onFilter={(f) => {
           setFilter(f);
@@ -142,7 +158,7 @@ export function TonightScreen() {
     >
       <Stack.Screen
         options={{
-          title: 'Dinner tonight',
+          title: fromSetup ? 'Dinner ideas' : 'Dinner tonight',
           headerRight: () => (
             <PressableScale
               accessibilityRole="button"
@@ -220,10 +236,14 @@ function ideaMeta(idea: DinnerIdea) {
     .join(' · ');
 }
 
-function openRecipe(idea: DinnerIdea, today: string | null) {
+function openRecipe(idea: DinnerIdea, today: string | null, serves: number | null) {
   router.push({
     pathname: '/recipe/[id]',
-    params: today ? { id: idea.id, plan: today } : { id: idea.id },
+    params: {
+      id: idea.id,
+      ...(today ? { plan: today } : {}),
+      ...(serves ? { serves: String(serves) } : {}),
+    },
   });
 }
 
@@ -232,6 +252,7 @@ function Ideas({
   error,
   filter,
   today,
+  serves,
   canMore,
   onFilter,
   onMore,
@@ -241,13 +262,13 @@ function Ideas({
   error: string | null;
   filter: IdeaFilter;
   today: string | null;
+  serves: number | null;
   canMore: boolean;
   onFilter: (f: IdeaFilter) => void;
   onMore: () => void;
   onTweak: (text: string) => void;
 }) {
   const t = useTheme();
-  const [main, ...rest] = ideas;
   return (
     <ScrollView
       keyboardShouldPersistTaps="handled"
@@ -297,103 +318,18 @@ function Ideas({
             value: 'kitchen' as const,
             accessibilityLabel: 'Nothing to buy',
           },
+          { label: 'Vegetarian', value: 'vegetarian' as const },
         ]}
         onChange={onFilter}
       />
       <ErrorText message={error} />
-      {!main && !error ? (
+      {ideas.length === 0 && !error ? (
         <Text muted>No dinners fit that right now. Try another filter, or ask Sweep below.</Text>
       ) : null}
 
-      {main ? (
-        <View
-          style={{
-            backgroundColor: t.colors.surface,
-            borderRadius: t.radius.lg,
-            padding: t.space.sm,
-            gap: t.space.sm,
-            boxShadow: t.shadow.card,
-          }}
-        >
-          <View>
-            <RecipeArt
-              title={main.title}
-              width="100%"
-              height={140}
-              radius={t.radius.md}
-              emojiSize={64}
-            />
-            {main.have.length > 0 ? (
-              <View
-                style={{
-                  position: 'absolute',
-                  left: t.space.sm,
-                  bottom: t.space.sm,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  gap: 4,
-                  backgroundColor: t.colors.surface,
-                  borderRadius: t.radius.pill,
-                  paddingHorizontal: t.space.md,
-                  paddingVertical: 4,
-                }}
-              >
-                <Icon icon={Check} size={14} color={t.colors.text} strong />
-                <Text variant="caption">
-                  Uses {main.have.length} Kitchen {main.have.length === 1 ? 'item' : 'items'}
-                </Text>
-              </View>
-            ) : null}
-            <View style={{ position: 'absolute', top: t.space.sm, right: t.space.sm }}>
-              <HeartButton
-                recipeId={main.id}
-                title={main.title}
-                favourite={main.favourite ?? false}
-              />
-            </View>
-          </View>
-          <View style={{ paddingHorizontal: t.space.sm, gap: 2 }}>
-            <Text variant="heading">{main.title}</Text>
-            <IdeaMeta idea={main} />
-          </View>
-          <Button
-            title="Choose recipe →"
-            accessibilityLabel={`Choose ${main.title}`}
-            onPress={() => openRecipe(main, today)}
-          />
-        </View>
-      ) : null}
-
-      {rest.length > 0 ? (
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.sm }}>
-          {rest.map((idea) => (
-            <View
-              key={idea.id}
-              style={{
-                flexGrow: 1,
-                flexBasis: 150,
-                backgroundColor: t.colors.surface,
-                borderRadius: t.radius.lg,
-                padding: t.space.sm,
-                gap: t.space.sm,
-                boxShadow: t.shadow.card,
-              }}
-            >
-              <RecipeArt title={idea.title} width="100%" height={76} radius={t.radius.md} />
-              <View style={{ flex: 1, paddingHorizontal: 4 }}>
-                <Text variant="label">{idea.title}</Text>
-                <IdeaMeta idea={idea} />
-              </View>
-              <Button
-                title="Choose"
-                accessibilityLabel={`Choose ${idea.title}`}
-                variant="secondary"
-                onPress={() => openRecipe(idea, today)}
-              />
-            </View>
-          ))}
-        </View>
-      ) : null}
+      {ideas.map((idea) => (
+        <IdeaCard key={idea.id} idea={idea} onOpen={() => openRecipe(idea, today, serves)} />
+      ))}
 
       <TweakBox onSend={onTweak} />
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.sm }}>
@@ -405,6 +341,64 @@ function Ideas({
         ) : null}
       </View>
     </ScrollView>
+  );
+}
+
+/** One idea: the picture with what it uses or needs, the heart, and the meta line. */
+function IdeaCard({ idea, onOpen }: { idea: DinnerIdea; onOpen: () => void }) {
+  const t = useTheme();
+  const ready = idea.missing.length === 0;
+  const uses = idea.have.length;
+  return (
+    <View
+      style={{
+        backgroundColor: t.colors.surface,
+        borderRadius: t.radius.lg,
+        overflow: 'hidden',
+        boxShadow: t.shadow.card,
+      }}
+    >
+      <PressableScale
+        accessibilityRole="link"
+        accessibilityLabel={`${idea.title}. ${ideaMeta(idea)}. See the recipe`}
+        onPress={onOpen}
+      >
+        <View>
+          <RecipeArt title={idea.title} width="100%" height={132} radius={0} emojiSize={60} />
+          <View
+            style={{
+              position: 'absolute',
+              left: t.space.sm,
+              bottom: t.space.sm,
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 4,
+              backgroundColor: ready ? t.colors.actionSoft : t.colors.surface,
+              borderRadius: t.radius.pill,
+              paddingHorizontal: t.space.md,
+              paddingVertical: 4,
+            }}
+          >
+            {ready ? <Icon icon={Check} size={14} color={t.colors.onActionSoft} strong /> : null}
+            <Text
+              variant="caption"
+              style={{ color: ready ? t.colors.onActionSoft : t.colors.text }}
+            >
+              {ready
+                ? `Uses ${uses} Kitchen ${uses === 1 ? 'item' : 'items'}`
+                : `${idea.missing.length} to buy`}
+            </Text>
+          </View>
+        </View>
+        <View style={{ padding: t.space.md, gap: 2 }}>
+          <Text variant="heading">{idea.title}</Text>
+          <IdeaMeta idea={idea} />
+        </View>
+      </PressableScale>
+      <View style={{ position: 'absolute', top: t.space.sm, right: t.space.sm }}>
+        <HeartButton recipeId={idea.id} title={idea.title} favourite={idea.favourite ?? false} />
+      </View>
+    </View>
   );
 }
 

@@ -10,6 +10,7 @@ export default function RecipesLayout() {
   return (
     <Stack screenOptions={useStackScreenOptions()}>
       <Stack.Screen name="index" options={{ title: 'Recipes', headerShown: false }} />
+      <Stack.Screen name="all" options={{ title: 'All recipes' }} />
       <Stack.Screen name="[id]" options={{ title: '' }} />
       <Stack.Screen name="review" options={{ title: '' }} />
     </Stack>

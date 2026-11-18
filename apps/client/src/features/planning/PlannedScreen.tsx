@@ -35,6 +35,8 @@ export function PlannedScreen() {
     title?: string;
     meals?: string;
     items?: string;
+    /** Planned for another day ("Thu 20 Nov"), not tonight. */
+    when?: string;
   }>();
   const week = params.kind === 'week';
   const meals = Number(params.meals ?? 0);
@@ -78,14 +80,16 @@ export function PlannedScreen() {
         <Text style={{ textAlign: 'center' }} accessibilityLiveRegion="polite">
           {week
             ? `${plural(meals, 'dinner')} added to your week and ${plural(items, 'thing')} to your Shopping List.`
-            : `${params.title ?? 'Dinner'} is set for tonight.`}
+            : `${params.title ?? 'Dinner'} is set for ${params.when ?? 'tonight'}.`}
         </Text>
 
         <Button
-          title={week ? 'View my week' : 'View tonight’s meal'}
+          title={week || params.when ? 'View my week' : 'View tonight’s meal'}
           variant="dark"
           icon={CalendarDays}
-          onPress={() => (week ? router.replace('/meal-plan') : router.dismissTo('/'))}
+          onPress={() =>
+            week || params.when ? router.replace('/meal-plan') : router.dismissTo('/')
+          }
         />
         <Button
           title="See Shopping List"

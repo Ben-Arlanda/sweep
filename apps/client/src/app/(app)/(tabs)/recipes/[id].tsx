@@ -35,6 +35,7 @@ import {
   type Have,
 } from '@/features/recipes/kitchenMatch';
 import { swapLine, swapsOf } from '@/features/recipes/adaptations';
+import { PickDaySheet } from '@/features/mealPlan/PickDaySheet';
 import { RecipeRow } from '@/features/recipes/RecipeRow';
 import { useRecipePath } from '@/features/recipes/recipePath';
 import { conversationKeys, useDecideProposal } from '@/lib/api/conversations';
@@ -65,11 +66,13 @@ export default function RecipeScreen() {
   const t = useTheme();
   // `plan`: opened from Dinner Ideas to plan it for that day (slice 6e).
   // `swap` + `date`: opened from a plan's swap list to swap that day to this (ADR 0025).
-  const { id, plan, swap, date } = useLocalSearchParams<{
+  // `serves`: the Dinner ideas setup's Serves, for the Planned Meal (slice 6f).
+  const { id, plan, swap, date, serves } = useLocalSearchParams<{
     id: string;
     plan?: string;
     swap?: string;
     date?: string;
+    serves?: string;
   }>();
   const recipe = useRecipe(id);
   // The Kitchen is optional here: if it fails to load, the recipe still shows.
@@ -119,9 +122,22 @@ export default function RecipeScreen() {
     <Screen
       footer={
         plan ? (
-          <PlanForDay date={plan} recipeId={r.id} title={r.title} />
+          <PlanForDay
+            date={plan}
+            recipeId={r.id}
+            title={r.title}
+            servings={Number(serves) > 0 ? Number(serves) : null}
+          />
         ) : swap && date ? (
           <SwapToThis proposalId={swap} date={date} recipeId={r.id} />
+        ) : r.course === 'main' ? (
+          // Any main can be tonight's dinner, however you found it.
+          <PlanForDay
+            date={null}
+            recipeId={r.id}
+            title={r.title}
+            servings={Number(serves) > 0 ? Number(serves) : null}
+          />
         ) : null
       }
     >
@@ -434,25 +450,67 @@ function SwapToThis({
 }
 
 /** Opened from Dinner Ideas: plan this recipe for the day straight away (no Proposal). */
-function PlanForDay({ date, recipeId, title }: { date: string; recipeId: string; title: string }) {
+/** "Cook tonight" or "Another day" (a sheet of this week and next): planned directly. */
+function PlanForDay({
+  date,
+  recipeId,
+  title,
+  servings,
+}: {
+  /** The day it was opened for (Dinner Ideas); null: tonight. */
+  date: string | null;
+  recipeId: string;
+  title: string;
+  servings: number | null;
+}) {
+  const t = useTheme();
   const planDay = usePlanDay();
   const today = useMealPlan(null).data?.today;
+  const day = date ?? today;
+  const [picking, setPicking] = useState(false);
+  function plan(day: string) {
+    planDay.mutate(planTap(day, recipeId, servings), {
+      onSuccess: () => {
+        setPicking(false);
+        router.replace({
+          pathname: '/planned',
+          params: { kind: 'tonight', title, ...(day === today ? {} : { when: formatDay(day) }) },
+        });
+      },
+    });
+  }
   return (
     <View style={{ gap: 4 }}>
-      <Button
-        title={date === today ? 'Plan for tonight' : `Plan for ${formatDay(date)}`}
-        icon={CalendarDays}
-        loading={planDay.isPending}
-        onPress={() =>
-          planDay.mutate(planTap(date, recipeId), {
-            onSuccess: () =>
-              router.replace({ pathname: '/planned', params: { kind: 'tonight', title } }),
-          })
-        }
-      />
+      <View style={{ flexDirection: 'row', gap: t.space.sm }}>
+        <View style={{ flex: 1 }}>
+          <Button
+            title={!day || day === today ? 'Cook tonight' : `Plan for ${formatDay(day)}`}
+            disabled={!day}
+            loading={planDay.isPending && !picking}
+            onPress={() => day && plan(day)}
+          />
+        </View>
+        <View style={{ flex: 1 }}>
+          <Button
+            title="Another day"
+            icon={CalendarDays}
+            variant="secondary"
+            onPress={() => setPicking(true)}
+          />
+        </View>
+      </View>
       <View accessibilityLiveRegion="polite">
         <ErrorText message={planDay.error?.message} />
       </View>
+      {picking && today ? (
+        <PickDaySheet
+          today={today}
+          busy={planDay.isPending}
+          error={planDay.error?.message ?? null}
+          onPick={plan}
+          onClose={() => setPicking(false)}
+        />
+      ) : null}
     </View>
   );
 }

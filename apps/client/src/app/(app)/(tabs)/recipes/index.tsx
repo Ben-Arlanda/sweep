@@ -1,49 +1,108 @@
-import { useState, type ReactNode } from 'react';
+import { router, type Href } from 'expo-router';
+import {
+  Check,
+  ChefHat,
+  ChevronRight,
+  Clock,
+  Heart,
+  SlidersHorizontal,
+  SquarePlus,
+  Utensils,
+  CakeSlice,
+  type LucideIcon,
+} from 'lucide-react-native';
+import { useState } from 'react';
 import { View } from 'react-native';
 
-import { ChoiceChips } from '@/components/ChoiceChips';
+import { HeartButton } from '@/components/HeartButton';
 import { Hero, HeroSearch } from '@/components/Hero';
-import { Button, ErrorText, Loading, Screen, SectionLabel, Text } from '@/components/ui';
+import { Icon } from '@/components/Icon';
+import { PressableScale } from '@/components/PressableScale';
+import { RecipeArt } from '@/components/RecipeArt';
+import { ErrorText, Loading, Screen, SectionLabel, Text } from '@/components/ui';
 import { AddRecipeSheet } from '@/features/imports/AddRecipeSheet';
 import { ruleBreakText } from '@/features/imports/ruleBreaks';
-import { CourseTiles } from '@/features/recipes/CourseTiles';
-import { COURSES, type Course } from '@/features/recipes/courses';
 import { RecipeRow } from '@/features/recipes/RecipeRow';
 import { ApiError } from '@/lib/api/client';
 import { useImportedRecipes } from '@/lib/api/imports';
-import { useDebounced, useRecipeBrowse, useRecipeSearch } from '@/lib/api/recipes';
+import { useDinnerIdeas, type DinnerIdea } from '@/lib/api/planning';
+import { useDebounced, useRecipeSearch } from '@/lib/api/recipes';
 import { useTheme } from '@/theme/useTheme';
 
-// No "≤": the "Ready in" label already says it, and the four then fit one row at 320px.
-const TIMES: { label: string; value: number | null }[] = [
-  { label: 'Any time', value: null },
-  { label: '20 min', value: 20 },
-  { label: '30 min', value: 30 },
-  { label: '45 min', value: 45 },
+const KITCHEN_FIRST = {
+  mood: 'kitchen',
+  q: '',
+  lean: null,
+  maxMinutes: null,
+  serves: null,
+} as const;
+
+const BROWSE: { label: string; icon?: LucideIcon; href: Href }[] = [
+  { label: 'All recipes', href: '/recipes/all' },
+  { label: '≤ 30 min', icon: Clock, href: { pathname: '/recipes/all', params: { max: '30' } } },
+  {
+    label: 'Mains',
+    icon: Utensils,
+    href: { pathname: '/recipes/all', params: { course: 'main' } },
+  },
+  {
+    label: 'Desserts',
+    icon: CakeSlice,
+    href: { pathname: '/recipes/all', params: { course: 'dessert' } },
+  },
 ];
 
 /**
- * The Recipe Knowledge Base. Type what you feel like ("quick vegetarian", "leftover
- * rice") and results are ranked by meaning; the time and Course filters are hard limits.
+ * The Recipes tab (slice 6f): search, three ways in (Dinner ideas, Add recipe,
+ * Favourites), shortcuts into All recipes, and what fits the Kitchen now. Typing a
+ * search swaps the sections for results, ranked by meaning.
  */
 export default function RecipesScreen() {
+  const t = useTheme();
   const [text, setText] = useState('');
-  const [maxMinutes, setMaxMinutes] = useState<number | null>(null);
-  const [course, setCourse] = useState<Course | null>(null);
-  const [favourites, setFavourites] = useState(false);
+  const [adding, setAdding] = useState(false);
   const q = useDebounced(text.trim());
   const searching = q.length >= 2;
-  const filters = { maxMinutes, course, favourites };
-
-  const search = useRecipeSearch(q, filters);
-  const browse = useRecipeBrowse(filters, !searching);
+  const search = useRecipeSearch(q, { maxMinutes: null, course: null });
 
   return (
     <Screen
       hero={
         <Hero
-          title="What do you feel like cooking?"
-          subtitle="Sweep finds recipes that fit, not just ones with the same words."
+          title={
+            <>
+              Find a recipe you’ll love to{' '}
+              <Text
+                variant="display"
+                style={{
+                  color: t.colors.onAction,
+                  backgroundColor: t.colors.action,
+                  borderRadius: t.radius.sm,
+                }}
+              >
+                {' cook '}
+              </Text>
+            </>
+          }
+          subtitle="Search, browse and save recipes, or add your own."
+          aside={
+            <PressableScale
+              accessibilityRole="link"
+              accessibilityLabel="Food rules"
+              onPress={() => router.push('/dietary-rules')}
+              style={{
+                width: t.touchTarget,
+                height: t.touchTarget,
+                borderRadius: t.radius.pill,
+                backgroundColor: t.colors.surface,
+                alignItems: 'center',
+                justifyContent: 'center',
+                alignSelf: 'flex-start',
+              }}
+            >
+              <Icon icon={SlidersHorizontal} color={t.colors.text} />
+            </PressableScale>
+          }
         >
           <HeroSearch
             label="Search recipes"
@@ -56,42 +115,230 @@ export default function RecipesScreen() {
         </Hero>
       }
     >
-      {searching ? null : <YourRecipes />}
-      <FilterGroup label="Show">
-        <ChoiceChips
-          label="Show"
-          size="small"
-          options={[
-            { label: 'All recipes', value: false },
-            { label: 'Favourites', value: true },
-          ]}
-          value={favourites}
-          onChange={setFavourites}
-        />
-      </FilterGroup>
-      <FilterGroup label="Ready in">
-        <ChoiceChips
-          label="Ready in"
-          size="small"
-          fill
-          options={TIMES.map((o) => ({
-            ...o,
-            accessibilityLabel: o.value ? `Ready in ${o.label}` : o.label,
-          }))}
-          value={maxMinutes}
-          onChange={setMaxMinutes}
-        />
-      </FilterGroup>
-      <FilterGroup label="Course">
-        <CourseTiles value={course} onChange={setCourse} />
-      </FilterGroup>
-
       {searching ? (
         <SearchResults search={search} />
       ) : (
-        <BrowseResults browse={browse} course={course} />
+        <>
+          <View style={{ flexDirection: 'row', gap: t.space.sm }}>
+            <Tile
+              icon={ChefHat}
+              title="Dinner ideas"
+              hint="Suggestions from Sweep"
+              lime
+              onPress={() => router.push('/dinner-ideas')}
+            />
+            <Tile
+              icon={SquarePlus}
+              title="Add recipe"
+              hint="Paste, photo or link"
+              onPress={() => setAdding(true)}
+            />
+            <Tile
+              icon={Heart}
+              title="Favourites"
+              hint="Your hearted recipes"
+              onPress={() => router.push({ pathname: '/recipes/all', params: { favourites: '1' } })}
+            />
+          </View>
+          <Browse />
+          <Recommended />
+          <YourRecipes />
+        </>
       )}
+      {adding ? <AddRecipeSheet onClose={() => setAdding(false)} /> : null}
     </Screen>
+  );
+}
+
+function Tile({
+  icon,
+  title,
+  hint,
+  lime,
+  onPress,
+}: {
+  icon: LucideIcon;
+  title: string;
+  hint: string;
+  lime?: boolean;
+  onPress: () => void;
+}) {
+  const t = useTheme();
+  return (
+    <PressableScale
+      accessibilityRole="button"
+      accessibilityLabel={`${title}: ${hint}`}
+      onPress={onPress}
+      style={{
+        flex: 1,
+        minWidth: 0,
+        alignItems: 'center',
+        gap: 4,
+        paddingVertical: t.space.md,
+        paddingHorizontal: t.space.xs,
+        borderRadius: t.radius.lg,
+        backgroundColor: lime ? t.colors.action : t.colors.surface,
+        boxShadow: lime ? undefined : t.shadow.card,
+      }}
+    >
+      <Icon icon={icon} size={26} color={lime ? t.colors.onAction : t.colors.text} />
+      <Text
+        variant="label"
+        style={{ textAlign: 'center', color: lime ? t.colors.onAction : t.colors.text }}
+      >
+        {title}
+      </Text>
+      <Text
+        variant="caption"
+        style={{ textAlign: 'center', color: lime ? t.colors.onAction : t.colors.textMuted }}
+      >
+        {hint}
+      </Text>
+    </PressableScale>
+  );
+}
+
+function Browse() {
+  const t = useTheme();
+  return (
+    <View style={{ gap: t.space.sm }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Text variant="heading" role="heading" aria-level={2}>
+          Browse recipes
+        </Text>
+        <PressableScale
+          accessibilityRole="link"
+          accessibilityLabel="See all recipes"
+          onPress={() => router.push('/recipes/all')}
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 2,
+            minHeight: t.touchTarget,
+            paddingHorizontal: t.space.md,
+            borderRadius: t.radius.pill,
+            borderWidth: 1.5,
+            borderColor: t.colors.tabSelected,
+          }}
+        >
+          <Text variant="label" style={{ color: t.colors.tabSelected }}>
+            See all
+          </Text>
+          <Icon icon={ChevronRight} size={16} color={t.colors.tabSelected} />
+        </PressableScale>
+      </View>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.sm }}>
+        {BROWSE.map((b, i) => (
+          <PressableScale
+            key={b.label}
+            accessibilityRole="link"
+            onPress={() => router.push(b.href)}
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 4,
+              minHeight: t.touchTarget,
+              paddingHorizontal: t.space.md,
+              borderRadius: t.radius.pill,
+              borderWidth: 1,
+              borderColor: i === 0 ? t.colors.tabSelected : t.colors.border,
+              backgroundColor: i === 0 ? t.colors.tabSelected : t.colors.surface,
+            }}
+          >
+            {b.icon ? <Icon icon={b.icon} size={16} color={t.colors.text} /> : null}
+            <Text variant="label" style={{ color: i === 0 ? t.colors.surface : t.colors.text }}>
+              {b.label}
+            </Text>
+          </PressableScale>
+        ))}
+      </View>
+    </View>
+  );
+}
+
+/** The best Kitchen Matches right now (the same code as Dinner Ideas), two across. */
+function Recommended() {
+  const t = useTheme();
+  const ideas = useDinnerIdeas(KITCHEN_FIRST, 'all', 4);
+  if (ideas.isError) return null; // optional: browsing still works without it
+  return (
+    <View style={{ gap: t.space.sm }}>
+      <View>
+        <Text variant="heading" role="heading" aria-level={2}>
+          Recommended for you
+        </Text>
+        <Text variant="caption" muted>
+          From your Kitchen and Dietary Rules.
+        </Text>
+      </View>
+      {ideas.isPending ? <Loading /> : null}
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.sm }}>
+        {ideas.data?.map((idea) => (
+          <IdeaTile key={idea.id} idea={idea} />
+        ))}
+      </View>
+    </View>
+  );
+}
+
+function IdeaTile({ idea }: { idea: DinnerIdea }) {
+  const t = useTheme();
+  const ready = idea.missing.length === 0;
+  const meta = [idea.total_minutes ? `${idea.total_minutes} min` : null, `Serves ${idea.servings}`]
+    .filter(Boolean)
+    .join(' · ');
+  return (
+    <View
+      style={{
+        flexGrow: 1,
+        flexBasis: 140,
+        backgroundColor: t.colors.surface,
+        borderRadius: t.radius.lg,
+        overflow: 'hidden',
+        boxShadow: t.shadow.card,
+      }}
+    >
+      <PressableScale
+        accessibilityRole="link"
+        accessibilityLabel={`${idea.title}. ${meta}. ${ready ? 'Nothing to buy' : `${idea.missing.length} to buy`}`}
+        onPress={() => router.push({ pathname: '/recipes/[id]', params: { id: idea.id } })}
+      >
+        <View>
+          <RecipeArt title={idea.title} width="100%" height={104} radius={0} emojiSize={48} />
+          <View
+            style={{
+              position: 'absolute',
+              left: t.space.sm,
+              bottom: t.space.sm,
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 2,
+              backgroundColor: ready ? t.colors.actionSoft : t.colors.surface,
+              borderRadius: t.radius.pill,
+              paddingHorizontal: t.space.sm,
+              paddingVertical: 2,
+            }}
+          >
+            {ready ? <Icon icon={Check} size={12} color={t.colors.onActionSoft} strong /> : null}
+            <Text
+              variant="caption"
+              style={{ color: ready ? t.colors.onActionSoft : t.colors.text }}
+            >
+              {ready ? `Uses ${idea.have.length} Kitchen` : `${idea.missing.length} to buy`}
+            </Text>
+          </View>
+        </View>
+        <View style={{ padding: t.space.sm, gap: 2 }}>
+          <Text variant="label">{idea.title}</Text>
+          <Text variant="caption" muted>
+            {meta}
+          </Text>
+        </View>
+      </PressableScale>
+      <View style={{ position: 'absolute', top: t.space.xs, right: t.space.xs }}>
+        <HeartButton recipeId={idea.id} title={idea.title} favourite={idea.favourite ?? false} />
+      </View>
+    </View>
   );
 }
 
@@ -104,7 +351,7 @@ function SearchResults({ search }: { search: ReturnType<typeof useRecipeSearch> 
       <ErrorText
         message={
           unavailable
-            ? "Search isn't available right now. Clear the search box to browse all recipes."
+            ? "Search isn't available right now. Clear the search box to browse."
             : search.error.message
         }
       />
@@ -113,9 +360,7 @@ function SearchResults({ search }: { search: ReturnType<typeof useRecipeSearch> 
   return (
     <View style={{ gap: t.space.sm }}>
       <SectionLabel>Best matches</SectionLabel>
-      {search.data.length === 0 ? (
-        <Text muted>Nothing fits those filters. Try a longer time or another course.</Text>
-      ) : null}
+      {search.data.length === 0 ? <Text muted>Nothing fits that. Try other words.</Text> : null}
       {search.data.map((r) => (
         <RecipeRow key={r.id} recipe={r} />
       ))}
@@ -124,87 +369,21 @@ function SearchResults({ search }: { search: ReturnType<typeof useRecipeSearch> 
 }
 
 /**
- * This Household's own recipes, with + Add. Hidden while searching: search already
- * includes them, ranked with everything else.
+ * This Household's own recipes. Kept here because one that breaks a Dietary Rule is
+ * left out of browsing, and this is where its note says why.
  */
 function YourRecipes() {
   const t = useTheme();
   const mine = useImportedRecipes();
-  const [adding, setAdding] = useState(false);
+  if (!mine.data?.length) return mine.isError ? <ErrorText message={mine.error.message} /> : null;
   return (
     <View style={{ gap: t.space.sm }}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-        <SectionLabel>Your recipes</SectionLabel>
-        <Button
-          title="+ Add"
-          accessibilityLabel="Add a recipe"
-          variant="secondary"
-          compact
-          onPress={() => setAdding(true)}
-        />
-      </View>
-      {mine.isError ? <ErrorText message={mine.error.message} /> : null}
-      {mine.data?.length === 0 ? (
-        <Text muted>
-          Bring in the recipes you already cook: paste one, snap a cookbook page, or add a link.
-        </Text>
-      ) : null}
-      {mine.data?.map((r) => (
+      <Text variant="heading" role="heading" aria-level={2}>
+        Your recipes
+      </Text>
+      {mine.data.map((r) => (
         <RecipeRow key={r.id} recipe={r} note={ruleBreakText(r.rule_breaks)} />
       ))}
-      {adding ? <AddRecipeSheet onClose={() => setAdding(false)} /> : null}
-    </View>
-  );
-}
-
-/** A filter row with its name above it. The name is visual only: each group names itself. */
-function FilterGroup({ label, children }: { label: string; children: ReactNode }) {
-  const t = useTheme();
-  return (
-    <View style={{ gap: t.space.xs }}>
-      <Text variant="caption" muted aria-hidden>
-        {label}
-      </Text>
-      {children}
-    </View>
-  );
-}
-
-function BrowseResults({
-  browse,
-  course,
-}: {
-  browse: ReturnType<typeof useRecipeBrowse>;
-  course: Course | null;
-}) {
-  const t = useTheme();
-  if (browse.isPending) return <Loading />;
-  if (browse.isError) {
-    return (
-      <>
-        <ErrorText message={browse.error.message} />
-        <Button title="Try again" onPress={() => browse.refetch()} />
-      </>
-    );
-  }
-  const recipes = browse.data.pages.flat();
-  return (
-    <View style={{ gap: t.space.sm }}>
-      <SectionLabel>
-        {course ? COURSES.find((c) => c.value === course)?.label : 'All recipes'}
-      </SectionLabel>
-      {recipes.length === 0 ? <Text muted>Nothing fits those filters yet.</Text> : null}
-      {recipes.map((r) => (
-        <RecipeRow key={r.id} recipe={r} />
-      ))}
-      {browse.hasNextPage ? (
-        <Button
-          title="Show more"
-          variant="secondary"
-          loading={browse.isFetchingNextPage}
-          onPress={() => browse.fetchNextPage()}
-        />
-      ) : null}
     </View>
   );
 }

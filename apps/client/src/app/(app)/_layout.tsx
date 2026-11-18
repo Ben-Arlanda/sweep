@@ -71,6 +71,7 @@ function SignedIn() {
         <Stack.Screen name="plan" options={{ title: 'Plan my week' }} />
         <Stack.Screen name="plan-week" options={{ title: 'Your meal plan' }} />
         <Stack.Screen name="tonight" options={{ title: 'Dinner tonight' }} />
+        <Stack.Screen name="dinner-ideas" options={{ title: 'Dinner ideas' }} />
         <Stack.Screen name="planned" options={{ title: 'Planned' }} />
         <Stack.Screen name="meal-plan" options={{ title: 'Meal Plan' }} />
         <Stack.Screen name="recipe/[id]" options={{ title: '' }} />

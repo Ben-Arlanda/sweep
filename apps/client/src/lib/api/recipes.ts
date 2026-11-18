@@ -24,25 +24,51 @@ export const PAGE = 30;
 export const recipeKeys = {
   all: ['recipes'] as const,
   browse: (f: RecipeFilters) =>
-    ['recipes', 'browse', f.maxMinutes, f.course, f.favourites ?? false] as const,
+    [
+      'recipes',
+      'browse',
+      f.maxMinutes,
+      f.course,
+      f.favourites ?? false,
+      f.cuisine ?? null,
+      f.sort ?? 'title',
+    ] as const,
+  count: (f: RecipeFilters) =>
+    ['recipes', 'count', f.maxMinutes, f.course, f.favourites ?? false, f.cuisine ?? null] as const,
   search: (q: string, f: RecipeFilters) =>
     ['recipes', 'search', q, f.maxMinutes, f.course, f.favourites ?? false] as const,
   one: (id: string) => ['recipes', 'one', id] as const,
   adaptations: (parentId: string) => ['recipes', 'adaptations', parentId] as const,
 };
 
-/** The Recipes screen's chips. `null` means no limit. `favourites`: hearted only. */
+export type RecipeSort = 'title' | 'newest' | 'recommended';
+
+/** The Recipes screens' filters. `null` means no limit. `favourites`: hearted only. */
 export type RecipeFilters = {
   maxMinutes: number | null;
   course: Course | null;
   favourites?: boolean;
+  cuisine?: string | null;
+  /** Browsing only: search is ordered by meaning. */
+  sort?: RecipeSort;
 };
 
-const query = ({ maxMinutes, course, favourites }: RecipeFilters) => ({
+const query = ({ maxMinutes, course, favourites, cuisine }: RecipeFilters) => ({
   ...(maxMinutes ? { max_minutes: maxMinutes } : {}),
   ...(course ? { course } : {}),
   ...(favourites ? { favourites: true } : {}),
+  ...(cuisine ? { cuisine } : {}),
 });
+
+/** How many recipes browsing would show ("500 recipes"). */
+export function useRecipeCount(filters: RecipeFilters) {
+  return useQuery({
+    queryKey: recipeKeys.count(filters),
+    queryFn: async () =>
+      unwrap(await api.GET('/recipes/count', { params: { query: query(filters) } })).count,
+    staleTime: 10 * 60_000,
+  });
+}
 
 /** All recipes by title, a page at a time. */
 export function useRecipeBrowse(filters: RecipeFilters, enabled: boolean) {
@@ -51,14 +77,22 @@ export function useRecipeBrowse(filters: RecipeFilters, enabled: boolean) {
     queryFn: async ({ pageParam }) =>
       unwrap(
         await api.GET('/recipes', {
-          params: { query: { ...query(filters), limit: PAGE, offset: pageParam } },
+          params: {
+            query: {
+              ...query(filters),
+              sort: filters.sort ?? 'title',
+              limit: PAGE,
+              offset: pageParam,
+            },
+          },
         }),
       ),
     initialPageParam: 0,
     // A short page means there's nothing after it.
     getNextPageParam: (last, pages) => (last.length < PAGE ? undefined : pages.length * PAGE),
     enabled,
-    staleTime: 10 * 60_000, // Seed Recipes change rarely
+    // Seed Recipes change rarely; Recommended follows the Kitchen, so it's always fresh.
+    staleTime: filters.sort === 'recommended' ? 0 : 10 * 60_000,
   });
 }
 

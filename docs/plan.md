@@ -638,9 +638,9 @@ Also built: the sheet's This week chips are stored on the Conversation (`plan_tw
 
 **Slice 6f steps** (build test-first):
 
-1. **API:** `/dinner-ideas` gains `mood` (`kitchen`|`surprise`|`specific`), `q`, `vegetarian`; `PUT /meal-plan/days/{day}` accepts `servings`; `GET /recipes` gains `sort` (`title`|`newest`|`recommended`) and `GET /recipes/count`.
-2. **Client:** Recipes main (tiles, browse chips, Recommended for you), All recipes, Dinner ideas setup, results as uniform cards (shared with Just tonight), Serves into planning.
-3. **Checks:** both suites; browser walk-through when the tools connect.
+1. ✅ **API:** `/dinner-ideas` gains `mood` (`kitchen`|`surprise`|`specific`), `q`, `vegetarian`; `PUT /meal-plan/days/{day}` accepts `servings`; `GET /recipes` gains `sort` (`title`|`newest`|`recommended`) and `GET /recipes/count`.
+2. ✅ **Client:** Recipes main (tiles, browse chips, Recommended for you, Your recipes kept for rule-break notes), All recipes, Dinner ideas setup, results as uniform cards (shared with Just tonight), Serves into planning; any main's recipe page offers Cook tonight / Another day (`PickDaySheet`).
+3. **Checks:** both suites ✅ (API 860, client 344); web bundle builds ✅; browser walk-through when the tools connect.
 
 Experiments (`experiments/`, any time after slice 4):
 

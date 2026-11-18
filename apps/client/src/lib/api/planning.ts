@@ -8,32 +8,40 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { randomUUID } from 'expo-crypto';
 
+import { ideaQuery, type IdeaFilter, type IdeaRequest } from '@/features/planning/ideaRequest';
+
 import { api, unwrap } from './client';
 import { mealPlanKeys } from './mealPlan';
 import { recipeKeys } from './recipes';
 import type { components } from './schema';
 
 export type DinnerIdea = components['schemas']['DinnerIdeaOut'];
-export type IdeaFilter = 'all' | 'quick' | 'kitchen';
+export type { IdeaFilter } from '@/features/planning/ideaRequest';
 
 export const planningKeys = {
-  ideas: (filter: IdeaFilter, limit: number) => ['dinner-ideas', filter, limit] as const,
+  ideas: (request: IdeaRequest, filter: IdeaFilter, limit: number) =>
+    [
+      'dinner-ideas',
+      request.mood,
+      request.q,
+      request.lean,
+      request.maxMinutes,
+      filter,
+      limit,
+    ] as const,
   allIdeas: ['dinner-ideas'] as const,
   alternatives: (proposalId: string, date: string) => ['alternatives', proposalId, date] as const,
 };
 
-const IDEA_QUERY: Record<IdeaFilter, { max_minutes?: number; nothing_to_buy?: boolean }> = {
-  all: {},
-  quick: { max_minutes: 30 },
-  kitchen: { nothing_to_buy: true },
-};
-
-export function useDinnerIdeas(filter: IdeaFilter, limit = 3) {
+/** Dinner Ideas for what the setup asked (or Use my Kitchen) and the chip picked. */
+export function useDinnerIdeas(request: IdeaRequest, filter: IdeaFilter, limit = 3) {
   return useQuery({
-    queryKey: planningKeys.ideas(filter, limit),
+    queryKey: planningKeys.ideas(request, filter, limit),
     queryFn: async () =>
       unwrap(
-        await api.GET('/dinner-ideas', { params: { query: { ...IDEA_QUERY[filter], limit } } }),
+        await api.GET('/dinner-ideas', {
+          params: { query: { ...ideaQuery(request, filter), limit } },
+        }),
       ),
   });
 }
@@ -42,20 +50,26 @@ export function useDinnerIdeas(filter: IdeaFilter, limit = 3) {
 export function usePlanDay() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (v: { date: string; recipeId: string; idempotencyKey: string }) =>
+    mutationFn: async (v: {
+      date: string;
+      recipeId: string;
+      servings?: number | null;
+      idempotencyKey: string;
+    }) =>
       unwrap(
         await api.PUT('/meal-plan/days/{day}', {
           params: { path: { day: v.date }, header: { 'Idempotency-Key': v.idempotencyKey } },
-          body: { recipe_id: v.recipeId },
+          body: { recipe_id: v.recipeId, servings: v.servings ?? null },
         }),
       ),
     onSettled: () => queryClient.invalidateQueries({ queryKey: mealPlanKeys.all }),
   });
 }
 
-export const planTap = (date: string, recipeId: string) => ({
+export const planTap = (date: string, recipeId: string, servings: number | null = null) => ({
   date,
   recipeId,
+  servings,
   idempotencyKey: randomUUID(),
 });
 
