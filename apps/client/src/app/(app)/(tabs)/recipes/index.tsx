@@ -185,7 +185,7 @@ function Browse() {
   const t = useTheme();
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-      <Text variant="heading" role="heading" aria-level={2}>
+      <Text variant="title" role="heading" aria-level={2}>
         Browse recipes
       </Text>
       <PressableScale
@@ -219,7 +219,7 @@ function Recommended() {
   return (
     <View style={{ gap: t.space.sm }}>
       <View>
-        <Text variant="heading" role="heading" aria-level={2}>
+        <Text variant="title" role="heading" aria-level={2}>
           Recommended for you
         </Text>
         <Text variant="caption" muted>
@@ -333,7 +333,7 @@ function YourRecipes() {
   if (!mine.data?.length) return mine.isError ? <ErrorText message={mine.error.message} /> : null;
   return (
     <View style={{ gap: t.space.sm }}>
-      <Text variant="heading" role="heading" aria-level={2}>
+      <Text variant="title" role="heading" aria-level={2}>
         Your recipes
       </Text>
       {mine.data.map((r) => (
