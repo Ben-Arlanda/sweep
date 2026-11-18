@@ -483,8 +483,7 @@ function PlanForDay({
   return (
     <View style={{ gap: 4 }}>
       <View style={{ flexDirection: 'row', gap: t.space.sm }}>
-        {/* The main button gets more room, so "Plan for Sun 22" stays on one line. */}
-        <View style={{ flex: 1.3 }}>
+        <View style={{ flex: 1 }}>
           <Button
             title={!day || day === today ? 'Cook tonight' : `Plan for ${dayLabel(day)}`}
             disabled={!day}
