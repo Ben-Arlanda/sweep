@@ -154,21 +154,6 @@ describe("Home's blue page (homeColors) meets WCAG AA", () => {
   });
 });
 
-// The user chose white headers on every tab, like Home (2026-11-18). On the light List
-// and Plan pages that is about 2:1, below the 3:1 large-text minimum: a known exception.
-const WHITE_HEADER_EXCEPTIONS = ['list', 'plan'];
-
-describe.each(
-  (Object.keys(PAGE_COLORS) as (keyof typeof PAGE_COLORS)[]).filter(
-    (page) => !WHITE_HEADER_EXCEPTIONS.includes(page),
-  ),
-)('the %s page header (white, large) meets 3:1', (page) => {
-  it('passes', () => {
-    const c = { ...colors.light, ...PAGE_COLORS[page] };
-    expect(contrastRatio(c.onHeader, c.background)).toBeGreaterThanOrEqual(3);
-  });
-});
-
 describe.each(Object.keys(PAGE_COLORS) as (keyof typeof PAGE_COLORS)[])(
   'the %s page colour meets WCAG AA',
   (page) => {

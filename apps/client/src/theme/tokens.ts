@@ -75,8 +75,6 @@ export type ColorTokens = {
   onBackgroundMuted: string;
   /** Bottom sheets and dialogs: their own colour, so a screen's page colour can't reach them. */
   sheet: string;
-  /** A tab's header (icon + title): white on every page, to match Home (user's choice). */
-  onHeader: string;
 };
 
 export const colors: Record<'light' | 'dark', ColorTokens> = {
@@ -106,7 +104,6 @@ export const colors: Record<'light' | 'dark', ColorTokens> = {
     onBackground: palette.ink,
     onBackgroundMuted: palette.stone600,
     sheet: palette.paper,
-    onHeader: palette.ink,
   },
   dark: {
     background: palette.night900,
@@ -134,7 +131,6 @@ export const colors: Record<'light' | 'dark', ColorTokens> = {
     onBackground: palette.mist100,
     onBackgroundMuted: palette.mist400,
     sheet: palette.night900,
-    onHeader: palette.mist100,
   },
 };
 
@@ -155,7 +151,6 @@ function pageColors(background: string, text: 'white' | 'ink', muted?: string) {
     heroField: palette.paper,
     onBackground: on,
     onBackgroundMuted: onMuted,
-    onHeader: palette.white,
   } satisfies Partial<ColorTokens>;
 }
 
