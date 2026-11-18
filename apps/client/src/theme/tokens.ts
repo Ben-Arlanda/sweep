@@ -78,6 +78,9 @@ export type ColorTokens = {
   /** Near-black for one strong button (View recipe), white text on it. */
   strong: string;
   onStrong: string;
+  /** Soft lavender for a gentle button (Home's View recipe), ink text on it. */
+  lavender: string;
+  onLavender: string;
 };
 
 export const colors: Record<'light' | 'dark', ColorTokens> = {
@@ -109,6 +112,8 @@ export const colors: Record<'light' | 'dark', ColorTokens> = {
     sheet: palette.paper,
     strong: '#171a14',
     onStrong: palette.white,
+    lavender: '#e9deff',
+    onLavender: palette.ink,
   },
   dark: {
     background: palette.night900,
@@ -138,6 +143,8 @@ export const colors: Record<'light' | 'dark', ColorTokens> = {
     sheet: palette.night900,
     strong: '#171a14',
     onStrong: palette.white,
+    lavender: '#e9deff',
+    onLavender: palette.ink,
   },
 };
 
