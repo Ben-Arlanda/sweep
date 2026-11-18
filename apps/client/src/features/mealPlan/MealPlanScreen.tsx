@@ -423,7 +423,7 @@ function MealMenu({
         ) : (
           <>
             <Button
-              title="Mark as cooked"
+              title="Mark cooked"
               icon={Check}
               accessibilityLabel={`Mark ${meal.title} as cooked`}
               variant="secondary"

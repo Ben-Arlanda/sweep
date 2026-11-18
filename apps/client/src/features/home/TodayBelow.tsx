@@ -87,7 +87,7 @@ function CookedButton({ meal }: { meal: PlannedMeal }) {
   return (
     <>
       <Button
-        title={isCooked ? 'Undo' : 'Mark as cooked'}
+        title={isCooked ? 'Undo' : 'Mark cooked'}
         tight
         icon={isCooked ? Undo2 : undefined}
         accessibilityLabel={
@@ -301,7 +301,7 @@ function MealPlanCard({
             {day.meal ? <MealMeta meal={day.meal} /> : null}
           </View>
         </View>
-        {/* Side by side in equal shares (tight padding so "Mark as cooked" fits); only on
+        {/* Side by side in equal shares (tight padding so "Mark cooked" fits); only on
             the narrowest phones does each take its own full row. */}
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.sm }}>
           {day.meal ? (
