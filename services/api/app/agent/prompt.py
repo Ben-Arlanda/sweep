@@ -23,6 +23,11 @@ from app.models import Conversation, PlanMode, utcnow
 from app.services import diet, kitchen, meal_plan, proposals, recipes
 
 CONTEXT_TAG = "household_context"
+TWEAK_LINES = {
+    "healthy": "healthy: lighter dishes, plenty of vegetables",
+    "quick": "quick: 30 minutes or less (pass max_minutes=30)",
+    "vegetarian": "vegetarian where it fits (a lean, not a Dietary Rule)",
+}
 MODE_LINES = {
     PlanMode.KITCHEN: "cook from my Kitchen (fewest things to buy)",
     PlanMode.NEW: "new recipes to shop for (choose by taste; the Kitchen only trims the list)",
@@ -54,6 +59,8 @@ dishes, not the Kitchen's best matches: choose by taste with search_recipes (the
 words and Preferences make the query; vary it to get different cuisines and mains), \
 and skip recipes already in Planned Meals. The Kitchen still matters for the list: \
 check_kitchen_coverage, then add only what's missing.
+- If the context has this_plan_leans, they're Preferences for this plan only: lean \
+towards them as you choose.
 - If the context has plan_these_days_only, put one dinner on each of those days \
 and none on any other day; the app refuses other days. If the Member asks for a day \
 that isn't listed, tell them to start a new plan from "Plan my week" to change the days.
@@ -123,6 +130,8 @@ async def household_context(session: AsyncSession, agent: AgentContext, draft: D
         context["plan_these_days_only"] = [
             f"{d:%a} {d.isoformat()}" for d in conversation.plan_days
         ]
+    if conversation.plan_tweaks:
+        context["this_plan_leans"] = [TWEAK_LINES[t] for t in conversation.plan_tweaks]
 
     context["dietary_rules"] = {
         "diets": [d.value.replace("_", " ") for d in sorted(rules.diets)],

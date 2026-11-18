@@ -260,3 +260,26 @@ async def test_a_plan_that_keeps_using_other_days_shows_them_as_left_out(
     assert proposal["proposal"]["dropped"] == [
         f"{day(2)}: not one of the days picked for this plan ({day(1)})"
     ]
+
+
+async def test_this_weeks_chips_are_kept_for_the_plan_and_given_to_the_agent(
+    client_for: ClientFor, fake_issuer: FakeIssuer
+) -> None:
+    model = ScriptedModel([[say_text("On it.")]])
+    async with client_for(model) as client:
+        await create_household(client, fake_issuer, "ana")
+        body = {"mode": "kitchen", "days": [day(1)], "tweaks": ["quick", "healthy"]}
+        response = await start(client, fake_issuer, body)
+        assert response.status_code == 201, response.text
+        assert response.json()["plan_tweaks"] == ["healthy", "quick"]
+
+        await say(client, fake_issuer, response.json()["id"], "plan it")
+        context = context_of(model)
+        assert context["this_plan_leans"][1].startswith("quick: 30 minutes")
+        prefs = await client.get(
+            "/households/current/preferences", headers=fake_issuer.headers("ana")
+        )
+        assert prefs.json()["cuisines"] == []  # never saved as Preferences
+
+        bad = await start(client, fake_issuer, {"tweaks": ["spicy"]})
+        assert bad.status_code == 422

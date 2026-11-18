@@ -25,6 +25,7 @@ from app.models import (
     Course,
     ParseMethod,
     PlanMode,
+    PlanTweak,
     ProposalStatus,
     RecipeKind,
     Role,
@@ -487,6 +488,8 @@ class ConversationIn(BaseModel):
 
     mode: PlanMode | None = None
     days: list[date] | None = Field(default=None, min_length=1, max_length=14)
+    # "This week" chips (slice 6e): for this plan only.
+    tweaks: list[PlanTweak] = Field(default=[], max_length=len(PlanTweak))
 
 
 class ConversationOut(BaseModel):
@@ -496,6 +499,7 @@ class ConversationOut(BaseModel):
     created_at: datetime
     plan_mode: PlanMode | None
     plan_days: list[date] | None
+    plan_tweaks: list[PlanTweak] | None = None
 
 
 class ChatLine(BaseModel):

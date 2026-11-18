@@ -573,6 +573,14 @@ class PlanMode(StrEnum):
     NEW = "new"  # new recipes to shop for; the Kitchen only trims the buy list
 
 
+class PlanTweak(StrEnum):
+    """The "This week" chips on the Plan my week sheet: Preferences for one plan."""
+
+    HEALTHY = "healthy"
+    QUICK = "quick"  # under 30 minutes
+    VEGETARIAN = "vegetarian"  # a lean, not a Rule: Dietary Rules stay the hard limit
+
+
 class Conversation(Base):
     """A chat between one Member and the agent. Its id is also the LangGraph thread id:
     the messages and Draft Plan live in the checkpointer's tables, keyed by it.
@@ -596,6 +604,9 @@ class Conversation(Base):
     # every turn, and validate refuses meals on other days (ADR 0015).
     plan_mode: Mapped[PlanMode | None] = mapped_column(str_enum(PlanMode, "plan_mode"))
     plan_days: Mapped[list[date] | None] = mapped_column(ARRAY(Date))
+    # The sheet's "This week" chips (slice 6e): soft tastes for this plan only, never
+    # saved as Preferences. Values from PlanTweak.
+    plan_tweaks: Mapped[list[str] | None] = mapped_column(ARRAY(String(20)))
 
 
 class AgentUsage(Base):
