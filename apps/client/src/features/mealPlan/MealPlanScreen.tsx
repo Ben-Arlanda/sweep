@@ -404,7 +404,7 @@ function MealMenu({
           {isCooked ? ' · Cooked ✓' : ''}
         </Text>
         <Button
-          title="See recipe"
+          title="View recipe"
           variant="secondary"
           onPress={() => {
             onClose();
