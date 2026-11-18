@@ -1,14 +1,11 @@
-import { router, type Href } from 'expo-router';
+import { router } from 'expo-router';
 import {
   Check,
   ChefHat,
   ChevronRight,
-  Clock,
   Heart,
   SlidersHorizontal,
   SquarePlus,
-  Utensils,
-  CakeSlice,
   type LucideIcon,
 } from 'lucide-react-native';
 import { useState } from 'react';
@@ -36,21 +33,6 @@ const KITCHEN_FIRST = {
   maxMinutes: null,
   serves: null,
 } as const;
-
-const BROWSE: { label: string; icon?: LucideIcon; href: Href }[] = [
-  { label: 'All recipes', href: '/recipes/all' },
-  { label: '≤ 30 min', icon: Clock, href: { pathname: '/recipes/all', params: { max: '30' } } },
-  {
-    label: 'Mains',
-    icon: Utensils,
-    href: { pathname: '/recipes/all', params: { course: 'main' } },
-  },
-  {
-    label: 'Desserts',
-    icon: CakeSlice,
-    href: { pathname: '/recipes/all', params: { course: 'dessert' } },
-  },
-];
 
 /**
  * The Recipes tab (slice 6f): search, three ways in (Dinner ideas, Add recipe,
@@ -198,60 +180,33 @@ function Tile({
   );
 }
 
+/** "Browse recipes" with See all: the filters live on All recipes. */
 function Browse() {
   const t = useTheme();
   return (
-    <View style={{ gap: t.space.sm }}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Text variant="heading" role="heading" aria-level={2}>
-          Browse recipes
+    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+      <Text variant="heading" role="heading" aria-level={2}>
+        Browse recipes
+      </Text>
+      <PressableScale
+        accessibilityRole="link"
+        accessibilityLabel="See all recipes"
+        onPress={() => router.push('/recipes/all')}
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 2,
+          minHeight: t.touchTarget,
+          paddingHorizontal: t.space.md,
+          borderRadius: t.radius.pill,
+          backgroundColor: t.colors.tabSelected,
+        }}
+      >
+        <Text variant="label" style={{ color: t.colors.surface }}>
+          See all
         </Text>
-        <PressableScale
-          accessibilityRole="link"
-          accessibilityLabel="See all recipes"
-          onPress={() => router.push('/recipes/all')}
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            gap: 2,
-            minHeight: t.touchTarget,
-            paddingHorizontal: t.space.md,
-            borderRadius: t.radius.pill,
-            borderWidth: 1.5,
-            borderColor: t.colors.tabSelected,
-          }}
-        >
-          <Text variant="label" style={{ color: t.colors.tabSelected }}>
-            See all
-          </Text>
-          <Icon icon={ChevronRight} size={16} color={t.colors.tabSelected} />
-        </PressableScale>
-      </View>
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.sm }}>
-        {BROWSE.map((b, i) => (
-          <PressableScale
-            key={b.label}
-            accessibilityRole="link"
-            onPress={() => router.push(b.href)}
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: 4,
-              minHeight: t.touchTarget,
-              paddingHorizontal: t.space.md,
-              borderRadius: t.radius.pill,
-              borderWidth: 1,
-              borderColor: i === 0 ? t.colors.tabSelected : t.colors.border,
-              backgroundColor: i === 0 ? t.colors.tabSelected : t.colors.surface,
-            }}
-          >
-            {b.icon ? <Icon icon={b.icon} size={16} color={t.colors.text} /> : null}
-            <Text variant="label" style={{ color: i === 0 ? t.colors.surface : t.colors.text }}>
-              {b.label}
-            </Text>
-          </PressableScale>
-        ))}
-      </View>
+        <Icon icon={ChevronRight} size={16} color={t.colors.surface} />
+      </PressableScale>
     </View>
   );
 }
