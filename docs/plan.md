@@ -335,6 +335,7 @@ Each slice is a feature branch and a focused PR that works end to end.
 | 6b | `feature/approvals-client` | Proposal card with checkboxes, "replaces …" per day, Approve / Reject; Meal Plan screen (from Home); Cooked button | (product) |
 | 6d | `feature/list-additions-top-up` | List Additions are the extra on top of the Shopping List: coverage subtracts the list, approving tops up a matching unticked item, the card says what's already there (ADR 0016) | (product; deterministic guardrails) |
 | 6c | `feature/home-today` | Home "Today" showing tonight's Planned Meal (the Kitchen part moved to 3c) | (product) |
+| 6e | `feature/tonight-week-screens` | Plan my week and Just tonight on their own screens (Generating, Dinner Ideas, Review plan, saved); Swaps by code; Favourites (hearts) in ranking (ADR 0025) | (product; deterministic guardrails) |
 | 8 | `feature/agent-evals` | Scenario set, deterministic graders, baseline planner, Langfuse, cost tracking | Evaluation & observability |
 | 9 | `feature/retrieval-evals` | Retrieval Set (51 queries), R2 keyword, R3 fusion, R4 rerank, comparison report; R1 stays (ADR 0022) | Advanced RAG |
 | 3e | `feature/kitchen-photos` | Kitchen Photos: photos of a Place suggest Kitchen items, a pre-ticked review adds or refreshes them (never removes), photo eval with a pre-set bar (ADR 0023) | Multimodal input, AI security, evaluation |
@@ -616,6 +617,18 @@ Known gaps from 6c: tapping Cooked or Undo swaps the button, so keyboard focus d
 6. ✅ **Client (3e-b):** "Add from photo" + Sheet (Place chips, camera/library, resize), review screen, leave dialog; browser check and Lighthouse (dark).
 
 **Used up → Shopping List** (`feature/kitchen-used-up`, 2026-11-17, product owner). Most households plan only dinners, so breakfast and lunch use never reaches the Kitchen as a Cooked meal. Decided: **Ran out** (Staple) and **Used up** (Tracked) put the item on the Shopping List in one step (`POST /kitchen/used-up/{id}`), unless it's already there unticked (ADR 0016's rule); **Remove** ("it isn't here") stays separate. Undo is inline with no timer (WCAG 2.2.1) and restores the amount, the Place and the list. **Milk is a default Staple.** Each Kitchen card has a ⋯ menu (amount, Used up, Place, Staple, Remove); the Confirmed badge is gone (only Estimated, Unknown and Run out are shown). Tracked cards show **Finished** (the same as Used up) and **+ List** (still have some, want more: added without leaving the Kitchen; "On list" when it's waiting there unticked). Not done: "I cooked this" for unplanned dinners; swipe as a shortcut.
+
+**Slice 6e: planning screens** (`feature/tonight-week-screens`, stacked on `feature/polish`; grilled 2026-11-18; canvas https://claude.ai/artifact/QeEPU1S3afG8x9H4dkEecC; ADR 0025). Plan my week and Just tonight leave the chat for their own screens on the same Conversation + Proposal machinery. **Dinner Ideas** (Just tonight) come from code, and picking one plans it directly. A **swap** on the Review screen is a fourth resume handled by code. **Favourites** are recipes the Household hearted (Seed or Imported; imports start hearted); they win ties on things to buy in Kitchen ranking, unless Cooked in the last 7 days, and get no boost in New recipes mode. Talking to Sweep stays on the screen, with replies as a one-to-two-sentence note. Already decided: Plan my week is the lime Home button; the sheet's preference chips apply to that plan only (stored on the Conversation like Plan Days, not saved as Preferences). Photos are emoji tiles in one `RecipeArt` slot, so real photos can be added later. The mascot bounces on Generating and stops under reduced motion.
+
+**Slice 6e steps** (build test-first):
+
+1. **Favourites:** `favourites` table (household, recipe, `hearted_by`, time); imports start hearted (migration hearts existing imports); `PUT/DELETE /recipes/{id}/favourite`; rename the import-only `FLAGGED_FAVOURITES` to "flagged imports".
+2. **Ranking:** `kitchen_match.rank` breaks ties on things to buy with Favourites (none Cooked in 7 days); results carry `favourite`; `recipes_from_kitchen` gains `only_favourites`; prompt line; New recipes mode unchanged.
+3. **Dinner Ideas:** `GET /dinner-ideas` (tonight, filters under-30 / Kitchen-only), and picking one saves a Planned Meal through the Meal Plan service.
+4. **Swap:** alternatives route for a Proposal day (excludes other days' recipes); `swap` resume → code node: change Draft, recalculate that day's List Additions, validate, supersede, new Proposal; next turn's context shows the current Draft.
+5. **Agent replies:** one or two sentences; eval check added.
+6. **Client:** Home (Plan my week lime), Plan my week sheet (preference chips), Generating (chef, steps from streamed tool events), Dinner Ideas, Review plan, swap screen, saved screens, Refine sheet + reply note, hearts (idea card, recipe header, Recipes list + Favourites filter), `RecipeArt`.
+7. **Checks:** both test suites; browser walk-through of both flows; Lighthouse accessibility 100 (light), 320 px reflow.
 
 Experiments (`experiments/`, any time after slice 4):
 
