@@ -80,6 +80,7 @@ import { useIngredientSearch, useKitchen, useKitchenActions } from '@/lib/api/ki
 import { useList } from '@/lib/api/lists';
 import { ingredientEmoji } from '@/theme/foodEmoji';
 import { tintFor } from '@/theme/tint';
+import { inputText } from '@/theme/inputText';
 import { useTheme, type Theme } from '@/theme/useTheme';
 
 type Actions = ReturnType<typeof useKitchenActions>;
@@ -277,7 +278,7 @@ export default function KitchenScreen() {
             value={query}
             onChangeText={setQuery}
             autoCorrect={false}
-            style={[t.type.body, { flex: 1, color: t.colors.text, minHeight: 44 }]}
+            style={[inputText(t.type.body), { flex: 1, color: t.colors.text, minHeight: 44 }]}
           />
         </View>
         <Pressable
@@ -1086,7 +1087,7 @@ function ItemSheet({
               placeholder="Some"
               placeholderTextColor={t.colors.textMuted}
               style={[
-                t.type.heading,
+                inputText(t.type.heading),
                 {
                   flex: 2,
                   minHeight: 56,
