@@ -31,6 +31,7 @@ describe.each(schemes)('%s theme meets WCAG AA for text', (scheme) => {
     ['danger on background', c.danger, c.background],
     ['danger on surface', c.danger, c.surface],
     ['danger on soft danger', c.danger, c.dangerSoft],
+    ['text on the chef yellow', c.onChef, c.chef],
     ['text on a grey pill (On list)', c.text, c.border],
     ['hero title', c.onHero, c.hero],
     ['hero text', c.onHeroMuted, c.hero],

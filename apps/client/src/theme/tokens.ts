@@ -18,6 +18,7 @@ const palette = {
   lime: '#d8f23c',
   limePressed: '#c5de25',
   limeSoft: '#eef8b8',
+  chef: '#fcb608', // the chef mascot's golden yellow, sampled from his artwork
   ink: '#12150f',
   ink700: '#2a2f24',
   paper: '#fffaf4',
@@ -66,6 +67,9 @@ export type ColorTokens = {
   onHeroMuted: string;
   /** The search field inside the hero. */
   heroField: string;
+  /** The chef mascot's yellow, for anything drawn to match him. Ink text only on it. */
+  chef: string;
+  onChef: string;
 };
 
 export const colors: Record<'light' | 'dark', ColorTokens> = {
@@ -90,6 +94,8 @@ export const colors: Record<'light' | 'dark', ColorTokens> = {
     onHero: palette.ink,
     onHeroMuted: '#4d5338',
     heroField: palette.white,
+    chef: palette.chef,
+    onChef: palette.ink,
   },
   dark: {
     background: palette.night900,
@@ -112,6 +118,8 @@ export const colors: Record<'light' | 'dark', ColorTokens> = {
     onHero: palette.mist100,
     onHeroMuted: '#bfc4b3',
     heroField: '#353b2e',
+    chef: palette.chef,
+    onChef: palette.ink,
   },
 };
 
