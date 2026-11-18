@@ -140,6 +140,10 @@ async def household_context(session: AsyncSession, agent: AgentContext, draft: D
     run_out = [s.ingredient.name for s in view.staples if s.ran_out_at]
     if run_out:
         context["staples_run_out"] = run_out
+    # Still at home, but the Member flagged it (ADR 0024): worth topping up.
+    low = kitchen.running_low(view)
+    if low:
+        context["running_low"] = low
     planned = await meal_plan.between(session, hid, agent.today, last_day)
     if planned:
         context["planned_meals"] = [

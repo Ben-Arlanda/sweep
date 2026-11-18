@@ -1161,14 +1161,84 @@
         }
       }
     },
-    "/kitchen/used-up/{ingredient_id}": {
+    "/kitchen/stock/{ingredient_id}": {
+      "put": {
+        "tags": [
+          "kitchen"
+        ],
+        "summary": "Set Stock",
+        "description": "In stock / Running low / Out (ADR 0024). A Staple set to Out also goes on the list.",
+        "operationId": "set_stock_kitchen_stock__ingredient_id__put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "ingredient_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Ingredient Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetStockIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StockOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/kitchen/to-list/{ingredient_id}": {
       "post": {
         "tags": [
           "kitchen"
         ],
-        "summary": "Mark Used Up",
-        "description": "Used up (Tracked) or Ran out (Staple): out of the Kitchen and onto the list.",
-        "operationId": "mark_used_up_kitchen_used_up__ingredient_id__post",
+        "summary": "Add To List",
+        "description": "\"Add to list\" for something in the Kitchen; skipped if already on it unticked.",
+        "operationId": "add_to_list_kitchen_to_list__ingredient_id__post",
         "security": [
           {
             "HTTPBearer": []
@@ -1203,7 +1273,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UsedUpOut"
+                  "$ref": "#/components/schemas/OnListOut"
                 }
               }
             }
@@ -4343,6 +4413,17 @@
             "type": "string",
             "title": "Default Unit"
           },
+          "grams_per_ml": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grams Per Ml"
+          },
           "is_household_ingredient": {
             "type": "boolean",
             "title": "Is Household Ingredient"
@@ -4538,6 +4619,15 @@
           },
           "place": {
             "$ref": "#/components/schemas/Place"
+          },
+          "stock": {
+            "type": "string",
+            "enum": [
+              "in_stock",
+              "low",
+              "out"
+            ],
+            "title": "Stock"
           }
         },
         "type": "object",
@@ -4548,7 +4638,8 @@
           "status",
           "last_change_source",
           "last_confirmed_at",
-          "place"
+          "place",
+          "stock"
         ],
         "title": "KitchenItemOut"
       },
@@ -4742,6 +4833,34 @@
           "joined_at"
         ],
         "title": "MemberOut"
+      },
+      "OnListOut": {
+        "properties": {
+          "list_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "List Id"
+          },
+          "list_item_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "List Item Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "list_id",
+          "list_item_id"
+        ],
+        "title": "OnListOut",
+        "description": "Where it went on the Shopping List, so the app can offer Undo."
       },
       "ParseMethod": {
         "type": "string",
@@ -5743,6 +5862,18 @@
               }
             ],
             "title": "Quantity"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 12
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
           }
         },
         "type": "object",
@@ -5750,7 +5881,7 @@
           "quantity"
         ],
         "title": "SetQuantityIn",
-        "description": "`null` means \"we have some; amount not recorded\"."
+        "description": "`null` means \"we have some; amount not recorded\". `unit` (g, kg, ml, L, count\u2026)\nis converted to the Ingredient's own unit; left out, it already is."
       },
       "SetStapleIn": {
         "properties": {
@@ -5764,6 +5895,24 @@
           "have"
         ],
         "title": "SetStapleIn"
+      },
+      "SetStockIn": {
+        "properties": {
+          "stock": {
+            "type": "string",
+            "enum": [
+              "in_stock",
+              "low",
+              "out"
+            ],
+            "title": "Stock"
+          }
+        },
+        "type": "object",
+        "required": [
+          "stock"
+        ],
+        "title": "SetStockIn"
       },
       "ShopIn": {
         "properties": {
@@ -5850,15 +5999,69 @@
           },
           "place": {
             "$ref": "#/components/schemas/Place"
+          },
+          "stock": {
+            "type": "string",
+            "enum": [
+              "in_stock",
+              "low",
+              "out"
+            ],
+            "title": "Stock"
           }
         },
         "type": "object",
         "required": [
           "ingredient",
           "have",
-          "place"
+          "place",
+          "stock"
         ],
         "title": "StapleOut"
+      },
+      "StockOut": {
+        "properties": {
+          "stock": {
+            "type": "string",
+            "enum": [
+              "in_stock",
+              "low",
+              "out"
+            ],
+            "title": "Stock"
+          },
+          "list_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "List Id"
+          },
+          "list_item_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "List Item Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "stock",
+          "list_id",
+          "list_item_id"
+        ],
+        "title": "StockOut"
       },
       "SwapOut": {
         "properties": {
@@ -5955,34 +6158,6 @@
             "tool": "#/components/schemas/ToolEvent"
           }
         }
-      },
-      "UsedUpOut": {
-        "properties": {
-          "list_id": {
-            "type": "string",
-            "format": "uuid",
-            "title": "List Id"
-          },
-          "list_item_id": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "uuid"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "List Item Id"
-          }
-        },
-        "type": "object",
-        "required": [
-          "list_id",
-          "list_item_id"
-        ],
-        "title": "UsedUpOut",
-        "description": "Where it went on the Shopping List, so the app can offer Undo."
       },
       "ValidationError": {
         "properties": {

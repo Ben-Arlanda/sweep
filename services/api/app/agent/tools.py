@@ -294,6 +294,7 @@ async def get_kitchen(call: Call, _args: NoArgs) -> Outcome:
                 for item in view.tracked
             ],
             "staples_run_out": [s.ingredient.name for s in view.staples if s.ran_out_at],
+            "running_low": kitchen.running_low(view),
             "note": "Other staples (salt, oil, common spices...) are assumed to be at home.",
         }
     )

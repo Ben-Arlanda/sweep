@@ -15,11 +15,14 @@ import { useTheme } from '@/theme/useTheme';
 export function Sheet({
   label,
   title,
+  header,
   onClose,
   children,
 }: {
   label: string;
   title: string;
+  /** Replaces the plain title, e.g. a picture, name and close button. */
+  header?: ReactNode;
   onClose: () => void;
   children: ReactNode;
 }) {
@@ -83,9 +86,11 @@ export function Sheet({
             }}
             keyboardShouldPersistTaps="handled"
           >
-            <Text variant="heading" accessibilityRole="header">
-              {title}
-            </Text>
+            {header ?? (
+              <Text variant="heading" accessibilityRole="header">
+                {title}
+              </Text>
+            )}
             {children}
           </ScrollView>
         </View>

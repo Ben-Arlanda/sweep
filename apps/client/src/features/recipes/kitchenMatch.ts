@@ -40,7 +40,7 @@ function matchKitchen(id: string, line: Line, kitchen: Kitchen): Have {
   if (staple) return staple.have ? { kind: 'have' } : { kind: 'need' };
 
   const item = kitchen.tracked.find((i) => i.ingredient.id === id);
-  if (!item) return { kind: 'need' };
+  if (!item || item.stock === 'out') return { kind: 'need' }; // Out stays listed (ADR 0024)
   if (item.status === 'unknown') return { kind: 'check' };
   // "Some" (no amount recorded), or a recipe amount that doesn't convert ("3 cloves"):
   // we can't compare, and having it at all is the useful answer.

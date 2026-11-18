@@ -125,6 +125,7 @@ class IngredientOut(BaseModel):
     name: str
     category: str
     default_unit: str
+    grams_per_ml: Decimal | None = None  # known density: weight and volume convert
     is_household_ingredient: bool  # created by this Household (ADR 0012), not a starter
 
 
@@ -209,13 +210,22 @@ class ShoppingListDetailOut(ShoppingListOut):
 
 
 class SetQuantityIn(BaseModel):
-    """`null` means "we have some; amount not recorded"."""
+    """`null` means "we have some; amount not recorded". `unit` (g, kg, ml, L, count…)
+    is converted to the Ingredient's own unit; left out, it already is."""
 
     quantity: Quantity | None
+    unit: Annotated[str, StringConstraints(max_length=12)] | None = None
 
 
 class SetStapleIn(BaseModel):
     have: bool
+
+
+Stock = Literal["in_stock", "low", "out"]
+
+
+class SetStockIn(BaseModel):
+    stock: Stock
 
 
 class KitchenItemOut(BaseModel):
@@ -226,12 +236,14 @@ class KitchenItemOut(BaseModel):
     last_change_source: ChangeSource
     last_confirmed_at: datetime
     place: Place
+    stock: Stock  # the Member's say (ADR 0024); `status` is how much we trust the amount
 
 
 class StapleOut(BaseModel):
     ingredient: IngredientOut
-    have: bool
+    have: bool  # not Out (Running low still counts as have)
     place: Place
+    stock: Stock
 
 
 class PlaceIn(BaseModel):
@@ -244,15 +256,21 @@ class PlaceOut(BaseModel):
 
 class KitchenOut(BaseModel):
     version: int
-    tracked: list[KitchenItemOut]
+    tracked: list[KitchenItemOut]  # Out Non-staples included, with stock "out"
     staples: list[StapleOut]
 
 
-class UsedUpOut(BaseModel):
+class OnListOut(BaseModel):
     """Where it went on the Shopping List, so the app can offer Undo."""
 
     list_id: uuid.UUID
     list_item_id: uuid.UUID | None  # None: already on the list unticked, nothing added
+
+
+class StockOut(BaseModel):
+    stock: Stock
+    list_id: uuid.UUID | None  # set when a Staple ran out and went on the list
+    list_item_id: uuid.UUID | None
 
 
 class InKitchenTrackedOut(BaseModel):

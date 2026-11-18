@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Icon } from '@/components/Icon';
 import { Text } from '@/components/ui';
+import { inputText } from '@/theme/inputText';
 import { useTheme } from '@/theme/useTheme';
 
 /**
@@ -112,7 +113,10 @@ export function HeroSearch({ label, ...props }: TextInputProps & { label: string
           setFocused(false);
           props.onBlur?.(e);
         }}
-        style={[t.type.body, { flex: 1, minHeight: t.touchTarget, color: t.colors.onHero }]}
+        style={[
+          inputText(t.type.body),
+          { flex: 1, minHeight: t.touchTarget, color: t.colors.onHero },
+        ]}
       />
     </View>
   );

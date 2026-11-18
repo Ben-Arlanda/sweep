@@ -305,6 +305,7 @@ class HouseholdStaple(Base):
     )
     ingredient: Mapped[Ingredient] = relationship(lazy="joined")
     ran_out_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    low: Mapped[bool] = mapped_column(default=False, server_default="false")  # ADR 0024
     # Where the Household keeps it, if not the default for its category (ADR 0011).
     place: Mapped[Place | None] = mapped_column(str_enum(Place, "staple_place"))
 
@@ -338,6 +339,9 @@ class KitchenItem(Base):
     last_confirmed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     # Where the Household keeps it, if not the default for its category (ADR 0011).
     place: Mapped[Place | None] = mapped_column(str_enum(Place, "kitchen_place"))
+    # Set by the Member (ADR 0024). Out rows stay on screen but never count as "have".
+    ran_out_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    low: Mapped[bool] = mapped_column(default=False, server_default="false")
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utcnow, server_default=func.now()
     )
