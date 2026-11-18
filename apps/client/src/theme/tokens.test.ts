@@ -66,6 +66,12 @@ describe.each(schemes)('%s stock colours (ADR 0024)', (scheme) => {
 });
 
 describe.each(schemes)('%s controls are visible (3:1, WCAG 1.4.11)', (scheme) => {
+  it('the selected Staples / Non-staples tab (text on green)', () => {
+    expect(
+      contrastRatio(colors[scheme].surface, stockColors[scheme].in_stock.fg),
+    ).toBeGreaterThanOrEqual(4.5);
+  });
+
   it('a switch that is off', () => {
     expect(contrastRatio(colors[scheme].switchOff, colors[scheme].surface)).toBeGreaterThanOrEqual(
       3,

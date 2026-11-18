@@ -565,7 +565,8 @@ function TabButton({
   onPress: () => void;
 }) {
   const t = useTheme();
-  const fg = on ? t.colors.onInverse : t.colors.text;
+  // Selected: the In stock green, with the card colour as text (7:1 or better).
+  const fg = on ? t.colors.surface : t.colors.text;
   return (
     <Pressable
       accessibilityRole="tab"
@@ -575,7 +576,7 @@ function TabButton({
         flex: 1,
         minHeight: 46,
         borderRadius: t.radius.pill,
-        backgroundColor: on ? t.colors.inverse : 'transparent',
+        backgroundColor: on ? t.stock.in_stock.fg : 'transparent',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
