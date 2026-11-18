@@ -91,7 +91,6 @@ function CookedButton({ meal }: { meal: PlannedMeal }) {
           isCooked ? `Undo cooked for ${meal.title}` : `Mark ${meal.title} as cooked`
         }
         variant={isCooked ? 'ghost' : 'dark'}
-        compact
         loading={busy}
         disabled={busy}
         onPress={() => (isCooked ? undoCooked : cooked).mutate(mealTap(meal.id))}
@@ -123,7 +122,7 @@ function TonightCard({ today, meals }: { today: string; meals: PlannedMeal[] }) 
           </View>
           <ChefPicture />
         </View>
-        <View style={{ alignSelf: 'flex-start' }}>
+        <View>
           <Button
             title="Find dinner ideas"
             icon={Sparkles}
@@ -166,7 +165,7 @@ function TonightCard({ today, meals }: { today: string; meals: PlannedMeal[] }) 
         </View>
         <RecipeArt title={meal.title} width={112} height={84} radius={16} emojiSize={44} />
       </PressableScale>
-      <View style={{ alignSelf: 'flex-start' }}>
+      <View>
         <CookedButton meal={meal} />
       </View>
     </Card>
@@ -299,23 +298,30 @@ function MealPlanCard({
             {day.meal ? <MealMeta meal={day.meal} /> : null}
           </View>
         </View>
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.sm }}>
+        {/* Each button gets an equal share of the row, so the margins either side match. */}
+        <View style={{ flexDirection: 'row', gap: t.space.sm }}>
           {day.meal ? (
-            <Button
-              title="See the recipe"
-              variant="secondary"
-              compact
-              onPress={() => day.meal && router.push(`/recipe/${day.meal.recipe_id}`)}
-            />
+            <View style={{ flex: 1 }}>
+              <Button
+                title="See the recipe"
+                variant="secondary"
+                onPress={() => day.meal && router.push(`/recipe/${day.meal.recipe_id}`)}
+              />
+            </View>
           ) : canPick(day.date, today) ? (
-            <Button
-              title="Add a dinner"
-              variant="secondary"
-              compact
-              onPress={() => router.push({ pathname: '/tonight', params: { date: day.date } })}
-            />
+            <View style={{ flex: 1 }}>
+              <Button
+                title="Add a dinner"
+                variant="secondary"
+                onPress={() => router.push({ pathname: '/tonight', params: { date: day.date } })}
+              />
+            </View>
           ) : null}
-          {day.meal && isToday ? <CookedButton meal={day.meal} /> : null}
+          {day.meal && isToday ? (
+            <View style={{ flex: 1 }}>
+              <CookedButton meal={day.meal} />
+            </View>
+          ) : null}
         </View>
       </View>
     </Card>
