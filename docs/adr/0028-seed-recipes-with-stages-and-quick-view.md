@@ -20,3 +20,5 @@ The 500 Seed Recipes from slice 4c had short methods. The 4e audit made them pas
 - The Retrieval Set and other eval labels point at old slugs, so they're relabelled and re-measured. The numbers aren't directly comparable with slice 9.
 - Imported Recipes keep one view (no stages).
 - Drafting by an LLM means mistakes a cook would spot can slip through the checks; the product owner's spot check stays.
+- Mains are 150 of 426 (35%, down from most of the old library). Plans offer mains only; 150 is enough for weekly plans, and the test now checks mains are the biggest Course.
+- Slugs come from the titles, accents dropped ("creme-brulee"); keyword search drops accents on both sides (Postgres `unaccent`), so "creme brulee" finds "Crème brûlée".
