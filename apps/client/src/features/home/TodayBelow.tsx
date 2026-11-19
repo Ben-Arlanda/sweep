@@ -477,7 +477,7 @@ function RecipeIdeas() {
         </View>
         <PressableScale
           accessibilityRole="link"
-          accessibilityLabel="See all recipes"
+          accessibilityLabel="More recipe ideas"
           onPress={() => router.push('/recipes')}
           style={{
             flexDirection: 'row',
@@ -488,7 +488,7 @@ function RecipeIdeas() {
           }}
         >
           <Text variant="label" style={{ color: t.colors.onBackground }}>
-            See all
+            More
           </Text>
           <Icon icon={ChevronRight} size={16} color={t.colors.onBackground} strong />
         </PressableScale>
