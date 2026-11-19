@@ -47,6 +47,7 @@ class Problem:
 # Aliases too vague to point at one Ingredient when they turn up in a method: "cheese"
 # could be any cheese, "pepper" could be black pepper or capsicum.
 VAGUE = {"cheese", "pepper", "mince", "steak", "cream", "rolls", "wraps", "stock cube"}
+VAGUE |= {"cloves", "ice cream", "berries", "fennel"}  # "garlic cloves", "fennel seeds"
 
 _VAGUE_FORMS = {form for term in VAGUE for form in variants(term)}  # "roll", "wrap" too
 
