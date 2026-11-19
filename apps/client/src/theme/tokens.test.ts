@@ -5,6 +5,7 @@ import {
   hero,
   homeColors,
   PAGE_COLORS,
+  palette,
   statusColors,
   stockColors,
   TINT_NAMES,
@@ -177,5 +178,25 @@ describe('lime words in a large hero title (34pt: AA large text is 3:1)', () => 
   it.each(['home', 'recipes'] as const)('read on the %s page', (page) => {
     const c = { ...colors.light, ...PAGE_COLORS[page] };
     expect(contrastRatio(c.action, c.background)).toBeGreaterThanOrEqual(3);
+  });
+});
+
+describe('tab bar: selected pill (page colour at 0x38 over paper) meets WCAG AA', () => {
+  const blend = (top: string, base: string, alpha: number) =>
+    '#' +
+    [1, 3, 5]
+      .map((i) => {
+        const a = parseInt(top.slice(i, i + 2), 16);
+        const b = parseInt(base.slice(i, i + 2), 16);
+        return Math.round(a * alpha + b * (1 - alpha))
+          .toString(16)
+          .padStart(2, '0');
+      })
+      .join('');
+  const light = colors.light;
+  it.each(Object.entries(PAGE_COLORS))('%s', (_, page) => {
+    const pill = blend(page.background, palette.paper, 0x38 / 255);
+    expect(contrastRatio(light.text, pill)).toBeGreaterThanOrEqual(AA);
+    expect(contrastRatio(light.textMuted, palette.paper)).toBeGreaterThanOrEqual(AA);
   });
 });
