@@ -10,11 +10,11 @@ import { useTheme } from '@/theme/useTheme';
  * Each tab shows an icon and a word (icons alone are guesswork for many people).
  */
 const TABS: TabItem[] = [
-  { name: 'index', title: 'Home', icon: House, page: 'home' },
-  { name: 'lists', title: 'Lists', icon: ShoppingBasket, page: 'list' },
-  { name: 'kitchen', title: 'Kitchen', icon: Refrigerator, page: 'kitchen' },
-  { name: 'meal-plan', title: 'Plan', icon: CalendarDays, page: 'plan' },
-  { name: 'recipes', title: 'Recipes', icon: BookOpen, page: 'recipes' },
+  { name: 'index', title: 'Home', icon: House },
+  { name: 'lists', title: 'Lists', icon: ShoppingBasket },
+  { name: 'kitchen', title: 'Kitchen', icon: Refrigerator },
+  { name: 'meal-plan', title: 'Plan', icon: CalendarDays },
+  { name: 'recipes', title: 'Recipes', icon: BookOpen },
 ];
 
 export default function TabsLayout() {

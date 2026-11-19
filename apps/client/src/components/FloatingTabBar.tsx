@@ -6,23 +6,15 @@ import { Platform, Text, View } from 'react-native';
 
 import { Icon } from '@/components/Icon';
 import { PressableScale } from '@/components/PressableScale';
-import { mix } from '@/theme/contrast';
-import {
-  PAGE_COLORS,
-  palette,
-  TAB_BAR_FROST,
-  TAB_PILL_TINT,
-  tabBarHeight,
-  type Page,
-} from '@/theme/tokens';
+import { palette, TAB_BAR_FROST, TAB_PILL_SHADE, tabBarHeight } from '@/theme/tokens';
 import { useTheme } from '@/theme/useTheme';
 
-export type TabItem = { name: string; title: string; icon: LucideIcon; page: Page };
+export type TabItem = { name: string; title: string; icon: LucideIcon };
 
 /**
  * The tab bar as a frosted pill floating over the page (like Apple's Podcasts): the
  * screen scrolls underneath it. The selected tab is shown three ways, never colour
- * alone (WCAG 1.4.1): its own solid pill, a heavier icon line and a bold label.
+ * alone (WCAG 1.4.1): a soft grey pill, a heavier icon line and a bold label.
  */
 export function FloatingTabBar({
   state,
@@ -34,12 +26,6 @@ export function FloatingTabBar({
   const t = useTheme();
   // Tells each screen how much room the bar takes, so <Screen> can leave space for it.
   const reportHeight = use(BottomTabBarHeightCallbackContext);
-  const current = tabs.find((tab) => tab.name === state.routes[state.index]?.name);
-  const selectedPill = mix(
-    PAGE_COLORS[current?.page ?? 'home'].background,
-    palette.paper,
-    TAB_PILL_TINT,
-  );
 
   return (
     <View
@@ -61,7 +47,7 @@ export function FloatingTabBar({
           width: '100%',
           maxWidth: 560,
           alignSelf: 'center',
-          height: tabBarHeight - t.space.sm,
+          height: tabBarHeight,
           borderRadius: t.radius.pill,
           // Two shadows: a soft one far below and a tight one close in, for depth.
           boxShadow: '0 14px 30px -10px rgba(18, 21, 15, 0.5), 0 2px 6px rgba(18, 21, 15, 0.14)',
@@ -89,7 +75,8 @@ export function FloatingTabBar({
             style={{
               flex: 1,
               flexDirection: 'row',
-              padding: 5,
+              padding: 6,
+              gap: 4,
               backgroundColor: `rgba(255, 250, 244, ${TAB_BAR_FROST})`,
               // Glass: a bright sheen across the top half and a lit top edge.
               backgroundImage:
@@ -121,9 +108,13 @@ export function FloatingTabBar({
                     flex: 1,
                     alignItems: 'center',
                     justifyContent: 'center',
-                    gap: 2,
+                    gap: 3,
+                    paddingVertical: 4,
+                    paddingHorizontal: 6,
                     borderRadius: t.radius.pill,
-                    backgroundColor: focused ? selectedPill : 'transparent',
+                    backgroundColor: focused
+                      ? `rgba(18, 21, 15, ${TAB_PILL_SHADE})`
+                      : 'transparent',
                     // Pressed in: shade at the top inside, a light lip along the bottom.
                     boxShadow: focused
                       ? 'inset 0 2px 5px rgba(18, 21, 15, 0.3), inset 0 -1px 0 rgba(255, 255, 255, 0.45)'

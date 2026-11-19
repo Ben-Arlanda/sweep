@@ -8,7 +8,7 @@ import {
   palette,
   statusColors,
   TAB_BAR_FROST,
-  TAB_PILL_TINT,
+  TAB_PILL_SHADE,
   stockColors,
   TINT_NAMES,
   tints,
@@ -188,8 +188,8 @@ describe('floating tab bar meets WCAG AA', () => {
     const worst = mix(palette.paper, palette.ink, TAB_BAR_FROST);
     expect(contrastRatio(palette.ink700, worst)).toBeGreaterThanOrEqual(AA);
   });
-  it.each(Object.entries(PAGE_COLORS))('selected pill on %s', (_, page) => {
-    const pill = mix(page.background, palette.paper, TAB_PILL_TINT);
+  it('selected label on its grey pill, even over black content', () => {
+    const pill = mix(palette.ink, mix(palette.paper, palette.ink, TAB_BAR_FROST), TAB_PILL_SHADE);
     expect(contrastRatio(palette.ink, pill)).toBeGreaterThanOrEqual(AA);
   });
 });
