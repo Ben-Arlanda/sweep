@@ -1179,6 +1179,11 @@ export interface components {
             excluded_ingredients: components["schemas"]["IngredientOut"][];
         };
         /**
+         * Difficulty
+         * @enum {string}
+         */
+        Difficulty: "easy" | "medium" | "hard";
+        /**
          * DinnerIdeaOut
          * @description One Dinner Idea (ADR 0025): a recipe with its Kitchen Match.
          */
@@ -1953,12 +1958,40 @@ export interface components {
             ingredients: components["schemas"]["RecipeIngredientOut"][];
             /** Method */
             method: string[] | null;
+            /** Prep Minutes */
+            prep_minutes: number | null;
+            /** Cook Minutes */
+            cook_minutes: number | null;
+            difficulty: components["schemas"]["Difficulty"] | null;
+            /** Stages */
+            stages: components["schemas"]["RecipeStageOut"][] | null;
+            /**
+             * Tips
+             * @default []
+             */
+            tips: string[];
+            /**
+             * Variations
+             * @default []
+             */
+            variations: string[];
+            /** Storage */
+            storage: string | null;
             /** Source Url */
             source_url: string | null;
             /** Licence */
             licence: string;
             /** Attribution */
             attribution: string;
+        };
+        /** RecipeStageOut */
+        RecipeStageOut: {
+            /** Title */
+            title: string;
+            /** Minutes */
+            minutes: number;
+            /** Steps */
+            steps: string[];
         };
         /** RecipeSummaryOut */
         RecipeSummaryOut: {
