@@ -20,3 +20,18 @@ function luminance(hex: string): number {
   });
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 }
+
+/** `top` laid over `base` at `alpha` (0–1), as one solid #rrggbb, so it can be tested. */
+export function mix(top: string, base: string, alpha: number): string {
+  const ch = (hex: string, i: number) => parseInt(hex.slice(i, i + 2), 16);
+  return (
+    '#' +
+    [1, 3, 5]
+      .map((i) =>
+        Math.round(ch(top, i) * alpha + ch(base, i) * (1 - alpha))
+          .toString(16)
+          .padStart(2, '0'),
+      )
+      .join('')
+  );
+}

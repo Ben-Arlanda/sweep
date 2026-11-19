@@ -318,6 +318,14 @@ export const motion = {
 /** Height of the bottom tab bar, above the phone's home-bar area. Toasts sit above it. */
 export const tabBarHeight = 64;
 
+/**
+ * The floating tab bar's frosting: warm white at this opacity over the blur. 0.7 keeps
+ * its ink700 labels at AA even over black content (tested in tokens.test.ts).
+ */
+export const TAB_BAR_FROST = 0.7;
+/** How strongly the selected tab's pill takes the page colour (over solid paper). */
+export const TAB_PILL_TINT = 0.22;
+
 /** Minimum tappable size (Apple HIG 44pt). Applies to every button and row. */
 export const touchTarget = 44;
 

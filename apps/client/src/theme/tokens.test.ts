@@ -1,4 +1,4 @@
-import { contrastRatio } from './contrast';
+import { contrastRatio, mix } from './contrast';
 import { initials, tintFor } from './tint';
 import {
   colors,
@@ -7,6 +7,8 @@ import {
   PAGE_COLORS,
   palette,
   statusColors,
+  TAB_BAR_FROST,
+  TAB_PILL_TINT,
   stockColors,
   TINT_NAMES,
   tints,
@@ -181,22 +183,13 @@ describe('lime words in a large hero title (34pt: AA large text is 3:1)', () => 
   });
 });
 
-describe('tab bar: selected pill (page colour at 0x38 over paper) meets WCAG AA', () => {
-  const blend = (top: string, base: string, alpha: number) =>
-    '#' +
-    [1, 3, 5]
-      .map((i) => {
-        const a = parseInt(top.slice(i, i + 2), 16);
-        const b = parseInt(base.slice(i, i + 2), 16);
-        return Math.round(a * alpha + b * (1 - alpha))
-          .toString(16)
-          .padStart(2, '0');
-      })
-      .join('');
-  const light = colors.light;
-  it.each(Object.entries(PAGE_COLORS))('%s', (_, page) => {
-    const pill = blend(page.background, palette.paper, 0x38 / 255);
-    expect(contrastRatio(light.text, pill)).toBeGreaterThanOrEqual(AA);
-    expect(contrastRatio(light.textMuted, palette.paper)).toBeGreaterThanOrEqual(AA);
+describe('floating tab bar meets WCAG AA', () => {
+  it('labels on the frost, even over black content', () => {
+    const worst = mix(palette.paper, palette.ink, TAB_BAR_FROST);
+    expect(contrastRatio(palette.ink700, worst)).toBeGreaterThanOrEqual(AA);
+  });
+  it.each(Object.entries(PAGE_COLORS))('selected pill on %s', (_, page) => {
+    const pill = mix(page.background, palette.paper, TAB_PILL_TINT);
+    expect(contrastRatio(palette.ink, pill)).toBeGreaterThanOrEqual(AA);
   });
 });

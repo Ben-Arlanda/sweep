@@ -4,7 +4,7 @@
  * Browse them all at /design (src/app/(app)/design.tsx).
  */
 import type { LucideIcon } from 'lucide-react-native';
-import { useState, type ReactNode, type Ref } from 'react';
+import { use, useState, type ReactNode, type Ref } from 'react';
 import {
   ActivityIndicator,
   Text as RNText,
@@ -17,6 +17,7 @@ import {
   type TextProps,
   type ViewStyle,
 } from 'react-native';
+import { BottomTabBarHeightContext } from 'expo-router/tabs';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Icon } from '@/components/Icon';
@@ -71,11 +72,13 @@ export function Screen({
   footer?: ReactNode;
 }) {
   const t = useTheme();
+  // The floating tab bar covers the bottom of the page: leave room so nothing hides under it.
+  const tabBar = use(BottomTabBarHeightContext) ?? 0;
   const content = (
     <View
       style={{
         padding: t.space.lg,
-        paddingBottom: t.space.xxl * 2, // room above the toast
+        paddingBottom: t.space.xxl * 2 + tabBar, // room above the toast and the tab bar
         gap: t.space.lg,
         width: '100%',
         maxWidth: 560, // readable column on tablets and the web
@@ -107,7 +110,7 @@ export function Screen({
             style={{
               paddingHorizontal: t.space.lg,
               paddingTop: t.space.md,
-              paddingBottom: t.space.lg,
+              paddingBottom: t.space.lg + tabBar,
               width: '100%',
               maxWidth: 560,
               alignSelf: 'center',
