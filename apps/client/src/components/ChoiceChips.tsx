@@ -75,7 +75,10 @@ export function ChoiceChips<T>({
                 numberOfLines={1}
                 style={[
                   small ? { fontSize: 14, lineHeight: 18 } : null,
-                  { color: selected ? t.colors.onSelected : t.colors.text, fontFamily: t.fonts.medium },
+                  {
+                    color: selected ? t.colors.onSelected : t.colors.text,
+                    fontFamily: t.fonts.medium,
+                  },
                 ]}
               >
                 {option.label}

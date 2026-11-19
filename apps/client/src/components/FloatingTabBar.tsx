@@ -8,8 +8,9 @@ import { Icon } from '@/components/Icon';
 import { PressableScale } from '@/components/PressableScale';
 import { palette, TAB_BAR_FROST, TAB_PILL_SHADE, tabBarHeight } from '@/theme/tokens';
 
-const BAR_RADIUS = 22;
 import { useTheme } from '@/theme/useTheme';
+
+const BAR_RADIUS = 22;
 
 export type TabItem = { name: string; title: string; icon: LucideIcon };
 

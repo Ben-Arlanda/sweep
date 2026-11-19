@@ -70,16 +70,16 @@ export function CategoryAccordion({
           flexDirection: 'row',
           alignItems: 'center',
           gap: t.space.sm,
-          paddingHorizontal: t.space.lg,
-          minHeight: 56,
+          paddingHorizontal: 14,
+          minHeight: 48,
         }}
       >
-        <Icon icon={CATEGORY_ICON[category] ?? Package} color={t.colors.text} />
-        <Text variant="heading" accessibilityRole="header" style={{ fontSize: 18 }}>
+        <Icon icon={CATEGORY_ICON[category] ?? Package} size={18} color={t.colors.textMuted} />
+        <Text variant="label" accessibilityRole="header" style={{ flex: 1 }}>
           {label}
         </Text>
-        <Text variant="caption" muted style={{ flex: 1 }}>
-          {count} {count === 1 ? 'item' : 'items'}
+        <Text variant="caption" muted style={{ fontVariant: ['tabular-nums'] }}>
+          {count}
         </Text>
         <View style={{ transform: [{ rotate: open ? '0deg' : '180deg' }] }}>
           <Icon icon={ChevronUp} size={20} color={t.colors.text} strong />

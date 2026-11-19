@@ -37,6 +37,7 @@ import { FoodThumb } from '@/components/FoodThumb';
 import { CategoryAccordion, toggled } from '@/components/CategoryAccordion';
 import { MenuItem } from '@/components/MenuItem';
 import { PageHeader } from '@/components/PageHeader';
+import { Segmented } from '@/components/Segmented';
 import { SwipeToRemove } from '@/components/SwipeToRemove';
 import { Icon } from '@/components/Icon';
 import { measureAnchor, Popover, type Anchor } from '@/components/Popover';
@@ -259,11 +260,15 @@ function KitchenScreenContent() {
 
   return (
     <Screen edges={TAB_ROOT}>
-      <PageHeader icon={Refrigerator} title="Kitchen" />
+      <PageHeader icon={Refrigerator} section="kitchen" title="Kitchen" />
 
-      <View style={{ flexDirection: 'row', gap: t.space.sm }}>
+      <View
+        accessibilityRole="group"
+        accessibilityLabel="Filter by stock"
+        style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6 }}
+      >
         {STOCK_ORDER.map((stock) => (
-          <SummaryTile
+          <StockPill
             key={stock}
             stock={stock}
             count={sum[stock]}
@@ -281,13 +286,14 @@ function KitchenScreenContent() {
             alignItems: 'center',
             gap: t.space.sm,
             backgroundColor: t.colors.surface,
-            borderRadius: t.radius.pill,
-            paddingHorizontal: t.space.lg,
-            minHeight: 52,
-            boxShadow: t.shadow.card,
+            borderRadius: t.radius.md,
+            borderWidth: 1,
+            borderColor: t.colors.border,
+            paddingHorizontal: t.space.md,
+            minHeight: 48,
           }}
         >
-          <Icon icon={Search} size={20} color={t.colors.text} />
+          <Icon icon={Search} size={20} color={t.colors.textMuted} />
           <TextInput
             accessibilityLabel="Add to Kitchen"
             placeholder="Add to Kitchen, e.g. olive oil"
@@ -303,11 +309,11 @@ function KitchenScreenContent() {
           accessibilityLabel="Add from photo"
           onPress={() => setPhotoSheet(true)}
           style={({ pressed }) => ({
-            width: 52,
-            minHeight: 52,
+            width: 48,
+            minHeight: 48,
             alignItems: 'center',
             justifyContent: 'center',
-            borderRadius: t.radius.pill,
+            borderRadius: t.radius.md,
             backgroundColor: pressed ? t.colors.actionPressed : t.colors.action,
           })}
         >
@@ -329,29 +335,15 @@ function KitchenScreenContent() {
       />
       <ErrorText message={actions.error?.message} />
 
-      <View
-        accessibilityRole="tablist"
-        style={{
-          flexDirection: 'row',
-          backgroundColor: t.colors.surface,
-          borderRadius: t.radius.pill,
-          padding: 4,
-          boxShadow: t.shadow.card,
-        }}
-      >
-        <TabButton
-          label={`Staples (${rows.filter((r) => r.staple).length})`}
-          icon={Container}
-          on={tab === 'staples'}
-          onPress={() => setTab('staples')}
-        />
-        <TabButton
-          label={`Non-staples (${rows.filter((r) => !r.staple).length})`}
-          icon={Leaf}
-          on={tab === 'non-staples'}
-          onPress={() => setTab('non-staples')}
-        />
-      </View>
+      <Segmented
+        label="Kind"
+        value={tab}
+        onChange={setTab}
+        options={[
+          { value: 'staples', label: `Staples (${rows.filter((r) => r.staple).length})` },
+          { value: 'non-staples', label: `Non-staples (${rows.filter((r) => !r.staple).length})` },
+        ]}
+      />
 
       {/* Swipes sideways when it doesn't fit (big text sizes), so labels never wrap. */}
       <ScrollView
@@ -476,7 +468,8 @@ function undoToTracked(actions: Actions, row: KitchenRow) {
   if (row.stock !== 'in_stock') void actions.setStock(row.id, row.stock);
 }
 
-function SummaryTile({
+/** A stock filter: dot, count and label ("● 12 In stock"). Navy when it's the filter. */
+function StockPill({
   stock,
   count,
   on,
@@ -488,33 +481,66 @@ function SummaryTile({
   onPress: () => void;
 }) {
   const t = useTheme();
-  const c = t.stock[stock];
+  const fg = on ? t.colors.onSelected : t.colors.text;
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityState={{ selected: on }}
-      accessibilityLabel={`${count} ${STOCK_LABEL[stock]}${on ? ', showing only these' : ''}`}
+      accessibilityLabel={`${count} ${STOCK_LABEL[stock]}. ${on ? 'Showing only these' : 'Show only these'}`}
       onPress={onPress}
       style={({ pressed }) => ({
-        flex: 1,
-        alignItems: 'center',
-        gap: 2,
-        paddingVertical: t.space.md,
-        borderRadius: t.radius.lg,
-        backgroundColor: c.tile,
-        borderWidth: 2,
-        borderColor: on ? c.icon : 'transparent',
+        minHeight: t.touchTarget,
+        justifyContent: 'center',
         opacity: pressed ? 0.8 : 1,
       })}
     >
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-        <StockIcon stock={stock} size={22} />
-        <Text variant="title" style={{ fontSize: 24, lineHeight: 30 }}>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 6,
+          minHeight: 36,
+          paddingLeft: 10,
+          paddingRight: t.space.md,
+          borderRadius: t.radius.pill,
+          borderWidth: 1,
+          borderColor: on ? t.colors.selected : t.colors.border,
+          backgroundColor: on ? t.colors.selected : t.colors.surface,
+        }}
+      >
+        <StockDot stock={stock} ring={on} />
+        <Text
+          style={{
+            fontFamily: t.fonts.bold,
+            fontSize: 13,
+            color: fg,
+            fontVariant: ['tabular-nums'],
+          }}
+        >
           {count}
         </Text>
+        <Text style={{ fontFamily: t.fonts.medium, fontSize: 13, color: fg }}>
+          {STOCK_LABEL[stock]}
+        </Text>
       </View>
-      <Text variant="caption">{STOCK_LABEL[stock]}</Text>
     </Pressable>
+  );
+}
+
+/** The stock colour as a small dot; `ring` adds a white edge so it shows on navy. */
+function StockDot({ stock, size = 8, ring }: { stock: Stock; size?: number; ring?: boolean }) {
+  const t = useTheme();
+  return (
+    <View
+      aria-hidden
+      style={{
+        width: size,
+        height: size,
+        borderRadius: size / 2,
+        backgroundColor: t.stock[stock].icon,
+        boxShadow: ring ? `0 0 0 1.5px ${t.colors.surface}` : undefined,
+      }}
+    />
   );
 }
 
@@ -542,44 +568,6 @@ function StockIcon({ stock, size = 18 }: { stock: Stock; size?: number }) {
   return <Icon icon={stock === 'low' ? TriangleAlert : CircleX} size={size} color={c.icon} />;
 }
 
-function TabButton({
-  label,
-  icon,
-  on,
-  onPress,
-}: {
-  label: string;
-  icon: LucideIcon;
-  on: boolean;
-  onPress: () => void;
-}) {
-  const t = useTheme();
-  // Selected: deep green, with the card colour as text.
-  const fg = on ? t.colors.surface : t.colors.text;
-  return (
-    <Pressable
-      accessibilityRole="tab"
-      accessibilityState={{ selected: on }}
-      onPress={onPress}
-      style={{
-        flex: 1,
-        minHeight: 46,
-        borderRadius: t.radius.pill,
-        backgroundColor: on ? t.colors.tabSelected : 'transparent',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: t.space.sm,
-      }}
-    >
-      <Icon icon={icon} size={18} color={fg} />
-      <Text variant="label" numberOfLines={1} style={{ color: fg, fontSize: 15, flexShrink: 1 }}>
-        {label}
-      </Text>
-    </Pressable>
-  );
-}
-
 function PlaceChip({
   label,
   icon,
@@ -602,9 +590,9 @@ function PlaceChip({
         minHeight: t.touchTarget,
         paddingHorizontal: t.space.md,
         borderRadius: t.radius.pill,
-        borderWidth: 1.5,
-        borderColor: on ? t.colors.action : t.colors.border,
-        backgroundColor: on ? t.colors.action : t.colors.surface,
+        borderWidth: 1,
+        borderColor: on ? t.colors.selected : t.colors.border,
+        backgroundColor: on ? t.colors.selected : t.colors.surface,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -612,11 +600,16 @@ function PlaceChip({
         opacity: pressed ? 0.8 : 1,
       })}
     >
-      {icon ? <Icon icon={icon} size={16} color={on ? t.colors.onAction : t.colors.text} /> : null}
+      {icon ? (
+        <Icon icon={icon} size={16} color={on ? t.colors.onSelected : t.colors.text} />
+      ) : null}
       <Text
-        variant="label"
         numberOfLines={1}
-        style={{ color: on ? t.colors.onAction : t.colors.text }}
+        style={{
+          fontFamily: t.fonts.medium,
+          fontSize: 14,
+          color: on ? t.colors.onSelected : t.colors.text,
+        }}
       >
         {label}
       </Text>
@@ -624,24 +617,20 @@ function PlaceChip({
   );
 }
 
+/** Stock on a row: a dot and the word in its stock colour (tap to change). */
 function StockBadge({ stock }: { stock: Stock }) {
   const t = useTheme();
-  const c = t.stock[stock];
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 4,
-        paddingLeft: 5,
-        paddingRight: 8,
-        minHeight: 24,
-        borderRadius: t.radius.pill,
-        backgroundColor: c.bg,
-      }}
-    >
-      <StockIcon stock={stock} size={14} />
-      <Text variant="label" style={{ color: c.fg, fontSize: 12, lineHeight: 16 }}>
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, minHeight: 20 }}>
+      <StockDot stock={stock} size={7} />
+      <Text
+        style={{
+          fontFamily: t.fonts.medium,
+          fontSize: 13,
+          lineHeight: 18,
+          color: t.stock[stock].fg,
+        }}
+      >
         {STOCK_LABEL[stock]}
       </Text>
     </View>
@@ -688,11 +677,11 @@ function ItemRow({
         minHeight: 32,
         paddingHorizontal: t.space.sm + 2,
         borderRadius: t.radius.pill,
-        backgroundColor: t.colors.actionSoft,
+        backgroundColor: t.colors.fill,
       }}
     >
-      <Icon icon={ShoppingCart} size={14} color={t.colors.onActionSoft} />
-      <Text variant="label" style={{ color: t.colors.onActionSoft, fontSize: 13 }}>
+      <Icon icon={ShoppingCart} size={14} color={t.colors.textMuted} />
+      <Text variant="label" style={{ color: t.colors.textMuted, fontSize: 13 }}>
         On list
       </Text>
     </View>
@@ -766,12 +755,14 @@ function ItemRow({
                 gap: 4,
                 minHeight: 40,
                 paddingHorizontal: t.space.sm + 2,
-                borderRadius: t.radius.pill,
-                backgroundColor: pressed ? t.colors.actionPressed : t.colors.action,
+                borderRadius: t.radius.md,
+                borderWidth: 1,
+                borderColor: t.colors.border,
+                backgroundColor: pressed ? t.colors.fill : t.colors.surface,
               })}
             >
-              <Icon icon={ShoppingCart} size={14} color={t.colors.onAction} />
-              <Text variant="label" style={{ color: t.colors.onAction, fontSize: 13 }}>
+              <Icon icon={ShoppingCart} size={14} color={t.colors.text} />
+              <Text variant="label" style={{ color: t.colors.text, fontSize: 13 }}>
                 Add to list
               </Text>
             </Pressable>

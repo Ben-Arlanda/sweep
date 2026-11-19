@@ -40,5 +40,5 @@ export function makeQueryClient() {
 export const persister = createAsyncStoragePersister({ storage: AsyncStorage });
 
 /** Bump when cached shapes change, so old caches aren't restored into new code. */
-export const CACHE_BUSTER = 'home-plan-tab'; // Plan tab: planned meals carry total_minutes
+export const CACHE_BUSTER = 'premium-redesign'; // drops caches from before Kitchen rows carried stock
 export const CACHE_MAX_AGE = DAY;

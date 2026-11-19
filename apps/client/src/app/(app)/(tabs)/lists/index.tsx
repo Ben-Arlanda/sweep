@@ -93,6 +93,7 @@ function ListContent({ list }: { list: ListDetail }) {
     <Screen edges={TAB_ROOT}>
       <PageHeader
         icon={ShoppingBasket}
+        section="list"
         title="Shopping List"
         right={<AvatarStack members={members} size={28} />}
         subtitle={`${summary}${sync ? ` · ${sync}` : ''}`}

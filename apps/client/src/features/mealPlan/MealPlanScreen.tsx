@@ -70,7 +70,7 @@ export function MealPlanScreen() {
 
   return (
     <Screen edges={['top', 'left', 'right']} footer={footer}>
-      <PageHeader icon={CalendarDays} title="Plan my week" />
+      <PageHeader icon={CalendarDays} section="plan" title="Plan my week" />
       <WeekToggle next={next} onChange={setNext} />
 
       {week.isPending || !today ? (
