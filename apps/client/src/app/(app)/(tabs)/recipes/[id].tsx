@@ -1,26 +1,16 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { router, useLocalSearchParams } from 'expo-router';
-import {
-  ArrowLeftRight,
-  CalendarDays,
-  ChefHat,
-  CirclePlus,
-  Clock,
-  Package,
-  ShoppingCart,
-  Users,
-  type LucideIcon,
-} from 'lucide-react-native';
+import { router, Stack, useLocalSearchParams } from 'expo-router';
+import { ArrowLeft, ArrowLeftRight, CalendarDays, Plus } from 'lucide-react-native';
 import { randomUUID } from 'expo-crypto';
 import { useState } from 'react';
 import { Linking, Pressable, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ConfirmDialog } from '@/components/ConfirmDialog';
-import { FoodThumb } from '@/components/FoodThumb';
 import { Segmented } from '@/components/Segmented';
 import { HeartButton } from '@/components/HeartButton';
 import { Icon } from '@/components/Icon';
-import { Tag } from '@/components/Pill';
+import { PressableScale } from '@/components/PressableScale';
 import { useToast } from '@/components/Toast';
 import { RecipeArt } from '@/components/RecipeArt';
 import { Button, ErrorText, Loading, Screen, SectionLabel, Text } from '@/components/ui';
@@ -48,8 +38,6 @@ import { useMealPlan } from '@/lib/api/mealPlan';
 import { planTap, usePlanDay } from '@/lib/api/planning';
 import { isNotFound, useAdaptations, useDeleteAdaptation, useRecipe } from '@/lib/api/recipes';
 import type { components } from '@/lib/api/schema';
-import { ingredientEmoji } from '@/theme/foodEmoji';
-import { tintFor } from '@/theme/tint';
 import { PageColors } from '@/theme/PageColors';
 import { useTheme, type Theme } from '@/theme/useTheme';
 
@@ -122,102 +110,119 @@ function RecipeContent() {
         .filter(({ line, i }) => statusOf(line, i)?.kind === 'need')
     : [];
 
+  const actions = plan ? (
+    <PlanForDay
+      date={plan}
+      recipeId={r.id}
+      title={r.title}
+      servings={Number(serves) > 0 ? Number(serves) : null}
+    />
+  ) : swap && date ? (
+    <SwapToThis proposalId={swap} date={date} recipeId={r.id} />
+  ) : r.course === 'main' ? (
+    // Any main can be tonight's dinner, however you found it.
+    <PlanForDay
+      date={null}
+      recipeId={r.id}
+      title={r.title}
+      servings={Number(serves) > 0 ? Number(serves) : null}
+    />
+  ) : null;
+
   return (
     <Screen
-      footer={
-        plan ? (
-          <PlanForDay
-            date={plan}
-            recipeId={r.id}
-            title={r.title}
-            servings={Number(serves) > 0 ? Number(serves) : null}
-          />
-        ) : swap && date ? (
-          <SwapToThis proposalId={swap} date={date} recipeId={r.id} />
-        ) : r.course === 'main' ? (
-          // Any main can be tonight's dinner, however you found it.
-          <PlanForDay
-            date={null}
-            recipeId={r.id}
-            title={r.title}
-            servings={Number(serves) > 0 ? Number(serves) : null}
-          />
-        ) : null
+      edges={['left', 'right', 'bottom']}
+      hero={
+        <RecipePhoto
+          title={r.title}
+          heart={
+            r.kind === 'adaptation' ? null : (
+              <HeartButton recipeId={r.id} title={r.title} favourite={r.favourite ?? false} />
+            )
+          }
+        />
       }
     >
-      {/* The picture slot (RecipeArt) with the heart and what it uses from the Kitchen. */}
-      <View>
-        <RecipeArt title={r.title} width="100%" height={200} radius={t.radius.xl} emojiSize={88} />
-        {r.kind === 'adaptation' ? null : (
-          <View style={{ position: 'absolute', top: t.space.md, right: t.space.md }}>
-            <HeartButton recipeId={r.id} title={r.title} favourite={r.favourite ?? false} />
-          </View>
-        )}
-        {summary && summary.have > 0 ? (
-          <View style={{ position: 'absolute', left: t.space.md, bottom: t.space.md }}>
-            <Tag kind={summary.have === summary.total ? 'action' : 'soft'}>
-              {summary.have === summary.total
-                ? '✓ You have everything'
-                : `✓ Uses ${summary.have} Kitchen ${summary.have === 1 ? 'item' : 'items'}`}
-            </Tag>
-          </View>
-        ) : null}
-      </View>
-
-      <View style={{ gap: t.space.sm }}>
-        <Text variant="title" accessibilityRole="header" style={{ color: t.colors.onBackground }}>
+      <View style={{ gap: 6 }}>
+        <Text variant="title" accessibilityRole="header">
           {r.title}
         </Text>
-        {r.summary ? <Text>{r.summary}</Text> : null}
         <MetaRow recipe={r} />
-        {swap && date ? <SwappingPill proposalId={swap} date={date} /> : null}
-        {parentId ? <AdaptedFrom parentId={parentId} /> : null}
       </View>
+      {r.summary ? <Text>{r.summary}</Text> : null}
+      {swap && date ? <SwappingPill proposalId={swap} date={date} /> : null}
+      {parentId ? <AdaptedFrom parentId={parentId} /> : null}
+
+      {summary ? (
+        <View
+          accessibilityLiveRegion="polite"
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: t.space.sm,
+            paddingVertical: missing.length > 0 ? 4 : 10,
+            paddingLeft: t.space.md,
+            paddingRight: 4,
+            borderRadius: 10,
+            backgroundColor: t.colors.fill,
+          }}
+        >
+          <Text style={{ flex: 1, fontSize: 14, lineHeight: 20 }}>
+            {summary.have === summary.total
+              ? 'You have everything for this.'
+              : `You have ${summary.have} of ${summary.total} ingredients.`}
+          </Text>
+          {missing.length > 0 ? (
+            <Button
+              title={`Add ${missing.length} to list`}
+              accessibilityLabel={`Add ${missing.length} missing ingredients to the shopping list`}
+              variant="secondary"
+              compact
+              tight
+              onPress={() => need.add(missing)}
+            />
+          ) : null}
+        </View>
+      ) : null}
+      {actions}
 
       <Segmented
         label="Recipe"
         value={tab}
         onChange={setTab}
         options={[
-          { value: 'ingredients', label: 'Ingredients' },
-          { value: 'method', label: 'Method' },
+          { value: 'ingredients', label: `Ingredients (${r.ingredients.length})` },
+          {
+            value: 'method',
+            label: r.method
+              ? `Method (${r.method.length} ${r.method.length === 1 ? 'step' : 'steps'})`
+              : 'Method',
+          },
         ]}
       />
 
       {tab === 'ingredients' ? (
         <View style={{ gap: t.space.sm }}>
           <View
-            style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+            style={{
+              backgroundColor: t.colors.surface,
+              borderRadius: t.radius.lg,
+              boxShadow: t.shadow.card,
+              overflow: 'hidden',
+            }}
           >
-            <Text
-              variant="heading"
-              role="heading"
-              aria-level={2}
-              style={{ color: t.colors.onBackground }}
-            >
-              Ingredients ({r.ingredients.length})
-            </Text>
-            {missing.length > 0 ? (
-              <Button
-                title={`Add ${missing.length} missing`}
-                accessibilityLabel={`Add ${missing.length} missing ingredients to the shopping list`}
-                icon={ShoppingCart}
-                variant="secondary"
-                compact
-                onPress={() => need.add(missing)}
+            {r.ingredients.map((line, i) => (
+              <IngredientRow
+                key={i}
+                first={i === 0}
+                line={line}
+                have={statusOf(line, i)}
+                onAdd={list.data ? () => need.add([{ line, i }]) : undefined}
               />
-            ) : null}
+            ))}
           </View>
-          {r.ingredients.map((line, i) => (
-            <IngredientRow
-              key={i}
-              line={line}
-              have={statusOf(line, i)}
-              onAdd={list.data ? () => need.add([{ line, i }]) : undefined}
-            />
-          ))}
           {kitchen.isError ? (
-            <Text variant="caption" style={{ color: t.colors.onBackgroundMuted }}>
+            <Text variant="caption" muted>
               Couldn&apos;t check the Kitchen just now.
             </Text>
           ) : null}
@@ -351,25 +356,15 @@ function MetaRow({
 }: {
   recipe: { total_minutes: number | null; servings: number; course: Course };
 }) {
-  const t = useTheme();
-  const parts: { icon: LucideIcon; text: string }[] = [
-    ...(recipe.total_minutes
-      ? [{ icon: Clock, text: minutesText(recipe.total_minutes) ?? '' }]
-      : []),
-    { icon: Users, text: `Serves ${recipe.servings}` },
-    { icon: ChefHat, text: courseName(recipe.course) },
-  ];
+  const parts = [
+    recipe.total_minutes ? minutesText(recipe.total_minutes) : null,
+    `Serves ${recipe.servings}`,
+    courseName(recipe.course),
+  ].filter(Boolean);
   return (
-    <View style={{ flexDirection: 'row', flexWrap: 'wrap', columnGap: t.space.lg, rowGap: 4 }}>
-      {parts.map((p) => (
-        <View key={p.text} style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-          <Icon icon={p.icon} size={17} color={t.colors.onBackground} />
-          <Text variant="label" style={{ color: t.colors.onBackground }}>
-            {p.text}
-          </Text>
-        </View>
-      ))}
-    </View>
+    <Text variant="caption" muted style={{ fontVariant: ['tabular-nums'] }}>
+      {parts.join('  ·  ')}
+    </Text>
   );
 }
 
@@ -673,10 +668,12 @@ function lineAmount(line: Line) {
  */
 function IngredientRow({
   line,
+  first,
   have,
   onAdd,
 }: {
   line: Line;
+  first: boolean;
   have: Have | null;
   onAdd?: () => void;
 }) {
@@ -685,86 +682,121 @@ function IngredientRow({
   return (
     <View
       style={{
-        minHeight: t.touchTarget + 16,
+        minHeight: 56,
         flexDirection: 'row',
         alignItems: 'center',
         gap: t.space.md,
-        backgroundColor: t.colors.surface,
-        borderRadius: t.radius.md,
-        borderWidth: 1,
-        borderColor: t.colors.border,
         paddingVertical: t.space.sm,
-        paddingLeft: t.space.sm,
-        paddingRight: t.space.sm,
+        paddingLeft: 14,
+        paddingRight: 6,
+        borderTopWidth: first ? 0 : 1,
+        borderTopColor: t.colors.border,
       }}
     >
       <View
         accessible
-        // The status is read from the pill beside it, a live region, so changes are announced.
+        // The status is read from the mark beside it, a live region, so changes are announced.
         accessibilityLabel={[line.raw_text, line.optional ? 'optional' : null]
           .filter(Boolean)
           .join(', ')}
-        style={{ flex: 1, flexDirection: 'row', alignItems: 'center', gap: t.space.md }}
+        style={{ flex: 1, gap: 2 }}
       >
-        <FoodThumb emoji={ingredientEmoji(line.ingredient)} tint={tintFor(name)} size={44} />
-        <View style={{ flex: 1 }}>
-          <Text variant="label">{lineName(line)}</Text>
-          <Text variant="caption" muted>
-            {[lineAmount(line), line.optional ? 'optional' : null].filter(Boolean).join(' · ')}
-          </Text>
-        </View>
+        <Text style={{ fontFamily: t.fonts.medium }}>{lineName(line)}</Text>
+        <Text variant="caption" muted style={{ fontVariant: ['tabular-nums'] }}>
+          {[lineAmount(line), line.optional ? 'optional' : null].filter(Boolean).join(' · ')}
+        </Text>
       </View>
       <View accessibilityLiveRegion="polite">
-        {have ? <StatusPill have={have} name={name} onAdd={onAdd} /> : null}
+        {have ? <StatusMark have={have} name={name} onAdd={onAdd} /> : null}
       </View>
     </View>
   );
 }
 
-/** In kitchen (lime), Add to list (red, tappable), On list (grey), or Low / Check. */
-function StatusPill({ have, name, onAdd }: { have: Have; name: string; onAdd?: () => void }) {
+/** In kitchen (green tick), On list, Have / Check (muted), or an Add button when needed. */
+function StatusMark({ have, name, onAdd }: { have: Have; name: string; onAdd?: () => void }) {
   const t = useTheme();
-  const look = {
-    have: { icon: Package, text: 'In kitchen', bg: t.colors.actionSoft, fg: t.colors.onActionSoft },
-    need: { icon: CirclePlus, text: 'Add to list', bg: t.colors.dangerSoft, fg: t.colors.danger },
-    onList: { icon: ShoppingCart, text: 'On list', bg: t.colors.border, fg: t.colors.text },
-    low: {
-      icon: Package,
-      text: have.kind === 'low' ? `Have ${have.have}` : '',
-      bg: t.colors.border,
-      fg: t.colors.text,
-    },
-    check: { icon: Package, text: 'Check', bg: t.colors.border, fg: t.colors.text },
+  if (have.kind === 'need') {
+    if (!onAdd) {
+      return (
+        <Text variant="caption" style={{ color: t.colors.danger, paddingRight: 8 }}>
+          Need
+        </Text>
+      );
+    }
+    return (
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={`Add ${name} to the shopping list`}
+        onPress={onAdd}
+        style={({ pressed }) => ({
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 4,
+          minHeight: t.touchTarget,
+          paddingHorizontal: t.space.sm,
+          borderRadius: t.radius.md,
+          borderWidth: 1,
+          borderColor: t.colors.border,
+          backgroundColor: pressed ? t.colors.fill : t.colors.surface,
+        })}
+      >
+        <Icon icon={Plus} size={14} color={t.colors.text} />
+        <Text variant="label" style={{ fontSize: 13 }}>
+          Add to list
+        </Text>
+      </Pressable>
+    );
+  }
+  const mark = {
+    have: { text: '✓ In kitchen', fg: t.stock.in_stock.fg },
+    onList: { text: 'On list', fg: t.colors.textMuted },
+    low: { text: have.kind === 'low' ? `Have ${have.have}` : '', fg: t.colors.textMuted },
+    check: { text: 'Check', fg: t.colors.textMuted },
   }[have.kind];
-  const pill = (
-    <View
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: t.space.xs,
-        backgroundColor: look.bg,
-        borderRadius: t.radius.pill,
-        paddingHorizontal: t.space.md,
-        minHeight: 36,
-      }}
-    >
-      <Icon icon={look.icon} color={look.fg} size={18} />
-      <Text variant="label" style={{ color: look.fg }}>
-        {look.text}
-      </Text>
-    </View>
-  );
-  if (have.kind !== 'need' || !onAdd) return pill;
   return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={`Add ${name} to the shopping list`}
-      onPress={onAdd}
-      // A 44pt target around the 36pt pill.
-      style={{ minHeight: t.touchTarget, justifyContent: 'center' }}
-    >
-      {pill}
-    </Pressable>
+    <Text style={{ fontFamily: t.fonts.medium, fontSize: 13, color: mark.fg, paddingRight: 8 }}>
+      {mark.text}
+    </Text>
+  );
+}
+
+/**
+ * The full-width picture at the top, under the status bar, with round Back and heart
+ * buttons floating on it (the stack's header bar is hidden on this screen).
+ */
+function RecipePhoto({ title, heart }: { title: string; heart: React.ReactNode }) {
+  const t = useTheme();
+  const insets = useSafeAreaInsets();
+  const float = {
+    position: 'absolute' as const,
+    top: insets.top + t.space.sm,
+  };
+  return (
+    <View>
+      <Stack.Screen options={{ headerShown: false }} />
+      <RecipeArt title={title} width="100%" height={260 + insets.top} radius={0} emojiSize={96} />
+      <PressableScale
+        accessibilityRole="button"
+        accessibilityLabel="Back"
+        onPress={() => (router.canGoBack() ? router.back() : router.replace('/recipes'))}
+        style={{
+          ...float,
+          left: Math.max(insets.left, t.space.lg),
+          width: t.touchTarget,
+          height: t.touchTarget,
+          borderRadius: t.touchTarget / 2,
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: 'rgba(255, 255, 255, 0.92)',
+        }}
+      >
+        <Icon icon={ArrowLeft} color={t.colors.text} strong />
+      </PressableScale>
+      {heart ? (
+        <View style={{ ...float, right: Math.max(insets.right, t.space.lg) }}>{heart}</View>
+      ) : null}
+    </View>
   );
 }
 
@@ -774,10 +806,10 @@ function dayLabel(iso: string): string {
   return `${weekday} ${day}`;
 }
 
-/** The recipe page on the Recipes purple, header bar included (from any tab). */
+/** The recipe page (from any tab): its own photo header, no stack header bar. */
 export default function RecipeScreen() {
   return (
-    <PageColors page="recipes" header>
+    <PageColors page="recipes">
       <RecipeContent />
     </PageColors>
   );
