@@ -415,6 +415,11 @@ def test_a_general_word_for_a_listed_ingredient_is_fine() -> None:
             "Fry the tortillas in the vegetable oil over medium heat for 2"
             " minutes, then break into tortilla chips.",
         ),
+        (
+            ["400 ml coconut milk", "2 tbsp green curry paste"],
+            "Fry the curry paste in the thick coconut cream from the top of the tin over medium"
+            " heat for 2 minutes, then add the rest of the coconut milk.",
+        ),
     ]
     for lines, step in cases:
         assert kinds([recipe(ingredients=lines, method=[step], minutes=30)]) == [], step

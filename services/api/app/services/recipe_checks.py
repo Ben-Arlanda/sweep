@@ -85,6 +85,7 @@ UMBRELLA: dict[str, set[str]] = {
     "canned tomatoes": {"tomatoes"},
     "tomato salsa": {"tomatoes", "canned tomatoes", "tomatillos"},
     "corn chips": {"corn tortillas", "tortillas"},
+    "coconut cream": {"coconut milk"},  # "the thick cream from the top of the tin"
 }
 
 
