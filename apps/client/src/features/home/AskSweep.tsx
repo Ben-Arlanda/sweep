@@ -50,7 +50,7 @@ export function AskSweep() {
       </View>
       <TextInput
         accessibilityLabel="Ask Sweep"
-        placeholder="Ask Sweep anything about dinner"
+        placeholder="What's for dinner?"
         placeholderTextColor={t.colors.textMuted}
         value={text}
         onChangeText={setText}
