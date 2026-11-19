@@ -324,7 +324,7 @@ export const tabBarHeight = 64;
  */
 export const TAB_BAR_FROST = 0.7;
 /** How strongly the selected tab's pill takes the page colour (over solid paper). */
-export const TAB_PILL_TINT = 0.22;
+export const TAB_PILL_TINT = 0.45;
 
 /** Minimum tappable size (Apple HIG 44pt). Applies to every button and row. */
 export const touchTarget = 44;
