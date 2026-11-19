@@ -3,7 +3,6 @@ import { router } from 'expo-router';
 import { CalendarDays, ChefHat, Settings, type LucideIcon } from 'lucide-react-native';
 import { useState } from 'react';
 import { View } from 'react-native';
-import { useReducedMotion } from 'react-native-reanimated';
 
 import { Hero } from '@/components/Hero';
 import { Icon } from '@/components/Icon';
@@ -207,10 +206,9 @@ function QuickAction({
   );
 }
 
-/** The sweep chef, the Household's name, and the cog for Household settings. */
+/** The Sweep logo, the Household's name, and the cog for Household settings. */
 function HouseholdRow({ me }: { me: MeOut }) {
   const t = useTheme();
-  const reduceMotion = useReducedMotion();
   const open = () => router.push('/household');
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.sm }}>
@@ -228,10 +226,9 @@ function HouseholdRow({ me }: { me: MeOut }) {
       >
         <Image
           aria-hidden
-          source={require('../../../assets/images/chef-blink.webp')}
-          style={{ width: 34, height: 34 }}
+          source={require('../../../assets/images/sweep-logo.png')}
+          style={{ width: 32, height: 32 }}
           contentFit="contain"
-          autoplay={!reduceMotion}
         />
         <Text style={{ flex: 1, fontFamily: t.fonts.medium }}>{me.household.name}</Text>
       </PressableScale>
