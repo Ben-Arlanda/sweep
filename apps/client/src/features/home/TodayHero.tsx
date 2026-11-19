@@ -180,9 +180,9 @@ function QuickAction({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        gap: t.space.sm,
-        minHeight: 56,
-        paddingHorizontal: t.space.sm + 2,
+        gap: 8,
+        minHeight: 52,
+        paddingHorizontal: 8,
         borderRadius: t.radius.lg,
         backgroundColor: t.colors.surface,
         boxShadow: t.shadow.card,
@@ -190,17 +190,17 @@ function QuickAction({
     >
       <View
         style={{
-          width: 36,
-          height: 36,
-          borderRadius: 10,
+          width: 32,
+          height: 32,
+          borderRadius: 9,
           alignItems: 'center',
           justifyContent: 'center',
           backgroundColor: sectionTints[tint].bg,
         }}
       >
-        <Icon icon={icon} size={20} color={sectionTints[tint].fg} />
+        <Icon icon={icon} size={18} color={sectionTints[tint].fg} />
       </View>
-      <Text variant="label" style={{ flexShrink: 1 }}>
+      <Text variant="label" style={{ flexShrink: 1, fontSize: 14, lineHeight: 18 }}>
         {label}
       </Text>
     </PressableScale>
