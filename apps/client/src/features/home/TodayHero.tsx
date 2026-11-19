@@ -1,6 +1,6 @@
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
-import { CalendarDays, ChefHat, CircleUserRound, type LucideIcon } from 'lucide-react-native';
+import { CalendarDays, ChefHat, User, type LucideIcon } from 'lucide-react-native';
 import { useState } from 'react';
 import { View } from 'react-native';
 
@@ -239,7 +239,7 @@ function LogoRow() {
           justifyContent: 'center',
         }}
       >
-        <Icon icon={CircleUserRound} size={26} color={t.colors.text} />
+        <Icon icon={User} size={26} color={t.colors.text} />
       </PressableScale>
     </View>
   );
