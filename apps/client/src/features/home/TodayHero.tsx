@@ -1,6 +1,6 @@
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
-import { CalendarDays, ChefHat, Settings, type LucideIcon } from 'lucide-react-native';
+import { CalendarDays, ChefHat, CircleUserRound, type LucideIcon } from 'lucide-react-native';
 import { useState } from 'react';
 import { View } from 'react-native';
 
@@ -113,32 +113,20 @@ export function usePlanFlow() {
 
 export type PlanFlow = ReturnType<typeof usePlanFlow>;
 
-/** "Good morning" before noon, "Good afternoon" until 5, then "Good evening". */
-export function greeting(hour: number): string {
-  if (hour < 12) return 'Good morning';
-  if (hour < 17) return 'Good afternoon';
-  return 'Good evening';
-}
-
 /**
- * Home's header: the chef and Household row, the date and a greeting, Ask Sweep, and
- * chips for Just tonight and planning the week. Tonight's dinner and the week sit in
+ * Home's header: the logo and account button, a hidden page heading, Ask Sweep, and
+ * buttons for Just tonight and planning the week. Tonight's dinner and the week sit in
  * cards below it, so the top never changes shape.
  */
 export function TodayHero({ me, flow }: { me: MeOut; flow: PlanFlow }) {
   const t = useTheme();
-  const now = new Date();
   const { cta } = flow;
   return (
-    <Hero top={<HouseholdRow me={me} />}>
-      <View style={{ gap: t.space.xs }}>
-        <Text variant="caption" muted>
-          {now.toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' })}
-        </Text>
-        <Text variant="title" accessibilityRole="header">
-          {greeting(now.getHours())}
-        </Text>
-      </View>
+    <Hero top={<LogoRow />}>
+      {/* No visible greeting; screen readers still get a heading for the page. */}
+      <Text accessibilityRole="header" aria-level={1} style={hidden}>
+        {`Home, ${me.household.name}`}
+      </Text>
       <AskSweep />
       <View style={{ flexDirection: 'row', gap: t.space.sm }}>
         <QuickAction
@@ -206,36 +194,37 @@ function QuickAction({
   );
 }
 
-/** The Sweep logo, the Household's name, and the cog for Household settings. */
-function HouseholdRow({ me }: { me: MeOut }) {
+/** Shown to screen readers only: a 1pt box that is fully transparent. */
+const hidden = {
+  position: 'absolute',
+  width: 1,
+  height: 1,
+  overflow: 'hidden',
+  opacity: 0,
+} as const;
+
+/** The Sweep logo, and the person button for Household settings. */
+function LogoRow() {
   const t = useTheme();
-  const open = () => router.push('/household');
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.sm }}>
-      <PressableScale
-        accessibilityRole="link"
-        accessibilityLabel={`${me.household.name}: Household settings`}
-        onPress={open}
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: t.space.sm + 2,
-          minHeight: t.touchTarget,
-        }}
-      >
-        <Image
-          aria-hidden
-          source={require('../../../assets/images/sweep-logo.png')}
-          style={{ width: 32, height: 32 }}
-          contentFit="contain"
-        />
-        <Text style={{ flex: 1, fontFamily: t.fonts.medium }}>{me.household.name}</Text>
-      </PressableScale>
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        minHeight: t.touchTarget,
+      }}
+    >
+      <Image
+        aria-hidden
+        source={require('../../../assets/images/sweep-logo.png')}
+        style={{ width: 32, height: 32 }}
+        contentFit="contain"
+      />
       <PressableScale
         accessibilityRole="link"
         accessibilityLabel="Household settings"
-        onPress={open}
+        onPress={() => router.push('/household')}
         style={{
           width: t.touchTarget,
           height: t.touchTarget,
@@ -244,7 +233,7 @@ function HouseholdRow({ me }: { me: MeOut }) {
           justifyContent: 'center',
         }}
       >
-        <Icon icon={Settings} color={t.colors.text} />
+        <Icon icon={CircleUserRound} size={26} color={t.colors.text} />
       </PressableScale>
     </View>
   );
