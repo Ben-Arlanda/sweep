@@ -16,7 +16,6 @@ import { PageHeader } from '@/components/PageHeader';
 import { PressableScale } from '@/components/PressableScale';
 import { ErrorText, Loading, Screen, TAB_ROOT, Text } from '@/components/ui';
 import { AddRecipeSheet } from '@/features/imports/AddRecipeSheet';
-import { ruleBreakText } from '@/features/imports/ruleBreaks';
 import { IdeaTile, KITCHEN_FIRST } from '@/features/recipes/IdeaTile';
 import { RecipeRow } from '@/features/recipes/RecipeRow';
 import { ApiError } from '@/lib/api/client';
@@ -256,7 +255,7 @@ function YourRecipes() {
         Your added recipes
       </Text>
       {mine.data.map((r) => (
-        <RecipeRow key={r.id} recipe={r} note={ruleBreakText(r.rule_breaks)} />
+        <RecipeRow key={r.id} recipe={r} brief />
       ))}
     </View>
   );

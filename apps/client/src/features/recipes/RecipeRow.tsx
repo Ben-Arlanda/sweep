@@ -29,8 +29,17 @@ export function recipeMeta(r: Pick<Summary, 'course' | 'total_minutes' | 'servin
  * One recipe in a list, with its heart (slice 6e). The row is the link; its name is
  * what's on screen.
  * `note` is a line under it, e.g. why a Dietary Rule can't be checked for it.
+ * `brief` shows only time and serves under the title.
  */
-export function RecipeRow({ recipe, note }: { recipe: Summary; note?: string | null }) {
+export function RecipeRow({
+  recipe,
+  note,
+  brief = false,
+}: {
+  recipe: Summary;
+  note?: string | null;
+  brief?: boolean;
+}) {
   const t = useTheme();
   const pathname = useRecipePath();
   return (
@@ -62,7 +71,11 @@ export function RecipeRow({ recipe, note }: { recipe: Summary; note?: string | n
           <View style={{ flex: 1, gap: 2 }}>
             <Text variant="label">{recipe.title}</Text>
             <Text variant="caption" muted>
-              {recipeMeta(recipe)}
+              {brief
+                ? [minutesText(recipe.total_minutes), `Serves ${recipe.servings}`]
+                    .filter(Boolean)
+                    .join(' · ')
+                : recipeMeta(recipe)}
             </Text>
             {note ? <Text variant="caption">{note}</Text> : null}
           </View>
