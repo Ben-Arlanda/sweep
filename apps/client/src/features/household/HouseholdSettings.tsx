@@ -1,12 +1,14 @@
 import { useAuth, useUser } from '@clerk/expo';
 import { useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
-import { Platform, Share, View } from 'react-native';
+import { ChevronRight, Plus } from 'lucide-react-native';
+import { useState, type ReactNode } from 'react';
+import { Platform, Pressable, Share, View } from 'react-native';
 
 import { router } from 'expo-router';
 
 import { Avatar } from '@/components/Avatar';
-import { Button, Card, ErrorText, Text } from '@/components/ui';
+import { Icon } from '@/components/Icon';
+import { Button, ErrorText, Text } from '@/components/ui';
 import type { MeOut } from '@/lib/api/client';
 import {
   useCreateInvite,
@@ -17,18 +19,18 @@ import {
 import { clerkErrorMessage } from '@/lib/clerkErrors';
 import { useTheme } from '@/theme/useTheme';
 
-/** Household settings: who's in it, inviting someone, and your account. */
+/** Household settings: who's in it, inviting someone, preferences, and your account. */
 export function HouseholdSettings({ me }: { me: MeOut }) {
   const household = useHousehold(true);
   const isOwner = me.member.role === 'owner';
   return (
     <>
-      <Card>
-        <Text variant="heading">Members</Text>
+      <Group label="Members">
         <ErrorText message={household.error?.message} />
-        {household.data?.members.map((m) => (
+        {household.data?.members.map((m, i) => (
           <MemberRow
             key={m.id}
+            first={i === 0}
             name={m.display_name}
             role={m.role}
             isMe={m.id === me.member.id}
@@ -36,27 +38,106 @@ export function HouseholdSettings({ me }: { me: MeOut }) {
             memberId={m.id}
           />
         ))}
-      </Card>
+        {isOwner ? <InviteRow /> : null}
+      </Group>
 
-      <Card>
-        <Text variant="heading">Food rules</Text>
-        <Text muted>
-          Allergies and diets Sweep must always follow, plus the food your Household likes.
-        </Text>
-        <Button
-          title="Dietary Rules & Preferences"
-          variant="lavender"
+      <Group label="Preferences">
+        <LinkRow
+          first
+          title="Dietary rules & preferences"
+          hint="Allergies and diets Sweep must always follow, plus the food you like"
           onPress={() => router.push('/dietary-rules')}
         />
-      </Card>
+      </Group>
 
-      {isOwner ? <InviteCard /> : null}
       <AccountCard />
     </>
   );
 }
 
+/** A small uppercase label over a card of rows, like iOS Settings. */
+function Group({ label, children }: { label?: string; children: ReactNode }) {
+  const t = useTheme();
+  return (
+    <View style={{ gap: t.space.sm }}>
+      {label ? (
+        <Text
+          variant="caption"
+          muted
+          accessibilityRole="header"
+          style={{
+            fontFamily: t.fonts.bold,
+            fontSize: 12,
+            letterSpacing: 0.7,
+            textTransform: 'uppercase',
+            paddingLeft: 2,
+          }}
+        >
+          {label}
+        </Text>
+      ) : null}
+      <View
+        style={{
+          backgroundColor: t.colors.surface,
+          borderRadius: t.radius.lg,
+          boxShadow: t.shadow.card,
+          overflow: 'hidden',
+        }}
+      >
+        {children}
+      </View>
+    </View>
+  );
+}
+
+function rowStyle(t: ReturnType<typeof useTheme>, first: boolean) {
+  return {
+    flexDirection: 'row' as const,
+    alignItems: 'center' as const,
+    gap: t.space.md,
+    minHeight: 60,
+    paddingVertical: t.space.sm,
+    paddingLeft: 14,
+    paddingRight: t.space.sm,
+    borderTopWidth: first ? 0 : 1,
+    borderTopColor: t.colors.border,
+  };
+}
+
+/** A row that opens another screen: title, a hint under it, and a chevron. */
+function LinkRow({
+  first,
+  title,
+  hint,
+  onPress,
+}: {
+  first: boolean;
+  title: string;
+  hint?: string;
+  onPress: () => void;
+}) {
+  const t = useTheme();
+  return (
+    <Pressable
+      accessibilityRole="link"
+      onPress={onPress}
+      style={({ pressed }) => [rowStyle(t, first), { opacity: pressed ? 0.7 : 1 }]}
+    >
+      <View style={{ flex: 1, gap: 2 }}>
+        <Text style={{ fontFamily: t.fonts.medium }}>{title}</Text>
+        {hint ? (
+          <Text variant="caption" muted>
+            {hint}
+          </Text>
+        ) : null}
+      </View>
+      <Icon icon={ChevronRight} size={18} color={t.colors.textMuted} />
+    </Pressable>
+  );
+}
+
 function MemberRow(props: {
+  first: boolean;
   name: string;
   role: string;
   isMe: boolean;
@@ -66,10 +147,10 @@ function MemberRow(props: {
   const t = useTheme();
   const remove = useRemoveMember();
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.md }}>
+    <View style={rowStyle(t, props.first)}>
       <Avatar id={props.memberId} name={props.name} size={36} />
-      <View style={{ flex: 1 }}>
-        <Text>
+      <View style={{ flex: 1, gap: 2 }}>
+        <Text variant="label">
           {props.name}
           {props.isMe ? ' (you)' : ''}
         </Text>
@@ -83,6 +164,7 @@ function MemberRow(props: {
           accessibilityLabel={`Remove ${props.name} from the Household`}
           variant="danger"
           compact
+          tight
           loading={remove.isPending}
           onPress={() => remove.mutate(props.memberId)}
         />
@@ -91,15 +173,40 @@ function MemberRow(props: {
   );
 }
 
-function InviteCard() {
+/** "+ Invite someone": makes a one-time code and shows it in the row. */
+function InviteRow() {
+  const t = useTheme();
   const invite = useCreateInvite();
   const code = invite.data?.code;
-
   return (
-    <Card>
-      <Text variant="heading">Invite someone</Text>
+    <View style={{ borderTopWidth: 1, borderTopColor: t.colors.border }}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityState={{ busy: invite.isPending }}
+        disabled={invite.isPending}
+        onPress={() => invite.mutate()}
+        style={({ pressed }) => [rowStyle(t, true), { opacity: pressed ? 0.7 : 1 }]}
+      >
+        <View
+          style={{
+            width: 36,
+            height: 36,
+            borderRadius: 18,
+            borderWidth: 1.5,
+            borderStyle: 'dashed',
+            borderColor: t.colors.switchOff,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Icon icon={Plus} size={18} color={t.colors.text} />
+        </View>
+        <Text style={{ flex: 1, fontFamily: t.fonts.medium }}>
+          {code ? 'New invite code' : 'Invite someone'}
+        </Text>
+      </Pressable>
       {code ? (
-        <>
+        <View style={{ paddingHorizontal: 14, paddingBottom: t.space.lg, gap: t.space.sm }}>
           <Text variant="title" selectable style={{ letterSpacing: 4 }}>
             {code}
           </Text>
@@ -115,16 +222,12 @@ function InviteCard() {
               }
             />
           ) : null}
-        </>
+        </View>
       ) : null}
-      <ErrorText message={invite.error?.message} />
-      <Button
-        title={code ? 'New code' : 'Create invite code'}
-        variant={code ? 'secondary' : 'primary'}
-        loading={invite.isPending}
-        onPress={() => invite.mutate()}
-      />
-    </Card>
+      <View style={{ paddingHorizontal: 14 }}>
+        <ErrorText message={invite.error?.message} />
+      </View>
+    </View>
   );
 }
 
@@ -161,29 +264,41 @@ function AccountCard() {
     queryClient.clear();
   }
 
+  const t = useTheme();
+  const signOutNow = async () => {
+    await signOut();
+    queryClient.clear(); // don't leave one person's data cached for the next
+  };
   return (
-    <Card>
-      <Text variant="heading">Account</Text>
-      <Text variant="caption" muted>
-        Signed in as {user?.primaryEmailAddress?.emailAddress}
-      </Text>
+    <Group label="Account">
+      <View style={[rowStyle(t, true), { minHeight: 48 }]}>
+        <Text variant="caption" muted style={{ flex: 1 }}>
+          Signed in as {user?.primaryEmailAddress?.emailAddress}
+        </Text>
+      </View>
       {__DEV__ ? (
-        <Button
+        <LinkRow
+          first={false}
           title="Design system (dev only)"
-          variant="ghost"
           onPress={() => router.push('/design')}
         />
       ) : null}
-      <Button
-        title="Sign out"
-        variant="secondary"
-        onPress={async () => {
-          await signOut();
-          queryClient.clear(); // don't leave one person's data cached for the next
-        }}
-      />
+      <Pressable
+        accessibilityRole="button"
+        onPress={signOutNow}
+        style={({ pressed }) => [rowStyle(t, false), { opacity: pressed ? 0.7 : 1 }]}
+      >
+        <Text style={{ fontFamily: t.fonts.medium }}>Sign out</Text>
+      </Pressable>
       {confirming ? (
-        <>
+        <View
+          style={{
+            padding: 14,
+            gap: t.space.sm,
+            borderTopWidth: 1,
+            borderTopColor: t.colors.border,
+          }}
+        >
           <Text danger>
             This permanently deletes your account. If you&apos;re the last Member, the Household and
             everything in it is deleted too.
@@ -195,11 +310,19 @@ function AccountCard() {
             onPress={deleteAccount}
           />
           <Button title="Cancel" variant="secondary" onPress={() => setConfirming(false)} />
-        </>
+        </View>
       ) : (
-        <Button title="Delete account" variant="danger" onPress={() => setConfirming(true)} />
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => setConfirming(true)}
+          style={({ pressed }) => [rowStyle(t, false), { opacity: pressed ? 0.7 : 1 }]}
+        >
+          <Text style={{ fontFamily: t.fonts.medium, color: t.colors.danger }}>Delete account</Text>
+        </Pressable>
       )}
-      <ErrorText message={error} />
-    </Card>
+      <View style={{ paddingHorizontal: 14 }}>
+        <ErrorText message={error} />
+      </View>
+    </Group>
   );
 }
