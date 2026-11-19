@@ -213,6 +213,12 @@ function LogoRow() {
         alignItems: 'center',
         justifyContent: 'space-between',
         minHeight: t.touchTarget,
+        // A hairline under the row, out to the screen edges (past the hero's padding).
+        marginHorizontal: -t.space.lg,
+        paddingHorizontal: t.space.lg,
+        paddingBottom: t.space.sm,
+        borderBottomWidth: 1,
+        borderBottomColor: t.colors.border,
       }}
     >
       <Image
