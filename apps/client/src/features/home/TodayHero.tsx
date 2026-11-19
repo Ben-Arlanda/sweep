@@ -234,12 +234,23 @@ function LogoRow() {
         style={{
           width: t.touchTarget,
           height: t.touchTarget,
-          borderRadius: t.radius.md,
           alignItems: 'center',
           justifyContent: 'center',
         }}
       >
-        <Icon icon={User} size={26} color={t.colors.text} />
+        {/* A soft grey circle inside the full 44pt tap area. */}
+        <View
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: 20,
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: t.colors.fill,
+          }}
+        >
+          <Icon icon={User} size={22} color={t.colors.text} />
+        </View>
       </PressableScale>
     </View>
   );
