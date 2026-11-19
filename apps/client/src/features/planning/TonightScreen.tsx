@@ -1,13 +1,5 @@
 import { router, Stack, useLocalSearchParams } from 'expo-router';
-import {
-  ArrowUp,
-  BookOpen,
-  CalendarDays,
-  Check,
-  Clock,
-  Ellipsis,
-  Sparkles,
-} from 'lucide-react-native';
+import { ArrowUp, BookOpen, CalendarDays, Ellipsis, Sparkles } from 'lucide-react-native';
 import { useEffect, useRef, useState } from 'react';
 import { ScrollView, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -25,7 +17,8 @@ import { requestPlan } from '@/features/chat/starters';
 import { PlanSheet } from '@/features/mealPlan/PlanSheet';
 import { useDecideProposal } from '@/lib/api/conversations';
 import { useMealPlan } from '@/lib/api/mealPlan';
-import { useDinnerIdeas, type DinnerIdea } from '@/lib/api/planning';
+import { dayParts } from '@/features/mealPlan/week';
+import { planTap, useDinnerIdeas, usePlanDay, type DinnerIdea } from '@/lib/api/planning';
 import { useTheme } from '@/theme/useTheme';
 
 import { GeneratingView } from './GeneratingView';
@@ -95,8 +88,8 @@ export function TonightScreen() {
       const fake = ['get_kitchen', 'recipes_from_kitchen', 'propose_plan'].slice(0, step);
       return (
         <GeneratingView
-          title="Finding your dinner ideas…"
-          subtitle="Looking for meals that fit your Kitchen and your Dietary Rules."
+          title="Finding dinner ideas"
+          subtitle="Usually about 10 seconds"
           steps={stepsFor(TONIGHT_STEPS, fake, step >= TONIGHT_STEPS.length)}
         />
       );
@@ -225,28 +218,6 @@ export function TonightScreen() {
   );
 }
 
-function IdeaMeta({ idea }: { idea: DinnerIdea }) {
-  const t = useTheme();
-  return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-      <Icon icon={Clock} size={15} color={t.colors.textMuted} />
-      <Text variant="caption" muted style={{ flexShrink: 1 }}>
-        {ideaMeta(idea)}
-      </Text>
-    </View>
-  );
-}
-
-function ideaMeta(idea: DinnerIdea) {
-  return [
-    idea.total_minutes ? `${idea.total_minutes} min` : null,
-    `Serves ${idea.servings}`,
-    idea.missing.length ? `${idea.missing.length} to buy` : 'Nothing to buy',
-  ]
-    .filter(Boolean)
-    .join(' · ');
-}
-
 function openRecipe(idea: DinnerIdea, today: string | null, serves: number | null) {
   router.push({
     pathname: '/recipe/[id]',
@@ -281,6 +252,8 @@ function Ideas({
   onTweak: ((text: string) => void) | null;
 }) {
   const t = useTheme();
+  // `today` here is the day being planned; the real today says whether that's tonight.
+  const realToday = useMealPlan(null).data?.today ?? null;
   return (
     <ScrollView
       keyboardShouldPersistTaps="handled"
@@ -292,30 +265,13 @@ function Ideas({
         alignSelf: 'center',
       }}
     >
-      <View
-        style={{
-          flexDirection: 'row',
-          gap: t.space.md,
-          alignItems: 'center',
-          backgroundColor: t.colors.actionSoft,
-          borderRadius: t.radius.lg,
-          padding: t.space.lg,
-        }}
-      >
-        <Icon icon={Sparkles} color={t.colors.onActionSoft} />
-        <View style={{ flex: 1 }}>
-          <Text
-            variant="heading"
-            role="heading"
-            aria-level={1}
-            style={{ color: t.colors.onActionSoft }}
-          >
-            Here are some dinner ideas
-          </Text>
-          <Text variant="caption" style={{ color: t.colors.onActionSoft }}>
-            Based on your Kitchen and Dietary Rules.
-          </Text>
-        </View>
+      <View style={{ gap: 4 }}>
+        <Text variant="title" role="heading" aria-level={1}>
+          {today && today !== realToday ? `Ideas for ${dayName(today)}` : 'Ideas for tonight'}
+        </Text>
+        <Text variant="caption" muted>
+          Based on your Kitchen and Dietary Rules.
+        </Text>
       </View>
 
       <ChoiceChips
@@ -340,7 +296,14 @@ function Ideas({
       ) : null}
 
       {ideas.map((idea) => (
-        <IdeaCard key={idea.id} idea={idea} onOpen={() => openRecipe(idea, today, serves)} />
+        <IdeaCard
+          key={idea.id}
+          idea={idea}
+          day={today}
+          tonight={!today || today === realToday}
+          serves={serves}
+          onOpen={() => openRecipe(idea, today, serves)}
+        />
       ))}
 
       {onTweak ? <TweakBox onSend={onTweak} /> : null}
@@ -358,62 +321,137 @@ function Ideas({
   );
 }
 
-/** One idea: the picture with what it uses or needs, the heart, and the meta line. */
-function IdeaCard({ idea, onOpen }: { idea: DinnerIdea; onOpen: () => void }) {
+/**
+ * One idea: Sweep's badge, the title and time, why it fits (what it uses from the
+ * Kitchen and what's left to buy), then Cook this tonight (plans it straight away) and
+ * Recipe. The heart sits in the corner.
+ */
+function IdeaCard({
+  idea,
+  day,
+  tonight,
+  serves,
+  onOpen,
+}: {
+  idea: DinnerIdea;
+  day: string | null;
+  tonight: boolean;
+  serves: number | null;
+  onOpen: () => void;
+}) {
   const t = useTheme();
-  const ready = idea.missing.length === 0;
+  const planDay = usePlanDay();
   const uses = idea.have.length;
+  const why = [
+    uses ? `Uses ${uses} Kitchen ${uses === 1 ? 'item' : 'items'}.` : null,
+    idea.missing.length
+      ? `${idea.missing.length} to buy: ${idea.missing.slice(0, 3).join(', ')}${idea.missing.length > 3 ? '…' : ''}.`
+      : 'Nothing to buy.',
+  ]
+    .filter(Boolean)
+    .join(' ');
+  function cook() {
+    if (!day) return;
+    planDay.mutate(planTap(day, idea.id, serves), {
+      onSuccess: () =>
+        router.replace({
+          pathname: '/planned',
+          params: {
+            kind: 'tonight',
+            title: idea.title,
+            ...(tonight ? {} : { when: dayName(day) }),
+          },
+        }),
+    });
+  }
   return (
     <View
       style={{
+        gap: t.space.md,
+        padding: t.space.lg,
         backgroundColor: t.colors.surface,
         borderRadius: t.radius.lg,
-        overflow: 'hidden',
         boxShadow: t.shadow.card,
       }}
     >
-      <PressableScale
-        accessibilityRole="link"
-        accessibilityLabel={`${idea.title}. ${ideaMeta(idea)}. See the recipe`}
-        onPress={onOpen}
-      >
-        <View>
-          <RecipeArt title={idea.title} width="100%" height={132} radius={0} emojiSize={60} />
+      <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: t.space.sm }}>
+        <View style={{ flex: 1, gap: t.space.sm }}>
           <View
             style={{
-              position: 'absolute',
-              left: t.space.sm,
-              bottom: t.space.sm,
+              alignSelf: 'flex-start',
               flexDirection: 'row',
               alignItems: 'center',
-              gap: 4,
-              backgroundColor: ready ? t.colors.actionSoft : t.colors.surface,
-              borderRadius: t.radius.pill,
-              paddingHorizontal: t.space.md,
+              gap: 6,
               paddingVertical: 4,
+              paddingLeft: 6,
+              paddingRight: 8,
+              borderRadius: 8,
+              backgroundColor: t.colors.actionSoft,
             }}
           >
-            {ready ? <Icon icon={Check} size={14} color={t.colors.onActionSoft} strong /> : null}
+            <Icon icon={Sparkles} size={13} color={t.colors.onActionSoft} />
             <Text
-              variant="caption"
-              style={{ color: ready ? t.colors.onActionSoft : t.colors.text }}
+              style={{
+                fontFamily: t.fonts.bold,
+                fontSize: 12,
+                lineHeight: 16,
+                color: t.colors.onActionSoft,
+              }}
             >
-              {ready
-                ? `Uses ${uses} Kitchen ${uses === 1 ? 'item' : 'items'}`
-                : `${idea.missing.length} to buy`}
+              Suggested by Sweep
+            </Text>
+          </View>
+          <View style={{ gap: 2 }}>
+            <Text variant="heading">{idea.title}</Text>
+            <Text variant="caption" muted style={{ fontVariant: ['tabular-nums'] }}>
+              {[idea.total_minutes ? `${idea.total_minutes} min` : null, `Serves ${idea.servings}`]
+                .filter(Boolean)
+                .join(' · ')}
             </Text>
           </View>
         </View>
-        <View style={{ padding: t.space.md, gap: 2 }}>
-          <Text variant="heading">{idea.title}</Text>
-          <IdeaMeta idea={idea} />
-        </View>
-      </PressableScale>
-      <View style={{ position: 'absolute', top: t.space.sm, right: t.space.sm }}>
         <HeartButton recipeId={idea.id} title={idea.title} favourite={idea.favourite ?? false} />
       </View>
+      <Text
+        style={{
+          fontSize: 14,
+          lineHeight: 20,
+          paddingVertical: 10,
+          paddingHorizontal: t.space.md,
+          borderRadius: 10,
+          backgroundColor: t.colors.background,
+          overflow: 'hidden',
+        }}
+      >
+        {why}
+      </Text>
+      <View style={{ flexDirection: 'row', gap: t.space.sm }}>
+        <View style={{ flex: 1 }}>
+          <Button
+            title={tonight ? 'Cook this tonight' : `Plan for ${day ? dayName(day) : 'that day'}`}
+            tight
+            disabled={!day}
+            loading={planDay.isPending}
+            onPress={cook}
+          />
+        </View>
+        <Button
+          title="Recipe"
+          variant="ghost"
+          compact
+          accessibilityLabel={`${idea.title} recipe`}
+          onPress={onOpen}
+        />
+      </View>
+      <ErrorText message={planDay.error?.message} />
     </View>
   );
+}
+
+/** "Fri 21". */
+function dayName(iso: string): string {
+  const { weekday, day } = dayParts(iso);
+  return `${weekday} ${day}`;
 }
 
 function TweakBox({ onSend }: { onSend: (text: string) => void }) {
