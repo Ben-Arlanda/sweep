@@ -107,7 +107,7 @@ export function FloatingTabBar({
                     justifyContent: 'center',
                     gap: 3,
                     paddingVertical: 4,
-                    paddingHorizontal: 6,
+                    paddingHorizontal: 2, // room for "Recipes" on a 320pt-wide phone
                     borderRadius: BAR_RADIUS - 6,
                     backgroundColor: focused
                       ? `rgba(27, 42, 78, ${TAB_PILL_SHADE})`

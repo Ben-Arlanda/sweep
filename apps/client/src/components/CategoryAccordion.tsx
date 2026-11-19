@@ -38,7 +38,6 @@ export function CategoryAccordion({
       <Pressable
         accessibilityRole="button"
         accessibilityState={{ expanded: open }}
-        accessibilityLabel={`${label}, ${count} ${count === 1 ? 'item' : 'items'}`}
         onPress={onToggle}
         style={{
           flexDirection: 'row',

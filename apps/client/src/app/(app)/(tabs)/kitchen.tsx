@@ -483,7 +483,8 @@ function StockPill({
     <Pressable
       accessibilityRole="button"
       accessibilityState={{ selected: on }}
-      accessibilityLabel={`${count} ${STOCK_LABEL[stock]}. ${on ? 'Showing only these' : 'Show only these'}`}
+      // The visible "12 In stock" is the name (WCAG 2.5.3); the hint says what tapping does.
+      accessibilityHint={on ? 'Showing only these. Tap to show all' : 'Show only these'}
       onPress={onPress}
       style={({ pressed }) => ({
         minHeight: t.touchTarget,
@@ -506,17 +507,8 @@ function StockPill({
         }}
       >
         <StockDot stock={stock} ring={on} />
-        <Text
-          style={{
-            fontFamily: t.fonts.bold,
-            fontSize: 13,
-            color: fg,
-            fontVariant: ['tabular-nums'],
-          }}
-        >
-          {count}
-        </Text>
         <Text style={{ fontFamily: t.fonts.medium, fontSize: 13, color: fg }}>
+          <Text style={{ fontFamily: t.fonts.bold, fontVariant: ['tabular-nums'] }}>{count}</Text>{' '}
           {STOCK_LABEL[stock]}
         </Text>
       </View>
@@ -581,6 +573,7 @@ function PlaceChip({
     <Pressable
       accessibilityRole="radio"
       accessibilityState={{ checked: on }}
+      aria-checked={on}
       onPress={onPress}
       style={({ pressed }) => ({
         minWidth: 52,
@@ -679,7 +672,6 @@ function ItemRow({
     >
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel={row.name}
         accessibilityHint="Edit amount, status, staple and storage"
         onPress={onOpen}
         style={({ pressed }) => ({
