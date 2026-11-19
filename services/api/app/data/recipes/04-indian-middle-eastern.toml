@@ -23,8 +23,8 @@ ingredients = [
 ]
 method = [
   "Marinate the chicken in the yoghurt and half the garam masala for 15 minutes or overnight.",
-  "Cook the onion, garlic and ginger in the butter until soft. Add the turmeric and remaining garam masala, then the tomatoes. Simmer 10 minutes and blend.",
-  "Add the chicken and simmer for 15 minutes until cooked. Stir in the cream and serve with rice.",
+  "Cook the onion, garlic and ginger in the butter in a large pan over medium heat for 5 minutes until soft. Add the turmeric and remaining garam masala, then the tomatoes. Simmer 10 minutes and blend.",
+  "Add the chicken and simmer for 15 minutes until cooked through. Meanwhile, cook the rice according to the packet. Stir the cream into the curry and serve with the rice.",
 ]
 
 [[recipe]]
@@ -33,7 +33,7 @@ title = "Red lentil dhal"
 cuisine = "indian"
 course = "main"
 servings = 4
-minutes = 35
+minutes = 45
 summary = "Comforting spiced red lentils with tomato and spinach. Vegan, cheap and freezes well."
 ingredients = [
   "1 tbsp vegetable oil",
@@ -49,9 +49,9 @@ ingredients = [
   "1 cup basmati rice",
 ]
 method = [
-  "Soften the onion, garlic and ginger in the oil. Add the spices for a minute.",
-  "Add the lentils, tomatoes and stock. Simmer for 25 minutes, stirring often, until thick.",
-  "Stir in the spinach and serve with rice.",
+  "Soften the onion, garlic and ginger in the oil in a large pot over medium heat for 5 minutes. Add the spices for a minute.",
+  "Add the lentils, tomatoes and stock. Simmer for 25 minutes, stirring often, until thick. Meanwhile, cook the rice according to the packet.",
+  "Stir in the spinach and serve with the rice.",
 ]
 
 [[recipe]]
@@ -75,7 +75,7 @@ ingredients = [
   "1 bunch coriander",
 ]
 method = [
-  "Cook the onion, garlic and ginger in the oil until soft. Add the curry powder.",
+  "Cook the onion, garlic and ginger in the oil in a large pan over medium heat for 5 minutes until soft. Add the curry powder and stir for 1 minute until fragrant.",
   "Add the chickpeas, tomatoes and coconut cream and simmer for 15 minutes.",
   "Stir in the spinach and top with coriander.",
 ]
@@ -86,7 +86,7 @@ title = "Beef madras"
 cuisine = "indian"
 course = "main"
 servings = 6
-minutes = 130
+minutes = 150
 summary = "A deep, hot South Indian-style beef curry, slow-cooked until tender."
 ingredients = [
   "1 kg beef chuck steak, diced",
@@ -100,9 +100,9 @@ ingredients = [
   "1 cup basmati rice",
 ]
 method = [
-  "Brown the beef in batches in the oil. Set aside.",
-  "Cook the onion, garlic and ginger until golden, then add the curry paste for 2 minutes.",
-  "Return the beef with the tomatoes and stock. Cover and simmer for 1½–2 hours until tender. Serve with rice.",
+  "Brown the beef in batches in the oil in a large pot over medium-high heat, 3–4 minutes a batch. Set aside.",
+  "Lower the heat to medium and cook the onion, garlic and ginger for 6–8 minutes until golden, then add the curry paste for 2 minutes.",
+  "Return the beef with the tomatoes and stock. Cover and simmer for 1½–2 hours until tender. Meanwhile, cook the rice according to the packet and serve with the curry.",
 ]
 
 [[recipe]]
@@ -111,7 +111,7 @@ title = "Lamb rogan josh"
 cuisine = "indian"
 course = "main"
 servings = 6
-minutes = 120
+minutes = 130
 summary = "Lamb shoulder in an aromatic Kashmiri-style sauce with yoghurt and warm spices."
 ingredients = [
   "1 kg lamb shoulder, diced",
@@ -125,9 +125,9 @@ ingredients = [
   "1 cup basmati rice",
 ]
 method = [
-  "Brown the lamb in the oil and set aside. Soften the onion, garlic and ginger.",
+  "Brown the lamb in batches in the oil in a large pot over medium-high heat, 3–4 minutes a batch, and set aside. Lower the heat to medium and soften the onion, garlic and ginger for 5 minutes.",
   "Add the paste for 2 minutes, then the lamb, tomatoes and 250 ml water.",
-  "Cover and simmer for 1½ hours. Stir in the yoghurt off the heat and serve with rice.",
+  "Cover and simmer gently for 1½ hours until the lamb is tender. Meanwhile, cook the rice according to the packet. Stir the yoghurt into the curry off the heat and serve with the rice.",
 ]
 
 [[recipe]]
@@ -150,9 +150,9 @@ ingredients = [
   "60 ml thickened cream",
 ]
 method = [
-  "Wilt the spinach in a pan, cool slightly, and blend smooth.",
-  "Cook the onion, garlic and ginger in the oil. Add the spices, then the spinach puree, and simmer 5 minutes.",
-  "Add the paneer and cream and heat through.",
+  "Wilt the spinach in a large pan over medium heat for 2–3 minutes, cool slightly, and blend smooth.",
+  "Cook the onion, garlic and ginger in the oil in the same pan for 5 minutes until soft. Add the spices, then the spinach puree, and simmer 5 minutes.",
+  "Add the paneer and cream and simmer gently for 3–4 minutes until heated through.",
 ]
 
 [[recipe]]
@@ -161,7 +161,7 @@ title = "Tandoori chicken"
 cuisine = "indian"
 course = "main"
 servings = 4
-minutes = 50
+minutes = 75
 summary = "Chicken marinated in yoghurt and tandoori spices, roasted until charred at the edges."
 ingredients = [
   "1 kg chicken thigh",
@@ -184,7 +184,7 @@ cuisine = "indian"
 course = "main"
 servings = 6
 minutes = 60
-summary = "Fragrant layered basmati rice with spiced vegetables, fried onion and cashews."
+summary = "Fragrant one-pot basmati rice with spiced vegetables, fried onion and cashews."
 ingredients = [
   "2 tbsp vegetable oil",
   "2 onions, thinly sliced",
@@ -194,14 +194,14 @@ ingredients = [
   "200 g cauliflower, cut into florets",
   "150 g frozen peas",
   "2 cups basmati rice",
-  "1 litre vegetable stock",
+  "750 ml vegetable stock",
   "50 g cashews",
   "1 bunch coriander",
 ]
 method = [
-  "Fry the onions in the oil until deep golden. Remove half for topping.",
-  "Add the garlic and paste, then the vegetables, and cook for 5 minutes.",
-  "Stir in the rice and stock. Cover tightly and cook on low for 20 minutes. Top with the fried onion, cashews and coriander.",
+  "Fry the onions in the oil in a large heavy pot over medium heat for 10–12 minutes until deep golden. Remove half for topping.",
+  "Add the garlic and paste for 1 minute, then the carrots and cauliflower, and cook for 5 minutes.",
+  "Stir in the rice, peas and stock and bring to the boil. Cover tightly and cook over low heat for 15–20 minutes until the rice is tender and the stock is absorbed. Rest, covered, for 5 minutes, then top with the fried onion, cashews and coriander.",
 ]
 
 [[recipe]]
@@ -224,8 +224,8 @@ ingredients = [
   "1 bunch coriander",
 ]
 method = [
-  "Fry the cumin seeds in the oil until they crackle. Add the onion and ginger for 5 minutes.",
-  "Add the spices, potato and cauliflower with a splash of water. Cover and cook on low for 20 minutes, stirring now and then.",
+  "Fry the cumin seeds in the oil in a large pan over medium heat for 30 seconds until they crackle. Add the onion and ginger for 5 minutes.",
+  "Add the turmeric, garam masala, potato and cauliflower with a splash of water. Cover and cook over low heat for 20 minutes, stirring now and then, until tender.",
   "Top with coriander.",
 ]
 
@@ -270,8 +270,8 @@ ingredients = [
   "4 slices bread",
 ]
 method = [
-  "Soften the onion and capsicum in the oil. Add the garlic and spices, then the tomatoes, and simmer 10 minutes.",
-  "Make wells in the sauce and crack in the eggs. Cover and cook for 6–8 minutes until the whites are set.",
+  "Soften the onion and capsicum in the oil in a large frying pan over medium heat for 5–6 minutes. Add the garlic and spices for 1 minute, then the tomatoes, and simmer 10 minutes.",
+  "Make wells in the sauce and crack in the eggs. Cover and cook over low heat for 6–8 minutes until the whites are set and the yolks are runny, or cooked through if you prefer.",
   "Scatter with feta and serve with bread.",
 ]
 
@@ -282,7 +282,7 @@ cuisine = "middle-eastern"
 course = "main"
 servings = 4
 minutes = 40
-summary = "Spiced roast chicken in flatbreads with garlic yoghurt, tomato, cucumber and pickles."
+summary = "Spiced roast chicken in flatbreads with garlic yoghurt, tomato and cucumber."
 ingredients = [
   "750 g chicken thigh",
   "2 tbsp olive oil",
@@ -296,7 +296,7 @@ ingredients = [
   "1 cucumber, sliced",
 ]
 method = [
-  "Toss the chicken with the oil and spices. Roast at 220°C for 25 minutes, then slice.",
+  "Heat the oven to 220°C. Toss the chicken with the oil and spices and roast on a lined tray for 25 minutes until charred at the edges and cooked through. Rest for 5 minutes, then slice.",
   "Mix the yoghurt with the garlic.",
   "Fill the pita with chicken, tomato, cucumber and garlic yoghurt.",
 ]
@@ -310,6 +310,7 @@ servings = 4
 minutes = 40
 summary = "Herby chickpea falafel baked until crisp, with a lemony tahini sauce. Vegan."
 ingredients = [
+  "1/2 tsp salt",
   "2 x 400 g cans chickpeas, drained",
   "1 onion, chopped",
   "2 cloves garlic",
@@ -322,9 +323,9 @@ ingredients = [
   "1 lemon, juiced",
 ]
 method = [
-  "Pulse the chickpeas, onion, garlic, herbs, cumin and flour in a processor until coarse. Shape into balls.",
-  "Brush with oil and bake at 200°C for 25 minutes, turning once.",
-  "Whisk the tahini with lemon juice and water until pourable.",
+  "Heat the oven to 200°C. Pulse the chickpeas, onion, garlic, herbs, cumin and flour in a processor until coarse. Shape into balls.",
+  "Brush with oil and bake on a lined tray for 25 minutes, turning once, until golden and crisp outside.",
+  "Whisk the tahini with the lemon juice, the salt and 3–4 tbsp cold water until pourable.",
 ]
 
 [[recipe]]
@@ -344,8 +345,8 @@ ingredients = [
   "1/2 tsp ground cumin",
 ]
 method = [
-  "Blend everything with 3 tbsp cold water until very smooth. Season.",
-  "Serve drizzled with extra oil.",
+  "Blend the chickpeas, tahini, lemon juice, garlic, cumin and 2 tbsp of the oil with 3 tbsp cold water until very smooth. Season.",
+  "Serve drizzled with the remaining oil.",
 ]
 
 [[recipe]]
@@ -368,7 +369,7 @@ ingredients = [
   "3 tbsp olive oil",
 ]
 method = [
-  "Mix the lamb, onion and spices and shape around skewers. Grill for 8–10 minutes, turning.",
+  "Mix the lamb, onion and spices and shape around skewers. Cook on a hot grill or barbecue for 8–10 minutes, turning, until browned and cooked through with no pink in the middle.",
   "Soak the bulgur in boiling water for 15 minutes, then drain well.",
   "Mix the bulgur with parsley, tomato, lemon juice and oil.",
 ]
@@ -396,8 +397,8 @@ ingredients = [
   "250 g couscous",
 ]
 method = [
-  "Brown the chicken in the oil and set aside. Soften the onion and garlic and add the spices.",
-  "Add the tomatoes, chickpeas, apricots, stock and chicken. Cover and simmer for 40 minutes.",
+  "Brown the chicken in the oil in a large heavy pot over medium-high heat for 4–5 minutes each side and set aside. Lower the heat to medium, soften the onion and garlic for 5 minutes, and add the spices for 1 minute.",
+  "Add the tomatoes, chickpeas, apricots, stock and chicken. Cover and simmer for 40 minutes until the chicken is tender and cooked through.",
   "Pour 250 ml boiling water over the couscous, cover for 5 minutes, then fluff with a fork. Serve together.",
 ]
 
@@ -421,9 +422,9 @@ ingredients = [
   "250 g couscous",
 ]
 method = [
-  "Brown the lamb in the oil. Add the onion and spice and cook for 3 minutes.",
+  "Brown the lamb in batches in the oil in a large heavy pot over medium-high heat, 3–4 minutes a batch. Add the onion and spice and cook for 3 minutes.",
   "Add the tomatoes and stock. Cover and simmer for 1 hour.",
-  "Add the sweet potato and dates and cook 45 minutes more. Serve with couscous.",
+  "Add the sweet potato and dates and simmer for 45 minutes more until the lamb and sweet potato are tender. Meanwhile, pour 250 ml boiling water over the couscous, cover for 5 minutes, then fluff with a fork. Serve the tagine with the couscous.",
 ]
 
 [[recipe]]
@@ -446,9 +447,9 @@ ingredients = [
   "2 tsp sumac",
 ]
 method = [
-  "Toss the pita in half the oil and bake at 200°C for 8 minutes until crisp.",
+  "Heat the oven to 200°C. Toss the pita in half the oil and bake for 8 minutes until crisp.",
   "Whisk the remaining oil with lemon juice and sumac.",
-  "Toss everything together just before serving.",
+  "Just before serving, toss the lettuce, tomatoes, cucumber, radishes and mint with the pita and dressing.",
 ]
 
 [[recipe]]
@@ -471,7 +472,7 @@ ingredients = [
   "1 lemon, juiced",
 ]
 method = [
-  "Soften the onion, carrot and garlic in the oil. Add the cumin.",
+  "Soften the onion, carrot and garlic in the oil in a large pot over medium heat for 5–6 minutes. Add the cumin for 1 minute.",
   "Add the lentils and stock and simmer for 30 minutes until soft.",
   "Stir in the spinach and lemon juice and season well.",
 ]
@@ -485,6 +486,7 @@ servings = 6
 minutes = 50
 summary = "A smoky dip of charred eggplant, tahini, garlic and lemon."
 ingredients = [
+  "1/2 tsp salt",
   "2 eggplants",
   "60 g tahini",
   "1 clove garlic, crushed",

@@ -20,7 +20,7 @@ ingredients = [
   "1 tsp sesame seeds",
 ]
 method = [
-  "Cook the rice. Steam the broccoli for 4 minutes.",
+  "Cook the rice according to the packet. Steam the broccoli over boiling water for 4 minutes until tender.",
   "Fry the chicken in the oil over medium heat for 6–7 minutes each side until golden and cooked through.",
   "Mix the soy, mirin, honey and ginger, pour into the pan and bubble for 2 minutes, turning the chicken until glazed.",
   "Slice and serve over the rice with the broccoli, sprinkled with sesame seeds.",
@@ -46,9 +46,9 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Cook the rice.",
+  "Cook the rice according to the packet.",
   "Simmer the dashi, soy, mirin and sugar with the onion for 3 minutes. Add the chicken and simmer for 8 minutes until cooked through.",
-  "Pour the eggs over, cover and cook on low for 2 minutes until just set.",
+  "Pour the eggs over, cover and cook over low heat for 2 minutes until just set.",
   "Slide over bowls of rice and scatter with spring onions.",
 ]
 
@@ -72,7 +72,7 @@ ingredients = [
   "2 tbsp pickled ginger",
 ]
 method = [
-  "Cook the rice.",
+  "Cook the rice according to the packet.",
   "Simmer the dashi, soy, mirin and sugar with the onion for 5 minutes until soft.",
   "Add the beef and simmer for 3 minutes until just cooked.",
   "Spoon over the rice with some of the sauce, and top with spring onions and pickled ginger.",
@@ -99,9 +99,9 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Cook the rice. Pound the pork to 1.5 cm thick.",
+  "Cook the rice according to the packet. Pound the pork to 1.5 cm thick.",
   "Dust the pork in flour, dip in egg, then press into the panko.",
-  "Shallow-fry in the oil for 4 minutes each side until golden and cooked through. Drain and slice.",
+  "Heat the oil in a large frying pan over medium-high heat. Shallow-fry the pork for 4 minutes each side until golden and cooked through. Drain and slice.",
   "Mix the tomato sauce, worcestershire and soy. Serve the pork with the cabbage, rice and sauce.",
 ]
 
@@ -111,7 +111,7 @@ title = "Okonomiyaki (cabbage pancakes)"
 cuisine = "japanese"
 course = "main"
 servings = 4
-minutes = 30
+minutes = 55
 summary = "Savoury cabbage and bacon pancakes topped with sauce, mayonnaise and spring onion."
 ingredients = [
   "150 g plain flour",
@@ -127,8 +127,8 @@ ingredients = [
 ]
 method = [
   "Whisk the flour, dashi and eggs to a batter. Fold in the cabbage and most of the spring onions.",
-  "Heat the oil in a frying pan, spoon in a quarter of the mixture and flatten to a thick pancake. Lay bacon on top.",
-  "Cook for 5 minutes, flip and cook for 5 minutes more until the bacon is crisp and the pancake is cooked through. Repeat.",
+  "Heat a little of the oil in a frying pan over medium heat, spoon in a quarter of the mixture and flatten to a thick pancake. Lay bacon on top.",
+  "Cook for 5 minutes, flip and cook for 5 minutes more until the bacon is crisp and the pancake is cooked through. Repeat with the rest of the oil and mixture.",
   "Mix the tomato and worcestershire sauces, drizzle over with the mayonnaise and scatter with the rest of the spring onions.",
 ]
 
@@ -138,7 +138,7 @@ title = "Miso-glazed eggplant"
 cuisine = "japanese"
 course = "side"
 servings = 4
-minutes = 30
+minutes = 40
 summary = "Eggplant halves roasted until creamy, then grilled with a sweet miso glaze. Vegetarian."
 ingredients = [
   "2 eggplants, halved lengthways",
@@ -152,7 +152,7 @@ ingredients = [
 ]
 method = [
   "Heat the oven to 200°C. Score the eggplant flesh, brush with the oil and roast cut side up for 20 minutes until soft.",
-  "Cook the rice.",
+  "Cook the rice according to the packet.",
   "Mix the miso, mirin and sugar, spread over the eggplant and grill for 3 minutes until bubbling.",
   "Scatter with sesame seeds and spring onions and serve with the rice.",
 ]
@@ -180,7 +180,7 @@ ingredients = [
 method = [
   "Mix the chicken with the soy, mirin, ginger and garlic and marinate for 15 minutes.",
   "Toss the chicken in the cornflour.",
-  "Fry in the oil in batches for 5 minutes until deep golden and cooked through. Drain on paper towel.",
+  "Heat the oil in a deep frying pan or wok over medium-high heat to 170°C. Fry the chicken in batches for 5 minutes until deep golden and cooked through. Drain on paper towel.",
   "Serve with mayonnaise, lemon wedges and the cabbage.",
 ]
 
@@ -206,7 +206,7 @@ ingredients = [
 ]
 method = [
   "Loosen the udon in hot water and drain.",
-  "Fry the pork in the oil for 5 minutes until browned and cooked through. Add the cabbage, mushrooms and carrot for 3 minutes.",
+  "Fry the pork in the oil in a wok over high heat for 5 minutes until browned and cooked through. Add the cabbage, mushrooms and carrot for 3 minutes.",
   "Add the noodles, soy, oyster sauce and mirin and toss for 2 minutes. Scatter with spring onions.",
 ]
 
@@ -230,8 +230,8 @@ ingredients = [
 ]
 method = [
   "Pat the tofu dry and gently roll in the cornflour.",
-  "Fry in the oil for 3 minutes, turning, until crisp. Drain.",
-  "Warm the dashi, soy and mirin. Pour into shallow bowls, add the tofu and top with spring onions and ginger.",
+  "Fry the tofu in the oil over medium-high heat for 3 minutes, turning, until crisp and golden. Drain.",
+  "Warm the dashi, soy and mirin in a small pan over low heat for 2 minutes. Pour into shallow bowls, add the tofu and top with spring onions and ginger.",
 ]
 
 [[recipe]]
@@ -254,7 +254,7 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Cook the rice.",
+  "Cook the rice according to the packet.",
   "Fry the pork in the oil over high heat in batches for 2 minutes until browned and cooked through. Add the onion for 2 minutes.",
   "Add the ginger, soy, mirin and sugar and toss for 1 minute until glossy. Serve with the cabbage and rice.",
 ]
@@ -283,9 +283,9 @@ ingredients = [
 ]
 method = [
   "Boil the eggs for 6½ minutes, cool in cold water and peel.",
-  "Fry the pork in the sesame oil for 5 minutes until cooked through. Add the garlic and ginger for 1 minute.",
+  "Fry the pork in the sesame oil in a large pot over medium-high heat for 5 minutes until cooked through. Add the garlic and ginger for 1 minute.",
   "Add the stock and bring to a simmer. Whisk in the miso and soy.",
-  "Cook the noodles, adding the bok choy for the last 2 minutes. Divide between bowls, ladle over the broth and pork, and top with the corn, halved eggs and spring onions.",
+  "Cook the noodles in a separate pot according to the packet, adding the bok choy for the last 2 minutes. Drain and divide between bowls, ladle over the broth and pork, and top with the corn, halved eggs and spring onions.",
 ]
 
 [[recipe]]
@@ -304,7 +304,7 @@ ingredients = [
   "1 tsp mirin",
 ]
 method = [
-  "Toast the sesame seeds in a dry pan for 2 minutes, then crush roughly.",
+  "Toast the sesame seeds in a dry pan over medium heat for 2 minutes, stirring, until golden, then crush roughly.",
   "Blanch the spinach in boiling water for 30 seconds, cool under cold water and squeeze dry.",
   "Mix the sesame, soy, sugar and mirin and toss through the spinach.",
 ]
@@ -356,8 +356,8 @@ ingredients = [
 ]
 method = [
   "Mix the gochujang, soy, honey, garlic and ginger and coat the chicken.",
-  "Cook the rice.",
-  "Fry the sweet potato in the oil for 5 minutes. Add the chicken and onion and cook, stirring, for 10 minutes until the chicken is cooked through.",
+  "Cook the rice according to the packet.",
+  "Fry the sweet potato in the oil in a large frying pan over medium-high heat for 5 minutes. Add the chicken and onion and cook, stirring, for 10 minutes until the chicken is cooked through.",
   "Add the cabbage and spring onions for 3 minutes until wilted. Serve with the rice.",
 ]
 
@@ -382,9 +382,9 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Cook the rice.",
-  "Fry the pork in the sesame oil for 5 minutes until browned. Add the kimchi, onion and garlic for 3 minutes.",
-  "Stir in the gochujang and stock and simmer for 15 minutes until the pork is tender.",
+  "Cook the rice according to the packet.",
+  "Fry the pork in the sesame oil in a large pot over medium-high heat for 5 minutes until browned. Add the kimchi, onion and garlic for 3 minutes.",
+  "Stir in the gochujang and stock and simmer for 15 minutes until the pork is tender and cooked through.",
   "Add the tofu for 3 minutes, scatter with spring onions and serve with the rice.",
 ]
 
@@ -410,10 +410,10 @@ ingredients = [
   "2 spring onions, sliced",
 ]
 method = [
-  "Soften the onion and garlic in the sesame oil for 3 minutes. Stir in the chilli powder for 30 seconds.",
+  "Soften the onion and garlic in the sesame oil in a pot over medium heat for 3 minutes. Stir in the chilli powder for 30 seconds.",
   "Add the soy, dashi and mushrooms and simmer for 5 minutes.",
   "Add the prawns and spoon in the tofu in large pieces. Simmer for 3 minutes until the prawns are pink.",
-  "Crack in the eggs, cover and cook for 3 minutes until the whites are set. Scatter with spring onions.",
+  "Crack in the eggs, cover and cook for 3 minutes until the whites are set and the yolks are runny, or cooked through if you prefer. Scatter with spring onions.",
 ]
 
 [[recipe]]
@@ -422,7 +422,7 @@ title = "Korean beef mince rice bowls"
 cuisine = "korean"
 course = "main"
 servings = 4
-minutes = 20
+minutes = 30
 summary = "Sweet, garlicky soy beef mince over rice with quick cucumber and a fried egg."
 ingredients = [
   "500 g beef mince",
@@ -440,9 +440,9 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Cook the rice. Toss the cucumber with the rice vinegar.",
-  "Fry the mince in the sesame oil for 6 minutes until browned. Add the garlic, ginger, soy, sugar and chilli and cook for 2 minutes until sticky.",
-  "Fry the eggs in the vegetable oil for 3 minutes until the whites are set.",
+  "Cook the rice according to the packet. Toss the cucumber with the rice vinegar.",
+  "Fry the mince in the sesame oil over medium-high heat for 6 minutes until browned and cooked through. Add the garlic, ginger, soy, sugar and chilli and cook for 2 minutes until sticky.",
+  "Fry the eggs in the vegetable oil in a frying pan over medium heat for 3 minutes until the whites are set and the yolks are runny, or cooked through if you prefer.",
   "Serve the beef over rice with the cucumber, eggs and spring onions.",
 ]
 
@@ -471,7 +471,7 @@ ingredients = [
 ]
 method = [
   "Mix the gochujang, chilli flakes, soy, sugar and garlic and coat the pork.",
-  "Cook the rice.",
+  "Cook the rice according to the packet.",
   "Stir-fry the pork in the oil over high heat for 6 minutes until cooked through. Add the onion and carrot for 3 minutes, then the spring onions.",
   "Sprinkle with sesame seeds and serve with lettuce leaves for wrapping and the rice.",
 ]
@@ -498,7 +498,7 @@ ingredients = [
 ]
 method = [
   "Whisk the flour, cornflour, water and egg to a smooth batter. Stir in the spring onions and prawns.",
-  "Heat a third of the oil in a frying pan, add a third of the batter and spread thin.",
+  "Heat a third of the oil in a frying pan over medium-high heat, add a third of the batter and spread thin.",
   "Cook for 3–4 minutes each side until golden and the prawns are cooked through. Repeat.",
   "Mix the soy, rice vinegar and chilli flakes for dipping.",
 ]
@@ -522,7 +522,7 @@ ingredients = [
 ]
 method = [
   "Mix the kimchi and juice, flour, water, egg and spring onions to a thick batter.",
-  "Fry spoonfuls in the oil for 3 minutes each side until crisp and cooked through.",
+  "Fry spoonfuls in the oil over medium heat for 3 minutes each side until crisp and cooked through.",
   "Serve with soy sauce for dipping.",
 ]
 
@@ -567,7 +567,7 @@ ingredients = [
   "1 tsp sesame seeds",
 ]
 method = [
-  "Fry the potatoes in the oil for 5 minutes until lightly golden.",
+  "Fry the potatoes in the oil in a saucepan over medium heat for 5 minutes until lightly golden.",
   "Add the soy, honey, garlic and water and simmer, stirring now and then, for 15 minutes until tender and the sauce is sticky.",
   "Toss with the sesame oil and seeds.",
 ]
@@ -593,7 +593,7 @@ ingredients = [
 ]
 method = [
   "Toss the cucumber with the salt for 10 minutes, then drain.",
-  "Mix in everything else and serve straight away.",
+  "Mix in the garlic, chilli flakes, rice vinegar, sugar, soy sauce, sesame oil and sesame seeds and serve straight away.",
 ]
 
 [[recipe]]
@@ -618,7 +618,7 @@ ingredients = [
 method = [
   "Heat the oven to 220°C. Pat the wings dry and toss with the baking powder and salt.",
   "Bake on a rack over a tray for 45 minutes, turning halfway, until crisp and cooked through.",
-  "Warm the gochujang, honey, soy and garlic for 2 minutes, toss with the wings and scatter with sesame seeds and spring onions.",
+  "Warm the gochujang, honey, soy and garlic in a small pan over low heat for 2 minutes until bubbling, toss with the wings and scatter with sesame seeds and spring onions.",
 ]
 
 [[recipe]]
@@ -643,7 +643,7 @@ ingredients = [
 ]
 method = [
   "Boil the eggs for 8 minutes, cool and halve.",
-  "Cook the noodles, then rinse under cold water until chilled and drain well.",
+  "Cook the noodles according to the packet, then rinse under cold water until chilled and drain well.",
   "Mix the gochujang, rice vinegar, sugar, soy and sesame oil and toss with the noodles.",
   "Top with cucumber, kimchi, the eggs and sesame seeds.",
 ]

@@ -20,7 +20,7 @@ ingredients = [
 ]
 method = [
   "Boil the potatoes for 12 minutes until tender. Drain and lightly crush with the butter.",
-  "Rub the chicken with the pepper, lemon zest and salt. Fry in the oil for 3–4 minutes each side until cooked through. Squeeze over the lemon juice.",
+  "Rub the chicken with the pepper, lemon zest and salt. Fry in the oil over medium-high heat for 3–4 minutes each side until cooked through. Squeeze over the lemon juice.",
   "Steam the broccolini for 3 minutes and serve with the chicken and potatoes.",
 ]
 
@@ -43,9 +43,9 @@ ingredients = [
   "1 bunch parsley, chopped",
 ]
 method = [
-  "Cook the pasta.",
-  "Soften the garlic and chilli in the oil for 1 minute. Add the passata and olives and simmer for 10 minutes.",
-  "Flake in the tuna, warm through and toss with the pasta and parsley.",
+  "Cook the pasta according to the packet and drain.",
+  "Soften the garlic and chilli in the oil in a large frying pan over medium heat for 1 minute. Add the passata and olives and simmer for 10 minutes.",
+  "Flake in the tuna, warm through for 2 minutes and toss with the pasta and parsley.",
 ]
 
 [[recipe]]
@@ -69,9 +69,9 @@ ingredients = [
   "2 tomatoes, sliced",
 ]
 method = [
-  "Cook the onions in 1 tbsp oil for 12 minutes until soft and golden. Add the sugar and vinegar for 2 minutes until sticky.",
-  "Rub the steak with the rest of the oil and sear for 3 minutes each side for medium. Rest for 5 minutes, then slice thinly.",
-  "Mix the mayonnaise and mustard. Toast the rolls and fill with the mayo, rocket, tomato, steak and onions.",
+  "Cook the onions in 1 tbsp oil over medium heat for 12 minutes until soft and golden. Add the sugar and vinegar for 2 minutes until sticky.",
+  "Rub the steak with the rest of the oil and sear in a very hot pan for 3 minutes each side until browned outside and still pink in the middle, for medium. Rest for 5 minutes, then slice thinly.",
+  "Mix the mayonnaise and mustard. Toast the rolls for 2 minutes until golden and fill with the mayo, rocket, tomato, steak and onions.",
 ]
 
 [[recipe]]
@@ -80,7 +80,7 @@ title = "Chicken and corn quesadillas"
 cuisine = "mexican"
 course = "main"
 servings = 4
-minutes = 20
+minutes = 30
 summary = "Crisp tortillas filled with spiced chicken, corn, beans and melted cheddar."
 ingredients = [
   "400 g chicken breast, thinly sliced",
@@ -95,9 +95,9 @@ ingredients = [
   "100 g tomato salsa",
 ]
 method = [
-  "Fry the chicken with the spices in the oil for 6 minutes until cooked through.",
+  "Fry the chicken with the spices in the oil over medium-high heat for 6 minutes until cooked through.",
   "Top 4 tortillas with the chicken, corn, beans and cheddar, then the other tortillas.",
-  "Cook in a dry frying pan for 2–3 minutes each side until crisp and melted. Cut into wedges and serve with sour cream and salsa.",
+  "Cook in a dry frying pan over medium heat for 2–3 minutes each side until crisp and melted. Cut into wedges and serve with sour cream and salsa.",
 ]
 
 [[recipe]]
@@ -144,9 +144,9 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Cook the rice. Season the pork with the salt.",
-  "Fry the pork in the oil for 4 minutes each side until golden and cooked through.",
-  "Add the garlic for 30 seconds, then the honey, soy and vinegar, and bubble for 2 minutes, turning the pork until glazed.",
+  "Cook the rice according to the packet. Season the pork with the salt.",
+  "Fry the pork in the oil over medium-high heat for 4 minutes each side until golden and cooked through.",
+  "Lower to medium heat, add the garlic for 30 seconds, then the honey, soy and vinegar, and bubble for 2 minutes, turning the pork until glazed.",
   "Steam the beans for 4 minutes and serve with the pork and rice.",
 ]
 
@@ -169,8 +169,8 @@ ingredients = [
   "4 spring onions, sliced",
 ]
 method = [
-  "Fry the salmon in 1 tbsp oil for 4 minutes each side until it flakes easily. Flake into chunks.",
-  "Scramble the eggs in the rest of the oil and push aside.",
+  "Fry the salmon in 1 tbsp oil in a wok or large frying pan over medium-high heat for 4 minutes each side until it flakes easily. Flake into chunks.",
+  "Scramble the eggs in the rest of the oil for 1 minute until just set and push aside.",
   "Add the rice and edamame and fry for 5 minutes until hot. Fold through the salmon, soy, sesame oil and spring onions.",
 ]
 
@@ -194,8 +194,8 @@ ingredients = [
 ]
 method = [
   "Microwave or boil the potatoes for 6 minutes until almost tender. Drain well.",
-  "Fry the potatoes in the oil for 10 minutes until crisp. Add the chorizo, onion, capsicum and paprika and cook for 5 minutes.",
-  "Make 4 hollows, crack in the eggs, cover and cook for 4 minutes until the whites are set. Scatter with parsley.",
+  "Fry the potatoes in the oil in a large frying pan over medium-high heat for 10 minutes until crisp. Add the chorizo, onion, capsicum and paprika and cook for 5 minutes.",
+  "Make 4 hollows, crack in the eggs, cover and cook for 4 minutes until the whites are set and the yolks are runny, or cooked through if you prefer. Scatter with parsley.",
 ]
 
 [[recipe]]
@@ -220,7 +220,7 @@ ingredients = [
 ]
 method = [
   "Pour the boiling water over the couscous, cover for 5 minutes and fluff up. Stir in the lemon juice.",
-  "Fry the halloumi in the oil for 2 minutes each side until golden.",
+  "Fry the halloumi in the oil over medium-high heat for 2 minutes each side until golden.",
   "Divide the couscous between bowls with the chickpeas, cucumber, tomatoes and mint. Top with the halloumi and yoghurt.",
 ]
 
@@ -243,8 +243,8 @@ ingredients = [
   "1 lemon, juiced",
 ]
 method = [
-  "Cook the pasta, adding the broccoli for the last 3 minutes. Keep a cup of the water.",
-  "Fry the sausage meat in the oil for 8 minutes, breaking it up, until browned and cooked through. Add the garlic and chilli for 1 minute.",
+  "Cook the pasta according to the packet, adding the broccoli for the last 3 minutes. Keep a cup of the water.",
+  "Fry the sausage meat in the oil over medium-high heat for 8 minutes, breaking it up, until browned and cooked through. Add the garlic and chilli for 1 minute.",
   "Toss with the pasta, broccoli, parmesan, lemon juice and a splash of pasta water.",
 ]
 
@@ -272,9 +272,9 @@ ingredients = [
   "100 g sour cream",
 ]
 method = [
-  "Cook the rice.",
-  "Fry the mince in the oil for 6 minutes until browned and cooked through. Add the spices, oregano, tomato paste and water and simmer for 3 minutes.",
-  "Warm the beans and corn. Build bowls with the rice, beef, beans, corn, avocado, salsa and sour cream.",
+  "Cook the rice according to the packet.",
+  "Fry the mince in the oil over medium-high heat for 6 minutes until browned and cooked through. Add the spices, oregano, tomato paste and water and simmer for 3 minutes.",
+  "Warm the beans and corn in a small saucepan over medium heat for 3 minutes. Build bowls with the rice, beef, beans, corn, avocado, salsa and sour cream.",
 ]
 
 [[recipe]]
@@ -298,8 +298,8 @@ ingredients = [
 ]
 method = [
   "Boil the potatoes for 12 minutes until tender, then drain and crush.",
-  "Season the steak and sear in the oil over very high heat in batches for 2 minutes until browned.",
-  "Lower the heat, add the butter and garlic for 1 minute and toss the steak through with the parsley.",
+  "Season the steak and sear in the oil over very high heat in batches for 2 minutes until browned outside and still pink in the middle, or longer if you prefer.",
+  "Lower to medium-low heat, add the butter and garlic for 1 minute and toss the steak through with the parsley.",
   "Steam the beans for 4 minutes and serve with the steak and potatoes.",
 ]
 
@@ -323,8 +323,8 @@ ingredients = [
   "1 bunch mint, chopped",
 ]
 method = [
-  "Cook the pasta, adding the peas for the last 2 minutes. Keep a cup of the water.",
-  "Fry the zucchini and garlic in the oil for 4 minutes until soft.",
+  "Cook the pasta according to the packet, adding the peas for the last 2 minutes. Keep a cup of the water.",
+  "Fry the zucchini and garlic in the oil over medium heat for 4 minutes until soft.",
   "Toss the pasta and peas with the zucchini, ricotta, lemon, parmesan, mint and a splash of pasta water.",
 ]
 
@@ -351,8 +351,8 @@ ingredients = [
 ]
 method = [
   "Mix the mango, onion, coriander and half the lime juice.",
-  "Toss the prawns with the spices and fry in the oil for 3 minutes until pink. Squeeze over the rest of the lime.",
-  "Warm the tortillas and fill with the cabbage, prawns, avocado and the mango mix.",
+  "Toss the prawns with the spices and fry in the oil over high heat for 3 minutes until pink. Squeeze over the rest of the lime.",
+  "Warm the tortillas in a dry frying pan for 20 seconds each side and fill with the cabbage, prawns, avocado and the mango mix.",
 ]
 
 [[recipe]]
@@ -375,9 +375,9 @@ ingredients = [
   "1 bunch dill, chopped",
 ]
 method = [
-  "Cook the pasta, keeping a cup of the water.",
-  "Fry the salmon in the oil for 4 minutes each side until it flakes easily. Flake and set aside.",
-  "In the same pan, soften the garlic for 30 seconds, add the cream and lemon and simmer for 2 minutes. Stir in the spinach until wilted.",
+  "Cook the pasta according to the packet, keeping a cup of the water.",
+  "Fry the salmon in the oil over medium-high heat for 4 minutes each side until it flakes easily. Flake and set aside.",
+  "Lower to medium heat and, in the same pan, soften the garlic for 30 seconds, add the cream and lemon and simmer for 2 minutes. Stir in the spinach until wilted.",
   "Toss with the pasta, salmon, parmesan and dill, loosening with pasta water.",
 ]
 
@@ -402,7 +402,7 @@ ingredients = [
   "1 bunch coriander, chopped",
 ]
 method = [
-  "Fry the curry paste in the oil for 1 minute. Add the coconut milk and stock and bring to a simmer.",
+  "Fry the curry paste in the oil in a large saucepan over medium heat for 1 minute until fragrant. Add the coconut milk and stock and bring to a simmer.",
   "Add the chicken and simmer for 8 minutes until cooked through. Add the noodles and bok choy for 3 minutes.",
   "Season with the fish sauce and lime juice and top with coriander.",
 ]
@@ -426,7 +426,7 @@ ingredients = [
   "3 spring onions, sliced",
 ]
 method = [
-  "Fry the bacon in the oil for 5 minutes until crisp. Push aside and scramble the eggs.",
+  "Fry the bacon in the oil in a wok over medium-high heat for 5 minutes until crisp. Push aside and scramble the eggs for 1 minute until just set.",
   "Add the rice, peas and corn and fry for 5 minutes until hot.",
   "Stir through the soy sauce and spring onions.",
 ]
@@ -477,7 +477,7 @@ ingredients = [
   "1 bunch coriander, chopped",
 ]
 method = [
-  "Fry the mince and onion in the oil for 8 minutes until browned and cooked through. Stir in the spices.",
+  "Fry the mince and onion in the oil in a large lidded frying pan over medium-high heat for 8 minutes until browned and cooked through. Stir in the spices.",
   "Add the rice, tomatoes and stock, cover and simmer on low for 18 minutes until the rice is tender.",
   "Stir in the beans, top with cheddar, cover until melted and scatter with coriander.",
 ]
@@ -503,8 +503,8 @@ ingredients = [
 ]
 method = [
   "Dust the fish in flour, dip in egg, then press into the panko.",
-  "Fry in the oil for 3 minutes each side until golden and the fish flakes easily.",
-  "Cook the peas for 3 minutes, drain and roughly smash with the butter and mint. Serve with the fish and lemon.",
+  "Fry in the oil in a large frying pan over medium heat for 3 minutes each side until golden and the fish flakes easily.",
+  "Boil the peas for 3 minutes until tender, drain and roughly smash with the butter and mint. Serve with the fish and lemon.",
 ]
 
 [[recipe]]
@@ -527,8 +527,8 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Cook the rice.",
-  "Fry the pork in the oil for 6 minutes until crisp and cooked through. Push aside.",
+  "Cook the rice according to the packet.",
+  "Fry the pork in the oil in a wok over high heat for 6 minutes until crisp and cooked through. Push aside.",
   "Add the beans and stir-fry for 5 minutes until blistered. Add the garlic and chilli for 30 seconds, then the sauces and sugar. Serve with the rice.",
 ]
 
@@ -555,9 +555,9 @@ ingredients = [
   "1 bunch coriander, chopped",
 ]
 method = [
-  "Soften the onion and garlic in the oil for 5 minutes. Add the spices, tomatoes and beans and simmer for 8 minutes.",
-  "Make 4 hollows, crack in the eggs, cover and cook for 5 minutes until the whites are set.",
-  "Serve on warm tortillas with avocado, feta and coriander.",
+  "Soften the onion and garlic in the oil in a large frying pan over medium heat for 5 minutes. Add the spices, tomatoes and beans and simmer for 8 minutes.",
+  "Make 4 hollows, crack in the eggs, cover and cook for 5 minutes until the whites are set and the yolks are runny, or cooked through if you prefer.",
+  "Warm the tortillas in a dry frying pan over medium heat for 30 seconds each side. Serve the eggs on the tortillas with avocado, feta and coriander.",
 ]
 
 [[recipe]]
@@ -604,7 +604,7 @@ ingredients = [
 ]
 method = [
   "Loosen the noodles in hot water and drain.",
-  "Stir-fry the prawns, garlic and ginger in the oil for 3 minutes until pink. Remove.",
+  "Stir-fry the prawns, garlic and ginger in the oil in a wok over high heat for 3 minutes until pink. Remove.",
   "Stir-fry the broccolini for 3 minutes, add the noodles, sauces and prawns, and toss for 2 minutes.",
 ]
 
@@ -627,8 +627,8 @@ ingredients = [
   "1/2 tsp black pepper",
 ]
 method = [
-  "Cook the pasta, keeping a cup of the water.",
-  "Fry the bacon in the oil for 5 minutes until crisp. Add the onion for 4 minutes.",
+  "Cook the pasta according to the packet, keeping a cup of the water.",
+  "Fry the bacon in the oil over medium heat for 5 minutes until crisp. Add the onion for 4 minutes.",
   "Add the peas and stock and simmer for 3 minutes. Toss with the pasta, parmesan, pepper and a splash of pasta water.",
 ]
 
@@ -638,7 +638,7 @@ title = "Lamb cutlets with herby couscous"
 cuisine = "australian"
 course = "main"
 servings = 4
-minutes = 20
+minutes = 30
 summary = "Quick-seared lamb cutlets with couscous, herbs, feta and a minted yoghurt."
 ingredients = [
   "12 lamb chops",
@@ -655,7 +655,7 @@ ingredients = [
 ]
 method = [
   "Pour the boiling water over the couscous, cover for 5 minutes and fluff up. Stir in most of the herbs, the feta and lemon juice.",
-  "Rub the lamb with the oil, cumin and salt and sear for 2–3 minutes each side for medium.",
+  "Rub the lamb with the oil, cumin and salt and sear in batches in a hot frying pan for 2–3 minutes each side until browned outside and still pink in the middle, for medium.",
   "Mix the yoghurt with the rest of the mint and serve with the lamb and couscous.",
 ]
 
@@ -680,8 +680,8 @@ ingredients = [
   "1 lime, cut into wedges",
 ]
 method = [
-  "Fry the corn in the oil for 4 minutes until charred. Add the beans and spices with a splash of water and warm through, roughly mashing a few beans.",
-  "Warm the tortillas and fill with the beans, cabbage, avocado and feta. Serve with lime.",
+  "Fry the corn in the oil in a frying pan over high heat for 4 minutes until charred. Add the beans and spices with a splash of water and warm through, roughly mashing a few beans.",
+  "Warm the tortillas in a dry frying pan for 20 seconds each side and fill with the beans, cabbage, avocado and feta. Serve with lime.",
 ]
 
 [[recipe]]
@@ -703,19 +703,19 @@ ingredients = [
   "40 g parmesan, grated",
 ]
 method = [
-  "Fry the gnocchi in half the oil for 5 minutes until golden. Remove.",
+  "Fry the gnocchi in half the oil in a large frying pan over medium-high heat for 5 minutes until golden. Remove.",
   "Fry the chicken in the rest of the oil for 6 minutes until cooked through. Add the mushrooms and garlic for 3 minutes.",
   "Add the cream and simmer for 2 minutes, then stir in the spinach, parmesan and gnocchi.",
 ]
 
 [[recipe]]
 slug = "halloumi-wraps"
-title = "Halloumi and roast capsicum wraps"
+title = "Halloumi and charred capsicum wraps"
 cuisine = "middle-eastern"
 course = "main"
 servings = 4
 minutes = 15
-summary = "Squeaky halloumi with hummus, roasted capsicum, rocket and tomato in warm wraps. Vegetarian."
+summary = "Squeaky halloumi with garlic yoghurt, charred capsicum, rocket and tomato in warm wraps. Vegetarian."
 ingredients = [
   "250 g halloumi, sliced",
   "1 tbsp olive oil",
@@ -727,7 +727,7 @@ ingredients = [
   "2 tomatoes, sliced",
 ]
 method = [
-  "Fry the capsicum in the oil for 5 minutes until soft. Fry the halloumi for 2 minutes each side until golden.",
+  "Fry the capsicum in the oil over medium-high heat for 6 minutes until soft and charred in places. Fry the halloumi for 2 minutes each side until golden. Warm the tortillas in the pan for 30 seconds each side.",
   "Mix the yoghurt and garlic, spread over the tortillas and fill with rocket, tomato, capsicum and halloumi. Roll up.",
 ]
 
@@ -737,7 +737,7 @@ title = "Chilli garlic butter prawns"
 cuisine = "australian"
 course = "main"
 servings = 4
-minutes = 20
+minutes = 30
 summary = "Prawns sizzled in garlic, chilli and butter with lemon, over rice with a green salad."
 ingredients = [
   "600 g prawns, peeled",
@@ -751,7 +751,7 @@ ingredients = [
   "1 lettuce, torn",
 ]
 method = [
-  "Cook the rice.",
-  "Melt the butter with the oil, add the garlic and chilli for 30 seconds, then fry the prawns for 3 minutes until pink.",
+  "Cook the rice according to the packet.",
+  "Melt the butter with the oil in a frying pan over medium heat, add the garlic and chilli for 30 seconds, then fry the prawns for 3 minutes until pink.",
   "Squeeze over the lemon and scatter with parsley. Serve over the rice with lettuce.",
 ]

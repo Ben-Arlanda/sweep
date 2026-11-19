@@ -118,7 +118,14 @@ Report only real problems a home cook would hit:
   an order that can't work, or a step that's impossible.
 - timing: times or oven temperatures that won't work, or a total time much shorter than
   the steps add up to (chilling and resting count).
-- clarity: a step a home cook couldn't follow.
+- clarity: a step a home cook couldn't follow without guessing: a cooking step with no
+  heat or no time, an ingredient the steps never mention, or a "mix everything" that
+  hides what goes in when.
+  A heat level given once carries on to the steps after it in the same pan.
+- Meat, chicken, pork, fish and anything baked need a doneness cue a cook can see or
+  test ("until cooked through", "until it flakes", "until a skewer comes out clean").
+  A time alone isn't enough: report it as food_safety for meat and fish, clarity for
+  baking.
 - mismatch: the title or summary promises something the recipe doesn't make.
 
 Don't report matters of taste, small style points, or ways it could be "even better".
@@ -319,6 +326,7 @@ class ClaudeRecipeReviewer:
     def __init__(self, api_key: str, model: str) -> None:
         self._client = anthropic.AsyncAnthropic(api_key=api_key, max_retries=2, timeout=60.0)
         self._model = model
+        self.usage: list[Usage] = []  # one per call, so a run can report what it cost
 
     async def review(self, recipe: SeedRecipe) -> Review | None:
         try:
@@ -332,6 +340,9 @@ class ClaudeRecipeReviewer:
         except ValidationError:
             log.warning("recipe reviewer returned an invalid shape for %s", recipe.slug)
             return None
+        self.usage.append(
+            Usage(response.model, response.usage.input_tokens, response.usage.output_tokens)
+        )
         log.info(
             "recipe reviewer: %s, %d in / %d out tokens",
             recipe.slug,

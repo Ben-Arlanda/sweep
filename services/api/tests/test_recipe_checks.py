@@ -15,7 +15,8 @@ def recipe(**overrides: object) -> SeedRecipe:
         "summary": "Chicken thighs fried with garlic.",
         "ingredients": ["600 g chicken thigh", "2 cloves garlic, crushed", "1 tbsp olive oil"],
         "method": [
-            "Fry the chicken in the olive oil for 12 minutes until cooked through.",
+            "Fry the chicken in the olive oil over medium-high heat for 12 minutes until cooked"
+            " through.",
             "Add the garlic for the last minute.",
         ],
     }
@@ -42,7 +43,7 @@ def test_water_needs_no_ingredient() -> None:
 
 def test_the_method_using_something_not_listed_is_flagged() -> None:
     method = [
-        "Fry the chicken in the olive oil for 12 minutes until cooked through.",
+        "Fry the chicken in the olive oil over medium heat for 12 minutes until cooked through.",
         "Add the garlic and parmesan.",
     ]
     problems = check_recipes([recipe(method=method)])
@@ -73,9 +74,11 @@ def test_raw_meat_without_a_proper_cooking_step_is_flagged() -> None:
 
 
 def test_a_cooking_step_needs_a_time_or_a_doneness_cue() -> None:
-    method = ["Fry the chicken in the olive oil with the garlic."]
-    assert kinds([recipe(method=method)]) == ["raw_meat"]
-    cooked = ["Fry the chicken in the olive oil with the garlic until no longer pink."]
+    method = ["Fry the chicken in the olive oil over medium heat with the garlic."]
+    assert kinds([recipe(method=method)]) == ["raw_meat", "no_time"]
+    cooked = [
+        "Fry the chicken in the olive oil over medium heat with the garlic until no longer pink."
+    ]
     assert kinds([recipe(method=cooked)]) == []
 
 
@@ -123,7 +126,7 @@ def test_a_vegetarian_claim_with_meat_or_hidden_seafood_is_flagged() -> None:
 
 def test_a_vegan_claim_with_dairy_or_eggs_is_flagged() -> None:
     lines = ["400 g pasta", "40 g parmesan, grated", "1 tbsp olive oil"]
-    method = ["Cook the pasta for 10 minutes and toss with the oil and parmesan."]
+    method = ["Cook the pasta in boiling water for 10 minutes and toss with the oil and parmesan."]
     pasta = recipe(ingredients=lines, method=method, summary="Simple pasta. Vegan.")
     assert kinds([pasta]) == ["diet_claim"]
 
@@ -142,3 +145,148 @@ def test_an_odd_free_phrase_is_flagged_but_diet_words_are_not() -> None:
     assert kinds([odd]) == ["odd_phrase"]
     fine = recipe(summary="A gluten-free, dairy-free chicken dinner.")
     assert check_recipes([fine]) == []
+
+
+# --- Cookable Method (slice 4e) -------------------------------------------------------
+
+
+def test_a_listed_ingredient_the_method_never_uses_is_flagged() -> None:
+    lines = ["600 g chicken thigh", "2 cloves garlic, crushed", "1 tbsp olive oil", "1 lemon"]
+    problems = check_recipes([recipe(ingredients=lines)])
+    assert [(p.check, p.message) for p in problems] == [
+        ("unused", "'1 lemon' isn't used in any step")
+    ]
+
+
+def test_a_word_from_the_line_counts_as_using_it() -> None:
+    # "the oil" uses "olive oil"; "the beef" uses "beef mince"
+    lines = ["500 g beef mince", "1 tbsp olive oil"]
+    method = ["Brown the beef in the oil over high heat for 8 minutes until cooked through."]
+    assert check_recipes([recipe(ingredients=lines, method=method)]) == []
+
+
+def test_a_group_word_uses_its_members() -> None:
+    lines = [
+        "600 g chicken thigh",
+        "1 tbsp olive oil",
+        "1 tsp ground cumin",
+        "1 tsp paprika",
+        "1/2 tsp salt",
+        "1/2 tsp black pepper",
+        "1 bunch coriander, chopped",
+    ]
+    method = [
+        "Rub the chicken with the spices, season, and fry in the oil over medium heat for"
+        " 12 minutes until cooked through.",
+        "Scatter with the herbs.",
+    ]
+    assert check_recipes([recipe(ingredients=lines, method=method)]) == []
+
+
+def test_everything_does_not_count_as_naming_the_ingredients() -> None:
+    lines = ["2 x 400 g cans chickpeas, drained", "1 cucumber, chopped", "2 tbsp olive oil"]
+    toss = recipe(ingredients=lines, method=["Toss everything together."], minutes=10)
+    assert kinds([toss]) == ["unused", "unused", "unused"]
+
+
+def test_egg_yolks_and_whites_use_the_eggs() -> None:
+    lines = ["3 eggs, separated", "100 g caster sugar"]
+    method = ["Whisk the yolks with the sugar, then fold in the whipped whites."]
+    assert check_recipes([recipe(ingredients=lines, method=method, minutes=10)]) == []
+
+
+def test_a_pan_step_needs_a_heat_level() -> None:
+    method = [
+        "Fry the chicken in the olive oil for 12 minutes until cooked through.",
+        "Add the garlic for the last minute.",
+    ]
+    problems = check_recipes([recipe(method=method)])
+    assert [(p.check, p.message) for p in problems] == [
+        ("no_heat", "'Fry the chicken in the olive oil for 12…' gives no heat level")
+    ]
+
+
+def test_a_heat_level_carries_forward_to_later_steps() -> None:
+    method = [
+        "Heat the olive oil in a frying pan over medium heat.",
+        "Fry the chicken for 12 minutes until cooked through, adding the garlic at the end.",
+    ]
+    assert check_recipes([recipe(method=method)]) == []
+
+
+def test_simmering_boiling_and_a_hot_pan_are_heat_levels() -> None:
+    for step in (
+        "Sear the chicken in the olive oil in a very hot pan for 4 minutes each side until"
+        " cooked through, adding the garlic at the end.",
+        "Brown the chicken in the olive oil, then simmer with the garlic for 25 minutes until"
+        " cooked through.",
+    ):
+        assert check_recipes([recipe(method=[step])]) == [], step
+
+
+def test_boiling_water_is_no_heat_level_for_the_next_pan_step() -> None:
+    lines = ["400 g pasta", "2 cloves garlic, sliced", "1 tbsp olive oil"]
+    method = [
+        "Cook the pasta in boiling water for 10 minutes and drain.",
+        "Soften the garlic in the olive oil for 1 minute and toss with the pasta.",
+    ]
+    assert kinds([recipe(ingredients=lines, method=method, minutes=15)]) == ["no_heat"]
+
+
+def test_the_oven_temperature_is_no_heat_level_for_the_pan() -> None:
+    method = [
+        "Heat the oven to 200°C.",
+        "Fry the chicken in the olive oil for 12 minutes until cooked through, adding the garlic.",
+    ]
+    assert kinds([recipe(method=method)]) == ["no_heat"]
+
+
+def test_toasting_in_a_dry_pan_needs_a_heat_level() -> None:
+    lines = ["600 g chicken thigh", "2 cloves garlic, crushed", "1 tbsp olive oil", "40 g walnuts"]
+    method = [
+        "Toast the walnuts in a dry pan for 4 minutes.",
+        "Fry the chicken in the olive oil over medium heat for 12 minutes until cooked through,"
+        " adding the garlic.",
+    ]
+    assert kinds([recipe(ingredients=lines, method=method)]) == ["no_heat"]
+
+
+def test_baking_needs_an_oven_temperature() -> None:
+    lines = ["150 g self-raising flour", "2 eggs", "100 g caster sugar", "100 g butter, melted"]
+    method = ["Mix the flour, eggs, sugar and butter.", "Bake for 25 minutes until golden."]
+    cake = recipe(ingredients=lines, method=method, minutes=35)
+    assert [(p.check, p.message) for p in check_recipes([cake])] == [
+        ("no_heat", "'Bake for 25 minutes until golden.' gives no oven temperature")
+    ]
+    hot = ["Heat the oven to 180°C. Mix the flour, eggs, sugar and butter.", method[1]]
+    assert check_recipes([recipe(ingredients=lines, method=hot, minutes=35)]) == []
+
+
+def test_brown_sugar_is_not_a_browning_step() -> None:
+    lines = ["100 g butter", "100 g brown sugar", "150 g plain flour"]
+    method = ["Rub the butter into the flour and brown sugar until crumbly."]
+    assert kinds([recipe(ingredients=lines, method=method, minutes=10)]) == []
+
+
+def test_baking_powder_and_fried_eggs_are_not_cooking_steps() -> None:
+    lines = ["150 g self-raising flour", "1 tsp baking powder", "250 ml milk", "4 eggs"]
+    method = ["Whisk the flour, baking powder and milk into a batter.", "Top with the eggs."]
+    assert kinds([recipe(ingredients=lines, method=method, minutes=10)]) == []
+
+
+def test_a_cooking_step_needs_a_time_or_a_cue() -> None:
+    lines = ["1 onion, diced", "2 cloves garlic, crushed", "1 tbsp olive oil"]
+    vague = ["Soften the onion and garlic in the olive oil over medium heat."]
+    problems = check_recipes([recipe(ingredients=lines, method=vague, minutes=10)])
+    assert [p.check for p in problems] == ["no_time"]
+    for cue in ("for 6 minutes", "until soft"):
+        fixed = [f"Soften the onion and garlic in the olive oil over medium heat {cue}."]
+        assert check_recipes([recipe(ingredients=lines, method=fixed, minutes=10)]) == []
+
+
+def test_a_staple_cooked_by_its_packet_needs_no_time_or_heat() -> None:
+    lines = ["300 g rice", "1 tbsp soy sauce"]
+    method = ["Cook the rice according to the packet.", "Toss the rice with the soy sauce."]
+    assert check_recipes([recipe(ingredients=lines, method=method, minutes=20)]) == []
+    bare = ["Cook the rice.", "Toss the rice with the soy sauce."]
+    assert kinds([recipe(ingredients=lines, method=bare, minutes=20)]) == ["no_heat", "no_time"]

@@ -1,6 +1,7 @@
 """How good is the recipe reviewer? LLM-as-judge, measured before it's trusted.
 
-    uv run python -m evals.recipe_review --llm      # calls the API: about 14 reviews
+    uv run python -m evals.recipe_review --llm      # calls the API: about 21 reviews
+    uv run python -m evals.recipe_review --library  # reviews every Seed Recipe (~500 calls)
 
 Without --llm it only checks the dataset loads (free). The dataset (recipe_review.jsonl)
 has sound recipes and recipes with one mistake planted on purpose, each labelled with
@@ -21,11 +22,13 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from app.config import settings
-from app.data.recipes import SeedRecipe
+from app.data.recipes import SeedRecipe, load_seed_recipes
 from app.llm import ClaudeRecipeReviewer
+from app.llm_costs import cost_usd
 from app.services.recipe_review import RecipeReviewer, Review
 
 DATASET = Path(__file__).with_name("recipe_review.jsonl")
+LIBRARY_REPORT = Path(__file__).with_name("results") / "recipe_review_library.json"
 
 
 @dataclass(frozen=True)
@@ -75,10 +78,44 @@ async def run(reviewer: RecipeReviewer, cases: list[Case]) -> dict[str, Review |
     return {c.recipe.slug: await reviewer.review(c.recipe) for c in cases}
 
 
+async def review_library(reviewer: RecipeReviewer, at_once: int = 4) -> dict[str, Review | None]:
+    """Every Seed Recipe, a few at a time (rate limits), in library order."""
+    recipes = load_seed_recipes()
+    gate = asyncio.Semaphore(at_once)
+
+    async def one(r: SeedRecipe) -> Review | None:
+        async with gate:
+            return await reviewer.review(r)
+
+    found = await asyncio.gather(*(one(r) for r in recipes))
+    return {r.slug: review for r, review in zip(recipes, found, strict=True)}
+
+
 async def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--llm", action="store_true", help="call the API (costs money)")
+    parser.add_argument("--library", action="store_true", help="review every Seed Recipe")
     args = parser.parse_args()
+
+    if args.library:
+        if settings.anthropic_api_key is None:
+            raise SystemExit("ANTHROPIC_API_KEY is not set")
+        claude = ClaudeRecipeReviewer(
+            settings.anthropic_api_key.get_secret_value(), settings.review_model
+        )
+        library = await review_library(claude)
+        report = {
+            slug: None if r is None else [i.model_dump() for i in r.issues]
+            for slug, r in library.items()
+        }
+        LIBRARY_REPORT.parent.mkdir(exist_ok=True)
+        LIBRARY_REPORT.write_text(json.dumps(report, indent=1))
+        flagged = sum(bool(v) for v in report.values())
+        missing = sum(v is None for v in report.values())
+        cost = sum((cost_usd(u) or 0 for u in claude.usage), start=0)
+        print(f"{len(report)} reviewed: {flagged} flagged, {missing} no answer")
+        print(f"cost ${float(cost):.3f} ({len(claude.usage)} calls) → {LIBRARY_REPORT}")
+        return
 
     cases = load_cases()
     print(f"{len(cases)} cases: {sum(bool(c.planted) for c in cases)} with a planted mistake")

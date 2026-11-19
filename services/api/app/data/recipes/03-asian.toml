@@ -6,7 +6,7 @@ title = "Beef and broccoli stir-fry"
 cuisine = "chinese"
 course = "main"
 servings = 4
-minutes = 25
+minutes = 30
 summary = "Tender strips of beef and broccoli in a glossy oyster sauce. Faster than takeaway."
 ingredients = [
   "500 g beef steak, thinly sliced",
@@ -20,9 +20,9 @@ ingredients = [
   "1 cup rice",
 ]
 method = [
-  "Cook the rice. Toss the beef with the cornflour.",
-  "Stir-fry the beef in half the oil over high heat in batches. Set aside.",
-  "Stir-fry the broccoli, garlic and ginger with a splash of water for 3 minutes. Return the beef with the sauces and toss.",
+  "Cook the rice according to the packet. Toss the beef with the cornflour.",
+  "Stir-fry the beef in batches in half the oil in a wok over high heat for 1–2 minutes a batch until browned. Set aside.",
+  "Add the remaining oil and stir-fry the broccoli, garlic and ginger with a splash of water for 3 minutes. Return the beef with the oyster sauce and soy and toss for 1 minute until hot and glossy.",
 ]
 
 [[recipe]]
@@ -44,9 +44,9 @@ ingredients = [
   "3 spring onions, sliced",
 ]
 method = [
-  "Scramble the eggs in a little oil, then set aside. Fry the bacon until crisp.",
-  "Add the remaining oil and the rice and fry over high heat until hot. Add the peas and corn.",
-  "Stir in the soy sauce, egg and spring onion.",
+  "Scramble the eggs in a little of the oil in a wok over medium heat for 1–2 minutes until just set, then set aside. Fry the bacon for 4–5 minutes until crisp and set aside with the egg.",
+  "Add the remaining oil and the rice and fry over high heat for 3–4 minutes until hot. Add the peas and corn for 2 minutes.",
+  "Stir in the soy sauce, egg, bacon and spring onion.",
 ]
 
 [[recipe]]
@@ -71,7 +71,7 @@ ingredients = [
   "3 spring onions, chopped",
 ]
 method = [
-  "Toss the chicken in the cornflour. Stir-fry in the oil until golden and cooked.",
+  "Toss the chicken in the cornflour. Stir-fry in the oil in a wok over high heat for 5–6 minutes until golden and cooked through.",
   "Add the chillies, garlic and ginger for 30 seconds.",
   "Add the soy, vinegar and sugar, then toss through the peanuts and spring onion.",
 ]
@@ -82,8 +82,8 @@ title = "Mapo tofu"
 cuisine = "chinese"
 course = "main"
 servings = 4
-minutes = 25
-summary = "Silken tofu and pork mince in a spicy, numbing chilli bean sauce."
+minutes = 30
+summary = "Silken tofu and pork mince in a spicy, savoury chilli bean sauce, with rice."
 ingredients = [
   "1 tbsp vegetable oil",
   "200 g pork mince",
@@ -97,9 +97,9 @@ ingredients = [
   "1 cup rice",
 ]
 method = [
-  "Fry the mince in the oil until browned. Add the garlic, ginger and chilli bean paste for a minute.",
+  "Cook the rice according to the packet. Fry the mince in the oil in a wok over medium-high heat for 4–5 minutes, breaking it up, until browned and cooked through. Add the garlic, ginger and chilli bean paste for a minute.",
   "Add the stock and tofu and simmer gently for 5 minutes.",
-  "Thicken with the cornflour mixed with water. Serve with rice and spring onion.",
+  "Mix the cornflour with 2 tbsp water, stir it in, and simmer for 1 minute until thickened. Serve with rice and spring onion.",
 ]
 
 [[recipe]]
@@ -108,7 +108,7 @@ title = "Pork and cabbage dumplings"
 cuisine = "chinese"
 course = "main"
 servings = 4
-minutes = 60
+minutes = 75
 summary = "Homemade pan-fried dumplings filled with pork, cabbage, ginger and spring onion."
 ingredients = [
   "400 g pork mince",
@@ -122,8 +122,8 @@ ingredients = [
 ]
 method = [
   "Mix the pork, wombok, spring onion, ginger, soy and sesame oil.",
-  "Put a teaspoon of filling in each wrapper, wet the edge, and fold to seal.",
-  "Fry in the oil until the bases are golden, then add 125 ml water, cover, and steam for 5 minutes.",
+  "Put a heaped teaspoon (about 15 g) of filling in each wrapper, wet the edge, and fold to seal.",
+  "Heat a little of the oil in a large frying pan over medium heat. Fry the dumplings in batches for 2–3 minutes until the bases are golden, then add 125 ml water, cover, and steam for 5–6 minutes until the water has gone and the filling is cooked through.",
 ]
 
 [[recipe]]
@@ -148,8 +148,9 @@ ingredients = [
   "1 cup rice",
 ]
 method = [
-  "Crumb the chicken (flour, egg, panko) and shallow-fry until golden and cooked. Slice.",
-  "Cook the onion and carrot in a little oil, stir in the curry powder and 1 tbsp flour, then the stock and honey. Simmer 15 minutes and blend.",
+  "Cook the rice according to the packet.",
+  "Cook the onion and carrot in 1 tbsp of the oil in a saucepan over medium heat for 5 minutes until soft. Stir in the curry powder and 1 tbsp of the flour for 1 minute, then the stock and honey. Simmer for 15 minutes and blend until smooth.",
+  "Meanwhile, crumb the chicken: flour, egg, then panko. Heat the remaining oil in a frying pan over medium heat and shallow-fry for 3–4 minutes each side until golden and cooked through. Slice.",
   "Serve the chicken on rice with the sauce.",
 ]
 
@@ -172,8 +173,8 @@ ingredients = [
   "1 tbsp sesame seeds",
 ]
 method = [
-  "Cook the rice. Mix the soy, mirin and honey.",
-  "Pan-fry the salmon for 3 minutes each side, then pour in the sauce and let it bubble and glaze.",
+  "Cook the rice according to the packet. Mix the soy, mirin and honey.",
+  "Pan-fry the salmon in a non-stick frying pan over medium-high heat for 3 minutes each side until it flakes easily, then pour in the sauce and let it bubble for 1–2 minutes until glazed.",
   "Serve on rice with cucumber and avocado, sprinkled with sesame seeds.",
 ]
 
@@ -215,9 +216,9 @@ ingredients = [
   "1 cup rice",
 ]
 method = [
-  "Simmer the soy, mirin and sugar for 3 minutes until syrupy.",
+  "Cook the rice according to the packet. Simmer the soy, mirin and sugar for 3 minutes until syrupy.",
   "Thread the chicken and spring onion onto skewers.",
-  "Grill for 10–12 minutes, turning and brushing with the glaze, until cooked. Serve with rice.",
+  "Cook under a hot grill for 10–12 minutes, turning and brushing with the glaze, until cooked through. Serve with rice.",
 ]
 
 [[recipe]]
@@ -263,9 +264,9 @@ ingredients = [
   "2 tbsp gochujang",
 ]
 method = [
-  "Cook the rice. Fry the mince with the soy and half the sesame oil for 5 minutes until browned.",
-  "Quickly cook the carrot, spinach and bean sprouts separately with a little sesame oil.",
-  "Fry the eggs. Top bowls of rice with the vegetables, beef and egg, and serve with gochujang.",
+  "Cook the rice according to the packet. Fry the mince with 1 tbsp of the soy and half the sesame oil in a frying pan over medium-high heat for 5 minutes until browned and cooked through. Set aside.",
+  "In the same pan, cook each vegetable separately with a little of the remaining soy and sesame oil: the carrot for 2–3 minutes until just tender, the spinach for 1 minute until wilted, and the bean sprouts for 1–2 minutes.",
+  "Fry the eggs for 3–4 minutes until the whites are set and the yolks are runny, or cooked through if you prefer. Top bowls of rice with the vegetables, beef and egg, and serve with gochujang.",
 ]
 
 [[recipe]]
@@ -274,7 +275,7 @@ title = "Korean-style fried chicken"
 cuisine = "korean"
 course = "main"
 servings = 4
-minutes = 45
+minutes = 55
 summary = "Extra-crunchy chicken pieces tossed in a sticky, spicy gochujang and honey glaze."
 ingredients = [
   "1 kg chicken wings",
@@ -287,7 +288,7 @@ ingredients = [
   "1 tbsp sesame seeds",
 ]
 method = [
-  "Toss the wings in the cornflour. Deep-fry at 170°C for 8 minutes, rest 5 minutes, then fry again for 4 minutes until crisp.",
+  "Heat the oil in a large, deep saucepan to 170°C. Toss the wings in the cornflour and deep-fry in batches for 8 minutes, rest for 5 minutes, then fry again for 4 minutes until crisp, golden and cooked through to the bone.",
   "Simmer the gochujang, honey, soy and garlic for 2 minutes.",
   "Toss the chicken in the glaze and sprinkle with sesame seeds.",
 ]
@@ -298,7 +299,7 @@ title = "Kimchi fried rice"
 cuisine = "korean"
 course = "main"
 servings = 2
-minutes = 15
+minutes = 20
 summary = "Leftover rice fried with tangy kimchi and bacon, topped with a runny egg."
 ingredients = [
   "1 tbsp vegetable oil",
@@ -310,9 +311,9 @@ ingredients = [
   "2 eggs",
 ]
 method = [
-  "Fry the bacon in the oil, then add the kimchi for 2 minutes.",
-  "Add the rice and gochujang and fry until hot and slightly crispy. Stir in the sesame oil.",
-  "Top with fried eggs.",
+  "Fry the bacon in most of the oil in a wok over medium-high heat for 3–4 minutes until crisp, then add the kimchi for 2 minutes.",
+  "Add the rice and gochujang and fry for 3–4 minutes until hot and slightly crispy. Stir in the sesame oil.",
+  "Fry the eggs in the remaining oil in a frying pan over medium heat for 3–4 minutes until the whites are set and the yolks are runny, or cooked through if you prefer. Serve on top of the rice.",
 ]
 
 [[recipe]]
@@ -321,7 +322,7 @@ title = "Beef bulgogi"
 cuisine = "korean"
 course = "main"
 servings = 4
-minutes = 30
+minutes = 40
 summary = "Thinly sliced beef in a sweet soy, garlic and pear marinade, quickly seared."
 ingredients = [
   "600 g beef steak, very thinly sliced",
@@ -334,8 +335,8 @@ ingredients = [
   "1 cup rice",
 ]
 method = [
-  "Mix the soy, sugar, pear, garlic and sesame oil. Marinate the beef for at least 15 minutes.",
-  "Sear the beef and onion in batches in a very hot pan, 2–3 minutes a batch, until browned.",
+  "Cook the rice according to the packet. Mix the soy, sugar, pear, garlic and sesame oil. Marinate the beef for at least 15 minutes.",
+  "Sear the beef and onion in batches in a very hot pan, 2–3 minutes a batch, until browned and cooked through.",
   "Serve with rice.",
 ]
 
@@ -360,8 +361,8 @@ ingredients = [
   "1 cup jasmine rice",
 ]
 method = [
-  "Fry the curry paste in the oil for a minute. Add the coconut milk and bring to a simmer.",
-  "Add the chicken and simmer for 10 minutes, then the beans and zucchini for 5 minutes.",
+  "Cook the rice according to the packet. Fry the curry paste in the oil in a large saucepan over medium heat for 1 minute until fragrant. Add the coconut milk and bring to a simmer.",
+  "Add the chicken and simmer for 10 minutes until cooked through, then the beans and zucchini for 5 minutes.",
   "Season with fish sauce and sugar, stir through the basil, and serve with rice.",
 ]
 
@@ -388,7 +389,7 @@ ingredients = [
 ]
 method = [
   "Soak the noodles in hot water until soft, then drain. Mix the tamarind, fish sauce and sugar.",
-  "Stir-fry the prawns in the oil until pink. Push aside and scramble the eggs.",
+  "Stir-fry the prawns in the oil in a wok over high heat for 2–3 minutes until pink and opaque. Push aside and scramble the eggs for 1 minute until just set.",
   "Add the noodles and sauce and toss, then the sprouts and spring onion. Serve with peanuts and lime.",
 ]
 
@@ -411,9 +412,9 @@ ingredients = [
   "1 cup jasmine rice",
 ]
 method = [
-  "Fry the curry paste in the oil, then add the coconut milk and lime leaves.",
+  "Cook the rice according to the packet. Fry the curry paste in the oil in a large saucepan over medium heat for 1 minute until fragrant, then add the coconut milk and lime leaves.",
   "Add the pumpkin and simmer for 12 minutes until tender.",
-  "Add the beef and cook for 3–4 minutes. Season with fish sauce and serve with rice.",
+  "Add the beef and simmer for 3–4 minutes until no longer pink. Season with fish sauce and serve with rice.",
 ]
 
 [[recipe]]
@@ -437,7 +438,7 @@ ingredients = [
 ]
 method = [
   "Simmer the stock with the lemongrass, lime leaves and paste for 10 minutes.",
-  "Add the mushrooms and prawns and cook for 3 minutes.",
+  "Add the mushrooms and prawns and simmer for 3 minutes until the prawns are pink and opaque.",
   "Season with fish sauce and lime juice, and serve topped with coriander.",
 ]
 
@@ -447,7 +448,7 @@ title = "Thai basil chicken"
 cuisine = "thai"
 course = "main"
 servings = 4
-minutes = 20
+minutes = 30
 summary = "Chicken mince stir-fried with chilli, garlic and basil, served with rice and a fried egg."
 ingredients = [
   "2 tbsp vegetable oil",
@@ -462,9 +463,9 @@ ingredients = [
   "1 cup jasmine rice",
 ]
 method = [
-  "Stir-fry the garlic and chilli in the oil for 30 seconds. Add the mince and cook until browned.",
-  "Add the sauces and sugar, then the basil until wilted.",
-  "Serve on rice with fried eggs.",
+  "Cook the rice according to the packet. Stir-fry the garlic and chilli in half the oil in a wok over high heat for 30 seconds. Add the mince and cook, breaking it up, for 5 minutes until browned and cooked through.",
+  "Add the oyster sauce, fish sauce and sugar, then the basil for 30 seconds until wilted.",
+  "Fry the eggs in the remaining oil in a frying pan over medium-high heat for 3–4 minutes until the whites are set and the yolks are runny, or cooked through if you prefer. Serve the chicken on rice, topped with the eggs.",
 ]
 
 [[recipe]]
@@ -488,7 +489,7 @@ ingredients = [
 ]
 method = [
   "Soak the vermicelli in hot water until soft, then drain.",
-  "Dip a rice paper sheet in warm water, lay it flat, and fill with prawns, noodles, vegetables and mint. Roll up tightly.",
+  "Dip a rice paper sheet in warm water, lay it flat, and fill with prawns, noodles, lettuce, carrot, cucumber and mint. Roll up tightly.",
   "Mix the peanut butter, hoisin and a little warm water for dipping.",
 ]
 
@@ -514,9 +515,9 @@ ingredients = [
   "2 limes, cut into wedges",
 ]
 method = [
-  "Char the onion and ginger in a dry pan. Simmer in the stock with the star anise and cinnamon for 40 minutes, then strain. Add the fish sauce.",
-  "Cook the noodles and divide between bowls. Top with the raw beef.",
-  "Pour over the boiling broth to cook the beef. Serve with sprouts, basil and lime.",
+  "Char the onion and ginger in a dry pan over high heat for 5 minutes until blackened in spots. Simmer in the stock with the star anise and cinnamon for 40 minutes, then strain. Add the fish sauce.",
+  "Cook the noodles according to the packet and divide between bowls. Top with the raw beef.",
+  "Bring the broth back to a rolling boil and ladle it over the beef; leave for 1 minute until the beef is no longer pink. Serve with sprouts, basil and lime.",
 ]
 
 [[recipe]]
@@ -526,7 +527,7 @@ cuisine = "vietnamese"
 course = "main"
 servings = 4
 minutes = 35
-summary = "Caramelised lemongrass pork over vermicelli with herbs, pickled carrot and nuoc cham."
+summary = "Caramelised lemongrass pork over vermicelli with herbs, crunchy carrot and a lime and fish sauce dressing."
 ingredients = [
   "500 g pork loin, thinly sliced",
   "2 stalks lemongrass, finely chopped",
@@ -540,9 +541,9 @@ ingredients = [
   "2 limes, juiced",
 ]
 method = [
-  "Marinate the pork with the lemongrass, garlic, 1 tbsp fish sauce and 1 tbsp sugar for 15 minutes. Grill or pan-fry until caramelised.",
-  "Cook the noodles. Mix the lime juice with the remaining fish sauce and sugar for the dressing.",
-  "Serve the pork on noodles with lettuce, carrot and mint, and pour over the dressing.",
+  "Marinate the pork with the lemongrass, garlic, 1 tbsp fish sauce and 1 tbsp sugar for 15 minutes. Cook on a hot barbecue or grill plate for 2–3 minutes each side until caramelised and cooked through.",
+  "Soak the vermicelli in boiling water for 5 minutes until soft, then drain and rinse under cold water. Mix the lime juice with the remaining fish sauce and sugar for the dressing.",
+  "Serve the pork on the noodles with lettuce, carrot and mint, and pour over the dressing.",
 ]
 
 [[recipe]]
@@ -565,9 +566,9 @@ ingredients = [
   "1 cucumber, sliced",
 ]
 method = [
-  "Fry the chicken in the oil until cooked. Add the onion, garlic and chilli for 3 minutes.",
-  "Add the rice and kecap manis and fry until hot.",
-  "Serve topped with fried eggs and cucumber on the side.",
+  "Fry the chicken in most of the oil in a wok over medium-high heat for 5–6 minutes until cooked through. Add the onion, garlic and chilli for 3 minutes.",
+  "Add the rice and kecap manis and fry for 3–4 minutes until hot.",
+  "Fry the eggs in the remaining oil in a frying pan over medium heat for 3–4 minutes until the whites are set and the yolks are runny, or cooked through if you prefer. Serve the rice topped with the eggs, with cucumber on the side.",
 ]
 
 [[recipe]]
@@ -592,9 +593,9 @@ ingredients = [
   "1 lime, cut into wedges",
 ]
 method = [
-  "Fry the laksa paste in the oil for 2 minutes. Add the coconut milk and stock and bring to a simmer.",
-  "Add the chicken and tofu puffs and simmer for 10 minutes. Season with fish sauce.",
-  "Cook the noodles and divide between bowls. Ladle over the soup and top with sprouts, coriander and lime.",
+  "Fry the laksa paste in the oil in a large pot over medium heat for 2 minutes until fragrant. Add the coconut milk and stock and bring to a simmer.",
+  "Add the chicken and tofu puffs and simmer for 10 minutes until the chicken is cooked through. Season with fish sauce.",
+  "Cook the noodles according to the packet and divide between bowls. Ladle over the soup and top with sprouts, coriander and lime.",
 ]
 
 [[recipe]]
@@ -616,9 +617,9 @@ ingredients = [
   "1 cup rice",
 ]
 method = [
-  "Marinate the chicken with the soy and turmeric. Thread onto skewers.",
-  "Grill for 10–12 minutes, turning, until cooked.",
-  "Warm the peanut butter, coconut milk, sweet chilli and lime juice, stirring until smooth. Serve with rice.",
+  "Cook the rice according to the packet. Marinate the chicken with the soy and turmeric. Thread onto skewers.",
+  "Cook under a hot grill for 10–12 minutes, turning, until cooked through.",
+  "Warm the peanut butter, coconut milk, sweet chilli and lime juice over low heat, stirring until smooth. Serve with rice.",
 ]
 
 [[recipe]]
@@ -640,7 +641,7 @@ ingredients = [
 ]
 method = [
   "Loosen the noodles in hot water and drain.",
-  "Brown the pork in the oil, then add the capsicum and bok choy for 2 minutes.",
+  "Brown the pork in the oil in a wok over high heat for 4–5 minutes, breaking it up, until cooked through, then add the capsicum and bok choy for 2 minutes.",
   "Add the noodles and sauces and toss until hot.",
 ]
 
@@ -665,7 +666,7 @@ ingredients = [
   "1 cup rice",
 ]
 method = [
-  "Toss the tofu in the cornflour and fry in the oil until golden on all sides. Set aside.",
+  "Cook the rice according to the packet. Toss the tofu in the cornflour and fry in the oil in a wok over medium-high heat for 6–8 minutes until golden on all sides. Set aside.",
   "Stir-fry the snow peas and capsicum for 2 minutes.",
   "Add the soy, honey and sesame oil, return the tofu and toss. Sprinkle with sesame seeds and serve with rice.",
 ]

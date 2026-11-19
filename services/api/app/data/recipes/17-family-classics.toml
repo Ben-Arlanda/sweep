@@ -21,7 +21,7 @@ ingredients = [
   "1 egg, beaten",
 ]
 method = [
-  "Brown the chicken in the butter for 6 minutes. Add the onion and mushrooms and cook for 6 minutes.",
+  "Brown the chicken in the butter over medium-high heat for 6 minutes. Add the onion and mushrooms and cook for 6 minutes.",
   "Stir in the flour, then the stock, cream and thyme, and simmer for 15 minutes until thick and the chicken is cooked through. Cool for 10 minutes.",
   "Heat the oven to 200°C. Spoon into a pie dish, top with the pastry, brush with egg and cut a slit in the top.",
   "Bake for 30 minutes until puffed and golden.",
@@ -43,13 +43,13 @@ ingredients = [
   "375 ml beef stock",
   "2 tbsp tomato sauce",
   "1 tbsp worcestershire sauce",
-  "2 sheets shortcrust pastry",
-  "2 sheets puff pastry",
+  "4 sheets shortcrust pastry",
+  "3 sheets puff pastry",
   "1 egg, beaten",
   "125 ml tomato sauce, to serve",
 ]
 method = [
-  "Fry the onion and mince in the oil for 10 minutes until browned and cooked through. Stir in the flour, then the stock, tomato sauce and worcestershire. Simmer for 20 minutes until thick. Cool completely, about 30 minutes.",
+  "Fry the onion and mince in the oil over medium-high heat for 10 minutes until browned and cooked through. Stir in the flour, then the stock, tomato sauce and worcestershire. Simmer for 20 minutes until thick. Cool completely, about 30 minutes.",
   "Heat the oven to 200°C. Line 6 pie tins with the shortcrust and fill with the mince.",
   "Top with circles of puff pastry, press the edges to seal and brush with egg.",
   "Bake for 30 minutes until golden. Serve with tomato sauce.",
@@ -107,7 +107,7 @@ ingredients = [
 ]
 method = [
   "Mix the mince, carrot, grated onion, breadcrumbs, egg and worcestershire. Shape into 8 patties.",
-  "Fry the rissoles in the oil for 5 minutes each side until cooked through. Remove.",
+  "Fry the rissoles in the oil over medium heat for 5 minutes each side until cooked through. Remove.",
   "Fry the sliced onion in the same pan for 6 minutes, stir in the flour, then the stock, and simmer for 3 minutes until thick. Return the rissoles to warm through.",
   "Boil the potatoes for 15 minutes and mash with the butter and milk. Cook the peas for 3 minutes. Serve together.",
 ]
@@ -135,7 +135,7 @@ method = [
   "Mix the butter, garlic and parsley and chill for 10 minutes.",
   "Cut a deep pocket in each chicken breast and fill with the butter. Dust with flour, dip in egg and coat in panko.",
   "Heat the oven to 200°C. Toss the potatoes in 1 tbsp oil and roast for 35 minutes.",
-  "Brown the chicken in the rest of the oil for 2 minutes each side, then bake for 20 minutes until cooked through.",
+  "Brown the chicken in the rest of the oil in an ovenproof frying pan over medium-high heat for 2 minutes each side, then bake for 20 minutes until cooked through.",
 ]
 
 [[recipe]]
@@ -160,8 +160,8 @@ ingredients = [
   "4 carrots, cut into chunks",
 ]
 method = [
-  "Heat the oven to 160°C. Season the beef with the salt and brown in the oil in a heavy pot for 8 minutes. Remove.",
-  "Soften the onions and garlic for 5 minutes, stir in the tomato paste, then the wine and stock.",
+  "Heat the oven to 160°C. Season the beef with the salt and brown in the oil in a heavy pot over medium-high heat for 8 minutes. Remove.",
+  "Turn the heat to medium and soften the onions and garlic for 5 minutes, stir in the tomato paste, then the wine and stock.",
   "Return the beef with the thyme, cover and bake for 2 hours. Add the potatoes and carrots and bake for 1 hour more until everything is tender and the beef is cooked through.",
 ]
 
@@ -185,10 +185,10 @@ ingredients = [
   "375 ml beef stock",
 ]
 method = [
-  "Heat the oven to 220°C. Brown the sausages in the oil in a baking dish in the oven for 10 minutes.",
+  "Heat the oven to 220°C. Put the sausages and oil in a baking dish and cook in the oven for 10 minutes until browned and the oil is very hot. Spoon 1 tbsp of the fat into a small pan for the gravy.",
   "Whisk the flour, eggs, milk and salt to a smooth batter.",
   "Pour the batter around the hot sausages and bake for 25 minutes, without opening the oven, until puffed and golden and the sausages are cooked through.",
-  "For the gravy, cook the onion in a little of the sausage fat for 8 minutes, stir in the extra flour, then the stock and simmer until thick.",
+  "For the gravy, cook the onion in the sausage fat in the small pan over medium heat for 8 minutes until soft, stir in the extra flour, then the stock and simmer for 3 minutes until thick.",
 ]
 
 [[recipe]]
@@ -212,7 +212,7 @@ ingredients = [
   "40 g butter, melted",
 ]
 method = [
-  "Heat the oven to 170°C. Toss the lamb in the flour and brown in the oil for 6 minutes. Add the onions and carrots for 5 minutes.",
+  "Heat the oven to 170°C. Toss the lamb in the flour and brown in the oil over medium-high heat for 6 minutes. Add the onions and carrots for 5 minutes.",
   "Add the stock, worcestershire and thyme and tip into a baking dish.",
   "Layer the potatoes over the top and brush with butter. Cover and bake for 1½ hours.",
   "Uncover and bake for 30 minutes more until the potatoes are golden and the lamb is tender and cooked through.",
@@ -241,7 +241,7 @@ ingredients = [
 method = [
   "Boil the potatoes for 15 minutes until tender, drain and mash. Cool for 10 minutes.",
   "Mix in the tuna, spring onions, lemon zest and parsley, and shape into 8 cakes.",
-  "Dip in egg and coat in breadcrumbs. Fry in the oil for 3 minutes each side until golden and hot through.",
+  "Dip in egg and coat in breadcrumbs. Fry in the oil over medium heat for 3 minutes each side until golden and hot through.",
   "Serve with mayonnaise and lettuce.",
 ]
 
@@ -265,9 +265,9 @@ ingredients = [
   "1 bunch parsley, chopped",
 ]
 method = [
-  "Cook the pasta, keeping a cup of the water.",
-  "Fry the chicken in the oil for 6 minutes until cooked through. Remove.",
-  "Melt the butter with the garlic for 30 seconds, add the cream and simmer for 3 minutes. Stir in the parmesan and pepper.",
+  "Cook the pasta according to the packet, keeping a cup of the water.",
+  "Fry the chicken in the oil over medium-high heat for 6 minutes until cooked through. Remove.",
+  "Turn the heat to medium. Melt the butter with the garlic for 30 seconds, add the cream and simmer for 3 minutes. Stir in the parmesan and pepper.",
   "Toss with the pasta and chicken, loosening with pasta water. Scatter with parsley.",
 ]
 
@@ -290,7 +290,7 @@ ingredients = [
   "4 bread rolls",
 ]
 method = [
-  "Fry the onion and capsicum in 1 tbsp oil for 8 minutes until soft. Push aside.",
+  "Fry the onion and capsicum in 1 tbsp oil over medium heat for 8 minutes until soft. Push aside.",
   "Add the rest of the oil and the beef, season, and stir-fry over high heat for 3 minutes until browned.",
   "Mix everything together, top with the cheddar and cover for 1 minute to melt. Pile into the rolls.",
 ]
@@ -340,8 +340,8 @@ ingredients = [
   "400 g pasta",
 ]
 method = [
-  "Cook the pasta.",
-  "Season the chicken with the oregano and salt and fry in the oil for 6–7 minutes each side until cooked through. Remove.",
+  "Cook the pasta according to the packet.",
+  "Season the chicken with the oregano and salt and fry in the oil over medium heat for 6–7 minutes each side until cooked through. Remove.",
   "Fry the garlic and tomatoes for 3 minutes, add the cream and parmesan and simmer for 2 minutes. Stir in the spinach.",
   "Return the chicken to the sauce and serve with the pasta.",
 ]
@@ -372,7 +372,7 @@ ingredients = [
   "3 spring onions, sliced",
 ]
 method = [
-  "Brown the chicken and chorizo in the oil for 6 minutes. Add the onion, capsicum, celery and garlic for 5 minutes.",
+  "Brown the chicken and chorizo in the oil over medium-high heat for 6 minutes. Add the onion, capsicum, celery and garlic for 5 minutes.",
   "Stir in the spices and rice, then the tomatoes and stock. Cover and simmer for 18 minutes until the rice is nearly tender.",
   "Push the prawns into the rice, cover and cook for 5 minutes until pink and the chicken is cooked through. Scatter with spring onions.",
 ]
@@ -400,7 +400,7 @@ ingredients = [
   "150 ml milk",
 ]
 method = [
-  "Brown the chicken in the oil for 6 minutes. Add the onion, carrots and celery for 5 minutes, stir in the plain flour, then the stock and thyme. Simmer for 25 minutes.",
+  "Brown the chicken in the oil over medium-high heat for 6 minutes. Turn the heat to medium, add the onion, carrots and celery for 5 minutes, stir in the plain flour, then the stock and thyme. Simmer for 25 minutes.",
   "Rub the butter into the self-raising flour, stir in the parsley and milk to a soft dough and shape into 12 balls.",
   "Sit the dumplings on the stew, cover and simmer for 20 minutes until risen and cooked through, and the chicken is cooked through.",
 ]
@@ -428,7 +428,7 @@ ingredients = [
   "1 bunch parsley, chopped",
 ]
 method = [
-  "Brown the beef in the oil in batches for 6 minutes. Add the onions and garlic for 8 minutes.",
+  "Brown the beef in the oil in batches over high heat for 6 minutes. Turn the heat to medium, return all the beef and add the onions and garlic for 8 minutes.",
   "Off the heat, stir in the paprika, cumin seeds and tomato paste, then the stock. Simmer, covered, for 1½ hours.",
   "Add the capsicums and potatoes and simmer for 30 minutes more until the beef is tender and cooked through.",
   "Serve with sour cream and parsley.",
@@ -436,7 +436,7 @@ method = [
 
 [[recipe]]
 slug = "kasespatzle"
-title = "Cheese spaetzle with crispy onions"
+title = "Cheese spaetzle with golden onions"
 cuisine = "german"
 course = "main"
 servings = 4
@@ -454,7 +454,7 @@ ingredients = [
 ]
 method = [
   "Beat the flour, eggs, milk and salt to a thick, sticky batter. Rest for 10 minutes.",
-  "Fry the onions in half the butter for 15 minutes until deep golden.",
+  "Fry the onions in half the butter over medium-low heat for 15 minutes until deep golden.",
   "Push the batter through the holes of a colander into a pot of simmering salted water. Cook for 2 minutes until the spaetzle float, then drain.",
   "Toss with the rest of the butter and the gruyere until melted, top with the onions and chives.",
 ]
@@ -482,8 +482,8 @@ ingredients = [
   "1 baguette",
 ]
 method = [
-  "Brown the chicken in the oil and butter for 4 minutes each side. Remove.",
-  "Cook the shallots, mushrooms and garlic for 6 minutes. Stir in the flour, then the wine, tomatoes, stock and thyme.",
+  "Brown the chicken in the oil and butter over medium-high heat for 4 minutes each side. Remove.",
+  "Turn the heat to medium and cook the shallots, mushrooms and garlic for 6 minutes. Stir in the flour, then the wine, tomatoes, stock and thyme.",
   "Return the chicken and simmer, covered, for 25 minutes until cooked through. Serve with the baguette.",
 ]
 
@@ -509,8 +509,8 @@ ingredients = [
   "1 bunch parsley, chopped",
 ]
 method = [
-  "Brown the sausages in the oil for 8 minutes. Remove.",
-  "Soften the onion, carrot and garlic for 6 minutes. Add the lentils, wine, stock and thyme.",
+  "Brown the sausages in the oil over medium heat for 8 minutes. Remove.",
+  "Soften the onion, carrot and garlic in the same pan for 6 minutes. Add the lentils, wine, stock and thyme.",
   "Return the sausages and simmer, covered, for 25 minutes until the lentils are tender and the sausages are cooked through.",
   "Stir in the mustard and parsley.",
 ]
@@ -538,7 +538,7 @@ ingredients = [
   "1 bunch dill, chopped",
 ]
 method = [
-  "Soften the onion and carrot in the oil for 6 minutes. Stir in the tomato paste.",
+  "Soften the onion and carrot in the oil over medium heat for 6 minutes. Stir in the tomato paste.",
   "Add the potatoes and stock and simmer for 15 minutes. Add the cabbage and beetroot and simmer for 15 minutes more.",
   "Stir in the vinegar and sugar. Serve with sour cream and dill.",
 ]
@@ -550,7 +550,7 @@ cuisine = "australian"
 course = "main"
 servings = 4
 minutes = 50
-summary = "The retro favourite: chicken thighs baked in a sweet, savoury apricot and onion sauce."
+summary = "The retro favourite: chicken thighs simmered in a sweet, savoury apricot and onion sauce."
 ingredients = [
   "1 kg chicken thigh",
   "1 tbsp vegetable oil",
@@ -564,10 +564,10 @@ ingredients = [
   "200 g green beans",
 ]
 method = [
-  "Brown the chicken in the oil for 4 minutes each side. Remove.",
-  "Soften the onion for 5 minutes. Add the apricots, stock, soy and sugar and bring to a simmer.",
+  "Brown the chicken in the oil over medium-high heat for 4 minutes each side. Remove.",
+  "Turn the heat to medium and soften the onion for 5 minutes. Add the apricots, stock, soy and sugar and bring to a simmer.",
   "Return the chicken, cover and simmer for 25 minutes until cooked through. Thicken with the cornflour mixed with a splash of water.",
-  "Cook the rice, steam the beans for 4 minutes and serve.",
+  "Meanwhile, cook the rice according to the packet. Steam the beans for 4 minutes until tender and serve.",
 ]
 
 [[recipe]]
@@ -576,7 +576,7 @@ title = "Curried sausages"
 cuisine = "australian"
 course = "main"
 servings = 4
-minutes = 40
+minutes = 45
 summary = "A homely mild curry of sliced sausages, potato, carrot and peas over rice."
 ingredients = [
   "8 sausages",
@@ -592,10 +592,10 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Brown the sausages in the oil for 8 minutes, then slice.",
-  "Soften the onion and apple for 5 minutes. Stir in the curry powder and flour, then the stock.",
+  "Brown the sausages in the oil over medium heat for 8 minutes, then slice.",
+  "Soften the onion and apple in the same pan for 5 minutes. Stir in the curry powder and flour, then the stock.",
   "Add the sausages, potatoes and carrots and simmer for 20 minutes until tender and the sausages are cooked through. Add the peas for 3 minutes.",
-  "Serve with rice.",
+  "Meanwhile, cook the rice according to the packet. Serve with the curried sausages.",
 ]
 
 [[recipe]]
@@ -619,7 +619,7 @@ ingredients = [
   "150 g cheddar cheese, grated",
 ]
 method = [
-  "Fry the mince and onion in the oil for 8 minutes until browned and cooked through. Stir in the spices.",
+  "Fry the mince and onion in the oil over medium-high heat for 8 minutes until browned and cooked through. Stir in the spices.",
   "Add the tomatoes, beans, stock and pasta. Simmer, stirring often, for 12 minutes until the pasta is tender.",
   "Top with cheddar, cover for 2 minutes until melted.",
 ]
@@ -645,8 +645,8 @@ ingredients = [
   "40 g parmesan, grated",
 ]
 method = [
-  "Cook the pasta for 2 minutes less than the packet says and drain.",
-  "Fry the mince, onion and garlic in the oil for 8 minutes until browned and cooked through. Add the passata and oregano and simmer for 10 minutes.",
+  "Boil the pasta for 2 minutes less than the packet says and drain.",
+  "Fry the mince, onion and garlic in the oil over medium-high heat for 8 minutes until browned and cooked through. Add the passata and oregano and simmer for 10 minutes.",
   "Heat the oven to 200°C. Toss the pasta with the sauce. Layer half in a dish, dot with ricotta, then add the rest.",
   "Top with mozzarella and parmesan and bake for 20 minutes until bubbling.",
 ]
@@ -727,9 +727,9 @@ ingredients = [
   "40 g butter",
 ]
 method = [
-  "Brown the sausages in the oil for 8 minutes. Remove.",
-  "Soften the onion, carrot and garlic for 6 minutes. Add the paprika, tomatoes, beans, stock and worcestershire.",
-  "Return the sausages and simmer for 25 minutes until thick and the sausages are cooked through.",
+  "Brown the sausages in the oil over medium heat for 8 minutes. Remove.",
+  "Soften the onion, carrot and garlic in the same pan for 6 minutes. Add the paprika, tomatoes, beans, stock and worcestershire.",
+  "Return the sausages and simmer gently for 25 minutes until thick and the sausages are cooked through.",
   "Boil the potatoes for 15 minutes and mash with the butter. Serve with the casserole.",
 ]
 
@@ -754,8 +754,8 @@ ingredients = [
   "300 g green beans",
 ]
 method = [
-  "Season the pork and fry in the oil for 4 minutes each side until cooked through. Rest.",
-  "Fry the apples in the butter for 4 minutes until golden. Add the shallot for 1 minute.",
+  "Season the pork and fry in the oil over medium-high heat for 4 minutes each side until cooked through. Rest.",
+  "Turn the heat to medium and fry the apples in the butter for 4 minutes until golden. Add the shallot for 1 minute.",
   "Add the stock and bubble for 2 minutes, then stir in the cream and mustard and simmer until saucy.",
   "Steam the beans for 4 minutes and serve with the pork, apples and sauce.",
 ]
@@ -766,7 +766,7 @@ title = "Homemade chicken nuggets"
 cuisine = "american"
 course = "main"
 servings = 4
-minutes = 35
+minutes = 50
 summary = "Crunchy oven-baked chicken nuggets the kids will love, with oven chips."
 ingredients = [
   "600 g chicken breast, cut into nugget-sized pieces",

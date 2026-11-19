@@ -16,7 +16,7 @@ ingredients = [
   "1/2 tsp chilli flakes",
 ]
 method = [
-  "Toast the bread. Mash the avocado with the lemon juice and season.",
+  "Toast the bread for 2–3 minutes until golden. Mash the avocado with the lemon juice and season.",
   "Pile onto the toast and top with feta and chilli flakes.",
 ]
 
@@ -38,8 +38,9 @@ ingredients = [
 ]
 method = [
   "Whisk the eggs with the milk and a pinch of salt.",
-  "Melt the butter over low heat, add the eggs, and stir gently until just set.",
-  "Serve on toast with chives.",
+  "Toast the bread for 2–3 minutes until golden and spread with a little of the butter.",
+  "Melt the rest of the butter in a pan over low heat, add the eggs, and stir gently for 3–4 minutes until just set.",
+  "Serve on the buttered toast with chives.",
 ]
 
 [[recipe]]
@@ -48,7 +49,7 @@ title = "Bircher muesli"
 cuisine = "swiss"
 course = "breakfast"
 servings = 4
-minutes = 10
+minutes = 490
 summary = "Oats soaked overnight with apple, yoghurt and milk. Grab-and-go breakfast."
 ingredients = [
   "200 g rolled oats",
@@ -59,7 +60,7 @@ ingredients = [
   "40 g almonds, chopped",
 ]
 method = [
-  "Mix the oats, apple, milk, yoghurt and honey. Cover and refrigerate overnight.",
+  "Mix the oats, apple, milk, yoghurt and honey. Cover and refrigerate for at least 8 hours or overnight.",
   "Serve topped with almonds.",
 ]
 
@@ -89,7 +90,7 @@ title = "French toast with berries"
 cuisine = "french"
 course = "breakfast"
 servings = 4
-minutes = 20
+minutes = 30
 summary = "Thick bread soaked in cinnamon egg custard, fried in butter, with berries and maple."
 ingredients = [
   "3 eggs",
@@ -102,7 +103,7 @@ ingredients = [
 ]
 method = [
   "Whisk the eggs, milk and cinnamon. Soak the bread briefly on both sides.",
-  "Fry in the butter for 2 minutes each side until golden.",
+  "Fry in batches in the butter in a frying pan over medium heat for 2 minutes each side until golden.",
   "Serve with berries and maple syrup.",
 ]
 
@@ -124,9 +125,9 @@ ingredients = [
   "4 slices bread",
 ]
 method = [
-  "Fry the bacon until crisp, then the mushrooms and tomatoes in the fat.",
-  "Wilt the spinach in the butter. Fry the eggs.",
-  "Serve everything with toast.",
+  "Fry the bacon in a large frying pan over medium-high heat for 4–5 minutes until crisp, then fry the mushrooms and tomatoes in the fat for 4–5 minutes until golden. Keep warm.",
+  "Wilt the spinach in the butter for 1–2 minutes. Fry the eggs for 3–4 minutes until the whites are set and the yolks are runny, or cooked through if you prefer.",
+  "Meanwhile, toast the bread for 2–3 minutes until golden. Serve with the bacon, mushrooms, tomatoes, spinach and eggs.",
 ]
 
 [[recipe]]
@@ -146,8 +147,9 @@ ingredients = [
   "150 g tomato salsa",
 ]
 method = [
-  "Fry the bacon until crisp. Scramble the eggs.",
-  "Fill the tortillas with egg, bacon, cheese, avocado and salsa. Roll up and toast in a dry pan.",
+  "Fry the bacon in a frying pan over medium heat for 4–5 minutes until crisp. Set aside.",
+  "Beat the eggs and scramble them in the bacon fat over low heat, stirring gently, for 3–4 minutes until just set.",
+  "Fill the tortillas with egg, bacon, cheese, avocado and salsa. Roll up and toast in a dry pan over medium heat for 1–2 minutes each side until golden.",
 ]
 
 [[recipe]]
@@ -170,7 +172,7 @@ ingredients = [
 ]
 method = [
   "Whisk the flour, eggs and milk into a thick batter. Stir in the corn and spring onion.",
-  "Fry spoonfuls in the oil for 2–3 minutes each side until golden.",
+  "Heat the oil in a frying pan over medium heat. Fry spoonfuls for 2–3 minutes each side until golden and cooked through.",
   "Mash the avocado with the lime juice and serve alongside.",
 ]
 
@@ -212,7 +214,7 @@ ingredients = [
   "1 tbsp honey",
 ]
 method = [
-  "Blend everything until smooth.",
+  "Blend the bananas, peanut butter, oats, milk and honey until smooth.",
 ]
 
 [[recipe]]
@@ -221,8 +223,8 @@ title = "Chicken, avocado and salad wraps"
 cuisine = "australian"
 course = "lunch"
 servings = 4
-minutes = 15
-summary = "Quick lunch wraps with leftover chicken, avocado, lettuce, tomato and mayo."
+minutes = 30
+summary = "Quick lunch wraps with poached chicken, avocado, lettuce, tomato and mayo. Use leftover chicken to save time."
 ingredients = [
   "2 chicken breasts",
   "4 tortillas",
@@ -254,7 +256,7 @@ ingredients = [
 ]
 method = [
   "Butter the outsides of the bread. Spread mustard inside and fill with ham and cheese.",
-  "Cook in a pan or press for 3 minutes each side until golden and melted.",
+  "Cook in a frying pan over medium heat, or in a sandwich press, for 3 minutes each side until golden and the cheese has melted.",
 ]
 
 [[recipe]]
@@ -272,10 +274,11 @@ ingredients = [
   "1/2 lemon, juiced",
   "4 slices bread",
   "4 lettuce leaves",
+  "1/4 tsp black pepper",
 ]
 method = [
-  "Mix the tuna, mayonnaise, celery and lemon juice and season.",
-  "Make sandwiches with the lettuce.",
+  "Mix the tuna, mayonnaise, celery and lemon juice, and season with black pepper.",
+  "Spread the tuna mix over 2 slices of bread, top with the lettuce and the other bread, and cut in half.",
 ]
 
 [[recipe]]
@@ -292,11 +295,12 @@ ingredients = [
   "1 bunch chives, snipped",
   "4 slices bread",
   "4 lettuce leaves",
+  "1 pinch salt",
 ]
 method = [
-  "Boil the eggs for 9 minutes, cool and peel.",
-  "Mash with the mayonnaise and chives and season.",
-  "Make sandwiches with the lettuce.",
+  "Boil the eggs for 9 minutes, cool in cold water and peel.",
+  "Mash with the mayonnaise and chives and season with the salt.",
+  "Spread the egg mix over 2 slices of bread, top with the lettuce and the other bread, and cut in half.",
 ]
 
 [[recipe]]
@@ -317,8 +321,8 @@ ingredients = [
   "1 litre vegetable stock",
 ]
 method = [
-  "Soften the onion and garlic in the oil. Add the cumin.",
-  "Add the lentils, tomatoes and stock and simmer 20 minutes. Blend if you like it smooth.",
+  "Soften the onion and garlic in the oil in a large pot over medium heat for 5 minutes. Add the cumin and stir for 30 seconds.",
+  "Add the lentils, tomatoes and stock and simmer 20 minutes until the lentils are soft. Blend if you like it smooth.",
 ]
 
 [[recipe]]
@@ -338,7 +342,7 @@ ingredients = [
   "1 tbsp balsamic vinegar",
 ]
 method = [
-  "Toss the pumpkin with 1 tbsp oil and roast at 200°C for 30 minutes.",
+  "Heat the oven to 200°C. Toss the pumpkin with 1 tbsp oil and roast for 30 minutes until tender and golden at the edges.",
   "Whisk the remaining oil with the vinegar.",
   "Toss the rocket with the pumpkin, feta, pepitas and dressing.",
 ]
@@ -361,8 +365,8 @@ ingredients = [
 ]
 method = [
   "Poach the chicken in simmering water for 15 minutes until cooked through. Cool and shred.",
-  "Cook the pasta, drain, and cool under cold water.",
-  "Toss with everything else.",
+  "Cook the pasta according to the packet, drain, and cool under cold water.",
+  "Toss the pasta and chicken with the tomatoes, spinach, pesto and parmesan.",
 ]
 
 [[recipe]]
@@ -382,7 +386,7 @@ ingredients = [
   "1 spring onion, sliced",
 ]
 method = [
-  "Fry the egg in hot oil until the edges are crisp.",
+  "Fry the egg in hot oil for 2–3 minutes until the edges are crisp and the white is set, with the yolk runny, or cooked through if you prefer.",
   "Put it on the rice and drizzle with soy and sesame oil. Top with spring onion.",
 ]
 
@@ -393,7 +397,7 @@ cuisine = "french"
 course = "breakfast"
 servings = 1
 minutes = 10
-summary = "A soft folded omelette with garlicky mushrooms and melted cheese."
+summary = "A soft folded omelette with buttery mushrooms and melted cheese."
 ingredients = [
   "3 eggs",
   "15 g butter",
@@ -402,8 +406,8 @@ ingredients = [
   "1 tsp chives, snipped",
 ]
 method = [
-  "Cook the mushrooms in half the butter until golden. Set aside.",
-  "Beat the eggs. Melt the remaining butter, add the eggs, and stir until nearly set.",
+  "Cook the mushrooms in half the butter in a frying pan over medium-high heat for 4–5 minutes until golden. Set aside.",
+  "Beat the eggs. Melt the remaining butter over medium heat, add the eggs, and stir for 1–2 minutes until nearly set.",
   "Add the mushrooms and cheese, fold, and top with chives.",
 ]
 
@@ -429,12 +433,12 @@ method = [
 
 [[recipe]]
 slug = "baked-beans-toast"
-title = "Smoky homemade baked beans"
+title = "Homemade baked beans"
 cuisine = "british"
 course = "breakfast"
 servings = 4
 minutes = 30
-summary = "Cannellini beans in a smoky, slightly sweet tomato sauce on toast."
+summary = "Cannellini beans in a rich, slightly sweet paprika tomato sauce on toast."
 ingredients = [
   "1 tbsp olive oil",
   "1 onion, diced",
@@ -447,9 +451,9 @@ ingredients = [
   "8 slices bread",
 ]
 method = [
-  "Soften the onion and garlic in the oil. Add the paprika.",
+  "Soften the onion and garlic in the oil in a saucepan over medium heat for 5 minutes. Add the paprika and stir for 30 seconds.",
   "Add the beans, tomatoes, sugar and worcestershire and simmer 15 minutes until thick.",
-  "Serve on toast.",
+  "Toast the bread for 2–3 minutes until golden and serve the beans on top.",
 ]
 
 [[recipe]]
@@ -489,7 +493,7 @@ ingredients = [
   "100 g feta, crumbled",
 ]
 method = [
-  "Cook the potato and onion in the oil in an ovenproof pan for 10 minutes. Add the capsicum and spinach.",
+  "Heat the oven to 180°C. Cook the potato and onion in the oil in an ovenproof frying pan over medium heat for 10 minutes until tender. Add the capsicum and spinach and cook for 2 minutes until wilted.",
   "Whisk the eggs and milk, pour over, and scatter with feta.",
-  "Cook on the stove for 5 minutes, then bake at 180°C for 15 minutes until set.",
+  "Cook on the stove over medium-low heat for 5 minutes until the edges set, then bake for 15 minutes until set in the middle.",
 ]

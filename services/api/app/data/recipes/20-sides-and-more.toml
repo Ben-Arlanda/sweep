@@ -84,8 +84,8 @@ ingredients = [
   "1/4 tsp ground nutmeg",
 ]
 method = [
-  "Wilt the spinach in a large pan for 3 minutes, then squeeze out the liquid and chop.",
-  "Soften the shallot and garlic in the butter for 3 minutes. Add the cream and simmer for 2 minutes.",
+  "Wilt the spinach in a large pan over medium heat for 3 minutes, then squeeze out the liquid and chop.",
+  "Soften the shallot and garlic in the butter in the same pan for 3 minutes. Add the cream and simmer for 2 minutes.",
   "Stir in the spinach, parmesan and nutmeg until hot.",
 ]
 
@@ -108,7 +108,7 @@ ingredients = [
   "1 bunch coriander, chopped",
 ]
 method = [
-  "Fry the rice in the oil for 4 minutes until lightly golden. Add the onion and garlic for 2 minutes, then the cumin and tomato paste.",
+  "Fry the rice in the oil in a saucepan over medium heat for 4 minutes until lightly golden. Add the onion and garlic for 2 minutes, then the cumin and tomato paste.",
   "Add the stock, bring to the boil, then cover and cook on low for 18 minutes. Rest for 5 minutes and fluff up with the coriander.",
 ]
 
@@ -118,7 +118,7 @@ title = "Fragrant coconut rice"
 cuisine = "malaysian"
 course = "side"
 servings = 4
-minutes = 25
+minutes = 30
 summary = "Rice cooked in coconut milk with ginger and lemongrass. Vegan."
 ingredients = [
   "1 1/2 cups rice",
@@ -130,7 +130,7 @@ ingredients = [
 ]
 method = [
   "Rinse the rice until the water runs clear.",
-  "Bring everything to the boil, then cover and cook on low for 15 minutes. Rest for 5 minutes, remove the lemongrass and ginger and fluff up.",
+  "Put the rice, coconut milk, water, lemongrass, ginger and salt in a saucepan and bring to the boil, then cover and cook on low for 15 minutes. Rest for 5 minutes, remove the lemongrass and ginger and fluff up.",
 ]
 
 [[recipe]]
@@ -139,8 +139,8 @@ title = "Two-ingredient yoghurt flatbreads"
 cuisine = "middle-eastern"
 course = "side"
 servings = 6
-minutes = 20
-summary = "Soft, puffy flatbreads from just self-raising flour and yoghurt. Vegetarian."
+minutes = 35
+summary = "Soft, puffy flatbreads made from self-raising flour and yoghurt, with a pinch of salt. Vegetarian."
 ingredients = [
   "300 g self-raising flour",
   "300 g greek yoghurt",
@@ -148,9 +148,9 @@ ingredients = [
   "1 tbsp olive oil",
 ]
 method = [
-  "Mix the flour, yoghurt and salt to a soft dough and knead briefly.",
+  "Mix the flour, yoghurt and salt to a soft dough and knead for 1 minute.",
   "Divide into 6 and roll out thinly.",
-  "Cook in a hot, lightly oiled frying pan for 2 minutes each side until puffed and charred in spots.",
+  "Cook one at a time in a frying pan over medium-high heat, brushed with a little of the oil, for 2 minutes each side until puffed and charred in spots.",
 ]
 
 [[recipe]]
@@ -222,11 +222,11 @@ title = "Lemon and herb couscous"
 cuisine = "middle-eastern"
 course = "side"
 servings = 4
-minutes = 10
+minutes = 15
 summary = "Five-minute fluffy couscous with lemon, parsley, mint and pine nuts. Vegan."
 ingredients = [
   "250 g couscous",
-  "250 ml boiling vegetable stock",
+  "300 ml boiling vegetable stock",
   "2 tbsp olive oil",
   "1 lemon, zested and juiced",
   "1 bunch parsley, chopped",
@@ -235,7 +235,7 @@ ingredients = [
 ]
 method = [
   "Pour the boiling stock over the couscous, cover for 5 minutes and fluff up.",
-  "Toast the pine nuts in a dry pan for 3 minutes.",
+  "Toast the pine nuts in a dry pan over medium heat for 3 minutes until golden.",
   "Stir through the oil, lemon, herbs and pine nuts.",
 ]
 
@@ -341,8 +341,8 @@ ingredients = [
 ]
 method = [
   "Whisk the flour, cornflour, turmeric, coconut milk and water to a thin batter. Stir in the spring onions and rest for 10 minutes.",
-  "Fry the pork and prawns in 1 tbsp oil for 5 minutes until the pork is cooked through and the prawns are pink. Remove.",
-  "Heat a little oil in a frying pan, pour in a thin layer of batter, scatter with some filling and bean sprouts, cover and cook for 3 minutes until crisp. Fold over and repeat.",
+  "Fry the pork and prawns in 1 tbsp oil over medium-high heat for 5 minutes until the pork is cooked through and the prawns are pink. Remove.",
+  "Heat a little oil in a frying pan over medium-high heat, pour in a thin layer of batter, scatter with some filling and bean sprouts, cover and cook for 3 minutes until crisp. Fold over and repeat.",
   "Mix the fish sauce, lime juice and sugar for dipping. Wrap pieces in lettuce with mint and dip.",
 ]
 
@@ -368,9 +368,9 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Brown the chicken in the oil for 6 minutes. Add the onion, garlic, ginger and chilli for 3 minutes.",
+  "Brown the chicken in the oil over medium-high heat for 6 minutes. Add the onion, garlic, ginger and chilli for 3 minutes.",
   "Add the kecap manis, soy sauce and water and simmer, uncovered, for 25 minutes until the chicken is cooked through and the sauce is sticky.",
-  "Cook the rice. Squeeze the lime over the chicken and serve.",
+  "Meanwhile, cook the rice according to the packet. Squeeze the lime over the chicken and serve.",
 ]
 
 [[recipe]]
@@ -398,7 +398,7 @@ ingredients = [
 ]
 method = [
   "Simmer the chicken in the stock with the sliced ginger and 2 spring onions for 25 minutes until cooked through. Lift out and rub with the sesame oil. Keep the broth.",
-  "Fry half the garlic in the vegetable oil for 1 minute, add the rice, then 750 ml of the broth. Cover and cook on low for 15 minutes.",
+  "Fry half the garlic in the vegetable oil in a saucepan over medium heat for 1 minute, add the rice, then 750 ml of the broth. Cover and cook on low for 15 minutes.",
   "Mix the grated ginger and the rest of the spring onions, finely chopped, with 2 tbsp of the broth and a pinch of salt. Blitz the chillies with the rest of the garlic and the lime juice.",
   "Slice the chicken and serve with the rice, cucumber, soy sauce, both sauces and a bowl of the hot broth.",
 ]
@@ -424,7 +424,7 @@ ingredients = [
   "1 baguette",
 ]
 method = [
-  "Season the chicken with the salt and brown in the oil for 5 minutes each side. Add the garlic and bay leaves for 2 minutes.",
+  "Season the chicken with the salt and brown in the oil over medium-high heat for 5 minutes each side. Add the garlic and bay leaves for 2 minutes.",
   "Add the paprika, wine and stock and simmer, covered, for 20 minutes until the chicken is cooked through.",
   "Scatter with parsley and serve with the baguette to mop up the sauce.",
 ]
@@ -452,9 +452,9 @@ ingredients = [
   "1 bunch parsley, chopped",
 ]
 method = [
-  "Toast the pasta in 2 tbsp oil for 4 minutes until golden. Remove.",
-  "Soften the onion, garlic and capsicum in the rest of the oil for 6 minutes. Add the paprika, saffron and tomatoes for 2 minutes.",
-  "Add the pasta and stock and simmer for 10 minutes. Push the prawns in and cook for 4 minutes until pink and the liquid is absorbed.",
+  "Toast the pasta in 2 tbsp oil in a large frying pan over medium heat for 4 minutes until golden. Remove.",
+  "Soften the onion, garlic and capsicum in the rest of the oil in the same pan for 6 minutes. Add the paprika, saffron and tomatoes for 2 minutes.",
+  "Add the pasta and stock and simmer for 15 minutes, without stirring, until the pasta is tender and most of the stock is absorbed. Push the prawns in and cook for 4 minutes until pink.",
   "Serve with lemon and parsley.",
 ]
 
@@ -484,7 +484,7 @@ ingredients = [
 ]
 method = [
   "Soak the breadcrumbs in the milk, then mix with the minces, egg, onion and nutmeg. Roll into 24 balls.",
-  "Brown the meatballs in the butter for 8 minutes until cooked through. Remove.",
+  "Brown the meatballs in the butter over medium heat for 8 minutes until cooked through. Remove.",
   "Stir the flour into the pan, then the stock, cream and soy, and simmer for 3 minutes. Return the meatballs.",
   "Boil the potatoes for 15 minutes and mash. Serve with the meatballs, gravy and a spoonful of jam.",
 ]
@@ -495,7 +495,7 @@ title = "Lomo saltado (Peruvian beef stir-fry)"
 cuisine = "peruvian"
 course = "main"
 servings = 4
-minutes = 40
+minutes = 50
 summary = "Beef, onion and tomato stir-fried with soy and vinegar, tossed with chips and served with rice."
 ingredients = [
   "600 g beef steak, cut into strips",
@@ -511,9 +511,9 @@ ingredients = [
   "1 cup rice",
 ]
 method = [
-  "Heat the oven to 220°C. Toss the chips in 1 tbsp oil and bake for 30 minutes. Cook the rice.",
-  "Sear the beef in the rest of the oil over very high heat in batches for 2 minutes until browned.",
-  "Add the onion, garlic and cumin for 2 minutes, then the tomatoes, soy and vinegar for 1 minute.",
+  "Heat the oven to 220°C. Toss the potato chips in 1 tbsp oil and bake for 30 minutes until golden. Meanwhile, cook the rice according to the packet.",
+  "Sear the beef in the rest of the oil over very high heat in batches for 2 minutes until browned. Remove.",
+  "Add the onion, garlic and cumin to the pan for 2 minutes, then the tomatoes, soy and vinegar for 1 minute. Return the beef and toss for 1 minute until hot and just cooked through.",
   "Toss with the chips and coriander and serve with the rice.",
 ]
 
@@ -538,9 +538,9 @@ ingredients = [
   "200 g baby spinach",
 ]
 method = [
-  "Fry the bacon and chorizo in the oil for 6 minutes until crisp. Add the onion and garlic for 5 minutes.",
+  "Fry the bacon and chorizo in the oil over medium heat for 6 minutes until crisp. Add the onion and garlic for 5 minutes.",
   "Add the bay leaves, beans and stock and simmer for 30 minutes, mashing some beans to thicken.",
-  "Cook the rice. Wilt the spinach in a hot pan for 2 minutes and serve with the stew and rice.",
+  "Meanwhile, cook the rice according to the packet. Wilt the spinach in a hot pan for 2 minutes and serve with the stew and rice.",
 ]
 
 [[recipe]]
@@ -550,7 +550,7 @@ cuisine = "indian"
 course = "side"
 servings = 6
 minutes = 60
-summary = "Flaky flatbreads stuffed with spiced mashed potato, cooked in butter. Vegetarian."
+summary = "Golden flatbreads stuffed with spiced mashed potato, cooked in butter. Vegetarian."
 ingredients = [
   "300 g plain flour",
   "180 ml water",
@@ -591,7 +591,7 @@ ingredients = [
 method = [
   "Stir the boiling water into the flour, then knead to a smooth dough. Rest for 15 minutes.",
   "Divide into 4. Roll each out thinly, brush with sesame oil, sprinkle with spring onions and salt, roll up like a cigar, coil into a snail and roll flat again.",
-  "Fry in the vegetable oil for 3 minutes each side until golden and crisp.",
+  "Fry in the vegetable oil in a frying pan over medium heat for 3 minutes each side until golden and crisp.",
   "Mix the soy and rice vinegar for dipping.",
 ]
 
@@ -618,8 +618,8 @@ ingredients = [
   "1 tbsp sesame seeds",
 ]
 method = [
-  "Soak the noodles in hot water for 5 minutes, drain and cut into shorter lengths.",
+  "Soak the vermicelli in hot water for 5 minutes, drain and cut into shorter lengths.",
   "Mix the soy, sugar, sesame oil and garlic. Toss the beef in 2 tbsp of it.",
-  "Stir-fry the beef in the vegetable oil for 3 minutes until browned. Add the onion, carrot and mushrooms for 3 minutes, then the spinach.",
-  "Add the noodles and the rest of the sauce and toss for 2 minutes. Sprinkle with sesame seeds.",
+  "Stir-fry the beef in the vegetable oil in a wok over high heat for 3 minutes until browned. Add the onion, carrot and mushrooms for 3 minutes, then the spinach.",
+  "Add the vermicelli and the rest of the sauce and toss for 2 minutes. Sprinkle with sesame seeds.",
 ]

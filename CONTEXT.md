@@ -85,6 +85,14 @@ A Kitchen entry the app no longer trusts. The agent asks instead of assuming. Es
 A recipe written for Sweep (we own it), available to every Household.
 _Avoid_: default recipe, built-in recipe
 
+**Cookable Method**:
+A method a confident home cook can follow without guessing: every ingredient is used in a step, each cooking step gives heat and time, risky steps (meat, fish, baking) give a doneness cue, the order makes sense, and the total time roughly matches the steps. Every Seed Recipe must have one; a recipe that can't be fixed to meet it is removed.
+_Avoid_: full recipe, detailed method
+
+**Recipe Image**:
+The picture shown for a recipe. For a Seed Recipe it is an openly licensed photo (credited to its author) or one generated for Sweep, and it must be checked against the recipe before it's shown. For an Imported Recipe it is only ever the Member's own photo.
+_Avoid_: thumbnail, hero image, recipe photo
+
 **Imported Recipe**:
 A recipe a Member brought in (pasted, photographed, linked, uploaded as a PDF file or typed). It belongs to that Household only and starts as a Favourite.
 _Avoid_: saved recipe, user recipe

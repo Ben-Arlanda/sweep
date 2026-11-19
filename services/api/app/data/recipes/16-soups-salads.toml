@@ -21,7 +21,7 @@ ingredients = [
   "1 baguette",
 ]
 method = [
-  "Soften the onion and carrot in the butter for 6 minutes. Stir in the flour for 1 minute.",
+  "Soften the onion and carrot in the butter in a large saucepan over medium heat for 6 minutes. Stir in the flour for 1 minute.",
   "Whisk in the stock and milk, add the broccoli and simmer for 15 minutes until tender.",
   "Blend half the soup, stir it back in, then add the cheddar and pepper until melted. Serve with the baguette.",
 ]
@@ -49,7 +49,7 @@ ingredients = [
   "1 bunch coriander, chopped",
 ]
 method = [
-  "Soften the onion, garlic and ginger in the oil for 5 minutes. Add the spices for 1 minute.",
+  "Soften the onion, garlic and ginger in the oil in a large saucepan over medium heat for 5 minutes. Add the spices for 1 minute.",
   "Add the sweet potato, lentils and stock and simmer for 25 minutes until soft.",
   "Blend until smooth, stir in the coconut milk and lime juice, and top with coriander.",
 ]
@@ -77,7 +77,7 @@ ingredients = [
 ]
 method = [
   "Mix the mince, breadcrumbs, egg and half the parmesan and roll into small balls.",
-  "Soften the onion, carrot and celery in the oil for 6 minutes. Add the stock and bring to a simmer.",
+  "Soften the onion, carrot and celery in the oil in a large pot over medium heat for 6 minutes. Add the stock and bring to a simmer.",
   "Drop in the meatballs and pasta and simmer for 12 minutes until the meatballs are cooked through and the pasta tender.",
   "Stir in the spinach and serve with the rest of the parmesan.",
 ]
@@ -96,7 +96,7 @@ ingredients = [
   "1 capsicum, diced",
   "3 cloves garlic, crushed",
   "2 tsp ground cumin",
-  "2 tsp paprika",
+  "2 tsp smoked paprika",
   "3 x 400 g cans black beans, drained",
   "400 g can canned tomatoes",
   "750 ml vegetable stock",
@@ -105,7 +105,7 @@ ingredients = [
   "1 lime, cut into wedges",
 ]
 method = [
-  "Soften the onion, capsicum and garlic in the oil for 8 minutes. Add the spices for 1 minute.",
+  "Soften the onion, capsicum and garlic in the oil in a large saucepan over medium heat for 8 minutes. Add the spices for 1 minute.",
   "Add the beans, tomatoes and stock and simmer for 15 minutes.",
   "Blend about half the soup and stir it back in. Serve topped with avocado, sour cream and lime.",
 ]
@@ -132,8 +132,8 @@ ingredients = [
 ]
 method = [
   "Heat the oven to 200°C. Roast the tomatoes, onion and garlic with the oil for 35 minutes until soft and charred.",
-  "Blend with the stock, sugar and most of the basil until smooth, then warm through.",
-  "Butter the outside of the bread, fill with cheddar and fry for 3 minutes each side until golden and melted. Serve with the soup.",
+  "Blend with the stock, sugar and most of the basil until smooth, then warm through in a saucepan over medium heat for 5 minutes.",
+  "Butter the outside of the bread, fill with cheddar and fry in a frying pan over medium heat for 3 minutes each side until golden and melted. Serve with the soup, scattered with the rest of the basil.",
 ]
 
 [[recipe]]
@@ -155,7 +155,7 @@ ingredients = [
   "1 bunch chives, snipped",
 ]
 method = [
-  "Fry the bacon in the butter for 5 minutes until crisp. Remove half for the top.",
+  "Fry the bacon in the butter in a large saucepan over medium heat for 5 minutes until crisp. Remove half for the top.",
   "Add the onion and celery for 5 minutes, then the potatoes and stock. Simmer for 20 minutes until soft.",
   "Blend until smooth, stir in the cream and serve topped with the reserved bacon and chives.",
 ]
@@ -184,7 +184,7 @@ ingredients = [
   "1 lime, cut into wedges",
 ]
 method = [
-  "Soften the onion and garlic in half the oil for 5 minutes. Add the spices, tomatoes, stock and chicken and simmer for 20 minutes until the chicken is cooked through. Shred the chicken.",
+  "Soften the onion and garlic in half the oil in a large saucepan over medium heat for 5 minutes. Add the spices, tomatoes, stock and chicken and simmer for 20 minutes until the chicken is cooked through. Shred the chicken.",
   "Add the corn and beans for 5 minutes.",
   "Toss the tortilla strips in the rest of the oil and bake at 200°C for 8 minutes until crisp.",
   "Serve the soup topped with tortilla strips, avocado and lime.",
@@ -208,7 +208,7 @@ ingredients = [
   "100 g greek yoghurt",
 ]
 method = [
-  "Soften the onion and ginger in the oil for 5 minutes.",
+  "Soften the onion and ginger in the oil in a large saucepan over medium heat for 5 minutes.",
   "Add the carrots and stock and simmer for 20 minutes until very soft.",
   "Blend until smooth, stir in the lemon juice and serve with a swirl of yoghurt.",
 ]
@@ -233,7 +233,7 @@ ingredients = [
   "1 baguette",
 ]
 method = [
-  "Soften the onion and garlic in the butter for 5 minutes. Add the mushrooms and thyme and cook for 10 minutes until golden.",
+  "Soften the onion and garlic in the butter in a large saucepan over medium heat for 5 minutes. Add the mushrooms and thyme and cook for 10 minutes until golden.",
   "Stir in the flour, then the stock, and simmer for 10 minutes.",
   "Blend until smooth, stir in the cream and serve with the baguette.",
 ]
@@ -257,7 +257,7 @@ ingredients = [
   "1/2 tsp black pepper",
 ]
 method = [
-  "Soften the onion in the butter for 5 minutes. Add the potato and stock and simmer for 12 minutes.",
+  "Soften the onion in the butter in a large saucepan over medium heat for 5 minutes. Add the potato and stock and simmer for 12 minutes.",
   "Add the peas for 4 minutes, then blend with most of the mint until smooth.",
   "Stir in the ham, warm through and serve with the rest of the mint and pepper.",
 ]
@@ -283,7 +283,7 @@ ingredients = [
   "1 bunch parsley, chopped",
 ]
 method = [
-  "Brown the beef in the oil for 5 minutes. Add the onion, carrot and celery for 5 minutes, then the tomato paste.",
+  "Brown the beef in the oil in a large pot over medium-high heat for 5 minutes. Lower to medium heat and add the onion, carrot and celery for 5 minutes, then the tomato paste.",
   "Add the barley, stock and thyme and simmer, partly covered, for 1½ hours until the beef is tender and cooked through.",
   "Stir in the parsley.",
 ]
@@ -310,7 +310,7 @@ ingredients = [
   "1/2 tsp salt",
 ]
 method = [
-  "Soften the onion, carrot, celery and garlic in 2 tbsp oil for 10 minutes.",
+  "Soften the onion, carrot, celery and garlic in 2 tbsp oil in a large pot over medium heat for 10 minutes.",
   "Add the tomatoes, beans, cabbage and stock and simmer for 30 minutes.",
   "Stir in the bread and salt and simmer for 5 minutes until thick. Serve drizzled with the rest of the oil.",
 ]
@@ -359,7 +359,7 @@ ingredients = [
 ]
 method = [
   "Heat the oven to 220°C. Roast the cauliflower, onion and garlic with the oil for 25 minutes until golden.",
-  "Blend with the stock and milk until smooth, then warm through.",
+  "Blend with the stock and milk until smooth, then warm through in a saucepan over medium heat for 5 minutes.",
   "Serve topped with parmesan and chives.",
 ]
 
@@ -384,7 +384,7 @@ ingredients = [
   "40 g parmesan, grated",
 ]
 method = [
-  "Fry the sausage meat in the oil for 8 minutes, breaking it up, until browned and cooked through.",
+  "Fry the sausage meat in the oil in a large saucepan over medium-high heat for 8 minutes, breaking it up, until browned and cooked through.",
   "Add the onion, garlic and chilli for 5 minutes, then the tomatoes, beans and stock. Simmer for 15 minutes.",
   "Stir in the spinach until wilted and serve with parmesan.",
 ]
@@ -457,7 +457,7 @@ ingredients = [
   "1 lettuce, leaves separated",
 ]
 method = [
-  "Toast the walnuts in a dry pan for 4 minutes and roughly chop.",
+  "Toast the walnuts in a dry pan over medium heat for 4 minutes until fragrant, and roughly chop.",
   "Toss the apple with the lemon juice, then mix with the celery, walnuts, sultanas, mayonnaise and yoghurt.",
   "Serve on the lettuce leaves.",
 ]
@@ -531,7 +531,7 @@ ingredients = [
   "1 tbsp balsamic vinegar",
 ]
 method = [
-  "Toast the walnuts in a dry pan for 4 minutes.",
+  "Toast the walnuts in a dry pan over medium heat for 4 minutes until fragrant.",
   "Toss the rocket with the oil and balsamic, then top with the beetroot, feta and walnuts.",
 ]
 
@@ -580,9 +580,9 @@ ingredients = [
   "1 tsp dried oregano",
 ]
 method = [
-  "Cook the pasta, rinse under cold water and drain well.",
+  "Cook the pasta according to the packet, rinse under cold water and drain well.",
   "Whisk the oil, vinegar and oregano.",
-  "Toss everything together.",
+  "Toss the pasta with the tomatoes, olives, capsicum, onion, mozzarella, basil and dressing.",
 ]
 
 [[recipe]]
@@ -591,7 +591,7 @@ title = "Classic Aussie rice salad"
 cuisine = "australian"
 course = "side"
 servings = 6
-minutes = 30
+minutes = 45
 summary = "The barbecue favourite: rice with capsicum, corn, peas, spring onion and a soy-curry dressing. Vegan."
 ingredients = [
   "1 1/2 cups rice",
@@ -607,8 +607,8 @@ ingredients = [
   "50 g almonds, toasted",
 ]
 method = [
-  "Cook the rice, adding the peas for the last 2 minutes. Spread out to cool.",
-  "Whisk the oil, soy, vinegar and curry powder.",
+  "Cook the rice according to the packet, adding the peas for the last 2 minutes. Drain, spread out and cool for 15 minutes.",
+  "Toast the almonds in a dry pan over medium heat for 4 minutes until golden. Whisk the oil, soy, vinegar and curry powder.",
   "Toss the rice and peas with the capsicum, corn, spring onions, sultanas, almonds and dressing.",
 ]
 
@@ -658,8 +658,8 @@ ingredients = [
   "1 tbsp balsamic vinegar",
 ]
 method = [
-  "Season the steak with the salt, rub with 1 tbsp oil and sear for 3 minutes each side for medium. Rest for 5 minutes, then slice.",
-  "Toast the walnuts in a dry pan for 4 minutes.",
+  "Season the steak with the salt, rub with 1 tbsp oil and sear in a very hot pan for 3 minutes each side until browned outside and still pink in the middle, for medium. Rest for 5 minutes, then slice.",
+  "Toast the walnuts in a dry pan over medium heat for 4 minutes until fragrant.",
   "Toss the rocket with the extra oil and balsamic, then top with the pear, steak, walnuts and blue cheese.",
 ]
 
@@ -683,7 +683,7 @@ ingredients = [
   "1 tsp honey",
 ]
 method = [
-  "Fry the bacon in a dry pan for 6 minutes until crisp.",
+  "Fry the bacon in a dry pan over medium heat for 6 minutes until crisp.",
   "Whisk the mayonnaise, yoghurt, vinegar and honey.",
   "Toss the broccoli, onion, sultanas, pepitas and bacon with the dressing.",
 ]
@@ -729,7 +729,7 @@ ingredients = [
   "1 tsp honey",
 ]
 method = [
-  "Toast the walnuts in a dry pan for 4 minutes.",
+  "Toast the walnuts in a dry pan over medium heat for 4 minutes until fragrant.",
   "Whisk the oil, vinegar and honey and toss with the rocket and pear. Top with the walnuts and blue cheese.",
 ]
 

@@ -85,3 +85,11 @@ crawlers, and taste.com.au prohibits automated collection without written permis
   planted mistakes (`evals/recipe_review.jsonl`) before anyone trusts it.
 - **Diet labels in summaries are prose, not rules.** The Dietary Rules check in slice 5
   must work from Ingredients, not from what a summary says.
+
+
+## Revision (2026-11-19): images and the Cookable Method
+
+- Seed Recipes must have a **Cookable Method** (CONTEXT.md); slice 4e audits the 500
+  against it and fixes or removes those that fall short.
+- Seed Recipes get **Recipe Images** that are openly licensed or Sweep's own, never
+  scraped (ADR 0027). Link imports still store no photos.
