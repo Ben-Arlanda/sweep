@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
-import { ArrowLeft, ArrowLeftRight, CalendarDays, Plus } from 'lucide-react-native';
+import { ArrowLeft, ArrowLeftRight, CalendarDays, ChefHat, Plus } from 'lucide-react-native';
 import { randomUUID } from 'expo-crypto';
 import { useState } from 'react';
 import { Linking, Pressable, View } from 'react-native';
@@ -18,7 +18,7 @@ import { formatDay } from '@/features/chat/format';
 import { dayParts } from '@/features/mealPlan/week';
 import { hostOf } from '@/features/imports/ReviewScreen';
 import { ruleBreakHint, ruleBreakText } from '@/features/imports/ruleBreaks';
-import { courseName, type Course } from '@/features/recipes/courses';
+import { CookMode } from '@/features/recipes/CookMode';
 import {
   addText,
   haveSummary,
@@ -27,6 +27,8 @@ import {
   type Have,
 } from '@/features/recipes/kitchenMatch';
 import { swapLine, swapsOf } from '@/features/recipes/adaptations';
+import { cookSteps, metaParts, viewsOf, type MethodView } from '@/features/recipes/method';
+import { useMethodView } from '@/features/recipes/methodView';
 import { PickDaySheet } from '@/features/mealPlan/PickDaySheet';
 import { RecipeRow } from '@/features/recipes/RecipeRow';
 import { useRecipePath } from '@/features/recipes/recipePath';
@@ -42,6 +44,7 @@ import { PageColors } from '@/theme/PageColors';
 import { useTheme, type Theme } from '@/theme/useTheme';
 
 type Line = components['schemas']['RecipeIngredientOut'];
+type Recipe = components['schemas']['RecipeOut'];
 
 /**
  * One recipe, checked against the Kitchen: each ingredient says whether you have it.
@@ -50,9 +53,10 @@ type Line = components['schemas']['RecipeIngredientOut'];
  * Something you need shows "Add to list": one tap puts it on the Shopping List. Anything
  * already unticked on the list shows "On list", the same rule the planner uses.
  *
- * Laid out as Ingredients | Method tabs (slice 6e, premium redesign). Notes sit at the
- * bottom of Method: a Recipe Adaptation's (ADR 0021) Swaps, a parent's Adaptations, and
- * where the recipe came from.
+ * Laid out as Ingredients | Method tabs (slice 6e, premium redesign). Method shows the
+ * Detailed View (Recipe Stages) or the Quick View, remembered on the device, and opens
+ * Cook Mode (ADR 0028). Notes sit at the bottom of Method: a Recipe Adaptation's
+ * (ADR 0021) Swaps, a parent's Adaptations, and where the recipe came from.
  */
 function RecipeContent() {
   const t = useTheme();
@@ -72,6 +76,8 @@ function RecipeContent() {
   // Optional too: without the list, "Need" is just a label, with no + to add it.
   const list = useList();
   const [tab, setTab] = useState<Tab>('ingredients');
+  const [remembered, setView] = useMethodView();
+  const [cooking, setCooking] = useState(false);
   const need = useNeedActions(list.data?.id ?? '');
 
   if (recipe.isPending) return <Loading />;
@@ -96,6 +102,9 @@ function RecipeContent() {
   }
 
   const r = recipe.data;
+  const views = viewsOf(r);
+  const view: MethodView = views.includes(remembered) ? remembered : views[0];
+  const steps = cookSteps(r, view);
   const summary = kitchen.data ? haveSummary(r.ingredients, kitchen.data) : null;
   const parentId = r.kind === 'adaptation' ? r.parent_recipe_id : null;
   const swaps = swapsOf(r.ingredients);
@@ -192,12 +201,7 @@ function RecipeContent() {
         onChange={setTab}
         options={[
           { value: 'ingredients', label: `Ingredients (${r.ingredients.length})` },
-          {
-            value: 'method',
-            label: r.method
-              ? `Method (${r.method.length} ${r.method.length === 1 ? 'step' : 'steps'})`
-              : 'Method',
-          },
+          { value: 'method', label: methodLabel(r, view) },
         ]}
       />
 
@@ -237,34 +241,30 @@ function RecipeContent() {
               (see Notes below).
             </Text>
           ) : null}
-          {r.method ? (
-            r.method.map((step, i) => (
-              <View
-                key={i}
-                style={[
-                  cardStyle(t),
-                  { flexDirection: 'row', alignItems: 'flex-start', padding: 14 },
-                ]}
-              >
-                <View
-                  style={{
-                    width: 26,
-                    height: 26,
-                    borderRadius: 13,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    backgroundColor: t.colors.selected,
-                  }}
-                >
-                  <Text
-                    style={{ fontFamily: t.fonts.bold, fontSize: 13, color: t.colors.onSelected }}
-                  >
-                    {i + 1}
-                  </Text>
-                </View>
-                <Text style={{ flex: 1 }}>{step}</Text>
-              </View>
-            ))
+          {views.length > 1 ? (
+            <Segmented
+              label="Method view"
+              value={view}
+              onChange={setView}
+              options={[
+                { value: 'detailed', label: 'Detailed' },
+                { value: 'quick', label: 'Quick' },
+              ]}
+            />
+          ) : null}
+          {steps.length > 0 ? (
+            <Button
+              title="Cook Mode"
+              icon={ChefHat}
+              variant="secondary"
+              accessibilityLabel={`Cook Mode: ${r.title}, one step at a time`}
+              onPress={() => setCooking(true)}
+            />
+          ) : null}
+          {view === 'detailed' && r.stages?.length ? (
+            <Stages stages={r.stages} />
+          ) : r.method ? (
+            r.method.map((step, i) => <StepCard key={i} n={i + 1} text={step} />)
           ) : r.source_url ? (
             <Pressable
               accessibilityRole="link"
@@ -278,7 +278,11 @@ function RecipeContent() {
           ) : (
             <Text muted>No method saved for this recipe.</Text>
           )}
+          {view === 'detailed' ? <Extras recipe={r} /> : null}
         </View>
+      ) : null}
+      {cooking ? (
+        <CookMode title={r.title} steps={steps} onClose={() => setCooking(false)} />
       ) : null}
 
       {tab === 'method' ? (
@@ -350,21 +354,105 @@ function useNeedActions(listId: string) {
   return { added, add };
 }
 
-/** "25 min · Serves 4 · Main", each with its icon, as on the plan screens. */
-function MetaRow({
-  recipe,
-}: {
-  recipe: { total_minutes: number | null; servings: number; course: Course };
-}) {
-  const parts = [
-    recipe.total_minutes ? minutesText(recipe.total_minutes) : null,
-    `Serves ${recipe.servings}`,
-    courseName(recipe.course),
-  ].filter(Boolean);
+/** "Prep 20 min · Cook 1 h · Easy · Serves 4 · Main"; just the total when that's all we know. */
+function MetaRow({ recipe }: { recipe: Recipe }) {
   return (
     <Text variant="caption" muted style={{ fontVariant: ['tabular-nums'] }}>
-      {parts.join('  ·  ')}
+      {metaParts(recipe).join('  ·  ')}
     </Text>
+  );
+}
+
+/** "Method (6 stages)" in the Detailed View, "Method (4 steps)" in the Quick View. */
+function methodLabel(r: Recipe, view: MethodView): string {
+  const plural = (n: number, one: string) => `${n} ${one}${n === 1 ? '' : 's'}`;
+  if (view === 'detailed' && r.stages?.length)
+    return `Method (${plural(r.stages.length, 'stage')})`;
+  return r.method ? `Method (${plural(r.method.length, 'step')})` : 'Method';
+}
+
+/** One numbered step: a white card with the number in a navy circle. */
+function StepCard({ n, text }: { n: number; text: string }) {
+  const t = useTheme();
+  return (
+    <View style={[cardStyle(t), { flexDirection: 'row', alignItems: 'flex-start', padding: 14 }]}>
+      <View
+        style={{
+          width: 26,
+          height: 26,
+          borderRadius: 13,
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: t.colors.selected,
+        }}
+      >
+        <Text style={{ fontFamily: t.fonts.bold, fontSize: 13, color: t.colors.onSelected }}>
+          {n}
+        </Text>
+      </View>
+      <Text style={{ flex: 1 }}>{text}</Text>
+    </View>
+  );
+}
+
+/**
+ * The Detailed View: each Recipe Stage's title and minutes, then its steps. Steps are
+ * numbered right through, as Cook Mode counts them.
+ */
+function Stages({ stages }: { stages: NonNullable<Recipe['stages']> }) {
+  const t = useTheme();
+  const starts = stages.map((_, i) => stages.slice(0, i).reduce((n, s) => n + s.steps.length, 0));
+  return (
+    <View style={{ gap: t.space.lg }}>
+      {stages.map((stage, i) => (
+        <View key={i} style={{ gap: t.space.sm }}>
+          <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: t.space.sm }}>
+            <Text variant="label" role="heading" aria-level={3} style={{ flex: 1 }}>
+              {stage.title}
+            </Text>
+            {stage.minutes ? (
+              <Text variant="caption" muted style={{ fontVariant: ['tabular-nums'] }}>
+                {minutesText(stage.minutes)}
+              </Text>
+            ) : null}
+          </View>
+          {stage.steps.map((step, j) => (
+            <StepCard key={j} n={starts[i] + j + 1} text={step} />
+          ))}
+        </View>
+      ))}
+    </View>
+  );
+}
+
+/** Tips, variations and storage, after the stages. Each only when the recipe has it. */
+function Extras({ recipe }: { recipe: Recipe }) {
+  const t = useTheme();
+  const lists = [
+    { title: 'Tips', items: recipe.tips ?? [] },
+    { title: 'Variations', items: recipe.variations ?? [] },
+  ].filter((l) => l.items.length > 0);
+  if (lists.length === 0 && !recipe.storage) return null;
+  return (
+    <View style={[cardStyle(t), { gap: t.space.lg }]}>
+      {lists.map((l) => (
+        <View key={l.title} style={{ gap: t.space.sm }}>
+          <SectionLabel>{l.title}</SectionLabel>
+          {l.items.map((item, i) => (
+            <View key={i} style={{ flexDirection: 'row', gap: t.space.sm }}>
+              <Text aria-hidden>•</Text>
+              <Text style={{ flex: 1 }}>{item}</Text>
+            </View>
+          ))}
+        </View>
+      ))}
+      {recipe.storage ? (
+        <View style={{ gap: t.space.sm }}>
+          <SectionLabel>Storage</SectionLabel>
+          <Text>{recipe.storage}</Text>
+        </View>
+      ) : null}
+    </View>
   );
 }
 

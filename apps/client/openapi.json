@@ -4126,6 +4126,15 @@
         ],
         "title": "DietaryRulesOut"
       },
+      "Difficulty": {
+        "type": "string",
+        "enum": [
+          "easy",
+          "medium",
+          "hard"
+        ],
+        "title": "Difficulty"
+      },
       "DinnerIdeaOut": {
         "properties": {
           "id": {
@@ -6411,6 +6420,79 @@
             ],
             "title": "Method"
           },
+          "prep_minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Prep Minutes"
+          },
+          "cook_minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cook Minutes"
+          },
+          "difficulty": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Difficulty"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "stages": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/RecipeStageOut"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stages"
+          },
+          "tips": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Tips",
+            "default": []
+          },
+          "variations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Variations",
+            "default": []
+          },
+          "storage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Storage"
+          },
           "source_url": {
             "anyOf": [
               {
@@ -6444,11 +6526,42 @@
           "parent_recipe_id",
           "ingredients",
           "method",
+          "prep_minutes",
+          "cook_minutes",
+          "difficulty",
+          "stages",
+          "storage",
           "source_url",
           "licence",
           "attribution"
         ],
         "title": "RecipeOut"
+      },
+      "RecipeStageOut": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "minutes": {
+            "type": "integer",
+            "title": "Minutes"
+          },
+          "steps": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Steps"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "minutes",
+          "steps"
+        ],
+        "title": "RecipeStageOut"
       },
       "RecipeSummaryOut": {
         "properties": {
