@@ -27,7 +27,7 @@ from app.auth import IssuerTrust, TokenVerifier
 from app.config import Settings
 from app.data.recipes import SeedRecipe
 from app.db import Base, make_engine, make_sessionmaker, sqlalchemy_url
-from app.embeddings import HashingEmbedder
+from app.embeddings import Embedder, HashingEmbedder
 from app.main import create_app
 from app.services import recipes
 from app.services.ingredient_lines import index_from_db
@@ -177,17 +177,19 @@ def load(database_url: str, db: Engine) -> Loader:
 
 # --- The agent with a scripted model (shared by agent tests) -----------------------
 
-ClientFor = Callable[[ScriptedModel], Any]
+ClientFor = Callable[..., Any]  # (model, embedder=None)
 
 
 @pytest.fixture
 def client_for(database_url: str, db: Engine, fake_issuer: FakeIssuer) -> ClientFor:
     @asynccontextmanager
-    async def make(model: ScriptedModel) -> AsyncIterator[httpx.AsyncClient]:
+    async def make(
+        model: ScriptedModel, embedder: Embedder | None = None
+    ) -> AsyncIterator[httpx.AsyncClient]:
         app = create_app(
             Settings(database_url=database_url, agent_daily_token_budget=50_000),
             token_verifier=fake_issuer.verifier(),
-            embedder=HashingEmbedder(),
+            embedder=embedder or HashingEmbedder(),
             agent_model=model,
             recipe_reader=ScriptedReader(),
             kitchen_reader=ScriptedReader(),

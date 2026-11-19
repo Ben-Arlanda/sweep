@@ -18,6 +18,7 @@ from pydantic import RootModel
 from app import errors
 from app.agent.prompt import transcript
 from app.deps import MemberDep, SessionDep
+from app.models import PlanTweak
 from app.routes.proposals import proposal_fields, proposal_out
 from app.schemas import (
     ChatLine,
@@ -47,7 +48,7 @@ async def create(
     ctx: MemberDep, session: SessionDep, body: ConversationIn | None = None
 ) -> ConversationOut:
     plan = body or ConversationIn()
-    conversation = await conversations.create(session, ctx, plan.mode, plan.days)
+    conversation = await conversations.create(session, ctx, plan.mode, plan.days, plan.tweaks)
     await session.commit()
     return ConversationOut.model_validate(conversation)
 
@@ -73,6 +74,7 @@ async def get(
         created_at=conversation.created_at,
         plan_mode=conversation.plan_mode,
         plan_days=conversation.plan_days,
+        plan_tweaks=[PlanTweak(t) for t in conversation.plan_tweaks or []] or None,
         messages=[ChatLine.model_validate(line) for line in transcript(state)],
         draft=DraftOut.model_validate(d) if (d := state.get("draft")) else None,
         proposal=proposal_out(current) if current is not None else None,

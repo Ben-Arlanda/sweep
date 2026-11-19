@@ -49,8 +49,9 @@ export function Checkbox({ checked, size = 26 }: { checked: boolean; size?: numb
           width: size,
           height: size,
           borderRadius: size / 2,
-          borderWidth: 2,
-          borderColor: checked ? t.colors.action : t.colors.border,
+          borderWidth: checked ? 2 : 1.5,
+          // Empty ring at 3:1 so the control is visible (WCAG 1.4.11).
+          borderColor: checked ? t.colors.action : t.colors.switchOff,
           backgroundColor: checked ? t.colors.action : 'transparent',
           alignItems: 'center',
           justifyContent: 'center',

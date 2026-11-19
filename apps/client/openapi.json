@@ -1522,6 +1522,33 @@
               "title": "Offset"
             },
             "description": "Browsing only"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "title",
+                "newest",
+                "recommended"
+              ],
+              "type": "string",
+              "description": "Browsing only; search is by meaning",
+              "default": "title",
+              "title": "Sort"
+            },
+            "description": "Browsing only; search is by meaning"
+          },
+          {
+            "name": "favourites",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Favourites"
+            }
           }
         ],
         "responses": {
@@ -1535,6 +1562,106 @@
                     "$ref": "#/components/schemas/RecipeSummaryOut"
                   },
                   "title": "Response List Or Search Recipes Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipes/count": {
+      "get": {
+        "tags": [
+          "recipes"
+        ],
+        "summary": "Count",
+        "description": "How many recipes browsing would show with these filters (Dietary Rules apply).",
+        "operationId": "count_recipes_count_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "cuisine",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 40
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Cuisine"
+            }
+          },
+          {
+            "name": "max_minutes",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 1440,
+                  "exclusiveMinimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Max Minutes"
+            }
+          },
+          {
+            "name": "course",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/Course"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Course"
+            }
+          },
+          {
+            "name": "favourites",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Favourites"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CountOut"
                 }
               }
             }
@@ -2134,6 +2261,86 @@
         }
       }
     },
+    "/recipes/{recipe_id}/favourite": {
+      "put": {
+        "tags": [
+          "recipes"
+        ],
+        "summary": "Heart",
+        "operationId": "heart_recipes__recipe_id__favourite_put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "recipe_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Recipe Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "recipes"
+        ],
+        "summary": "Unheart",
+        "operationId": "unheart_recipes__recipe_id__favourite_delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "recipe_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Recipe Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/recipes/{recipe_id}": {
       "get": {
         "tags": [
@@ -2654,6 +2861,69 @@
         }
       }
     },
+    "/proposals/{proposal_id}/alternatives": {
+      "get": {
+        "tags": [
+          "agent"
+        ],
+        "summary": "Alternatives",
+        "description": "What a day of a pending Proposal could be swapped for (ADR 0025): the same code\nas Dinner Ideas, leaving out the plan's recipes. In New recipes mode, candidates\ncome by taste (the Household's liked cuisines) and Favourites get no boost.",
+        "operationId": "alternatives_proposals__proposal_id__alternatives_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "proposal_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Proposal Id"
+            }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "title": "Date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DinnerIdeaOut"
+                  },
+                  "title": "Response Alternatives Proposals  Proposal Id  Alternatives Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/meal-plan": {
       "get": {
         "tags": [
@@ -2692,6 +2962,204 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MealPlanOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dinner-ideas": {
+      "get": {
+        "tags": [
+          "meal-plan"
+        ],
+        "summary": "Get Dinner Ideas",
+        "description": "Tonight's best Kitchen Matches, chosen by code (ADR 0025). No AI, no limits.",
+        "operationId": "get_dinner_ideas_dinner_ideas_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "max_minutes",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 1440,
+                  "exclusiveMinimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Max Minutes"
+            }
+          },
+          {
+            "name": "nothing_to_buy",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Nothing To Buy"
+            }
+          },
+          {
+            "name": "exclude",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "maxItems": 60,
+              "default": [],
+              "title": "Exclude"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 12,
+              "exclusiveMinimum": 0,
+              "default": 3,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "mood",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/Mood",
+              "default": "kitchen"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 200,
+              "default": "",
+              "title": "Q"
+            }
+          },
+          {
+            "name": "vegetarian",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Vegetarian"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DinnerIdeaOut"
+                  },
+                  "title": "Response Get Dinner Ideas Dinner Ideas Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/meal-plan/days/{day}": {
+      "put": {
+        "tags": [
+          "meal-plan"
+        ],
+        "summary": "Plan Day",
+        "description": "A Member picks a recipe for a day (a Dinner Idea): planned directly, no Proposal.",
+        "operationId": "plan_day_meal_plan_days__day__put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "day",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "title": "Day"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanDayIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlannedMealOut"
                 }
               }
             }
@@ -2974,6 +3442,11 @@
               }
             ],
             "title": "Score"
+          },
+          "favourite": {
+            "type": "boolean",
+            "title": "Favourite",
+            "default": false
           },
           "parent_recipe_id": {
             "type": "string",
@@ -3300,6 +3773,20 @@
             ],
             "title": "Plan Days"
           },
+          "plan_tweaks": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/PlanTweak"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Plan Tweaks"
+          },
           "messages": {
             "items": {
               "$ref": "#/components/schemas/ChatLine"
@@ -3376,6 +3863,21 @@
               }
             ],
             "title": "Days"
+          },
+          "tweaks": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/PlanTweak"
+                },
+                "type": "array",
+                "maxItems": 3
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tweaks"
           }
         },
         "type": "object",
@@ -3418,6 +3920,20 @@
               }
             ],
             "title": "Plan Days"
+          },
+          "plan_tweaks": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/PlanTweak"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Plan Tweaks"
           }
         },
         "type": "object",
@@ -3428,6 +3944,19 @@
           "plan_days"
         ],
         "title": "ConversationOut"
+      },
+      "CountOut": {
+        "properties": {
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "count"
+        ],
+        "title": "CountOut"
       },
       "Course": {
         "type": "string",
@@ -3469,7 +3998,8 @@
             "type": "string",
             "enum": [
               "approve",
-              "reject"
+              "reject",
+              "swap"
             ],
             "title": "Action"
           },
@@ -3503,6 +4033,30 @@
               }
             ],
             "title": "Keep Additions"
+          },
+          "date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date"
+          },
+          "recipe_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recipe Id"
           }
         },
         "type": "object",
@@ -3510,7 +4064,7 @@
           "action"
         ],
         "title": "DecisionIn",
-        "description": "Approve (optionally with some meals or additions unticked) or reject.\n\n`keep_meals` / `keep_additions` list what stays ticked: dates of proposed meals, and\npositions in `list_additions`. Leave one out to keep all of that kind."
+        "description": "Approve (optionally with some meals or additions unticked), reject, or swap one\nday's recipe for an alternative (ADR 0025: a new Proposal replaces this one).\n\n`keep_meals` / `keep_additions` list what stays ticked: dates of proposed meals, and\npositions in `list_additions`. Leave one out to keep all of that kind. A swap needs\n`date` (a day in the Proposal) and `recipe_id`."
       },
       "Diet": {
         "type": "string",
@@ -3571,6 +4125,116 @@
           "excluded_ingredients"
         ],
         "title": "DietaryRulesOut"
+      },
+      "DinnerIdeaOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/RecipeKind"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary"
+          },
+          "cuisine": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cuisine"
+          },
+          "course": {
+            "$ref": "#/components/schemas/Course"
+          },
+          "servings": {
+            "type": "integer",
+            "title": "Servings"
+          },
+          "total_minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Total Minutes"
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score"
+          },
+          "favourite": {
+            "type": "boolean",
+            "title": "Favourite",
+            "default": false
+          },
+          "have": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Have"
+          },
+          "maybe": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Maybe"
+          },
+          "missing": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Missing"
+          },
+          "kitchen_uses": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Kitchen Uses"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "title",
+          "summary",
+          "cuisine",
+          "course",
+          "servings",
+          "total_minutes",
+          "have",
+          "maybe",
+          "missing",
+          "kitchen_uses"
+        ],
+        "title": "DinnerIdeaOut",
+        "description": "One Dinner Idea (ADR 0025): a recipe with its Kitchen Match."
       },
       "DoneEvent": {
         "properties": {
@@ -4302,6 +4966,11 @@
             ],
             "title": "Score"
           },
+          "favourite": {
+            "type": "boolean",
+            "title": "Favourite",
+            "default": false
+          },
           "rule_breaks": {
             "items": {
               "type": "string"
@@ -4834,6 +5503,16 @@
         ],
         "title": "MemberOut"
       },
+      "Mood": {
+        "type": "string",
+        "enum": [
+          "kitchen",
+          "surprise",
+          "specific"
+        ],
+        "title": "Mood",
+        "description": "What the Member is in the mood for on the Dinner ideas setup (slice 6f)."
+      },
       "OnListOut": {
         "properties": {
           "list_id": {
@@ -5035,6 +5714,34 @@
         ],
         "title": "PlaceOut"
       },
+      "PlanDayIn": {
+        "properties": {
+          "recipe_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Recipe Id"
+          },
+          "servings": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 24.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Servings"
+          }
+        },
+        "type": "object",
+        "required": [
+          "recipe_id"
+        ],
+        "title": "PlanDayIn",
+        "description": "Put this recipe on the day (Dinner Ideas): replaces an uncooked meal there."
+      },
       "PlanMode": {
         "type": "string",
         "enum": [
@@ -5043,6 +5750,16 @@
         ],
         "title": "PlanMode",
         "description": "What kind of plan the Member asked for in the \"Plan my week\" sheet (ADR 0015)."
+      },
+      "PlanTweak": {
+        "type": "string",
+        "enum": [
+          "healthy",
+          "quick",
+          "vegetarian"
+        ],
+        "title": "PlanTweak",
+        "description": "The \"This week\" chips on the Plan my week sheet: Preferences for one plan."
       },
       "PlanWeekdaysIn": {
         "properties": {
@@ -5106,6 +5823,17 @@
             "type": "integer",
             "title": "Servings"
           },
+          "total_minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Total Minutes"
+          },
           "cooked_at": {
             "anyOf": [
               {
@@ -5145,6 +5873,7 @@
           "recipe_id",
           "title",
           "servings",
+          "total_minutes",
           "cooked_at",
           "cooked_by",
           "kitchen_uses"
@@ -5644,6 +6373,11 @@
             ],
             "title": "Score"
           },
+          "favourite": {
+            "type": "boolean",
+            "title": "Favourite",
+            "default": false
+          },
           "parent_recipe_id": {
             "anyOf": [
               {
@@ -5773,6 +6507,11 @@
               }
             ],
             "title": "Score"
+          },
+          "favourite": {
+            "type": "boolean",
+            "title": "Favourite",
+            "default": false
           }
         },
         "type": "object",

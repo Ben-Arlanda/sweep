@@ -1,8 +1,9 @@
 /**
  * Design tokens: the app's shared visual decisions, named once and used everywhere.
  *
- * Direction: "Zest + Kitchen Table" (ADR 0007). Lime and ink are the brand; warm white
- * and soft pastels make it feel like a household kitchen rather than a shop.
+ * Direction: "Lime & Navy" on the Warm Neutral layout (premium redesign, 2026-11-19): one
+ * cool neutral page, white cards with a hairline edge, navy ink, and lime kept for the one
+ * main action and Sweep's AI.
  *
  * Components never hard-code a colour or a spacing value. They ask for a *role*
  * ("action", "textMuted", a tint) rather than a raw colour, so each colour has one job:
@@ -14,16 +15,22 @@
  * Contrast for every text/background pair is checked in tokens.test.ts.
  */
 
-const palette = {
+export const palette = {
   lime: '#d8f23c',
   limePressed: '#c5de25',
   limeSoft: '#eef8b8',
-  ink: '#12150f',
-  ink700: '#2a2f24',
-  paper: '#fffaf4',
+  chef: '#fcb608', // the chef mascot's golden yellow, sampled from his artwork
+  ink: '#121a2e', // navy ink
+  ink700: '#2b3550',
+  navy: '#1b2a4e', // selection: chips, segmented tabs, step numbers
+  page: '#f1f3f7', // the one page colour on every tab
+  line: '#dce0e9',
+  fill: '#e4e8f0', // photo placeholders and quiet fills
+  aiSoft: '#eef6c8',
+  paper: '#ffffff',
   white: '#ffffff',
-  stone600: '#5d6155',
-  stone300: '#e7e2d6',
+  stone600: '#4f5770',
+  stone300: '#dce0e9',
   night900: '#0f110d',
   night800: '#181b15',
   night700: '#22261e',
@@ -42,12 +49,19 @@ export type ColorTokens = {
   text: string;
   textMuted: string;
   border: string;
+  /** Quiet fill: photo placeholders, segmented-control tracks. */
+  fill: string;
   /** Lime: main buttons, ticks, the AI. */
   action: string;
   actionPressed: string;
   onAction: string;
   actionSoft: string;
   onActionSoft: string;
+  /** Selection (chips, segmented tabs): navy, white text on it. Lime stays for actions. */
+  selected: string;
+  onSelected: string;
+  /** Smaller, quieter text on navy (the weekday over the date). */
+  onSelectedMuted: string;
   /** The one strong dark (light in dark mode) surface: toasts and anchor cards. */
   inverse: string;
   onInverse: string;
@@ -66,33 +80,67 @@ export type ColorTokens = {
   onHeroMuted: string;
   /** The search field inside the hero. */
   heroField: string;
+  /** The chef mascot's yellow, for anything drawn to match him. Ink text only on it. */
+  chef: string;
+  onChef: string;
+  /** Text straight on the page (not on a card): ink on paper; white on Home's blue. */
+  onBackground: string;
+  onBackgroundMuted: string;
+  /** Bottom sheets and dialogs: their own colour, so a screen's page colour can't reach them. */
+  sheet: string;
+  /** Near-black for one strong button (View recipe), white text on it. */
+  strong: string;
+  onStrong: string;
+  /** Soft lavender for a gentle button (Home's View recipe), ink text on it. */
+  lavender: string;
+  onLavender: string;
+  /** Text on a solid danger button ("Yes, delete my account"). */
+  onDanger: string;
 };
 
 export const colors: Record<'light' | 'dark', ColorTokens> = {
   light: {
-    background: palette.paper,
+    background: palette.page,
     surface: palette.white,
     text: palette.ink,
     textMuted: palette.stone600,
-    border: palette.stone300,
+    border: palette.line,
+    fill: palette.fill,
     action: palette.lime,
     actionPressed: palette.limePressed,
     onAction: palette.ink,
-    actionSoft: palette.limeSoft,
+    actionSoft: palette.aiSoft,
     onActionSoft: '#2f3600',
+    selected: palette.navy,
+    onSelected: palette.white,
+    onSelectedMuted: '#d9dccf',
     inverse: palette.ink,
     onInverse: palette.white,
     danger: palette.red600,
     dangerSoft: palette.red100,
-    switchOff: '#8f8a7d',
-    tabSelected: '#174a20',
-    hero: palette.limeSoft,
+    switchOff: '#858ca0',
+    tabSelected: palette.navy,
+    hero: 'transparent',
     onHero: palette.ink,
-    onHeroMuted: '#4d5338',
+    onHeroMuted: palette.stone600,
     heroField: palette.white,
+    chef: palette.chef,
+    onChef: palette.ink,
+    onBackground: palette.ink,
+    onBackgroundMuted: palette.stone600,
+    sheet: palette.page, // grey sheet, white cards inside
+    strong: palette.navy,
+    onStrong: palette.white,
+    lavender: '#e4e8f0',
+    onLavender: palette.ink,
+    onDanger: palette.white,
   },
   dark: {
     background: palette.night900,
+    fill: palette.night700,
+    selected: palette.mist100,
+    onSelected: palette.ink,
+    onSelectedMuted: palette.ink700,
     surface: palette.night800,
     text: palette.mist100,
     textMuted: palette.mist400,
@@ -112,8 +160,55 @@ export const colors: Record<'light' | 'dark', ColorTokens> = {
     onHero: palette.mist100,
     onHeroMuted: '#bfc4b3',
     heroField: '#353b2e',
+    chef: palette.chef,
+    onChef: palette.ink,
+    onBackground: palette.mist100,
+    onBackgroundMuted: palette.mist400,
+    sheet: palette.night900,
+    strong: '#171a14',
+    onStrong: palette.white,
+    lavender: '#e9deff',
+    onLavender: palette.ink,
+    onDanger: palette.ink,
   },
 };
+
+/**
+ * Each main screen's page colour. Since the premium redesign (2026-11-19) every tab shares
+ * the one neutral page; the map stays so a screen could get its own colour again.
+ */
+const neutralPage = {
+  background: palette.page,
+  surface: palette.white,
+  hero: 'transparent',
+  onHero: palette.ink,
+  onHeroMuted: palette.stone600,
+  heroField: palette.white,
+  onBackground: palette.ink,
+  onBackgroundMuted: palette.stone600,
+} satisfies Partial<ColorTokens>;
+
+export const PAGE_COLORS = {
+  home: neutralPage,
+  kitchen: neutralPage,
+  list: neutralPage,
+  recipes: neutralPage,
+  plan: neutralPage,
+  household: neutralPage,
+};
+export type Page = keyof typeof PAGE_COLORS;
+
+/**
+ * Each tab's small icon tile (Home's quick tiles, section headers): a pale wash with the
+ * icon in a deeper shade of the same colour. Graphics only need 3:1 on their wash.
+ */
+export const sectionTints = {
+  home: { bg: '#e3e8fa', fg: '#2447c6' },
+  list: { bg: '#fbe3dc', fg: '#a63d22' },
+  kitchen: { bg: '#d6efeb', fg: '#006b61' },
+  plan: { bg: '#fcefd2', fg: '#8a5a00' },
+  recipes: { bg: '#ebe4fa', fg: '#6343b8' },
+} as const;
 
 /** The household pastels. `bg` for cards and thumbnails, `pill`/`onPill` for quantity pills. */
 export const TINT_NAMES = ['butter', 'blush', 'mint', 'sky', 'lilac'] as const;
@@ -200,32 +295,35 @@ export const hero = {
  * never set `fontWeight` alongside these.
  */
 export const fonts = {
-  display: 'Urbanist_700Bold',
-  displayBold: 'Urbanist_600SemiBold',
-  body: 'Urbanist_500Medium',
-  medium: 'Urbanist_600SemiBold',
-  bold: 'Urbanist_700Bold',
+  display: 'Urbanist_600SemiBold', // screen titles only
+  displayBold: 'Inter_600SemiBold',
+  body: 'Inter_400Regular',
+  medium: 'Inter_500Medium',
+  bold: 'Inter_600SemiBold',
 } as const;
 
 // A 4-point scale: every gap and padding is one of these, which keeps layouts even.
 export const space = { xs: 4, sm: 8, md: 12, lg: 16, xl: 24, xxl: 32 } as const;
 
-// Soft and round throughout: nothing sharp.
-export const radius = { sm: 8, md: 14, lg: 20, xl: 28, hero: 32, pill: 999 } as const;
+// Buttons and fields 12, cards 16, sheets 24, chips fully round.
+export const radius = { sm: 8, md: 12, lg: 16, xl: 24, hero: 24, pill: 999 } as const;
 
 export const type = {
   display: { fontFamily: fonts.display, fontSize: 34, lineHeight: 40, letterSpacing: -0.6 },
-  title: { fontFamily: fonts.display, fontSize: 28, lineHeight: 34, letterSpacing: -0.4 },
-  heading: { fontFamily: fonts.displayBold, fontSize: 20, lineHeight: 26, letterSpacing: -0.2 },
-  body: { fontFamily: fonts.body, fontSize: 16, lineHeight: 23 },
+  title: { fontFamily: fonts.display, fontSize: 30, lineHeight: 36, letterSpacing: -0.4 },
+  heading: { fontFamily: fonts.displayBold, fontSize: 18, lineHeight: 24, letterSpacing: -0.2 },
+  body: { fontFamily: fonts.body, fontSize: 15, lineHeight: 22 },
   label: { fontFamily: fonts.bold, fontSize: 15, lineHeight: 20 },
   caption: { fontFamily: fonts.body, fontSize: 13, lineHeight: 18 },
   pill: { fontFamily: fonts.bold, fontSize: 12, lineHeight: 16 },
 } as const;
 
-/** CSS-style shadows (supported on iOS, Android and web with the New Architecture). */
+/**
+ * CSS-style shadows (iOS, Android and web with the New Architecture). `card` is no shadow
+ * at all but a 1px hairline: a spread-only shadow draws the edge without taking up space.
+ */
 export const shadow = {
-  card: '0px 4px 14px -8px rgba(0, 0, 0, 0.30)',
+  card: `0px 0px 0px 1px ${palette.line}`,
   raised: '0px 12px 28px -14px rgba(0, 0, 0, 0.40)',
 } as const;
 
@@ -248,7 +346,15 @@ export const motion = {
 } as const;
 
 /** Height of the bottom tab bar, above the phone's home-bar area. Toasts sit above it. */
-export const tabBarHeight = 64;
+export const tabBarHeight = 68;
+
+/**
+ * The floating tab bar's frosting: white at this opacity over the blur. High enough that
+ * its labels pass AA even over black content (tested in tokens.test.ts).
+ */
+export const TAB_BAR_FROST = 0.86;
+/** The selected tab's pill: navy at this opacity over the frost. */
+export const TAB_PILL_SHADE = 0.09;
 
 /** Minimum tappable size (Apple HIG 44pt). Applies to every button and row. */
 export const touchTarget = 44;

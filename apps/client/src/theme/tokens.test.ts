@@ -1,6 +1,18 @@
-import { contrastRatio } from './contrast';
+import { contrastRatio, mix } from './contrast';
 import { initials, tintFor } from './tint';
-import { colors, hero, statusColors, stockColors, TINT_NAMES, tints } from './tokens';
+import {
+  colors,
+  hero,
+  PAGE_COLORS,
+  sectionTints,
+  palette,
+  statusColors,
+  TAB_BAR_FROST,
+  TAB_PILL_SHADE,
+  stockColors,
+  TINT_NAMES,
+  tints,
+} from './tokens';
 
 const AA = 4.5;
 const schemes = ['light', 'dark'] as const;
@@ -18,6 +30,8 @@ describe('contrastRatio', () => {
 
 describe.each(schemes)('%s theme meets WCAG AA for text', (scheme) => {
   const c = colors[scheme];
+  // A see-through hero shows the page under it.
+  const heroBg = c.hero === 'transparent' ? c.background : c.hero;
 
   it.each([
     ['text on background', c.text, c.background],
@@ -28,14 +42,23 @@ describe.each(schemes)('%s theme meets WCAG AA for text', (scheme) => {
     ['button text on pressed lime', c.onAction, c.actionPressed],
     ['text on soft lime', c.onActionSoft, c.actionSoft],
     ['toast text', c.onInverse, c.inverse],
+    ['strong button text', c.onStrong, c.strong],
+    ['lavender button text', c.onLavender, c.lavender],
+    ['solid danger button text', c.onDanger, c.danger],
     ['danger on background', c.danger, c.background],
     ['danger on surface', c.danger, c.surface],
     ['danger on soft danger', c.danger, c.dangerSoft],
-    ['hero title', c.onHero, c.hero],
-    ['hero text', c.onHeroMuted, c.hero],
+    ['text on the chef yellow', c.onChef, c.chef],
+    ['text on a grey pill (On list)', c.text, c.border],
+    ['hero title', c.onHero, heroBg],
+    ['hero text', c.onHeroMuted, heroBg],
     ['hero search text', c.onHero, c.heroField],
     ['hero search placeholder', c.onHeroMuted, c.heroField],
     ['lime highlight in the hero', c.onAction, c.action],
+    ['text on a selected chip', c.onSelected, c.selected],
+    ['muted text on navy', c.onSelectedMuted, c.selected],
+    ['text on the quiet fill', c.text, c.fill],
+    ['muted text on the quiet fill', c.textMuted, c.fill],
   ])('%s', (_, fg, bg) => {
     expect(contrastRatio(fg, bg)).toBeGreaterThanOrEqual(AA);
   });
@@ -114,3 +137,42 @@ describe('initials', () => {
     expect(initials(name)).toBe(expected);
   });
 });
+
+describe.each(Object.keys(PAGE_COLORS) as (keyof typeof PAGE_COLORS)[])(
+  'the %s page colour meets WCAG AA',
+  (page) => {
+    const c = { ...colors.light, ...PAGE_COLORS[page] };
+    it.each([
+      ['page text', c.onBackground, c.background],
+      ['muted page text', c.onBackgroundMuted, c.background],
+      ['hero title', c.onHero, c.background],
+      ['hero subtitle', c.onHeroMuted, c.background],
+      ['card text on warm white', c.text, c.surface],
+    ])('%s', (_name, fg, bg) => {
+      expect(contrastRatio(fg as string, bg as string)).toBeGreaterThanOrEqual(AA);
+    });
+  },
+);
+
+describe('floating tab bar meets WCAG AA', () => {
+  it('labels on the frost, even over black content', () => {
+    const worst = mix(palette.paper, palette.ink, TAB_BAR_FROST);
+    expect(contrastRatio(palette.ink700, worst)).toBeGreaterThanOrEqual(AA);
+  });
+  it('a selected chip stands out from the page (3:1, WCAG 1.4.11)', () => {
+    expect(contrastRatio(palette.navy, palette.page)).toBeGreaterThanOrEqual(3);
+  });
+  it('selected label on its navy pill, even over black content', () => {
+    const pill = mix(palette.navy, mix(palette.paper, palette.ink, TAB_BAR_FROST), TAB_PILL_SHADE);
+    expect(contrastRatio(palette.ink, pill)).toBeGreaterThanOrEqual(AA);
+  });
+});
+
+describe.each(Object.keys(sectionTints) as (keyof typeof sectionTints)[])(
+  'the %s icon tile',
+  (k) => {
+    it('icon reads on its wash (AA, so it could carry text too)', () => {
+      expect(contrastRatio(sectionTints[k].fg, sectionTints[k].bg)).toBeGreaterThanOrEqual(AA);
+    });
+  },
+);

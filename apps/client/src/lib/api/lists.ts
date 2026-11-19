@@ -295,13 +295,12 @@ export function useListActions(listId: string) {
 
   return {
     error: add.error ?? check.error ?? tag.error ?? remove.error ?? relink.error,
-    addItem: (text: string) =>
-      add.mutate({
-        listId,
-        itemId: randomUUID(),
-        text,
-        idempotencyKey: randomUUID(),
-      }),
+    /** Returns the new item's id, so the caller can offer Undo. */
+    addItem: (text: string) => {
+      const itemId = randomUUID();
+      add.mutate({ listId, itemId, text, idempotencyKey: randomUUID() });
+      return itemId;
+    },
     setChecked: (itemId: string, checked: boolean) =>
       check.mutate({ listId, itemId, checked, idempotencyKey: randomUUID() }),
     setShop: (itemId: string, shopId: string | null) =>

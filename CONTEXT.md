@@ -86,8 +86,12 @@ A recipe written for Sweep (we own it), available to every Household.
 _Avoid_: default recipe, built-in recipe
 
 **Imported Recipe**:
-A Household favourite a Member brought in (pasted, photographed, linked, uploaded as a PDF file or typed). It belongs to that Household only and is preferred over Seed Recipes when planning.
+A recipe a Member brought in (pasted, photographed, linked, uploaded as a PDF file or typed). It belongs to that Household only and starts as a Favourite.
 _Avoid_: saved recipe, user recipe
+
+**Favourite**:
+A recipe (Seed or Imported) the Household has hearted. Any Member can heart or un-heart it for everyone. In Cook from my Kitchen planning, Dinner Ideas and swap alternatives, a Favourite comes first among recipes with the same number of things to buy, unless it was Cooked in the last 7 days. It gets no boost in New recipes mode. Un-hearting an Imported Recipe keeps the recipe.
+_Avoid_: loved, saved, starred
 
 **Recipe Adaptation**:
 A clearly labelled variation of an existing recipe that swaps one or more ingredient lines for others (e.g. beef mince → lentils, cream → Greek yoghurt). The method isn't rewritten. Always linked to the recipe it came from. The planner proposes it inside a Proposal, and it's saved only when a Member approves.
@@ -123,6 +127,10 @@ _Avoid_: dietary requirement
 How well a recipe fits what's in the Kitchen: which of its ingredients the Household has, might have (Unknown status) or is missing. Plans start from the best Kitchen Matches (fewest things to buy).
 _Avoid_: coverage score, pantry match
 
+**Dinner Ideas**:
+What "Just tonight" shows: tonight's best Kitchen Matches that pass the Dietary Rules, chosen by code, not the agent. A Member picking one plans it directly, like editing the Meal Plan by hand, so there's no Proposal. Asking Sweep to tweak them starts a Conversation, which ends in a one-dinner Proposal.
+_Avoid_: suggestions, AI picks
+
 ### The agent
 
 **Conversation**:
@@ -150,7 +158,7 @@ _Avoid_: recommendation, change request
 A Proposal is *pending* until it's approved or rejected. It becomes *superseded* when the Member asks the agent for changes instead, and *expired* after 24 hours.
 
 **Approval**:
-A Member's decision on a Proposal: approve (optionally after unticking some meals or list additions) or reject. Recorded permanently. Bigger edits happen in the Conversation, which produces a new Proposal.
+A Member's decision on a Proposal: approve (optionally after unticking some meals or list additions), reject, or **swap** one day's recipe for an alternative, which supersedes it with a new Proposal at once (ADR 0025). Recorded permanently. Bigger edits happen in the Conversation, which produces a new Proposal.
 _Avoid_: confirmation (Confirmed means something else)
 
 ### Evaluation

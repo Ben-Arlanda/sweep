@@ -1,6 +1,5 @@
-import { useColorScheme } from 'react-native';
+import { createContext, useContext } from 'react';
 
-import { useAppearance } from './appearance';
 import {
   colors,
   fonts,
@@ -13,22 +12,24 @@ import {
   tints,
   touchTarget,
   type,
+  type ColorTokens,
 } from './tokens';
 
-/** Light or dark, from the person's Appearance choice (dark unless they changed it). */
+/** Always light: dark mode was removed (2026-11-18). Kept as a hook so callers don't change. */
 export function useScheme(): 'light' | 'dark' {
-  const appearance = useAppearance();
-  const phone = useColorScheme(); // only used when they chose "match my phone"
-  if (appearance === 'system') return phone === 'light' ? 'light' : 'dark';
-  return appearance;
+  return 'light';
 }
+
+/** Colours a screen swaps in for everything inside it (PAGE_COLORS). */
+export const ColorOverride = createContext<Partial<ColorTokens> | null>(null);
 
 /** The current theme. Re-renders automatically when the scheme changes. */
 export function useTheme() {
   const scheme = useScheme();
+  const override = useContext(ColorOverride);
   return {
     scheme,
-    colors: colors[scheme],
+    colors: override ? { ...colors[scheme], ...override } : colors[scheme],
     tints: tints[scheme],
     status: statusColors[scheme],
     stock: stockColors[scheme],

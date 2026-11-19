@@ -39,7 +39,9 @@ export function ChoiceChips<T>({
       style={{
         flexDirection: 'row',
         flexWrap: fill ? 'nowrap' : 'wrap',
-        gap: fill ? t.space.xs + 2 : t.space.sm,
+        columnGap: fill ? t.space.xs + 2 : small ? 6 : t.space.sm,
+        // Small chips already sit in a 44pt tap area, so wrapped rows need no extra gap.
+        rowGap: small ? 0 : t.space.sm,
       }}
     >
       {options.map((option) => {
@@ -65,17 +67,20 @@ export function ChoiceChips<T>({
                 borderRadius: t.radius.pill,
                 alignItems: 'center',
                 justifyContent: 'center',
-                backgroundColor: selected ? t.colors.inverse : t.colors.surface,
+                backgroundColor: selected ? t.colors.selected : t.colors.surface,
                 borderWidth: 1,
-                borderColor: selected ? t.colors.inverse : t.colors.border,
+                borderColor: selected ? t.colors.selected : t.colors.border,
               }}
             >
               <Text
                 variant="label"
                 numberOfLines={1}
                 style={[
-                  small ? { fontSize: 14, lineHeight: 18 } : null,
-                  { color: selected ? t.colors.onInverse : t.colors.text },
+                  small ? { fontSize: 13, lineHeight: 18 } : null,
+                  {
+                    color: selected ? t.colors.onSelected : t.colors.text,
+                    fontFamily: t.fonts.medium,
+                  },
                 ]}
               >
                 {option.label}

@@ -27,7 +27,7 @@ from app.agent.prompt import today_in_sydney, transcript
 from app.agent.state import AgentState
 from app.agent.tools import AgentContext
 from app.embeddings import Embedder
-from app.models import Conversation, PlanMode, Proposal
+from app.models import Conversation, PlanMode, PlanTweak, Proposal
 from app.services.households import MemberContext
 
 log = logging.getLogger(__name__)
@@ -54,12 +54,14 @@ async def create(
     ctx: MemberContext,
     mode: PlanMode | None = None,
     days: list[date] | None = None,
+    tweaks: list[PlanTweak] | None = None,
 ) -> Conversation:
     conversation = Conversation(
         household_id=ctx.household.id,
         member_id=ctx.member.id,
         plan_mode=mode,
         plan_days=check_days(days, today_in_sydney()) if days is not None else None,
+        plan_tweaks=sorted({t.value for t in tweaks}) if tweaks else None,
     )
     session.add(conversation)
     await session.flush()

@@ -29,6 +29,7 @@ from evals.agent_graders import (
     only_courses,
     proposal_made,
     revised_after_reject,
+    short_note,
     summarise,
     swap_uses,
     swaps_bring_no_new_meat,
@@ -331,3 +332,15 @@ def test_no_adaptation_swap_uses_and_no_swap_to() -> None:
     wine = SwapFacts("500 g beef mince", "750 ml red wine", "beef mince", "red wine")
     assert no_swap_to("wine")(record(proposal(RAGU))).ok
     assert not no_swap_to("wine")(record(proposal(meal(MON, swaps=(wine,))))).ok
+
+
+def test_a_long_plan_note_fails_short_note() -> None:
+    short = replace(proposal(meal(MON)), summary="Two dinners from your Kitchen. Enjoy!")
+    rambling = replace(
+        proposal(meal(MON)), summary="Here's your plan. Monday is dhal. Tuesday is curry."
+    )
+    listed = replace(proposal(meal(MON)), summary="Your plan:\n1. Dhal\n2. Curry")
+
+    assert short_note(record(short)).ok
+    assert not short_note(record(rambling)).ok
+    assert not short_note(record(listed)).ok

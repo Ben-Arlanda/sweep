@@ -7,6 +7,8 @@ import {
   pickDays,
   planWeekFor,
   weekDays,
+  shortWeekRange,
+  weekRange,
 } from './week';
 
 const meal = (date: string, title: string) => ({
@@ -15,6 +17,7 @@ const meal = (date: string, title: string) => ({
   recipe_id: 'r1',
   title,
   servings: 4,
+  total_minutes: null,
   cooked_at: null,
   cooked_by: null,
   kitchen_uses: [],
@@ -136,5 +139,23 @@ describe('the usual weekdays to save after picking', () => {
       picked: ['2026-11-16', '2026-11-22'],
     });
     expect(got).toEqual([1, 7]);
+  });
+});
+
+describe('weekRange', () => {
+  it('names the month once when the week stays in it', () => {
+    expect(weekRange('2026-11-16')).toBe('Mon 16 – Sun 22 Nov');
+  });
+  it('names both months when the week crosses one', () => {
+    expect(weekRange('2026-11-30')).toBe('Mon 30 Nov – Sun 6 Dec');
+  });
+});
+
+describe('shortWeekRange', () => {
+  it('drops the weekdays', () => {
+    expect(shortWeekRange('2026-11-16')).toBe('16–22 Nov');
+  });
+  it('names both months across a month end', () => {
+    expect(shortWeekRange('2026-11-30')).toBe('30 Nov – 6 Dec');
   });
 });

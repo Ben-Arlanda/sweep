@@ -9,6 +9,8 @@
 import { keepPreviousData, useMutation, useQuery, type QueryClient } from '@tanstack/react-query';
 import { randomUUID } from 'expo-crypto';
 
+import { withoutItem } from '@/features/kitchen/kitchenCache';
+
 import { api, ApiError, unwrap } from './client';
 import { listKeys } from './lists';
 import type { components } from './schema';
@@ -58,6 +60,20 @@ export function registerKitchenMutations(queryClient: QueryClient) {
     retry: shouldRetry,
     onSettled: () => queryClient.invalidateQueries({ queryKey: kitchenKeys.all }),
   };
+  // A delete shows at once (the row leaves the cached Kitchen); a refusal puts it back.
+  type KitchenOut = components['schemas']['KitchenOut'];
+  const removedAtOnce = {
+    onMutate: async (v: IngredientVars) => {
+      await queryClient.cancelQueries({ queryKey: kitchenKeys.all });
+      const before = queryClient.getQueryData<KitchenOut>(kitchenKeys.all);
+      if (before) queryClient.setQueryData(kitchenKeys.all, withoutItem(before, v.ingredientId));
+      return { before };
+    },
+    onError: (_error: Error, _v: IngredientVars, context: unknown) => {
+      const before = (context as { before?: KitchenOut } | undefined)?.before;
+      if (before) queryClient.setQueryData(kitchenKeys.all, before);
+    },
+  };
 
   queryClient.setMutationDefaults(mutationKeys.setTracked, {
     mutationFn: async (v: SetTrackedVars) =>
@@ -77,6 +93,7 @@ export function registerKitchenMutations(queryClient: QueryClient) {
         }),
       ),
     ...settled,
+    ...removedAtOnce,
   });
   queryClient.setMutationDefaults(mutationKeys.setStaple, {
     mutationFn: async (v: SetStapleVars) =>
@@ -96,6 +113,7 @@ export function registerKitchenMutations(queryClient: QueryClient) {
         }),
       ),
     ...settled,
+    ...removedAtOnce,
   });
   queryClient.setMutationDefaults(mutationKeys.setPlace, {
     mutationFn: async (v: SetPlaceVars) =>

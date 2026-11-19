@@ -1,5 +1,5 @@
 /// <reference types="jest" />
-import { COURSES, courseName, tapCourse } from './courses';
+import { COURSES, courseName, TILES } from './courses';
 
 describe('Course tiles', () => {
   it('lists every Course, mains first, as the screen shows them', () => {
@@ -13,10 +13,9 @@ describe('Course tiles', () => {
     ]);
   });
 
-  it('tapping a tile picks it, and tapping it again shows every Course', () => {
-    expect(tapCourse(null, 'dessert')).toBe('dessert');
-    expect(tapCourse('dessert', 'main')).toBe('main');
-    expect(tapCourse('dessert', 'dessert')).toBeNull(); // there's no "All" tile
+  it('the tiles are All, then the four big Courses (Lunch shows under All)', () => {
+    expect(TILES.map((c) => c.value)).toEqual([null, 'main', 'side', 'dessert', 'breakfast']);
+    expect(TILES.map((c) => c.label)).toEqual(['All', 'Mains', 'Sides', 'Desserts', 'Breakfast']);
   });
 });
 

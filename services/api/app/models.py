@@ -414,7 +414,7 @@ class Course(StrEnum):
 
 class RecipeKind(StrEnum):
     SEED = "seed"  # written for Sweep, shared by every Household
-    IMPORTED = "imported"  # a Household's favourite: pasted, photo, link, file or typed (4d)
+    IMPORTED = "imported"  # a Household's own: pasted, photo, link, file or typed (4d)
     ADAPTATION = "adaptation"  # a Household's copy of another recipe with Swaps (5e)
 
 
@@ -490,6 +490,26 @@ class Recipe(Base):
 Index("ix_recipes_search_document", Recipe.search_document, postgresql_using="gin")
 
 
+class Favourite(Base):
+    """A recipe the Household has hearted (ADR 0025). One heart per Household, so the
+    key is the pair; `hearted_by` is kept in case hearts become per Member later."""
+
+    __tablename__ = "favourites"
+
+    household_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("households.id", ondelete="CASCADE"), primary_key=True
+    )
+    recipe_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("recipes.id", ondelete="CASCADE"), primary_key=True, index=True
+    )
+    hearted_by: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("members.id", ondelete="SET NULL")
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utcnow, server_default=func.now()
+    )
+
+
 class RecipeIngredient(Base):
     """One ingredient line of a recipe: what was written, and what we understood."""
 
@@ -553,6 +573,14 @@ class PlanMode(StrEnum):
     NEW = "new"  # new recipes to shop for; the Kitchen only trims the buy list
 
 
+class PlanTweak(StrEnum):
+    """The "This week" chips on the Plan my week sheet: Preferences for one plan."""
+
+    HEALTHY = "healthy"
+    QUICK = "quick"  # under 30 minutes
+    VEGETARIAN = "vegetarian"  # a lean, not a Rule: Dietary Rules stay the hard limit
+
+
 class Conversation(Base):
     """A chat between one Member and the agent. Its id is also the LangGraph thread id:
     the messages and Draft Plan live in the checkpointer's tables, keyed by it.
@@ -576,6 +604,9 @@ class Conversation(Base):
     # every turn, and validate refuses meals on other days (ADR 0015).
     plan_mode: Mapped[PlanMode | None] = mapped_column(str_enum(PlanMode, "plan_mode"))
     plan_days: Mapped[list[date] | None] = mapped_column(ARRAY(Date))
+    # The sheet's "This week" chips (slice 6e): soft tastes for this plan only, never
+    # saved as Preferences. Values from PlanTweak.
+    plan_tweaks: Mapped[list[str] | None] = mapped_column(ARRAY(String(20)))
 
 
 class AgentUsage(Base):

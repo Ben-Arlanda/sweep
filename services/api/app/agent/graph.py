@@ -8,12 +8,12 @@
                              ▼
                           approve  ← interrupt(): the graph pauses, saved in Postgres
                              │ resumed by POST /proposals/{id}/decision, or a chat message
-                ┌────────────┼──────────────┐
-             approve       reject         message (Proposal superseded)
-                ▼            ▼              ▼
-             commit         END         load_context → agent ... (a normal turn)
-                ▼
-               END
+         ┌──────────────┬─────┴────────┬──────────────────┐
+      approve        reject      message             swap (both supersede it)
+         ▼              ▼          ▼                    ▼
+      commit           END     load_context → agent   swap: plain code, no model
+         ▼                       (a normal turn)        ▼
+        END                                          approve (a new Proposal waits)
 
 The LLM chooses which tools to call and in what order: that's the "agent" part, and
 why "plan 5 dinners" and "we already have pasta" take different paths. Everything that
@@ -36,8 +36,8 @@ from pydantic import ValidationError
 
 from app import tracing
 from app.agent import prompt, tools
-from app.agent.state import AgentState, Draft, empty_draft
-from app.agent.tools import AgentContext, Call, ToolError
+from app.agent.state import AgentState, Draft, DraftAddition, DraftMeal, empty_draft
+from app.agent.tools import AgentContext, Call, CoverageArgs, MealRef, ToolError
 from app.agent.validate import Problem, build_proposal, explain_additions, validate_draft
 from app.llm_costs import cost_usd
 from app.models import Conversation, ProposalStatus, Recipe
@@ -497,7 +497,101 @@ def after_approve(state: AgentState) -> str:
         return "commit"
     if action == "message":
         return "load_context"
+    if action == "swap":
+        return "swap"
     return END
+
+
+async def swap(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
+    """The Member swapped one day's recipe for an alternative (ADR 0025). Plain code, no
+    model call: change that day, redo only that day's shopping, run the same checks as
+    validate and show a new Proposal. The decision route already checked the day and
+    the recipe; validate checks again, as it does every Draft.
+
+    Shopping: an addition goes when only the old recipe needed it (not another meal, and
+    the Member didn't ask for it); the new recipe's missing things are added, unless an
+    addition for that Ingredient is already there (it may be a little short then)."""
+    ctx = runtime.context
+    decision = state.get("decision") or {}
+    day, new_id = decision["date"], decision["recipe_id"]
+    draft = state["draft"]
+    old = draft["meals"][day]
+    async with ctx.sessionmaker() as session:
+        ids = [m["recipe_id"] for m in draft["meals"].values()] + [new_id]
+        found = await recipes.get_many(session, ctx.household_id, ids)
+        adapted, _ = await adaptations.for_draft(session, ctx.household_id, draft["meals"])
+        new = found[new_id]
+        meals = {**draft["meals"], day: DraftMeal(recipe_id=new_id, servings=old["servings"])}
+        meals[day]["title"] = new.title
+
+        old_recipe = adapted.get(day) or found[old["recipe_id"]]
+        others = [
+            (d, adapted.get(d) or found[m["recipe_id"]])
+            for d, m in draft["meals"].items()
+            if d != day
+        ]
+        said = [line["text"] for line in prompt.transcript(state) if line["role"] == "user"]
+        names = await ingredients.names(
+            session, [a["ingredient_id"] for a in draft["list_additions"]]
+        )
+        explained = explain_additions(draft["list_additions"], others, said, names)
+        old_only = {str(i) for i in _needs(old_recipe)}
+        kept = [
+            addition
+            for addition, why in zip(draft["list_additions"], explained, strict=True)
+            if why["reason"] != "unexplained" or addition["ingredient_id"] not in old_only
+        ]
+
+        member = await tools.member_context(session, ctx)
+        call = Call(session, member, ctx, Draft(meals=meals, list_additions=kept))
+        coverage = await tools.check_kitchen_coverage(
+            call, CoverageArgs(meals=[MealRef(recipe_id=new.id, servings=old["servings"])])
+        )
+        by_name = {
+            line.ingredient.name: str(line.ingredient.id)
+            for line in new.ingredients
+            if line.ingredient is not None
+        }
+        have = {a["ingredient_id"] for a in kept if a["ingredient_id"]}
+        for missing in coverage.result["missing"]:
+            iid = by_name.get(missing["ingredient"])
+            if iid in have:
+                continue
+            kept.append(
+                DraftAddition(
+                    name=missing["ingredient"],
+                    quantity=missing.get("need"),
+                    unit=missing.get("unit") if missing.get("need") is not None else None,
+                    ingredient_id=iid,
+                )
+            )
+        swapped = Draft(meals=meals, list_additions=kept)
+        rules = await diet.get_rules(session, ctx.household_id)
+        conversation = await session.get_one(Conversation, ctx.conversation_id)
+        adapted, refused = await adaptations.for_draft(session, ctx.household_id, meals)
+    with tracing.observe("swap-meal", as_type="guardrail", input=decision) as obs:
+        problems = validate_draft(
+            swapped, found, rules, ctx.today, conversation.plan_days, adapted, refused
+        )
+        obs.update(output=[p.message for p in problems] or "passed")
+    summary = f"Swapped {date.fromisoformat(day):%A} for {new.title}."
+    proposal = await _show(
+        {**state, "draft": swapped}, runtime, swapped, found, rules, problems, summary, adapted
+    )
+    return {
+        "draft": swapped,
+        "decision": None,
+        "proposal": proposal,
+        "proposal_marks": [{"id": proposal["id"], "at": len(state["messages"])}],
+    }
+
+
+def _needs(recipe: Recipe) -> set[uuid.UUID]:
+    return {
+        line.ingredient.id
+        for line in recipe.ingredients
+        if line.ingredient is not None and not line.optional
+    }
 
 
 async def commit(state: AgentState, runtime: Runtime_) -> dict[str, Any]:
@@ -543,6 +637,7 @@ def build(checkpointer: Checkpointer) -> CompiledStateGraph[AgentState, AgentCon
     graph.add_node("reshow", reshow)
     graph.add_node("approve", approve)
     graph.add_node("commit", commit)
+    graph.add_node("swap", swap)
     graph.add_edge(START, "load_context")
     graph.add_conditional_edges("load_context", after_load)
     graph.add_conditional_edges("agent", after_agent)
@@ -551,4 +646,5 @@ def build(checkpointer: Checkpointer) -> CompiledStateGraph[AgentState, AgentCon
     graph.add_conditional_edges("reshow", after_reshow)
     graph.add_conditional_edges("approve", after_approve)
     graph.add_edge("commit", END)
+    graph.add_edge("swap", "approve")
     return graph.compile(checkpointer=checkpointer)

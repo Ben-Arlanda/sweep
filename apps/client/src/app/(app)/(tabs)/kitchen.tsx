@@ -1,24 +1,15 @@
 import {
   Archive,
-  Beef,
   Camera,
   Check,
-  ChevronUp,
   Container,
-  CupSoda,
-  Croissant,
   Ellipsis,
-  Fish,
   Leaf,
-  Milk,
-  Package,
   Pencil,
   Refrigerator,
-  Salad,
   Search,
   ShoppingCart,
   Snowflake,
-  Sparkles,
   Tag,
   Trash2,
   TriangleAlert,
@@ -32,17 +23,14 @@ import {
   type LucideIcon,
 } from 'lucide-react-native';
 import { useRef, useState } from 'react';
-import {
-  Pressable,
-  ScrollView,
-  Switch,
-  TextInput,
-  useWindowDimensions,
-  View,
-  type HostInstance,
-} from 'react-native';
+import { Pressable, ScrollView, Switch, TextInput, View, type HostInstance } from 'react-native';
 
 import { FoodThumb } from '@/components/FoodThumb';
+import { CategoryAccordion, toggled } from '@/components/CategoryAccordion';
+import { MenuItem } from '@/components/MenuItem';
+import { PageHeader } from '@/components/PageHeader';
+import { Segmented } from '@/components/Segmented';
+import { SwipeToRemove } from '@/components/SwipeToRemove';
 import { Icon } from '@/components/Icon';
 import { measureAnchor, Popover, type Anchor } from '@/components/Popover';
 import { Sheet } from '@/components/Sheet';
@@ -63,6 +51,7 @@ import {
 import { newIngredientName } from '@/features/kitchen/addNew';
 import { displayName } from '@/features/kitchen/format';
 import {
+  afterRemove,
   afterStockChange,
   sections as toSections,
   STOCK_LABEL,
@@ -77,10 +66,11 @@ import { onListIds } from '@/features/kitchen/onList';
 import { usePlaceFilter } from '@/features/kitchen/placeFilter';
 import { PLACES, type Place, type PlaceFilter } from '@/features/kitchen/places';
 import { useIngredientSearch, useKitchen, useKitchenActions } from '@/lib/api/kitchen';
-import { useList } from '@/lib/api/lists';
+import { useList, useListActions } from '@/lib/api/lists';
 import { ingredientEmoji } from '@/theme/foodEmoji';
 import { tintFor } from '@/theme/tint';
 import { inputText } from '@/theme/inputText';
+import { PageColors } from '@/theme/PageColors';
 import { useTheme, type Theme } from '@/theme/useTheme';
 
 type Actions = ReturnType<typeof useKitchenActions>;
@@ -91,19 +81,6 @@ const PLACE_ICON: Record<Place, LucideIcon> = {
   cupboard: Archive,
 };
 
-const CATEGORY_ICON: Record<string, LucideIcon> = {
-  spices: Sparkles,
-  pantry: Package,
-  bakery: Croissant,
-  produce: Salad,
-  dairy: Milk,
-  chilled: Refrigerator,
-  meat: Beef,
-  seafood: Fish,
-  frozen: Snowflake,
-  drinks: CupSoda,
-};
-
 const placeLabel = (place: Place) => PLACES.find((p) => p.place === place)?.label ?? place;
 
 /**
@@ -111,12 +88,13 @@ const placeLabel = (place: Place) => PLACES.find((p) => p.place === place)?.labe
  * grouped by category. Each item has a status the Member sets from its badge: a Staple
  * that runs out goes on the Shopping List at once (Undo), a Non-staple only asks.
  */
-export default function KitchenScreen() {
+function KitchenScreenContent() {
   const t = useTheme();
   const toast = useToast();
   const kitchen = useKitchen();
   const actions = useKitchenActions();
   const list = useList();
+  const listActions = useListActions(list.data?.id ?? '');
   const [query, setQuery] = useState('');
   const [tab, setTab] = useState<Tab>('staples');
   const [place, setPlace] = usePlaceFilter();
@@ -218,12 +196,46 @@ export default function KitchenScreen() {
     });
   }
 
-  function remove(row: KitchenRow) {
+  /**
+   * ••• Remove item: follows the Out rule (`afterRemove`). A Staple is marked Out and goes
+   * on the list; a Non-staple leaves and the toast offers the list, with Undo.
+   */
+  function removeItem(row: KitchenRow) {
+    const effect = afterRemove(row, isOnList(row));
+    if (effect === 'markOut') return void changeStock(row, 'out'); // "Added to shopping list"
+    if (effect === 'addToList') return void addToList(row);
+    actions.remove(row.id);
+    const undo = () => undoToTracked(actions, row);
+    if (effect === 'remove') {
+      toast({ kind: 'undo', text: 'Removed from Kitchen', detail: row.name, onUndo: undo });
+      return;
+    }
+    toast({
+      kind: 'ask',
+      text: `Removed ${row.name.toLowerCase()}. Add it to your shopping list?`,
+      emoji: ingredientEmoji(row.ingredient),
+      tint: tintFor(row.ingredient.name),
+      actionLabel: 'Add to list',
+      // It's out of the Kitchen now, so it goes on through the list (linked by its name).
+      onAction: () => {
+        if (!list.data) return;
+        const name = row.ingredient.name;
+        listActions.addItem(name.charAt(0).toUpperCase() + name.slice(1));
+      },
+      onUndo: undo,
+    });
+  }
+
+  /**
+   * Swipe left: gone, nothing goes on the list. A Staple
+   * stops being a Staple. Undo puts it back as it was.
+   */
+  function removeFromKitchen(row: KitchenRow) {
     if (row.staple) actions.notAStaple(row.id);
     else actions.remove(row.id);
     toast({
       kind: 'undo',
-      text: 'Removed from Kitchen',
+      text: 'Deleted from Kitchen',
       detail: row.name,
       onUndo: () => {
         if (row.staple) {
@@ -240,13 +252,15 @@ export default function KitchenScreen() {
 
   return (
     <Screen edges={TAB_ROOT}>
-      <Text variant="display" accessibilityRole="header">
-        Kitchen
-      </Text>
+      <PageHeader icon={Refrigerator} section="kitchen" title="Kitchen" />
 
-      <View style={{ flexDirection: 'row', gap: t.space.sm }}>
+      <View
+        accessibilityRole="group"
+        accessibilityLabel="Filter by stock"
+        style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6 }}
+      >
         {STOCK_ORDER.map((stock) => (
-          <SummaryTile
+          <StockPill
             key={stock}
             stock={stock}
             count={sum[stock]}
@@ -264,13 +278,14 @@ export default function KitchenScreen() {
             alignItems: 'center',
             gap: t.space.sm,
             backgroundColor: t.colors.surface,
-            borderRadius: t.radius.pill,
-            paddingHorizontal: t.space.lg,
-            minHeight: 52,
-            boxShadow: t.shadow.card,
+            borderRadius: t.radius.md,
+            borderWidth: 1,
+            borderColor: t.colors.border,
+            paddingHorizontal: t.space.md,
+            minHeight: 48,
           }}
         >
-          <Icon icon={Search} size={20} color={t.colors.text} />
+          <Icon icon={Search} size={20} color={t.colors.textMuted} />
           <TextInput
             accessibilityLabel="Add to Kitchen"
             placeholder="Add to Kitchen, e.g. olive oil"
@@ -286,11 +301,11 @@ export default function KitchenScreen() {
           accessibilityLabel="Add from photo"
           onPress={() => setPhotoSheet(true)}
           style={({ pressed }) => ({
-            width: 52,
-            minHeight: 52,
+            width: 48,
+            minHeight: 48,
             alignItems: 'center',
             justifyContent: 'center',
-            borderRadius: t.radius.pill,
+            borderRadius: t.radius.md,
             backgroundColor: pressed ? t.colors.actionPressed : t.colors.action,
           })}
         >
@@ -312,29 +327,15 @@ export default function KitchenScreen() {
       />
       <ErrorText message={actions.error?.message} />
 
-      <View
-        accessibilityRole="tablist"
-        style={{
-          flexDirection: 'row',
-          backgroundColor: t.colors.surface,
-          borderRadius: t.radius.pill,
-          padding: 4,
-          boxShadow: t.shadow.card,
-        }}
-      >
-        <TabButton
-          label={`Staples (${rows.filter((r) => r.staple).length})`}
-          icon={Container}
-          on={tab === 'staples'}
-          onPress={() => setTab('staples')}
-        />
-        <TabButton
-          label={`Non-staples (${rows.filter((r) => !r.staple).length})`}
-          icon={Leaf}
-          on={tab === 'non-staples'}
-          onPress={() => setTab('non-staples')}
-        />
-      </View>
+      <Segmented
+        label="Kind"
+        value={tab}
+        onChange={setTab}
+        options={[
+          { value: 'staples', label: `Staples (${rows.filter((r) => r.staple).length})` },
+          { value: 'non-staples', label: `Non-staples (${rows.filter((r) => !r.staple).length})` },
+        ]}
+      />
 
       {/* Swipes sideways when it doesn't fit (big text sizes), so labels never wrap. */}
       <ScrollView
@@ -349,7 +350,6 @@ export default function KitchenScreen() {
           <PlaceChip
             key={p.place}
             label={p.label}
-            icon={PLACE_ICON[p.place]}
             on={place === p.place}
             onPress={() => setPlace(p.place as PlaceFilter)}
           />
@@ -357,7 +357,7 @@ export default function KitchenScreen() {
       </ScrollView>
 
       {shown.length === 0 ? (
-        <Text muted>
+        <Text style={{ color: t.colors.onBackgroundMuted }}>
           {rows.length === 0
             ? 'Nothing in your Kitchen yet.'
             : 'Nothing here. Try another tab or filter.'}
@@ -367,61 +367,38 @@ export default function KitchenScreen() {
       {shown.map((section) => {
         const open = !closed.has(section.category);
         return (
-          <View
+          <CategoryAccordion
             key={section.category}
-            style={{
-              backgroundColor: t.colors.surface,
-              borderRadius: t.radius.lg,
-              boxShadow: t.shadow.card,
-            }}
+            category={section.category}
+            label={section.label}
+            open={open}
+            onToggle={() => setClosed((now) => toggled(now, section.category))}
           >
-            <Pressable
-              accessibilityRole="button"
-              accessibilityState={{ expanded: open }}
-              accessibilityLabel={`${section.label}, ${section.rows.length} items`}
-              onPress={() =>
-                setClosed((now) => {
-                  const next = new Set(now);
-                  if (open) next.add(section.category);
-                  else next.delete(section.category);
-                  return next;
-                })
-              }
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: t.space.sm,
-                paddingHorizontal: t.space.lg,
-                minHeight: 56,
-              }}
-            >
-              <Icon icon={CATEGORY_ICON[section.category] ?? Package} color={t.colors.text} />
-              <Text variant="heading" accessibilityRole="header" style={{ fontSize: 18 }}>
-                {section.label}
-              </Text>
-              <Text variant="caption" muted style={{ flex: 1 }}>
-                {section.rows.length} items
-              </Text>
-              <View style={{ transform: [{ rotate: open ? '0deg' : '180deg' }] }}>
-                <Icon icon={ChevronUp} size={20} color={t.colors.text} strong />
-              </View>
-            </Pressable>
-            {open
-              ? section.rows.map((row) => (
-                  <ItemRow
-                    key={row.id}
-                    row={row}
-                    onList={isOnList(row)}
-                    onStatus={(anchor) => setPopover({ id: row.id, kind: 'status', anchor })}
-                    onMenu={(anchor) => setPopover({ id: row.id, kind: 'menu', anchor })}
-                    onOpen={() => setSheet(row.id)}
-                    onAdd={() => void addToList(row)}
-                  />
-                ))
-              : null}
-          </View>
+            {section.rows.map((row) => (
+              <SwipeToRemove
+                key={row.id}
+                background={t.colors.surface}
+                onRemove={() => removeFromKitchen(row)}
+              >
+                <ItemRow
+                  row={row}
+                  onList={isOnList(row)}
+                  onStatus={(anchor) => setPopover({ id: row.id, kind: 'status', anchor })}
+                  onMenu={(anchor) => setPopover({ id: row.id, kind: 'menu', anchor })}
+                  onOpen={() => setSheet(row.id)}
+                  onAdd={() => void addToList(row)}
+                />
+              </SwipeToRemove>
+            ))}
+          </CategoryAccordion>
         );
       })}
+
+      {shown.length > 0 ? (
+        <Text variant="caption" muted style={{ textAlign: 'center', fontSize: 12 }}>
+          Swipe left on a row to delete it without adding it to the list.
+        </Text>
+      ) : null}
 
       {popover?.kind === 'status' && popRow ? (
         <Popover
@@ -455,9 +432,9 @@ export default function KitchenScreen() {
               setPopover(null);
               moveKind(popRow);
             }}
-            onRemove={() => {
+            onRemoveItem={() => {
               setPopover(null);
-              remove(popRow);
+              removeItem(popRow);
             }}
           />
         </Popover>
@@ -487,7 +464,8 @@ function undoToTracked(actions: Actions, row: KitchenRow) {
   if (row.stock !== 'in_stock') void actions.setStock(row.id, row.stock);
 }
 
-function SummaryTile({
+/** A stock filter: dot, count and label ("● 12 In stock"). Navy when it's the filter. */
+function StockPill({
   stock,
   count,
   on,
@@ -499,33 +477,61 @@ function SummaryTile({
   onPress: () => void;
 }) {
   const t = useTheme();
-  const c = t.stock[stock];
+  const fg = on ? t.colors.onSelected : t.colors.text;
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityState={{ selected: on }}
-      accessibilityLabel={`${count} ${STOCK_LABEL[stock]}${on ? ', showing only these' : ''}`}
+      // The visible "12 In stock" is the name (WCAG 2.5.3); the hint says what tapping does.
+      accessibilityHint={on ? 'Showing only these. Tap to show all' : 'Show only these'}
       onPress={onPress}
       style={({ pressed }) => ({
-        flex: 1,
-        alignItems: 'center',
-        gap: 2,
-        paddingVertical: t.space.md,
-        borderRadius: t.radius.lg,
-        backgroundColor: c.tile,
-        borderWidth: 2,
-        borderColor: on ? c.icon : 'transparent',
+        minHeight: t.touchTarget,
+        justifyContent: 'center',
         opacity: pressed ? 0.8 : 1,
       })}
     >
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-        <StockIcon stock={stock} size={22} />
-        <Text variant="title" style={{ fontSize: 24, lineHeight: 30 }}>
-          {count}
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 6,
+          minHeight: 36,
+          paddingLeft: 10,
+          paddingRight: t.space.md,
+          borderRadius: t.radius.pill,
+          borderWidth: 1,
+          borderColor: on ? t.colors.selected : t.colors.border,
+          backgroundColor: on ? t.colors.selected : t.colors.surface,
+        }}
+      >
+        <StockDot stock={stock} ring={on} />
+        <Text style={{ fontFamily: t.fonts.medium, fontSize: 13, color: fg }}>
+          {/* Our Text sets its own colour, so the count must be told the pill's colour too. */}
+          <Text style={{ fontFamily: t.fonts.bold, fontVariant: ['tabular-nums'], color: fg }}>
+            {count}
+          </Text>{' '}
+          {STOCK_LABEL[stock]}
         </Text>
       </View>
-      <Text variant="caption">{STOCK_LABEL[stock]}</Text>
     </Pressable>
+  );
+}
+
+/** The stock colour as a small dot; `ring` adds a white edge so it shows on navy. */
+function StockDot({ stock, size = 8, ring }: { stock: Stock; size?: number; ring?: boolean }) {
+  const t = useTheme();
+  return (
+    <View
+      aria-hidden
+      style={{
+        width: size,
+        height: size,
+        borderRadius: size / 2,
+        backgroundColor: t.stock[stock].icon,
+        boxShadow: ring ? `0 0 0 1.5px ${t.colors.surface}` : undefined,
+      }}
+    />
   );
 }
 
@@ -553,44 +559,6 @@ function StockIcon({ stock, size = 18 }: { stock: Stock; size?: number }) {
   return <Icon icon={stock === 'low' ? TriangleAlert : CircleX} size={size} color={c.icon} />;
 }
 
-function TabButton({
-  label,
-  icon,
-  on,
-  onPress,
-}: {
-  label: string;
-  icon: LucideIcon;
-  on: boolean;
-  onPress: () => void;
-}) {
-  const t = useTheme();
-  // Selected: deep green, with the card colour as text.
-  const fg = on ? t.colors.surface : t.colors.text;
-  return (
-    <Pressable
-      accessibilityRole="tab"
-      accessibilityState={{ selected: on }}
-      onPress={onPress}
-      style={{
-        flex: 1,
-        minHeight: 46,
-        borderRadius: t.radius.pill,
-        backgroundColor: on ? t.colors.tabSelected : 'transparent',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: t.space.sm,
-      }}
-    >
-      <Icon icon={icon} size={18} color={fg} />
-      <Text variant="label" numberOfLines={1} style={{ color: fg, fontSize: 15, flexShrink: 1 }}>
-        {label}
-      </Text>
-    </Pressable>
-  );
-}
-
 function PlaceChip({
   label,
   icon,
@@ -607,15 +575,17 @@ function PlaceChip({
     <Pressable
       accessibilityRole="radio"
       accessibilityState={{ checked: on }}
+      aria-checked={on}
       onPress={onPress}
       style={({ pressed }) => ({
-        minWidth: 56,
-        minHeight: t.touchTarget,
+        minWidth: 52,
+        minHeight: 36,
+        marginVertical: 4, // 36 + 4 + 4 = the 44pt tap height
         paddingHorizontal: t.space.md,
         borderRadius: t.radius.pill,
-        borderWidth: 1.5,
-        borderColor: on ? t.colors.action : t.colors.border,
-        backgroundColor: on ? t.colors.action : t.colors.surface,
+        borderWidth: 1,
+        borderColor: on ? t.colors.selected : t.colors.border,
+        backgroundColor: on ? t.colors.selected : t.colors.surface,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -623,11 +593,16 @@ function PlaceChip({
         opacity: pressed ? 0.8 : 1,
       })}
     >
-      {icon ? <Icon icon={icon} size={16} color={on ? t.colors.onAction : t.colors.text} /> : null}
+      {icon ? (
+        <Icon icon={icon} size={16} color={on ? t.colors.onSelected : t.colors.text} />
+      ) : null}
       <Text
-        variant="label"
         numberOfLines={1}
-        style={{ color: on ? t.colors.onAction : t.colors.text }}
+        style={{
+          fontFamily: t.fonts.medium,
+          fontSize: 14,
+          color: on ? t.colors.onSelected : t.colors.text,
+        }}
       >
         {label}
       </Text>
@@ -635,24 +610,20 @@ function PlaceChip({
   );
 }
 
+/** Stock on a row: a dot and the word in its stock colour (tap to change). */
 function StockBadge({ stock }: { stock: Stock }) {
   const t = useTheme();
-  const c = t.stock[stock];
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 4,
-        paddingLeft: 5,
-        paddingRight: 8,
-        minHeight: 24,
-        borderRadius: t.radius.pill,
-        backgroundColor: c.bg,
-      }}
-    >
-      <StockIcon stock={stock} size={14} />
-      <Text variant="label" style={{ color: c.fg, fontSize: 12, lineHeight: 16 }}>
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, minHeight: 20 }}>
+      <StockDot stock={stock} size={7} />
+      <Text
+        style={{
+          fontFamily: t.fonts.medium,
+          fontSize: 13,
+          lineHeight: 18,
+          color: t.stock[stock].fg,
+        }}
+      >
         {STOCK_LABEL[stock]}
       </Text>
     </View>
@@ -681,121 +652,110 @@ function ItemRow({
   onAdd: () => void;
 }) {
   const t = useTheme();
-  // Narrow phones (iPhone SE and mini): smaller picture, tighter gaps.
-  const compact = useWindowDimensions().width < 390;
-  const gap = compact ? t.space.sm : t.space.md;
-  const badge = useRef<HostInstance>(null);
+  const status = useRef<HostInstance>(null);
   const more = useRef<HostInstance>(null);
   const out = row.stock === 'out';
-  // Out Staples went on the list by themselves: "On list" replaces the amount, no button.
-  const stapleOnList = out && row.staple && onList;
-  const offerList = out && !row.staple;
-  const onListChip = (
-    <View
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 4,
-        minHeight: 32,
-        paddingHorizontal: t.space.sm + 2,
-        borderRadius: t.radius.pill,
-        backgroundColor: t.colors.actionSoft,
-      }}
-    >
-      <Icon icon={ShoppingCart} size={14} color={t.colors.onActionSoft} />
-      <Text variant="label" style={{ color: t.colors.onActionSoft, fontSize: 13 }}>
-        On list
-      </Text>
-    </View>
-  );
+  // An out Non-staple not yet on the list offers Add to list; an out Staple went on by itself.
+  const offerAdd = out && !row.staple && !onList;
+  const sub = out ? 'Ran out' : (row.amount ?? (row.staple ? 'Staple' : null));
   return (
     <View
       style={{
         flexDirection: 'row',
         alignItems: 'center',
-        gap,
-        marginHorizontal: compact ? t.space.sm : t.space.md,
-        paddingVertical: t.space.sm + 2,
+        gap: t.space.md,
+        minHeight: 60,
+        paddingVertical: t.space.sm,
+        paddingLeft: 14,
+        paddingRight: 6,
         borderTopWidth: 1,
         borderTopColor: t.colors.border,
       }}
     >
-      <View
-        style={{
+      <Pressable
+        accessibilityRole="button"
+        accessibilityHint="Edit amount, status, staple and storage"
+        onPress={onOpen}
+        style={({ pressed }) => ({
           flex: 1,
           minWidth: 0,
           flexDirection: 'row',
           alignItems: 'center',
-          gap,
-        }}
+          gap: t.space.md,
+          opacity: pressed ? 0.75 : 1,
+        })}
       >
+        <View style={{ flex: 1, minWidth: 0, gap: 2 }}>
+          <Text variant="label" numberOfLines={2}>
+            {row.name}
+          </Text>
+          {sub ? (
+            <Text
+              variant="caption"
+              style={{
+                color: out ? t.stock.out.fg : t.colors.textMuted,
+                fontVariant: ['tabular-nums'],
+              }}
+            >
+              {sub}
+            </Text>
+          ) : null}
+        </View>
+      </Pressable>
+      {offerAdd ? (
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel={row.name}
-          accessibilityHint="Edit amount, status, staple and storage"
-          onPress={onOpen}
-          style={({ pressed }) => ({ opacity: pressed ? 0.75 : 1 })}
+          accessibilityLabel={`Add ${row.name} to your shopping list`}
+          onPress={onAdd}
+          style={({ pressed }) => ({
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 4,
+            minHeight: t.touchTarget,
+            paddingHorizontal: t.space.sm,
+            borderRadius: t.radius.md,
+            borderWidth: 1,
+            borderColor: t.colors.border,
+            backgroundColor: pressed ? t.colors.fill : t.colors.surface,
+          })}
         >
-          <FoodThumb
-            emoji={ingredientEmoji(row.ingredient)}
-            tint={tintFor(row.ingredient.name)}
-            size={compact ? 40 : 48}
-          />
+          <Icon icon={ShoppingCart} size={14} color={t.colors.text} />
+          <Text variant="label" style={{ fontSize: 13 }}>
+            Add to list
+          </Text>
         </Pressable>
-        <View style={{ flex: 1, minWidth: 0, gap: 2, alignItems: 'flex-start' }}>
-          <Pressable onPress={onOpen} accessible={false} focusable={false}>
-            <Text variant="label" numberOfLines={2} style={{ fontSize: 15, lineHeight: 19 }}>
-              {row.name}
-            </Text>
-          </Pressable>
-          <Pressable
-            ref={badge}
-            accessibilityRole="button"
-            accessibilityLabel={`${row.name}: ${STOCK_LABEL[row.stock]}. Change stock status`}
-            onPress={async () => onStatus(await measureAnchor(badge))}
-            hitSlop={{ top: 10, bottom: 10, left: 4, right: 4 }} // 44 pt to tap
-            style={({ pressed }) => ({ marginTop: 3, opacity: pressed ? 0.7 : 1 })}
-          >
-            <StockBadge stock={row.stock} />
-          </Pressable>
-        </View>
-      </View>
-      <View style={{ alignItems: 'flex-end', gap: t.space.sm }}>
-        {stapleOnList ? onListChip : null}
-        {offerList ? (
-          onList ? (
-            onListChip
-          ) : (
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel={`Add ${row.name} to your shopping list`}
-              onPress={onAdd}
-              hitSlop={{ top: 4, bottom: 4 }}
-              style={({ pressed }) => ({
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 4,
-                minHeight: 40,
-                paddingHorizontal: t.space.sm + 2,
-                borderRadius: t.radius.pill,
-                backgroundColor: pressed ? t.colors.actionPressed : t.colors.action,
-              })}
-            >
-              <Icon icon={ShoppingCart} size={14} color={t.colors.onAction} />
-              <Text variant="label" style={{ color: t.colors.onAction, fontSize: 13 }}>
-                Add to list
+      ) : (
+        <Pressable
+          ref={status}
+          accessibilityRole="button"
+          accessibilityLabel={`${row.name}: ${out && onList ? 'out, on your list' : STOCK_LABEL[row.stock]}. Change stock status`}
+          onPress={async () => onStatus(await measureAnchor(status))}
+          style={({ pressed }) => ({
+            minHeight: t.touchTarget,
+            justifyContent: 'center',
+            paddingHorizontal: 4,
+            opacity: pressed ? 0.7 : 1,
+          })}
+        >
+          {out && onList ? (
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
+              <Icon icon={Check} size={14} color={t.colors.textMuted} strong />
+              <Text style={{ fontFamily: t.fonts.medium, fontSize: 13, color: t.colors.textMuted }}>
+                On list
               </Text>
-            </Pressable>
-          )
-        ) : null}
-      </View>
+            </View>
+          ) : (
+            <StockBadge stock={row.stock} />
+          )}
+        </Pressable>
+      )}
       <Pressable
         ref={more}
         accessibilityRole="button"
         accessibilityLabel={`More for ${row.name}`}
         onPress={async () => onMenu(await measureAnchor(more))}
         style={({ pressed }) => ({
-          width: 28,
+          width: t.touchTarget,
           minHeight: t.touchTarget,
           alignItems: 'center',
           justifyContent: 'center',
@@ -868,12 +828,13 @@ function ItemMenu({
   row,
   onEdit,
   onMove,
-  onRemove,
+  onRemoveItem,
 }: {
   row: KitchenRow;
   onEdit: () => void;
   onMove: () => void;
-  onRemove: () => void;
+  /** Staple → Out + on the list; Non-staple → removed, list offered. */
+  onRemoveItem: () => void;
 }) {
   const t = useTheme();
   return (
@@ -891,54 +852,8 @@ function ItemMenu({
         divider={!row.staple} // first item for Staples (no Change amount above)
       />
       <MenuItem icon={Archive} label="Storage location" chevron onPress={onEdit} divider />
-      <MenuItem icon={Trash2} label="Remove item" danger onPress={onRemove} divider />
+      <MenuItem icon={Trash2} label="Remove item" danger onPress={onRemoveItem} divider />
     </View>
-  );
-}
-
-function MenuItem({
-  icon,
-  label,
-  detail,
-  chevron,
-  danger,
-  divider,
-  onPress,
-}: {
-  icon: LucideIcon;
-  label: string;
-  detail?: string;
-  chevron?: boolean;
-  danger?: boolean;
-  divider?: boolean;
-  onPress: () => void;
-}) {
-  const t = useTheme();
-  const color = danger ? t.colors.danger : t.colors.text;
-  return (
-    <Pressable
-      accessibilityRole="menuitem"
-      onPress={onPress}
-      style={({ pressed }) => ({
-        minHeight: 50,
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: t.space.md,
-        paddingHorizontal: t.space.lg,
-        borderTopWidth: divider ? 1 : 0,
-        borderTopColor: t.colors.border,
-        backgroundColor: pressed ? t.colors.background : 'transparent',
-      })}
-    >
-      <Icon icon={icon} size={20} color={color} />
-      <Text style={{ flex: 1, color }}>{label}</Text>
-      {detail ? (
-        <Text variant="caption" muted>
-          {detail}
-        </Text>
-      ) : null}
-      {chevron ? <Icon icon={ChevronRight} size={16} color={t.colors.text} /> : null}
-    </Pressable>
   );
 }
 
@@ -1050,7 +965,7 @@ function ItemSheet({
             >
               {KINDS.filter(({ kind }) => kinds.has(kind)).map(({ kind, label }) => {
                 const on = kindOf(unit) === kind;
-                const fg = on ? t.colors.onInverse : t.colors.text;
+                const fg = on ? t.colors.onSelected : t.colors.text;
                 return (
                   <Pressable
                     key={kind}
@@ -1062,8 +977,8 @@ function ItemSheet({
                       minHeight: 46,
                       borderRadius: t.radius.pill,
                       borderWidth: 1.5,
-                      borderColor: on ? t.colors.inverse : t.colors.border,
-                      backgroundColor: on ? t.colors.inverse : t.colors.surface,
+                      borderColor: on ? t.colors.selected : t.colors.border,
+                      backgroundColor: on ? t.colors.selected : t.colors.surface,
                       flexDirection: 'row',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -1140,7 +1055,7 @@ function ItemSheet({
                   paddingHorizontal: t.space.md,
                   borderRadius: t.radius.pill,
                   borderWidth: 1.5,
-                  borderColor: value === pick ? t.colors.inverse : t.colors.border,
+                  borderColor: value === pick ? t.colors.selected : t.colors.border,
                   backgroundColor: t.colors.surface,
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -1398,5 +1313,14 @@ function MatchRow({
         <Text muted> · {note}</Text>
       </Text>
     </Pressable>
+  );
+}
+
+/** The kitchen tab on its own page colour (PAGE_COLORS). */
+export default function KitchenScreen() {
+  return (
+    <PageColors page="kitchen">
+      <KitchenScreenContent />
+    </PageColors>
   );
 }

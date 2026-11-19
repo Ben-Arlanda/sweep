@@ -25,7 +25,15 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 from app import errors
 from app.data.recipes import ATTRIBUTION, LICENCE, SeedRecipe
 from app.embeddings import Embedder, EmbeddingUnavailable
-from app.models import Course, Ingredient, Recipe, RecipeEmbedding, RecipeIngredient, RecipeKind
+from app.models import (
+    Course,
+    Favourite,
+    Ingredient,
+    Recipe,
+    RecipeEmbedding,
+    RecipeIngredient,
+    RecipeKind,
+)
 from app.services import diet
 from app.services.ingredient_lines import IngredientIndex, normalise_lines
 
@@ -289,7 +297,8 @@ class RecipeFilters:
     # Set when Dietary Rules apply: a line we can't check might break them (fail closed).
     # Same lines as diet.check_recipe: unmatched, or linked to a Household Ingredient.
     exclude_uncheckable: bool = False
-    only_kind: RecipeKind | None = None  # e.g. IMPORTED: the agent's flagged favourites
+    only_kind: RecipeKind | None = None  # e.g. IMPORTED: the agent's flagged imports
+    favourites_of: uuid.UUID | None = None  # only this Household's Favourites
 
 
 def visible_to(household_id: uuid.UUID) -> Select[Recipe]:
@@ -318,6 +327,12 @@ async def cuisines(session: AsyncSession, household_id: uuid.UUID) -> list[str]:
 def _filtered(query: Select[Recipe], filters: RecipeFilters) -> Select[Recipe]:
     if filters.only_kind is not None:
         query = query.where(Recipe.kind == filters.only_kind)
+    if filters.favourites_of is not None:
+        query = query.where(
+            exists().where(
+                Favourite.recipe_id == Recipe.id, Favourite.household_id == filters.favourites_of
+            )
+        )
     if filters.max_minutes is not None:
         query = query.where(Recipe.total_minutes <= filters.max_minutes)
     if filters.cuisine is not None:
@@ -351,17 +366,32 @@ async def list_recipes(
     filters: RecipeFilters,
     limit: int,
     offset: int = 0,
+    *,
+    newest: bool = False,
 ) -> list[Recipe]:
-    # Ordered by title, then id: a stable order, so pages never repeat or skip a recipe.
+    # A to Z (or newest first), then id: a stable order, so pages never repeat or skip.
     # Adaptations aren't listed on their own: they show under their parent (ADR 0021).
+    order = (Recipe.created_at.desc(), Recipe.title) if newest else (Recipe.title,)
     query = (
         _filtered(visible_to(household_id), filters)
         .where(Recipe.kind != RecipeKind.ADAPTATION)
-        .order_by(Recipe.title, Recipe.id)
+        .order_by(*order, Recipe.id)
         .limit(limit)
         .offset(offset)
     )
     return list((await session.execute(query)).scalars())
+
+
+async def count_recipes(
+    session: AsyncSession, household_id: uuid.UUID, filters: RecipeFilters
+) -> int:
+    """How many list_recipes would page through (the "500 recipes" line)."""
+    found = (
+        _filtered(visible_to(household_id), filters)
+        .where(Recipe.kind != RecipeKind.ADAPTATION)
+        .subquery()
+    )
+    return (await session.execute(select(func.count()).select_from(found))).scalar_one()
 
 
 async def eligible(
@@ -408,6 +438,24 @@ async def search(
     )
     rows = (await session.execute(query)).all()
     return [(recipe, 1 - float(d)) for recipe, d in rows]
+
+
+async def search_or_keywords(
+    session: AsyncSession,
+    household_id: uuid.UUID,
+    embedder: Embedder | None,
+    text: str,
+    filters: RecipeFilters,
+    limit: int,
+) -> list[tuple[Recipe, float]]:
+    """Search by meaning; with no embedder, or Voyage failing, by keyword (R2) instead.
+    Scores are on different scales then, so callers use the order, never the number."""
+    if embedder is not None:
+        try:
+            return await search(session, household_id, embedder, text, filters, limit)
+        except EmbeddingUnavailable as error:
+            log.warning("Search by meaning failed, using keywords: %s", error)
+    return await keyword_search(session, household_id, text, filters, limit)
 
 
 def _words(query: str) -> list[str]:

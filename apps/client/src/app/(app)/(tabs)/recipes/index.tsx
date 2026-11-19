@@ -1,84 +1,198 @@
-import { useState, type ReactNode } from 'react';
+import { router } from 'expo-router';
+import {
+  BookOpen,
+  ChefHat,
+  Heart,
+  Plus,
+  SlidersHorizontal,
+  type LucideIcon,
+} from 'lucide-react-native';
+import { useState } from 'react';
 import { View } from 'react-native';
 
-import { ChoiceChips } from '@/components/ChoiceChips';
-import { Hero, HeroSearch } from '@/components/Hero';
-import { Button, ErrorText, Loading, Screen, SectionLabel, Text } from '@/components/ui';
+import { HeroSearch } from '@/components/Hero';
+import { Icon } from '@/components/Icon';
+import { PageHeader } from '@/components/PageHeader';
+import { PressableScale } from '@/components/PressableScale';
+import { ErrorText, Loading, Screen, TAB_ROOT, Text } from '@/components/ui';
 import { AddRecipeSheet } from '@/features/imports/AddRecipeSheet';
-import { ruleBreakText } from '@/features/imports/ruleBreaks';
-import { CourseTiles } from '@/features/recipes/CourseTiles';
-import { COURSES, type Course } from '@/features/recipes/courses';
+import { IdeaTile, KITCHEN_FIRST } from '@/features/recipes/IdeaTile';
 import { RecipeRow } from '@/features/recipes/RecipeRow';
 import { ApiError } from '@/lib/api/client';
 import { useImportedRecipes } from '@/lib/api/imports';
-import { useDebounced, useRecipeBrowse, useRecipeSearch } from '@/lib/api/recipes';
+import { useDinnerIdeas } from '@/lib/api/planning';
+import { useDebounced, useRecipeSearch } from '@/lib/api/recipes';
+import { PageColors } from '@/theme/PageColors';
 import { useTheme } from '@/theme/useTheme';
 
-// No "≤": the "Ready in" label already says it, and the four then fit one row at 320px.
-const TIMES: { label: string; value: number | null }[] = [
-  { label: 'Any time', value: null },
-  { label: '20 min', value: 20 },
-  { label: '30 min', value: 30 },
-  { label: '45 min', value: 45 },
-];
-
 /**
- * The Recipe Knowledge Base. Type what you feel like ("quick vegetarian", "leftover
- * rice") and results are ranked by meaning; the time and Course filters are hard limits.
+ * The Recipes tab (slice 6f, premium redesign): header with Add recipe and Food rules,
+ * search, one row of ways in (Dinner ideas, Favourites, Browse all), what fits the
+ * Kitchen now, and your added recipes. Typing a search swaps the sections for results,
+ * ranked by meaning.
  */
-export default function RecipesScreen() {
+function RecipesScreenContent() {
+  const t = useTheme();
   const [text, setText] = useState('');
-  const [maxMinutes, setMaxMinutes] = useState<number | null>(null);
-  const [course, setCourse] = useState<Course | null>(null);
+  const [adding, setAdding] = useState(false);
   const q = useDebounced(text.trim());
   const searching = q.length >= 2;
-  const filters = { maxMinutes, course };
-
-  const search = useRecipeSearch(q, filters);
-  const browse = useRecipeBrowse(filters, !searching);
+  const search = useRecipeSearch(q, { maxMinutes: null, course: null });
 
   return (
-    <Screen
-      hero={
-        <Hero
-          title="What do you feel like cooking?"
-          subtitle="Sweep finds recipes that fit, not just ones with the same words."
-        >
-          <HeroSearch
-            label="Search recipes"
-            placeholder="e.g. quick vegetarian dinner"
-            value={text}
-            onChangeText={setText}
-            autoCorrect={false}
-            returnKeyType="search"
-          />
-        </Hero>
-      }
-    >
-      {searching ? null : <YourRecipes />}
-      <FilterGroup label="Ready in">
-        <ChoiceChips
-          label="Ready in"
-          size="small"
-          fill
-          options={TIMES.map((o) => ({
-            ...o,
-            accessibilityLabel: o.value ? `Ready in ${o.label}` : o.label,
-          }))}
-          value={maxMinutes}
-          onChange={setMaxMinutes}
-        />
-      </FilterGroup>
-      <FilterGroup label="Course">
-        <CourseTiles value={course} onChange={setCourse} />
-      </FilterGroup>
-
+    <Screen edges={TAB_ROOT}>
+      <PageHeader
+        icon={BookOpen}
+        section="recipes"
+        title="Recipes"
+        right={
+          <View style={{ flexDirection: 'row', gap: t.space.sm }}>
+            <BoxButton
+              icon={SlidersHorizontal}
+              label="Food rules"
+              role="link"
+              onPress={() => router.push('/dietary-rules')}
+            />
+            <BoxButton icon={Plus} label="Add a recipe" onPress={() => setAdding(true)} />
+          </View>
+        }
+      />
+      <HeroSearch
+        label="Search recipes"
+        placeholder="e.g. quick vegetarian dinner"
+        value={text}
+        onChangeText={setText}
+        autoCorrect={false}
+        returnKeyType="search"
+      />
       {searching ? (
         <SearchResults search={search} />
       ) : (
-        <BrowseResults browse={browse} course={course} />
+        <>
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: -t.space.sm }}>
+            <IconChip
+              icon={ChefHat}
+              label="Dinner ideas"
+              onPress={() => router.push('/dinner-ideas')}
+            />
+            <IconChip
+              icon={Heart}
+              label="Favourites"
+              onPress={() => router.push({ pathname: '/recipes/all', params: { favourites: '1' } })}
+            />
+            <IconChip
+              icon={BookOpen}
+              label="Browse all"
+              onPress={() => router.push('/recipes/all')}
+            />
+          </View>
+          <Recommended />
+          <YourRecipes />
+        </>
       )}
+      {adding ? <AddRecipeSheet onClose={() => setAdding(false)} /> : null}
     </Screen>
+  );
+}
+
+/** A 44pt square icon button with a hairline box, for the header. */
+function BoxButton({
+  icon,
+  label,
+  role = 'button',
+  onPress,
+}: {
+  icon: LucideIcon;
+  label: string;
+  role?: 'button' | 'link';
+  onPress: () => void;
+}) {
+  const t = useTheme();
+  return (
+    <PressableScale
+      accessibilityRole={role}
+      accessibilityLabel={label}
+      onPress={onPress}
+      style={{
+        width: t.touchTarget,
+        height: t.touchTarget,
+        borderRadius: t.radius.md,
+        borderWidth: 1,
+        borderColor: t.colors.border,
+        backgroundColor: t.colors.surface,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <Icon icon={icon} color={t.colors.text} />
+    </PressableScale>
+  );
+}
+
+/** A way into recipes: white pill with an icon. */
+function IconChip({
+  icon,
+  label,
+  onPress,
+}: {
+  icon: LucideIcon;
+  label: string;
+  onPress: () => void;
+}) {
+  const t = useTheme();
+  return (
+    <PressableScale
+      accessibilityRole="link"
+      onPress={onPress}
+      style={{ minHeight: t.touchTarget, justifyContent: 'center' }}
+    >
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 6,
+          minHeight: 36,
+          paddingHorizontal: t.space.md - 1,
+          borderRadius: t.radius.pill,
+          borderWidth: 1,
+          borderColor: t.colors.border,
+          backgroundColor: t.colors.surface,
+        }}
+      >
+        <Icon icon={icon} size={15} color={t.colors.text} />
+        <Text style={{ fontFamily: t.fonts.medium, fontSize: 13, lineHeight: 18 }}>{label}</Text>
+      </View>
+    </PressableScale>
+  );
+}
+
+/** The best Kitchen Matches right now (the same code as Dinner Ideas), two across. */
+function Recommended() {
+  const t = useTheme();
+  const ideas = useDinnerIdeas(KITCHEN_FIRST, 'all', 4);
+  if (ideas.isError) return null; // optional: browsing still works without it
+  return (
+    <View style={{ gap: t.space.sm }}>
+      <View>
+        <Text
+          variant="label"
+          role="heading"
+          aria-level={2}
+          style={{ color: t.colors.onBackground, fontSize: 17, lineHeight: 22 }}
+        >
+          Recommended for you
+        </Text>
+        <Text variant="caption" style={{ color: t.colors.onBackgroundMuted }}>
+          From your Kitchen and Dietary Rules.
+        </Text>
+      </View>
+      {ideas.isPending ? <Loading /> : null}
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.sm }}>
+        {ideas.data?.map((idea) => (
+          <IdeaTile key={idea.id} idea={idea} path="/recipes/[id]" />
+        ))}
+      </View>
+    </View>
   );
 }
 
@@ -91,7 +205,7 @@ function SearchResults({ search }: { search: ReturnType<typeof useRecipeSearch> 
       <ErrorText
         message={
           unavailable
-            ? "Search isn't available right now. Clear the search box to browse all recipes."
+            ? "Search isn't available right now. Clear the search box to browse."
             : search.error.message
         }
       />
@@ -99,9 +213,21 @@ function SearchResults({ search }: { search: ReturnType<typeof useRecipeSearch> 
   }
   return (
     <View style={{ gap: t.space.sm }}>
-      <SectionLabel>Best matches</SectionLabel>
+      <Text
+        variant="caption"
+        style={{
+          color: t.colors.onBackgroundMuted,
+          fontFamily: t.fonts.bold,
+          letterSpacing: 1.2,
+          textTransform: 'uppercase',
+        }}
+      >
+        Best matches
+      </Text>
       {search.data.length === 0 ? (
-        <Text muted>Nothing fits those filters. Try a longer time or another course.</Text>
+        <Text style={{ color: t.colors.onBackgroundMuted }}>
+          Nothing fits that. Try other words.
+        </Text>
       ) : null}
       {search.data.map((r) => (
         <RecipeRow key={r.id} recipe={r} />
@@ -111,87 +237,35 @@ function SearchResults({ search }: { search: ReturnType<typeof useRecipeSearch> 
 }
 
 /**
- * This Household's own recipes, with + Add. Hidden while searching: search already
- * includes them, ranked with everything else.
+ * This Household's own recipes. Kept here because one that breaks a Dietary Rule is
+ * left out of browsing, and this is where its note says why.
  */
 function YourRecipes() {
   const t = useTheme();
   const mine = useImportedRecipes();
-  const [adding, setAdding] = useState(false);
+  if (!mine.data?.length) return mine.isError ? <ErrorText message={mine.error.message} /> : null;
   return (
     <View style={{ gap: t.space.sm }}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-        <SectionLabel>Your recipes</SectionLabel>
-        <Button
-          title="+ Add"
-          accessibilityLabel="Add a recipe"
-          variant="secondary"
-          compact
-          onPress={() => setAdding(true)}
-        />
-      </View>
-      {mine.isError ? <ErrorText message={mine.error.message} /> : null}
-      {mine.data?.length === 0 ? (
-        <Text muted>
-          Bring in the recipes you already cook: paste one, snap a cookbook page, or add a link.
-        </Text>
-      ) : null}
-      {mine.data?.map((r) => (
-        <RecipeRow key={r.id} recipe={r} note={ruleBreakText(r.rule_breaks)} />
-      ))}
-      {adding ? <AddRecipeSheet onClose={() => setAdding(false)} /> : null}
-    </View>
-  );
-}
-
-/** A filter row with its name above it. The name is visual only: each group names itself. */
-function FilterGroup({ label, children }: { label: string; children: ReactNode }) {
-  const t = useTheme();
-  return (
-    <View style={{ gap: t.space.xs }}>
-      <Text variant="caption" muted aria-hidden>
-        {label}
+      <Text
+        variant="label"
+        role="heading"
+        aria-level={2}
+        style={{ color: t.colors.onBackground, fontSize: 17, lineHeight: 22 }}
+      >
+        Your added recipes
       </Text>
-      {children}
+      {mine.data.map((r) => (
+        <RecipeRow key={r.id} recipe={r} brief />
+      ))}
     </View>
   );
 }
 
-function BrowseResults({
-  browse,
-  course,
-}: {
-  browse: ReturnType<typeof useRecipeBrowse>;
-  course: Course | null;
-}) {
-  const t = useTheme();
-  if (browse.isPending) return <Loading />;
-  if (browse.isError) {
-    return (
-      <>
-        <ErrorText message={browse.error.message} />
-        <Button title="Try again" onPress={() => browse.refetch()} />
-      </>
-    );
-  }
-  const recipes = browse.data.pages.flat();
+/** The recipes tab on its own page colour (PAGE_COLORS). */
+export default function RecipesScreen() {
   return (
-    <View style={{ gap: t.space.sm }}>
-      <SectionLabel>
-        {course ? COURSES.find((c) => c.value === course)?.label : 'All recipes'}
-      </SectionLabel>
-      {recipes.length === 0 ? <Text muted>Nothing fits those filters yet.</Text> : null}
-      {recipes.map((r) => (
-        <RecipeRow key={r.id} recipe={r} />
-      ))}
-      {browse.hasNextPage ? (
-        <Button
-          title="Show more"
-          variant="secondary"
-          loading={browse.isFetchingNextPage}
-          onPress={() => browse.fetchNextPage()}
-        />
-      ) : null}
-    </View>
+    <PageColors page="recipes">
+      <RecipesScreenContent />
+    </PageColors>
   );
 }

@@ -25,6 +25,7 @@ from app.models import (
     Course,
     ParseMethod,
     PlanMode,
+    PlanTweak,
     ProposalStatus,
     RecipeKind,
     Role,
@@ -32,6 +33,8 @@ from app.models import (
 from app.services.ingredients import normalise
 from app.text import ONE_LINE
 from app.web_fetch import check_url
+
+date_ = date  # for a field named `date`, which hides the type inside its class
 
 
 # Trimming runs before ONE_LINE, so a pasted trailing newline is simply removed.
@@ -337,6 +340,7 @@ class RecipeSummaryOut(BaseModel):
     total_minutes: int | None
     # How close to the search (1 = identical meaning). Only set for a search.
     score: float | None = None
+    favourite: bool = False  # hearted by this Household (ADR 0025)
 
 
 class ImportedRecipeOut(RecipeSummaryOut):
@@ -444,10 +448,31 @@ class PlannedMealOut(BaseModel):
     recipe_id: uuid.UUID
     title: str
     servings: int
+    total_minutes: int | None  # the recipe's, for "25 min" on the Plan tab
     cooked_at: datetime | None
     cooked_by: uuid.UUID | None
     # Before Cooked: Tracked items in the Kitchen it uses. After: what Cooked took out.
     kitchen_uses: list[str]
+
+
+class PlanDayIn(BaseModel):
+    """Put this recipe on the day (Dinner Ideas): replaces an uncooked meal there."""
+
+    recipe_id: uuid.UUID
+    servings: int | None = Field(default=None, ge=1, le=24)  # None: Household size or the recipe's
+
+
+class CountOut(BaseModel):
+    count: int
+
+
+class DinnerIdeaOut(RecipeSummaryOut):
+    """One Dinner Idea (ADR 0025): a recipe with its Kitchen Match."""
+
+    have: list[str]
+    maybe: list[str]  # Tracked items whose status is Unknown
+    missing: list[str]  # things to buy
+    kitchen_uses: list[str]  # Tracked items it uses that are there
 
 
 class MealPlanOut(BaseModel):
@@ -469,6 +494,8 @@ class ConversationIn(BaseModel):
 
     mode: PlanMode | None = None
     days: list[date] | None = Field(default=None, min_length=1, max_length=14)
+    # "This week" chips (slice 6e): for this plan only.
+    tweaks: list[PlanTweak] | None = Field(default=None, max_length=len(PlanTweak))
 
 
 class ConversationOut(BaseModel):
@@ -478,6 +505,7 @@ class ConversationOut(BaseModel):
     created_at: datetime
     plan_mode: PlanMode | None
     plan_days: list[date] | None
+    plan_tweaks: list[PlanTweak] | None = None
 
 
 class ChatLine(BaseModel):
@@ -565,14 +593,24 @@ class ProposalOut(BaseModel):
 
 
 class DecisionIn(BaseModel):
-    """Approve (optionally with some meals or additions unticked) or reject.
+    """Approve (optionally with some meals or additions unticked), reject, or swap one
+    day's recipe for an alternative (ADR 0025: a new Proposal replaces this one).
 
     `keep_meals` / `keep_additions` list what stays ticked: dates of proposed meals, and
-    positions in `list_additions`. Leave one out to keep all of that kind."""
+    positions in `list_additions`. Leave one out to keep all of that kind. A swap needs
+    `date` (a day in the Proposal) and `recipe_id`."""
 
-    action: Literal["approve", "reject"]
+    action: Literal["approve", "reject", "swap"]
     keep_meals: list[date] | None = Field(default=None, max_length=14)
     keep_additions: list[int] | None = Field(default=None, max_length=60)
+    date: date_ | None = None
+    recipe_id: uuid.UUID | None = None
+
+    @model_validator(mode="after")
+    def _swap_says_what(self) -> Self:
+        if self.action == "swap" and (self.date is None or self.recipe_id is None):
+            raise ValueError("A swap needs a date and a recipe_id")
+        return self
 
 
 class ChatProposalOut(ProposalOut):

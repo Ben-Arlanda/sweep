@@ -86,3 +86,31 @@ export function nextWeekdays(opts: {
     })
     .map(isoWeekday);
 }
+
+const SHORT_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+/** "Wed" and 18 for a date: the Plan tab's day badge. Plain maths, not the phone's locale. */
+export function dayParts(iso: string): { weekday: string; day: number; month: string } {
+  const [, m, d] = iso.split('-').map(Number);
+  return { weekday: SHORT_DAYS[isoWeekday(iso) - 1], day: d, month: MONTHS[m - 1] };
+}
+
+/** "Mon 16 – Sun 22 Nov", or "Mon 30 Nov – Sun 6 Dec" across a month. */
+export function weekRange(monday: string): string {
+  const a = dayParts(monday);
+  const b = dayParts(addDays(monday, 6));
+  const end = `${b.weekday} ${b.day} ${b.month}`;
+  return a.month === b.month
+    ? `${a.weekday} ${a.day} – ${end}`
+    : `${a.weekday} ${a.day} ${a.month} – ${end}`;
+}
+
+/** "16–22 Nov", or "30 Nov – 6 Dec" across a month: short enough for a tab. */
+export function shortWeekRange(monday: string): string {
+  const a = dayParts(monday);
+  const b = dayParts(addDays(monday, 6));
+  return a.month === b.month
+    ? `${a.day}–${b.day} ${b.month}`
+    : `${a.day} ${a.month} – ${b.day} ${b.month}`;
+}

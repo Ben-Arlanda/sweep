@@ -301,9 +301,10 @@ async def test_a_seed_recipe_cannot_belong_to_a_household(db: Engine) -> None:
         )
 
 
-async def test_search_without_an_embedder_says_unavailable(
-    database_url: str, db: Engine, fake_issuer: FakeIssuer
+async def test_search_without_an_embedder_searches_by_keyword(
+    database_url: str, db: Engine, fake_issuer: FakeIssuer, load: Loader
 ) -> None:
+    await load([CURRY, PASTA])
     app = create_app(
         Settings(database_url=database_url, voyage_api_key=None),
         token_verifier=fake_issuer.verifier(),
@@ -314,9 +315,9 @@ async def test_search_without_an_embedder_says_unavailable(
         response = await http.get(
             "/recipes", params={"q": "curry"}, headers=fake_issuer.headers("ana")
         )
-        assert response.status_code == 503
-        assert response.json()["code"] == "unavailable"
-        # Browsing doesn't need the embedder, so it keeps working.
+        assert response.status_code == 200
+        assert [r["title"] for r in response.json()] == ["Chicken and chickpea curry"]
+        # Browsing doesn't need the embedder either.
         assert (await http.get("/recipes", headers=fake_issuer.headers("ana"))).status_code == 200
     await app.state.engine.dispose()
 

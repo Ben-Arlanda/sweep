@@ -14,13 +14,14 @@ names one of the Household's own Ingredients as a whole word ("2 finger limes"):
 Recipes can't link to Household Ingredients (ADR 0012), so this is how they still count.
 Amounts aren't compared here; check_kitchen_coverage works out how much to buy.
 
-Ranking is "fewest things to buy": missing, then maybe, then the most Tracked items used
-(so a recipe that uses what you bought beats a pantry-only one), then title.
+Ranking is "fewest things to buy": missing, then maybe, then Favourites (ADR 0025: they
+win ties, never beat a recipe needing less), then the most Tracked items used (so a
+recipe that uses what you bought beats a pantry-only one), then title.
 """
 
 import re
 import uuid
-from collections.abc import Iterable, Mapping, Sequence
+from collections.abc import Collection, Iterable, Mapping, Sequence
 from dataclasses import dataclass
 
 from sqlalchemy import select
@@ -99,9 +100,10 @@ def uses(lines: Iterable[Line], snapshot: KitchenSnapshot) -> list[str]:
     return list(used.values())
 
 
-def rank_key(title: str, m: Match) -> tuple[int, int, int, str]:
-    """Sort key: fewest missing, then fewest unsure, then uses the most, then A to Z."""
-    return (len(m.missing), len(m.maybe), -m.tracked_used, title)
+def rank_key(title: str, m: Match, favourite: bool = False) -> tuple[int, int, bool, int, str]:
+    """Sort key: fewest missing, then fewest unsure, then Favourites, then uses the most,
+    then A to Z."""
+    return (len(m.missing), len(m.maybe), not favourite, -m.tracked_used, title)
 
 
 def _identify(
@@ -174,14 +176,16 @@ async def rank(
     *,
     among: Sequence[uuid.UUID] | None = None,
     exclude: Sequence[uuid.UUID] = (),
+    favourites: Collection[uuid.UUID] = frozenset(),
     limit: int,
 ) -> list[tuple[Recipe, Match]]:
     """The best Kitchen Matches among the recipes this Household may see and eat.
 
     `among` limits it to some recipes (the top results of a search by meaning: that's
     the hybrid case, where meaning finds candidates and the Kitchen orders them).
+    `favourites` win ties: pass favourites.boosted (none in New recipes mode).
     """
     found = await eligible(session, household_id, filters, among=among, exclude=exclude)
     scored = [(r, match(lines_of(r), snap)) for r in found]
-    scored.sort(key=lambda pair: rank_key(pair[0].title, pair[1]))
+    scored.sort(key=lambda pair: rank_key(pair[0].title, pair[1], pair[0].id in favourites))
     return scored[:limit]

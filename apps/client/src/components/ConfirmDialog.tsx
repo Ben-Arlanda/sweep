@@ -59,7 +59,7 @@ export function ConfirmDialog({
             gap: t.space.md,
             padding: t.space.lg,
             borderRadius: t.radius.xl,
-            backgroundColor: t.colors.background,
+            backgroundColor: t.colors.sheet,
           }}
         >
           <Text variant="heading" accessibilityRole="header">

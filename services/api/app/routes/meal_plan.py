@@ -1,5 +1,5 @@
-"""HTTP routes for the Meal Plan: read a week (Mon–Sun by default), remove a meal,
-Mark as Cooked and undo.
+"""HTTP routes for the Meal Plan: read a week (Mon–Sun by default), Dinner Ideas and
+putting one on a day, remove a meal, Mark as Cooked and undo.
 
 Cooked is a sub-resource (`/planned-meals/{id}/cooked`): POST sets it, DELETE undoes
 it. Both are "set", never "toggle", so a repeated tap can't flip it back.
@@ -7,16 +7,20 @@ it. Both are "set", never "toggle", so a repeated tap can't flip it back.
 
 import uuid
 from datetime import date, timedelta
+from typing import Annotated, cast
 
-from fastapi import APIRouter, Request, Response, status
+from fastapi import APIRouter, Query, Request, Response, status
 
+from app import errors
 from app.agent.prompt import today_in_sydney
 from app.deps import MemberDep, SessionDep
+from app.embeddings import Embedder
 from app.idempotency import IdempotencyKeyHeader
 from app.models import Household, PlannedMeal
 from app.routes.common import idempotent
-from app.schemas import MealPlanOut, PlannedMealOut
-from app.services import meal_plan
+from app.schemas import DinnerIdeaOut, MealPlanOut, PlanDayIn, PlannedMealOut, RecipeSummaryOut
+from app.services import dinner_ideas, meal_plan
+from app.services.dinner_ideas import MAX_IDEAS, Mood
 
 router = APIRouter(tags=["meal-plan"])
 WEEK = timedelta(days=6)  # start plus six more days
@@ -36,6 +40,7 @@ def _meal_out(meal: PlannedMeal, kitchen_uses: list[str]) -> PlannedMealOut:
         recipe_id=meal.recipe_id,
         title=meal.recipe.title,
         servings=meal.servings,
+        total_minutes=meal.recipe.total_minutes,
         cooked_at=meal.cooked_at,
         cooked_by=meal.cooked_by,
         kitchen_uses=kitchen_uses,
@@ -56,6 +61,73 @@ async def get_week(ctx: MemberDep, session: SessionDep, start: date | None = Non
         version=household.meal_plan_version,
         meals=await meals_out(session, ctx, meals),
     )
+
+
+@router.get("/dinner-ideas")
+async def get_dinner_ideas(
+    request: Request,
+    ctx: MemberDep,
+    session: SessionDep,
+    max_minutes: Annotated[int | None, Query(gt=0, le=1440)] = None,
+    nothing_to_buy: bool = False,
+    exclude: Annotated[list[uuid.UUID], Query(max_length=60)] = [],  # noqa: B006
+    limit: Annotated[int, Query(gt=0, le=MAX_IDEAS)] = 3,
+    mood: Mood = Mood.KITCHEN,
+    q: Annotated[str, Query(max_length=200)] = "",
+    vegetarian: bool = False,
+) -> list[DinnerIdeaOut]:
+    """Tonight's best Kitchen Matches, chosen by code (ADR 0025). No AI, no limits."""
+    if mood == Mood.SPECIFIC and not q.strip():
+        raise errors.InvalidInput("Say what you're in the mood for")
+    found = await dinner_ideas.for_mood(
+        session,
+        ctx,
+        cast(Embedder | None, request.app.state.embedder),
+        mood,
+        today=today_in_sydney(),
+        q=q.strip(),
+        max_minutes=max_minutes,
+        nothing_to_buy=nothing_to_buy,
+        vegetarian=vegetarian,
+        exclude=exclude,
+        limit=limit,
+    )
+    return ideas_out(found)
+
+
+def ideas_out(found: list[dinner_ideas.Idea]) -> list[DinnerIdeaOut]:
+    return [
+        DinnerIdeaOut(
+            **RecipeSummaryOut.model_validate(i.recipe).model_dump(exclude={"favourite"}),
+            favourite=i.favourite,
+            have=list(i.match.have),
+            maybe=list(i.match.maybe),
+            missing=list(i.match.missing),
+            kitchen_uses=i.kitchen_uses,
+        )
+        for i in found
+    ]
+
+
+@router.put("/meal-plan/days/{day}", response_model=PlannedMealOut)
+async def plan_day(
+    day: date,
+    body: PlanDayIn,
+    request: Request,
+    ctx: MemberDep,
+    session: SessionDep,
+    key: IdempotencyKeyHeader,
+) -> Response:
+    """A Member picks a recipe for a day (a Dinner Idea): planned directly, no Proposal."""
+
+    async def work() -> PlannedMealOut:
+        meal = await meal_plan.plan_day(
+            session, ctx, day, body.recipe_id, today_in_sydney(), servings=body.servings
+        )
+        [out] = await meals_out(session, ctx, [meal])
+        return out
+
+    return await idempotent(request, session, ctx, key, work)
 
 
 @router.delete("/planned-meals/{meal_id}", status_code=status.HTTP_204_NO_CONTENT)

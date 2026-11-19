@@ -7,7 +7,8 @@ Two kinds, kept apart on purpose:
 - Measures are reported, never pass/fail: replans, tool calls, things to buy, seconds,
   cost. They're for comparing (Sonnet vs Haiku, agent vs baseline), not for gating.
 
-Every check reads what the agent *did* (Proposals, tool calls), never what it *said*.
+Checks read what the agent *did* (Proposals, tool calls), not what it *said*; the one
+exception is short_note, because the plan screens depend on the note's length.
 """
 
 import re
@@ -364,8 +365,29 @@ def no_swap_to(*words: str) -> Check:
     return check
 
 
+MAX_NOTE_SENTENCES = 2
+MAX_NOTE_CHARS = 240
+
+
+@_named("short_note")
+def short_note(record: RunRecord) -> tuple[bool, str]:
+    """The plan screens show propose_plan's summary as a note above the plan (ADR 0025):
+    one or two sentences. The one check that reads what the agent wrote, because the
+    screen depends on its length."""
+    long = [
+        p.summary
+        for p in record.proposals
+        if len(p.summary) > MAX_NOTE_CHARS or _sentences(p.summary) > MAX_NOTE_SENTENCES
+    ]
+    return not long, "; ".join(long)
+
+
+def _sentences(text: str) -> int:
+    return len([s for s in re.split(r"(?<=[.!?])\s+|\n+", text.strip()) if s.strip()])
+
+
 DEFAULT_CHECKS = (
-    no_crash, grounded, follows_rules, only_chosen_days, swaps_bring_no_new_meat,
+    no_crash, grounded, follows_rules, only_chosen_days, swaps_bring_no_new_meat, short_note,
 )  # fmt: skip
 
 

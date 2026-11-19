@@ -38,8 +38,9 @@ test('"All" shows every item', () => {
   expect(filterByShop(list().items, 'all').map((i) => i.id)).toEqual(['bread', 'milk', 'eggs']);
 });
 
-test('a Shop filter shows its items and the ones you can buy anywhere', () => {
-  expect(filterByShop(list().items, 'aldi').map((i) => i.id)).toEqual(['bread', 'eggs']);
+test("a Shop filter shows only that Shop's items (any-shop items are on All)", () => {
+  expect(filterByShop(list().items, 'aldi').map((i) => i.id)).toEqual(['bread']);
+  expect(filterByShop(list().items, 'coles').map((i) => i.id)).toEqual(['milk']);
 });
 
 test('new items carry the Shop chosen when adding, or none', () => {

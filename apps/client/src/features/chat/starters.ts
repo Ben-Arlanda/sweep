@@ -1,6 +1,6 @@
 /**
- * How a plan starts. "Just tonight" (ADR 0013) and the "Plan my week" sheet (ADR 0015)
- * leave a one-off request here, then open the chat; the chat takes it (read and clear in
+ * How a plan starts. "Just tonight" (ADR 0013), the "Plan my week" sheet (ADR 0015) and
+ * the "Ask Sweep" box on Home leave a one-off request here, then open the chat; the chat takes it (read and clear in
  * one step) and sends the message in a new plan, shown like one the Member typed.
  *
  * From the sheet the request also carries the kind of plan and the days. The chat
@@ -13,10 +13,20 @@
 import type { components } from '@/lib/api/schema';
 
 export type PlanMode = components['schemas']['PlanMode'];
-export type Plan = { mode: PlanMode; days: string[] };
+export type PlanTweak = components['schemas']['PlanTweak'];
+/** What the sheet picked: the kind of plan, the days, and this week's chips (slice 6e). */
+export type Plan = { mode: PlanMode; days: string[]; tweaks?: PlanTweak[] };
 export type Start = { text: string; plan: Plan | null };
 
 let pending: Start | null = null;
+
+/** The "Ask Sweep" box on Home. False when there's nothing to send. */
+export function requestAsk(text: string): boolean {
+  const words = text.trim();
+  if (!words) return false;
+  pending = { text: words, plan: null };
+  return true;
+}
 
 /** "Just tonight" on Home: always Kitchen-first, no sheet. */
 export function requestStart(_start: 'tonight'): void {
@@ -24,9 +34,17 @@ export function requestStart(_start: 'tonight'): void {
 }
 
 /** The "Plan my week" sheet, once the Member has picked the days and the kind of plan. */
-export function requestPlan(mode: PlanMode, days: string[]): void {
+export function requestPlan(mode: PlanMode, days: string[], tweaks: PlanTweak[] = []): void {
   const sorted = [...days].sort();
-  pending = { text: planMessage(mode, sorted), plan: { mode, days: sorted } };
+  pending = {
+    text: planMessage(mode, sorted),
+    plan: { mode, days: sorted, ...(tweaks.length ? { tweaks } : {}) },
+  };
+}
+
+/** The requested start, without taking it: for a screen to know on its first render. */
+export function peekStart(): Start | null {
+  return pending;
 }
 
 /** The requested start, once. Later calls return null until another request. */

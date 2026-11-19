@@ -24,6 +24,7 @@ import {
 import { useTheme } from '@/theme/useTheme';
 
 import { placeProposals } from './history';
+import { replyBlocks, type Span } from './reply';
 import { DraftPeek, PastProposal, ProposalCard } from './ProposalCard';
 import { streamTurn, type TurnEvent } from './sse';
 import { PlanSheet } from '@/features/mealPlan/PlanSheet';
@@ -247,8 +248,8 @@ export function ChatScreen() {
       {planning ? (
         <PlanSheet
           onClose={() => setPlanning(false)}
-          onPick={(mode, days) =>
-            void send(planMessage(mode, days), { fresh: true, plan: { mode, days } })
+          onPick={(mode, days, tweaks) =>
+            void send(planMessage(mode, days), { fresh: true, plan: { mode, days, tweaks } })
           }
         />
       ) : null}
@@ -342,7 +343,7 @@ function Bubble({ role, text }: { role: 'user' | 'assistant'; text: string }) {
   return (
     <View
       accessible
-      accessibilityLabel={`${mine ? 'You' : 'Sweep'}: ${text}`}
+      accessibilityLabel={`${mine ? 'You' : 'Sweep'}: ${mine ? text : text.replaceAll('**', '')}`}
       style={{
         alignSelf: mine ? 'flex-end' : 'flex-start',
         maxWidth: '88%',
@@ -353,7 +354,33 @@ function Bubble({ role, text }: { role: 'user' | 'assistant'; text: string }) {
         boxShadow: mine ? undefined : t.shadow.card,
       }}
     >
-      <Text style={mine ? { color: t.colors.onInverse } : undefined}>{text}</Text>
+      {mine ? <Text style={{ color: t.colors.onInverse }}>{text}</Text> : <Reply text={text} />}
+    </View>
+  );
+}
+
+function Reply({ text }: { text: string }) {
+  const t = useTheme();
+  const line = (spans: Span[]) =>
+    spans.map((s, i) => (
+      <Text key={i} style={s.bold ? { fontFamily: t.fonts.bold } : undefined}>
+        {s.text}
+      </Text>
+    ));
+  return (
+    <View style={{ gap: t.space.sm }}>
+      {replyBlocks(text).map((block, i) =>
+        block.kind === 'text' ? (
+          <Text key={i}>{line(block.spans)}</Text>
+        ) : (
+          <View key={i} style={{ flexDirection: 'row', gap: t.space.sm }}>
+            <Text style={{ fontFamily: t.fonts.bold, minWidth: 18 }}>
+              {block.marker === '•' ? '•' : `${block.marker}.`}
+            </Text>
+            <Text style={{ flex: 1 }}>{line(block.spans)}</Text>
+          </View>
+        ),
+      )}
     </View>
   );
 }

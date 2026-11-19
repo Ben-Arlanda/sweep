@@ -17,13 +17,16 @@ export function Hero({
   title,
   top,
   subtitle,
+  aside,
   children,
 }: {
-  /** The screen's heading (one per screen, so it's marked as the header). */
-  title: ReactNode;
+  /** The screen's heading (one per screen, so it's marked as the header). Home has none. */
+  title?: ReactNode;
   /** A row above the title: who's in the Household, a small label, etc. */
   top?: ReactNode;
   subtitle?: ReactNode;
+  /** Beside the title, e.g. tonight's recipe picture on Home. */
+  aside?: ReactNode;
   /** Usually a HeroSearch. */
   children?: ReactNode;
 }) {
@@ -37,19 +40,28 @@ export function Hero({
         borderBottomLeftRadius: t.radius.hero,
         borderBottomRightRadius: t.radius.hero,
         paddingTop: insets.top + t.space.lg,
-        paddingBottom: t.space.xl,
+        // A see-through hero (the coloured pages) needs no bottom padding: the page's own
+        // gap then matches the space between cards. A coloured panel keeps its padding.
+        paddingBottom: t.colors.hero === 'transparent' ? 0 : t.space.xl,
         paddingLeft: Math.max(insets.left, t.space.lg),
         paddingRight: Math.max(insets.right, t.space.lg),
       }}
     >
       <View style={{ width: '100%', maxWidth: 560, alignSelf: 'center', gap: t.space.lg }}>
         {top}
-        <View style={{ gap: t.space.xs }}>
-          <Text variant="display" accessibilityRole="header" style={{ color: t.colors.onHero }}>
-            {title}
-          </Text>
-          {subtitle ? <Text style={{ color: t.colors.onHeroMuted }}>{subtitle}</Text> : null}
-        </View>
+        {title || subtitle || aside ? (
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.md }}>
+            <View style={{ flex: 1, gap: t.space.xs }}>
+              {title ? (
+                <Text variant="title" accessibilityRole="header" style={{ color: t.colors.onHero }}>
+                  {title}
+                </Text>
+              ) : null}
+              {subtitle ? <Text style={{ color: t.colors.onHeroMuted }}>{subtitle}</Text> : null}
+            </View>
+            {aside}
+          </View>
+        ) : null}
         {children}
       </View>
     </View>
@@ -79,7 +91,7 @@ if (Platform.OS === 'web' && typeof document !== 'undefined') {
   document.head.appendChild(style);
 }
 
-/** The pill-shaped search box that sits inside the hero. */
+/** The search box that sits inside the hero: white with a hairline edge. */
 export function HeroSearch({ label, ...props }: TextInputProps & { label: string }) {
   const t = useTheme();
   const [focused, setFocused] = useState(false);
@@ -89,22 +101,22 @@ export function HeroSearch({ label, ...props }: TextInputProps & { label: string
         flexDirection: 'row',
         alignItems: 'center',
         gap: t.space.sm,
-        minHeight: t.touchTarget + 8,
-        paddingHorizontal: t.space.lg,
-        borderRadius: t.radius.pill,
+        minHeight: t.touchTarget + 4,
+        paddingHorizontal: t.space.md,
+        borderRadius: t.radius.md,
         backgroundColor: t.colors.heroField,
-        borderWidth: 1.5,
+        borderWidth: 1,
         // A clear ring while typing: the field's focus indicator (see the web rule above).
-        borderColor: focused ? t.colors.onHero : 'transparent',
+        borderColor: focused ? t.colors.selected : t.colors.border,
       }}
     >
-      <Icon icon={Search} color={t.colors.onHeroMuted} />
+      <Icon icon={Search} color={t.colors.textMuted} />
       <TextInput
         {...props}
         // react-native-web turns dataSet into a data-hero-search attribute (see above).
         {...({ dataSet: { heroSearch: '' } } as object)}
         accessibilityLabel={label}
-        placeholderTextColor={t.colors.onHeroMuted}
+        placeholderTextColor={t.colors.textMuted}
         onFocus={(e) => {
           setFocused(true);
           props.onFocus?.(e);
@@ -115,7 +127,7 @@ export function HeroSearch({ label, ...props }: TextInputProps & { label: string
         }}
         style={[
           inputText(t.type.body),
-          { flex: 1, minHeight: t.touchTarget, color: t.colors.onHero },
+          { flex: 1, minHeight: t.touchTarget, color: t.colors.text },
         ]}
       />
     </View>

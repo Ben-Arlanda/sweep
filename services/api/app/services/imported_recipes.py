@@ -1,4 +1,4 @@
-"""Imported Recipes: a Household's own favourites (slice 4d).
+"""Imported Recipes: a Household's own recipes, brought in by a Member (slice 4d).
 
 Every door (paste, photo, link, file, type) ends on the review screen, and the review
 screen saves through here. This module has no AI in it: the doors that use a model
@@ -19,7 +19,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import errors
 from app.embeddings import Embedder
-from app.models import Ingredient, ParseMethod, Recipe, RecipeIngredient, RecipeKind
+from app.models import Favourite, Ingredient, ParseMethod, Recipe, RecipeIngredient, RecipeKind
 from app.schemas import ImportedLineIn, ImportedRecipeIn
 from app.services import diet, ingredients, recipes
 from app.services.households import MemberContext
@@ -116,6 +116,10 @@ async def save(
     _fill(recipe, body)
     session.add(recipe)
     await session.flush()
+    # Imports start as Favourites: you brought it in because you like it (ADR 0025).
+    session.add(
+        Favourite(household_id=ctx.household.id, recipe_id=recipe.id, hearted_by=ctx.member.id)
+    )
     await recipes.refresh_search_documents(session, [recipe.id])
     await recipes.embed_after_save(session, embedder)  # for search; never fails the Save
     return recipe

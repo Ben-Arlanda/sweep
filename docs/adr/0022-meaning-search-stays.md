@@ -37,7 +37,7 @@ By kind, keyword search wins only where words differ: "aubergine", "shrimp", "ga
 
 - **Reranking is the method to revisit** if search quality becomes a complaint: with a paid Voyage plan, only where a person waits anyway (e.g. the agent's `search_recipes`, where a turn already takes ~12 s), not on every Recipes tab keystroke. Re-run the eval first.
 - **Follow-up, data not method:** add Ingredient aliases to `embedding_text` and re-embed (about 30k tokens), then re-run. It should close R1's gap on "words" queries, the one place keyword search beat it.
-- **Follow-up, reliability:** when Voyage is unavailable, search could fall back to R2 instead of an error (R2 alone still finds about half of what R1 does).
+- **Follow-up, reliability (DONE 2026-11-18):** when Voyage is unavailable (often the free tier's ~3 calls a minute), `search_or_keywords` falls back to R2 instead of an error, for the recipe search screen, `search_recipes` and `recipes_from_kitchen` (R2 alone still finds about half of what R1 does).
 - **Fused lists are shallower:** R3/R4 recall@60 is 0.82 vs R1's 0.86, because they only merge two top-30s. `recipes_from_kitchen` takes 60 candidates, so a fused method would need deeper lists there.
 - **The Retrieval Set is optimistic:** Claude wrote both the recipes and the queries. Real search logs (none yet) would make a harder, fairer set.
 - Re-run `python -m evals.retrieval` after changing the embedding text, the embedding model, the filters or the seed library.

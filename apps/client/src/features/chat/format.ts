@@ -16,7 +16,7 @@ export function formatDay(iso: string): string {
 type AdditionShape = { name: string; quantity: number | null; unit: string | null };
 
 /** "6", "1.2 kg", "1 bunch", or null when there's no amount. */
-function amountOf(item: AdditionShape): string | null {
+export function amountOf(item: AdditionShape): string | null {
   if (item.quantity === null) return null;
   const unit = item.unit ?? 'count';
   return unit === 'g' || unit === 'ml' || unit === 'count'

@@ -3,7 +3,8 @@
  * stays consistent and every colour, font and spacing value comes from the theme tokens.
  * Browse them all at /design (src/app/(app)/design.tsx).
  */
-import { useState, type ReactNode, type Ref } from 'react';
+import type { LucideIcon } from 'lucide-react-native';
+import { use, useState, type ReactNode, type Ref } from 'react';
 import {
   ActivityIndicator,
   Text as RNText,
@@ -16,8 +17,10 @@ import {
   type TextProps,
   type ViewStyle,
 } from 'react-native';
+import { BottomTabBarHeightContext } from 'expo-router/tabs';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { Icon } from '@/components/Icon';
 import { PressableScale } from '@/components/PressableScale';
 import type { TintName } from '@/theme/tokens';
 import { inputText } from '@/theme/inputText';
@@ -54,6 +57,7 @@ export function Screen({
   children,
   edges = ['left', 'right'],
   hero,
+  footer,
 }: {
   children: ReactNode;
   /**
@@ -64,13 +68,17 @@ export function Screen({
   edges?: readonly ('top' | 'bottom' | 'left' | 'right')[];
   /** A <Hero>: full width at the top, scrolling with the page. It clears the notch itself. */
   hero?: ReactNode;
+  /** Stays at the bottom while the page scrolls, e.g. the screen's main button. */
+  footer?: ReactNode;
 }) {
   const t = useTheme();
+  // The floating tab bar covers the bottom of the page: leave room so nothing hides under it.
+  const tabBar = use(BottomTabBarHeightContext) ?? 0;
   const content = (
     <View
       style={{
         padding: t.space.lg,
-        paddingBottom: t.space.xxl * 2, // room above the toast
+        paddingBottom: t.space.xxl * 2 + tabBar, // room above the toast and the tab bar
         gap: t.space.lg,
         width: '100%',
         maxWidth: 560, // readable column on tablets and the web
@@ -90,12 +98,35 @@ export function Screen({
         {hero}
         {content}
       </ScrollView>
+      {footer ? (
+        // The page colour with a soft shadow above, so the list scrolls "under" the bar.
+        <View
+          style={{
+            backgroundColor: t.colors.background,
+            boxShadow: '0 -6px 14px -6px rgba(18, 21, 15, 0.22)',
+          }}
+        >
+          <View
+            style={{
+              paddingHorizontal: t.space.lg,
+              paddingTop: t.space.md,
+              paddingBottom: t.space.lg + tabBar,
+              width: '100%',
+              maxWidth: 560,
+              alignSelf: 'center',
+              gap: t.space.xs,
+            }}
+          >
+            {footer}
+          </View>
+        </View>
+      ) : null}
     </SafeAreaView>
   );
 }
 
 /**
- * A rounded panel. Plain cards are white with a soft shadow; `tint` makes it a pastel
+ * A rounded panel. Plain cards are white with a hairline edge; `tint` makes it a pastel
  * card (one per list, day or Member); `inverse` is the single strong anchor on a screen.
  */
 export function Card({
@@ -129,11 +160,21 @@ export function Card({
   );
 }
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
+type ButtonVariant =
+  | 'primary'
+  | 'secondary'
+  | 'ghost'
+  | 'danger'
+  | 'dark'
+  | 'strong'
+  | 'outline'
+  | 'lavender'
+  | 'dangerSolid';
 
 /**
- * Pill buttons. `primary` is lime: use one per screen, for the main thing to do next.
- * Everything else is `secondary` (white), `ghost` (text only) or `danger`.
+ * Buttons (12pt corners). `primary` is lime: use one per screen, for the main thing to do next.
+ * Everything else is `secondary` (white), `ghost` (text only) or `danger`. `dark` is
+ * the deep green for a screen whose main step is "go and look" (Dinner planned!).
  */
 export function Button({
   title,
@@ -142,9 +183,13 @@ export function Button({
   disabled,
   loading,
   compact,
+  tight,
   accessibilityLabel,
+  icon,
 }: {
   title: string;
+  /** A small icon before the title. Decorative: the title names the button. */
+  icon?: LucideIcon;
   /** When the visible title needs more context, e.g. "Remove" → "Remove Bob". */
   accessibilityLabel?: string;
   onPress: () => void;
@@ -153,6 +198,8 @@ export function Button({
   loading?: boolean;
   /** Fits its text instead of filling the width. */
   compact?: boolean;
+  /** Less side padding, for two buttons sharing a row ("View recipe | Mark as cooked"). */
+  tight?: boolean;
 }) {
   const t = useTheme();
   const [pressed, setPressed] = useState(false);
@@ -167,8 +214,17 @@ export function Button({
     secondary: { bg: t.colors.surface, fg: t.colors.text, border: t.colors.border },
     ghost: { bg: 'transparent', fg: t.colors.text, border: 'transparent' },
     danger: { bg: 'transparent', fg: t.colors.danger, border: t.colors.danger },
+    dark: { bg: t.colors.tabSelected, fg: t.colors.surface, border: 'transparent' },
+    strong: { bg: t.colors.strong, fg: t.colors.onStrong, border: 'transparent' },
+    // A quiet second action (Undo): see-through, thin border, muted text.
+    outline: { bg: 'transparent', fg: t.colors.textMuted, border: t.colors.border },
+    lavender: { bg: t.colors.lavender, fg: t.colors.onLavender, border: 'transparent' },
+    // The step that actually deletes something: solid red, white text.
+    dangerSolid: { bg: t.colors.danger, fg: t.colors.onDanger, border: 'transparent' },
   };
   const { bg, fg, border } = look[variant];
+  // Filled buttons get the heavier label; outlined and text-only ones stay quieter.
+  const quiet = variant === 'secondary' || variant === 'ghost' || variant === 'outline';
 
   return (
     <PressableScale
@@ -181,14 +237,14 @@ export function Button({
       onPressOut={() => setPressed(false)}
       disabled={inactive}
       style={{
-        minHeight: t.touchTarget + 4,
-        borderRadius: t.radius.pill,
-        paddingHorizontal: t.space.xl,
+        minHeight: t.touchTarget,
+        borderRadius: t.radius.md,
+        paddingHorizontal: tight ? t.space.md : t.space.lg,
         alignItems: 'center',
         justifyContent: 'center',
         alignSelf: compact ? 'flex-start' : 'stretch',
         backgroundColor: bg,
-        borderWidth: border === 'transparent' ? 0 : 1.5,
+        borderWidth: border === 'transparent' ? 0 : 1,
         borderColor: border,
         opacity: inactive ? 0.45 : 1,
       }}
@@ -196,11 +252,14 @@ export function Button({
       {loading ? (
         <ActivityIndicator color={fg} aria-hidden />
       ) : (
-        <RNText
-          style={[t.type.label, { color: fg, fontFamily: t.fonts.displayBold, fontSize: 16 }]}
-        >
-          {title}
-        </RNText>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.sm }}>
+          {icon ? <Icon icon={icon} size={20} color={fg} /> : null}
+          <RNText
+            style={[t.type.label, { color: fg, fontFamily: quiet ? t.fonts.medium : t.fonts.bold }]}
+          >
+            {title}
+          </RNText>
+        </View>
       )}
     </PressableScale>
   );
@@ -241,7 +300,7 @@ export function Field({
           props.multiline ? t.type.body : inputText(t.type.body), // multi-line keeps its line spacing
           {
             minHeight: t.touchTarget + 4,
-            borderWidth: 1.5,
+            borderWidth: 1,
             borderColor: error ? t.colors.danger : focused ? t.colors.text : t.colors.border,
             borderRadius: t.radius.md,
             paddingHorizontal: t.space.lg,
@@ -261,10 +320,24 @@ export function Field({
   );
 }
 
+/** On its own soft-red pill, so it reads on any page colour as well as on cards. */
 export function ErrorText({ message }: { message: string | null | undefined }) {
+  const t = useTheme();
   if (!message) return null;
   return (
-    <Text variant="caption" danger accessibilityRole="alert">
+    <Text
+      variant="caption"
+      danger
+      accessibilityRole="alert"
+      style={{
+        alignSelf: 'flex-start',
+        backgroundColor: t.colors.dangerSoft,
+        borderRadius: t.radius.sm,
+        paddingHorizontal: t.space.sm,
+        paddingVertical: 2,
+        overflow: 'hidden',
+      }}
+    >
       {message}
     </Text>
   );
@@ -281,7 +354,7 @@ export function Loading() {
         backgroundColor: t.colors.background,
       }}
     >
-      <ActivityIndicator color={t.colors.text} size="large" accessibilityLabel="Loading" />
+      <ActivityIndicator color={t.colors.onBackground} size="large" accessibilityLabel="Loading" />
     </View>
   );
 }
