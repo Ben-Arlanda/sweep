@@ -2,19 +2,19 @@ import { router } from 'expo-router';
 import {
   BookOpen,
   ChefHat,
-  ChevronRight,
   Heart,
+  Plus,
   SlidersHorizontal,
-  SquarePlus,
   type LucideIcon,
 } from 'lucide-react-native';
 import { useState } from 'react';
 import { View } from 'react-native';
 
-import { Hero, HeroSearch } from '@/components/Hero';
+import { HeroSearch } from '@/components/Hero';
 import { Icon } from '@/components/Icon';
+import { PageHeader } from '@/components/PageHeader';
 import { PressableScale } from '@/components/PressableScale';
-import { ErrorText, Loading, Screen, Text } from '@/components/ui';
+import { ErrorText, Loading, Screen, TAB_ROOT, Text } from '@/components/ui';
 import { AddRecipeSheet } from '@/features/imports/AddRecipeSheet';
 import { ruleBreakText } from '@/features/imports/ruleBreaks';
 import { IdeaTile, KITCHEN_FIRST } from '@/features/recipes/IdeaTile';
@@ -27,9 +27,10 @@ import { PageColors } from '@/theme/PageColors';
 import { useTheme } from '@/theme/useTheme';
 
 /**
- * The Recipes tab (slice 6f): search, three ways in (Dinner ideas, Add recipe,
- * Favourites), shortcuts into All recipes, and what fits the Kitchen now. Typing a
- * search swaps the sections for results, ranked by meaning.
+ * The Recipes tab (slice 6f, premium redesign): header with Add recipe and Food rules,
+ * search, one row of ways in (Dinner ideas, Favourites, Browse all), what fits the
+ * Kitchen now, and your added recipes. Typing a search swaps the sections for results,
+ * ranked by meaning.
  */
 function RecipesScreenContent() {
   const t = useTheme();
@@ -40,67 +41,52 @@ function RecipesScreenContent() {
   const search = useRecipeSearch(q, { maxMinutes: null, course: null });
 
   return (
-    <Screen
-      hero={
-        <Hero
-          title="Recipes"
-          subtitle="Search, browse and save recipes, or add your own."
-          aside={
-            <PressableScale
-              accessibilityRole="link"
-              accessibilityLabel="Food rules"
+    <Screen edges={TAB_ROOT}>
+      <PageHeader
+        icon={BookOpen}
+        section="recipes"
+        title="Recipes"
+        right={
+          <View style={{ flexDirection: 'row', gap: t.space.sm }}>
+            <BoxButton
+              icon={SlidersHorizontal}
+              label="Food rules"
+              role="link"
               onPress={() => router.push('/dietary-rules')}
-              style={{
-                width: t.touchTarget,
-                height: t.touchTarget,
-                borderRadius: t.radius.pill,
-                backgroundColor: t.colors.surface,
-                alignItems: 'center',
-                justifyContent: 'center',
-                alignSelf: 'flex-start',
-              }}
-            >
-              <Icon icon={SlidersHorizontal} color={t.colors.text} />
-            </PressableScale>
-          }
-        >
-          <HeroSearch
-            label="Search recipes"
-            placeholder="e.g. quick vegetarian dinner"
-            value={text}
-            onChangeText={setText}
-            autoCorrect={false}
-            returnKeyType="search"
-          />
-        </Hero>
-      }
-    >
+            />
+            <BoxButton icon={Plus} label="Add a recipe" onPress={() => setAdding(true)} />
+          </View>
+        }
+      />
+      <HeroSearch
+        label="Search recipes"
+        placeholder="e.g. quick vegetarian dinner"
+        value={text}
+        onChangeText={setText}
+        autoCorrect={false}
+        returnKeyType="search"
+      />
       {searching ? (
         <SearchResults search={search} />
       ) : (
         <>
-          <View style={{ flexDirection: 'row', gap: t.space.sm }}>
-            <Tile
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: -t.space.sm }}>
+            <IconChip
               icon={ChefHat}
-              title="Dinner ideas"
-              hint="Suggestions from Sweep"
-              lime
+              label="Dinner ideas"
               onPress={() => router.push('/dinner-ideas')}
             />
-            <Tile
-              icon={SquarePlus}
-              title="Add recipe"
-              hint="Paste, photo or link"
-              onPress={() => setAdding(true)}
-            />
-            <Tile
+            <IconChip
               icon={Heart}
-              title="Favourites"
-              hint="Your hearted recipes"
+              label="Favourites"
               onPress={() => router.push({ pathname: '/recipes/all', params: { favourites: '1' } })}
             />
+            <IconChip
+              icon={BookOpen}
+              label="Browse all"
+              onPress={() => router.push('/recipes/all')}
+            />
           </View>
-          <Browse />
           <Recommended />
           <YourRecipes />
         </>
@@ -110,85 +96,73 @@ function RecipesScreenContent() {
   );
 }
 
-function Tile({
+/** A 44pt square icon button with a hairline box, for the header. */
+function BoxButton({
   icon,
-  title,
-  hint,
-  lime,
+  label,
+  role = 'button',
   onPress,
 }: {
   icon: LucideIcon;
-  title: string;
-  hint: string;
-  lime?: boolean;
+  label: string;
+  role?: 'button' | 'link';
   onPress: () => void;
 }) {
   const t = useTheme();
   return (
     <PressableScale
-      accessibilityRole="button"
-      accessibilityLabel={`${title}: ${hint}`}
+      accessibilityRole={role}
+      accessibilityLabel={label}
       onPress={onPress}
       style={{
-        flex: 1,
-        minWidth: 0,
+        width: t.touchTarget,
+        height: t.touchTarget,
+        borderRadius: t.radius.md,
+        borderWidth: 1,
+        borderColor: t.colors.border,
+        backgroundColor: t.colors.surface,
         alignItems: 'center',
-        gap: 4,
-        paddingVertical: t.space.md,
-        paddingHorizontal: t.space.xs,
-        borderRadius: t.radius.lg,
-        backgroundColor: lime ? t.colors.action : t.colors.surface,
-        boxShadow: lime ? undefined : t.shadow.card,
+        justifyContent: 'center',
       }}
     >
-      <Icon icon={icon} size={26} color={lime ? t.colors.onAction : t.colors.text} />
-      <Text
-        variant="label"
-        style={{ textAlign: 'center', color: lime ? t.colors.onAction : t.colors.text }}
-      >
-        {title}
-      </Text>
-      <Text
-        variant="caption"
-        style={{ textAlign: 'center', color: lime ? t.colors.onAction : t.colors.textMuted }}
-      >
-        {hint}
-      </Text>
+      <Icon icon={icon} color={t.colors.text} />
     </PressableScale>
   );
 }
 
-/**
- * Browse: a card into All recipes (courses, filters, sort). A card,
- * not a lone heading, so this section has a body like the ones under it.
- */
-function Browse() {
+/** A way into recipes: white pill with an icon. */
+function IconChip({
+  icon,
+  label,
+  onPress,
+}: {
+  icon: LucideIcon;
+  label: string;
+  onPress: () => void;
+}) {
   const t = useTheme();
-  const label = 'Browse all recipes';
   return (
     <PressableScale
       accessibilityRole="link"
-      accessibilityLabel={`${label}: courses, filters and sort`}
-      onPress={() => router.push('/recipes/all')}
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: t.space.md,
-        minHeight: 64,
-        paddingHorizontal: t.space.lg,
-        borderRadius: t.radius.lg,
-        backgroundColor: t.colors.surface,
-        boxShadow: t.shadow.card,
-      }}
+      onPress={onPress}
+      style={{ minHeight: t.touchTarget, justifyContent: 'center' }}
     >
-      <Icon icon={BookOpen} size={26} color={t.colors.text} />
-      <View style={{ flex: 1 }}>
-        <Text variant="label">{label}</Text>
-        <Text variant="caption" muted>
-          Courses, filters and sort
-        </Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 6,
+          minHeight: 36,
+          paddingHorizontal: t.space.md - 1,
+          borderRadius: t.radius.pill,
+          borderWidth: 1,
+          borderColor: t.colors.border,
+          backgroundColor: t.colors.surface,
+        }}
+      >
+        <Icon icon={icon} size={15} color={t.colors.text} />
+        <Text style={{ fontFamily: t.fonts.medium, fontSize: 13, lineHeight: 18 }}>{label}</Text>
       </View>
-      <Icon icon={ChevronRight} size={20} color={t.colors.text} strong />
     </PressableScale>
   );
 }
@@ -202,10 +176,10 @@ function Recommended() {
     <View style={{ gap: t.space.sm }}>
       <View>
         <Text
-          variant="heading"
+          variant="label"
           role="heading"
           aria-level={2}
-          style={{ color: t.colors.onBackground }}
+          style={{ color: t.colors.onBackground, fontSize: 17, lineHeight: 22 }}
         >
           Recommended for you
         </Text>
@@ -273,8 +247,13 @@ function YourRecipes() {
   if (!mine.data?.length) return mine.isError ? <ErrorText message={mine.error.message} /> : null;
   return (
     <View style={{ gap: t.space.sm }}>
-      <Text variant="title" role="heading" aria-level={2} style={{ color: t.colors.onBackground }}>
-        Your recipes
+      <Text
+        variant="label"
+        role="heading"
+        aria-level={2}
+        style={{ color: t.colors.onBackground, fontSize: 17, lineHeight: 22 }}
+      >
+        Your added recipes
       </Text>
       {mine.data.map((r) => (
         <RecipeRow key={r.id} recipe={r} note={ruleBreakText(r.rule_breaks)} />

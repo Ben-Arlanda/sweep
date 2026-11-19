@@ -17,6 +17,7 @@ import { Linking, Pressable, View } from 'react-native';
 
 import { ConfirmDialog } from '@/components/ConfirmDialog';
 import { FoodThumb } from '@/components/FoodThumb';
+import { Segmented } from '@/components/Segmented';
 import { HeartButton } from '@/components/HeartButton';
 import { Icon } from '@/components/Icon';
 import { Tag } from '@/components/Pill';
@@ -61,8 +62,9 @@ type Line = components['schemas']['RecipeIngredientOut'];
  * Something you need shows "Add to list": one tap puts it on the Shopping List. Anything
  * already unticked on the list shows "On list", the same rule the planner uses.
  *
- * Laid out as Ingredients / Method / Notes tabs (slice 6e). A Recipe Adaptation (ADR 0021)
- * links back to its parent; its Swaps and a parent's Adaptations are under Notes.
+ * Laid out as Ingredients | Method tabs (slice 6e, premium redesign). Notes sit at the
+ * bottom of Method: a Recipe Adaptation's (ADR 0021) Swaps, a parent's Adaptations, and
+ * where the recipe came from.
  */
 function RecipeContent() {
   const t = useTheme();
@@ -166,12 +168,21 @@ function RecipeContent() {
         <Text variant="title" accessibilityRole="header" style={{ color: t.colors.onBackground }}>
           {r.title}
         </Text>
+        {r.summary ? <Text>{r.summary}</Text> : null}
         <MetaRow recipe={r} />
         {swap && date ? <SwappingPill proposalId={swap} date={date} /> : null}
         {parentId ? <AdaptedFrom parentId={parentId} /> : null}
       </View>
 
-      <Tabs value={tab} onChange={setTab} />
+      <Segmented
+        label="Recipe"
+        value={tab}
+        onChange={setTab}
+        options={[
+          { value: 'ingredients', label: 'Ingredients' },
+          { value: 'method', label: 'Method' },
+        ]}
+      />
 
       {tab === 'ingredients' ? (
         <View style={{ gap: t.space.sm }}>
@@ -214,19 +225,38 @@ function RecipeContent() {
       ) : null}
 
       {tab === 'method' ? (
-        <View style={cardStyle(t)}>
+        <View style={{ gap: t.space.sm + 2 }}>
           {swaps.length > 0 ? (
-            <Text variant="caption" muted>
+            <Text variant="caption" style={{ color: t.colors.onBackgroundMuted }}>
               The method is the original recipe&apos;s, so it may still mention what was swapped
-              (see Notes).
+              (see Notes below).
             </Text>
           ) : null}
           {r.method ? (
             r.method.map((step, i) => (
-              <View key={i} style={{ flexDirection: 'row', gap: t.space.md }}>
-                <Text variant="heading" style={{ minWidth: 24 }}>
-                  {i + 1}
-                </Text>
+              <View
+                key={i}
+                style={[
+                  cardStyle(t),
+                  { flexDirection: 'row', alignItems: 'flex-start', padding: 14 },
+                ]}
+              >
+                <View
+                  style={{
+                    width: 26,
+                    height: 26,
+                    borderRadius: 13,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: t.colors.selected,
+                  }}
+                >
+                  <Text
+                    style={{ fontFamily: t.fonts.bold, fontSize: 13, color: t.colors.onSelected }}
+                  >
+                    {i + 1}
+                  </Text>
+                </View>
                 <Text style={{ flex: 1 }}>{step}</Text>
               </View>
             ))
@@ -246,9 +276,11 @@ function RecipeContent() {
         </View>
       ) : null}
 
-      {tab === 'notes' ? (
+      {tab === 'method' ? (
         <View style={[cardStyle(t), { gap: t.space.lg }]}>
-          {r.summary ? <Text>{r.summary}</Text> : null}
+          <Text variant="heading" role="heading" aria-level={2}>
+            Notes
+          </Text>
           {swaps.length > 0 ? (
             <View style={{ gap: t.space.sm }}>
               <SectionLabel>Swaps</SectionLabel>
@@ -275,7 +307,7 @@ function RecipeContent() {
   );
 }
 
-/** Method and Notes: a warm white card on the page, so long text stays ink on light. */
+/** Method steps and Notes: white cards with a hairline edge. */
 function cardStyle(t: Theme) {
   return {
     gap: t.space.md,
@@ -286,56 +318,7 @@ function cardStyle(t: Theme) {
   };
 }
 
-type Tab = 'ingredients' | 'method' | 'notes';
-const TABS: { value: Tab; label: string }[] = [
-  { value: 'ingredients', label: 'Ingredients' },
-  { value: 'method', label: 'Method' },
-  { value: 'notes', label: 'Notes' },
-];
-
-/** Ingredients / Method / Notes: a tab list, so screen readers say "tab, 1 of 3, selected". */
-function Tabs({ value, onChange }: { value: Tab; onChange: (tab: Tab) => void }) {
-  const t = useTheme();
-  return (
-    <View
-      accessibilityRole="tablist"
-      style={{
-        flexDirection: 'row',
-        gap: t.space.xs,
-        padding: t.space.xs,
-        borderRadius: t.radius.pill,
-        backgroundColor: t.colors.surface,
-        borderWidth: 1,
-        borderColor: t.colors.border,
-      }}
-    >
-      {TABS.map((tab) => {
-        const selected = tab.value === value;
-        return (
-          <Pressable
-            key={tab.value}
-            accessibilityRole="tab"
-            aria-selected={selected}
-            accessibilityState={{ selected }}
-            onPress={() => onChange(tab.value)}
-            style={{
-              flex: 1,
-              minHeight: t.touchTarget,
-              borderRadius: t.radius.pill,
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: selected ? t.colors.tabSelected : 'transparent',
-            }}
-          >
-            <Text variant="label" style={{ color: selected ? t.colors.surface : t.colors.text }}>
-              {tab.label}
-            </Text>
-          </Pressable>
-        );
-      })}
-    </View>
-  );
-}
+type Tab = 'ingredients' | 'method';
 
 /**
  * "Add to list" and "Add 2 missing": onto the Shopping List (queued if offline), then
