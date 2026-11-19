@@ -15,12 +15,6 @@ import {
   type HostInstance,
   type TextInputInstance,
 } from 'react-native';
-import Animated, {
-  FadeInDown,
-  FadeOut,
-  LinearTransition,
-  ReduceMotion,
-} from 'react-native-reanimated';
 
 import { AvatarStack } from '@/components/Avatar';
 import { toggled } from '@/components/CategoryAccordion';
@@ -28,6 +22,7 @@ import { Checkbox } from '@/components/Checkbox';
 import { ChoiceChips } from '@/components/ChoiceChips';
 import { Icon } from '@/components/Icon';
 import { MenuItem } from '@/components/MenuItem';
+import { displayName } from '@/features/kitchen/format';
 import { PageHeader } from '@/components/PageHeader';
 import { measureAnchor, Popover, type Anchor } from '@/components/Popover';
 import { useToast } from '@/components/Toast';
@@ -131,14 +126,7 @@ function ListContent({ list }: { list: ListDetail }) {
         <Text style={{ color: t.colors.onBackgroundMuted }}>Nothing left to buy. Nice work.</Text>
       ) : null}
       {listSections(toBuy).map((section) => (
-        // The whole card glides away when its last item is ticked, like a row does.
-        <Animated.View
-          key={section.category}
-          exiting={FadeOut.duration(t.motion.duration.base).reduceMotion(ReduceMotion.System)}
-          layout={LinearTransition.duration(t.motion.duration.base).reduceMotion(
-            ReduceMotion.System,
-          )}
-        >
+        <View key={section.category}>
           <ListGroup
             label={section.label}
             count={section.items.length}
@@ -147,13 +135,13 @@ function ListContent({ list }: { list: ListDetail }) {
           >
             {section.items.map(row)}
           </ListGroup>
-        </Animated.View>
+        </View>
       ))}
 
       {menu ? (
         <Popover
           anchor={menu.anchor}
-          label={`${menu.item.text} options`}
+          label={`${displayName(menu.item.text)} options`}
           width={260}
           onClose={() => setMenu(null)}
         >
@@ -171,7 +159,7 @@ function ListContent({ list }: { list: ListDetail }) {
             onRemove={() => {
               setMenu(null);
               actions.deleteItem(menu.item.id);
-              toast({ tag: 'List', text: `Removed ${menu.item.text}` });
+              toast({ tag: 'List', text: `Removed ${displayName(menu.item.text)}` });
             }}
           />
         </Popover>
@@ -354,7 +342,7 @@ function ItemRow({
     actions.setChecked(item.id, true);
     toast({
       kind: 'undo',
-      text: `Ticked off ${item.text}`,
+      text: `Ticked off ${displayName(item.text)}`,
       detail: item.ingredient
         ? `Added ${amount ? `${amount} ` : ''}${item.ingredient.name} to your Kitchen`
         : undefined,
@@ -363,75 +351,62 @@ function ItemRow({
   }
 
   return (
-    <Animated.View
-      // Rows rise in one after another when the list opens. Capped so a long list
-      // doesn't make the last row wait.
-      entering={FadeInDown.delay(Math.min(index, 8) * t.motion.staggerMs)
-        .springify()
-        .damping(18)
-        .reduceMotion(ReduceMotion.System)}
-      // A ticked row fades out while the rows under it glide up into its place, instead
-      // of the list jumping (a straight glide, no spring). Both follow reduce motion.
-      exiting={FadeOut.duration(t.motion.duration.base).reduceMotion(ReduceMotion.System)}
-      layout={LinearTransition.duration(t.motion.duration.base).reduceMotion(ReduceMotion.System)}
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        // A line between rows (none above the first) inside the category card.
+        borderTopWidth: index === 0 ? 0 : 1,
+        borderTopColor: t.colors.border,
+        paddingRight: 6,
+      }}
     >
-      <View
-        style={{
+      {/* No custom label: the visible text ("Milk, Coles, 2 L") is the
+            name, so voice control users can say exactly what they see (WCAG 2.5.3). */}
+      <Pressable
+        accessibilityRole="checkbox"
+        accessibilityState={{ checked: false }}
+        aria-checked={false}
+        onPress={tick}
+        style={({ pressed }) => ({
+          flex: 1,
+          minHeight: 60,
           flexDirection: 'row',
           alignItems: 'center',
-          // A line between rows (none above the first) inside the category card.
-          borderTopWidth: index === 0 ? 0 : 1,
-          borderTopColor: t.colors.border,
-          paddingRight: 6,
-        }}
+          gap: t.space.sm,
+          paddingVertical: t.space.sm,
+          paddingLeft: t.space.xs,
+          opacity: pressed ? 0.75 : 1,
+        })}
       >
-        {/* No custom label: the visible text ("Milk, Coles, 2 L") is the
-            name, so voice control users can say exactly what they see (WCAG 2.5.3). */}
-        <Pressable
-          accessibilityRole="checkbox"
-          accessibilityState={{ checked: false }}
-          aria-checked={false}
-          onPress={tick}
-          style={({ pressed }) => ({
-            flex: 1,
-            minHeight: 60,
-            flexDirection: 'row',
-            alignItems: 'center',
-            gap: t.space.sm,
-            paddingVertical: t.space.sm,
-            paddingLeft: t.space.xs,
-            opacity: pressed ? 0.75 : 1,
-          })}
-        >
-          <View style={{ width: 36, alignItems: 'center' }}>
-            <Checkbox checked={false} size={22} />
-          </View>
-          <View style={{ flex: 1, gap: 2 }}>
-            <Text variant="label">{item.text}</Text>
-            {detail ? (
-              <Text variant="caption" muted style={{ fontVariant: ['tabular-nums'] }}>
-                {detail}
-              </Text>
-            ) : null}
-          </View>
-        </Pressable>
-        <Pressable
-          ref={more}
-          accessibilityRole="button"
-          accessibilityLabel={`More for ${item.text}`}
-          onPress={async () => onMenu(await measureAnchor(more))}
-          style={({ pressed }) => ({
-            width: t.touchTarget,
-            minHeight: t.touchTarget,
-            alignItems: 'center',
-            justifyContent: 'center',
-            opacity: pressed ? 0.6 : 1,
-          })}
-        >
-          <Icon icon={Ellipsis} color={t.colors.text} strong />
-        </Pressable>
-      </View>
-    </Animated.View>
+        <View style={{ width: 36, alignItems: 'center' }}>
+          <Checkbox checked={false} size={22} />
+        </View>
+        <View style={{ flex: 1, gap: 2 }}>
+          <Text variant="label">{displayName(item.text)}</Text>
+          {detail ? (
+            <Text variant="caption" muted style={{ fontVariant: ['tabular-nums'] }}>
+              {detail}
+            </Text>
+          ) : null}
+        </View>
+      </Pressable>
+      <Pressable
+        ref={more}
+        accessibilityRole="button"
+        accessibilityLabel={`More for ${displayName(item.text)}`}
+        onPress={async () => onMenu(await measureAnchor(more))}
+        style={({ pressed }) => ({
+          width: t.touchTarget,
+          minHeight: t.touchTarget,
+          alignItems: 'center',
+          justifyContent: 'center',
+          opacity: pressed ? 0.6 : 1,
+        })}
+      >
+        <Icon icon={Ellipsis} color={t.colors.text} strong />
+      </Pressable>
+    </View>
   );
 }
 
