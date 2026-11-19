@@ -108,7 +108,9 @@ export function FloatingTabBar({
                     paddingVertical: 4,
                     paddingHorizontal: 6,
                     borderRadius: BAR_RADIUS - 6,
-                    backgroundColor: focused ? `rgba(27, 42, 78, ${TAB_PILL_SHADE})` : 'transparent',
+                    backgroundColor: focused
+                      ? `rgba(27, 42, 78, ${TAB_PILL_SHADE})`
+                      : 'transparent',
                   }}
                 >
                   <Icon icon={tab.icon} color={colour} strong={focused} />

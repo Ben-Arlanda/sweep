@@ -53,11 +53,7 @@ export function Hero({
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.md }}>
             <View style={{ flex: 1, gap: t.space.xs }}>
               {title ? (
-                <Text
-                  variant="display"
-                  accessibilityRole="header"
-                  style={{ color: t.colors.onHero }}
-                >
+                <Text variant="title" accessibilityRole="header" style={{ color: t.colors.onHero }}>
                   {title}
                 </Text>
               ) : null}
@@ -95,7 +91,7 @@ if (Platform.OS === 'web' && typeof document !== 'undefined') {
   document.head.appendChild(style);
 }
 
-/** The pill-shaped search box that sits inside the hero. */
+/** The search box that sits inside the hero: white with a hairline edge. */
 export function HeroSearch({ label, ...props }: TextInputProps & { label: string }) {
   const t = useTheme();
   const [focused, setFocused] = useState(false);
@@ -105,13 +101,13 @@ export function HeroSearch({ label, ...props }: TextInputProps & { label: string
         flexDirection: 'row',
         alignItems: 'center',
         gap: t.space.sm,
-        minHeight: t.touchTarget + 8,
-        paddingHorizontal: t.space.lg,
-        borderRadius: t.radius.pill,
+        minHeight: t.touchTarget + 4,
+        paddingHorizontal: t.space.md,
+        borderRadius: t.radius.md,
         backgroundColor: t.colors.heroField,
-        borderWidth: 1.5,
+        borderWidth: 1,
         // A clear ring while typing: the field's focus indicator (see the web rule above).
-        borderColor: focused ? t.colors.text : 'transparent',
+        borderColor: focused ? t.colors.selected : t.colors.border,
       }}
     >
       <Icon icon={Search} color={t.colors.textMuted} />

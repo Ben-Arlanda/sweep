@@ -24,6 +24,7 @@ import { IdeaTile, KITCHEN_FIRST } from '@/features/recipes/IdeaTile';
 import { useList } from '@/lib/api/lists';
 import { mealTap, useMealPlan, useMealPlanActions } from '@/lib/api/mealPlan';
 import { useDinnerIdeas } from '@/lib/api/planning';
+import { sectionTints } from '@/theme/tokens';
 import { useTheme } from '@/theme/useTheme';
 
 import { hasPlan, homeState, usesLine } from './today';
@@ -32,13 +33,18 @@ import { hasPlan, homeState, usesLine } from './today';
  * Under Home's hero (ADR 0026): tonight's card, or "Your meal plan" once the week is
  * planned; then three quick tiles and recipe ideas from the Kitchen.
  */
-export function TodayBelow() {
+export function TodayBelow({ onEditPlan }: { onEditPlan: () => void }) {
   const week = useMealPlan(null);
   const data = week.data;
   return (
     <>
       {!data ? null : hasPlan(data.today, data.meals) ? (
-        <MealPlanCard monday={data.start} today={data.today} meals={data.meals} />
+        <MealPlanCard
+          monday={data.start}
+          today={data.today}
+          meals={data.meals}
+          onEdit={onEditPlan}
+        />
       ) : (
         <TonightCard today={data.today} meals={data.meals} />
       )}
@@ -48,15 +54,16 @@ export function TodayBelow() {
   );
 }
 
-function Card({ children }: { children: React.ReactNode }) {
+function Card({ children, flush }: { children: React.ReactNode; flush?: boolean }) {
   const t = useTheme();
   return (
     <View
       style={{
         backgroundColor: t.colors.surface,
         borderRadius: t.radius.lg,
-        padding: t.space.md,
-        gap: t.space.md,
+        padding: flush ? 0 : t.space.lg,
+        gap: flush ? 0 : t.space.md,
+        overflow: flush ? 'hidden' : undefined,
         boxShadow: t.shadow.card,
       }}
     >
@@ -93,7 +100,7 @@ function CookedButton({ meal }: { meal: PlannedMeal }) {
         accessibilityLabel={
           isCooked ? `Undo cooked for ${meal.title}` : `Mark ${meal.title} as cooked`
         }
-        variant={isCooked ? 'outline' : 'dark'}
+        variant={isCooked ? 'outline' : 'secondary'}
         loading={busy}
         disabled={busy}
         onPress={() => (isCooked ? undoCooked : cooked).mutate(mealTap(meal.id))}
@@ -111,25 +118,21 @@ function TonightCard({ today, meals }: { today: string; meals: PlannedMeal[] }) 
   if (state.kind === 'free' || state.kind === 'empty') {
     return (
       <Card>
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.md }}>
-          <View style={{ flex: 1, gap: 2 }}>
-            <Text variant="caption" muted>
-              Tonight
-            </Text>
-            <Text variant="heading" role="heading" aria-level={2}>
-              No meal planned
-            </Text>
-            <Text variant="caption" muted>
-              Get a dinner idea in seconds.
-            </Text>
-          </View>
-          <ChefPicture />
+        <View style={{ gap: 4 }}>
+          <Text variant="caption" muted style={{ fontFamily: t.fonts.medium }}>
+            Tonight
+          </Text>
+          <Text variant="heading" role="heading" aria-level={2}>
+            No meal planned
+          </Text>
+          <Text variant="caption" muted>
+            Get a dinner idea in seconds.
+          </Text>
         </View>
         <View>
           <Button
             title="Find dinner ideas"
             icon={Sparkles}
-            variant="dark"
             onPress={() => router.push('/tonight')}
           />
         </View>
@@ -175,20 +178,6 @@ function TonightCard({ today, meals }: { today: string; meals: PlannedMeal[] }) 
   );
 }
 
-/** The new chef, winking (still when the phone asks for less motion). Decorative. */
-function ChefPicture() {
-  const reduceMotion = useReducedMotion();
-  return (
-    <Image
-      aria-hidden
-      source={require('../../../assets/images/chef-blink.webp')}
-      style={{ width: 84, height: 84 }}
-      contentFit="contain"
-      autoplay={!reduceMotion}
-    />
-  );
-}
-
 /**
  * The week, once there's a plan: tap a day to see its dinner underneath. Today starts
  * selected and is the one you can mark Cooked.
@@ -197,10 +186,12 @@ function MealPlanCard({
   monday,
   today,
   meals,
+  onEdit,
 }: {
   monday: string;
   today: string;
   meals: PlannedMeal[];
+  onEdit: () => void;
 }) {
   const t = useTheme();
   const [selected, setSelected] = useState(today);
@@ -215,122 +206,158 @@ function MealPlanCard({
     : `${parts.weekday} ${parts.day}`;
 
   return (
-    <Card>
-      <PressableScale
-        accessibilityRole="link"
-        accessibilityLabel={`Your meal plan, ${weekRange(monday)}, ${meals.length} dinners. Open the Plan tab`}
-        onPress={() => router.push('/meal-plan')}
-        style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.md, minHeight: 44 }}
-      >
-        <Icon icon={CalendarDays} size={28} color={t.colors.text} />
-        <View style={{ flex: 1 }}>
-          <Text variant="heading" role="heading" aria-level={2}>
+    <View style={{ gap: t.space.sm + 2 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.md }}>
+        <PressableScale
+          accessibilityRole="link"
+          accessibilityLabel={`Your meal plan, ${weekRange(monday)}, ${meals.length} dinners. Open the Plan tab`}
+          onPress={() => router.push('/meal-plan')}
+          style={{ flex: 1, minHeight: t.touchTarget, justifyContent: 'center', gap: 2 }}
+        >
+          <Text
+            variant="label"
+            role="heading"
+            aria-level={2}
+            style={{ fontSize: 17, lineHeight: 22 }}
+          >
             Your meal plan
           </Text>
-          <Text variant="caption" muted>
+          <Text variant="caption" muted style={{ fontVariant: ['tabular-nums'] }}>
             {weekRange(monday)} · {meals.length} {meals.length === 1 ? 'dinner' : 'dinners'}
           </Text>
-        </View>
-        <Icon icon={ChevronRight} color={t.colors.text} strong />
-      </PressableScale>
+        </PressableScale>
+        <PressableScale
+          accessibilityRole="button"
+          onPress={onEdit}
+          style={{ minHeight: t.touchTarget, justifyContent: 'center', paddingLeft: t.space.md }}
+        >
+          <Text variant="label">Edit plan</Text>
+        </PressableScale>
+      </View>
 
-      <View accessibilityRole="tablist" style={{ flexDirection: 'row', gap: 4 }}>
-        {days.map((d) => {
-          const p = dayParts(d.date);
-          const on = d.date === selected;
-          return (
-            <PressableScale
-              key={d.date}
-              accessibilityRole="tab"
-              accessibilityState={{ selected: on }}
-              accessibilityLabel={`${p.weekday} ${p.day}${d.date === today ? ', tonight' : ''}: ${d.meal ? d.meal.title : 'nothing planned'}`}
-              onPress={() => setSelected(d.date)}
-              style={{
-                flex: 1,
-                alignItems: 'center',
-                gap: 4,
-                paddingVertical: 6,
-                borderRadius: t.radius.md,
-                borderWidth: 1,
-                borderColor: on ? t.colors.action : t.colors.border,
-                backgroundColor: on ? t.colors.action : t.colors.surface,
-              }}
-            >
-              <Text
-                variant="caption"
-                style={{ color: on ? t.colors.onAction : t.colors.text, fontWeight: '700' }}
+      <Card flush>
+        <View
+          accessibilityRole="tablist"
+          style={{
+            flexDirection: 'row',
+            gap: 4,
+            padding: t.space.sm,
+            borderBottomWidth: 1,
+            borderBottomColor: t.colors.border,
+          }}
+        >
+          {days.map((d) => {
+            const p = dayParts(d.date);
+            const on = d.date === selected;
+            const isTodayTab = d.date === today;
+            return (
+              <PressableScale
+                key={d.date}
+                accessibilityRole="tab"
+                accessibilityState={{ selected: on }}
+                accessibilityLabel={`${p.weekday} ${p.day}${isTodayTab ? ', tonight' : ''}: ${d.meal ? d.meal.title : 'nothing planned'}`}
+                onPress={() => setSelected(d.date)}
+                style={{
+                  flex: 1,
+                  minWidth: 0,
+                  height: 58,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 1,
+                  borderRadius: 10,
+                  backgroundColor: on ? t.colors.selected : 'transparent',
+                }}
               >
-                {p.weekday}
-              </Text>
-              {d.meal ? (
-                <RecipeArt title={d.meal.title} width={34} radius={17} emojiSize={18} />
-              ) : (
+                <Text
+                  style={{
+                    fontSize: 11,
+                    lineHeight: 14,
+                    fontFamily: isTodayTab ? t.fonts.bold : t.fonts.body,
+                    color: on ? t.colors.onSelectedMuted : t.colors.textMuted,
+                  }}
+                >
+                  {p.weekday}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    lineHeight: 20,
+                    fontFamily: t.fonts.bold,
+                    fontVariant: ['tabular-nums'],
+                    color: on ? t.colors.onSelected : t.colors.text,
+                    // Today is underlined too, so it isn't told apart by weight alone.
+                    textDecorationLine: isTodayTab && !on ? 'underline' : 'none',
+                  }}
+                >
+                  {p.day}
+                </Text>
+                {/* A dot under days with a dinner planned. */}
                 <View
                   style={{
-                    width: 34,
-                    height: 34,
-                    borderRadius: 17,
-                    backgroundColor: t.colors.border,
+                    width: 4,
+                    height: 4,
+                    borderRadius: 2,
+                    backgroundColor: d.meal
+                      ? on
+                        ? t.colors.action
+                        : t.colors.textMuted
+                      : 'transparent',
                   }}
                 />
-              )}
-            </PressableScale>
-          );
-        })}
-      </View>
+              </PressableScale>
+            );
+          })}
+        </View>
 
-      <View
-        accessibilityLiveRegion="polite"
-        style={{
-          borderWidth: 1,
-          borderColor: t.colors.border,
-          borderRadius: t.radius.md,
-          padding: t.space.sm,
-          gap: t.space.sm,
-        }}
-      >
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.md }}>
+        <View accessibilityLiveRegion="polite">
           {day.meal ? (
-            <RecipeArt title={day.meal.title} width={52} radius={14} emojiSize={26} />
+            <RecipeArt title={day.meal.title} width="100%" height={132} radius={0} emojiSize={56} />
           ) : null}
-          <View style={{ flex: 1 }}>
-            <Text variant="caption" style={{ color: t.colors.tabSelected, fontWeight: '700' }}>
-              {eyebrow}
-            </Text>
-            <Text variant="label">{day.meal ? day.meal.title : 'Nothing planned'}</Text>
-            {day.meal ? <MealMeta meal={day.meal} /> : null}
+          <View style={{ padding: t.space.lg, paddingTop: 14, gap: t.space.md }}>
+            <View style={{ gap: 4 }}>
+              <Text variant="caption" muted style={{ fontFamily: t.fonts.medium }}>
+                {eyebrow}
+              </Text>
+              <Text variant="heading" style={day.meal ? null : { color: t.colors.textMuted }}>
+                {day.meal ? day.meal.title : 'Nothing planned'}
+              </Text>
+              {day.meal ? <MealMeta meal={day.meal} /> : null}
+            </View>
+            {/* Side by side in equal shares; only on the narrowest phones does each take
+                its own full row. */}
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.sm }}>
+              {day.meal ? (
+                <View style={{ flexGrow: 1, flexBasis: 140 }}>
+                  <Button
+                    title="View recipe"
+                    tight
+                    // Lime only for tonight's dinner: the one thing to do next.
+                    variant={isToday && !day.meal.cooked_at ? 'primary' : 'secondary'}
+                    onPress={() => day.meal && router.push(`/recipe/${day.meal.recipe_id}`)}
+                  />
+                </View>
+              ) : canPick(day.date, today) ? (
+                <View style={{ flexGrow: 1, flexBasis: 140 }}>
+                  <Button
+                    title="Add a dinner"
+                    tight
+                    variant="secondary"
+                    onPress={() =>
+                      router.push({ pathname: '/tonight', params: { date: day.date } })
+                    }
+                  />
+                </View>
+              ) : null}
+              {day.meal && isToday ? (
+                <View style={{ flexGrow: 1, flexBasis: 140 }}>
+                  <CookedButton meal={day.meal} />
+                </View>
+              ) : null}
+            </View>
           </View>
         </View>
-        {/* Side by side in equal shares (tight padding so "Mark cooked" fits); only on
-            the narrowest phones does each take its own full row. */}
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.sm }}>
-          {day.meal ? (
-            <View style={{ flexGrow: 1, flexBasis: 140 }}>
-              <Button
-                title="View recipe"
-                tight
-                variant="lavender"
-                onPress={() => day.meal && router.push(`/recipe/${day.meal.recipe_id}`)}
-              />
-            </View>
-          ) : canPick(day.date, today) ? (
-            <View style={{ flexGrow: 1, flexBasis: 140 }}>
-              <Button
-                title="Add a dinner"
-                tight
-                variant="secondary"
-                onPress={() => router.push({ pathname: '/tonight', params: { date: day.date } })}
-              />
-            </View>
-          ) : null}
-          {day.meal && isToday ? (
-            <View style={{ flexGrow: 1, flexBasis: 140 }}>
-              <CookedButton meal={day.meal} />
-            </View>
-          ) : null}
-        </View>
-      </View>
-    </Card>
+      </Card>
+    </View>
   );
 }
 
@@ -343,13 +370,15 @@ function QuickTiles() {
     <View style={{ flexDirection: 'row', gap: t.space.sm }}>
       <Tile
         icon={ShoppingBasket}
+        tint="list"
         title={toBuy === undefined ? 'Shopping' : toBuy === 0 ? 'Nothing' : `${toBuy} to buy`}
         hint={toBuy === 0 ? 'to buy' : 'Shopping list'}
         href="/lists"
       />
-      <Tile icon={Refrigerator} title="Update" hint="kitchen" href="/kitchen" />
+      <Tile icon={Refrigerator} tint="kitchen" title="Update" hint="kitchen" href="/kitchen" />
       <Tile
         icon={Bookmark}
+        tint="recipes"
         title="Saved"
         hint="recipes"
         href={{ pathname: '/recipes/all', params: { favourites: '1' } }}
@@ -360,11 +389,13 @@ function QuickTiles() {
 
 function Tile({
   icon,
+  tint,
   title,
   hint,
   href,
 }: {
   icon: LucideIcon;
+  tint: keyof typeof sectionTints;
   title: string;
   hint: string;
   href: Href;
@@ -378,20 +409,30 @@ function Tile({
       style={{
         flex: 1,
         minWidth: 0,
-        alignItems: 'center',
         gap: 2,
-        paddingVertical: t.space.md,
-        paddingHorizontal: t.space.xs,
+        padding: t.space.md,
         borderRadius: t.radius.lg,
         backgroundColor: t.colors.surface,
         boxShadow: t.shadow.card,
       }}
     >
-      <Icon icon={icon} size={26} color={t.colors.text} />
-      <Text variant="label" style={{ textAlign: 'center', marginTop: 4 }}>
+      <View
+        style={{
+          width: 32,
+          height: 32,
+          borderRadius: 10,
+          marginBottom: t.space.sm,
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: sectionTints[tint].bg,
+        }}
+      >
+        <Icon icon={icon} size={18} color={sectionTints[tint].fg} />
+      </View>
+      <Text variant="label" numberOfLines={1} style={{ fontVariant: ['tabular-nums'] }}>
         {title}
       </Text>
-      <Text variant="caption" muted style={{ textAlign: 'center' }}>
+      <Text variant="caption" muted numberOfLines={1}>
         {hint}
       </Text>
     </PressableScale>
@@ -411,7 +452,7 @@ function RecipeIdeas() {
             variant="heading"
             role="heading"
             aria-level={2}
-            style={{ color: t.colors.onBackground }}
+            style={{ color: t.colors.onBackground, fontSize: 17, lineHeight: 22 }}
           >
             Recipe ideas for you
           </Text>

@@ -60,6 +60,8 @@ export type ColorTokens = {
   /** Selection (chips, segmented tabs): navy, white text on it. Lime stays for actions. */
   selected: string;
   onSelected: string;
+  /** Smaller, quieter text on navy (the weekday over the date). */
+  onSelectedMuted: string;
   /** The one strong dark (light in dark mode) surface: toasts and anchor cards. */
   inverse: string;
   onInverse: string;
@@ -111,6 +113,7 @@ export const colors: Record<'light' | 'dark', ColorTokens> = {
     onActionSoft: '#2f3600',
     selected: palette.navy,
     onSelected: palette.white,
+    onSelectedMuted: '#d9dccf',
     inverse: palette.ink,
     onInverse: palette.white,
     danger: palette.red600,
@@ -137,6 +140,7 @@ export const colors: Record<'light' | 'dark', ColorTokens> = {
     fill: palette.night700,
     selected: palette.mist100,
     onSelected: palette.ink,
+    onSelectedMuted: palette.ink700,
     surface: palette.night800,
     text: palette.mist100,
     textMuted: palette.mist400,
@@ -193,6 +197,18 @@ export const PAGE_COLORS = {
   household: neutralPage,
 };
 export type Page = keyof typeof PAGE_COLORS;
+
+/**
+ * Each tab's small icon tile (Home's quick tiles, section headers): a pale wash with the
+ * icon in a deeper shade of the same colour. Graphics only need 3:1 on their wash.
+ */
+export const sectionTints = {
+  home: { bg: '#e3e8fa', fg: '#2447c6' },
+  list: { bg: '#fbe3dc', fg: '#a63d22' },
+  kitchen: { bg: '#d6efeb', fg: '#006b61' },
+  plan: { bg: '#fcefd2', fg: '#8a5a00' },
+  recipes: { bg: '#ebe4fa', fg: '#6343b8' },
+} as const;
 
 /** The household pastels. `bg` for cards and thumbnails, `pill`/`onPill` for quantity pills. */
 export const TINT_NAMES = ['butter', 'blush', 'mint', 'sky', 'lilac'] as const;

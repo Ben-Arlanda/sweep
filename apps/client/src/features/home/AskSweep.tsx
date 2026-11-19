@@ -8,7 +8,7 @@ import { PressableScale } from '@/components/PressableScale';
 import { requestAsk } from '@/features/chat/starters';
 import { useTheme } from '@/theme/useTheme';
 
-/** Free-text start for the chat. Not lime: Plan my week is the screen's one primary. */
+/** Free-text start for the chat: a quiet field, with lime only on the small AI mark. */
 export function AskSweep() {
   const t = useTheme();
   const [text, setText] = useState('');
@@ -26,17 +26,31 @@ export function AskSweep() {
         flexDirection: 'row',
         alignItems: 'center',
         gap: t.space.sm,
-        minHeight: t.touchTarget + 12,
-        paddingLeft: t.space.lg,
-        paddingRight: t.space.xs,
-        borderRadius: t.radius.pill,
+        minHeight: 50,
+        paddingLeft: t.space.md,
+        paddingRight: 3,
+        borderRadius: t.radius.md + 2,
+        borderWidth: 1,
+        borderColor: t.colors.border,
         backgroundColor: t.colors.heroField,
       }}
     >
-      <Icon icon={Sparkles} size={20} color={t.colors.text} />
+      {/* Lime marks Sweep's AI (the one other place lime is allowed). */}
+      <View
+        style={{
+          width: 26,
+          height: 26,
+          borderRadius: 8,
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: t.colors.action,
+        }}
+      >
+        <Icon icon={Sparkles} size={15} color={t.colors.onAction} />
+      </View>
       <TextInput
         accessibilityLabel="Ask Sweep"
-        placeholder="Ask Sweep for dinner ideas…"
+        placeholder="Ask Sweep anything about dinner"
         placeholderTextColor={t.colors.textMuted}
         value={text}
         onChangeText={setText}
@@ -55,10 +69,10 @@ export function AskSweep() {
         style={{
           width: t.touchTarget,
           height: t.touchTarget,
-          borderRadius: t.radius.pill,
+          borderRadius: t.radius.md,
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: t.colors.text,
+          backgroundColor: t.colors.selected,
           opacity: canSend ? 1 : 0.35,
         }}
       >

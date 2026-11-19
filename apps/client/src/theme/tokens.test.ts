@@ -4,6 +4,7 @@ import {
   colors,
   hero,
   PAGE_COLORS,
+  sectionTints,
   palette,
   statusColors,
   TAB_BAR_FROST,
@@ -55,6 +56,7 @@ describe.each(schemes)('%s theme meets WCAG AA for text', (scheme) => {
     ['hero search placeholder', c.onHeroMuted, c.heroField],
     ['lime highlight in the hero', c.onAction, c.action],
     ['text on a selected chip', c.onSelected, c.selected],
+    ['muted text on navy', c.onSelectedMuted, c.selected],
     ['text on the quiet fill', c.text, c.fill],
     ['muted text on the quiet fill', c.textMuted, c.fill],
   ])('%s', (_, fg, bg) => {
@@ -165,3 +167,12 @@ describe('floating tab bar meets WCAG AA', () => {
     expect(contrastRatio(palette.ink, pill)).toBeGreaterThanOrEqual(AA);
   });
 });
+
+describe.each(Object.keys(sectionTints) as (keyof typeof sectionTints)[])(
+  'the %s icon tile',
+  (k) => {
+    it('icon reads on its wash (AA, so it could carry text too)', () => {
+      expect(contrastRatio(sectionTints[k].fg, sectionTints[k].bg)).toBeGreaterThanOrEqual(AA);
+    });
+  },
+);

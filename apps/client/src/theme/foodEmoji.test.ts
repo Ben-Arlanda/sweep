@@ -11,7 +11,9 @@ import { CATEGORY_EMOJI, INGREDIENT_EMOJI, ingredientEmoji, recipeEmoji } from '
 const API_DATA = join(__dirname, '../../../../services/api/app/data');
 
 const ingredientNames = [
-  ...readFileSync(join(API_DATA, 'ingredients.py'), 'utf8').matchAll(/SeedIngredient\(\s*"([^"]+)"/g),
+  ...readFileSync(join(API_DATA, 'ingredients.py'), 'utf8').matchAll(
+    /SeedIngredient\(\s*"([^"]+)"/g,
+  ),
 ].map((m) => m[1]);
 
 const recipeTitles = readdirSync(join(API_DATA, 'recipes'))
@@ -36,7 +38,9 @@ test('every Seed Recipe gets a specific emoji, not the plate fallback', () => {
 });
 
 test('falls back to the category, then a basket', () => {
-  expect(ingredientEmoji({ name: 'dragon fruit', category: 'produce' })).toBe(CATEGORY_EMOJI.produce);
+  expect(ingredientEmoji({ name: 'dragon fruit', category: 'produce' })).toBe(
+    CATEGORY_EMOJI.produce,
+  );
   expect(ingredientEmoji({ name: 'mystery', category: 'unknown' })).toBe('🛒');
   expect(ingredientEmoji(null)).toBe('🛒'); // a free-text list item
 });
