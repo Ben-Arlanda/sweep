@@ -29,23 +29,21 @@ const TWEAKS: { label: string; value: PlanTweak; icon: LucideIcon }[] = [
   { label: 'Under 30 min', value: 'quick', icon: Zap },
   { label: 'Vegetarian', value: 'vegetarian', icon: Leaf },
 ];
-const WEEKNIGHTS = [1, 2, 3, 4, 5];
 
 /** What every Plan my week sheet does with its answer: ask Sweep, then show the plan. */
 export function startPlan(mode: PlanMode, days: string[], tweaks: PlanTweak[]) {
   requestPlan(mode, days, tweaks);
   router.push('/plan-week');
 }
-const EVERY_DAY = [1, 2, 3, 4, 5, 6, 7];
 
 /**
  * "Plan my week" (slice 5d, ADR 0015): which days, then what kind of plan.
  *
  * Starts from the Household's usual weekdays in the week it opens on (this week, or
  * next week at the weekend), leaving out past days and days already planned. "How many
- * days" is just how many are ticked; the chips are shortcuts.
+ * days" is just how many are ticked: tap a day to add or remove it.
  *
- * The canvas layout (slice 6e): days, Plan for, Build my plan using, This week chips and
+ * The canvas layout (slice 6e): days, Build my plan using, This week chips and
  * one Plan button. Planning remembers the usual days, then hands the mode
  * and days to `onPick`, which opens the plan screens.
  */
@@ -104,12 +102,6 @@ export function PlanSheet({
     const planned = week.data.meals.map((m) => m.date);
     const daysFor = (weekdays: number[]) => pickDays({ monday, weekdays, today, planned });
     const picked = touched ?? daysFor(prefs.data.plan_weekdays);
-    const same = (a: string[], b: string[]) => a.join() === b.join();
-    const shortcut = same(picked, daysFor(WEEKNIGHTS))
-      ? 'weeknights'
-      : same(picked, daysFor(EVERY_DAY))
-        ? 'every'
-        : null;
     const meals: Record<string, StripMeal> = Object.fromEntries(
       week.data.meals.map((m) => [m.date, { title: m.title, cooked: m.cooked_at !== null }]),
     );
@@ -179,25 +171,6 @@ export function PlanSheet({
             ? 'Pick at least one day.'
             : `${picked.length} ${picked.length === 1 ? 'day' : 'days'} · ✓ already planned (tick one to replace it)`}
         </Text>
-
-        <Group label="Plan for">
-          <View style={{ flexDirection: 'row', gap: t.space.sm }}>
-            <Option
-              role="radio"
-              title="Weeknights"
-              detail="Mon – Fri"
-              selected={shortcut === 'weeknights'}
-              onPress={() => setTouched(daysFor(WEEKNIGHTS))}
-            />
-            <Option
-              role="radio"
-              title="Every day"
-              detail="Mon – Sun"
-              selected={shortcut === 'every'}
-              onPress={() => setTouched(daysFor(EVERY_DAY))}
-            />
-          </View>
-        </Group>
 
         <Group label="Build my plan using">
           <Option

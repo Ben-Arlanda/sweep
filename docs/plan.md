@@ -382,7 +382,7 @@ Fixed in 6d (ADR 0016), was: a re-proposal repeats list additions already added 
 
 **Slice 5d decisions** (2026-11-15, revised the same day; ADR 0015). "Plan my week" on Home (and New plan in the chat) opens one sheet; "Just tonight" stays Kitchen-first with no sheet.
 
-- **Days:** a Mon–Sun week strip (the user's reference design). Past days can't be picked; days with a Planned Meal show ✓ and start unticked (tick one to replace it). Quick chips: Weeknights (Mon–Fri) / Every day. ‹ › between this week and next; on Saturday and Sunday it opens on next week. "How many" is simply how many days are ticked.
+- **Days:** a Mon–Sun week strip (the user's reference design). Past days can't be picked; days with a Planned Meal show ✓ and start unticked (tick one to replace it). Tap a day to add or remove it (the Weeknights / Every day shortcuts were removed in the premium redesign). ‹ › between this week and next; on Saturday and Sunday it opens on next week. "How many" is simply how many days are ticked.
 - **Remembered per Household:** the ticked weekdays (not dates) are saved with the Preferences, so every phone starts from the same pattern. Default Mon–Fri.
 - **Kind of plan:** "Cook from my Kitchen" (5c, fewest things to buy) or "New recipes to shop for" (choose by taste with `search_recipes`; the Kitchen only trims the buy list). UI copy says "New recipes", never "Something new".
 - **Stored on the Conversation** (`plan_mode`, `plan_days`) and put in every turn's context, not just the first message (5c showed wording alone is fragile). Null means a free chat.
