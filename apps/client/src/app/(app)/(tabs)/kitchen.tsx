@@ -23,15 +23,7 @@ import {
   type LucideIcon,
 } from 'lucide-react-native';
 import { useRef, useState } from 'react';
-import {
-  Pressable,
-  ScrollView,
-  Switch,
-  TextInput,
-  useWindowDimensions,
-  View,
-  type HostInstance,
-} from 'react-native';
+import { Pressable, ScrollView, Switch, TextInput, View, type HostInstance } from 'react-native';
 
 import { FoodThumb } from '@/components/FoodThumb';
 import { CategoryAccordion, toggled } from '@/components/CategoryAccordion';
@@ -358,7 +350,6 @@ function KitchenScreenContent() {
           <PlaceChip
             key={p.place}
             label={p.label}
-            icon={PLACE_ICON[p.place]}
             on={place === p.place}
             onPress={() => setPlace(p.place as PlaceFilter)}
           />
@@ -403,6 +394,12 @@ function KitchenScreenContent() {
           </CategoryAccordion>
         );
       })}
+
+      {shown.length > 0 ? (
+        <Text variant="caption" muted style={{ textAlign: 'center', fontSize: 12 }}>
+          Swipe left on a row to delete it without adding it to the list.
+        </Text>
+      ) : null}
 
       {popover?.kind === 'status' && popRow ? (
         <Popover
@@ -586,8 +583,9 @@ function PlaceChip({
       accessibilityState={{ checked: on }}
       onPress={onPress}
       style={({ pressed }) => ({
-        minWidth: 56,
-        minHeight: t.touchTarget,
+        minWidth: 52,
+        minHeight: 36,
+        marginVertical: 4, // 36 + 4 + 4 = the 44pt tap height
         paddingHorizontal: t.space.md,
         borderRadius: t.radius.pill,
         borderWidth: 1,
@@ -659,123 +657,116 @@ function ItemRow({
   onAdd: () => void;
 }) {
   const t = useTheme();
-  // Narrow phones (iPhone SE and mini): smaller picture, tighter gaps.
-  const compact = useWindowDimensions().width < 390;
-  const gap = compact ? t.space.sm : t.space.md;
-  const badge = useRef<HostInstance>(null);
+  const status = useRef<HostInstance>(null);
   const more = useRef<HostInstance>(null);
   const out = row.stock === 'out';
-  // Out Staples went on the list by themselves: "On list" replaces the amount, no button.
-  const stapleOnList = out && row.staple && onList;
-  const offerList = out && !row.staple;
-  const onListChip = (
-    <View
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 4,
-        minHeight: 32,
-        paddingHorizontal: t.space.sm + 2,
-        borderRadius: t.radius.pill,
-        backgroundColor: t.colors.fill,
-      }}
-    >
-      <Icon icon={ShoppingCart} size={14} color={t.colors.textMuted} />
-      <Text variant="label" style={{ color: t.colors.textMuted, fontSize: 13 }}>
-        On list
-      </Text>
-    </View>
-  );
+  // An out Non-staple not yet on the list offers Add to list; an out Staple went on by itself.
+  const offerAdd = out && !row.staple && !onList;
+  const sub = out ? 'Ran out' : (row.amount ?? (row.staple ? 'Staple' : null));
   return (
     <View
       style={{
         flexDirection: 'row',
         alignItems: 'center',
-        gap,
-        marginHorizontal: compact ? t.space.sm : t.space.md,
-        paddingVertical: t.space.sm + 2,
+        gap: t.space.md,
+        minHeight: 60,
+        paddingVertical: t.space.sm,
+        paddingLeft: 14,
+        paddingRight: 6,
         borderTopWidth: 1,
         borderTopColor: t.colors.border,
       }}
     >
-      <View
-        style={{
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={row.name}
+        accessibilityHint="Edit amount, status, staple and storage"
+        onPress={onOpen}
+        style={({ pressed }) => ({
           flex: 1,
           minWidth: 0,
           flexDirection: 'row',
           alignItems: 'center',
-          gap,
-        }}
+          gap: t.space.md,
+          opacity: pressed ? 0.75 : 1,
+        })}
       >
+        <FoodThumb
+          emoji={ingredientEmoji(row.ingredient)}
+          tint={tintFor(row.ingredient.name)}
+          size={40}
+        />
+        <View style={{ flex: 1, minWidth: 0, gap: 2 }}>
+          <Text variant="label" numberOfLines={2}>
+            {row.name}
+          </Text>
+          {sub ? (
+            <Text
+              variant="caption"
+              style={{
+                color: out ? t.stock.out.fg : t.colors.textMuted,
+                fontVariant: ['tabular-nums'],
+              }}
+            >
+              {sub}
+            </Text>
+          ) : null}
+        </View>
+      </Pressable>
+      {offerAdd ? (
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel={row.name}
-          accessibilityHint="Edit amount, status, staple and storage"
-          onPress={onOpen}
-          style={({ pressed }) => ({ opacity: pressed ? 0.75 : 1 })}
+          accessibilityLabel={`Add ${row.name} to your shopping list`}
+          onPress={onAdd}
+          style={({ pressed }) => ({
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 4,
+            minHeight: t.touchTarget,
+            paddingHorizontal: t.space.sm,
+            borderRadius: t.radius.md,
+            borderWidth: 1,
+            borderColor: t.colors.border,
+            backgroundColor: pressed ? t.colors.fill : t.colors.surface,
+          })}
         >
-          <FoodThumb
-            emoji={ingredientEmoji(row.ingredient)}
-            tint={tintFor(row.ingredient.name)}
-            size={compact ? 40 : 48}
-          />
+          <Icon icon={ShoppingCart} size={14} color={t.colors.text} />
+          <Text variant="label" style={{ fontSize: 13 }}>
+            Add to list
+          </Text>
         </Pressable>
-        <View style={{ flex: 1, minWidth: 0, gap: 2, alignItems: 'flex-start' }}>
-          <Pressable onPress={onOpen} accessible={false} focusable={false}>
-            <Text variant="label" numberOfLines={2} style={{ fontSize: 15, lineHeight: 19 }}>
-              {row.name}
-            </Text>
-          </Pressable>
-          <Pressable
-            ref={badge}
-            accessibilityRole="button"
-            accessibilityLabel={`${row.name}: ${STOCK_LABEL[row.stock]}. Change stock status`}
-            onPress={async () => onStatus(await measureAnchor(badge))}
-            hitSlop={{ top: 10, bottom: 10, left: 4, right: 4 }} // 44 pt to tap
-            style={({ pressed }) => ({ marginTop: 3, opacity: pressed ? 0.7 : 1 })}
-          >
-            <StockBadge stock={row.stock} />
-          </Pressable>
-        </View>
-      </View>
-      <View style={{ alignItems: 'flex-end', gap: t.space.sm }}>
-        {stapleOnList ? onListChip : null}
-        {offerList ? (
-          onList ? (
-            onListChip
-          ) : (
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel={`Add ${row.name} to your shopping list`}
-              onPress={onAdd}
-              hitSlop={{ top: 4, bottom: 4 }}
-              style={({ pressed }) => ({
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 4,
-                minHeight: 40,
-                paddingHorizontal: t.space.sm + 2,
-                borderRadius: t.radius.md,
-                borderWidth: 1,
-                borderColor: t.colors.border,
-                backgroundColor: pressed ? t.colors.fill : t.colors.surface,
-              })}
-            >
-              <Icon icon={ShoppingCart} size={14} color={t.colors.text} />
-              <Text variant="label" style={{ color: t.colors.text, fontSize: 13 }}>
-                Add to list
+      ) : (
+        <Pressable
+          ref={status}
+          accessibilityRole="button"
+          accessibilityLabel={`${row.name}: ${out && onList ? 'out, on your list' : STOCK_LABEL[row.stock]}. Change stock status`}
+          onPress={async () => onStatus(await measureAnchor(status))}
+          style={({ pressed }) => ({
+            minHeight: t.touchTarget,
+            justifyContent: 'center',
+            paddingHorizontal: 4,
+            opacity: pressed ? 0.7 : 1,
+          })}
+        >
+          {out && onList ? (
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
+              <Icon icon={Check} size={14} color={t.colors.textMuted} strong />
+              <Text style={{ fontFamily: t.fonts.medium, fontSize: 13, color: t.colors.textMuted }}>
+                On list
               </Text>
-            </Pressable>
-          )
-        ) : null}
-      </View>
+            </View>
+          ) : (
+            <StockBadge stock={row.stock} />
+          )}
+        </Pressable>
+      )}
       <Pressable
         ref={more}
         accessibilityRole="button"
         accessibilityLabel={`More for ${row.name}`}
         onPress={async () => onMenu(await measureAnchor(more))}
         style={({ pressed }) => ({
-          width: 28,
+          width: t.touchTarget,
           minHeight: t.touchTarget,
           alignItems: 'center',
           justifyContent: 'center',

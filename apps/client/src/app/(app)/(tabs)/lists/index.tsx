@@ -1,6 +1,20 @@
-import { Ellipsis, Link2, ShoppingBasket, Store, Trash2 } from 'lucide-react-native';
-import { useRef, useState } from 'react';
-import { Pressable, View, type HostInstance, type TextInputInstance } from 'react-native';
+import {
+  ChevronUp,
+  Ellipsis,
+  Link2,
+  Plus,
+  ShoppingBasket,
+  Store,
+  Trash2,
+} from 'lucide-react-native';
+import { useRef, useState, type ReactNode } from 'react';
+import {
+  Pressable,
+  TextInput,
+  View,
+  type HostInstance,
+  type TextInputInstance,
+} from 'react-native';
 import Animated, {
   FadeInDown,
   FadeOut,
@@ -9,16 +23,15 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { AvatarStack } from '@/components/Avatar';
-import { CategoryAccordion, toggled } from '@/components/CategoryAccordion';
+import { toggled } from '@/components/CategoryAccordion';
 import { Checkbox } from '@/components/Checkbox';
 import { ChoiceChips } from '@/components/ChoiceChips';
 import { Icon } from '@/components/Icon';
 import { MenuItem } from '@/components/MenuItem';
 import { PageHeader } from '@/components/PageHeader';
-import { Pill } from '@/components/Pill';
 import { measureAnchor, Popover, type Anchor } from '@/components/Popover';
 import { useToast } from '@/components/Toast';
-import { Button, ErrorText, Field, Loading, Screen, TAB_ROOT, Text } from '@/components/ui';
+import { Button, ErrorText, Loading, Screen, TAB_ROOT, Text } from '@/components/ui';
 import { useMembers } from '@/features/household/useMembers';
 import { listSections } from '@/features/lists/categories';
 import { shoppingOrder } from '@/features/lists/listCache';
@@ -27,9 +40,7 @@ import { ShopSheet } from '@/features/lists/ShopSheet';
 import { filterByShop, knownShop, shopName, type ShopFilter } from '@/features/lists/shops';
 import type { Item, ListDetail } from '@/lib/api/client';
 import { useIsOnline, useList, useListActions, usePendingListChanges } from '@/lib/api/lists';
-import { tintFor } from '@/theme/tint';
-import { FoodThumb } from '@/components/FoodThumb';
-import { ingredientEmoji } from '@/theme/foodEmoji';
+import { inputText } from '@/theme/inputText';
 import { PageColors } from '@/theme/PageColors';
 import { useTheme } from '@/theme/useTheme';
 
@@ -94,16 +105,19 @@ function ListContent({ list }: { list: ListDetail }) {
       <PageHeader
         icon={ShoppingBasket}
         section="list"
-        title="Shopping List"
+        title="Shopping list"
         right={<AvatarStack members={members} size={28} />}
         subtitle={`${summary}${sync ? ` · ${sync}` : ''}`}
       />
+
+      <AddItem onAdd={actions.addItem} />
 
       {shops.length > 0 ? (
         <ChoiceChips
           label="Show items for"
           value={shown}
           onChange={setFilter}
+          size="small"
           options={[
             { label: 'All', value: ALL, accessibilityLabel: 'All shops' },
             ...shops.map((shop) => ({ label: shop.name, value: shop.id })),
@@ -111,7 +125,6 @@ function ListContent({ list }: { list: ListDetail }) {
         />
       ) : null}
 
-      <AddItem onAdd={actions.addItem} />
       <ErrorText message={actions.error?.message} />
 
       {toBuy.length === 0 ? (
@@ -126,15 +139,14 @@ function ListContent({ list }: { list: ListDetail }) {
             ReduceMotion.System,
           )}
         >
-          <CategoryAccordion
-            category={section.category}
+          <ListGroup
             label={section.label}
             count={section.items.length}
             open={!closed.has(section.category)}
             onToggle={() => setClosed((now) => toggled(now, section.category))}
           >
             {section.items.map(row)}
-          </CategoryAccordion>
+          </ListGroup>
         </Animated.View>
       ))}
 
@@ -198,6 +210,7 @@ type Actions = ReturnType<typeof useListActions>;
 
 /** The add box. New items are "any shop"; pick one from the item's ••• menu. */
 function AddItem({ onAdd }: { onAdd: (text: string) => void }) {
+  const t = useTheme();
   const [text, setText] = useState('');
   const input = useRef<TextInputInstance>(null);
 
@@ -209,17 +222,103 @@ function AddItem({ onAdd }: { onAdd: (text: string) => void }) {
   }
 
   return (
-    <Field
-      ref={input}
-      label="Add an item"
-      placeholder="e.g. 2 L milk"
-      value={text}
-      onChangeText={setText}
-      onSubmitEditing={submit}
-      submitBehavior="submit"
-      returnKeyType="done"
-      maxLength={200}
-    />
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 10,
+        minHeight: 46,
+        paddingHorizontal: t.space.md,
+        borderRadius: t.radius.md,
+        borderWidth: 1,
+        borderColor: t.colors.border,
+        backgroundColor: t.colors.surface,
+      }}
+    >
+      <Icon icon={Plus} size={18} color={t.colors.textMuted} />
+      <TextInput
+        ref={input}
+        accessibilityLabel="Add an item"
+        placeholder="Add an item, e.g. 2 L milk"
+        placeholderTextColor={t.colors.textMuted}
+        value={text}
+        onChangeText={setText}
+        onSubmitEditing={submit}
+        submitBehavior="submit"
+        returnKeyType="done"
+        maxLength={200}
+        style={[
+          inputText(t.type.body),
+          { flex: 1, minHeight: t.touchTarget, color: t.colors.text },
+        ]}
+      />
+    </View>
+  );
+}
+
+/**
+ * A food category: a small uppercase heading over a card of rows. The heading folds the
+ * card away (open by default), so a long list stays easy to scan in the shop.
+ */
+function ListGroup({
+  label,
+  count,
+  open,
+  onToggle,
+  children,
+}: {
+  label: string;
+  count: number;
+  open: boolean;
+  onToggle: () => void;
+  children: ReactNode;
+}) {
+  const t = useTheme();
+  return (
+    <View style={{ gap: t.space.sm }}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityState={{ expanded: open }}
+        accessibilityLabel={`${label}, ${count} ${count === 1 ? 'item' : 'items'}`}
+        onPress={onToggle}
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 6,
+          minHeight: 32,
+          paddingLeft: 2,
+        }}
+      >
+        <Text
+          variant="caption"
+          muted
+          accessibilityRole="header"
+          style={{
+            fontFamily: t.fonts.bold,
+            fontSize: 12,
+            letterSpacing: 0.7,
+            textTransform: 'uppercase',
+          }}
+        >
+          {label}
+        </Text>
+        <View style={{ transform: [{ rotate: open ? '0deg' : '180deg' }] }}>
+          <Icon icon={ChevronUp} size={14} color={t.colors.textMuted} strong />
+        </View>
+      </Pressable>
+      {open ? (
+        <View
+          style={{
+            backgroundColor: t.colors.surface,
+            borderRadius: t.radius.lg,
+            boxShadow: t.shadow.card,
+            overflow: 'hidden',
+          }}
+        >
+          {children}
+        </View>
+      ) : null}
+    </View>
   );
 }
 
@@ -247,7 +346,8 @@ function ItemRow({
   const toast = useToast();
   const more = useRef<HostInstance>(null);
   const amount = [item.quantity, item.unit].filter(Boolean).join(' ');
-  const tint = tintFor(item.ingredient?.name ?? item.text);
+  // Under the name: the amount, then the Shop on All ("250 g · Aldi").
+  const detail = [amount, shop].filter(Boolean).join(' · ');
 
   function tick() {
     // Send what the Member *sees* as the new state, not "toggle" (ADR 0004).
@@ -279,10 +379,10 @@ function ItemRow({
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          // A line between rows inside the category card, like the Kitchen's.
-          marginHorizontal: t.space.sm,
-          borderTopWidth: 1,
+          // A line between rows (none above the first) inside the category card.
+          borderTopWidth: index === 0 ? 0 : 1,
           borderTopColor: t.colors.border,
+          paddingRight: 6,
         }}
       >
         {/* No custom label: the visible text ("Milk, Coles, 2 L") is the
@@ -294,26 +394,26 @@ function ItemRow({
           onPress={tick}
           style={({ pressed }) => ({
             flex: 1,
-            minHeight: t.touchTarget + 12,
+            minHeight: 60,
             flexDirection: 'row',
             alignItems: 'center',
-            gap: t.space.md,
+            gap: t.space.sm,
             paddingVertical: t.space.sm,
-            paddingLeft: t.space.sm,
+            paddingLeft: t.space.xs,
             opacity: pressed ? 0.75 : 1,
           })}
         >
-          <Checkbox checked={false} />
-          <FoodThumb emoji={ingredientEmoji(item.ingredient)} tint={tint} />
+          <View style={{ width: 36, alignItems: 'center' }}>
+            <Checkbox checked={false} size={22} />
+          </View>
           <View style={{ flex: 1, gap: 2 }}>
             <Text variant="label">{item.text}</Text>
-            {shop ? (
-              <Text variant="caption" muted>
-                {shop}
+            {detail ? (
+              <Text variant="caption" muted style={{ fontVariant: ['tabular-nums'] }}>
+                {detail}
               </Text>
             ) : null}
           </View>
-          {amount ? <Pill tint={tint}>{amount}</Pill> : null}
         </Pressable>
         <Pressable
           ref={more}

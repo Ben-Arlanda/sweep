@@ -1,17 +1,4 @@
-import {
-  Beef,
-  ChevronUp,
-  Croissant,
-  CupSoda,
-  Fish,
-  Milk,
-  Package,
-  Refrigerator,
-  Salad,
-  Snowflake,
-  Leaf,
-  type LucideIcon,
-} from 'lucide-react-native';
+import { ChevronUp } from 'lucide-react-native';
 import type { ReactNode } from 'react';
 import { Pressable, View } from 'react-native';
 
@@ -19,21 +6,8 @@ import { Icon } from '@/components/Icon';
 import { Text } from '@/components/ui';
 import { useTheme } from '@/theme/useTheme';
 
-const CATEGORY_ICON: Record<string, LucideIcon> = {
-  spices: Leaf,
-  pantry: Package,
-  bakery: Croissant,
-  produce: Salad,
-  dairy: Milk,
-  chilled: Refrigerator,
-  meat: Beef,
-  seafood: Fish,
-  frozen: Snowflake,
-  drinks: CupSoda,
-};
-
 /**
- * A food-category card that opens and closes (Kitchen and Shopping List): icon, name,
+ * A food-category card that opens and closes (Kitchen): name,
  * how many items, and a chevron. The header is one button that says whether it's open.
  */
 export function CategoryAccordion({
@@ -74,7 +48,6 @@ export function CategoryAccordion({
           minHeight: 48,
         }}
       >
-        <Icon icon={CATEGORY_ICON[category] ?? Package} size={18} color={t.colors.textMuted} />
         <Text variant="label" accessibilityRole="header" style={{ flex: 1 }}>
           {label}
         </Text>
