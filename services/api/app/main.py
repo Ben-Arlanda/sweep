@@ -5,13 +5,16 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
+from fastapi.staticfiles import StaticFiles
+from starlette.types import Scope
 
 from app import errors, tracing
 from app.agent.checkpoints import Checkpoints
 from app.agent.model import AgentModel
 from app.auth import TokenVerifier
 from app.config import Settings, settings
+from app.data.recipe_images import FILES, URL_PATH
 from app.db import make_engine, make_sessionmaker
 from app.embeddings import Embedder, VoyageEmbedder
 from app.llm import ClaudeAgentModel, ClaudeKitchenPhotoReader, ClaudeRecipeReader
@@ -78,6 +81,14 @@ def default_agent_model(app_settings: Settings) -> AgentModel | None:
     return ClaudeAgentModel(
         key.get_secret_value(), app_settings.agent_model, app_settings.agent_effort
     )
+
+
+class CachedFiles(StaticFiles):
+    async def get_response(self, path: str, scope: Scope) -> Response:
+        response = await super().get_response(path, scope)
+        if response.status_code == 200:  # a day: a re-chosen photo keeps its file name
+            response.headers["Cache-Control"] = "public, max-age=86400"
+        return response
 
 
 def default_recipe_reader(app_settings: Settings) -> RecipeReader | None:
@@ -189,6 +200,8 @@ def create_app(
     app.include_router(proposals.router)
     app.include_router(meal_plan.router)
     app.include_router(realtime.router)
+    # Recipe Images (ADR 0027): public, like the Seed Recipes they show. S3 in slice 11.
+    app.mount(URL_PATH, CachedFiles(directory=FILES, check_dir=False), name="recipe-images")
 
     @app.get("/health")
     def health() -> dict[str, str]:

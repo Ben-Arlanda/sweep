@@ -486,6 +486,9 @@ class Recipe(Base):
     tips: Mapped[list[str] | None] = mapped_column(JSONB)
     variations: Mapped[list[str] | None] = mapped_column(JSONB)
     storage: Mapped[str | None] = mapped_column(String(1000))
+    # A Seed Recipe's approved photo (ADR 0027): {"file", "author", "licence",
+    # "licence_url", "source_url"}. Never from model output; null shows RecipeArt.
+    image: Mapped[dict[str, Any] | None] = mapped_column(JSONB)
     source_url: Mapped[str | None] = mapped_column(String(2048))
     licence: Mapped[str] = mapped_column(String(100))
     attribution: Mapped[str] = mapped_column(String(200))

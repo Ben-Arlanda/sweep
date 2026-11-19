@@ -12,7 +12,7 @@ from contextlib import asynccontextmanager
 from dataclasses import dataclass, field
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
-from typing import Any
+from typing import Any, Protocol
 
 import httpx
 import jwt
@@ -25,6 +25,7 @@ from sqlalchemy import Engine, create_engine, text
 
 from app.auth import IssuerTrust, TokenVerifier
 from app.config import Settings
+from app.data.recipe_images import RecipeImage
 from app.data.recipes import SeedRecipe
 from app.db import Base, make_engine, make_sessionmaker, sqlalchemy_url
 from app.embeddings import Embedder, HashingEmbedder
@@ -158,15 +159,21 @@ async def client(
     await app.state.engine.dispose()
 
 
-Loader = Callable[[Sequence[SeedRecipe]], Awaitable[recipes.SeedReport]]
+class Loader(Protocol):
+    def __call__(
+        self, seeds: Sequence[SeedRecipe], images: Sequence[RecipeImage] = ()
+    ) -> Awaitable[recipes.SeedReport]: ...
 
 
 @pytest.fixture
 def load(database_url: str, db: Engine) -> Loader:
-    async def run(seeds: Sequence[SeedRecipe]) -> recipes.SeedReport:
+    async def run(
+        seeds: Sequence[SeedRecipe], images: Sequence[RecipeImage] = ()
+    ) -> recipes.SeedReport:
         engine = make_engine(database_url)
         async with make_sessionmaker(engine)() as session:
-            report = await recipes.upsert_seed_recipes(session, seeds, await index_from_db(session))
+            index = await index_from_db(session)
+            report = await recipes.upsert_seed_recipes(session, seeds, index, images)
             await recipes.embed_missing(session, HashingEmbedder())
             await session.commit()
         await engine.dispose()

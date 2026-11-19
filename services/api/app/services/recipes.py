@@ -23,6 +23,7 @@ from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from app import errors
+from app.data.recipe_images import RecipeImage, as_stored
 from app.data.recipes import ATTRIBUTION, LICENCE, SeedRecipe
 from app.embeddings import Embedder, EmbeddingUnavailable
 from app.models import (
@@ -56,10 +57,14 @@ class SeedReport:
 
 
 async def upsert_seed_recipes(
-    session: AsyncSession, seeds: Sequence[SeedRecipe], index: IngredientIndex
+    session: AsyncSession,
+    seeds: Sequence[SeedRecipe],
+    index: IngredientIndex,
+    images: Sequence[RecipeImage] = (),
 ) -> SeedReport:
     """Make the Seed Recipes in the database match `seeds`. Safe to run any number of times."""
     report = SeedReport()
+    photos = {image.slug: as_stored(image) for image in images}
     ingredient_ids = dict(
         (
             await session.execute(
@@ -91,6 +96,7 @@ async def upsert_seed_recipes(
         recipe.stages = [stage.model_dump() for stage in seed.stages]
         recipe.tips, recipe.variations = list(seed.tips), list(seed.variations)
         recipe.storage = seed.storage
+        recipe.image = photos.get(seed.slug)
         recipe.licence, recipe.attribution = LICENCE, ATTRIBUTION
 
         # Rules only (no LLM) for the seed: we wrote these lines, so they should parse.
