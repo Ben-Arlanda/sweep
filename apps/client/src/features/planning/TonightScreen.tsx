@@ -437,8 +437,8 @@ function IdeaCard({
         </View>
         <Button
           title="Recipe"
-          variant="ghost"
-          compact
+          variant="secondary"
+          tight
           accessibilityLabel={`${idea.title} recipe`}
           onPress={onOpen}
         />
