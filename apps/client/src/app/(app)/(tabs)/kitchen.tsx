@@ -686,11 +686,6 @@ function ItemRow({
           opacity: pressed ? 0.75 : 1,
         })}
       >
-        <FoodThumb
-          emoji={ingredientEmoji(row.ingredient)}
-          tint={tintFor(row.ingredient.name)}
-          size={40}
-        />
         <View style={{ flex: 1, minWidth: 0, gap: 2 }}>
           <Text variant="label" numberOfLines={2}>
             {row.name}
