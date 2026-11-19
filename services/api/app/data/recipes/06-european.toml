@@ -23,7 +23,7 @@ ingredients = [
 method = [
   "Marinate the lamb in the oil, lemon juice and oregano for at least 20 minutes. Thread onto skewers.",
   "Squeeze the cucumber dry and mix with the yoghurt and garlic.",
-  "Grill the skewers for 8–10 minutes. Serve in pita with tzatziki, tomato and onion.",
+  "Grill the skewers on a hot grill or barbecue for 8–10 minutes, turning, until charred outside and cooked through. Serve in pita with tzatziki, tomato and onion.",
 ]
 
 [[recipe]]
@@ -73,10 +73,10 @@ ingredients = [
   "50 g parmesan, grated",
 ]
 method = [
-  "Brush the eggplant with oil and bake at 200°C for 20 minutes until soft.",
-  "Brown the onion, garlic and lamb. Add the cinnamon and tomatoes and simmer for 20 minutes.",
-  "Make a white sauce with the butter, flour and milk. Off the heat, beat in the eggs and parmesan.",
-  "Layer eggplant and lamb in a dish, top with the sauce, and bake at 180°C for 45 minutes.",
+  "Heat the oven to 200°C. Brush the eggplant with oil and bake for 20 minutes until soft.",
+  "Brown the onion, garlic and lamb in a large pan over medium-high heat for 8 minutes, breaking up the mince, until no longer pink. Add the cinnamon and tomatoes and simmer for 20 minutes.",
+  "Melt the butter in a saucepan over medium heat, stir in the flour for 1 minute, then whisk in the milk and cook for 5 minutes until thick. Off the heat, beat in the eggs and parmesan.",
+  "Turn the oven down to 180°C. Layer eggplant and lamb in a dish, top with the sauce, and bake for 45 minutes until golden on top and the sauce is set.",
 ]
 
 [[recipe]]
@@ -98,9 +98,9 @@ ingredients = [
   "80 g butter, melted",
 ]
 method = [
-  "Wilt the spinach, squeeze out all the water, and chop. Mix with the cheeses, eggs, spring onion and dill.",
+  "Heat the oven to 180°C. Wilt the spinach in a large covered pan over medium heat for 3–4 minutes, stirring once. Cool, squeeze out all the water, and chop. Mix with the cheeses, eggs, spring onion and dill.",
   "Layer half the filo in a dish, brushing each sheet with butter. Add the filling and top with the remaining buttered sheets.",
-  "Score the top and bake at 180°C for 45 minutes until golden.",
+  "Score the top and bake for 45 minutes until golden.",
 ]
 
 [[recipe]]
@@ -122,7 +122,7 @@ ingredients = [
 ]
 method = [
   "Mix the lemon juice, garlic, oregano and oil. Toss the chicken and potatoes in it in a roasting tin.",
-  "Pour the stock around and roast at 200°C for 55 minutes, turning the potatoes once, until golden and cooked.",
+  "Pour the stock around and roast at 200°C for 55 minutes, turning the potatoes once, until golden and the chicken is cooked through with juices that run clear.",
 ]
 
 [[recipe]]
@@ -148,9 +148,9 @@ ingredients = [
   "1 lemon, cut into wedges",
 ]
 method = [
-  "Brown the chicken and chorizo in the oil. Add the onion, capsicum and garlic and cook until soft.",
+  "Heat the oil in a wide pan over medium-high heat. Brown the chicken and chorizo for 6–8 minutes. Add the onion, capsicum and garlic and cook for 5 minutes until soft.",
   "Stir in the paprika, saffron and rice, then pour in the stock. Simmer without stirring for 20 minutes.",
-  "Scatter the peas over, cover for 5 minutes, and serve with lemon.",
+  "Scatter the peas over, cover for 5 minutes until the rice is tender and the chicken is cooked through, and serve with lemon.",
 ]
 
 [[recipe]]
@@ -169,9 +169,9 @@ ingredients = [
   "salt, to taste",
 ]
 method = [
-  "Gently cook the potato and onion in the oil for 20 minutes until soft but not brown. Drain, keeping 2 tbsp oil.",
+  "Gently cook the potato and onion in the oil in a frying pan over low heat for 20 minutes until soft but not brown. Drain, keeping 2 tbsp oil.",
   "Beat the eggs with salt and stir in the potato.",
-  "Cook in the reserved oil over low heat for 8 minutes, flip using a plate, and cook 4 minutes more.",
+  "Cook in the reserved oil over low heat for 8 minutes until the edges are set, flip using a plate, and cook 4 minutes more until set in the centre.",
 ]
 
 [[recipe]]
@@ -181,7 +181,7 @@ cuisine = "spanish"
 course = "side"
 servings = 4
 minutes = 45
-summary = "Crispy roast potatoes with a smoky tomato sauce and garlic aioli."
+summary = "Crispy roast potatoes with a paprika tomato sauce and garlic aioli."
 ingredients = [
   "1 kg potatoes, cut into cubes",
   "3 tbsp olive oil",
@@ -191,8 +191,8 @@ ingredients = [
   "4 tbsp mayonnaise",
 ]
 method = [
-  "Toss the potatoes in 2 tbsp oil and roast at 220°C for 35 minutes until crisp.",
-  "Cook half the garlic and the paprika in the remaining oil, add the tomatoes, and simmer 10 minutes.",
+  "Heat the oven to 220°C. Toss the potatoes in 2 tbsp oil and roast for 35 minutes until crisp.",
+  "Cook half the garlic and the paprika in the remaining oil in a small pan over medium heat for 1 minute until fragrant, add the tomatoes, and simmer 10 minutes.",
   "Mix the remaining garlic into the mayonnaise. Serve the potatoes with both sauces.",
 ]
 
@@ -212,9 +212,10 @@ ingredients = [
   "2 slices bread",
   "3 tbsp olive oil",
   "2 tbsp red wine vinegar",
+  "salt, to taste",
 ]
 method = [
-  "Blend everything until very smooth. Season well.",
+  "Blend the tomatoes, cucumber, capsicum, garlic, bread, oil and vinegar until very smooth. Season well with salt.",
   "Chill for at least 1 hour before serving.",
 ]
 
@@ -235,7 +236,7 @@ ingredients = [
   "1 loaf crusty bread",
 ]
 method = [
-  "Gently heat the oil with the garlic and chilli until the garlic just colours.",
+  "Gently heat the oil with the garlic and chilli in a small pan over medium-low heat until the garlic just colours.",
   "Add the prawns and cook for 2–3 minutes until pink. Stir in the parsley.",
   "Serve sizzling with bread for the oil.",
 ]
@@ -284,9 +285,9 @@ ingredients = [
   "2 sprigs thyme",
 ]
 method = [
-  "Fry the bacon in the oil and set aside. Dust the chicken in flour and brown it in the fat.",
-  "Brown the shallots and mushrooms, then add the garlic, wine, stock and thyme.",
-  "Return the chicken and bacon, cover, and simmer for 1 hour until tender.",
+  "Fry the bacon in the oil in a large heavy pot over medium heat for 5 minutes until crisp, and set aside. Dust the chicken in flour and brown it in the fat over medium-high heat for 4–5 minutes each side until golden. Set aside.",
+  "Brown the shallots and mushrooms for 5 minutes, then add the garlic, wine, stock and thyme.",
+  "Return the chicken and bacon, cover, and simmer for 1 hour until the chicken is tender and cooked through.",
 ]
 
 [[recipe]]
@@ -309,7 +310,7 @@ ingredients = [
   "1 bunch basil",
 ]
 method = [
-  "Cook the onion and garlic in half the oil. Add the eggplant and the rest of the oil and cook for 10 minutes.",
+  "Cook the onion and garlic in half the oil in a large pan over medium heat for 5 minutes until soft. Add the eggplant and the rest of the oil and cook for 10 minutes.",
   "Add the zucchini, capsicum, tomatoes and thyme. Simmer for 30 minutes, stirring now and then.",
   "Stir through the basil.",
 ]
@@ -331,9 +332,9 @@ ingredients = [
   "120 g gruyere, grated",
 ]
 method = [
-  "Line a tart tin with the pastry and blind-bake at 190°C for 15 minutes.",
-  "Fry the bacon and onion until golden. Whisk the eggs and cream.",
-  "Scatter the bacon and cheese in the case, pour over the custard, and bake at 170°C for 35 minutes until just set.",
+  "Heat the oven to 190°C. Line a tart tin with the pastry and blind-bake for 15 minutes.",
+  "Fry the bacon and onion in a frying pan over medium heat for 6–8 minutes until golden. Whisk the eggs and cream.",
+  "Turn the oven down to 170°C. Scatter the bacon, onion and cheese in the case, pour over the custard, and bake for 35 minutes until just set.",
 ]
 
 [[recipe]]
@@ -354,9 +355,9 @@ ingredients = [
   "1 tbsp dijon mustard",
 ]
 method = [
-  "Make a thick white sauce with the butter, flour and milk.",
+  "Heat the oven to 200°C. Melt the butter in a small saucepan over medium heat, stir in the flour for 1 minute, then whisk in the milk a little at a time and cook for 3–4 minutes until thick.",
   "Spread 4 slices of bread with mustard, top with ham and half the cheese, and close the sandwiches.",
-  "Spread the tops with sauce and the rest of the cheese. Bake at 200°C for 10 minutes, then grill until golden.",
+  "Spread the tops with sauce and the rest of the cheese. Bake for 10 minutes, then grill for 2–3 minutes until golden.",
 ]
 
 [[recipe]]
@@ -381,9 +382,9 @@ ingredients = [
   "300 g mushrooms",
 ]
 method = [
-  "Dust the beef in flour and brown in batches in the oil. Fry the bacon, onion and carrot.",
+  "Heat the oven to 160°C. Dust the beef in flour and brown in batches in the oil in a large ovenproof pot over medium-high heat, 4–5 minutes a batch. Set aside. Fry the bacon, onion and carrot in the pot for 5 minutes until golden.",
   "Add the garlic and tomato paste, then the wine and stock, and return the beef.",
-  "Cover and cook at 160°C for 2½ hours, adding the mushrooms for the last 30 minutes.",
+  "Cover and cook in the oven for 2½ hours, adding the mushrooms for the last 30 minutes, until the beef is tender enough to break apart with a fork.",
 ]
 
 [[recipe]]
@@ -404,9 +405,9 @@ ingredients = [
   "500 ml beef stock",
 ]
 method = [
-  "Cook the sausages in a pan or oven until browned and cooked through.",
-  "Boil and mash the potatoes with half the butter and the milk.",
-  "Cook the onions in the remaining butter for 15 minutes until soft and golden. Stir in the flour, then the stock, and simmer until thick.",
+  "Cook the sausages in a frying pan over medium heat for 12–15 minutes, turning often, until browned and cooked through.",
+  "Boil the potatoes for 15 minutes until tender, drain, and mash with half the butter and the milk.",
+  "Cook the onions in the remaining butter in a pan over medium-low heat for 15 minutes until soft and golden. Stir in the flour, then the stock, and simmer for 5 minutes until thick.",
 ]
 
 [[recipe]]
@@ -430,9 +431,9 @@ ingredients = [
   "80 g cheddar cheese, grated",
 ]
 method = [
-  "Brown the onion, carrot and mince. Stir in the tomato paste, worcestershire and stock, and simmer 20 minutes.",
-  "Boil and mash the potatoes with the butter.",
-  "Top the mince with mash and cheese and bake at 200°C for 25 minutes.",
+  "Heat the oven to 200°C. Heat the oil in a large pan over medium-high heat. Brown the onion, carrot and mince for 8 minutes, breaking it up, until no longer pink. Stir in the tomato paste, worcestershire and stock, and simmer 20 minutes.",
+  "Boil the potatoes for 15 minutes until tender, drain, and mash with the butter.",
+  "Top the mince with mash and cheese and bake for 25 minutes until golden and bubbling.",
 ]
 
 [[recipe]]
@@ -454,9 +455,10 @@ ingredients = [
   "1 bunch parsley, chopped",
 ]
 method = [
-  "Boil and mash the potatoes with 20 g butter and a splash of milk.",
-  "Poach the fish in the milk for 5 minutes. Lift out and flake into a dish with the prawns. Keep the milk.",
-  "Make a sauce with the remaining butter, the flour and the poaching milk. Add the parsley, pour over the fish, top with mash, and bake at 200°C for 30 minutes.",
+  "Heat the oven to 200°C. Boil the potatoes for 15 minutes until tender, drain, and mash with 20 g butter and a splash of milk.",
+  "Poach the white fish and salmon in the remaining milk over low heat for 5 minutes until opaque and it flakes easily. Lift out and flake into a dish with the prawns. Keep the milk.",
+  "Melt the remaining butter in a saucepan over medium heat, stir in the flour for 1 minute, then whisk in the poaching milk and cook for 3–4 minutes until thick. Add the parsley and pour over the fish.",
+  "Top with mash and bake for 30 minutes until the sauce is bubbling, the mash is golden and the prawns are cooked through.",
 ]
 
 [[recipe]]
@@ -480,7 +482,7 @@ ingredients = [
   "1 lemon, cut into wedges",
 ]
 method = [
-  "Boil the potatoes until tender, then slice. Fry the bacon and toss it with the warm potatoes, vinegar and mustard.",
+  "Boil the potatoes for 15–20 minutes until tender, then slice. Fry the bacon in a frying pan over medium heat for 4–5 minutes until crisp and toss it with the warm potatoes, vinegar and mustard.",
   "Pound the pork thin. Crumb in flour, egg and breadcrumbs.",
-  "Shallow-fry for 3 minutes each side until golden. Serve with the potato salad and lemon.",
+  "Heat the oil in a large frying pan over medium-high heat. Shallow-fry the pork for 3 minutes each side until golden and cooked through. Serve with the potato salad and lemon.",
 ]

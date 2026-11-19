@@ -20,9 +20,9 @@ ingredients = [
   "2 tbsp oyster sauce",
 ]
 method = [
-  "Cook the noodles and drain.",
-  "Stir-fry the garlic and vegetables in the oil for 4 minutes until just tender.",
-  "Add the noodles and sauces and toss until hot.",
+  "Cook the egg noodles according to the packet and drain.",
+  "Heat the oil in a wok over high heat. Stir-fry the garlic and vegetables for 4 minutes until just tender.",
+  "Add the noodles and sauces and toss for 1–2 minutes until hot.",
 ]
 
 [[recipe]]
@@ -47,7 +47,7 @@ ingredients = [
 ]
 method = [
   "Mash the beans roughly, then mix in the corn, breadcrumbs, egg and spices. Shape into 4 patties and chill 10 minutes.",
-  "Fry in the oil for 4 minutes each side until crisp.",
+  "Heat the oil in a frying pan over medium heat. Fry the patties for 4 minutes each side until crisp and hot through.",
   "Serve in buns with avocado and salsa.",
 ]
 
@@ -67,13 +67,13 @@ ingredients = [
   "500 g ricotta",
   "100 g baby spinach",
   "700 g passata",
-  "250 g lasagne sheets",
+  "375 g lasagne sheets",
   "150 g mozzarella, grated",
 ]
 method = [
-  "Roast the vegetables with the oil at 200°C for 25 minutes.",
-  "Mix the ricotta and spinach.",
-  "Layer passata, lasagne sheets, vegetables and ricotta three times. Top with mozzarella and bake at 180°C for 45 minutes.",
+  "Heat the oven to 200°C. Roast the vegetables with the oil for 25 minutes until tender when pierced with a knife.",
+  "Mix the ricotta and spinach. Turn the oven down to 180°C.",
+  "Layer passata, lasagne sheets, vegetables and ricotta three times. Top with mozzarella and bake for 45 minutes until golden and bubbling and the lasagne sheets are tender when tested with a knife.",
 ]
 
 [[recipe]]
@@ -94,8 +94,8 @@ ingredients = [
   "100 g cheddar cheese, grated",
 ]
 method = [
-  "Mix the rice, beans, corn, salsa and cumin.",
-  "Fill the capsicum halves, top with cheese, and bake covered at 190°C for 30 minutes, then uncovered for 10.",
+  "Heat the oven to 190°C. Mix the rice, beans, corn, salsa and cumin.",
+  "Fill the capsicum halves, top with cheese, and bake covered for 30 minutes, then uncovered for 10 minutes until the capsicums are soft and the cheese is melted and golden.",
 ]
 
 [[recipe]]
@@ -104,7 +104,7 @@ title = "Mushroom stroganoff"
 cuisine = "russian"
 course = "main"
 servings = 4
-minutes = 25
+minutes = 30
 summary = "A creamy paprika mushroom stroganoff over rice or pasta. Vegetarian."
 ingredients = [
   "2 tbsp olive oil",
@@ -118,9 +118,10 @@ ingredients = [
   "1 cup rice",
 ]
 method = [
-  "Cook the onion in the oil, then the mushrooms over high heat until golden. Add the garlic and paprika.",
+  "Cook the rice according to the packet.",
+  "Meanwhile, cook the onion in the oil in a large frying pan over medium heat for 5 minutes until soft, then the mushrooms over high heat for 6–8 minutes until golden. Add the garlic and paprika and stir for 30 seconds.",
   "Add the stock and simmer for 5 minutes. Stir in the sour cream.",
-  "Serve over rice with parsley.",
+  "Serve over the rice with parsley.",
 ]
 
 [[recipe]]
@@ -129,7 +130,7 @@ title = "Grilled halloumi and quinoa salad"
 cuisine = "middle-eastern"
 course = "main"
 servings = 4
-minutes = 30
+minutes = 45
 summary = "Golden halloumi on quinoa with roast capsicum, cucumber, mint and lemon."
 ingredients = [
   "200 g quinoa, rinsed",
@@ -142,7 +143,7 @@ ingredients = [
 ]
 method = [
   "Simmer the quinoa in 500 ml water for 15 minutes. Drain and cool.",
-  "Grill the capsicum and halloumi until charred.",
+  "Cook the capsicum in a griddle pan over high heat for 5–6 minutes until charred, then the halloumi for 1–2 minutes each side until golden.",
   "Toss the quinoa with the cucumber, mint, oil and lemon. Top with capsicum and halloumi.",
 ]
 
@@ -167,9 +168,10 @@ ingredients = [
   "1 cup basmati rice",
 ]
 method = [
-  "Soften the onion and garlic in the oil. Add the curry powder.",
+  "Soften the onion and garlic in the oil in a large pot over medium heat for 5 minutes. Add the curry powder and stir for 30 seconds.",
   "Add the sweet potato, chickpeas, coconut milk and tomatoes. Simmer 25 minutes until the sweet potato is soft.",
-  "Stir in the spinach and serve with rice.",
+  "Meanwhile, cook the rice according to the packet.",
+  "Stir the spinach into the curry until wilted and serve with the rice.",
 ]
 
 [[recipe]]
@@ -189,9 +191,9 @@ ingredients = [
   "1 tsp dijon mustard",
 ]
 method = [
-  "Boil the cauliflower for 5 minutes and drain well.",
-  "Make a white sauce with the butter, flour and milk. Stir in most of the cheese and the mustard.",
-  "Pour over the cauliflower, top with the remaining cheese, and bake at 200°C for 20 minutes.",
+  "Heat the oven to 200°C. Boil the cauliflower for 5 minutes and drain well.",
+  "Melt the butter in a saucepan over medium heat, stir in the flour for 1 minute, then whisk in the milk and cook for 4–5 minutes until thick. Stir in most of the cheese and the mustard.",
+  "Pour over the cauliflower, top with the remaining cheese, and bake for 20 minutes until golden on top and bubbling at the edges.",
 ]
 
 [[recipe]]
@@ -212,7 +214,7 @@ ingredients = [
   "salt, to taste",
 ]
 method = [
-  "Heat the oven to 200°C. Toss everything in the oil and salt on a large tray.",
+  "Heat the oven to 200°C. Toss the potatoes, pumpkin, carrots, onion and rosemary in the oil and salt on a large tray.",
   "Roast for 40–45 minutes, turning once, until golden.",
 ]
 
@@ -223,7 +225,7 @@ cuisine = "italian"
 course = "side"
 servings = 6
 minutes = 20
-summary = "A crusty loaf filled with garlic and parsley butter and baked until crisp."
+summary = "A crusty loaf filled with garlic and parsley butter and baked until golden."
 ingredients = [
   "1 baguette",
   "100 g butter, softened",
@@ -231,9 +233,9 @@ ingredients = [
   "2 tbsp parsley, chopped",
 ]
 method = [
-  "Mix the butter, garlic and parsley.",
+  "Heat the oven to 200°C. Mix the butter, garlic and parsley.",
   "Slice the baguette without cutting all the way through and spread the butter between the slices.",
-  "Wrap in foil and bake at 200°C for 15 minutes.",
+  "Wrap in foil and bake for 10 minutes, then open the foil and bake for 5 minutes more until the crust is golden and crisp.",
 ]
 
 [[recipe]]
@@ -264,7 +266,7 @@ title = "Potato salad"
 cuisine = "australian"
 course = "side"
 servings = 6
-minutes = 30
+minutes = 45
 summary = "Waxy potatoes with egg, spring onion and a creamy mustard dressing. A barbecue staple."
 ingredients = [
   "1 kg potatoes, halved",
@@ -276,9 +278,9 @@ ingredients = [
   "1 bunch parsley, chopped",
 ]
 method = [
-  "Boil the potatoes until tender and cool. Boil the eggs for 9 minutes, cool and chop.",
+  "Boil the potatoes for 15–20 minutes until tender, drain and cool. Boil the eggs for 9 minutes, cool in cold water, peel and chop.",
   "Mix the mayonnaise, sour cream and mustard.",
-  "Toss everything together.",
+  "Toss the potatoes, eggs, spring onion and parsley with the dressing.",
 ]
 
 [[recipe]]
@@ -298,8 +300,8 @@ ingredients = [
   "1 bunch parsley, chopped",
 ]
 method = [
-  "Cook the onion in the butter until soft. Add the rice and stir for a minute.",
-  "Add the stock, cover, and cook on low for 15 minutes. Rest for 5 minutes.",
+  "Cook the onion in the butter in a saucepan over medium heat for 5 minutes until soft. Add the rice and stir for a minute.",
+  "Add the stock, cover, and cook on low heat for 15 minutes. Rest for 5 minutes.",
   "Fluff with a fork and stir in the almonds and parsley.",
 ]
 
@@ -344,7 +346,7 @@ ingredients = [
 ]
 method = [
   "Bash the cucumbers with a rolling pin, then cut into chunks. Salt lightly for 10 minutes and drain.",
-  "Toss with everything else.",
+  "Toss with the garlic, soy sauce, vinegar, sesame oil and chilli flakes. Scatter with the sesame seeds.",
 ]
 
 [[recipe]]
@@ -363,7 +365,7 @@ ingredients = [
   "40 g feta, crumbled",
 ]
 method = [
-  "Grill the corn for 10–12 minutes, turning, until charred.",
+  "Cook the corn on a hot grill or barbecue over medium-high heat for 10–12 minutes, turning, until charred.",
   "Mix the butter, lime and chilli and brush over the hot corn. Top with feta.",
 ]
 
@@ -386,9 +388,9 @@ ingredients = [
   "1 kg sweet potato, peeled and chopped",
 ]
 method = [
-  "Soften the onion, carrot and celery in half the oil. Add the lentils, tomato paste and stock and simmer 20 minutes.",
-  "Boil and mash the sweet potato with the remaining oil.",
-  "Top the lentils with mash and bake at 200°C for 25 minutes.",
+  "Heat the oven to 200°C. Soften the onion, carrot and celery in half the oil in a large pan over medium heat for 6–8 minutes. Add the lentils, tomato paste and stock and simmer 20 minutes.",
+  "Boil the sweet potato for 12–15 minutes until a knife slides in easily, drain, and mash with the remaining oil.",
+  "Top the lentils with mash and bake for 25 minutes until golden on top and bubbling.",
 ]
 
 [[recipe]]
@@ -402,6 +404,7 @@ summary = "Rice bowls with soy-glazed tofu, edamame, cucumber, avocado and pickl
 ingredients = [
   "1 cup rice",
   "450 g tofu, cubed",
+  "1 tbsp vegetable oil",
   "3 tbsp soy sauce",
   "1 tbsp honey",
   "200 g edamame",
@@ -411,9 +414,10 @@ ingredients = [
   "1 tbsp sesame seeds",
 ]
 method = [
-  "Cook the rice. Fry the tofu until golden, then toss with the soy and honey until glazed.",
-  "Cook the edamame.",
-  "Build bowls with rice, tofu and the vegetables. Top with ginger and sesame seeds.",
+  "Cook the rice according to the packet.",
+  "Heat the oil in a frying pan over medium-high heat. Fry the tofu for 8–10 minutes, turning, until golden, then toss with the soy and honey for 1 minute until glazed.",
+  "Boil the edamame for 3–4 minutes and drain.",
+  "Build bowls with rice, tofu, edamame, cucumber and avocado. Top with ginger and sesame seeds.",
 ]
 
 [[recipe]]
@@ -435,7 +439,7 @@ ingredients = [
   "1 lemon, juiced",
 ]
 method = [
-  "Toss everything together and season.",
+  "Toss the chickpeas, tomatoes, cucumber, red onion, feta and parsley with the oil and lemon juice and season.",
 ]
 
 [[recipe]]
@@ -453,7 +457,7 @@ ingredients = [
   "1 bunch mint, chopped",
 ]
 method = [
-  "Cook the peas for 3 minutes and drain.",
+  "Boil the peas for 3 minutes and drain.",
   "Toss with the butter, spring onion and mint.",
 ]
 
@@ -473,7 +477,7 @@ ingredients = [
   "1 lemon, zested",
 ]
 method = [
-  "Toss the broccoli and garlic with the oil and roast at 220°C for 18 minutes.",
+  "Heat the oven to 220°C. Toss the broccoli and garlic with the oil and roast for 18 minutes until tender with browned, crisp edges.",
   "Scatter with parmesan and lemon zest.",
 ]
 
@@ -497,8 +501,8 @@ ingredients = [
   "2 litres vegetable stock",
 ]
 method = [
-  "Soften the onion, carrot and celery in the oil.",
-  "Add everything else and simmer for 40 minutes until the barley is tender.",
+  "Soften the onion, carrot and celery in the oil in a large pot over medium heat for 8 minutes.",
+  "Add the potatoes, zucchini, barley, tomatoes and stock and simmer for 40 minutes until the barley is tender.",
 ]
 
 [[recipe]]
@@ -518,8 +522,8 @@ ingredients = [
   "1 lime, juiced",
 ]
 method = [
-  "Toss the chips with the cornflour, then the oil and paprika. Spread out on two trays.",
-  "Bake at 220°C for 30 minutes, turning once.",
+  "Heat the oven to 220°C. Toss the sweet potato chips with the cornflour, then the oil and paprika. Spread out on two trays.",
+  "Bake for 30 minutes, turning once, until golden and crisp at the edges.",
   "Mix the yoghurt and lime for dipping.",
 ]
 
@@ -530,7 +534,7 @@ cuisine = "mexican"
 course = "main"
 servings = 6
 minutes = 45
-summary = "A smoky vegetarian chilli of kidney beans, black beans and chickpeas with capsicum."
+summary = "A hearty vegetarian chilli of kidney beans, black beans and chickpeas with capsicum."
 ingredients = [
   "2 tbsp olive oil",
   "1 onion, diced",
@@ -545,7 +549,7 @@ ingredients = [
   "1 cup rice",
 ]
 method = [
-  "Soften the onion, capsicum and garlic in the oil. Add the spices.",
-  "Add the beans and tomatoes and simmer for 30 minutes until thick.",
-  "Serve with rice.",
+  "Soften the onion, capsicum and garlic in the oil in a large pot over medium heat for 5 minutes. Add the spices and stir for 30 seconds.",
+  "Add the beans, chickpeas and tomatoes and simmer for 30 minutes until thick.",
+  "Meanwhile, cook the rice according to the packet. Serve over the rice.",
 ]

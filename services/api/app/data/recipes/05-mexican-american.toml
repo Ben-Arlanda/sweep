@@ -22,8 +22,9 @@ ingredients = [
   "100 g sour cream",
 ]
 method = [
-  "Brown the mince with the onion in the oil. Add the spices, tomato paste and 125 ml water and simmer 5 minutes.",
-  "Warm the tortillas.",
+  "Heat the oil in a frying pan over medium-high heat. Brown the mince with the onion for 5–6 minutes, breaking it up, until no longer pink.",
+  "Add the spices, tomato paste and 125 ml water and simmer for 5 minutes until thick.",
+  "Warm the tortillas in a dry pan over medium heat for 20–30 seconds each side.",
   "Fill with the beef, lettuce, tomato, cheese and sour cream.",
 ]
 
@@ -48,9 +49,9 @@ ingredients = [
   "1 lime, cut into wedges",
 ]
 method = [
-  "Toss the chicken in half the oil and the spices. Cook in a hot pan until cooked through. Set aside.",
-  "Cook the capsicum and onion in the remaining oil until charred and soft.",
-  "Serve in warm tortillas with avocado and lime.",
+  "Toss the chicken in half the oil and the spices. Cook in a hot frying pan over medium-high heat for 6–8 minutes until cooked through. Set aside.",
+  "Cook the capsicum and onion in the remaining oil in the same pan for 5 minutes until charred and soft. Return the chicken and toss for 1 minute until hot.",
+  "Warm the tortillas in a dry frying pan for 20 seconds each side. Fill with the chicken and vegetables and serve with avocado and lime.",
 ]
 
 [[recipe]]
@@ -60,7 +61,7 @@ cuisine = "mexican"
 course = "main"
 servings = 6
 minutes = 60
-summary = "A smoky beef and kidney bean chilli. Even better the next day."
+summary = "A rich, spiced beef and kidney bean chilli. Even better the next day."
 ingredients = [
   "1 tbsp olive oil",
   "1 onion, diced",
@@ -76,9 +77,10 @@ ingredients = [
   "100 g sour cream",
 ]
 method = [
-  "Soften the onion, capsicum and garlic in the oil. Add the mince and brown.",
-  "Add the spices, tomatoes and beans. Simmer for 40 minutes until thick.",
-  "Serve with rice and sour cream.",
+  "Heat the oil in a large pot over medium heat. Soften the onion, capsicum and garlic for 5 minutes. Add the mince and brown for 5–6 minutes, breaking it up, until no longer pink.",
+  "Add the spices, tomatoes and beans. Simmer for 40 minutes, stirring now and then, until thick.",
+  "Meanwhile, cook the rice according to the packet.",
+  "Serve the chilli over the rice with sour cream.",
 ]
 
 [[recipe]]
@@ -103,8 +105,9 @@ ingredients = [
   "1 bunch coriander",
 ]
 method = [
-  "Cook the rice. Rub the chicken with the spices and oil and pan-fry until cooked. Slice.",
-  "Warm the beans. Mix the corn, tomato, coriander and lime juice to spoon over the top.",
+  "Cook the rice according to the packet.",
+  "Rub the chicken with the spices and oil. Pan-fry over medium-high heat for 5–6 minutes each side until cooked through with no pink in the middle. Rest, then slice.",
+  "Warm the beans in a small pan over medium heat for 3–4 minutes until heated through. Mix the corn, tomato, coriander and lime juice to spoon over the top.",
   "Build bowls of rice, chicken, beans, the corn mix and avocado.",
 ]
 
@@ -125,7 +128,7 @@ ingredients = [
 ]
 method = [
   "Spread 4 tortillas with beans, scatter with cheese and spring onion, and top with the others.",
-  "Cook in a dry pan for 2–3 minutes each side until crisp and melted.",
+  "Cook in a dry pan over medium heat for 2–3 minutes each side until crisp and the cheese has melted.",
   "Cut into wedges and serve with sour cream.",
 ]
 
@@ -148,7 +151,7 @@ ingredients = [
 ]
 method = [
   "Mash the avocado with the lime juice.",
-  "Stir in everything else and season with salt.",
+  "Stir in the red onion, tomato, chilli and coriander and season with salt.",
 ]
 
 [[recipe]]
@@ -171,8 +174,8 @@ ingredients = [
   "1 bunch coriander",
 ]
 method = [
-  "Rub the fish with the spices and pan-fry in the oil for 3 minutes each side. Flake.",
-  "Mix the mayonnaise with the juice of 1 lime.",
+  "Rub the fish with the spices. Heat the oil in a frying pan over medium-high heat and pan-fry the fish for 3–4 minutes each side until it flakes easily. Flake.",
+  "Mix the mayonnaise with the juice of 1 lime. Cut the other lime into wedges.",
   "Fill the tortillas with cabbage, fish, lime mayo and coriander. Serve with lime wedges.",
 ]
 
@@ -217,9 +220,9 @@ ingredients = [
   "1 bunch coriander",
 ]
 method = [
-  "Poach the chicken for 15 minutes, then shred. Mix the passata with the spices.",
+  "Heat the oven to 190°C. Poach the chicken in simmering water for 15 minutes until cooked through, then shred. Mix the passata with the spices.",
   "Mix the chicken, beans and a third of the sauce. Roll up in the tortillas and lay in a dish.",
-  "Pour over the remaining sauce, top with cheese, and bake at 190°C for 20 minutes. Scatter with coriander.",
+  "Pour over the remaining sauce, top with cheese, and bake for 20 minutes until bubbling and the cheese has melted. Scatter with coriander.",
 ]
 
 [[recipe]]
@@ -264,9 +267,9 @@ ingredients = [
   "40 g breadcrumbs",
 ]
 method = [
-  "Cook the pasta until just tender and drain.",
-  "Melt the butter, stir in the flour, then whisk in the milk until thick. Stir in most of the cheese and the mustard.",
-  "Mix with the pasta, top with breadcrumbs and remaining cheese, and bake at 200°C for 20 minutes.",
+  "Heat the oven to 200°C. Cook the pasta according to the packet until just tender and drain.",
+  "Melt the butter in a saucepan over medium heat, stir in the flour and cook for 1 minute, then whisk in the milk and cook for 5 minutes until thick. Stir in most of the cheese and the mustard.",
+  "Mix with the pasta, top with breadcrumbs and remaining cheese, and bake for 20 minutes until golden and bubbling at the edges.",
 ]
 
 [[recipe]]
@@ -285,8 +288,8 @@ ingredients = [
   "2 tbsp honey",
 ]
 method = [
-  "Toss the wings in the spices and bake on a rack at 220°C for 40 minutes, turning once.",
-  "Warm the barbecue sauce and honey and toss the wings in it.",
+  "Heat the oven to 220°C. Toss the wings in the spices and bake on a rack for 40 minutes, turning once, until golden and cooked through with no pink at the bone.",
+  "Warm the barbecue sauce and honey in a small pan over low heat for 2 minutes and toss the wings in it.",
 ]
 
 [[recipe]]
@@ -309,7 +312,7 @@ ingredients = [
   "125 ml thickened cream",
 ]
 method = [
-  "Fry the bacon, onion and celery until soft.",
+  "Fry the bacon, onion and celery in a large pot over medium heat for 6–8 minutes until soft.",
   "Add the potatoes and stock and simmer for 15 minutes.",
   "Add the corn, fish, milk and cream and simmer gently for 5 minutes until the fish is cooked.",
 ]
@@ -332,9 +335,10 @@ ingredients = [
   "4 burger buns",
 ]
 method = [
-  "Brown the mince with the onion and capsicum.",
+  "Brown the mince with the onion and capsicum in a frying pan over medium-high heat for 6–8 minutes, breaking it up, until no longer pink.",
   "Add the sauces, sugar and 60 ml water and simmer for 10 minutes until thick.",
-  "Spoon into toasted buns.",
+  "Meanwhile, split the buns and toast them under the grill for 1–2 minutes until golden.",
+  "Spoon the mince into the toasted buns.",
 ]
 
 [[recipe]]
@@ -357,8 +361,9 @@ ingredients = [
   "1 tbsp red wine vinegar",
 ]
 method = [
-  "Grill the chicken and bacon, then chop. Boil the eggs for 9 minutes, cool and quarter.",
-  "Arrange everything in rows over the lettuce.",
+  "Cook the chicken in a frying pan over medium-high heat for 6–7 minutes each side until cooked through. Cook the bacon in the same pan for 3–4 minutes until crisp. Chop both.",
+  "Boil the eggs for 9 minutes, cool in cold water and quarter.",
+  "Arrange the chicken, bacon, eggs, avocado, tomatoes and blue cheese in rows over the lettuce.",
   "Whisk the oil and vinegar and drizzle over.",
 ]
 
@@ -381,8 +386,8 @@ ingredients = [
 ]
 method = [
   "Heat the oven to 200°C and grease a square tin.",
-  "Mix the dry ingredients, then stir in the eggs, milk and butter.",
-  "Pour into the tin and bake for 20–25 minutes until golden.",
+  "Mix the polenta and the other dry ingredients, then stir in the eggs, milk and butter.",
+  "Pour into the tin and bake for 20–25 minutes until golden and a skewer comes out clean.",
 ]
 
 [[recipe]]
@@ -404,7 +409,7 @@ ingredients = [
 ]
 method = [
   "Whisk the flour, sugar, eggs, milk and butter into a smooth batter.",
-  "Cook ladlefuls in a buttered pan over medium heat until bubbles appear, then flip.",
+  "Cook ladlefuls in a buttered pan over medium heat for 2 minutes until bubbles appear, then flip and cook for 1–2 minutes until golden.",
   "Serve with maple syrup and blueberries.",
 ]
 
@@ -430,7 +435,7 @@ ingredients = [
   "1 egg, beaten",
 ]
 method = [
-  "Soften the onion, carrot and celery in the butter. Stir in the flour, then the stock and cream.",
-  "Add the chicken and simmer for 15 minutes. Stir in the peas and cool slightly.",
-  "Tip into a pie dish, cover with pastry, brush with egg, and bake at 200°C for 30 minutes.",
+  "Heat the oven to 200°C. Melt the butter in a large pan over medium heat and soften the onion, carrot and celery for 6–8 minutes. Stir in the flour for 1 minute, then the stock and cream.",
+  "Add the chicken and simmer for 15 minutes until cooked through. Stir in the peas and cool slightly.",
+  "Tip into a pie dish, cover with pastry, brush with egg, and bake for 30 minutes until the pastry is puffed and golden and the filling is bubbling.",
 ]

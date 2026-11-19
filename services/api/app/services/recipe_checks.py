@@ -223,11 +223,16 @@ def _used(text: str, name: str, method: str) -> bool:
 
 
 _CLAUSE = r"(?:^|[.;,]\s*|\b(?:then|and|or)\s+)(?:gently\s+|quickly\s+)?(?:shallow-|deep-|pan-)?"
-_PAN = re.compile(_CLAUSE + r"(fry|sear|brown|sauté|saute|stir-fry|soften|scramble|cook)\b")
+# "brown sugar" and "brown onion" are things, not a step.
+_BROWN = r"brown(?!\s+(?:sugar|rice|onions?|bread|lentils|mushrooms))"
+_PAN = re.compile(
+    _CLAUSE + rf"(fry|sear|{_BROWN}|sauté|saute|stir-fry|soften|scramble|cook)\b"
+    r"|\btoast\b[^.]*\bdry (?:frying )?pan"
+)
 # "Heat" isn't here: heating a pan or oven is set-up, needing a heat level, not a time.
 _COOK = re.compile(
     _CLAUSE + r"(cook|fry|roast|bake|grill|griddle|barbecue|bbq|simmer|braise|stew|poach|"
-    r"steam|sear|brown|boil|stir-fry|char|toast|soften|scramble)\b"
+    rf"steam|sear|{_BROWN}|boil|stir-fry|char|toast|soften|scramble)\b"
 )
 _OVEN = re.compile(_CLAUSE + r"(bake|roast)\b")
 _HEAT = re.compile(
@@ -238,6 +243,7 @@ _HEAT = re.compile(
 # Simmering or boiling says how hot this step is, but not the next one: boiling the pasta
 # doesn't say how hot to fry the garlic.
 _OWN_HEAT = re.compile(r"\bsimmer|\bboil")
+_OVEN_TEMP = re.compile(r"\boven\b[^.]*?°c")
 _CUE = re.compile(
     DONE.pattern + r"|packet|seconds?\b|heat(?:ed)? through|"
     r"until (?:just )?(?:fragrant|soft|softened|wilted|set|melted|thick|thickened|bubbling|"
@@ -269,7 +275,8 @@ def _method_problems(r: SeedRecipe, lines: Sequence[ParsedLine]) -> list[Problem
     heat = False
     for step in r.method:
         low = _STAPLE.sub("", step.lower())
-        heat = heat or bool(_HEAT.search(low))
+        # The oven's temperature says nothing about how hot the pan should be.
+        heat = heat or bool(_HEAT.search(_OVEN_TEMP.sub("", low)))
         if _PAN.search(low) and not (heat or _OWN_HEAT.search(low)):
             problems.append(Problem(r.slug, "no_heat", f"'{_short(step)}' gives no heat level"))
             heat = True  # one report per method is enough to fix it

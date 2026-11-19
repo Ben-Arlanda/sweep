@@ -23,9 +23,9 @@ ingredients = [
   "40 g parmesan, grated",
 ]
 method = [
-  "Soften the onion, carrot, celery and garlic in the oil for 10 minutes.",
+  "Soften the onion, carrot, celery and garlic in the oil in a large saucepan over medium heat for 10 minutes.",
   "Stir in the tomato paste, then the lentils, passata, stock and oregano. Simmer for 25 minutes, stirring often, until thick.",
-  "Cook the pasta and serve with the sauce and parmesan.",
+  "Cook the pasta according to the packet and serve with the sauce and parmesan.",
 ]
 
 [[recipe]]
@@ -52,7 +52,7 @@ ingredients = [
 method = [
   "Heat the oven to 220°C. Brush the cauliflower with 2 tbsp oil and sprinkle with the spices and salt. Roast for 25 minutes, turning once, until golden and tender.",
   "Toss the chickpeas in the rest of the oil and roast alongside for the last 15 minutes.",
-  "Whisk the tahini, lemon juice and water until smooth. Toast the pine nuts in a dry pan for 3 minutes.",
+  "Whisk the tahini, lemon juice and water until smooth. Toast the pine nuts in a dry pan over medium heat for 3 minutes until golden.",
   "Drizzle the cauliflower with tahini and top with the chickpeas, pine nuts and parsley.",
 ]
 
@@ -132,9 +132,9 @@ ingredients = [
   "125 ml water",
 ]
 method = [
-  "Cook the rice.",
-  "Toss the tofu in the cornflour and fry in the oil for 8 minutes, turning, until crisp.",
-  "Warm the peanut butter, soy, maple syrup, lime juice and water, whisking, until smooth.",
+  "Cook the rice according to the packet.",
+  "Toss the tofu in the cornflour and fry in the oil over medium-high heat for 8 minutes, turning, until crisp.",
+  "Warm the peanut butter, soy, maple syrup, lime juice and water in a small saucepan over low heat, whisking, until smooth.",
   "Serve the tofu over the rice with the cucumber, carrot and bean sprouts and pour over the sauce.",
 ]
 
@@ -162,8 +162,8 @@ ingredients = [
   "125 ml milk",
 ]
 method = [
-  "Brown the mushrooms in the oil in batches for 5 minutes. Remove.",
-  "Soften the onion, carrot and garlic for 6 minutes. Stir in the tomato paste and flour, then the wine, stock and thyme.",
+  "Brown the mushrooms in the oil in a large pot over high heat in batches for 5 minutes. Remove.",
+  "Lower to medium heat and soften the onion, carrot and garlic for 6 minutes. Stir in the tomato paste and flour, then the wine, stock and thyme.",
   "Return the mushrooms and simmer for 25 minutes until thick.",
   "Meanwhile, boil the potatoes for 15 minutes until tender, then mash with the butter and milk. Serve the mushrooms over the mash.",
 ]
@@ -193,7 +193,7 @@ ingredients = [
   "1 bunch coriander, chopped",
 ]
 method = [
-  "Soften the onion and garlic in the oil for 5 minutes. Add the spices for 1 minute.",
+  "Soften the onion and garlic in the oil in a large pot over medium heat for 5 minutes. Add the spices for 1 minute.",
   "Add the sweet potato, carrot, tomatoes, chickpeas, stock and apricots and simmer for 25 minutes until the vegetables are tender.",
   "Pour the boiling water over the couscous, cover for 5 minutes and fluff up. Serve with the tagine and coriander.",
 ]
@@ -231,7 +231,7 @@ cuisine = "greek"
 course = "main"
 servings = 4
 minutes = 30
-summary = "Crisp grated zucchini fritters with feta, dill and spring onion, served with tzatziki-style yoghurt. Vegetarian."
+summary = "Crisp grated zucchini fritters with feta, dill and spring onion, served with lemony yoghurt. Vegetarian."
 ingredients = [
   "3 zucchini, grated",
   "1/2 tsp salt",
@@ -247,8 +247,8 @@ ingredients = [
 method = [
   "Toss the zucchini with the salt for 10 minutes, then squeeze out as much liquid as you can.",
   "Mix with the feta, spring onions, most of the dill, the eggs and flour.",
-  "Fry heaped spoonfuls in the oil for 3 minutes each side until golden and set.",
-  "Serve with the yoghurt, the rest of the dill and lemon.",
+  "Fry heaped spoonfuls in the oil in a large frying pan over medium heat for 3 minutes each side until golden and set.",
+  "Stir a squeeze of the lemon into the yoghurt. Serve the fritters with the yoghurt, the rest of the dill and the lemon wedges.",
 ]
 
 [[recipe]]
@@ -272,7 +272,7 @@ ingredients = [
 ]
 method = [
   "Heat the oven to 200°C. Toss the pumpkin in 1 tbsp oil and roast for 25 minutes until golden.",
-  "Soften the onion in the rest of the oil for 5 minutes. Stir in the rice for 1 minute, then the wine.",
+  "Heat the stock in a saucepan and keep it hot over low heat. Soften the onion in the rest of the oil in a large pan over medium heat for 5 minutes. Stir in the rice for 1 minute, then the wine.",
   "Add the hot stock a ladle at a time, stirring, for 20 minutes until the rice is creamy and just tender.",
   "Fry the sage in the butter for 1 minute until crisp. Stir the pumpkin and parmesan into the risotto and top with the sage butter.",
 ]
@@ -299,9 +299,9 @@ ingredients = [
   "1 baguette",
 ]
 method = [
-  "Fry the eggplant in 3 tbsp oil for 10 minutes until golden and soft. Remove.",
-  "Soften the onion and celery in the rest of the oil for 6 minutes. Add the tomatoes and simmer for 10 minutes.",
-  "Stir in the eggplant, olives, vinegar and sugar and simmer for 5 minutes. Toast the pine nuts in a dry pan for 3 minutes.",
+  "Fry the eggplant in 3 tbsp oil in a large frying pan over medium-high heat for 10 minutes until golden and soft. Remove.",
+  "Lower to medium heat and soften the onion and celery in the rest of the oil for 6 minutes. Add the tomatoes and simmer for 10 minutes.",
+  "Stir in the eggplant, olives, vinegar and sugar and simmer for 5 minutes. Toast the pine nuts in a dry pan over medium heat for 3 minutes until golden.",
   "Scatter with pine nuts and basil and serve warm or at room temperature with the baguette.",
 ]
 
@@ -329,8 +329,8 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Cook the rice.",
-  "Fry the cumin seeds in the oil for 30 seconds, then the onion for 8 minutes until golden. Add the garlic, ginger and spices for 1 minute.",
+  "Cook the rice according to the packet.",
+  "Fry the cumin seeds in the oil in a large saucepan over medium heat for 30 seconds, then the onion for 8 minutes until golden. Add the garlic, ginger and spices for 1 minute.",
   "Add the tomatoes, beans and water and simmer for 20 minutes, mashing some beans to thicken. Scatter with coriander and serve with the rice.",
 ]
 
@@ -356,7 +356,7 @@ ingredients = [
 ]
 method = [
   "Fry the mushrooms in the oil over high heat for 10 minutes, without stirring too often, until crisp at the edges. Add the spices and salt for 1 minute.",
-  "Warm the tortillas and fill with the mushrooms, avocado, cabbage and coriander. Serve with lime.",
+  "Warm the tortillas in a dry frying pan for 20 seconds each side and fill with the mushrooms, avocado, cabbage and coriander. Serve with lime.",
 ]
 
 [[recipe]]
@@ -383,8 +383,8 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Cook the rice. Toss the cauliflower in 2 tbsp cornflour.",
-  "Fry the cauliflower in the oil for 10 minutes, turning, until golden and tender.",
+  "Cook the rice according to the packet. Toss the cauliflower in 2 tbsp cornflour.",
+  "Fry the cauliflower in the oil in a wok or large frying pan over medium-high heat for 10 minutes, turning, until golden and tender.",
   "Add the capsicum, garlic and chilli for 2 minutes. Mix the soy, vinegar, sugar, water and the rest of the cornflour, add and toss for 1 minute until glossy.",
   "Toss through the peanuts and spring onions and serve with the rice.",
 ]
@@ -413,7 +413,7 @@ ingredients = [
   "1 bunch parsley, chopped",
 ]
 method = [
-  "Soften the onion, capsicum and garlic in the oil in a wide pan for 6 minutes. Stir in the paprika, saffron and rice.",
+  "Soften the onion, capsicum and garlic in the oil in a wide pan over medium heat for 6 minutes. Stir in the paprika, saffron and rice.",
   "Pour in the stock and simmer, without stirring, for 15 minutes.",
   "Scatter over the beans, peas and tomatoes and cook for 8 minutes more until the rice is tender and the liquid absorbed.",
   "Rest for 5 minutes, then serve with lemon and parsley.",
@@ -426,7 +426,7 @@ cuisine = "thai"
 course = "main"
 servings = 4
 minutes = 20
-summary = "Chilled noodles with crunchy vegetables, herbs and a lime peanut dressing. Vegan."
+summary = "Cold rice noodles with crunchy vegetables, herbs and a lime peanut dressing. Vegan."
 ingredients = [
   "250 g rice noodles",
   "90 g peanut butter",
@@ -468,7 +468,7 @@ ingredients = [
 ]
 method = [
   "Heat the oven to 200°C. Put the feta in a baking dish with the tomatoes and garlic around it, drizzle with oil and sprinkle with chilli. Bake for 30 minutes until the tomatoes burst.",
-  "Meanwhile, cook the pasta, keeping a cup of the water.",
+  "Meanwhile, cook the pasta according to the packet, keeping a cup of the water.",
   "Mash the feta, tomatoes and garlic together, stir in the spinach, then the pasta and enough water to make it silky. Top with basil.",
 ]
 
@@ -494,7 +494,7 @@ ingredients = [
   "60 g parmesan, grated",
 ]
 method = [
-  "Fry the mushrooms in the oil for 8 minutes until browned. Add the onion and garlic for 5 minutes.",
+  "Fry the mushrooms in the oil over medium-high heat for 8 minutes until browned. Add the onion and garlic for 5 minutes.",
   "Add the oregano, tomatoes and wine and simmer for 15 minutes until thick.",
   "Meanwhile, bring the stock to the boil, whisk in the polenta and cook on low, stirring, for 10 minutes until thick. Stir in the butter and parmesan.",
   "Spoon the ragu over the polenta.",
@@ -522,7 +522,7 @@ ingredients = [
   "1 baguette",
 ]
 method = [
-  "Soften the onion, carrot, garlic and rosemary in the oil for 8 minutes.",
+  "Soften the onion, carrot, garlic and rosemary in the oil in a large saucepan over medium heat for 8 minutes.",
   "Add the tomatoes, beans and stock and simmer for 15 minutes, mashing a few beans to thicken.",
   "Stir in the spinach until wilted. Serve with parmesan and the baguette.",
 ]
@@ -548,9 +548,9 @@ ingredients = [
   "4 pita bread",
 ]
 method = [
-  "Soften the onion and zucchini in the oil for 6 minutes. Add the garlic and cumin for 1 minute.",
+  "Soften the onion and zucchini in the oil in a large lidded frying pan over medium heat for 6 minutes. Add the garlic and cumin for 1 minute.",
   "Stir in the spinach and most of the parsley until wilted.",
-  "Make 6 hollows, crack in the eggs, cover and cook for 6 minutes until the whites are set.",
+  "Make 6 hollows, crack in the eggs, cover and cook for 6 minutes until the whites are set and the yolks are runny, or cooked through if you prefer.",
   "Scatter with feta and the rest of the parsley and serve with warm pita.",
 ]
 
@@ -577,9 +577,9 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Soften the onion in half the butter for 6 minutes. Add the potato, carrot, pumpkin and stock and simmer for 15 minutes until tender.",
-  "Cook the rice.",
-  "In a small pan, cook the flour and curry powder in the rest of the butter for 2 minutes to a paste. Whisk in a ladle of the stock, then stir it all back into the pot.",
+  "Soften the onion in half the butter in a large saucepan over medium heat for 6 minutes. Add the potato, carrot, pumpkin and stock and simmer for 15 minutes until tender.",
+  "Cook the rice according to the packet.",
+  "In a small pan over medium-low heat, cook the flour and curry powder in the rest of the butter for 2 minutes to a paste. Whisk in a ladle of the stock, then stir it all back into the pot.",
   "Add the soy, honey and apple and simmer for 5 minutes until thick. Serve over the rice.",
 ]
 
@@ -590,7 +590,7 @@ cuisine = "chinese"
 course = "main"
 servings = 4
 minutes = 30
-summary = "Golden tofu and mushrooms in a savoury oyster-style soy sauce with bok choy. Vegetarian if made with vegetable stock."
+summary = "Golden tofu and mushrooms in a savoury soy and hoisin sauce with bok choy. Vegetarian if made with vegetable stock."
 ingredients = [
   "450 g tofu, cut into thick slices",
   "2 tbsp vegetable oil",
@@ -605,9 +605,9 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Cook the rice.",
-  "Fry the tofu in the oil for 3 minutes each side until golden. Remove.",
-  "Fry the mushrooms for 5 minutes, add the garlic and ginger for 30 seconds, then the soy, hoisin and stock.",
+  "Cook the rice according to the packet.",
+  "Fry the tofu in the oil in a large frying pan over medium-high heat for 3 minutes each side until golden. Remove.",
+  "Fry the mushrooms for 5 minutes until golden, add the garlic and ginger for 30 seconds, then the soy, hoisin and stock.",
   "Return the tofu with the bok choy and simmer for 5 minutes. Thicken with the cornflour mixed with a splash of water. Serve with the rice.",
 ]
 
@@ -630,9 +630,9 @@ ingredients = [
   "150 g ricotta",
 ]
 method = [
-  "Fry the eggplant in 3 tbsp oil for 10 minutes until golden and soft. Remove.",
-  "Soften the garlic and chilli in the rest of the oil for 1 minute, add the passata and simmer for 10 minutes. Stir in the eggplant.",
-  "Cook the pasta and toss with the sauce and basil. Top with spoonfuls of ricotta.",
+  "Fry the eggplant in 3 tbsp oil in a large frying pan over medium-high heat for 10 minutes until golden and soft. Remove.",
+  "Lower to medium heat and soften the garlic and chilli in the rest of the oil for 1 minute, add the passata and simmer for 10 minutes. Stir in the eggplant.",
+  "Cook the pasta according to the packet and toss with the sauce and basil. Top with spoonfuls of ricotta.",
 ]
 
 [[recipe]]
@@ -660,7 +660,7 @@ ingredients = [
 method = [
   "Toss the wombok with the salt for 10 minutes, then squeeze dry. Mix with the mushrooms, tofu, spring onions, ginger, 1 tbsp soy and the sesame oil.",
   "Put a teaspoon of filling in each wrapper, wet the edges and pinch closed.",
-  "Fry the dumplings in the vegetable oil for 2 minutes until the bottoms are golden. Add the water, cover and steam for 5 minutes until cooked through.",
+  "Fry the dumplings in the vegetable oil in a large non-stick frying pan over medium-high heat for 2 minutes until the bottoms are golden. Add the water, cover and steam for 5 minutes until cooked through.",
   "Mix the rest of the soy with the rice vinegar for dipping.",
 ]
 
@@ -696,7 +696,7 @@ cuisine = "australian"
 course = "main"
 servings = 4
 minutes = 20
-summary = "Thick slices of golden halloumi in buns with roast capsicum, rocket and sweet chilli mayo. Vegetarian."
+summary = "Thick slices of golden halloumi in buns with charred capsicum, rocket and sweet chilli mayo. Vegetarian."
 ingredients = [
   "250 g halloumi, cut into 4 thick slices",
   "1 tbsp olive oil",
@@ -708,9 +708,9 @@ ingredients = [
   "1 tomato, sliced",
 ]
 method = [
-  "Fry the capsicum in the oil for 6 minutes until soft. Fry the halloumi for 2 minutes each side until golden.",
+  "Fry the capsicum in the oil over medium-high heat for 6 minutes until soft and charred in places. Fry the halloumi for 2 minutes each side until golden.",
   "Mix the mayonnaise and sweet chilli sauce.",
-  "Toast the buns and fill with the mayo, rocket, tomato, capsicum and halloumi.",
+  "Toast the buns for 1–2 minutes until golden and fill with the mayo, rocket, tomato, capsicum and halloumi.",
 ]
 
 [[recipe]]
@@ -735,8 +735,8 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Cook the rice.",
-  "Soften the onion, garlic and ginger in the oil for 5 minutes. Add the curry paste for 1 minute.",
+  "Cook the rice according to the packet.",
+  "Soften the onion, garlic and ginger in the oil in a large saucepan over medium heat for 5 minutes. Add the curry paste for 1 minute.",
   "Add the cauliflower, chickpeas, tomatoes and coconut milk and simmer for 20 minutes until the cauliflower is tender.",
   "Stir in the spinach until wilted and serve with the rice.",
 ]
@@ -762,7 +762,7 @@ ingredients = [
   "1 bunch coriander, chopped",
 ]
 method = [
-  "Fry the laksa paste in the oil for 1 minute. Add the coconut milk and stock and simmer for 5 minutes.",
+  "Fry the laksa paste in the oil in a large saucepan over medium heat for 1 minute until fragrant. Add the coconut milk and stock and simmer for 5 minutes.",
   "Add the tofu puffs and broccoli and simmer for 5 minutes.",
   "Soak the vermicelli in boiling water for 5 minutes and drain. Divide between bowls, ladle over the laksa and top with bean sprouts, lime juice and coriander.",
 ]
@@ -785,7 +785,7 @@ ingredients = [
   "1 lemon, juiced",
 ]
 method = [
-  "Fry the gnocchi in the oil for 5 minutes until golden. Add the zucchini for 3 minutes, then the peas for 2 minutes.",
+  "Fry the gnocchi in the oil in a large frying pan over medium-high heat for 5 minutes until golden. Add the zucchini for 3 minutes, then the peas for 2 minutes.",
   "Toss through the pesto, lemon juice and parmesan.",
 ]
 
@@ -811,6 +811,6 @@ ingredients = [
 ]
 method = [
   "Heat the oven to 200°C. Prick the sweet potatoes, rub with the oil and bake for 45 minutes until soft.",
-  "Warm the beans and corn with the spices and a splash of water for 5 minutes.",
+  "Warm the beans and corn with the spices and a splash of water in a saucepan over medium heat for 5 minutes.",
   "Split the sweet potatoes and fill with the beans, avocado, sour cream, lime juice and coriander.",
 ]

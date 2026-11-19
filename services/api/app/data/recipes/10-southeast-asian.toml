@@ -6,7 +6,7 @@ title = "Thai chicken larb"
 cuisine = "thai"
 course = "main"
 servings = 4
-minutes = 20
+minutes = 30
 summary = "Zesty minced chicken salad with lime, fish sauce, chilli and lots of fresh herbs."
 ingredients = [
   "500 g chicken mince",
@@ -22,7 +22,7 @@ ingredients = [
   "1 cup rice",
 ]
 method = [
-  "Cook the rice.",
+  "Cook the rice according to the packet.",
   "Fry the chicken mince in the oil over high heat for 6 minutes, breaking it up, until cooked through.",
   "Off the heat, stir in the shallots, chilli, fish sauce, lime juice and sugar, then the mint and coriander.",
   "Spoon into lettuce cups and serve with the rice.",
@@ -50,8 +50,8 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Cook the rice.",
-  "Fry the curry paste in the oil for 1 minute until fragrant.",
+  "Cook the rice according to the packet.",
+  "Fry the curry paste in the oil in a large saucepan over medium heat for 1 minute until fragrant.",
   "Add the coconut milk, stock and pumpkin and simmer for 15 minutes until the pumpkin is tender.",
   "Add the chickpeas and green beans for 4 minutes. Season with the soy sauce and lime juice, scatter with basil and serve with the rice.",
 ]
@@ -106,7 +106,7 @@ ingredients = [
   "2 tbsp peanuts, chopped",
 ]
 method = [
-  "Rub the steak with the oil and sear over high heat for 3 minutes each side for medium. Rest for 5 minutes, then slice thinly.",
+  "Rub the steak with the oil and sear over high heat for 3 minutes each side for medium, until browned outside and still pink in the middle. Rest for 5 minutes, then slice thinly.",
   "Mix the fish sauce, lime juice, sugar and chilli.",
   "Toss the cucumber, tomatoes, onion, mint and coriander with the beef and dressing. Top with peanuts.",
 ]
@@ -132,8 +132,8 @@ ingredients = [
 ]
 method = [
   "Soak the noodles in hot water until soft, then drain.",
-  "Stir-fry the chicken in the oil for 5 minutes until cooked through. Add the garlic and broccolini for 2 minutes.",
-  "Push to one side, scramble the eggs, then add the noodles and sauces and toss over high heat for 2 minutes until a little charred.",
+  "Stir-fry the chicken in the oil in a wok over high heat for 5 minutes until cooked through. Add the garlic and broccolini for 2 minutes.",
+  "Push to one side and scramble the eggs for 1 minute until just set, then add the noodles, kecap manis, oyster sauce and soy sauce and toss for 2 minutes until a little charred.",
 ]
 
 [[recipe]]
@@ -158,7 +158,7 @@ ingredients = [
 method = [
   "Blitz the fish, curry paste, egg and fish sauce in a food processor to a sticky paste. Stir in the beans and lime leaves.",
   "With wet hands, shape into 16 small patties.",
-  "Fry in the oil in batches for 2–3 minutes each side until golden and cooked through. Serve with sweet chilli sauce and cucumber.",
+  "Fry in the oil over medium heat in batches for 2–3 minutes each side until golden and cooked through. Serve with sweet chilli sauce and cucumber.",
 ]
 
 [[recipe]]
@@ -184,8 +184,8 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Cook the rice. Toss the chicken in the cornflour.",
-  "Stir-fry the chicken in the oil for 5 minutes until golden and cooked through. Remove.",
+  "Cook the rice according to the packet. Toss the chicken in the cornflour.",
+  "Stir-fry the chicken in the oil in a wok over high heat for 5 minutes until golden and cooked through. Remove.",
   "Stir-fry the garlic, onion and capsicum for 2 minutes. Return the chicken with the cashews, sauces, sugar and spring onions and toss for 1 minute. Serve with the rice.",
 ]
 
@@ -211,7 +211,7 @@ ingredients = [
   "3 spring onions, sliced",
 ]
 method = [
-  "Scramble the eggs in half the oil and remove.",
+  "Scramble the eggs in half the oil in a wok over medium-high heat for 1–2 minutes until just set, then remove.",
   "Fry the onion in the rest of the oil for 2 minutes, then the prawns for 2 minutes until pink.",
   "Add the curry powder, rice, pineapple and peas and fry for 5 minutes until hot. Stir in the egg, cashews, fish sauce and spring onions.",
 ]
@@ -238,8 +238,8 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Cook the rice.",
-  "Fry the curry paste in the oil for 1 minute, then add the coconut milk and stock and bring to a simmer.",
+  "Cook the rice according to the packet.",
+  "Fry the curry paste in the oil in a large saucepan over medium heat for 1 minute until fragrant, then add the coconut milk and stock and bring to a simmer.",
   "Add the tofu and zucchini for 6 minutes, then the snow peas for 2 minutes. Season with the soy sauce and lime and scatter with basil. Serve with the rice.",
 ]
 
@@ -268,7 +268,7 @@ ingredients = [
 ]
 method = [
   "Mix the pork, lemongrass, garlic, 1 tbsp fish sauce and 1 tbsp sugar. Shape into 12 small patties.",
-  "Fry or grill the patties in the oil for 4 minutes each side until charred and cooked through.",
+  "Fry the patties in the oil over medium-high heat, or grill them, for 4 minutes each side until charred and cooked through.",
   "Soak the vermicelli in boiling water for 5 minutes, then drain and rinse.",
   "For the dipping sauce, mix the rest of the fish sauce and sugar with the lime juice, chilli and water. Serve the patties with the noodles, lettuce, mint, cucumber and sauce.",
 ]
@@ -298,7 +298,7 @@ ingredients = [
 ]
 method = [
   "Toss the carrots with the rice vinegar and white sugar and leave while you cook.",
-  "Fry the pork with the lemongrass in the oil for 6 minutes until browned and cooked through. Add the fish sauce and brown sugar and cook for 1 minute until sticky.",
+  "Fry the pork with the lemongrass in the oil over medium-high heat for 6 minutes until browned and cooked through. Add the fish sauce and brown sugar and cook for 1 minute until sticky.",
   "Split the rolls, spread with mayonnaise and fill with the pork, drained carrot, cucumber, coriander and chilli.",
 ]
 
@@ -308,7 +308,7 @@ title = "Vietnamese chicken and cabbage salad"
 cuisine = "vietnamese"
 course = "main"
 servings = 4
-minutes = 30
+minutes = 45
 summary = "Poached chicken tossed through crunchy wombok, carrot and herbs with a lime dressing."
 ingredients = [
   "2 chicken breasts",
@@ -349,7 +349,7 @@ ingredients = [
   "3 spring onions, sliced",
 ]
 method = [
-  "Mix the lemongrass, garlic, fish sauce and sugar and coat the chicken. Marinate for 15 minutes while you cook the rice.",
+  "Mix the lemongrass, garlic, fish sauce and sugar and coat the chicken. Marinate for 15 minutes while you cook the rice according to the packet.",
   "Fry the chicken in the oil over medium heat for 6–7 minutes each side until caramelised and cooked through.",
   "Slice and serve over the rice with cucumber and spring onions.",
 ]
@@ -376,9 +376,9 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Cook the rice.",
-  "Sear the beef in the oil over very high heat in batches for 2 minutes, shaking the pan, until browned.",
-  "Add the onion and garlic for 1 minute, then the oyster sauce, soy and sugar and toss until glossy.",
+  "Cook the rice according to the packet.",
+  "Sear the beef in the oil over very high heat in batches for 2 minutes, shaking the pan, until browned outside and still pink in the middle. Remove.",
+  "Add the onion and garlic to the pan for 1 minute. Return the beef with the oyster sauce, soy and sugar and toss for 1 minute until glossy.",
   "Serve on the rocket and tomatoes with lime wedges and the rice.",
 ]
 
@@ -407,7 +407,7 @@ ingredients = [
 ]
 method = [
   "Soak the vermicelli in boiling water for 5 minutes, drain and rinse under cold water.",
-  "Fry the prawns and garlic in the oil for 3 minutes until pink.",
+  "Fry the prawns and garlic in the oil over high heat for 3 minutes until pink and cooked through.",
   "Mix the fish sauce, lime juice, sugar and water for the dressing.",
   "Divide the noodles, carrot, cucumber, bean sprouts and mint between bowls, top with the prawns and peanuts and pour over the dressing.",
 ]
@@ -418,7 +418,7 @@ title = "Vietnamese caramel pork"
 cuisine = "vietnamese"
 course = "main"
 servings = 4
-minutes = 75
+minutes = 105
 summary = "Pork shoulder braised in a dark caramel with fish sauce until sticky and tender."
 ingredients = [
   "1 kg pork shoulder, cut into 3 cm pieces",
@@ -432,10 +432,10 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Hard-boil the eggs for 8 minutes, cool and peel.",
+  "Hard-boil the eggs for 8 minutes, cool and peel. Cook the rice according to the packet while the pork simmers.",
   "Melt the sugar in a heavy pot over medium heat, without stirring, for 4 minutes until dark amber.",
   "Carefully add the pork, onion and garlic and stir for 5 minutes until coated and browned. Add the fish sauce and water.",
-  "Cover and simmer for 45 minutes until tender, adding the eggs for the last 10 minutes. Serve with rice and spring onions.",
+  "Cover and simmer gently for 1 hour 15 minutes until the pork is very tender, adding the eggs for the last 10 minutes. Serve with the rice and spring onions.",
 ]
 
 [[recipe]]
@@ -462,10 +462,10 @@ ingredients = [
   "80 g peanuts",
 ]
 method = [
-  "Rinse the rice and cook with the coconut milk, water, ginger and salt, covered, on low for 15 minutes. Rest for 5 minutes.",
+  "Rinse the rice and cook with the coconut milk, water, ginger and salt, covered, over low heat for 15 minutes until the liquid is absorbed. Rest for 5 minutes.",
   "Boil the eggs for 8 minutes, cool and halve.",
-  "For the sambal, fry the onion in the oil for 5 minutes, then add the chilli flakes, tamarind and sugar with a splash of water and simmer for 3 minutes until jammy.",
-  "Toast the peanuts in a dry pan for 3 minutes. Serve the rice with the eggs, cucumber, peanuts and sambal.",
+  "For the sambal, fry the onion in the oil in a small pan over medium heat for 5 minutes until soft, then add the chilli flakes, tamarind and sugar with a splash of water and simmer for 3 minutes until jammy.",
+  "Toast the peanuts in a dry pan over medium heat for 3 minutes until golden. Serve the rice with the eggs, cucumber, peanuts and sambal.",
 ]
 
 [[recipe]]
@@ -493,8 +493,8 @@ ingredients = [
 ]
 method = [
   "Loosen the noodles in hot water and drain.",
-  "Stir-fry the chicken in the oil for 5 minutes until cooked through. Add the garlic, onion and bok choy for 2 minutes.",
-  "Push aside and scramble the eggs, then add the noodles, kecap manis, tomato sauce, soy and chilli and toss for 2 minutes. Add the bean sprouts and serve with lime.",
+  "Stir-fry the chicken in the oil in a wok over high heat for 5 minutes until cooked through. Add the garlic, onion and bok choy for 2 minutes.",
+  "Push aside and scramble the eggs for 1 minute until just set, then add the noodles, kecap manis, tomato sauce, soy and chilli and toss for 2 minutes. Add the bean sprouts and serve with lime.",
 ]
 
 [[recipe]]
@@ -521,9 +521,9 @@ ingredients = [
   "2 cups rice",
 ]
 method = [
-  "Fry the curry paste in the oil for 2 minutes. Add the beef and stir for 5 minutes until coated and browned.",
+  "Fry the curry paste in the oil in a heavy pot over medium heat for 2 minutes until fragrant. Add the beef and stir for 5 minutes until coated and browned.",
   "Add the lemongrass, lime leaves, cinnamon, coconut milk and water. Simmer uncovered for 2 hours, stirring more often near the end, until thick and the beef is tender.",
-  "Toast the coconut in a dry pan for 3 minutes until golden. Stir it in with the tamarind, sugar and salt and cook for 10 minutes more until dark and almost dry. Serve with rice.",
+  "Cook the rice according to the packet. Toast the coconut in a dry pan over medium heat for 3 minutes until golden. Stir it in with the tamarind, sugar and salt and cook for 10 minutes more until dark and almost dry. Serve with the rice.",
 ]
 
 [[recipe]]
@@ -550,7 +550,7 @@ ingredients = [
 method = [
   "Soak the noodles in hot water until soft and drain.",
   "Stir-fry the prawns and garlic in the oil over very high heat for 2 minutes until pink.",
-  "Push aside and scramble the eggs, then add the noodles, sauces and chilli and toss for 2 minutes until charred in spots. Toss through the bean sprouts and chives.",
+  "Push aside and scramble the eggs, then add the noodles, kecap manis, soy sauce, oyster sauce and chilli and toss for 2 minutes until charred in spots. Toss through the bean sprouts and chives.",
 ]
 
 [[recipe]]
@@ -578,8 +578,8 @@ ingredients = [
 ]
 method = [
   "Boil the potatoes for 12 minutes until tender, adding the beans for the last 3 minutes. Drain.",
-  "Boil the eggs for 8 minutes, cool and halve. Fry the tofu in the oil for 6 minutes until golden.",
-  "Warm the peanut butter, kecap manis, soy, lime juice, chilli and water, whisking, until smooth.",
+  "Boil the eggs for 8 minutes, cool and halve. Fry the tofu in the oil over medium-high heat for 6 minutes, turning, until golden.",
+  "Warm the peanut butter, kecap manis, soy, lime juice, chilli and water over low heat, whisking, for 2–3 minutes until smooth.",
   "Arrange everything with the cucumber and bean sprouts and pour over the sauce.",
 ]
 
@@ -634,7 +634,7 @@ ingredients = [
 ]
 method = [
   "Loosen the noodles in hot water and drain.",
-  "Stir-fry the chicken in the oil for 5 minutes until cooked through. Add the broccoli and capsicum for 3 minutes.",
+  "Stir-fry the chicken in the oil in a wok over high heat for 5 minutes until cooked through. Add the broccoli and capsicum for 3 minutes.",
   "Whisk the peanut butter, kecap manis, soy, lime juice and water, add with the noodles and toss for 2 minutes until coated. Top with peanuts.",
 ]
 
@@ -659,9 +659,9 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Brown the chicken in the oil for 4 minutes each side. Add the garlic for 1 minute.",
+  "Cook the rice according to the packet. Brown the chicken in the oil in a large pan over medium-high heat for 4 minutes each side. Add the garlic for 1 minute.",
   "Add the soy sauce, vinegar, water, bay leaves, pepper and sugar. Simmer, covered, for 25 minutes until the chicken is cooked through.",
-  "Uncover and simmer for 10 minutes more until the sauce reduces. Serve with rice.",
+  "Uncover and simmer for 10 minutes more until the sauce reduces. Serve with the rice.",
 ]
 
 [[recipe]]
@@ -686,6 +686,6 @@ ingredients = [
 ]
 method = [
   "Soak the vermicelli in warm water for 10 minutes and drain.",
-  "Stir-fry the chicken in the oil for 5 minutes until cooked through. Add the onion and garlic for 2 minutes, then the cabbage and carrot for 3 minutes.",
+  "Stir-fry the chicken in the oil in a wok over high heat for 5 minutes until cooked through. Add the onion and garlic for 2 minutes, then the cabbage and carrot for 3 minutes.",
   "Add the stock, soy sauce and noodles and toss for 3 minutes until the liquid is absorbed. Serve with lemon wedges.",
 ]

@@ -233,6 +233,24 @@ def test_boiling_water_is_no_heat_level_for_the_next_pan_step() -> None:
     assert kinds([recipe(ingredients=lines, method=method, minutes=15)]) == ["no_heat"]
 
 
+def test_the_oven_temperature_is_no_heat_level_for_the_pan() -> None:
+    method = [
+        "Heat the oven to 200°C.",
+        "Fry the chicken in the olive oil for 12 minutes until cooked through, adding the garlic.",
+    ]
+    assert kinds([recipe(method=method)]) == ["no_heat"]
+
+
+def test_toasting_in_a_dry_pan_needs_a_heat_level() -> None:
+    lines = ["600 g chicken thigh", "2 cloves garlic, crushed", "1 tbsp olive oil", "40 g walnuts"]
+    method = [
+        "Toast the walnuts in a dry pan for 4 minutes.",
+        "Fry the chicken in the olive oil over medium heat for 12 minutes until cooked through,"
+        " adding the garlic.",
+    ]
+    assert kinds([recipe(ingredients=lines, method=method)]) == ["no_heat"]
+
+
 def test_baking_needs_an_oven_temperature() -> None:
     lines = ["150 g self-raising flour", "2 eggs", "100 g caster sugar", "100 g butter, melted"]
     method = ["Mix the flour, eggs, sugar and butter.", "Bake for 25 minutes until golden."]
@@ -242,6 +260,12 @@ def test_baking_needs_an_oven_temperature() -> None:
     ]
     hot = ["Heat the oven to 180°C. Mix the flour, eggs, sugar and butter.", method[1]]
     assert check_recipes([recipe(ingredients=lines, method=hot, minutes=35)]) == []
+
+
+def test_brown_sugar_is_not_a_browning_step() -> None:
+    lines = ["100 g butter", "100 g brown sugar", "150 g plain flour"]
+    method = ["Rub the butter into the flour and brown sugar until crumbly."]
+    assert kinds([recipe(ingredients=lines, method=method, minutes=10)]) == []
 
 
 def test_baking_powder_and_fried_eggs_are_not_cooking_steps() -> None:

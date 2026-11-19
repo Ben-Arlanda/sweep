@@ -48,7 +48,7 @@ ingredients = [
 ]
 method = [
   "Boil the lentils in plenty of water for 15 minutes until just tender. Drain.",
-  "Fry the onions in the oil for 20 minutes, stirring often, until deep golden. Remove half.",
+  "Fry the onions in the oil over medium heat for 20 minutes, stirring often, until deep golden. Remove half.",
   "Add the spices, rice, lentils, salt and the 750 ml water to the pan. Cover and cook on low for 15 minutes until the rice is tender.",
   "Top with the reserved onions and parsley.",
 ]
@@ -76,7 +76,7 @@ ingredients = [
 method = [
   "Heat the oven to 200°C. Toss the chicken and onions with the sumac, cinnamon, oil, lemon juice and salt.",
   "Roast for 40 minutes until the chicken is golden and cooked through.",
-  "Toast the pine nuts in a dry pan for 3 minutes. Scatter over with the parsley and serve with warm pita.",
+  "Toast the pine nuts in a dry pan over medium heat for 3 minutes until golden. Scatter over with the parsley and serve with warm pita.",
 ]
 
 [[recipe]]
@@ -102,8 +102,8 @@ ingredients = [
 ]
 method = [
   "Heat the oven to 200°C. Toss the pita with 2 tbsp oil and bake for 8 minutes until crisp.",
-  "Warm the chickpeas with the cumin and a splash of water for 5 minutes.",
-  "Mix the yoghurt, tahini, garlic and lemon juice. Fry the pine nuts and paprika in the last of the oil for 2 minutes.",
+  "Warm the chickpeas with the cumin and a splash of water in a saucepan over medium heat for 5 minutes until heated through.",
+  "Mix the yoghurt, tahini, garlic and lemon juice. Fry the pine nuts and paprika in the last of the oil in a small frying pan over medium heat for 2 minutes until golden.",
   "Layer the pita, chickpeas and yoghurt, and top with the pine nuts and parsley.",
 ]
 
@@ -130,8 +130,9 @@ ingredients = [
 ]
 method = [
   "Grill the capsicums for 15 minutes, turning, until blackened. Cover for 5 minutes, then peel and seed.",
-  "Toast the walnuts in a dry pan for 4 minutes.",
-  "Blitz everything except the pita to a coarse paste. Serve with warm pita.",
+  "Toast the walnuts in a dry pan over medium heat for 4 minutes until fragrant.",
+  "Blitz the capsicums and walnuts with the breadcrumbs, garlic, cumin, chilli flakes, tomato paste, lemon juice, oil and salt to a coarse paste.",
+  "Warm the pita in the oven at 180°C for 5 minutes and serve with the dip.",
 ]
 
 [[recipe]]
@@ -158,8 +159,8 @@ ingredients = [
 ]
 method = [
   "Heat the oven to 200°C. Rub the chicken with 1 tbsp oil and the paprika and roast for 22 minutes until cooked through. Rest, then slice.",
-  "Fry the mince and onion in the rest of the oil for 8 minutes until browned. Add the spices, rice, stock and salt. Cover and cook on low for 15 minutes.",
-  "Toast the almonds in a dry pan for 3 minutes. Pile the rice on a platter, top with the chicken, almonds and parsley.",
+  "Fry the mince and onion in the rest of the oil in a large pan over medium-high heat for 8 minutes until browned and cooked through. Add the spices, rice, stock and salt. Cover and cook over low heat for 15 minutes until the rice is tender.",
+  "Toast the almonds in a dry pan over medium heat for 3 minutes until golden. Pile the rice on a platter, top with the chicken, almonds and parsley.",
 ]
 
 [[recipe]]
@@ -182,9 +183,9 @@ ingredients = [
   "4 slices bread, toasted",
 ]
 method = [
-  "Mix the yoghurt, garlic and salt and spread on two plates.",
+  "Toast the bread for 2–3 minutes until golden. Mix the yoghurt, garlic and salt and spread on four plates.",
   "Poach the eggs in barely simmering water for 3 minutes until the whites are set.",
-  "Melt the butter with the chilli flakes and paprika for 1 minute until sizzling.",
+  "Melt the butter with the chilli flakes and paprika in a small pan over medium heat for 1 minute until sizzling.",
   "Put the eggs on the yoghurt, spoon over the butter, scatter with dill and serve with the toast.",
 ]
 
@@ -212,7 +213,7 @@ ingredients = [
   "1 lemon, cut into wedges",
 ]
 method = [
-  "Brown the lamb in the oil for 5 minutes. Add the onion and celery for 5 minutes, then the spices for 1 minute.",
+  "Brown the lamb in the oil in a large pot over medium-high heat for 5 minutes. Add the onion and celery for 5 minutes, then the spices for 1 minute.",
   "Add the tomatoes, lentils, chickpeas and stock and simmer, partly covered, for 50 minutes until the lamb is tender and cooked through.",
   "Stir in the coriander and parsley and serve with lemon wedges.",
 ]
@@ -320,8 +321,8 @@ ingredients = [
   "500 g potatoes, cut into chips",
 ]
 method = [
-  "Heat the oven to 220°C. Toss the chips with 1 tbsp oil and bake for 30 minutes until golden.",
-  "Mix the chicken with the rest of the oil, half the lemon juice, the oregano, paprika and half the garlic. Pan-fry for 6 minutes each side until cooked through, then slice.",
+  "Heat the oven to 220°C. Toss the potato chips with 1 tbsp oil and bake for 30 minutes until golden.",
+  "Mix the chicken with the rest of the oil, half the lemon juice, the oregano, paprika and half the garlic. Pan-fry in a frying pan over medium-high heat for 6 minutes each side until cooked through, then slice.",
   "For the tzatziki, mix the yoghurt, cucumber, the rest of the garlic and lemon juice.",
   "Fill the warm pita with chicken, tzatziki, tomato, onion and a few chips.",
 ]
@@ -375,7 +376,7 @@ ingredients = [
   "1 baguette",
 ]
 method = [
-  "Heat the oven to 190°C. Soften the onion, garlic and carrot in the oil for 8 minutes.",
+  "Heat the oven to 190°C. Soften the onion, garlic and carrot in the oil in an ovenproof pan over medium heat for 8 minutes until soft.",
   "Add the passata, oregano, honey and beans and simmer for 5 minutes. Stir in most of the dill.",
   "Tip into a baking dish, top with feta and bake for 30 minutes until bubbling. Scatter with the rest of the dill and serve with the baguette.",
 ]
@@ -410,7 +411,7 @@ title = "Spinach and herb rice (spanakorizo)"
 cuisine = "greek"
 course = "main"
 servings = 4
-minutes = 35
+minutes = 40
 summary = "Rice simmered with lots of spinach, dill, spring onion and lemon, topped with feta. Vegetarian."
 ingredients = [
   "3 tbsp olive oil",
@@ -424,9 +425,9 @@ ingredients = [
   "100 g feta, crumbled",
 ]
 method = [
-  "Soften the onion and spring onions in the oil for 5 minutes. Stir in the rice for 1 minute.",
-  "Add the stock and simmer, covered, for 15 minutes.",
-  "Stir in the spinach and dill until wilted, cover for 5 minutes, then add the lemon juice. Serve with feta.",
+  "Soften the onion and spring onions in the oil in a saucepan over medium heat for 5 minutes. Stir in the rice for 1 minute.",
+  "Add the stock, bring to the boil, then cover and simmer over low heat for 18–20 minutes until the rice is almost tender.",
+  "Stir in the spinach and dill until wilted, cover off the heat for 5 minutes until the rice is tender and most of the stock is absorbed, then add the lemon juice. Serve with feta.",
 ]
 
 [[recipe]]
@@ -436,7 +437,7 @@ cuisine = "greek"
 course = "main"
 servings = 4
 minutes = 25
-summary = "Prawns baked in a garlicky tomato and oregano sauce under melting feta."
+summary = "Prawns simmered in a garlicky tomato and oregano sauce under melting feta."
 ingredients = [
   "600 g prawns, peeled",
   "2 tbsp olive oil",
@@ -450,7 +451,7 @@ ingredients = [
   "1 baguette",
 ]
 method = [
-  "Soften the onion and garlic in the oil for 5 minutes. Add the tomatoes, oregano and chilli and simmer for 8 minutes.",
+  "Soften the onion and garlic in the oil in a frying pan over medium heat for 5 minutes. Add the tomatoes, oregano and chilli and simmer for 8 minutes.",
   "Add the prawns, scatter with feta and cook, covered, for 4 minutes until the prawns are pink.",
   "Scatter with parsley and serve with the baguette.",
 ]
@@ -477,10 +478,10 @@ ingredients = [
   "100 g parmesan, grated",
 ]
 method = [
-  "Cook the pasta for 2 minutes less than the packet says and drain.",
-  "Fry the onion and mince in the oil for 10 minutes until browned. Add the cinnamon and passata and simmer for 20 minutes.",
-  "Melt the butter, stir in the flour, then whisk in the milk until thick. Off the heat, whisk in the eggs and half the parmesan.",
-  "Heat the oven to 180°C. Layer the pasta, meat sauce and white sauce in a dish, top with the rest of the parmesan and bake for 45 minutes. Rest for 10 minutes.",
+  "Boil the pasta in salted water for 2 minutes less than the packet says and drain.",
+  "Fry the onion and mince in the oil over medium-high heat for 10 minutes until browned. Add the cinnamon and passata and simmer for 20 minutes.",
+  "Melt the butter in a saucepan over medium heat and stir in the flour for 1 minute, then gradually whisk in the milk for 5 minutes until thick. Off the heat, whisk in the eggs and half the parmesan.",
+  "Heat the oven to 180°C. Layer the pasta, meat sauce and white sauce in a dish, top with the rest of the parmesan and bake for 45 minutes until golden on top and bubbling at the edges. Rest for 10 minutes.",
 ]
 
 [[recipe]]
@@ -501,7 +502,7 @@ ingredients = [
   "1 pinch salt",
 ]
 method = [
-  "Mix everything together and chill until needed.",
+  "Mix the yoghurt, cucumber, garlic, dill, lemon juice, oil and salt, and chill until needed.",
 ]
 
 [[recipe]]
@@ -528,8 +529,8 @@ ingredients = [
 ]
 method = [
   "Mix the minces, breadcrumbs, egg, half the garlic and 1 tsp paprika. Roll into 20 balls.",
-  "Brown the meatballs in the oil for 6 minutes. Remove.",
-  "Soften the onion and the rest of the garlic for 5 minutes, add the rest of the paprika, the wine and passata, and simmer for 5 minutes.",
+  "Brown the meatballs in the oil in a large frying pan over medium-high heat for 6 minutes. Remove.",
+  "Lower to medium heat and soften the onion and the rest of the garlic in the same pan for 5 minutes, add the rest of the paprika, the wine and passata, and simmer for 5 minutes.",
   "Return the meatballs and simmer for 15 minutes until cooked through. Scatter with parsley and serve with the baguette.",
 ]
 
@@ -549,7 +550,7 @@ ingredients = [
   "1/2 tsp salt",
 ]
 method = [
-  "Toast the bread.",
+  "Toast the bread for 2–3 minutes until golden.",
   "Rub each slice with the cut garlic, then the cut tomato, squeezing so the pulp soaks in.",
   "Drizzle with olive oil and sprinkle with salt.",
 ]
@@ -561,7 +562,7 @@ cuisine = "spanish"
 course = "main"
 servings = 4
 minutes = 25
-summary = "Chickpeas and spinach in a smoky garlic, cumin and paprika sauce. Vegan."
+summary = "Chickpeas and spinach in a warm garlic, cumin and paprika sauce. Vegan."
 ingredients = [
   "3 tbsp olive oil",
   "2 slices bread, cubed",
@@ -575,8 +576,8 @@ ingredients = [
   "1/2 tsp salt",
 ]
 method = [
-  "Fry the bread and garlic in the oil for 4 minutes until golden. Blitz or mash with the spices and vinegar to a paste.",
-  "Warm the chickpeas in the stock for 5 minutes, stir in the paste, then the spinach until wilted. Season with the salt.",
+  "Fry the bread and garlic in the oil over medium heat for 4 minutes until golden. Blitz or mash with the spices and vinegar to a paste.",
+  "Warm the chickpeas in the stock in the same pan over medium heat for 5 minutes, stir in the paste, then the spinach until wilted. Season with the salt.",
 ]
 
 [[recipe]]
@@ -602,8 +603,8 @@ ingredients = [
   "1 baguette",
 ]
 method = [
-  "Brown the chicken in the oil for 4 minutes each side. Remove. Fry the chorizo for 2 minutes.",
-  "Add the onion, capsicum and garlic for 5 minutes, then the paprika, tomatoes and stock.",
+  "Brown the chicken in the oil in a large pan over medium-high heat for 4 minutes each side. Remove. Fry the chorizo for 2 minutes until it releases its oil.",
+  "Lower to medium heat, add the onion, capsicum and garlic for 5 minutes until soft, then the paprika, tomatoes and stock.",
   "Return the chicken and simmer, covered, for 25 minutes until cooked through. Add the beans for 5 minutes. Scatter with parsley and serve with the baguette.",
 ]
 
@@ -625,7 +626,7 @@ ingredients = [
   "1 bunch parsley, chopped",
 ]
 method = [
-  "Fry the garlic and bread in the oil for 4 minutes until golden. Stir in the paprika.",
+  "Fry the garlic and bread in the oil in a saucepan over medium heat for 4 minutes until golden. Stir in the paprika.",
   "Add the stock and simmer for 10 minutes.",
   "Crack in the eggs and simmer for 4 minutes until the whites are set. Scatter with parsley.",
 ]
@@ -651,7 +652,7 @@ ingredients = [
 ]
 method = [
   "Bring the water and butter to the boil, tip in the flour and beat for 1 minute until it forms a ball. Cool for 5 minutes, then beat in the eggs.",
-  "Pipe 10 cm lengths into the hot oil and fry for 3 minutes until golden. Drain.",
+  "Heat the oil in a deep saucepan to 180°C, or until a little batter sizzles straight away. Pipe 10 cm lengths into the hot oil and fry for 3 minutes until golden. Drain.",
   "Toss in the sugar and cinnamon.",
   "Warm the cream, pour over the chocolate and stir until smooth. Serve for dipping.",
 ]

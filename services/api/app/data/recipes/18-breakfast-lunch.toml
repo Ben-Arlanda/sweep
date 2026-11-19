@@ -37,9 +37,9 @@ ingredients = [
   "2 tbsp tomato sauce",
 ]
 method = [
-  "Fry the bacon for 5 minutes until crisp.",
-  "Fry the eggs in the butter for 3 minutes until the whites are set. Toast the muffins.",
-  "Stack each muffin with cheddar, bacon, egg and a little tomato sauce.",
+  "Fry the bacon in a frying pan over medium heat for 5 minutes until crisp. Remove.",
+  "Fry the eggs in the butter for 3 minutes until the whites are set and the yolks are runny, or cooked through if you prefer. Top each egg with cheddar, cover and cook for 1 minute until melted. Toast the muffins.",
+  "Stack each muffin with bacon, the cheesy egg and a little tomato sauce.",
 ]
 
 [[recipe]]
@@ -88,9 +88,9 @@ ingredients = [
   "30 g butter",
 ]
 method = [
-  "Fry the mince, onion and carrot in the oil for 8 minutes until browned and cooked through.",
+  "Fry the mince, onion and carrot in the oil over medium-high heat for 8 minutes until browned and cooked through.",
   "Stir in the flour, then the stock, tomato sauce and worcestershire. Simmer for 10 minutes, adding the peas for the last 3 minutes.",
-  "Toast and butter the bread and spoon the mince over the top.",
+  "Toast the bread until golden, butter it and spoon the mince over the top.",
 ]
 
 [[recipe]]
@@ -109,12 +109,12 @@ ingredients = [
   "1 tbsp soy sauce",
   "100 g cherry tomatoes, halved",
   "50 g baby spinach",
-  "4 slices bread, toasted",
+  "4 slices bread",
 ]
 method = [
-  "Soften the onion in the oil for 4 minutes.",
+  "Soften the onion in the oil over medium heat for 4 minutes.",
   "Add the tofu, turmeric and soy and fry for 5 minutes until hot and golden in spots.",
-  "Add the tomatoes and spinach for 1 minute until wilted. Serve on the toast.",
+  "Add the tomatoes and spinach for 1 minute until wilted. Toast the bread until golden and serve the scramble on top.",
 ]
 
 [[recipe]]
@@ -161,7 +161,7 @@ ingredients = [
 method = [
   "Fry the mushrooms in the butter over high heat for 6 minutes until golden.",
   "Add the garlic, thyme and salt for 1 minute.",
-  "Toast the bread, pile on the mushrooms and scatter with parsley.",
+  "Toast the bread until golden, pile on the mushrooms and scatter with parsley.",
 ]
 
 [[recipe]]
@@ -207,9 +207,9 @@ ingredients = [
   "1 avocado, sliced",
 ]
 method = [
-  "Fry the sweet potato in the oil for 12 minutes until tender and crisp at the edges.",
+  "Fry the sweet potato in the oil over medium heat for 12 minutes until tender and crisp at the edges.",
   "Add the onion, capsicum and paprika for 5 minutes, then the spinach until wilted.",
-  "Make 4 hollows, crack in the eggs, cover and cook for 4 minutes until the whites are set. Serve with avocado.",
+  "Make 4 hollows, crack in the eggs, cover and cook for 4 minutes until the whites are set and the yolks are runny, or cooked through if you prefer. Serve with avocado.",
 ]
 
 [[recipe]]
@@ -278,7 +278,7 @@ ingredients = [
 ]
 method = [
   "Mix the tuna, mayonnaise, celery, spring onions and lemon juice.",
-  "Toast the bread, spread with the tuna and top with cheddar.",
+  "Toast the bread until golden, spread with the tuna and top with cheddar.",
   "Grill for 3 minutes until the cheese is bubbling.",
 ]
 
@@ -299,8 +299,8 @@ ingredients = [
   "1 pinch salt",
 ]
 method = [
-  "Fry the bacon for 6 minutes until crisp.",
-  "Toast the bread and spread with mayonnaise.",
+  "Fry the bacon in a frying pan over medium heat for 6 minutes until crisp.",
+  "Toast the bread until golden and spread with mayonnaise.",
   "Fill with lettuce, tomato sprinkled with salt, and bacon.",
 ]
 
@@ -321,7 +321,7 @@ ingredients = [
   "1 tsp honey",
 ]
 method = [
-  "Blend everything until smooth.",
+  "Blend the spinach, banana, mango, oats, milk and honey until smooth.",
 ]
 
 [[recipe]]
@@ -342,9 +342,9 @@ ingredients = [
   "1 bunch coriander, chopped",
 ]
 method = [
-  "Fry the chorizo for 4 minutes until crisp. Remove.",
+  "Fry the chorizo in a frying pan over medium heat for 4 minutes until crisp. Remove.",
   "Scramble the eggs in the butter over low heat for 3 minutes until just set. Fold in the chorizo.",
-  "Warm the tortillas and fill with the eggs, avocado, salsa and coriander.",
+  "Warm the tortillas in a dry frying pan for 20 seconds each side and fill with the eggs, avocado, salsa and coriander.",
 ]
 
 [[recipe]]
@@ -368,7 +368,7 @@ ingredients = [
 method = [
   "Heat the oven to 220°C with a 25 cm ovenproof frying pan inside.",
   "Blend the eggs, flour, milk and sugar until smooth.",
-  "Melt the butter in the hot pan, pour in the batter and bake for 18 minutes until puffed and golden. Don't open the oven.",
+  "Carefully take the hot pan out of the oven, add the butter and swirl until melted. Pour in the batter, return the pan to the oven and bake for 18 minutes until puffed and golden. Don't open the oven.",
   "Dust with icing sugar and serve with lemon and blueberries.",
 ]
 
@@ -401,7 +401,7 @@ title = "Ricotta hotcakes with banana and honey"
 cuisine = "australian"
 course = "breakfast"
 servings = 4
-minutes = 25
+minutes = 40
 summary = "The cafe classic: light, fluffy ricotta hotcakes with banana and honey butter. Vegetarian."
 ingredients = [
   "250 g ricotta",
@@ -439,9 +439,9 @@ ingredients = [
   "30 g butter, softened",
 ]
 method = [
-  "Fry the chicken in the oil for 6–7 minutes each side until cooked through. Rest, then slice.",
+  "Fry the chicken in the oil over medium heat for 6–7 minutes each side until cooked through. Rest, then slice.",
   "Spread the bread with pesto, fill with chicken, tomato and mozzarella, and butter the outsides.",
-  "Cook in a frying pan for 3 minutes each side until golden and melted.",
+  "Cook in the frying pan over medium-low heat for 3 minutes each side until golden and melted.",
 ]
 
 [[recipe]]
@@ -526,9 +526,9 @@ ingredients = [
   "1 pinch salt",
 ]
 method = [
-  "Butter the outside of each slice.",
+  "Butter the outside of each slice of bread.",
   "Fill with cheddar and tomato sprinkled with salt.",
-  "Cook in a jaffle iron or sandwich press for 4 minutes until golden and melted.",
+  "Cook in a jaffle iron over medium heat, or in a heated sandwich press, for 4 minutes until golden and melted.",
 ]
 
 [[recipe]]
@@ -571,9 +571,9 @@ ingredients = [
   "1 spring onion, sliced",
 ]
 method = [
-  "Fry the kimchi in half the butter for 2 minutes.",
-  "Fry the eggs in the rest of the butter for 3 minutes until the whites are set and the edges crisp.",
-  "Toast the bread, top with the kimchi, cheddar and egg, and scatter with spring onion.",
+  "Fry the kimchi in half the butter over medium heat for 2 minutes until hot.",
+  "Fry the eggs in the rest of the butter for 3 minutes until the whites are set and the edges crisp, and the yolks are runny, or cooked through if you prefer.",
+  "Toast the bread until golden, top with the kimchi, cheddar and egg, and scatter with spring onion.",
 ]
 
 [[recipe]]
@@ -604,7 +604,7 @@ title = "Egg and bacon pie"
 cuisine = "australian"
 course = "lunch"
 servings = 6
-minutes = 60
+minutes = 70
 summary = "A picnic classic: whole eggs and bacon baked between puff pastry."
 ingredients = [
   "2 sheets puff pastry",
@@ -616,7 +616,7 @@ ingredients = [
   "1 egg, beaten, extra",
 ]
 method = [
-  "Heat the oven to 200°C. Fry the bacon and onion for 6 minutes. Cool.",
+  "Heat the oven to 200°C. Fry the bacon and onion in a frying pan over medium heat for 6 minutes until the onion is soft. Cool for 10 minutes.",
   "Line a pie dish with one pastry sheet. Scatter in the bacon, onion, peas and parsley.",
   "Crack in the 7 eggs, piercing a few yolks, top with the second sheet and seal. Brush with the extra egg.",
   "Bake for 40 minutes until golden and the eggs are set. Cool a little before slicing.",

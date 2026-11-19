@@ -20,9 +20,9 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Cook the rice.",
+  "Cook the rice according to the packet.",
   "Dip the chicken in egg, then toss in all but 1 tbsp of the cornflour.",
-  "Fry in the oil in batches for 4–5 minutes until golden and cooked through. Drain.",
+  "Heat the oil in a wok or frying pan over medium-high heat. Fry the chicken in batches for 4–5 minutes until golden and cooked through. Drain.",
   "Simmer the lemon juice and zest, sugar, stock and soy with the remaining cornflour, stirring, for 2 minutes until thick. Pour over the chicken and serve with the rice.",
 ]
 
@@ -47,7 +47,7 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Cook the rice. Toss the beef in the cornflour.",
+  "Cook the rice according to the packet. Toss the beef in the cornflour.",
   "Fry the beef in the oil in batches over high heat for 2 minutes until browned. Remove.",
   "Fry the garlic and ginger for 30 seconds, add the soy, sugar and water and bubble for 2 minutes until syrupy.",
   "Return the beef with the spring onions and toss for 1 minute. Serve with the rice.",
@@ -72,9 +72,9 @@ ingredients = [
   "2 cups rice",
 ]
 method = [
-  "Mix the hoisin, honey, soy, garlic and star anise and coat the pork. Marinate for 15 minutes.",
-  "Heat the oven to 200°C. Roast the pork on a rack over a tray of water for 40 minutes, basting with the marinade twice, until charred at the edges and cooked through.",
-  "Cook the rice and steam the bok choy for 3 minutes. Slice the pork and serve.",
+  "Mix the hoisin, honey, soy, garlic and star anise. Set aside 3 tbsp for basting and coat the pork in the rest. Marinate for 15 minutes.",
+  "Heat the oven to 200°C. Roast the pork on a rack over a tray of water for 40 minutes, basting twice with the set-aside glaze, until charred at the edges and cooked through.",
+  "Cook the rice according to the packet and steam the bok choy for 3 minutes until tender. Slice the pork and serve.",
 ]
 
 [[recipe]]
@@ -99,8 +99,8 @@ ingredients = [
   "3 spring onions, sliced",
 ]
 method = [
-  "Cook the noodles, drain and toss with the sesame oil.",
-  "Stir-fry the chicken in the vegetable oil for 5 minutes until cooked through. Add the garlic, cabbage and carrot for 3 minutes.",
+  "Cook the noodles according to the packet, drain and toss with the sesame oil.",
+  "Stir-fry the chicken in the vegetable oil in a wok over high heat for 5 minutes until cooked through. Add the garlic, cabbage and carrot for 3 minutes.",
   "Add the noodles, soy and oyster sauce and toss over high heat for 2 minutes. Add the bean sprouts and spring onions.",
 ]
 
@@ -150,7 +150,7 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Cook the rice.",
+  "Cook the rice according to the packet.",
   "Put the fish on a plate in a steamer, scatter with half the ginger and steam for 8 minutes until it flakes easily.",
   "Top with the rest of the ginger and the spring onions. Mix the soy and sugar and pour over.",
   "Heat the oil until smoking and carefully pour it over the fish to sizzle. Scatter with coriander and serve with the rice.",
@@ -180,9 +180,9 @@ ingredients = [
   "3 spring onions, sliced",
 ]
 method = [
-  "Fry the pork in the oil for 6 minutes until crisp and cooked through. Stir in the chilli bean paste and hoisin for 1 minute.",
+  "Fry the pork in the oil over medium-high heat for 6 minutes until crisp and cooked through. Stir in the chilli bean paste and hoisin for 1 minute.",
   "Whisk the tahini, soy, vinegar, sugar and stock for the sauce.",
-  "Cook the noodles, adding the bok choy for the last 2 minutes. Drain.",
+  "Cook the noodles according to the packet, adding the bok choy for the last 2 minutes. Drain.",
   "Toss the noodles in the sauce, top with the pork, bok choy, peanuts and spring onions.",
 ]
 
@@ -192,7 +192,7 @@ title = "Tomato and egg stir-fry"
 cuisine = "chinese"
 course = "main"
 servings = 4
-minutes = 15
+minutes = 25
 summary = "Fluffy scrambled egg folded through sweet-sour tomatoes. A homestyle favourite. Vegetarian."
 ingredients = [
   "6 eggs",
@@ -205,9 +205,9 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Cook the rice. Beat the eggs with the salt.",
-  "Scramble the eggs in half the oil until just set, then remove.",
-  "Fry the tomatoes in the rest of the oil for 4 minutes until soft and juicy. Add the sugar and tomato sauce.",
+  "Cook the rice according to the packet. Beat the eggs with the salt.",
+  "Scramble the eggs in half the oil in a wok over medium heat for 1–2 minutes until just set, then remove.",
+  "Fry the tomatoes in the rest of the oil over medium-high heat for 4 minutes until soft and juicy. Add the sugar and tomato sauce.",
   "Fold the egg back in with the spring onions and serve over the rice.",
 ]
 
@@ -234,9 +234,9 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Cook the rice.",
-  "Fry the eggplant in 2 tbsp of the oil for 8 minutes until soft and golden. Remove.",
-  "Fry the pork in the rest of the oil for 5 minutes until cooked through. Add the garlic, ginger and chilli bean paste for 1 minute.",
+  "Cook the rice according to the packet.",
+  "Fry the eggplant in 2 tbsp of the oil in a wok over medium-high heat for 8 minutes until soft and golden. Remove.",
+  "Fry the pork in the rest of the oil in the same wok for 5 minutes until cooked through. Add the garlic, ginger and chilli bean paste for 1 minute.",
   "Add the soy, vinegar, sugar, water and eggplant and simmer for 3 minutes until saucy. Top with spring onions and serve with the rice.",
 ]
 
@@ -262,7 +262,7 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Cook the rice. Toss the beef in the cornflour.",
+  "Cook the rice according to the packet. Toss the beef in the cornflour.",
   "Fry the beef in the oil over high heat in batches for 2 minutes until browned. Remove.",
   "Stir-fry the onion, capsicum and garlic for 3 minutes. Add the oyster sauce, soy, pepper and water and bubble for 1 minute.",
   "Return the beef and toss to coat. Serve with the rice.",
@@ -338,8 +338,8 @@ ingredients = [
 ]
 method = [
   "Mix the chicken with the tandoori paste and half the yoghurt and marinate for 15 minutes.",
-  "Cook the rice. Grill the chicken on a hot tray for 10 minutes until charred and cooked through.",
-  "Soften the onion in the oil for 5 minutes, add the garlic, ginger and spices for 1 minute, then the tomatoes and simmer for 10 minutes.",
+  "Cook the rice according to the packet. Grill the chicken on a hot tray for 10 minutes until charred and cooked through.",
+  "Soften the onion in the oil in a large pan over medium heat for 5 minutes, add the garlic, ginger and spices for 1 minute, then the tomatoes and simmer for 10 minutes.",
   "Stir in the cream, the rest of the yoghurt and the chicken and warm through. Scatter with coriander and serve with the rice.",
 ]
 
@@ -368,15 +368,15 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Cook the rice.",
-  "Fry the cumin seeds in the oil for 30 seconds, then the onion for 8 minutes until golden. Add the garlic, ginger, chilli and spices for 1 minute.",
+  "Cook the rice according to the packet.",
+  "Fry the cumin seeds in the oil in a large pan over medium heat for 30 seconds, then the onion for 8 minutes until golden. Add the garlic, ginger, chilli and spices for 1 minute.",
   "Add the tomatoes, chickpeas and water and simmer for 15 minutes, mashing a few chickpeas to thicken.",
   "Stir in the lemon juice and coriander and serve with the rice.",
 ]
 
 [[recipe]]
 slug = "dal-makhani"
-title = "Creamy black lentil dal"
+title = "Creamy lentil dal"
 cuisine = "indian"
 course = "main"
 servings = 6
@@ -399,9 +399,9 @@ ingredients = [
 ]
 method = [
   "Simmer the lentils in the water for 35 minutes until very soft.",
-  "Meanwhile, cook the onion in the butter for 8 minutes until golden. Add the garlic, ginger and spices for 1 minute, then the tomato paste.",
+  "Meanwhile, cook the onion in the butter in a frying pan over medium heat for 8 minutes until golden. Add the garlic, ginger and spices for 1 minute, then the tomato paste.",
   "Add the onion mix and kidney beans to the lentils and simmer for 20 minutes, stirring often, until thick. Stir in the cream and salt.",
-  "Serve with rice.",
+  "Cook the rice according to the packet and serve with the dal.",
 ]
 
 [[recipe]]
@@ -428,10 +428,10 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Cook the rice.",
-  "Soften the onion in the oil for 5 minutes. Add the mince and cook for 8 minutes, breaking it up, until browned and cooked through.",
+  "Cook the rice according to the packet.",
+  "Soften the onion in the oil in a large frying pan over medium heat for 5 minutes. Add the mince and cook for 8 minutes, breaking it up, until browned and cooked through.",
   "Add the garlic, ginger and spices for 1 minute, then the tomatoes and simmer for 10 minutes.",
-  "Add the peas for 3 minutes. Scatter with coriander and serve with the rice.",
+  "Add the peas for 3 minutes until hot. Scatter with coriander and serve with the rice.",
 ]
 
 [[recipe]]
@@ -460,7 +460,7 @@ ingredients = [
 ]
 method = [
   "Soak the cashews in the water for 10 minutes, then blend to a smooth paste.",
-  "Cook the rice. Soften the onion in the butter for 6 minutes, then add the garlic, ginger and spices for 1 minute.",
+  "Cook the rice according to the packet. Soften the onion in the butter in a large pan over medium heat for 6 minutes, then add the garlic, ginger and spices for 1 minute.",
   "Add the chicken and stir for 5 minutes. Add the cashew paste and simmer gently for 15 minutes until the chicken is cooked through.",
   "Stir in the yoghurt, cream and salt and warm gently without boiling. Serve with the rice.",
 ]
@@ -488,8 +488,8 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Cook the rice.",
-  "Soften the onion in the oil for 5 minutes. Add the garlic, ginger and spices for 1 minute.",
+  "Cook the rice according to the packet.",
+  "Soften the onion in the oil in a large pan over medium heat for 5 minutes. Add the garlic, ginger and spices for 1 minute.",
   "Add the coconut milk, tamarind and tomatoes and simmer for 8 minutes.",
   "Add the fish and simmer gently for 6 minutes until it flakes easily. Scatter with coriander and serve with the rice.",
 ]
@@ -516,7 +516,7 @@ ingredients = [
 ]
 method = [
   "Boil the potatoes for 10 minutes until just tender. Drain.",
-  "Fry the cumin seeds in the oil for 30 seconds, then the onion for 6 minutes. Add the garlic, ginger and spices for 1 minute.",
+  "Fry the cumin seeds in the oil in a large frying pan over medium heat for 30 seconds, then the onion for 6 minutes until soft. Add the garlic, ginger and spices for 1 minute.",
   "Add the potatoes and fry for 5 minutes until golden at the edges. Stir in the spinach until wilted and season with the salt.",
 ]
 
@@ -543,9 +543,9 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Boil the eggs for 9 minutes, cool and peel. Cook the rice.",
-  "Fry the eggs in the oil with the turmeric for 2 minutes until golden. Remove.",
-  "Cook the onion in the same oil for 6 minutes. Add the garlic, ginger and spices for 1 minute, then the tomatoes and simmer for 8 minutes.",
+  "Boil the eggs for 9 minutes, cool and peel. Cook the rice according to the packet.",
+  "Fry the eggs in the oil with the turmeric in a large frying pan over medium heat for 2 minutes until golden. Remove.",
+  "Cook the onion in the same oil for 6 minutes until soft. Add the garlic, ginger and spices for 1 minute, then the tomatoes and simmer gently for 8 minutes.",
   "Stir in the coconut milk and eggs and warm through. Scatter with coriander and serve with the rice.",
 ]
 
@@ -567,8 +567,8 @@ ingredients = [
 ]
 method = [
   "Rinse the rice until the water runs clear.",
-  "Fry the cumin seeds and bay leaves in the oil for 30 seconds. Add the rice and stir for 1 minute.",
-  "Add the water and salt, bring to the boil, then cover and cook on low for 12 minutes. Rest for 5 minutes and fluff up.",
+  "Fry the cumin seeds and bay leaves in the oil in a saucepan over medium heat for 30 seconds. Add the rice and stir for 1 minute.",
+  "Add the water and salt, bring to the boil, then cover and cook over low heat for 12 minutes until the water is absorbed. Rest for 5 minutes and fluff up.",
 ]
 
 [[recipe]]
@@ -587,8 +587,8 @@ ingredients = [
   "1 pinch salt",
 ]
 method = [
-  "Toast the cumin in a dry pan for 30 seconds.",
-  "Mix everything together and chill until needed.",
+  "Toast the cumin in a dry pan over medium heat for 30 seconds until fragrant.",
+  "Mix the yoghurt, cucumber, mint, toasted cumin and salt and chill until needed.",
 ]
 
 [[recipe]]
@@ -640,7 +640,7 @@ cuisine = "indian"
 course = "main"
 servings = 6
 minutes = 80
-summary = "Layers of spiced chicken and rice baked together with fried onions."
+summary = "Spiced chicken and rice baked together in one pot, topped with crisp fried onions and herbs."
 ingredients = [
   "1 kg chicken thigh, cut into chunks",
   "4 tbsp biryani curry paste",
@@ -656,10 +656,10 @@ ingredients = [
   "1 bunch mint, chopped",
 ]
 method = [
-  "Mix the chicken with the curry paste and yoghurt and marinate for 15 minutes.",
-  "Fry the onions in the oil for 15 minutes until deep golden. Remove half for the top.",
+  "Heat the oven to 180°C. Mix the chicken with the curry paste and yoghurt and marinate for 15 minutes.",
+  "Fry the onions in the oil in a large ovenproof pot over medium heat for 15 minutes until deep golden. Remove half for the top.",
   "Add the chicken to the pan and cook for 10 minutes, stirring, until browned.",
-  "Heat the oven to 180°C. Stir in the rice, cinnamon, bay leaves, salt and stock, bring to the boil, then cover tightly and bake for 30 minutes until the rice is tender and the chicken is cooked through. Top with the reserved onions, coriander and mint.",
+  "Stir in the rice, cinnamon, bay leaves, salt and stock, bring to the boil, then cover tightly and bake for 30 minutes until the rice is tender and the chicken is cooked through. Top with the reserved onions, coriander and mint.",
 ]
 
 [[recipe]]
@@ -685,7 +685,7 @@ ingredients = [
   "1 1/2 cups rice",
 ]
 method = [
-  "Cook the rice. Fry the paneer in the oil for 5 minutes until golden. Remove.",
-  "Cook the onion for 6 minutes. Add the garlic, ginger and spices for 1 minute, then the tomatoes and simmer for 10 minutes.",
+  "Cook the rice according to the packet. Fry the paneer in the oil in a large frying pan over medium-high heat for 5 minutes until golden. Remove.",
+  "Cook the onion in the same pan over medium heat for 6 minutes until soft. Add the garlic, ginger and spices for 1 minute, then the tomatoes and simmer for 10 minutes.",
   "Add the peas and paneer for 5 minutes, then stir in the cream. Scatter with coriander and serve with the rice.",
 ]

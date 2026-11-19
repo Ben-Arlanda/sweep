@@ -22,9 +22,9 @@ ingredients = [
 ]
 method = [
   "Heat the oil in a large pan over medium heat. Cook the onion and carrot for 5 minutes until soft, then add the garlic.",
-  "Add the mince and cook, breaking it up, until browned. Stir in the tomato paste for a minute.",
+  "Add the mince and cook, breaking it up, for 5–6 minutes until browned and no longer pink. Stir in the tomato paste for a minute.",
   "Add the tomatoes and oregano, season, and simmer gently for 25–30 minutes until thick.",
-  "Cook the pasta in salted boiling water. Drain and serve topped with the sauce and parmesan.",
+  "Meanwhile, cook the pasta according to the packet in salted boiling water. Drain and serve topped with the sauce and parmesan.",
 ]
 
 [[recipe]]
@@ -55,7 +55,7 @@ title = "Honey soy chicken drumsticks"
 cuisine = "australian"
 course = "main"
 servings = 4
-minutes = 55
+minutes = 65
 summary = "Sticky oven-baked drumsticks in a honey, soy and garlic glaze. Kids love them."
 ingredients = [
   "1 kg chicken drumsticks",
@@ -67,9 +67,9 @@ ingredients = [
   "1 broccoli, cut into florets",
 ]
 method = [
-  "Mix the soy sauce, honey, garlic and sesame oil. Toss the drumsticks in it and marinate for at least 10 minutes.",
-  "Bake at 200°C for 40–45 minutes, basting twice, until sticky and cooked through.",
-  "Meanwhile cook the rice and steam the broccoli. Serve together.",
+  "Heat the oven to 200°C. Mix the soy sauce, honey, garlic and sesame oil and set 3 tbsp aside for basting. Toss the drumsticks in the rest and marinate for at least 10 minutes.",
+  "Bake the drumsticks on a lined tray for 40–45 minutes, basting twice with the reserved sauce, until sticky and cooked through.",
+  "Meanwhile, cook the rice according to the packet. Steam the broccoli for 4–5 minutes until just tender. Serve together.",
 ]
 
 [[recipe]]
@@ -94,8 +94,8 @@ ingredients = [
 ]
 method = [
   "Mix the mince, egg, breadcrumbs and worcestershire sauce. Shape into 4 patties.",
-  "Cook on a hot grill or pan for 4–5 minutes each side, adding the cheese for the last minute.",
-  "Toast the buns and build the burgers with lettuce, tomato, beetroot and sauce.",
+  "Cook on a hot grill or in a pan over medium-high heat for 4–5 minutes each side until cooked through with no pink in the middle, adding the cheese for the last minute.",
+  "Toast the buns cut-side down for 1 minute until golden, then build the burgers with the lettuce, tomato, beetroot and tomato sauce.",
 ]
 
 [[recipe]]
@@ -104,7 +104,7 @@ title = "Lamb chops with mash and peas"
 cuisine = "australian"
 course = "main"
 servings = 4
-minutes = 35
+minutes = 40
 summary = "Pan-fried lamb chops with buttery mashed potato and minty peas."
 ingredients = [
   "8 lamb chops",
@@ -117,9 +117,9 @@ ingredients = [
   "salt, to taste",
 ]
 method = [
-  "Boil the potatoes until tender, drain, and mash with the butter, milk and salt.",
-  "Season the chops and cook in the oil over high heat for 3–4 minutes each side. Rest for 5 minutes.",
-  "Cook the peas, drain, and toss with the mint. Serve everything together.",
+  "Boil the potatoes in salted water for 15–20 minutes until tender, drain, and mash with the butter, milk and salt.",
+  "Season the chops and cook in the oil over high heat for 3–4 minutes each side until browned outside and still a little pink in the middle, or longer if you prefer. Rest for 5 minutes.",
+  "Simmer the peas in boiling water for 3 minutes, drain, and toss with the mint. Serve with the chops and mash.",
 ]
 
 [[recipe]]
@@ -170,10 +170,10 @@ ingredients = [
   "125 ml milk",
 ]
 method = [
-  "Cook the onion and carrot in the oil until soft. Add the mince and brown well.",
+  "Heat the oven to 200°C. Cook the onion and carrot in the oil in a large pan over medium heat for 5 minutes until soft. Add the mince and cook, breaking it up, for 8–10 minutes until browned and no longer pink.",
   "Stir in the tomato paste, worcestershire sauce and flour, then the stock. Simmer for 20 minutes, adding the peas at the end.",
-  "Boil and mash the potatoes with the butter and milk.",
-  "Spoon the filling into a baking dish, top with the mash, and bake at 200°C for 25 minutes until golden.",
+  "Meanwhile, boil the potatoes for 15–20 minutes until tender. Drain and mash with the butter and milk.",
+  "Spoon the filling into a baking dish, top with the mash, and bake for 25 minutes until golden.",
 ]
 
 [[recipe]]
@@ -183,7 +183,7 @@ cuisine = "australian"
 course = "main"
 servings = 4
 minutes = 45
-summary = "Crumbed white fish and crispy potato wedges, both done in the oven, with lemon and tartare."
+summary = "Crumbed white fish and crispy potato wedges, both done in the oven, with lemon and mayonnaise."
 ingredients = [
   "1 kg potatoes, cut into wedges",
   "2 tbsp olive oil",
@@ -195,7 +195,7 @@ ingredients = [
   "salt, to taste",
 ]
 method = [
-  "Heat the oven to 220°C. Toss the wedges in the oil and salt and roast for 35 minutes, turning once.",
+  "Heat the oven to 220°C. Toss the potato wedges in the oil and salt and roast for 35 minutes, turning once, until golden.",
   "Dip the fish in egg, then breadcrumbs. Bake on a lined tray for the last 12–15 minutes until it flakes easily.",
   "Serve with lemon wedges and mayonnaise.",
 ]
@@ -221,10 +221,10 @@ ingredients = [
   "2 bay leaves",
 ]
 method = [
-  "Toss the beef in the flour. Brown it in batches in the oil and set aside.",
-  "Soften the onion and celery in the same pot, then add the tomato paste.",
+  "Toss the beef in the flour. Brown it in batches in the oil in a large pot over medium-high heat, 3–4 minutes a batch, and set aside.",
+  "Lower the heat to medium and soften the onion and celery in the same pot for 5 minutes, then stir in the tomato paste for a minute.",
   "Return the beef with the stock and bay leaves. Cover and simmer gently for 1½ hours.",
-  "Add the carrots and potatoes and simmer for 30–40 minutes more until everything is tender.",
+  "Add the carrots and potatoes and simmer for 30–40 minutes more until the beef and vegetables are tender.",
 ]
 
 [[recipe]]
@@ -270,8 +270,8 @@ ingredients = [
   "2 spring onions, sliced",
 ]
 method = [
-  "Simmer the chicken in the stock for 10 minutes. Remove, shred, and return to the pot with the corn and soy sauce.",
-  "Mix the cornflour with a little water and stir in to thicken.",
+  "Bring the stock to a simmer, add the chicken and simmer gently for 10–12 minutes until cooked through with no pink in the middle. Remove, shred, and return to the pot with the corn and soy sauce.",
+  "Mix the cornflour with 3 tbsp water, stir it in, and simmer for 2 minutes until thickened.",
   "Slowly pour in the egg while stirring to make ribbons. Serve with spring onion.",
 ]
 
@@ -282,7 +282,7 @@ cuisine = "australian"
 course = "main"
 servings = 4
 minutes = 40
-summary = "Silky roast-style pumpkin soup with onion and a swirl of cream. Freezes well."
+summary = "Silky pumpkin soup with onion, a little nutmeg and a swirl of cream. Freezes well."
 ingredients = [
   "1 kg pumpkin, peeled and chopped",
   "1 onion, diced",
@@ -293,7 +293,7 @@ ingredients = [
   "1/2 tsp ground nutmeg",
 ]
 method = [
-  "Soften the onion and garlic in the oil. Add the pumpkin and stock and simmer for 20 minutes until tender.",
+  "Soften the onion and garlic in the oil in a large pot over medium heat for 5 minutes. Add the pumpkin and stock and simmer for 20 minutes until tender.",
   "Blend until smooth, season, and stir in the nutmeg. Serve with a swirl of cream.",
 ]
 
@@ -319,9 +319,10 @@ ingredients = [
   "1 cup rice",
 ]
 method = [
-  "Toss the pork in 2 tbsp cornflour and fry in the oil until golden and cooked. Set aside.",
-  "Stir-fry the onion and capsicum for 3 minutes. Add the pineapple and juice, sauce, vinegar, sugar and soy.",
-  "Thicken with the remaining cornflour mixed with water, return the pork, and serve with rice.",
+  "Cook the rice according to the packet.",
+  "Toss the pork in 2 tbsp cornflour and fry in the oil in a wok over medium-high heat for 5–6 minutes until golden and cooked through. Set aside.",
+  "Stir-fry the onion and capsicum for 3 minutes. Add the pineapple and juice, tomato sauce, vinegar, sugar and soy and bring to a simmer.",
+  "Mix the remaining cornflour with 2 tbsp water and stir in for 1 minute until thickened. Return the pork, toss to coat, and serve with the rice.",
 ]
 
 [[recipe]]
@@ -344,9 +345,9 @@ ingredients = [
   "350 g pasta",
 ]
 method = [
-  "Sear the beef in batches in half the oil over high heat. Set aside.",
-  "Cook the onion and mushrooms in the remaining oil until golden. Add the paprika and stock and simmer 5 minutes.",
-  "Stir in the sour cream and mustard, return the beef, and heat through. Serve over cooked pasta.",
+  "Cook the pasta according to the packet. Meanwhile, sear the beef in batches in half the oil over high heat for 1–2 minutes until browned. Set aside.",
+  "Cook the onion and mushrooms in the remaining oil over medium heat for 5 minutes until golden. Add the paprika and stock and simmer for 5 minutes.",
+  "Stir in the sour cream and mustard, return the beef, and heat through gently for 1–2 minutes until the beef is hot and just cooked. Serve over the pasta.",
 ]
 
 [[recipe]]
@@ -368,9 +369,9 @@ ingredients = [
   "150 g mozzarella, grated",
 ]
 method = [
-  "Heat the oven to 200°C. Cook the pasta until just tender and drain.",
-  "Brown the chicken in the oil, add the garlic, passata and cream, and simmer 5 minutes. Stir in the spinach.",
-  "Mix with the pasta in a baking dish, top with mozzarella, and bake for 20 minutes until bubbling.",
+  "Heat the oven to 200°C. Cook the pasta in a large pot of boiling water for 2 minutes less than the packet says, so it's just tender, and drain.",
+  "Brown the chicken in the oil in a large pan over medium-high heat for 5 minutes. Add the garlic, passata and cream and simmer for 5 minutes until the chicken is cooked through. Stir in the spinach until wilted.",
+  "Mix with the pasta in a baking dish, top with mozzarella, and bake for 20 minutes until golden and bubbling.",
 ]
 
 [[recipe]]
@@ -394,7 +395,7 @@ ingredients = [
   "1 iceberg lettuce, leaves separated",
 ]
 method = [
-  "Stir-fry the garlic and ginger in the oil, then add the mince and cook until browned.",
+  "Stir-fry the garlic and ginger in the oil in a wok over high heat for 30 seconds, then add the mince and cook, breaking it up, for 5–6 minutes until browned and cooked through.",
   "Add the water chestnuts, oyster sauce, soy and sesame oil and toss for 2 minutes. Stir in the spring onion.",
   "Spoon into lettuce cups to serve.",
 ]
@@ -416,9 +417,9 @@ ingredients = [
   "1 lemon, halved",
 ]
 method = [
-  "Pat the salmon dry and season. Cook skin-side down in the oil over medium-high heat for 4 minutes, then flip for 2–3 minutes.",
-  "Blanch the beans and broccolini for 2 minutes, drain, and toss in the same pan with the garlic.",
-  "Serve with lemon squeezed over.",
+  "Bring a pot of salted water to the boil. Blanch the beans and broccolini for 2 minutes, then drain.",
+  "Pat the salmon dry and season. Cook skin-side down in the oil in a frying pan over medium-high heat for 4 minutes until the skin is crisp, then flip for 2–3 minutes until it flakes easily. Set aside.",
+  "Toss the beans, broccolini and garlic in the same pan for 1 minute. Serve with the salmon and the lemon squeezed over.",
 ]
 
 [[recipe]]
@@ -442,7 +443,7 @@ ingredients = [
 method = [
   "Heat the oven to 200°C. Squeeze excess water from the grated vegetables and mix with the mince, breadcrumbs and half the egg.",
   "Halve the pastry sheets, lay a line of filling along each, roll up and cut into pieces.",
-  "Brush with the remaining egg, sprinkle with sesame seeds, and bake for 25–30 minutes until golden.",
+  "Brush with the remaining egg, sprinkle with sesame seeds, and bake for 25–30 minutes until the pastry is golden and the filling is cooked through, with no pink in the middle.",
 ]
 
 [[recipe]]
@@ -466,7 +467,7 @@ ingredients = [
 method = [
   "Heat the oven to 180°C. Mix the mince, onion, breadcrumbs, egg, milk and worcestershire sauce, and press into a loaf tin.",
   "Mix the tomato sauce and sugar and spread on top.",
-  "Bake for 1 hour, then rest for 10 minutes before slicing.",
+  "Bake for 1 hour until cooked through and the juices run clear, then rest for 10 minutes before slicing.",
 ]
 
 [[recipe]]
@@ -476,9 +477,9 @@ cuisine = "american"
 course = "main"
 servings = 4
 minutes = 25
-summary = "Cos lettuce, grilled chicken, crispy bacon, croutons and a creamy parmesan dressing."
+summary = "Cos lettuce, pan-fried chicken, crispy bacon and croutons in a creamy garlic dressing, topped with parmesan."
 ingredients = [
-  "2 chicken breasts",
+  "3 chicken breasts",
   "1 tbsp olive oil",
   "4 rashers bacon, chopped",
   "2 slices bread, cubed",
@@ -489,8 +490,8 @@ ingredients = [
   "1 clove garlic, crushed",
 ]
 method = [
-  "Season the chicken and cook in the oil for 5–6 minutes each side. Rest, then slice.",
-  "Fry the bacon until crisp, then toss the bread cubes in the fat until golden.",
+  "Season the chicken and cook in the oil in a frying pan over medium heat for 5–6 minutes each side until golden and cooked through. Rest, then slice.",
+  "Fry the bacon in the same pan for 4–5 minutes until crisp, then toss the bread cubes in the fat for 3 minutes until golden.",
   "Whisk the mayonnaise, lemon juice and garlic. Toss with the lettuce and top with chicken, bacon, croutons and parmesan.",
 ]
 
@@ -512,8 +513,8 @@ ingredients = [
   "60 ml vegetable oil",
 ]
 method = [
-  "Heat the oven to 180°C and line a slice tin. Fry the bacon and onion until soft.",
-  "Whisk the eggs and oil, then stir in everything else.",
+  "Heat the oven to 180°C and line a slice tin. Fry the bacon and onion in a pan over medium heat for 5 minutes until the onion is soft. Cool slightly.",
+  "Squeeze the excess water from the zucchini. Whisk the eggs and oil, then stir in the flour, zucchini, cheese, bacon and onion.",
   "Pour into the tin and bake for 35 minutes until set and golden.",
 ]
 
@@ -535,9 +536,9 @@ ingredients = [
   "1 tbsp white vinegar",
 ]
 method = [
-  "Toss the chips in 1 tbsp oil and bake at 220°C for 30–35 minutes, turning once.",
-  "Cook the steaks in a very hot pan for 3–4 minutes each side for medium-rare. Rest for 5 minutes.",
-  "Toss the salad with the remaining oil and vinegar and serve alongside.",
+  "Heat the oven to 220°C. Toss the potato chips in 1 tbsp oil and bake for 30–35 minutes, turning once, until golden.",
+  "Rub the steaks with 1 tsp of the remaining oil and cook in a very hot pan for 3–4 minutes each side, until browned outside and still pink in the middle, for medium-rare. Rest for 5 minutes.",
+  "Toss the tomato, cucumber and rocket with the remaining oil and vinegar and serve alongside.",
 ]
 
 [[recipe]]
@@ -559,9 +560,9 @@ ingredients = [
   "250 g pasta",
 ]
 method = [
-  "Cook the pasta and drain. Heat the oven to 200°C.",
-  "Melt the butter, stir in the flour, then whisk in the milk until thick. Add most of the cheese.",
-  "Fold in the tuna, peas and pasta. Tip into a dish, top with breadcrumbs and remaining cheese, and bake for 15 minutes.",
+  "Heat the oven to 200°C. Cook the pasta according to the packet and drain.",
+  "Melt the butter in a saucepan over medium heat and stir in the flour for 1 minute. Gradually whisk in the milk and stir for 4–5 minutes until thick. Add most of the cheese.",
+  "Fold in the tuna, peas and pasta. Tip into a dish, top with breadcrumbs and remaining cheese, and bake for 15 minutes until golden on top and bubbling at the edges.",
 ]
 
 [[recipe]]
@@ -582,7 +583,7 @@ ingredients = [
 ]
 method = [
   "Heat the oven to 200°C. Cut small slits in the lamb and push in the garlic and rosemary. Rub with oil and salt.",
-  "Roast on top of the potatoes for about 1 hour 30 minutes for medium.",
+  "Toss the potatoes in the rest of the oil and a pinch of salt in a roasting tin and sit the lamb on top. Roast for about 1 hour 30 minutes for medium, until the lamb is browned outside and still a little pink in the middle (or longer if you prefer it well done) and the potatoes are golden.",
   "Rest the lamb for 15 minutes, covered, before carving.",
 ]
 
@@ -605,7 +606,7 @@ ingredients = [
   "1 bunch parsley, chopped",
 ]
 method = [
-  "Soften the onion, carrot and celery in the oil for 5 minutes.",
-  "Add the stock and chicken and simmer for 20 minutes. Remove the chicken, shred it, and return it.",
+  "Soften the onion, carrot and celery in the oil in a large pot over medium heat for 5 minutes.",
+  "Add the stock and chicken and simmer for 20 minutes until the chicken is cooked through. Remove the chicken, shred it, and return it.",
   "Add the noodles and cook for 4 minutes. Stir in the parsley.",
 ]

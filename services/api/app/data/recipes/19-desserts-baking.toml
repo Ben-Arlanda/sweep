@@ -93,7 +93,7 @@ ingredients = [
 ]
 method = [
   "Heat the oven to 190°C. Toss the berries with the white sugar and cornflour in a baking dish.",
-  "Rub the butter into the flour, oats and brown sugar until it clumps. Scatter over the berries.",
+  "Rub the butter into the flour, oats and the brown sugar until it clumps. Scatter over the berries.",
   "Bake for 30 minutes until golden and bubbling. Serve with yoghurt.",
 ]
 
@@ -116,8 +116,8 @@ ingredients = [
 ]
 method = [
   "Whisk the flour, eggs, milk, half the butter and the salt until smooth. Rest for 10 minutes.",
-  "Brush a frying pan with butter, pour in a thin layer of batter and swirl. Cook for 1 minute each side until golden in spots.",
-  "Repeat, then serve with lemon and sugar.",
+  "Heat a frying pan over medium heat and brush with butter. Pour in a thin layer of batter and swirl. Cook for 1 minute each side until golden in spots.",
+  "Repeat with the rest of the batter, then serve with lemon and sugar.",
 ]
 
 [[recipe]]
@@ -161,8 +161,8 @@ ingredients = [
 ]
 method = [
   "Simmer the rice with half the coconut milk, the water, half the sugar and the salt, covered, for 18 minutes until tender and creamy.",
-  "Warm the rest of the coconut milk and sugar until dissolved.",
-  "Toast the sesame seeds in a dry pan for 1 minute. Serve the rice with mango, the sweet coconut sauce and sesame.",
+  "Warm the rest of the coconut milk and sugar in a small pan over low heat for 2 minutes until dissolved.",
+  "Toast the sesame seeds in a dry pan over medium heat for 1 minute until golden. Serve the rice with mango, the sweet coconut sauce and sesame.",
 ]
 
 [[recipe]]
@@ -184,7 +184,7 @@ method = [
   "Heat the oven to 120°C. Whisk the egg whites to stiff peaks, then add the caster sugar a spoonful at a time until glossy.",
   "Spoon onto a lined tray and bake for 1½ hours until crisp. Cool.",
   "Toss half the strawberries with the icing sugar and crush lightly. Whip the cream.",
-  "Fold the crushed meringue, cream and both lots of strawberries together and serve straight away.",
+  "Break the meringue into rough pieces. Fold the meringue, cream and both lots of strawberries together and serve straight away.",
 ]
 
 [[recipe]]
@@ -253,7 +253,7 @@ ingredients = [
 ]
 method = [
   "Heat the oven to 180°C and line two trays.",
-  "Mix everything to a soft dough. Roll into 18 balls and press each with a fork.",
+  "Beat the peanut butter with the brown sugar, then mix in the egg, flour and bicarbonate soda to a soft dough. Roll into 18 balls and press each with a fork.",
   "Bake for 10 minutes until just golden. Cool on the trays to firm up.",
 ]
 
@@ -339,7 +339,7 @@ title = "Victoria sponge"
 cuisine = "british"
 course = "dessert"
 servings = 10
-minutes = 60
+minutes = 90
 summary = "Two light butter sponges sandwiched with strawberry jam and whipped cream. Vegetarian."
 ingredients = [
   "200 g butter, softened",
@@ -423,7 +423,7 @@ ingredients = [
 ]
 method = [
   "Whisk the flour, sugar, egg and milk to a smooth, thick batter.",
-  "Melt a little butter in a frying pan and drop in tablespoons of batter. Cook for 1–2 minutes until bubbles appear, then flip and cook for 1 minute more.",
+  "Melt a little butter in a frying pan over medium heat and drop in tablespoons of batter. Cook for 1–2 minutes until bubbles appear, then flip and cook for 1 minute more.",
   "Serve warm with butter and jam.",
 ]
 
@@ -444,7 +444,7 @@ ingredients = [
   "1 tbsp chocolate chips",
 ]
 method = [
-  "Mix everything in a large mug until smooth.",
+  "Mix the flour, sugar, cocoa, milk, oil and chocolate chips in a large mug until smooth.",
   "Microwave on high for 70–90 seconds until risen but still a little gooey in the middle. Cool for 1 minute.",
 ]
 
