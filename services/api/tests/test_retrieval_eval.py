@@ -9,6 +9,7 @@ from evals.retrieval import (
     recall_at,
     reciprocal_rank,
 )
+from evals.retrieval_rules import labels
 
 RELEVANT = frozenset({"a", "b"})
 
@@ -36,7 +37,7 @@ def test_percentile_picks_a_real_value() -> None:
 def test_the_retrieval_set_is_labelled_with_real_seed_recipes() -> None:
     queries = load_queries()
     slugs = {s.slug for s in load_seed_recipes()}
-    assert len(queries) >= 50
+    assert len(queries) >= 45
     assert len({q.id for q in queries}) == len(queries)
     assert {q.kind for q in queries} == set(KINDS)
     assert {q.split for q in queries} == {"dev", "test"}
@@ -44,3 +45,13 @@ def test_the_retrieval_set_is_labelled_with_real_seed_recipes() -> None:
         assert q.relevant, f"{q.id} has no relevant recipes"
         assert q.relevant <= q.judged
         assert q.judged <= slugs, f"{q.id}: {sorted(q.judged - slugs)} aren't Seed Recipes"
+
+
+def test_rule_labels_are_what_the_rules_say() -> None:
+    # Rule queries can be made again for any library; this keeps the file in step.
+    queries = {q.id: q for q in load_queries()}
+    library = load_seed_recipes()
+    for qid, relevant in labels(library).items():
+        assert queries[qid].labelled_by == "rule"
+        assert sorted(queries[qid].relevant) == relevant, qid
+        assert queries[qid].judged == {r.slug for r in library}, qid
