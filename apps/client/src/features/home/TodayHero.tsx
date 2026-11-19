@@ -1,6 +1,6 @@
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
-import { CalendarDays, ChefHat, UserRound, type LucideIcon } from 'lucide-react-native';
+import { CalendarDays, ChefHat, User, type LucideIcon } from 'lucide-react-native';
 import { useState } from 'react';
 import { View } from 'react-native';
 
@@ -234,23 +234,12 @@ function LogoRow() {
         style={{
           width: t.touchTarget,
           height: t.touchTarget,
+          borderRadius: t.radius.md,
           alignItems: 'center',
           justifyContent: 'center',
         }}
       >
-        {/* A soft grey circle inside the full 44pt tap area. */}
-        <View
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: 20,
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: t.colors.fill,
-          }}
-        >
-          <Icon icon={UserRound} size={22} color={t.colors.text} />
-        </View>
+        <Icon icon={User} size={26} color={t.colors.text} />
       </PressableScale>
     </View>
   );
