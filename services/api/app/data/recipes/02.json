@@ -1,0 +1,2994 @@
+[
+ {
+  "slug": "chicken-parmesan",
+  "title": "Chicken parmesan",
+  "cuisine": "italian",
+  "course": "main",
+  "servings": 4,
+  "prep_minutes": 20,
+  "cook_minutes": 25,
+  "difficulty": "medium",
+  "summary": "Crispy breaded chicken cutlets topped with tomato sauce, melted mozzarella and Parmesan.",
+  "ingredients": [
+   "2 large chicken breasts",
+   "80 g plain flour",
+   "2 eggs",
+   "120 g panko breadcrumbs",
+   "50 g grated parmesan",
+   "350 ml passata",
+   "2 garlic cloves",
+   "150 g mozzarella",
+   "3 tbsp olive oil",
+   "1 tsp dried oregano",
+   "Salt"
+  ],
+  "method": [
+   "Warm 1 tbsp of the olive oil in a saucepan over low heat. Cook the garlic for 30 seconds without browning, then add the passata, oregano and salt. Simmer until slightly thickened.",
+   "Slice the chicken breasts horizontally into two cutlets and pat dry. Coat each in flour, then beaten eggs, then panko mixed with parmesan, pressing the crumbs on firmly.",
+   "Heat the remaining oil in a wide frying pan over medium heat. Fry the cutlets in batches for 3–4 minutes per side until golden, then lay them in a baking dish.",
+   "Spoon sauce over each cutlet, leaving crisp edges showing, and scatter with mozzarella. Bake at 200°C until the cheese bubbles and the chicken reaches 74°C in the centre. Rest for 3 minutes."
+  ],
+  "stages": [
+   {
+    "title": "Prepare the tomato sauce",
+    "minutes": 12,
+    "steps": [
+     "Warm 1 tbsp oil in a saucepan and gently cook minced garlic for 30 seconds without browning.",
+     "Add passata and oregano, season with salt and simmer uncovered until slightly thickened."
+    ]
+   },
+   {
+    "title": "Bread the chicken",
+    "minutes": 10,
+    "steps": [
+     "Slice each breast horizontally into two thin cutlets and pat dry.",
+     "Set out flour, beaten eggs and breadcrumbs mixed with parmesan in separate dishes; coat each cutlet in that order, pressing crumbs on firmly."
+    ]
+   },
+   {
+    "title": "Brown the cutlets",
+    "minutes": 10,
+    "steps": [
+     "Heat remaining oil in a wide frying pan over medium heat.",
+     "Fry cutlets in batches for 3–4 minutes per side until golden; transfer to a baking dish without stacking."
+    ]
+   },
+   {
+    "title": "Bake and serve",
+    "minutes": 13,
+    "steps": [
+     "Spoon a little sauce over each cutlet, leaving some crisp edges visible, and scatter with mozzarella.",
+     "Bake at 200°C until the cheese bubbles and chicken reaches 74°C in the centre; rest for 3 minutes before serving."
+    ]
+   }
+  ],
+  "tips": [
+   "Keep some breadcrumbs uncovered by sauce so the crust stays crisp."
+  ],
+  "variations": [
+   "Serve over spaghetti or with a green salad."
+  ],
+  "storage": "Refrigerate up to 3 days; reheat in the oven until piping hot."
+ },
+ {
+  "slug": "beef-stroganoff",
+  "title": "Beef stroganoff",
+  "cuisine": "russian",
+  "course": "main",
+  "servings": 4,
+  "prep_minutes": 15,
+  "cook_minutes": 16,
+  "difficulty": "easy",
+  "summary": "Tender strips of beef and mushrooms coated in a silky mustard and sour cream sauce.",
+  "ingredients": [
+   "500 g beef sirloin strips",
+   "250 g mushrooms",
+   "1 onion",
+   "2 tbsp butter",
+   "1 tbsp olive oil",
+   "1 tbsp plain flour",
+   "200 ml beef stock",
+   "150 ml sour cream",
+   "1 tbsp Dijon mustard",
+   "250 g egg noodles",
+   "1 tsp paprika",
+   "Salt"
+  ],
+  "method": [
+   "Pat the beef dry and season with salt. Sear in batches in the oil in a wide pan over high heat, about 1 minute per side until browned, then set aside.",
+   "Reduce to medium, melt the butter and soften the sliced onion for 4 minutes.",
+   "Add the mushrooms and cook until their moisture evaporates and the edges are golden. Stir in the paprika and flour for 1 minute.",
+   "Stir in the stock, scraping up the browned bits, and simmer until lightly thickened. Reduce to low and fold in the mustard and sour cream without boiling.",
+   "Cook the egg noodles in salted water until tender, then drain.",
+   "Return the beef and its juices to the sauce for 1–2 minutes, just until heated through. Serve over the noodles."
+  ],
+  "stages": [
+   {
+    "title": "Prepare and sear the beef",
+    "minutes": 7,
+    "steps": [
+     "Pat beef dry and season with salt and pepper; heat oil in a wide pan until hot.",
+     "Sear in small batches for about 1 minute per side so it browns rather than steams; transfer to a plate."
+    ]
+   },
+   {
+    "title": "Build the mushroom base",
+    "minutes": 10,
+    "steps": [
+     "Reduce heat to medium, melt butter and soften sliced onion for 4 minutes.",
+     "Add mushrooms and cook until their moisture evaporates and edges turn golden; stir in paprika and flour for 1 minute."
+    ]
+   },
+   {
+    "title": "Make the sauce",
+    "minutes": 6,
+    "steps": [
+     "Gradually stir in stock, scraping browned bits from the pan; simmer until lightly thickened.",
+     "Reduce heat to low and fold in mustard and sour cream without allowing the sauce to boil."
+    ]
+   },
+   {
+    "title": "Finish with noodles",
+    "minutes": 8,
+    "steps": [
+     "Cook egg noodles in salted water until tender and drain.",
+     "Return beef and its juices to the warm sauce for 1–2 minutes, just until heated through, then serve immediately over noodles."
+    ]
+   }
+  ],
+  "tips": [
+   "Do not boil after adding sour cream or it may split."
+  ],
+  "variations": [
+   "Use chicken thigh strips instead of beef, cooking fully before serving."
+  ],
+  "storage": "Refrigerate up to 3 days; reheat gently and do not boil."
+ },
+ {
+  "slug": "teriyaki-salmon-bowls",
+  "title": "Teriyaki salmon bowls",
+  "cuisine": "japanese",
+  "course": "main",
+  "servings": 4,
+  "prep_minutes": 15,
+  "cook_minutes": 18,
+  "difficulty": "easy",
+  "summary": "Glazed salmon over fluffy rice with sweet-savoury teriyaki sauce, vegetables and sesame.",
+  "ingredients": [
+   "4 salmon fillets (150 g each)",
+   "250 g jasmine rice",
+   "4 tbsp soy sauce",
+   "2 tbsp mirin",
+   "1 tbsp honey",
+   "1 tbsp rice vinegar",
+   "1 tsp grated ginger",
+   "1 garlic clove",
+   "1 cucumber",
+   "2 carrots",
+   "2 tsp sesame seeds"
+  ],
+  "method": [
+   "Rinse the rice until the water runs mostly clear, then cook on medium heat as directed on the packet. Rest covered off the heat for 5 minutes, then fluff.",
+   "Whisk the soy sauce, mirin, honey, rice vinegar, ginger and grated garlic together for the glaze.",
+   "Slice the cucumber and shred the carrots, then keep them chilled until serving.",
+   "Sear the patted-dry salmon skin-side down in a lightly oiled nonstick pan over medium heat for 4–5 minutes. Turn and cook until opaque and flaking.",
+   "Add the glaze and bubble briefly until glossy and the salmon is cooked through.",
+   "Divide the rice between bowls, add the cucumber and carrots, then top with salmon, glaze and sesame seeds."
+  ],
+  "stages": [
+   {
+    "title": "Cook the rice",
+    "minutes": 15,
+    "steps": [
+     "Rinse rice until the water runs mostly clear, then cook over medium heat with the amount of water directed on the packet.",
+     "Keep covered off the heat for 5 minutes before fluffing with a fork."
+    ]
+   },
+   {
+    "title": "Mix the glaze and vegetables",
+    "minutes": 5,
+    "steps": [
+     "Whisk soy sauce, mirin, honey, vinegar, ginger and grated garlic together.",
+     "Slice cucumber and shred carrots; keep them chilled until serving."
+    ]
+   },
+   {
+    "title": "Cook and glaze the salmon",
+    "minutes": 10,
+    "steps": [
+     "Pat salmon dry and sear skin-side down in a lightly oiled nonstick pan over medium heat for 4–5 minutes.",
+     "Turn, cook until the thickest part is opaque and flakes easily, then add the glaze and bubble briefly until glossy; ensure fish is cooked through."
+    ]
+   },
+   {
+    "title": "Assemble the bowls",
+    "minutes": 3,
+    "steps": [
+     "Divide rice between bowls and add cucumber and carrots.",
+     "Top with salmon, spoon over reduced glaze and finish with sesame seeds."
+    ]
+   }
+  ],
+  "tips": [
+   "Add the glaze only near the end so the honey does not burn."
+  ],
+  "variations": [
+   "Replace salmon with firm tofu; brown the tofu well before glazing."
+  ],
+  "storage": "Refrigerate cooked fish and rice separately up to 2 days; chill rice promptly."
+ },
+ {
+  "slug": "vegetable-pad-thai",
+  "title": "Vegetable pad Thai",
+  "cuisine": "thai",
+  "course": "main",
+  "servings": 4,
+  "prep_minutes": 20,
+  "cook_minutes": 4,
+  "difficulty": "medium",
+  "summary": "Rice noodles stir-fried with vegetables, egg, tamarind and peanuts for a sweet, tangy finish.",
+  "ingredients": [
+   "250 g flat rice noodles",
+   "200 g firm tofu",
+   "2 eggs",
+   "150 g bean sprouts",
+   "2 carrots",
+   "4 spring onions",
+   "3 tbsp tamarind paste",
+   "2 tbsp fish sauce or soy sauce",
+   "2 tbsp brown sugar",
+   "2 tbsp neutral oil",
+   "60 g roasted peanuts",
+   "1 lime"
+  ],
+  "method": [
+   "Soak the rice noodles in warm water until flexible but still firm, then drain. Stir the tamarind, fish or soy sauce and brown sugar together until the sugar dissolves.",
+   "Heat the oil in a wok or large frying pan over medium-high heat. Fry the cubed, pressed tofu until golden on several sides, then push it to the edge.",
+   "Crack the eggs into the clear part of the pan and scramble until just set.",
+   "Add the noodles, julienned carrots and sauce. Toss until the noodles soften and absorb the sauce, adding a splash of water if needed.",
+   "Fold in the bean sprouts and sliced spring onions for the final minute so they stay crunchy.",
+   "Serve topped with crushed peanuts and lime wedges for squeezing."
+  ],
+  "stages": [
+   {
+    "title": "Soak noodles and mix sauce",
+    "minutes": 10,
+    "steps": [
+     "Soak rice noodles in warm water until flexible but still firm, following packet guidance; drain well.",
+     "Stir tamarind, fish sauce or soy sauce and sugar together until the sugar dissolves."
+    ]
+   },
+   {
+    "title": "Brown the tofu",
+    "minutes": 5,
+    "steps": [
+     "Press tofu dry, cube it and heat oil in a wok or large frying pan over medium-high heat.",
+     "Fry tofu until golden on several sides, then move it to the edge of the pan."
+    ]
+   },
+   {
+    "title": "Cook eggs and noodles",
+    "minutes": 6,
+    "steps": [
+     "Crack eggs into the clear part of the pan and scramble until just set.",
+     "Add noodles, julienned carrots and sauce; toss constantly, adding a splash of water if needed, until noodles soften and absorb the sauce."
+    ]
+   },
+   {
+    "title": "Finish quickly",
+    "minutes": 3,
+    "steps": [
+     "Fold in bean sprouts and sliced spring onions for the final minute so they retain crunch.",
+     "Serve with crushed peanuts and lime wedges for squeezing."
+    ]
+   }
+  ],
+  "tips": [
+   "Prepare every ingredient before heating the wok; the stir-fry moves quickly."
+  ],
+  "variations": [
+   "Use prawns instead of tofu, cooking them until opaque."
+  ],
+  "storage": "Refrigerate up to 2 days; reheat thoroughly, adding a little water."
+ },
+ {
+  "slug": "lamb-kofta-with-yoghurt",
+  "title": "Lamb kofta with yoghurt",
+  "cuisine": "middle-eastern",
+  "course": "main",
+  "servings": 4,
+  "prep_minutes": 20,
+  "cook_minutes": 8,
+  "difficulty": "easy",
+  "summary": "Juicy spiced lamb kofta served with cooling garlic yoghurt, herbs and warm flatbread.",
+  "ingredients": [
+   "500 g lamb mince",
+   "1 small onion",
+   "2 garlic cloves",
+   "1 tsp ground cumin",
+   "1 tsp ground coriander",
+   "1 tsp paprika",
+   "2 tbsp chopped parsley",
+   "200 g Greek yoghurt",
+   "1 lemon",
+   "1 cucumber",
+   "4 flatbreads",
+   "1 tbsp olive oil",
+   "Salt"
+  ],
+  "method": [
+   "Grate the onion and squeeze out the liquid. Mix with the lamb mince, garlic, cumin, coriander, paprika, parsley and 1 tsp salt.",
+   "Shape the mixture into 8 short oval patties, by hand or around skewers.",
+   "Mix the Greek yoghurt with lemon zest, a squeeze of juice and a pinch of salt. Fold in half the diced cucumber.",
+   "Heat the olive oil in a griddle or frying pan over medium-high heat. Cook the kofta, turning, for about 10 minutes, until browned all over and cooked through to 71°C.",
+   "Warm the flatbreads in a dry pan until pliable. Serve the kofta with the yoghurt, remaining cucumber, extra parsley and lemon wedges."
+  ],
+  "stages": [
+   {
+    "title": "Mix and shape the kofta",
+    "minutes": 10,
+    "steps": [
+     "Grate onion and squeeze out excess liquid; combine with lamb, minced garlic, spices, parsley and 1 tsp salt.",
+     "Mix just until evenly combined and shape into 8 short oval patties around skewers or by hand."
+    ]
+   },
+   {
+    "title": "Prepare the yoghurt sauce",
+    "minutes": 5,
+    "steps": [
+     "Mix yoghurt with lemon zest, a squeeze of juice and a pinch of salt.",
+     "Dice cucumber and fold half into the yoghurt, keeping the remainder for serving."
+    ]
+   },
+   {
+    "title": "Cook the kofta",
+    "minutes": 10,
+    "steps": [
+     "Heat a griddle or frying pan with oil over medium-high heat.",
+     "Cook kofta, turning every few minutes, until browned on all sides and cooked through to 71°C in the centre."
+    ]
+   },
+   {
+    "title": "Serve with flatbread",
+    "minutes": 3,
+    "steps": [
+     "Warm flatbreads briefly in a dry pan until pliable.",
+     "Serve kofta with yoghurt, cucumber, extra parsley and lemon wedges."
+    ]
+   }
+  ],
+  "tips": [
+   "Do not overmix the lamb or the kofta can become dense."
+  ],
+  "variations": [
+   "Use beef mince or a beef-lamb mixture."
+  ],
+  "storage": "Refrigerate cooked kofta up to 3 days; keep yoghurt sauce separately."
+ },
+ {
+  "slug": "classic-fish-tacos",
+  "title": "Classic fish tacos",
+  "cuisine": "mexican",
+  "course": "main",
+  "servings": 4,
+  "prep_minutes": 20,
+  "cook_minutes": 6,
+  "difficulty": "easy",
+  "summary": "Flaky seasoned fish tucked into tortillas with crunchy slaw and a tangy lime dressing.",
+  "ingredients": [
+   "500 g firm white fish",
+   "8 small corn tortillas",
+   "2 tsp smoked paprika",
+   "1 tsp cumin",
+   "2 tbsp olive oil",
+   "200 g red cabbage",
+   "1 avocado",
+   "120 g Greek yoghurt",
+   "2 limes",
+   "1 small red onion",
+   "1 tbsp chopped coriander",
+   "Salt"
+  ],
+  "method": [
+   "Shred the red cabbage and slice the red onion. Toss with the juice of one lime, a pinch of salt and the coriander, then leave to stand.",
+   "Pat the fish dry, cut into broad strips and coat with the paprika, cumin, olive oil and salt.",
+   "Cook the fish in a nonstick pan over high heat for 3–4 minutes per side, until opaque and flaking easily.",
+   "Mash the avocado with a squeeze of lime and salt. Stir the Greek yoghurt with the remaining lime juice and a tablespoon of water until spoonable.",
+   "Warm the tortillas in a dry pan over medium heat until flexible. Fill with fish, slaw, avocado and lime yoghurt, and serve straight away."
+  ],
+  "stages": [
+   {
+    "title": "Make the slaw",
+    "minutes": 8,
+    "steps": [
+     "Finely shred cabbage and thinly slice red onion.",
+     "Toss with juice from one lime, a pinch of salt and a little coriander; let stand while preparing fish."
+    ]
+   },
+   {
+    "title": "Season and cook the fish",
+    "minutes": 10,
+    "steps": [
+     "Pat fish dry, cut into broad strips and coat with paprika, cumin, salt and olive oil.",
+     "Cook in a hot nonstick pan for 3–4 minutes per side, depending on thickness, until opaque and easily flaked."
+    ]
+   },
+   {
+    "title": "Prepare toppings",
+    "minutes": 5,
+    "steps": [
+     "Mash avocado with a squeeze of lime and salt.",
+     "Stir yoghurt with remaining lime juice and a tablespoon of water until spoonable."
+    ]
+   },
+   {
+    "title": "Warm and assemble",
+    "minutes": 3,
+    "steps": [
+     "Warm tortillas one at a time in a dry pan until flexible.",
+     "Fill with fish, cabbage slaw, avocado and lime yoghurt; serve immediately."
+    ]
+   }
+  ],
+  "tips": [
+   "Dry the fish well before seasoning to encourage browning."
+  ],
+  "variations": [
+   "Replace fish with prawns, cooking until opaque and firm."
+  ],
+  "storage": "Refrigerate cooked fish up to 2 days; store slaw and sauces separately."
+ },
+ {
+  "slug": "chicken-fajitas",
+  "title": "Chicken fajitas",
+  "cuisine": "mexican",
+  "course": "main",
+  "servings": 4,
+  "prep_minutes": 15,
+  "cook_minutes": 13,
+  "difficulty": "easy",
+  "summary": "Sizzling chicken strips with peppers and onions, smoky spices and warm flour tortillas.",
+  "ingredients": [
+   "600 g chicken breast",
+   "2 bell peppers",
+   "1 red onion",
+   "2 tbsp olive oil",
+   "2 tsp smoked paprika",
+   "1 tsp ground cumin",
+   "1 tsp oregano",
+   "1 lime",
+   "8 flour tortillas",
+   "150 g sour cream",
+   "1 avocado",
+   "Salt"
+  ],
+  "method": [
+   "Slice the chicken, peppers and red onion into thin strips. Toss the chicken with half the olive oil, paprika, cumin, oregano, salt and lime zest.",
+   "Heat the remaining oil in a large frying pan over high heat. Cook the peppers and onion in batches until lightly charred but still with some bite.",
+   "Move the vegetables to a plate. Cook the chicken in a single layer over high heat, turning, until golden and 74°C in the thickest pieces.",
+   "Return the vegetables to the pan and squeeze over the lime juice.",
+   "Warm the tortillas in a dry pan or in foil in the oven. Serve the filling with sour cream and sliced avocado."
+  ],
+  "stages": [
+   {
+    "title": "Slice and season",
+    "minutes": 8,
+    "steps": [
+     "Cut chicken into even thin strips and slice peppers and onion to a similar thickness.",
+     "Toss chicken with half the oil, spices, salt and lime zest; keep raw chicken separate from vegetables."
+    ]
+   },
+   {
+    "title": "Cook the vegetables",
+    "minutes": 8,
+    "steps": [
+     "Heat a large frying pan until hot, add remaining oil and cook peppers and onion in batches.",
+     "Let them char lightly before stirring so they develop colour while retaining some bite."
+    ]
+   },
+   {
+    "title": "Cook the chicken",
+    "minutes": 9,
+    "steps": [
+     "Transfer vegetables to a plate and add chicken in a single layer.",
+     "Cook, turning, until golden and the thickest pieces reach 74°C; return vegetables and squeeze over lime juice."
+    ]
+   },
+   {
+    "title": "Serve hot",
+    "minutes": 3,
+    "steps": [
+     "Warm tortillas in a dry pan or wrapped in foil in the oven.",
+     "Serve the sizzling filling with sour cream and sliced avocado."
+    ]
+   }
+  ],
+  "tips": [
+   "Use a large pan and avoid crowding to prevent steaming."
+  ],
+  "variations": [
+   "Replace chicken with sliced portobello mushrooms for a vegetarian option."
+  ],
+  "storage": "Refrigerate filling up to 3 days; store tortillas and toppings separately."
+ },
+ {
+  "slug": "prawn-linguine-with-chilli",
+  "title": "Prawn linguine with chilli",
+  "cuisine": "italian",
+  "course": "main",
+  "servings": 4,
+  "prep_minutes": 15,
+  "cook_minutes": 10,
+  "difficulty": "easy",
+  "summary": "Linguine tossed with juicy prawns, garlic, chilli, olive oil and a bright squeeze of lemon.",
+  "ingredients": [
+   "350 g linguine",
+   "450 g peeled raw prawns",
+   "4 garlic cloves",
+   "1 red chilli",
+   "250 g cherry tomatoes",
+   "100 ml dry white wine",
+   "3 tbsp olive oil",
+   "1 lemon",
+   "2 tbsp chopped parsley"
+  ],
+  "method": [
+   "Boil the linguine in salted water until just short of al dente. Reserve a mug of pasta water, then drain. Thinly slice the garlic and chilli.",
+   "Pat the prawns dry. Sear them in 1 tbsp oil in a wide pan over medium-high heat until pink and opaque, then remove.",
+   "Lower to medium-low heat and add the remaining oil, garlic and chilli. Cook 30 seconds until fragrant.",
+   "Add the halved cherry tomatoes and cook until softened. Pour in the wine and simmer until reduced by half.",
+   "Toss in the pasta with a splash of reserved water until the sauce turns glossy and coats the strands.",
+   "Return the prawns briefly. Finish with lemon zest, a squeeze of juice and the parsley, then serve."
+  ],
+  "stages": [
+   {
+    "title": "Prepare pasta and aromatics",
+    "minutes": 10,
+    "steps": [
+     "Bring a large pot of salted water to the boil and cook linguine until just short of al dente.",
+     "Reserve a mug of pasta water before draining; thinly slice garlic and chilli."
+    ]
+   },
+   {
+    "title": "Cook the prawns",
+    "minutes": 5,
+    "steps": [
+     "Pat prawns dry and heat 1 tbsp oil in a wide pan over medium-high heat.",
+     "Sear prawns briefly on both sides until pink and opaque; remove promptly to avoid toughness."
+    ]
+   },
+   {
+    "title": "Build the sauce",
+    "minutes": 7,
+    "steps": [
+     "Lower heat and add remaining oil, garlic and chilli; cook for 30 seconds until fragrant.",
+     "Add halved tomatoes and cook until they soften, then pour in wine and simmer until reduced by half."
+    ]
+   },
+   {
+    "title": "Combine and finish",
+    "minutes": 3,
+    "steps": [
+     "Add pasta and a splash of reserved water, tossing until a glossy sauce coats the strands.",
+     "Return prawns briefly, add lemon zest, parsley and a squeeze of juice, and serve."
+    ]
+   }
+  ],
+  "tips": [
+   "Prawns cook quickly; remove them as soon as they turn opaque."
+  ],
+  "variations": [
+   "Use finely diced courgette instead of tomatoes."
+  ],
+  "storage": "Refrigerate up to 2 days; reheat gently until hot."
+ },
+ {
+  "slug": "roast-chicken-with-lemon",
+  "title": "Roast chicken with lemon",
+  "cuisine": "british",
+  "course": "main",
+  "servings": 4,
+  "prep_minutes": 20,
+  "cook_minutes": 90,
+  "difficulty": "medium",
+  "summary": "Golden roast chicken with crisp skin, juicy meat, lemon, garlic and fragrant herbs.",
+  "ingredients": [
+   "1 whole chicken (1.6 kg)",
+   "1 lemon",
+   "1 garlic bulb",
+   "3 tbsp olive oil",
+   "1 tsp dried thyme",
+   "1 tsp salt",
+   "1/2 tsp black pepper",
+   "2 onions",
+   "250 ml chicken stock"
+  ],
+  "method": [
+   "Heat the oven to 200°C (180°C fan). Pat the chicken dry, rub with olive oil, thyme, salt and pepper, then put the halved lemon and garlic in the cavity.",
+   "Spread the quartered onions in a roasting tray and sit the chicken on top, breast-side up. Pour the stock around the chicken, not over it.",
+   "Roast for 75–90 minutes, until the thickest part of the thigh reaches 74°C and the skin is golden.",
+   "Rest the chicken under loose foil for 15 minutes, then carve and spoon over the strained roasting juices."
+  ],
+  "stages": [
+   {
+    "title": "Prepare the chicken",
+    "minutes": 15,
+    "steps": [
+     "Preheat oven to 200°C conventional (180°C fan); pat chicken dry inside and out.",
+     "Rub skin with oil, thyme, salt and pepper; place halved lemon and garlic inside the cavity without packing tightly."
+    ]
+   },
+   {
+    "title": "Set up the roasting tray",
+    "minutes": 5,
+    "steps": [
+     "Quarter onions and spread them in a roasting tray, then place chicken breast-side up on top.",
+     "Pour stock around, not over, the chicken so the skin stays dry."
+    ]
+   },
+   {
+    "title": "Roast and check",
+    "minutes": 75,
+    "steps": [
+     "Roast for approximately 75–90 minutes, basting only if the pan becomes dry.",
+     "Check the thickest part of the thigh without touching bone reaches 74°C; continue roasting if needed."
+    ]
+   },
+   {
+    "title": "Rest and carve",
+    "minutes": 15,
+    "steps": [
+     "Transfer chicken to a board, loosely tent with foil and rest for 15 minutes.",
+     "Carve into portions and spoon over strained roasting juices."
+    ]
+   }
+  ],
+  "tips": [
+   "A thermometer is more reliable than judging doneness by colour."
+  ],
+  "variations": [
+   "Add carrots and potatoes around the chicken for a one-pan meal."
+  ],
+  "storage": "Refrigerate carved chicken up to 3 days; freeze up to 3 months."
+ },
+ {
+  "slug": "beef-and-broccoli-stir-fry",
+  "title": "Beef and broccoli stir-fry",
+  "cuisine": "chinese",
+  "course": "main",
+  "servings": 4,
+  "prep_minutes": 20,
+  "cook_minutes": 7,
+  "difficulty": "easy",
+  "summary": "Tender beef and crisp broccoli coated in a glossy ginger, garlic and soy sauce.",
+  "ingredients": [
+   "500 g beef rump",
+   "1 large broccoli head",
+   "3 tbsp soy sauce",
+   "1 tbsp oyster sauce",
+   "1 tbsp cornflour",
+   "1 tbsp sesame oil",
+   "2 garlic cloves",
+   "2 tsp grated ginger",
+   "120 ml water",
+   "2 tbsp neutral oil",
+   "250 g rice"
+  ],
+  "method": [
+   "Cook the rice on low heat to the packet instructions until tender, and keep it covered.",
+   "Whisk the soy sauce, oyster sauce, cornflour, sesame oil and water until smooth. Thinly slice the beef rump across the grain.",
+   "Blanch the broccoli florets in boiling water on high heat for 90 seconds, then drain well.",
+   "Heat the neutral oil in a wok over high heat until very hot. Sear the beef in batches for 1–2 minutes until browned but still tender, then set aside.",
+   "Add the garlic and ginger for 20 seconds, then the broccoli and sauce. Simmer until glossy and thickened, return the beef briefly and serve over the rice."
+  ],
+  "stages": [
+   {
+    "title": "Prepare rice and sauce",
+    "minutes": 15,
+    "steps": [
+     "Cook rice according to packet instructions and keep covered.",
+     "Whisk soy sauce, oyster sauce, cornflour, sesame oil and water until smooth; slice beef thinly across the grain."
+    ]
+   },
+   {
+    "title": "Blanch broccoli",
+    "minutes": 3,
+    "steps": [
+     "Cut broccoli into small florets and blanch in boiling water for 90 seconds.",
+     "Drain thoroughly so it does not dilute the stir-fry sauce."
+    ]
+   },
+   {
+    "title": "Sear beef",
+    "minutes": 5,
+    "steps": [
+     "Heat a wok or wide pan until very hot and add neutral oil.",
+     "Sear beef in batches for 1–2 minutes, stirring minimally at first; remove while still tender."
+    ]
+   },
+   {
+    "title": "Finish the stir-fry",
+    "minutes": 4,
+    "steps": [
+     "Add garlic and ginger for 20 seconds, then broccoli and sauce.",
+     "Simmer while stirring until glossy and thickened; return beef briefly and serve over rice."
+    ]
+   }
+  ],
+  "tips": [
+   "Slicing across the grain keeps beef tender."
+  ],
+  "variations": [
+   "Replace beef with sliced chicken thigh, cooking fully before adding sauce."
+  ],
+  "storage": "Refrigerate up to 3 days; cool rice promptly and reheat thoroughly."
+ },
+ {
+  "slug": "chickpea-and-spinach-curry",
+  "title": "Chickpea and spinach curry",
+  "cuisine": "indian",
+  "course": "main",
+  "servings": 4,
+  "prep_minutes": 15,
+  "cook_minutes": 17,
+  "difficulty": "easy",
+  "summary": "Chickpeas and spinach simmered in a warming tomato curry with ginger and aromatic spices.",
+  "ingredients": [
+   "2 cans chickpeas (400 g each)",
+   "200 g baby spinach",
+   "1 onion",
+   "3 garlic cloves",
+   "2 tsp grated ginger",
+   "1 tbsp curry powder",
+   "1 tsp ground cumin",
+   "400 g chopped tomatoes",
+   "200 ml coconut milk",
+   "2 tbsp neutral oil",
+   "1 lemon",
+   "Salt",
+   "Basmati rice, to serve (optional)",
+   "Flatbread, to serve (optional)"
+  ],
+  "method": [
+   "Heat the oil in a deep pan over medium heat. Soften the chopped onion until golden at the edges, then add the garlic and ginger for 1 minute.",
+   "Stir in the curry powder and cumin for 30 seconds, until fragrant.",
+   "Add the chopped tomatoes and simmer until thickened and the oil starts to separate.",
+   "Add the drained chickpeas, coconut milk and 100 ml water. Simmer gently for 10 minutes.",
+   "Stir in the spinach by handfuls until wilted, then season with salt and lemon juice. Simmer until the sauce coats the chickpeas.",
+   "Rest off the heat for a few minutes, then serve with basmati rice or warm flatbread."
+  ],
+  "stages": [
+   {
+    "title": "Cook the aromatics",
+    "minutes": 10,
+    "steps": [
+     "Heat oil in a deep pan over medium heat and soften finely chopped onion until golden at the edges.",
+     "Add garlic and ginger for 1 minute, then stir in curry powder and cumin for 30 seconds to bloom the spices."
+    ]
+   },
+   {
+    "title": "Build the curry",
+    "minutes": 15,
+    "steps": [
+     "Add chopped tomatoes and simmer until thickened and the oil begins to separate slightly.",
+     "Drain and rinse chickpeas, add with coconut milk and 100 ml water, then simmer gently for 10 minutes."
+    ]
+   },
+   {
+    "title": "Wilt spinach and season",
+    "minutes": 5,
+    "steps": [
+     "Add spinach by handfuls, stirring until each batch wilts.",
+     "Season with salt and lemon juice; simmer briefly until the sauce coats the chickpeas."
+    ]
+   },
+   {
+    "title": "Serve",
+    "minutes": 2,
+    "steps": [
+     "Rest the curry off the heat for a few minutes to let flavours settle.",
+     "Serve with basmati rice or warm flatbread."
+    ]
+   }
+  ],
+  "tips": [
+   "Rinse canned chickpeas to remove excess brine."
+  ],
+  "variations": [
+   "Add diced sweet potato early in the simmer and cook until tender."
+  ],
+  "storage": "Refrigerate up to 4 days; freeze up to 3 months."
+ },
+ {
+  "slug": "creamy-mushroom-pasta",
+  "title": "Creamy mushroom pasta",
+  "cuisine": "italian",
+  "course": "main",
+  "servings": 4,
+  "prep_minutes": 15,
+  "cook_minutes": 11,
+  "difficulty": "easy",
+  "summary": "Silky pasta coated in a savoury mushroom cream sauce with garlic and Parmesan.",
+  "ingredients": [
+   "350 g fettuccine",
+   "400 g mixed mushrooms",
+   "2 garlic cloves",
+   "1 shallot",
+   "25 g butter",
+   "1 tbsp olive oil",
+   "180 ml thickened cream",
+   "50 g parmesan",
+   "1 tbsp lemon juice",
+   "2 tbsp parsley",
+   "Black pepper"
+  ],
+  "method": [
+   "Boil the fettuccine in well-salted water until al dente. Reserve 200 ml of the cooking water, then drain.",
+   "Slice the mushrooms and cook in the oil in a large pan over medium-high heat, in batches, until golden and the moisture has evaporated.",
+   "Add the butter and shallot and cook until softened. Add the garlic for 30 seconds.",
+   "Pour in the cream and simmer gently. Stir in the parmesan and a little pasta water until smooth, without boiling hard.",
+   "Toss the pasta through the sauce until evenly coated, loosening with more pasta water if needed.",
+   "Finish with the parsley, lemon juice and black pepper."
+  ],
+  "stages": [
+   {
+    "title": "Cook pasta",
+    "minutes": 10,
+    "steps": [
+     "Boil fettuccine in well-salted water until al dente.",
+     "Reserve 200 ml cooking water before draining."
+    ]
+   },
+   {
+    "title": "Brown the mushrooms",
+    "minutes": 9,
+    "steps": [
+     "Slice mushrooms and cook in a large pan with oil over medium-high heat in batches, until golden brown.",
+     "Let their moisture evaporate before stirring often; add butter and shallot once browned."
+    ]
+   },
+   {
+    "title": "Make the cream sauce",
+    "minutes": 4,
+    "steps": [
+     "Add minced garlic for 30 seconds, then pour in cream and simmer gently.",
+     "Stir in grated parmesan and a little pasta water until smooth; avoid a hard boil."
+    ]
+   },
+   {
+    "title": "Toss and serve",
+    "minutes": 3,
+    "steps": [
+     "Add pasta and toss vigorously until evenly coated, loosening with more pasta water as needed.",
+     "Finish with parsley, lemon juice and black pepper."
+    ]
+   }
+  ],
+  "tips": [
+   "Browning mushrooms well creates the savoury base."
+  ],
+  "variations": [
+   "Add cooked shredded chicken for a heartier meal."
+  ],
+  "storage": "Refrigerate up to 3 days; reheat gently with a splash of water."
+ },
+ {
+  "slug": "eggplant-parmigiana",
+  "title": "Eggplant parmigiana",
+  "cuisine": "italian",
+  "course": "main",
+  "servings": 4,
+  "prep_minutes": 25,
+  "cook_minutes": 55,
+  "difficulty": "medium",
+  "summary": "Soft aubergine layered with rich tomato sauce, basil, mozzarella and Parmesan, baked until bubbling.",
+  "ingredients": [
+   "2 large eggplants",
+   "600 ml passata",
+   "2 garlic cloves",
+   "250 g mozzarella",
+   "70 g parmesan",
+   "4 tbsp olive oil",
+   "1 handful basil",
+   "1 tsp salt"
+  ],
+  "method": [
+   "Slice the eggplants lengthwise into 1 cm slices, salt them and rest for 10 minutes. Pat dry and brush both sides with olive oil.",
+   "Roast the slices in a single layer at 220°C, in batches, until soft and golden, turning halfway.",
+   "Meanwhile, cook the garlic in a little oil in a pan over medium heat for 30 seconds until fragrant. Add the passata and simmer until slightly thickened, then stir in the basil.",
+   "Layer sauce, eggplant, mozzarella and parmesan in a baking dish, finishing with cheese.",
+   "Bake at 190°C until bubbling and golden, then rest for 10 minutes before slicing."
+  ],
+  "stages": [
+   {
+    "title": "Prepare eggplant",
+    "minutes": 15,
+    "steps": [
+     "Slice eggplants lengthwise into 1 cm slices, sprinkle lightly with salt and rest for 10 minutes.",
+     "Pat dry and brush both sides lightly with olive oil."
+    ]
+   },
+   {
+    "title": "Roast the slices",
+    "minutes": 25,
+    "steps": [
+     "Arrange eggplant in a single layer on baking trays and roast at 220°C until soft and golden, turning halfway.",
+     "Work in batches if needed to avoid steaming."
+    ]
+   },
+   {
+    "title": "Make the sauce",
+    "minutes": 15,
+    "steps": [
+     "While eggplant roasts, cook minced garlic in a little oil over medium heat for 30 seconds until fragrant.",
+     "Add passata, simmer until slightly thickened and stir in torn basil."
+    ]
+   },
+   {
+    "title": "Layer and bake",
+    "minutes": 25,
+    "steps": [
+     "Spread a thin layer of sauce in a baking dish, then alternate eggplant, sauce, mozzarella and parmesan.",
+     "Finish with cheese and bake at 190°C until bubbling and golden; rest 10 minutes before slicing."
+    ]
+   }
+  ],
+  "tips": [
+   "Roasting instead of frying reduces oil while keeping flavour."
+  ],
+  "variations": [
+   "Add a layer of sautéed spinach between eggplant slices."
+  ],
+  "storage": "Refrigerate up to 4 days; freeze individual portions up to 2 months."
+ },
+ {
+  "slug": "chicken-noodle-soup",
+  "title": "Chicken noodle soup",
+  "cuisine": "american",
+  "course": "main",
+  "servings": 4,
+  "prep_minutes": 15,
+  "cook_minutes": 23,
+  "difficulty": "easy",
+  "summary": "Comforting chicken broth filled with tender chicken, vegetables and soft noodles.",
+  "ingredients": [
+   "400 g boneless chicken thighs",
+   "1 onion",
+   "2 carrots",
+   "2 celery stalks",
+   "2 garlic cloves",
+   "1.2 L chicken stock",
+   "120 g egg noodles",
+   "1 tbsp olive oil",
+   "1 bay leaf",
+   "2 tbsp parsley",
+   "1 lemon",
+   "Salt"
+  ],
+  "method": [
+   "Dice the onion, carrots and celery. Cook in the olive oil in a soup pot over medium heat for about 8 minutes until softened, adding the garlic for the last 30 seconds.",
+   "Pour in the stock, add the bay leaf and bring to a gentle simmer.",
+   "Add the chicken thighs and poach for 15–20 minutes, until cooked through (74°C).",
+   "Shred the chicken with two forks and return it to the pot. Add the egg noodles and simmer until tender, following the packet.",
+   "Remove the bay leaf and season with salt, pepper and lemon juice. Serve hot, scattered with parsley."
+  ],
+  "stages": [
+   {
+    "title": "Soften vegetables",
+    "minutes": 8,
+    "steps": [
+     "Dice onion, carrots and celery into small even pieces.",
+     "Heat oil in a soup pot and cook vegetables over medium heat until softened, then add garlic for 30 seconds."
+    ]
+   },
+   {
+    "title": "Poach chicken",
+    "minutes": 20,
+    "steps": [
+     "Pour in stock, add bay leaf and bring to a gentle simmer.",
+     "Add chicken thighs and poach until cooked through to 74°C, around 15–20 minutes depending on thickness."
+    ]
+   },
+   {
+    "title": "Shred and cook noodles",
+    "minutes": 8,
+    "steps": [
+     "Lift chicken onto a board, shred with two forks and return to the pot.",
+     "Add noodles and simmer according to packet instructions until tender."
+    ]
+   },
+   {
+    "title": "Finish soup",
+    "minutes": 2,
+    "steps": [
+     "Remove bay leaf, season with salt, pepper and lemon juice.",
+     "Scatter parsley over each bowl and serve hot."
+    ]
+   }
+  ],
+  "tips": [
+   "Keep stock at a gentle simmer for tender chicken."
+  ],
+  "variations": [
+   "Use cooked rice instead of noodles, adding it at the end."
+  ],
+  "storage": "Refrigerate soup up to 3 days; store noodles separately to prevent sogginess."
+ },
+ {
+  "slug": "spinach-and-ricotta-cannelloni",
+  "title": "Spinach and ricotta cannelloni",
+  "cuisine": "italian",
+  "course": "main",
+  "servings": 4,
+  "prep_minutes": 25,
+  "cook_minutes": 40,
+  "difficulty": "medium",
+  "summary": "Pasta tubes stuffed with creamy spinach and ricotta, baked in tomato sauce and melted cheese.",
+  "ingredients": [
+   "12 cannelloni tubes",
+   "400 g ricotta",
+   "250 g spinach",
+   "1 egg",
+   "60 g parmesan",
+   "500 ml passata",
+   "2 garlic cloves",
+   "150 g mozzarella",
+   "1 tbsp olive oil",
+   "1/4 tsp nutmeg",
+   "Salt"
+  ],
+  "method": [
+   "Wilt the spinach in a pan over medium heat until soft. Cool, squeeze dry, chop finely and mix with ricotta, egg, half the parmesan, nutmeg, salt and pepper.",
+   "Heat the olive oil in a pan over medium heat and cook the garlic for 30 seconds until fragrant. Add passata and a splash of water, then simmer for 5 minutes.",
+   "Spread a thin layer of sauce in a baking dish. Pipe the filling into the dry cannelloni tubes and arrange them in a single layer.",
+   "Cover with the remaining sauce, then top with mozzarella and the remaining parmesan.",
+   "Cover with foil and bake at 190°C for 25 minutes. Uncover and bake 10–15 minutes more until the pasta is tender and bubbling."
+  ],
+  "stages": [
+   {
+    "title": "Make the filling",
+    "minutes": 12,
+    "steps": [
+     "Wilt spinach in a pan, cool slightly and squeeze out as much liquid as possible.",
+     "Chop finely and mix with ricotta, egg, half the parmesan, nutmeg, salt and pepper."
+    ]
+   },
+   {
+    "title": "Prepare the tomato sauce",
+    "minutes": 8,
+    "steps": [
+     "Heat oil in a pan over medium heat and cook garlic for about 30 seconds until fragrant, without browning.",
+     "Add passata with a splash of water and simmer for 5 minutes; spread a thin layer in a baking dish."
+    ]
+   },
+   {
+    "title": "Fill and arrange",
+    "minutes": 10,
+    "steps": [
+     "Spoon ricotta filling into a piping bag or sturdy food bag with the corner snipped.",
+     "Pipe into dry cannelloni tubes and arrange in a single layer over sauce."
+    ]
+   },
+   {
+    "title": "Bake until tender",
+    "minutes": 35,
+    "steps": [
+     "Cover tubes completely with remaining sauce and sprinkle mozzarella and parmesan over the top.",
+     "Cover with foil and bake at 190°C for 25 minutes; uncover and bake 10–15 minutes until pasta is tender and bubbling."
+    ]
+   }
+  ],
+  "tips": [
+   "Keep the pasta fully covered in sauce so it cooks evenly."
+  ],
+  "variations": [
+   "Replace spinach with finely chopped cooked silverbeet."
+  ],
+  "storage": "Refrigerate up to 3 days; freeze baked portions up to 2 months."
+ },
+ {
+  "slug": "honey-soy-chicken-thighs",
+  "title": "Honey soy chicken thighs",
+  "cuisine": "asian-fusion",
+  "course": "main",
+  "servings": 4,
+  "prep_minutes": 15,
+  "cook_minutes": 23,
+  "difficulty": "easy",
+  "summary": "Juicy chicken thighs glazed with sticky honey, soy, garlic and ginger.",
+  "ingredients": [
+   "700 g boneless chicken thighs",
+   "3 tbsp soy sauce",
+   "2 tbsp honey",
+   "1 tbsp rice vinegar",
+   "2 garlic cloves",
+   "1 tsp grated ginger",
+   "1 tbsp neutral oil",
+   "1 tsp cornflour",
+   "2 spring onions",
+   "250 g rice"
+  ],
+  "method": [
+   "Whisk the soy sauce, honey, rice vinegar, garlic and ginger. Set a little aside in a clean bowl for finishing.",
+   "Pat the chicken dry. Heat the oil in an oven-safe pan over medium-high heat and brown the thighs 3–4 minutes per side.",
+   "Pour the glaze around the chicken and roast at 190°C, turning once, until the chicken reaches 74°C.",
+   "If the juices are thin, stir the cornflour with a tablespoon of cold water into them to thicken.",
+   "Cook the rice to packet directions while the chicken roasts.",
+   "Slice the chicken and serve over the rice with the pan juices and sliced spring onions."
+  ],
+  "stages": [
+   {
+    "title": "Mix the glaze",
+    "minutes": 5,
+    "steps": [
+     "Whisk soy sauce, honey, rice vinegar, minced garlic and ginger together.",
+     "Reserve a small amount in a clean bowl for finishing; do not reuse sauce that has touched raw chicken unless boiled."
+    ]
+   },
+   {
+    "title": "Brown chicken",
+    "minutes": 10,
+    "steps": [
+     "Pat thighs dry and heat oil in an oven-safe frying pan over medium-high heat.",
+     "Brown chicken for 3–4 minutes per side, working in batches if necessary."
+    ]
+   },
+   {
+    "title": "Roast and glaze",
+    "minutes": 18,
+    "steps": [
+     "Pour glaze around chicken and transfer to a 190°C oven.",
+     "Roast until chicken reaches 74°C, turning once; thicken pan juices with cornflour mixed into a tablespoon of cold water if needed."
+    ]
+   },
+   {
+    "title": "Serve",
+    "minutes": 5,
+    "steps": [
+     "Cook rice according to packet directions while chicken finishes.",
+     "Slice chicken and serve over rice with spooned-over glaze and sliced spring onions."
+    ]
+   }
+  ],
+  "tips": [
+   "Watch the glaze near the end because honey can burn."
+  ],
+  "variations": [
+   "Add chilli flakes or sesame seeds before serving."
+  ],
+  "storage": "Refrigerate up to 3 days; freeze chicken up to 2 months."
+ },
+ {
+  "slug": "turkey-meatballs-in-tomato-sauce",
+  "title": "Turkey meatballs in tomato sauce",
+  "cuisine": "italian",
+  "course": "main",
+  "servings": 4,
+  "prep_minutes": 20,
+  "cook_minutes": 28,
+  "difficulty": "easy",
+  "summary": "Tender turkey meatballs simmered in a herby tomato sauce, ideal with pasta or crusty bread.",
+  "ingredients": [
+   "500 g turkey mince",
+   "1 egg",
+   "60 g breadcrumbs",
+   "40 g parmesan",
+   "2 garlic cloves",
+   "1 tbsp parsley",
+   "500 ml passata",
+   "1 onion",
+   "2 tbsp olive oil",
+   "350 g spaghetti",
+   "Salt"
+  ],
+  "method": [
+   "Combine the turkey mince, egg, breadcrumbs, parmesan, one minced garlic clove, parsley and a pinch of salt. Shape into 16 balls with damp hands.",
+   "Heat the olive oil in a wide pan over medium heat. Brown the meatballs for about 5 minutes until golden, then set aside.",
+   "In the same pan, soften the onion and remaining garlic for about 5 minutes. Add the passata and 100 ml water.",
+   "Return the meatballs, cover loosely and simmer for 15–20 minutes until cooked through to 74°C.",
+   "Boil the spaghetti in salted water until al dente, reserving a little pasta water. Toss with the sauce, top with meatballs and extra parmesan."
+  ],
+  "stages": [
+   {
+    "title": "Mix and shape meatballs",
+    "minutes": 10,
+    "steps": [
+     "Combine turkey mince, egg, breadcrumbs, parmesan, one minced garlic clove, parsley and a pinch of salt.",
+     "Mix gently and shape into 16 equal balls with damp hands; avoid packing too tightly."
+    ]
+   },
+   {
+    "title": "Brown the meatballs",
+    "minutes": 8,
+    "steps": [
+     "Heat oil in a wide pan over medium heat.",
+     "Brown meatballs on several sides until golden, about 5 minutes, without fully cooking them; remove to a plate."
+    ]
+   },
+   {
+    "title": "Simmer in sauce",
+    "minutes": 20,
+    "steps": [
+     "Soften chopped onion and remaining garlic in the same pan for about 5 minutes until soft and translucent, then add passata and 100 ml water.",
+     "Return meatballs, cover loosely and simmer until cooked through to 74°C, about 15–20 minutes."
+    ]
+   },
+   {
+    "title": "Cook pasta and serve",
+    "minutes": 10,
+    "steps": [
+     "Boil spaghetti until al dente and reserve a little pasta water.",
+     "Toss with tomato sauce, top with meatballs and finish with extra parmesan."
+    ]
+   }
+  ],
+  "tips": [
+   "Turkey mince is lean, so gentle mixing prevents tough meatballs."
+  ],
+  "variations": [
+   "Use pork mince instead, cooking thoroughly."
+  ],
+  "storage": "Refrigerate up to 3 days; freeze meatballs in sauce up to 3 months."
+ },
+ {
+  "slug": "beef-bibimbap",
+  "title": "Beef bibimbap",
+  "cuisine": "korean",
+  "course": "main",
+  "servings": 4,
+  "prep_minutes": 25,
+  "cook_minutes": 13,
+  "difficulty": "medium",
+  "summary": "Rice topped with seasoned beef, colourful vegetables, a fried egg and spicy gochujang sauce.",
+  "ingredients": [
+   "400 g beef mince",
+   "250 g short-grain rice",
+   "2 carrots",
+   "1 courgette",
+   "150 g spinach",
+   "4 eggs",
+   "2 tbsp soy sauce",
+   "1 tbsp sesame oil",
+   "2 tsp brown sugar",
+   "2 tbsp gochujang",
+   "1 tbsp neutral oil",
+   "1 tsp sesame seeds"
+  ],
+  "method": [
+   "Cook the rice following the packet directions and keep it covered. Mix the soy sauce, sesame oil and brown sugar through the beef mince.",
+   "Julienne the carrots and courgette. Wilt the spinach in a pan over medium heat until just soft, then squeeze dry.",
+   "Cook the carrots and courgette separately in the neutral oil over medium heat for 2–3 minutes each, until just tender.",
+   "Brown the beef in a hot pan over high heat, breaking up lumps, until cooked through. Fry the eggs until the whites are set.",
+   "Divide the rice among four bowls and arrange the beef and vegetables on top. Add the eggs, sesame seeds and gochujang, then mix before eating."
+  ],
+  "stages": [
+   {
+    "title": "Cook rice and season beef",
+    "minutes": 15,
+    "steps": [
+     "Rinse rice and cook according to packet directions; keep covered until serving.",
+     "Mix soy sauce, sesame oil and sugar in a bowl, then stir into beef mince."
+    ]
+   },
+   {
+    "title": "Prepare vegetables",
+    "minutes": 12,
+    "steps": [
+     "Julienne carrots and courgette; wilt spinach briefly in a pan over medium heat and squeeze dry.",
+     "Cook each vegetable separately in a lightly oiled pan over medium heat for 2–3 minutes so colours and textures remain distinct."
+    ]
+   },
+   {
+    "title": "Cook beef and eggs",
+    "minutes": 8,
+    "steps": [
+     "Brown seasoned beef in a hot pan, breaking up lumps, until thoroughly cooked.",
+     "Fry eggs to your preferred doneness; cook yolks fully if serving someone at higher risk from undercooked eggs."
+    ]
+   },
+   {
+    "title": "Assemble bowls",
+    "minutes": 3,
+    "steps": [
+     "Divide rice among four bowls and arrange beef and vegetables in separate sections.",
+     "Top with eggs, sesame seeds and a small spoonful of gochujang; mix before eating."
+    ]
+   }
+  ],
+  "tips": [
+   "Keep toppings separate until serving for the classic presentation."
+  ],
+  "variations": [
+   "Use tofu instead of beef and season it with the same sauce."
+  ],
+  "storage": "Refrigerate cooked components up to 3 days; store eggs separately and chill rice promptly."
+ },
+ {
+  "slug": "baked-macaroni-and-cheese",
+  "title": "Baked macaroni and cheese",
+  "cuisine": "american",
+  "course": "main",
+  "servings": 4,
+  "prep_minutes": 15,
+  "cook_minutes": 30,
+  "difficulty": "easy",
+  "summary": "Tender macaroni baked in a rich cheese sauce beneath a crisp, golden topping.",
+  "ingredients": [
+   "300 g macaroni",
+   "50 g butter",
+   "50 g plain flour",
+   "600 ml whole milk",
+   "200 g cheddar",
+   "60 g gruyere",
+   "1 tsp Dijon mustard",
+   "50 g panko breadcrumbs",
+   "25 g parmesan"
+  ],
+  "method": [
+   "Boil the macaroni in salted water for 2 minutes less than the packet directions, then drain.",
+   "Melt the butter in a saucepan over medium heat, whisk in the flour and cook for 1 minute without browning.",
+   "Gradually whisk in the milk and simmer until thick enough to coat a spoon.",
+   "Off the heat, stir in the Dijon mustard, grated cheddar and gruyere.",
+   "Fold the macaroni through the sauce, tip into a lightly buttered baking dish and scatter over the panko mixed with the parmesan.",
+   "Bake at 190°C until bubbling at the edges and golden on top, then rest for 5 minutes."
+  ],
+  "stages": [
+   {
+    "title": "Cook pasta",
+    "minutes": 8,
+    "steps": [
+     "Boil macaroni in salted water for 2 minutes less than packet directions.",
+     "Drain well; it will finish cooking in the oven."
+    ]
+   },
+   {
+    "title": "Make the cheese sauce",
+    "minutes": 12,
+    "steps": [
+     "Melt butter over medium heat, whisk in flour and cook for 1 minute without browning.",
+     "Add milk gradually while whisking and simmer until thick enough to coat a spoon; remove from heat and stir in mustard and grated cheeses."
+    ]
+   },
+   {
+    "title": "Assemble the bake",
+    "minutes": 5,
+    "steps": [
+     "Fold macaroni through the cheese sauce and pour into a lightly buttered baking dish.",
+     "Mix panko with parmesan and scatter evenly over the surface."
+    ]
+   },
+   {
+    "title": "Bake and rest",
+    "minutes": 20,
+    "steps": [
+     "Bake at 190°C until bubbling around the edges and golden on top.",
+     "Rest 5 minutes before serving so the sauce settles slightly."
+    ]
+   }
+  ],
+  "tips": [
+   "Remove sauce from heat before adding cheese to reduce graininess."
+  ],
+  "variations": [
+   "Fold in steamed broccoli or cooked bacon before baking."
+  ],
+  "storage": "Refrigerate up to 3 days; reheat covered with a splash of milk."
+ },
+ {
+  "slug": "lentil-shepherds-pie",
+  "title": "Lentil shepherd's pie",
+  "cuisine": "british",
+  "course": "main",
+  "servings": 4,
+  "prep_minutes": 20,
+  "cook_minutes": 44,
+  "difficulty": "medium",
+  "summary": "Savoury lentils and vegetables beneath a fluffy, golden mashed potato topping.",
+  "ingredients": [
+   "2 cans brown lentils (400 g each)",
+   "800 g potatoes",
+   "1 onion",
+   "2 carrots",
+   "150 g mushrooms",
+   "2 tbsp tomato paste",
+   "350 ml vegetable stock",
+   "2 tbsp olive oil",
+   "40 g butter",
+   "80 ml milk",
+   "1 tsp thyme",
+   "Salt"
+  ],
+  "method": [
+   "Simmer the peeled, cubed potatoes in salted water until easily pierced with a fork. Drain and mash with the butter, milk and salt until smooth.",
+   "Heat the olive oil in a wide pan over medium heat. Soften the onion and carrots for 5 minutes.",
+   "Add the mushrooms and cook until their moisture has evaporated. Stir in the tomato paste and thyme for 1 minute.",
+   "Add the drained lentils and stock, then simmer uncovered until thick and spoonable. Season with salt and pepper and transfer to a baking dish.",
+   "Spread the mash over the filling and rough up the surface with a fork. Bake at 200°C until bubbling and lightly browned, then rest for 5 minutes."
+  ],
+  "stages": [
+   {
+    "title": "Make the potato topping",
+    "minutes": 20,
+    "steps": [
+     "Peel and cube potatoes, cover with cold salted water and simmer until easily pierced with a fork.",
+     "Drain thoroughly and mash with butter, milk and salt until smooth; set aside."
+    ]
+   },
+   {
+    "title": "Cook the vegetable base",
+    "minutes": 12,
+    "steps": [
+     "Heat oil in a wide pan over medium heat and soften diced onion and carrots for 5 minutes.",
+     "Add chopped mushrooms and cook until their moisture has evaporated; stir in tomato paste and thyme for 1 minute."
+    ]
+   },
+   {
+    "title": "Simmer the filling",
+    "minutes": 12,
+    "steps": [
+     "Drain lentils and add with vegetable stock; simmer uncovered until thick and spoonable.",
+     "Taste and adjust salt and pepper; transfer to a baking dish."
+    ]
+   },
+   {
+    "title": "Top and bake",
+    "minutes": 20,
+    "steps": [
+     "Spread mashed potato over the lentils and rough up the surface with a fork to create crisp ridges.",
+     "Bake at 200°C until bubbling and lightly browned; rest 5 minutes before serving."
+    ]
+   }
+  ],
+  "tips": [
+   "The lentil filling should be thick before topping to avoid a watery pie."
+  ],
+  "variations": [
+   "Add frozen peas to the filling during the last few minutes."
+  ],
+  "storage": "Refrigerate up to 4 days; freeze baked portions up to 3 months."
+ },
+ {
+  "slug": "greek-chicken-souvlaki",
+  "title": "Greek chicken souvlaki",
+  "cuisine": "greek",
+  "course": "main",
+  "servings": 4,
+  "prep_minutes": 20,
+  "cook_minutes": 32,
+  "difficulty": "easy",
+  "summary": "Lemon-oregano chicken skewers served with warm pita, crisp salad and creamy tzatziki.",
+  "ingredients": [
+   "650 g chicken thigh",
+   "2 lemons",
+   "3 tbsp olive oil",
+   "3 garlic cloves",
+   "2 tsp dried oregano",
+   "1 tsp paprika",
+   "200 g Greek yoghurt",
+   "1/2 cucumber",
+   "4 pita breads",
+   "2 tomatoes",
+   "Salt"
+  ],
+  "method": [
+   "Cut the chicken into 3 cm pieces and toss with olive oil, juice of one lemon, two minced garlic cloves, oregano, paprika and salt. Marinate for at least 30 minutes, then skewer.",
+   "Grate the cucumber and squeeze out moisture. Stir into the yoghurt with the remaining garlic, a little lemon juice and salt, then chill.",
+   "Heat a grill pan or barbecue to medium-high and oil it. Cook the skewers for 10–12 minutes, turning, until charred and the chicken reaches 74°C.",
+   "Warm the pita and slice the tomatoes. Fill the pita with chicken, tomatoes, tzatziki and lemon wedges."
+  ],
+  "stages": [
+   {
+    "title": "Marinate the chicken",
+    "minutes": 30,
+    "steps": [
+     "Cut chicken into even 3 cm pieces and toss with olive oil, juice of one lemon, two minced garlic cloves, oregano, paprika and salt.",
+     "Cover and refrigerate for at least 30 minutes if time allows; thread onto skewers just before cooking."
+    ]
+   },
+   {
+    "title": "Prepare tzatziki",
+    "minutes": 7,
+    "steps": [
+     "Grate cucumber, squeeze out moisture and stir into yoghurt with remaining garlic and a little lemon juice.",
+     "Season with salt and chill until serving."
+    ]
+   },
+   {
+    "title": "Grill the skewers",
+    "minutes": 12,
+    "steps": [
+     "Heat a grill pan or barbecue to medium-high for about 3 minutes, until hot, and lightly oil the surface.",
+     "Cook skewers for 10–12 minutes, turning regularly, until charred in spots and chicken reaches 74°C."
+    ]
+   },
+   {
+    "title": "Serve in pita",
+    "minutes": 3,
+    "steps": [
+     "Warm pita briefly and slice tomatoes.",
+     "Slide chicken from skewers into pita with tomatoes, tzatziki and lemon wedges."
+    ]
+   }
+  ],
+  "tips": [
+   "Chicken thigh stays juicy on high heat and tolerates slight charring."
+  ],
+  "variations": [
+   "Use pork shoulder cubes, ensuring they are thoroughly cooked."
+  ],
+  "storage": "Refrigerate cooked chicken up to 3 days; keep tzatziki separate."
+ },
+ {
+  "slug": "crispy-tofu-rice-bowls",
+  "title": "Crispy tofu rice bowls",
+  "cuisine": "asian-fusion",
+  "course": "main",
+  "servings": 4,
+  "prep_minutes": 20,
+  "cook_minutes": 11,
+  "difficulty": "easy",
+  "summary": "Crispy tofu over rice with crunchy vegetables and a punchy sesame-soy dressing.",
+  "ingredients": [
+   "500 g firm tofu",
+   "250 g jasmine rice",
+   "3 tbsp cornflour",
+   "2 tbsp soy sauce",
+   "1 tbsp maple syrup",
+   "1 tbsp rice vinegar",
+   "1 tsp sesame oil",
+   "1 cucumber",
+   "2 carrots",
+   "2 tbsp neutral oil",
+   "Salt"
+  ],
+  "method": [
+   "Cook the jasmine rice over low heat until tender, following the packet directions, and keep it covered.",
+   "Wrap the tofu in a clean towel and press under a plate for 10 minutes.",
+   "Cut the tofu into cubes, pat dry and toss with the cornflour and a pinch of salt.",
+   "Heat the neutral oil in a nonstick pan over medium-high heat. Fry the tofu until golden and crisp on several sides.",
+   "Whisk the soy sauce, maple syrup, rice vinegar and sesame oil. Slice the cucumber and julienne the carrots.",
+   "Divide the rice among bowls, add the vegetables and top with the tofu. Drizzle with the dressing just before eating."
+  ],
+  "stages": [
+   {
+    "title": "Cook rice and press tofu",
+    "minutes": 15,
+    "steps": [
+     "Cook rice according to packet instructions over low heat until tender and keep covered.",
+     "Wrap tofu in a clean towel and press under a plate for 10 minutes to remove excess moisture."
+    ]
+   },
+   {
+    "title": "Coat and crisp tofu",
+    "minutes": 10,
+    "steps": [
+     "Cut tofu into cubes, pat dry and toss lightly with cornflour and a pinch of salt.",
+     "Heat oil in a nonstick pan over medium-high heat and fry tofu, turning carefully, until golden and crisp on several sides."
+    ]
+   },
+   {
+    "title": "Mix the dressing",
+    "minutes": 3,
+    "steps": [
+     "Whisk soy sauce, maple syrup, vinegar and sesame oil together.",
+     "Slice cucumber and julienne carrots while tofu finishes cooking."
+    ]
+   },
+   {
+    "title": "Build the bowls",
+    "minutes": 3,
+    "steps": [
+     "Divide rice among bowls and add fresh vegetables.",
+     "Top with crisp tofu and drizzle dressing just before eating to preserve texture."
+    ]
+   }
+  ],
+  "tips": [
+   "Dry tofu thoroughly so the cornflour coating crisps."
+  ],
+  "variations": [
+   "Add edamame or shredded red cabbage for extra vegetables."
+  ],
+  "storage": "Refrigerate components separately up to 3 days; re-crisp tofu in a pan."
+ },
+ {
+  "slug": "spanish-tortilla",
+  "title": "Spanish tortilla",
+  "cuisine": "spanish",
+  "course": "lunch",
+  "servings": 4,
+  "prep_minutes": 15,
+  "cook_minutes": 25,
+  "difficulty": "medium",
+  "summary": "A thick Spanish potato and onion omelette with a golden exterior and tender centre.",
+  "ingredients": [
+   "600 g waxy potatoes",
+   "1 onion",
+   "6 eggs",
+   "100 ml olive oil",
+   "1 tsp salt",
+   "1/2 tsp black pepper"
+  ],
+  "method": [
+   "Peel and thinly slice the potatoes and onion. Beat the eggs with the salt and pepper in a large bowl until just combined.",
+   "Heat the olive oil in a nonstick pan over medium-low heat. Cook the potatoes and onion gently until completely tender but not browned, then drain off most of the oil.",
+   "Fold the warm potato mixture into the eggs and rest for 3 minutes.",
+   "Cook in a lightly oiled nonstick pan over low heat until the edges set and the centre is mostly firm.",
+   "Invert onto a plate, slide back into the pan and cook until set through. Rest 5 minutes before slicing."
+  ],
+  "stages": [
+   {
+    "title": "Slice potatoes and onion",
+    "minutes": 10,
+    "steps": [
+     "Peel potatoes and slice into thin even rounds; thinly slice onion.",
+     "Beat eggs in a large bowl with salt and pepper until combined, without incorporating too much air."
+    ]
+   },
+   {
+    "title": "Gently cook potatoes",
+    "minutes": 18,
+    "steps": [
+     "Heat olive oil in a nonstick frying pan over medium-low heat.",
+     "Add potatoes and onion and cook gently, stirring occasionally, until completely tender but not browned; drain off most oil."
+    ]
+   },
+   {
+    "title": "Combine and set",
+    "minutes": 8,
+    "steps": [
+     "Fold warm potato mixture into eggs and rest 3 minutes.",
+     "Return to a lightly oiled nonstick pan over low heat and cook until edges set and centre is mostly firm."
+    ]
+   },
+   {
+    "title": "Flip and finish",
+    "minutes": 4,
+    "steps": [
+     "Place a flat plate over the pan and carefully invert the tortilla, using oven gloves.",
+     "Slide back into the pan and cook until set through; rest 5 minutes before slicing."
+    ]
+   }
+  ],
+  "tips": [
+   "Keep the heat low so potatoes soften without crisping."
+  ],
+  "variations": [
+   "Add roasted peppers or a little parsley."
+  ],
+  "storage": "Refrigerate up to 3 days; serve chilled or reheat thoroughly."
+ },
+ {
+  "slug": "tuna-and-white-bean-salad",
+  "title": "Tuna and white bean salad",
+  "cuisine": "mediterranean",
+  "course": "lunch",
+  "servings": 4,
+  "prep_minutes": 15,
+  "cook_minutes": 0,
+  "difficulty": "easy",
+  "summary": "Creamy white beans and flaky tuna tossed with lemon, parsley, red onion and olive oil.",
+  "ingredients": [
+   "2 cans tuna in olive oil (185 g each)",
+   "2 cans cannellini beans (400 g each)",
+   "200 g cherry tomatoes",
+   "1 small red onion",
+   "1 cucumber",
+   "2 tbsp lemon juice",
+   "3 tbsp olive oil",
+   "2 tbsp parsley",
+   "1 tsp Dijon mustard",
+   "Salt"
+  ],
+  "method": [
+   "Drain, rinse and pat dry the cannellini beans. Halve the cherry tomatoes, dice the cucumber and slice the red onion as thinly as possible.",
+   "Whisk the lemon juice, olive oil, Dijon mustard, salt and pepper until lightly emulsified. Taste and adjust the acidity.",
+   "Drain the tuna, flake it into large pieces and gently fold it through the beans and vegetables.",
+   "Add the dressing and parsley, tossing just enough to coat without crushing the beans."
+  ],
+  "stages": [
+   {
+    "title": "Prepare the vegetables",
+    "minutes": 8,
+    "steps": [
+     "Drain and rinse beans, then pat dry so dressing clings to them.",
+     "Halve tomatoes, dice cucumber and slice onion as thinly as possible."
+    ]
+   },
+   {
+    "title": "Mix the dressing",
+    "minutes": 3,
+    "steps": [
+     "Whisk lemon juice, olive oil, mustard, salt and pepper until lightly emulsified.",
+     "Taste and adjust acidity before adding to the salad."
+    ]
+   },
+   {
+    "title": "Combine and serve",
+    "minutes": 4,
+    "steps": [
+     "Flake drained tuna into large pieces and fold gently with beans and vegetables.",
+     "Add dressing and parsley, tossing just enough to coat without crushing beans."
+    ]
+   }
+  ],
+  "tips": [
+   "Use good-quality tuna packed in olive oil for richer flavour."
+  ],
+  "variations": [
+   "Swap tuna for cooked chickpeas for a vegetarian salad."
+  ],
+  "storage": "Refrigerate up to 2 days; keep dressing separate for best texture."
+ },
+ {
+  "slug": "roasted-vegetable-couscous",
+  "title": "Roasted vegetable couscous",
+  "cuisine": "moroccan",
+  "course": "lunch",
+  "servings": 4,
+  "prep_minutes": 15,
+  "cook_minutes": 22,
+  "difficulty": "easy",
+  "summary": "Fluffy couscous with caramelised roast vegetables, fresh herbs and a lemony dressing.",
+  "ingredients": [
+   "250 g couscous",
+   "1 courgette",
+   "1 red pepper",
+   "1 eggplant",
+   "1 red onion",
+   "3 tbsp olive oil",
+   "300 ml vegetable stock",
+   "1 tsp cumin",
+   "1 lemon",
+   "40 g raisins",
+   "2 tbsp mint",
+   "Salt"
+  ],
+  "method": [
+   "Cut the courgette, red pepper, eggplant and red onion into bite-sized pieces. Toss with the olive oil, cumin and salt.",
+   "Roast at 210°C for 25 minutes, turning halfway, until caramelised at the edges.",
+   "Put the couscous and raisins in a heatproof bowl and pour over the boiling vegetable stock. Cover for 5 minutes, then fluff with a fork.",
+   "Fold the roasted vegetables through the couscous with the lemon zest and juice.",
+   "Scatter over the chopped mint and season to taste while warm."
+  ],
+  "stages": [
+   {
+    "title": "Roast the vegetables",
+    "minutes": 25,
+    "steps": [
+     "Cut courgette, pepper, eggplant and onion into even bite-sized pieces.",
+     "Toss with oil, cumin and salt and roast at 210°C for 25 minutes, turning halfway, until caramelised at the edges."
+    ]
+   },
+   {
+    "title": "Prepare couscous",
+    "minutes": 7,
+    "steps": [
+     "Place couscous and raisins in a heatproof bowl and pour over boiling vegetable stock.",
+     "Cover tightly for 5 minutes, then fluff with a fork to separate grains."
+    ]
+   },
+   {
+    "title": "Finish the salad",
+    "minutes": 5,
+    "steps": [
+     "Fold roasted vegetables into couscous with lemon zest and juice.",
+     "Scatter chopped mint over the top and adjust seasoning while warm."
+    ]
+   }
+  ],
+  "tips": [
+   "Spread vegetables over two trays if needed to encourage roasting rather than steaming."
+  ],
+  "variations": [
+   "Add crumbled feta or toasted almonds for extra richness."
+  ],
+  "storage": "Refrigerate up to 3 days; serve chilled or at room temperature after safe storage."
+ },
+ {
+  "slug": "turkey-and-avocado-wraps",
+  "title": "Turkey and avocado wraps",
+  "cuisine": "american",
+  "course": "lunch",
+  "servings": 4,
+  "prep_minutes": 15,
+  "cook_minutes": 0,
+  "difficulty": "easy",
+  "summary": "Soft wraps packed with turkey, creamy avocado, crunchy greens and a tangy spread.",
+  "ingredients": [
+   "4 large tortillas",
+   "300 g sliced cooked turkey",
+   "2 ripe avocados",
+   "100 g lettuce",
+   "2 tomatoes",
+   "100 g Greek yoghurt",
+   "1 tbsp lemon juice",
+   "1 tsp Dijon mustard",
+   "1 small carrot",
+   "Salt"
+  ],
+  "method": [
+   "Mash the avocados with lemon juice and a pinch of salt. In a separate bowl, stir the Dijon mustard into the Greek yoghurt for the dressing.",
+   "Wash and dry the lettuce, slice the tomatoes and grate the carrot.",
+   "Spread the avocado over the centre of each tortilla, leaving a border. Layer on the lettuce, turkey, tomato and carrot, then drizzle with the dressing.",
+   "Fold in the sides and roll up tightly from the bottom. Cut diagonally with a sharp knife and serve straight away."
+  ],
+  "stages": [
+   {
+    "title": "Mix the spread",
+    "minutes": 3,
+    "steps": [
+     "Mash avocado with lemon juice and a pinch of salt.",
+     "Stir mustard into yoghurt in a separate bowl for a tangy dressing."
+    ]
+   },
+   {
+    "title": "Prepare fillings",
+    "minutes": 5,
+    "steps": [
+     "Wash and dry lettuce thoroughly, slice tomatoes and grate carrot.",
+     "Lay turkey slices out so they are ready to assemble quickly."
+    ]
+   },
+   {
+    "title": "Assemble wraps",
+    "minutes": 5,
+    "steps": [
+     "Spread avocado over the centre of each tortilla, leaving a border.",
+     "Layer lettuce, turkey, tomato and carrot, then drizzle with yoghurt dressing."
+    ]
+   },
+   {
+    "title": "Roll and serve",
+    "minutes": 2,
+    "steps": [
+     "Fold the sides inward and roll tightly from the bottom, keeping fillings tucked in.",
+     "Cut diagonally with a sharp knife and serve immediately."
+    ]
+   }
+  ],
+  "tips": [
+   "Dry vegetables well to stop tortillas becoming soggy."
+  ],
+  "variations": [
+   "Use leftover roast chicken instead of turkey."
+  ],
+  "storage": "Best eaten fresh; refrigerate assembled wraps up to 1 day."
+ },
+ {
+  "slug": "falafel-pita-pockets",
+  "title": "Falafel pita pockets",
+  "cuisine": "middle-eastern",
+  "course": "lunch",
+  "servings": 4,
+  "prep_minutes": 20,
+  "cook_minutes": 10,
+  "difficulty": "medium",
+  "summary": "Golden falafel tucked into pita with crisp vegetables, pickles and creamy tahini sauce.",
+  "ingredients": [
+   "2 cans chickpeas (400 g each)",
+   "1 small onion",
+   "3 garlic cloves",
+   "1 tsp cumin",
+   "1 tsp coriander",
+   "3 tbsp parsley",
+   "3 tbsp plain flour",
+   "2 tbsp olive oil",
+   "4 pita breads",
+   "150 g yoghurt",
+   "1 cucumber",
+   "Salt",
+   "Lettuce, to serve (optional)",
+   "Tomato, to serve (optional)"
+  ],
+  "method": [
+   "Drain and dry the chickpeas, then pulse with the onion, garlic, cumin, coriander and parsley until coarse, not smooth.",
+   "Stir in the flour and season with salt, then chill for 10 minutes.",
+   "Shape into 12 firm patties, adding a little more flour if the mixture is wet.",
+   "Heat the olive oil in a nonstick pan over medium heat and cook the patties until golden on both sides and heated through.",
+   "Mix the yoghurt with finely diced cucumber and a pinch of salt. Warm the pita breads until warm through and slice open.",
+   "Stuff the pitas with falafel and cucumber yoghurt, adding lettuce or tomato if you like."
+  ],
+  "stages": [
+   {
+    "title": "Make the falafel mixture",
+    "minutes": 10,
+    "steps": [
+     "Drain and thoroughly dry chickpeas; pulse with onion, garlic, cumin, coriander and parsley until coarse, not smooth.",
+     "Stir in flour and season well; chill for 10 minutes to help the mixture hold together."
+    ]
+   },
+   {
+    "title": "Shape and cook",
+    "minutes": 12,
+    "steps": [
+     "Form 12 small patties, pressing firmly; add a little more flour if the mixture is wet.",
+     "Heat oil in a nonstick pan and cook patties over medium heat until golden on both sides and heated through."
+    ]
+   },
+   {
+    "title": "Prepare the sauce and fillings",
+    "minutes": 5,
+    "steps": [
+     "Mix yoghurt with finely diced cucumber and a pinch of salt.",
+     "Warm pita breads and slice pockets open carefully."
+    ]
+   },
+   {
+    "title": "Assemble",
+    "minutes": 3,
+    "steps": [
+     "Stuff pitas with falafel and cucumber yoghurt.",
+     "Add shredded lettuce or tomato if desired and serve immediately."
+    ]
+   }
+  ],
+  "tips": [
+   "Dry canned chickpeas well; wet mixture falls apart in the pan."
+  ],
+  "variations": [
+   "Use a spoonful of tahini instead of yoghurt sauce."
+  ],
+  "storage": "Refrigerate cooked falafel up to 3 days; reheat in oven to crisp."
+ },
+ {
+  "slug": "tomato-and-red-pepper-soup",
+  "title": "Tomato and red pepper soup",
+  "cuisine": "mediterranean",
+  "course": "lunch",
+  "servings": 4,
+  "prep_minutes": 15,
+  "cook_minutes": 25,
+  "difficulty": "easy",
+  "summary": "Velvety roasted tomato and red pepper soup with garlic, herbs and a gentle smoky sweetness.",
+  "ingredients": [
+   "800 g ripe tomatoes",
+   "2 red peppers",
+   "1 onion",
+   "4 garlic cloves",
+   "3 tbsp olive oil",
+   "500 ml vegetable stock",
+   "1 tsp smoked paprika",
+   "2 tbsp cream",
+   "1 tbsp basil",
+   "Salt"
+  ],
+  "method": [
+   "Halve the tomatoes, deseed the red peppers and cut the onion into wedges. Toss on a tray with the unpeeled garlic and olive oil.",
+   "Roast at 210°C for about 25 minutes, until softened and lightly charred.",
+   "Squeeze the garlic from its skins and blend with the roasted vegetables, stock and smoked paprika until smooth, working in batches.",
+   "Pour into a saucepan and simmer over low heat for 10 minutes, until steaming hot.",
+   "Season with salt and pepper, then stir in the cream and torn basil just before serving."
+  ],
+  "stages": [
+   {
+    "title": "Roast the vegetables",
+    "minutes": 25,
+    "steps": [
+     "Halve tomatoes, deseed peppers and cut onion into wedges; arrange with unpeeled garlic on a tray.",
+     "Toss with olive oil and roast at 210°C until softened and lightly charred."
+    ]
+   },
+   {
+    "title": "Blend the soup",
+    "minutes": 5,
+    "steps": [
+     "Squeeze roasted garlic from its skins and transfer vegetables to a blender with stock and paprika.",
+     "Blend in batches, venting the lid carefully for hot liquid, until smooth."
+    ]
+   },
+   {
+    "title": "Simmer and finish",
+    "minutes": 10,
+    "steps": [
+     "Pour blended soup into a saucepan and simmer gently over low heat for 10 minutes, until steaming hot, to meld flavours.",
+     "Season with salt and pepper, then stir in cream and torn basil just before serving."
+    ]
+   }
+  ],
+  "tips": [
+   "Roasting concentrates sweetness without needing added sugar."
+  ],
+  "variations": [
+   "Add a pinch of chilli flakes for heat."
+  ],
+  "storage": "Refrigerate up to 4 days; freeze without cream up to 3 months."
+ },
+ {
+  "slug": "egg-and-spinach-breakfast-muffins",
+  "title": "Egg and spinach breakfast muffins",
+  "cuisine": "american",
+  "course": "breakfast",
+  "servings": 6,
+  "prep_minutes": 15,
+  "cook_minutes": 19,
+  "difficulty": "easy",
+  "summary": "Portable egg muffins packed with spinach, vegetables and cheese, baked until just set.",
+  "ingredients": [
+   "8 eggs",
+   "100 g baby spinach",
+   "1 red pepper",
+   "3 spring onions",
+   "80 g cheddar",
+   "2 tbsp milk",
+   "1 tbsp olive oil",
+   "1/2 tsp salt",
+   "1/4 tsp ground black pepper"
+  ],
+  "method": [
+   "Heat the oven to 180°C and lightly oil a 12-hole muffin tin with the olive oil.",
+   "Finely dice the red pepper and spring onions, and chop the baby spinach.",
+   "Whisk the eggs with the milk, salt and pepper until just combined, then stir in the vegetables and grated cheddar.",
+   "Divide the mixture between the muffin holes, filling each about three-quarters full.",
+   "Bake for 16–20 minutes until puffed and fully set in the centre.",
+   "Rest in the tin for 5 minutes, then loosen the edges and serve warm."
+  ],
+  "stages": [
+   {
+    "title": "Prepare vegetables",
+    "minutes": 7,
+    "steps": [
+     "Preheat oven to 180°C and lightly oil a 12-hole muffin tin with the olive oil.",
+     "Finely dice red pepper and spring onions; chop spinach so it distributes evenly."
+    ]
+   },
+   {
+    "title": "Mix the eggs",
+    "minutes": 4,
+    "steps": [
+     "Whisk eggs with milk, salt and pepper until just combined.",
+     "Stir in vegetables and grated cheddar without overbeating."
+    ]
+   },
+   {
+    "title": "Bake the muffins",
+    "minutes": 18,
+    "steps": [
+     "Divide mixture between muffin holes, filling each about three-quarters full.",
+     "Bake for 16–20 minutes until puffed and fully set in the centre."
+    ]
+   },
+   {
+    "title": "Cool and remove",
+    "minutes": 5,
+    "steps": [
+     "Let muffins stand in the tin for 5 minutes; they will settle slightly as they cool.",
+     "Loosen edges with a silicone spatula and serve warm."
+    ]
+   }
+  ],
+  "tips": [
+   "Grease the tin thoroughly to prevent sticking."
+  ],
+  "variations": [
+   "Add diced cooked mushrooms or cooked ham."
+  ],
+  "storage": "Refrigerate up to 3 days; freeze individually up to 2 months."
+ },
+ {
+  "slug": "french-toast-with-cinnamon",
+  "title": "French toast with cinnamon",
+  "cuisine": "french",
+  "course": "breakfast",
+  "servings": 4,
+  "prep_minutes": 10,
+  "cook_minutes": 9,
+  "difficulty": "easy",
+  "summary": "Thick slices of bread soaked in cinnamon custard and pan-fried until golden and soft inside.",
+  "ingredients": [
+   "8 thick slices brioche",
+   "3 eggs",
+   "180 ml milk",
+   "1 tsp vanilla extract",
+   "1 tsp ground cinnamon",
+   "25 g butter",
+   "2 tbsp maple syrup",
+   "150 g strawberries"
+  ],
+  "method": [
+   "Whisk the eggs, milk, vanilla and cinnamon in a shallow dish until fully blended.",
+   "Heat a large nonstick frying pan over medium heat and melt a little butter.",
+   "Dip each brioche slice briefly in the custard on both sides, then let the excess drip off.",
+   "Cook the slices in batches, 2–3 minutes per side until golden and set in the centre. Add butter as needed and lower the heat if they brown too fast.",
+   "Stack on warm plates, scatter over the sliced strawberries, drizzle with maple syrup and serve immediately."
+  ],
+  "stages": [
+   {
+    "title": "Make the custard",
+    "minutes": 4,
+    "steps": [
+     "Whisk eggs, milk, vanilla and cinnamon in a shallow dish until fully blended.",
+     "Set a large nonstick frying pan over medium heat and melt a little butter."
+    ]
+   },
+   {
+    "title": "Soak the bread",
+    "minutes": 3,
+    "steps": [
+     "Dip each brioche slice briefly into custard on both sides, allowing it to absorb without falling apart.",
+     "Let excess custard drip back into the dish before cooking."
+    ]
+   },
+   {
+    "title": "Cook in batches",
+    "minutes": 10,
+    "steps": [
+     "Lay slices in the pan without crowding and cook for 2–3 minutes per side until golden and set in the centre.",
+     "Add more butter between batches as needed, lowering heat if the brioche browns too fast."
+    ]
+   },
+   {
+    "title": "Serve",
+    "minutes": 2,
+    "steps": [
+     "Stack slices on warm plates and scatter sliced strawberries over them.",
+     "Drizzle with maple syrup and serve immediately."
+    ]
+   }
+  ],
+  "tips": [
+   "Day-old brioche absorbs custard without becoming mushy."
+  ],
+  "variations": [
+   "Use sourdough for a less sweet version."
+  ],
+  "storage": "Best eaten fresh; refrigerate cooked slices up to 2 days and reheat in a pan."
+ },
+ {
+  "slug": "banana-oat-pancakes",
+  "title": "Banana oat pancakes",
+  "cuisine": "american",
+  "course": "breakfast",
+  "servings": 4,
+  "prep_minutes": 10,
+  "cook_minutes": 9,
+  "difficulty": "easy",
+  "summary": "Naturally sweet banana and oat pancakes with tender centres and lightly golden edges.",
+  "ingredients": [
+   "2 ripe bananas",
+   "2 eggs",
+   "120 g rolled oats",
+   "100 ml milk",
+   "1 tsp baking powder",
+   "1/2 tsp cinnamon",
+   "1 tsp vanilla extract",
+   "1 tbsp butter",
+   "Yoghurt, to serve (optional)"
+  ],
+  "method": [
+   "Blend the bananas, eggs, oats, milk, baking powder, cinnamon and vanilla until mostly smooth.",
+   "Rest the batter for 5 minutes so it thickens slightly.",
+   "Warm a nonstick frying pan over medium-low heat and grease lightly with the butter. Test a teaspoon of batter to check it cooks gently without scorching.",
+   "Spoon small rounds into the pan, leaving room to flip. Cook 2–3 minutes until the edges look set, then flip and cook another 1–2 minutes.",
+   "Stack the pancakes and serve with yoghurt if you like. Loosen any leftover batter with a splash of milk if it thickens."
+  ],
+  "stages": [
+   {
+    "title": "Blend the batter",
+    "minutes": 5,
+    "steps": [
+     "Blend bananas, eggs, oats, milk, baking powder, cinnamon and vanilla until mostly smooth.",
+     "Let batter stand for 5 minutes so oats hydrate and it thickens slightly."
+    ]
+   },
+   {
+    "title": "Heat the pan",
+    "minutes": 2,
+    "steps": [
+     "Warm a nonstick frying pan over medium-low heat and lightly grease with butter.",
+     "Drop a teaspoon of batter to test that it cooks gently without scorching."
+    ]
+   },
+   {
+    "title": "Cook pancakes",
+    "minutes": 10,
+    "steps": [
+     "Spoon small rounds of batter into the pan, leaving space to flip.",
+     "Cook 2–3 minutes until edges look set, then turn carefully and cook another 1–2 minutes."
+    ]
+   },
+   {
+    "title": "Serve",
+    "minutes": 2,
+    "steps": [
+     "Stack pancakes and serve with fruit or a little yoghurt.",
+     "Add a splash of milk to remaining batter if it thickens too much."
+    ]
+   }
+  ],
+  "tips": [
+   "Keep pancakes small because oat batter is delicate."
+  ],
+  "variations": [
+   "Add blueberries or a pinch of nutmeg."
+  ],
+  "storage": "Refrigerate up to 3 days; freeze separated with baking paper up to 2 months."
+ },
+ {
+  "slug": "baked-oatmeal-with-apple",
+  "title": "Baked oatmeal with apple",
+  "cuisine": "american",
+  "course": "breakfast",
+  "servings": 6,
+  "prep_minutes": 15,
+  "cook_minutes": 38,
+  "difficulty": "easy",
+  "summary": "Warm baked oats with tender apple, cinnamon and a lightly golden, comforting top.",
+  "ingredients": [
+   "250 g rolled oats",
+   "2 apples",
+   "2 eggs",
+   "400 ml milk",
+   "60 ml maple syrup",
+   "1 tsp baking powder",
+   "1 tsp cinnamon",
+   "1 tsp vanilla extract",
+   "30 g walnuts",
+   "1 tbsp butter",
+   "Yoghurt, to serve (optional)"
+  ],
+  "method": [
+   "Preheat the oven to 180°C and grease a medium baking dish with the butter. Dice the apples and roughly chop the walnuts.",
+   "Whisk the eggs, milk, maple syrup and vanilla in a large bowl. Stir in the oats, baking powder, cinnamon and apples.",
+   "Pour into the dish and scatter with walnuts. Bake for 30–35 minutes, until the centre is set and the top is lightly golden.",
+   "Rest for 5 minutes so it holds its shape, then serve warm with yoghurt (optional) or a splash of milk."
+  ],
+  "stages": [
+   {
+    "title": "Prepare the dish",
+    "minutes": 8,
+    "steps": [
+     "Preheat oven to 180°C and grease a medium baking dish with butter.",
+     "Core and dice apples into small pieces; roughly chop walnuts."
+    ]
+   },
+   {
+    "title": "Mix wet and dry ingredients",
+    "minutes": 5,
+    "steps": [
+     "Whisk eggs, milk, maple syrup and vanilla in a large bowl.",
+     "Stir in oats, baking powder, cinnamon and apples until evenly combined."
+    ]
+   },
+   {
+    "title": "Bake",
+    "minutes": 35,
+    "steps": [
+     "Pour mixture into prepared dish and scatter walnuts on top.",
+     "Bake for 30–35 minutes until centre is set and surface lightly golden."
+    ]
+   },
+   {
+    "title": "Rest and portion",
+    "minutes": 5,
+    "steps": [
+     "Let baked oats stand for 5 minutes so slices hold their shape.",
+     "Serve warm with yoghurt or a splash of milk."
+    ]
+   }
+  ],
+  "tips": [
+   "Use rolled oats for texture; instant oats become soft and pasty."
+  ],
+  "variations": [
+   "Swap apples for pears and walnuts for pecans."
+  ],
+  "storage": "Refrigerate up to 4 days; freeze individual squares up to 2 months."
+ },
+ {
+  "slug": "breakfast-hash-with-potatoes",
+  "title": "Breakfast hash with potatoes",
+  "cuisine": "american",
+  "course": "breakfast",
+  "servings": 4,
+  "prep_minutes": 15,
+  "cook_minutes": 17,
+  "difficulty": "easy",
+  "summary": "Crispy pan-fried potatoes with peppers, onions and eggs for a hearty breakfast skillet.",
+  "ingredients": [
+   "600 g potatoes",
+   "1 red pepper",
+   "1 onion",
+   "4 eggs",
+   "2 tbsp olive oil",
+   "1 tsp smoked paprika",
+   "1/2 tsp garlic powder",
+   "2 tbsp parsley",
+   "Salt"
+  ],
+  "method": [
+   "Dice the potatoes into 1.5 cm cubes and simmer in salted water for about 8 minutes until just tender at the edges. Drain and let the steam escape for 2 minutes.",
+   "Heat the olive oil in a large frying pan over medium-high heat. Spread the potatoes in one layer and cook undisturbed until golden, then season with the smoked paprika and garlic powder.",
+   "Add the diced onion and red pepper and cook until softened and lightly charred. Season with salt, keeping the potatoes crisp.",
+   "Make four spaces in the hash and crack in the eggs. Cover and cook until the whites are set.",
+   "Sprinkle with the parsley and serve straight from the pan."
+  ],
+  "stages": [
+   {
+    "title": "Parboil potatoes",
+    "minutes": 8,
+    "steps": [
+     "Dice potatoes into 1.5 cm cubes and simmer in salted water until just tender at the edges.",
+     "Drain thoroughly and allow steam to evaporate for 2 minutes so they crisp in the pan."
+    ]
+   },
+   {
+    "title": "Crisp the potatoes",
+    "minutes": 12,
+    "steps": [
+     "Heat oil in a large frying pan over medium-high heat and spread potatoes in one layer.",
+     "Cook without stirring for several minutes at a time until golden; season with paprika and garlic powder."
+    ]
+   },
+   {
+    "title": "Add vegetables",
+    "minutes": 7,
+    "steps": [
+     "Add diced onion and pepper and cook until softened and lightly charred.",
+     "Taste and adjust salt and pepper, keeping the potatoes crisp."
+    ]
+   },
+   {
+    "title": "Cook eggs and serve",
+    "minutes": 5,
+    "steps": [
+     "Make four spaces in the hash and crack in eggs, then cover briefly until whites set.",
+     "Sprinkle with parsley and serve straight from the pan."
+    ]
+   }
+  ],
+  "tips": [
+   "Dry potatoes thoroughly after boiling for crisp edges."
+  ],
+  "variations": [
+   "Add cooked sausage or sautéed mushrooms."
+  ],
+  "storage": "Refrigerate hash without eggs up to 3 days; cook eggs fresh."
+ },
+ {
+  "slug": "garlic-green-beans-with-almonds",
+  "title": "Garlic green beans with almonds",
+  "cuisine": "french",
+  "course": "side",
+  "servings": 4,
+  "prep_minutes": 10,
+  "cook_minutes": 1,
+  "difficulty": "easy",
+  "summary": "Tender green beans tossed with garlic butter and toasted almonds for a crisp, nutty side.",
+  "ingredients": [
+   "500 g green beans",
+   "2 garlic cloves",
+   "30 g butter",
+   "40 g flaked almonds",
+   "1 tbsp olive oil",
+   "1 tbsp lemon juice",
+   "Black pepper"
+  ],
+  "method": [
+   "Boil the trimmed green beans in salted water for 3–4 minutes until bright green and just tender. Cool in cold water, then dry well.",
+   "Toast the flaked almonds in a dry frying pan over medium heat, shaking often, until lightly golden. Tip onto a plate straight away.",
+   "Melt the butter with the olive oil in the pan over medium heat. Add the finely sliced garlic and cook for 20–30 seconds.",
+   "Toss in the beans until hot. Add the lemon juice, almonds and a little black pepper."
+  ],
+  "stages": [
+   {
+    "title": "Blanch the beans",
+    "minutes": 4,
+    "steps": [
+     "Trim bean ends and cook in boiling salted water for 3–4 minutes until bright green and just tender.",
+     "Drain and plunge into cold water briefly to stop cooking, then dry well."
+    ]
+   },
+   {
+    "title": "Toast almonds",
+    "minutes": 3,
+    "steps": [
+     "Heat a dry frying pan over medium heat and toast flaked almonds, shaking often, until lightly golden.",
+     "Transfer immediately to a plate to prevent burning."
+    ]
+   },
+   {
+    "title": "Sauté and finish",
+    "minutes": 4,
+    "steps": [
+     "Melt butter with olive oil, add finely sliced garlic and cook for 20–30 seconds.",
+     "Toss in beans until hot, then add lemon juice, almonds and a little black pepper."
+    ]
+   }
+  ],
+  "tips": [
+   "Dry beans before sautéing to avoid splattering and dilution."
+  ],
+  "variations": [
+   "Use toasted hazelnuts instead of almonds."
+  ],
+  "storage": "Refrigerate up to 3 days; reheat briefly in a pan."
+ },
+ {
+  "slug": "honey-roasted-carrots",
+  "title": "Honey roasted carrots",
+  "cuisine": "british",
+  "course": "side",
+  "servings": 4,
+  "prep_minutes": 10,
+  "cook_minutes": 26,
+  "difficulty": "easy",
+  "summary": "Roasted carrots caramelised with honey, olive oil and herbs until sweet and tender.",
+  "ingredients": [
+   "700 g carrots",
+   "2 tbsp olive oil",
+   "1 tbsp honey",
+   "1 tsp thyme leaves",
+   "1/2 tsp salt",
+   "1 tbsp lemon juice"
+  ],
+  "method": [
+   "Preheat the oven to 210°C and line a baking tray. Peel the carrots if needed and halve any thick ones lengthwise so they cook evenly.",
+   "Toss the carrots with the olive oil, thyme and salt, then spread in a single layer on the tray.",
+   "Roast for 20–25 minutes, turning once, until the edges start to caramelise.",
+   "Drizzle over the honey, toss to coat, then roast 5 more minutes until glossy and golden, watching so they don't burn. Finish with the lemon juice."
+  ],
+  "stages": [
+   {
+    "title": "Prepare the carrots",
+    "minutes": 8,
+    "steps": [
+     "Preheat oven to 210°C and line a baking tray.",
+     "Peel carrots if needed and cut thick ones lengthwise so pieces cook evenly."
+    ]
+   },
+   {
+    "title": "Roast until tender",
+    "minutes": 22,
+    "steps": [
+     "Toss carrots with oil, thyme and salt and spread in a single layer.",
+     "Roast for 20–25 minutes, turning once, until edges begin to caramelise."
+    ]
+   },
+   {
+    "title": "Glaze and finish",
+    "minutes": 6,
+    "steps": [
+     "Drizzle honey over carrots and toss carefully to coat.",
+     "Return to oven for 5 minutes, watching closely to prevent burning; finish with lemon juice."
+    ]
+   }
+  ],
+  "tips": [
+   "Add honey near the end because it burns at high heat."
+  ],
+  "variations": [
+   "Use maple syrup instead of honey for a vegan version."
+  ],
+  "storage": "Refrigerate up to 3 days; reheat in the oven."
+ },
+ {
+  "slug": "creamy-coleslaw",
+  "title": "Creamy coleslaw",
+  "cuisine": "american",
+  "course": "side",
+  "servings": 6,
+  "prep_minutes": 15,
+  "cook_minutes": 13,
+  "difficulty": "easy",
+  "summary": "Shredded cabbage and carrot in a creamy, tangy dressing with a satisfying crunch.",
+  "ingredients": [
+   "400 g white cabbage",
+   "200 g red cabbage",
+   "2 carrots",
+   "100 g mayonnaise",
+   "60 g Greek yoghurt",
+   "1 tbsp apple cider vinegar",
+   "1 tsp Dijon mustard",
+   "1 tsp sugar",
+   "Salt"
+  ],
+  "method": [
+   "Core and finely shred the white and red cabbage, then grate the carrots and pat the vegetables dry of excess moisture.",
+   "Whisk the mayonnaise, Greek yoghurt, apple cider vinegar, Dijon mustard and sugar until smooth.",
+   "Season the dressing with salt and pepper, tasting until the tang and sweetness are balanced.",
+   "Toss the vegetables with the dressing until evenly coated.",
+   "Refrigerate for at least 15 minutes, then give it a final stir just before serving."
+  ],
+  "stages": [
+   {
+    "title": "Prepare the vegetables",
+    "minutes": 10,
+    "steps": [
+     "Remove tough cabbage cores and shred both cabbages finely with a sharp knife or mandoline.",
+     "Grate carrots and pat any excess moisture from vegetables."
+    ]
+   },
+   {
+    "title": "Mix the dressing",
+    "minutes": 3,
+    "steps": [
+     "Whisk mayonnaise, yoghurt, vinegar, mustard and sugar until smooth.",
+     "Season with salt and pepper and taste for a balance of acidity and sweetness."
+    ]
+   },
+   {
+    "title": "Toss and chill",
+    "minutes": 15,
+    "steps": [
+     "Combine vegetables with dressing and toss until evenly coated.",
+     "Refrigerate for at least 15 minutes before serving, stirring once more just beforehand."
+    ]
+   }
+  ],
+  "tips": [
+   "Dress just before serving if you prefer a very crisp slaw."
+  ],
+  "variations": [
+   "Use all yoghurt instead of mayonnaise for a lighter dressing."
+  ],
+  "storage": "Refrigerate up to 2 days; do not freeze."
+ },
+ {
+  "slug": "crispy-smashed-potatoes",
+  "title": "Crispy smashed potatoes",
+  "cuisine": "australian",
+  "course": "side",
+  "servings": 4,
+  "prep_minutes": 15,
+  "cook_minutes": 40,
+  "difficulty": "easy",
+  "summary": "Boiled potatoes smashed and roasted until deeply crisp, with fluffy middles and savoury seasoning.",
+  "ingredients": [
+   "800 g baby potatoes",
+   "3 tbsp olive oil",
+   "3 garlic cloves",
+   "1 tsp rosemary",
+   "40 g parmesan",
+   "1 tsp flaky salt",
+   "Yoghurt, to serve (optional)"
+  ],
+  "method": [
+   "Cover the baby potatoes with cold salted water, bring to the boil, then simmer until a knife slides in easily.",
+   "Drain and let them steam dry for 5 minutes.",
+   "Space the potatoes out on an oiled baking tray and flatten each gently with the base of a glass.",
+   "Brush with olive oil and sprinkle over the rosemary, minced garlic and flaky salt.",
+   "Roast at 220°C for 20–25 minutes until deep golden and crisp, adding the parmesan for the last 5 minutes until lightly browned.",
+   "Rest for 2 minutes to firm the crisp edges, then serve with yoghurt if you like."
+  ],
+  "stages": [
+   {
+    "title": "Boil potatoes",
+    "minutes": 20,
+    "steps": [
+     "Place whole baby potatoes in salted cold water, bring to a boil and simmer until a knife slides in easily.",
+     "Drain and allow to steam dry for 5 minutes."
+    ]
+   },
+   {
+    "title": "Smash and season",
+    "minutes": 8,
+    "steps": [
+     "Arrange potatoes on an oiled baking tray with space between them.",
+     "Flatten each gently with the base of a glass, then brush with oil and sprinkle with rosemary, minced garlic and salt."
+    ]
+   },
+   {
+    "title": "Roast until crisp",
+    "minutes": 25,
+    "steps": [
+     "Roast at 220°C for 20–25 minutes until edges are deep golden and crisp.",
+     "Sprinkle with parmesan for the last 5 minutes so it melts and browns lightly."
+    ]
+   },
+   {
+    "title": "Serve",
+    "minutes": 2,
+    "steps": [
+     "Let potatoes rest for 2 minutes to firm their crisp edges.",
+     "Serve immediately with yoghurt dip or aioli."
+    ]
+   }
+  ],
+  "tips": [
+   "Steam drying is essential for a crisp surface."
+  ],
+  "variations": [
+   "Use smoked paprika instead of rosemary."
+  ],
+  "storage": "Refrigerate up to 3 days; reheat in a hot oven or air fryer."
+ },
+ {
+  "slug": "sesame-cucumber-salad",
+  "title": "Sesame cucumber salad",
+  "cuisine": "korean",
+  "course": "side",
+  "servings": 4,
+  "prep_minutes": 10,
+  "cook_minutes": 2,
+  "difficulty": "easy",
+  "summary": "Cool, crunchy cucumber tossed in a tangy sesame-soy dressing with chilli and garlic.",
+  "ingredients": [
+   "2 cucumbers",
+   "1 tsp salt",
+   "1 tbsp rice vinegar",
+   "2 tsp soy sauce",
+   "1 tsp sesame oil",
+   "1 tsp honey",
+   "1 tsp chilli flakes",
+   "1 tbsp sesame seeds"
+  ],
+  "method": [
+   "Slice the cucumbers into thin rounds, or lightly crush and cut into chunks. Toss with the salt and rest for 10 minutes.",
+   "Drain the cucumbers and pat them dry.",
+   "Whisk the rice vinegar, soy sauce, sesame oil, honey and chilli flakes until combined. Taste and adjust the vinegar or sweetness.",
+   "Just before serving, coat the cucumbers with the dressing, scatter over the sesame seeds and serve chilled."
+  ],
+  "stages": [
+   {
+    "title": "Salt the cucumber",
+    "minutes": 8,
+    "steps": [
+     "Slice cucumbers into thin rounds or lightly crush and cut into chunks.",
+     "Toss with salt and rest 10 minutes to draw out excess moisture; drain and pat dry."
+    ]
+   },
+   {
+    "title": "Mix the dressing",
+    "minutes": 2,
+    "steps": [
+     "Whisk rice vinegar, soy sauce, sesame oil, honey and chilli flakes until combined.",
+     "Taste and adjust vinegar or sweetness to your preference."
+    ]
+   },
+   {
+    "title": "Toss and serve",
+    "minutes": 2,
+    "steps": [
+     "Coat cucumbers with dressing just before serving.",
+     "Scatter sesame seeds over the top and serve chilled."
+    ]
+   }
+  ],
+  "tips": [
+   "Salting prevents the dressing from becoming watery."
+  ],
+  "variations": [
+   "Add thinly sliced spring onions or fresh coriander."
+  ],
+  "storage": "Refrigerate up to 1 day; best eaten soon after dressing."
+ },
+ {
+  "slug": "cornbread-with-honey-butter",
+  "title": "Cornbread with honey butter",
+  "cuisine": "american",
+  "course": "side",
+  "servings": 8,
+  "prep_minutes": 15,
+  "cook_minutes": 21,
+  "difficulty": "easy",
+  "summary": "Tender golden cornbread with a lightly crisp crust, served with sweet honey butter.",
+  "ingredients": [
+   "160 g fine cornmeal",
+   "150 g plain flour",
+   "2 tsp baking powder",
+   "1/2 tsp salt",
+   "2 eggs",
+   "240 ml buttermilk",
+   "70 g melted butter",
+   "2 tbsp honey",
+   "40 g softened butter"
+  ],
+  "method": [
+   "Preheat the oven to 200°C and grease a 20 cm square tin. Whisk the cornmeal, flour, baking powder and salt in one bowl.",
+   "Beat the eggs, buttermilk, melted butter and 1 tbsp honey in another bowl.",
+   "Fold the wet mix into the dry until no dry flour remains. A few small lumps are fine.",
+   "Spread the batter in the tin and bake 20–25 minutes, until golden and a skewer comes out clean. Cool in the tin for 10 minutes.",
+   "Beat the softened butter with the remaining honey and a pinch of salt until smooth.",
+   "Cut the cornbread into squares and serve warm with a little honey butter on each."
+  ],
+  "stages": [
+   {
+    "title": "Prepare the batter",
+    "minutes": 8,
+    "steps": [
+     "Preheat oven to 200°C and grease a 20 cm square baking tin.",
+     "Whisk cornmeal, flour, baking powder and salt in one bowl; beat eggs, buttermilk, melted butter and 1 tbsp honey in another."
+    ]
+   },
+   {
+    "title": "Combine gently",
+    "minutes": 3,
+    "steps": [
+     "Pour wet ingredients into dry and fold just until no dry flour remains.",
+     "Do not overmix; a few small lumps are fine."
+    ]
+   },
+   {
+    "title": "Bake",
+    "minutes": 22,
+    "steps": [
+     "Spread batter in the tin and bake for 20–25 minutes until golden and a skewer comes out clean.",
+     "Cool in the tin for 10 minutes before cutting."
+    ]
+   },
+   {
+    "title": "Make honey butter",
+    "minutes": 3,
+    "steps": [
+     "Beat softened butter with remaining honey and a pinch of salt until smooth.",
+     "Serve a little over each warm square."
+    ]
+   }
+  ],
+  "tips": [
+   "Overmixing develops gluten and makes cornbread tough."
+  ],
+  "variations": [
+   "Add chopped jalapeños and cheddar for a savoury version."
+  ],
+  "storage": "Refrigerate up to 4 days; freeze slices up to 2 months."
+ },
+ {
+  "slug": "roasted-cauliflower-with-tahini",
+  "title": "Roasted cauliflower with tahini",
+  "cuisine": "middle-eastern",
+  "course": "side",
+  "servings": 4,
+  "prep_minutes": 15,
+  "cook_minutes": 27,
+  "difficulty": "easy",
+  "summary": "Caramelised cauliflower florets drizzled with lemony tahini and finished with fresh herbs.",
+  "ingredients": [
+   "1 large cauliflower",
+   "3 tbsp olive oil",
+   "1 tsp cumin",
+   "1 tsp paprika",
+   "3 tbsp tahini",
+   "1 lemon",
+   "1 garlic clove",
+   "3 tbsp water",
+   "2 tbsp parsley",
+   "Salt"
+  ],
+  "method": [
+   "Preheat the oven to 220°C. Cut the cauliflower into evenly sized florets, dry well and toss with the olive oil, cumin, paprika and salt.",
+   "Spread the florets on a baking tray, cut sides down where possible. Roast for 25–30 minutes, turning once, until tender and browned at the edges.",
+   "Whisk the tahini with the lemon juice, grated garlic and a pinch of salt. Add the cold water gradually until smooth and pourable.",
+   "Transfer the hot cauliflower to a platter and drizzle with the tahini dressing. Finish with the parsley and extra lemon wedges."
+  ],
+  "stages": [
+   {
+    "title": "Prepare cauliflower",
+    "minutes": 10,
+    "steps": [
+     "Preheat oven to 220°C and cut cauliflower into medium florets of similar size.",
+     "Dry well and toss with olive oil, cumin, paprika and salt."
+    ]
+   },
+   {
+    "title": "Roast until golden",
+    "minutes": 25,
+    "steps": [
+     "Spread florets in a single layer on a baking tray, cut sides down where possible.",
+     "Roast 25–30 minutes, turning once, until tender and browned at the edges."
+    ]
+   },
+   {
+    "title": "Make tahini dressing",
+    "minutes": 5,
+    "steps": [
+     "Whisk tahini with lemon juice, grated garlic and a pinch of salt.",
+     "Add cold water gradually until the dressing becomes smooth and pourable."
+    ]
+   },
+   {
+    "title": "Serve",
+    "minutes": 2,
+    "steps": [
+     "Transfer hot cauliflower to a platter and drizzle with tahini dressing.",
+     "Finish with parsley and extra lemon wedges."
+    ]
+   }
+  ],
+  "tips": [
+   "Leave space between florets for caramelisation."
+  ],
+  "variations": [
+   "Add toasted pine nuts or pomegranate seeds."
+  ],
+  "storage": "Refrigerate up to 3 days; store dressing separately."
+ },
+ {
+  "slug": "garlic-butter-mushrooms",
+  "title": "Garlic butter mushrooms",
+  "cuisine": "french",
+  "course": "side",
+  "servings": 4,
+  "prep_minutes": 10,
+  "cook_minutes": 6,
+  "difficulty": "easy",
+  "summary": "Golden sautéed mushrooms coated in garlic butter, herbs and their own savoury juices.",
+  "ingredients": [
+   "500 g button mushrooms",
+   "30 g butter",
+   "1 tbsp olive oil",
+   "3 garlic cloves",
+   "1 tbsp lemon juice",
+   "2 tbsp parsley",
+   "Salt",
+   "Black pepper"
+  ],
+  "method": [
+   "Brush the mushrooms clean (or rinse quickly and dry well) and halve any large ones so the pieces are a similar size.",
+   "Heat the olive oil in a large frying pan over medium-high heat. Add the mushrooms in a single layer and leave for 2–3 minutes.",
+   "Turn the mushrooms and cook until the moisture has evaporated and they are browned.",
+   "Lower the heat to medium-low. Add the butter and minced garlic and toss for 30–60 seconds until fragrant.",
+   "Finish with the lemon juice, parsley, salt and black pepper, then serve."
+  ],
+  "stages": [
+   {
+    "title": "Prepare mushrooms",
+    "minutes": 5,
+    "steps": [
+     "Brush mushrooms clean or rinse quickly and dry thoroughly.",
+     "Halve large mushrooms so all pieces are similar in size."
+    ]
+   },
+   {
+    "title": "Brown mushrooms",
+    "minutes": 8,
+    "steps": [
+     "Heat olive oil in a large frying pan over medium-high heat.",
+     "Add mushrooms in a single layer and leave undisturbed for 2–3 minutes before turning; cook until moisture evaporates."
+    ]
+   },
+   {
+    "title": "Add butter and aromatics",
+    "minutes": 3,
+    "steps": [
+     "Lower heat and add butter and minced garlic, tossing for 30–60 seconds until fragrant.",
+     "Finish with lemon juice, parsley, salt and black pepper."
+    ]
+   }
+  ],
+  "tips": [
+   "Use a wide pan and cook in batches to avoid steaming."
+  ],
+  "variations": [
+   "Add a splash of white wine before the butter and reduce fully."
+  ],
+  "storage": "Refrigerate up to 3 days; reheat in a hot pan."
+ },
+ {
+  "slug": "vanilla-panna-cotta",
+  "title": "Vanilla panna cotta",
+  "cuisine": "italian",
+  "course": "dessert",
+  "servings": 6,
+  "prep_minutes": 15,
+  "cook_minutes": 240,
+  "difficulty": "medium",
+  "summary": "Silky vanilla cream set into a delicate dessert and served with bright fruit sauce.",
+  "ingredients": [
+   "500 ml thickened cream",
+   "150 ml whole milk",
+   "70 g caster sugar",
+   "1 vanilla bean",
+   "3 gelatine leaves (about 6 g)",
+   "150 g berries"
+  ],
+  "method": [
+   "Soak the gelatine leaves in cold water for 5 minutes until soft.",
+   "Split the vanilla bean and scrape the seeds into a saucepan with the cream, milk and sugar. Warm over low heat until the sugar dissolves, without boiling.",
+   "Off the heat, squeeze the water from the gelatine and whisk it in until fully dissolved.",
+   "Strain through a fine sieve into six ramekins, cool slightly, then cover and refrigerate for at least 4 hours until softly set.",
+   "Dip the bases briefly in warm water and turn out onto plates, or serve in the ramekins. Top with the berries just before serving."
+  ],
+  "stages": [
+   {
+    "title": "Bloom gelatine",
+    "minutes": 5,
+    "steps": [
+     "Soak gelatine leaves in a bowl of cold water for 5 minutes until soft.",
+     "Meanwhile split the vanilla bean and scrape seeds into a saucepan with cream, milk and sugar."
+    ]
+   },
+   {
+    "title": "Heat the cream",
+    "minutes": 5,
+    "steps": [
+     "Warm cream mixture gently, stirring until sugar dissolves; do not let it boil.",
+     "Remove from heat, squeeze excess water from gelatine and whisk it into the hot mixture until fully dissolved."
+    ]
+   },
+   {
+    "title": "Set in moulds",
+    "minutes": 240,
+    "steps": [
+     "Strain mixture through a fine sieve and divide between six small ramekins.",
+     "Cool slightly, cover and refrigerate at least 4 hours until softly set."
+    ]
+   },
+   {
+    "title": "Serve",
+    "minutes": 5,
+    "steps": [
+     "Dip mould bases briefly in warm water and invert onto plates, or serve directly in ramekins.",
+     "Top with berries just before serving."
+    ]
+   }
+  ],
+  "tips": [
+   "Avoid boiling after adding gelatine; a gentle set is the goal."
+  ],
+  "variations": [
+   "Infuse with orange zest instead of vanilla."
+  ],
+  "storage": "Refrigerate covered up to 3 days; do not freeze."
+ },
+ {
+  "slug": "tiramisu",
+  "title": "Tiramisu",
+  "cuisine": "italian",
+  "course": "dessert",
+  "servings": 8,
+  "prep_minutes": 25,
+  "cook_minutes": 360,
+  "difficulty": "medium",
+  "summary": "Coffee-soaked sponge layered with airy mascarpone cream and a dusting of cocoa.",
+  "ingredients": [
+   "250 g mascarpone",
+   "300 ml thickened cream",
+   "80 g caster sugar",
+   "250 ml strong coffee, cooled",
+   "2 tbsp cocoa powder",
+   "200 g savoiardi biscuits",
+   "1 tsp vanilla extract"
+  ],
+  "method": [
+   "Whip the cold cream with the sugar and vanilla to soft peaks, then gently fold in the mascarpone until smooth and thick.",
+   "Pour the cooled coffee into a shallow bowl and briefly dip each savoiardi biscuit on both sides, so they stay firm and don't go soggy.",
+   "Arrange a single layer of dipped biscuits in a dish and spread over half the mascarpone cream.",
+   "Repeat with the remaining biscuits and cream, then smooth the top.",
+   "Cover and refrigerate for at least 6 hours, or overnight, until set.",
+   "Dust generously with the cocoa powder just before serving."
+  ],
+  "stages": [
+   {
+    "title": "Make the cream",
+    "minutes": 10,
+    "steps": [
+     "Whip cold cream with sugar and vanilla to soft peaks.",
+     "Fold mascarpone into whipped cream gently until smooth and thick; avoid overmixing."
+    ]
+   },
+   {
+    "title": "Prepare the biscuits",
+    "minutes": 5,
+    "steps": [
+     "Pour cooled coffee into a shallow bowl.",
+     "Dip each savoiardi biscuit briefly on both sides; do not soak or the dessert will become soggy."
+    ]
+   },
+   {
+    "title": "Layer the dessert",
+    "minutes": 10,
+    "steps": [
+     "Arrange a single layer of dipped biscuits in a dish and spread over half the mascarpone cream.",
+     "Repeat with remaining biscuits and cream, smoothing the top with a spatula."
+    ]
+   },
+   {
+    "title": "Chill and finish",
+    "minutes": 360,
+    "steps": [
+     "Cover and refrigerate for at least 6 hours, preferably overnight, to set and meld flavours.",
+     "Dust generously with cocoa just before serving."
+    ]
+   }
+  ],
+  "tips": [
+   "Use fully cooled coffee to keep the cream stable."
+  ],
+  "variations": [
+   "Add a little grated dark chocolate between layers."
+  ],
+  "storage": "Refrigerate up to 3 days; keep chilled and do not leave at room temperature."
+ }
+]

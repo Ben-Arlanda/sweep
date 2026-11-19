@@ -23,6 +23,7 @@ from app.models import (
     AddedBy,
     ChangeSource,
     Course,
+    Difficulty,
     ParseMethod,
     PlanMode,
     PlanTweak,
@@ -379,10 +380,30 @@ class RecipeIngredientOut(BaseModel):
     replaces: str | None = None  # Adaptations: the parent's line this Swap replaced
 
 
+class RecipeStageOut(BaseModel):
+    title: str
+    minutes: int
+    steps: list[str]
+
+
 class RecipeOut(RecipeSummaryOut):
     parent_recipe_id: uuid.UUID | None  # set for a Recipe Adaptation
     ingredients: list[RecipeIngredientOut]
-    method: list[str] | None
+    method: list[str] | None  # the Quick View
+    # Seed Recipes and their Adaptations (ADR 0028); empty for Imported Recipes.
+    prep_minutes: int | None
+    cook_minutes: int | None
+    difficulty: Difficulty | None
+    stages: list[RecipeStageOut] | None  # the Detailed View
+    tips: list[str] = []
+    variations: list[str] = []
+    storage: str | None
+
+    @field_validator("tips", "variations", mode="before")
+    @classmethod
+    def _none_is_empty(cls, value: list[str] | None) -> list[str]:
+        return value or []
+
     source_url: str | None
     licence: str
     attribution: str

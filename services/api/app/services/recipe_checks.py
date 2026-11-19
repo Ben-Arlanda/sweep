@@ -47,6 +47,10 @@ class Problem:
 # Aliases too vague to point at one Ingredient when they turn up in a method: "cheese"
 # could be any cheese, "pepper" could be black pepper or capsicum.
 VAGUE = {"cheese", "pepper", "mince", "steak", "cream", "rolls", "wraps", "stock cube"}
+VAGUE |= {"cloves", "ice cream", "berries", "fennel"}  # "garlic cloves", "fennel seeds"
+# "apple juices bubble", "very long beans", "the chicken pieces", the Spanish tortilla (an omelette)
+VAGUE |= {"apple juice", "cherry juice", "long beans", "chicken pieces", "pork strips", "chutney"}
+VAGUE |= {"tortilla"}
 
 _VAGUE_FORMS = {form for term in VAGUE for form in variants(term)}  # "roll", "wrap" too
 
@@ -64,15 +68,32 @@ _TERM_PATTERN = re.compile(
 def _mentioned(text: str) -> list[str]:
     """Terms for Ingredients in `text`, longest match first, never overlapping.
 
-    "walnut-sized balls" is a size, not walnuts, so a term right before "-size" is skipped.
+    "walnut-sized balls" is a size, not walnuts, so a term right before "-size" is skipped;
+    so are "breast-side up", "a potato masher" and "resembles coarse breadcrumbs".
     """
-    text = normalise(text)
-    return [m[1] for m in _TERM_PATTERN.finditer(text) if not text.startswith("-size", m.end())]
+    text = _SIMILE.sub(" ", normalise(text))
+    return [m[1] for m in _TERM_PATTERN.finditer(text) if not _NOT_FOOD.match(text, m.end())]
+
+
+_NOT_FOOD = re.compile(r"-size|-side|\s+masher")
+_SIMILE = re.compile(r"\bresembles? (?:\w+ ){0,2}breadcrumbs")
+# A general word the method uses for a listed Ingredient: "the pasta sheets" when the
+# list has lasagne sheets, "the tomato sauce" made from the listed passata.
+UMBRELLA: dict[str, set[str]] = {
+    "pasta": {"lasagne sheets", "cannelloni tubes"},
+    "tomato sauce": {"passata", "canned tomatoes", "tomatoes"},
+    "canned tomatoes": {"tomatoes"},
+    "tomato salsa": {"tomatoes", "canned tomatoes", "tomatillos"},
+    "corn chips": {"corn tortillas", "tortillas"},
+    "coconut cream": {"coconut milk"},  # "the thick cream from the top of the tin"
+}
 
 
 # --- raw_meat ----------------------------------------------------------------------
 
 READY_TO_EAT = {"ham", "canned tuna", "cooked prawns", "tofu", "silken tofu", "tofu puffs"}
+READY_TO_EAT |= {"sliced turkey", "smoked salmon", "prosciutto", "bresaola", "barbecue chicken"}
+READY_TO_EAT |= {"smoked sausage"}  # kransky and kielbasa are sold cooked
 COOKING = re.compile(
     r"\b(cook|fry|fried|frying|roast|bake|grill|griddle|barbecue|bbq|simmer|braise|stew|"
     r"poach|steam|sear|brown|boil|stir-fry|stir-fried|char|sizzle|toast)\w*",
@@ -80,7 +101,10 @@ COOKING = re.compile(
 DONE = re.compile(
     r"\b\d+[½¼¾]?(?:[-–]\d+)?\s*(?:minutes?|mins?|hours?|hrs?)\b|cooked through|no longer pink|"
     r"until pink|turns? pink|"
-    r"until (?:done|golden|browned|charred|opaque|tender|crisp|cooked)|°c|juices run clear",
+    r"until (?:done|golden|browned|charred|opaque|tender|crisp|cooked)|°c|juices run clear|"
+    # A time in words: "for two minutes", "a few minutes" (slice 4g's longer writing).
+    r"\b(?:one|two|three|four|five|six|eight|ten|fifteen|twenty|thirty|a|a few|a couple of|"
+    r"several)\s+(?:more\s+)?(?:minutes?|mins?|hours?)\b",
 )
 
 
@@ -166,6 +190,10 @@ def _longest_step(method: Sequence[str]) -> int:
 # --- duplicate ---------------------------------------------------------------------
 
 
+# Different dishes from the same shopping, kept on purpose (the product owner decided).
+NOT_DUPLICATES = {frozenset({"elote", "elote-salad"})}
+
+
 def _similar(a: set[str], b: set[str]) -> bool:
     """Nearly the same shopping: 85% of the combined ingredients are shared."""
     return bool(a and b) and len(a & b) / len(a | b) >= 0.85
@@ -200,7 +228,8 @@ _GROUPS: dict[str, set[str]] = {
     "spice": {i.name for i in INGREDIENTS if i.category == "spices"},
     "herb": _HERBS,
     "cheese": {i.name for i in INGREDIENTS if "cheese" in i.name}
-    | {"parmesan", "mozzarella", "feta", "ricotta", "halloumi", "gruyere", "paneer"},
+    | {"parmesan", "mozzarella", "feta", "ricotta", "halloumi", "gruyere", "paneer"}
+    | {"queso fresco", "pecorino"},
     "season": {"salt", "black pepper"},
     "salad": _SALAD,
     "veg": {i.name for i in INGREDIENTS if i.category == "produce"} - _HERBS,
@@ -217,6 +246,7 @@ def _used(text: str, name: str, method: str) -> bool:
     words = {w for w in re.findall(r"[a-z-]+", head) if len(w) >= 3 and w not in _FILLER}
     forms |= {f for w in words for f in variants(w)}
     forms |= {g for g, members in _GROUPS.items() if name in members}
+    forms |= {u for u, members in UMBRELLA.items() if name in members}  # "the pasta sheets"
     if name == "eggs" and _EGG_PARTS.search(method):
         return True
     return any(re.search(rf"\b{re.escape(f)}(?:s|ed)?\b", method) for f in forms)  # "salted"
@@ -231,31 +261,47 @@ _PAN = re.compile(
 )
 # "Heat" isn't here: heating a pan or oven is set-up, needing a heat level, not a time.
 _COOK = re.compile(
-    _CLAUSE + r"(cook|fry|roast|bake|grill|griddle|barbecue|bbq|simmer|braise|stew|poach|"
+    # "BBQ sauce" and "a grill pan" are things, not a step.
+    _CLAUSE + r"(cook|fry|roast|bake|grill(?! pan)|griddle|(?:barbecue|bbq)(?! sauce)|simmer|"
+    r"braise|stew|poach|"
     rf"steam|sear|{_BROWN}|boil|stir-fry|char|toast|soften|scramble)\b"
 )
 _OVEN = re.compile(_CLAUSE + r"(bake|roast)\b")
 _HEAT = re.compile(
     r"\b(?:low|medium|high|medium-high|medium-low|gentle|moderate)\b(?:[- ]\w+)? heat|"
-    r"\bhot (?:pan|wok|frying pan|oil|grill|barbecue|griddle|plate)|\bvery hot\b|\bsmoking\b|"
-    r"°c|\btoaster\b|\bgrill\b"
+    r"\bhot (?:\w+ )?(?:pan|wok|frying pan|oil|grill|barbecue|griddle|plate)|"
+    r"\bvery hot\b|\bsmoking\b|"
+    r"°c|\btoaster\b|\bgrill\b|\buntil (?:very )?hot\b|\bgently\b"
 )
 # Simmering or boiling says how hot this step is, but not the next one: boiling the pasta
 # doesn't say how hot to fry the garlic.
 _OWN_HEAT = re.compile(r"\bsimmer|\bboil")
 _OVEN_TEMP = re.compile(r"\boven\b[^.]*?°c")
+# What a cook can see, feel or smell when a step is done.
+_CUE_WORDS = (
+    *("golden", "brown", "browned", "charred", "opaque", "tender", "crisp", "crispy", "cooked"),
+    *("translucent", "al dente", "absorbed", "evaporat\\w*", "soft\\w*", "thick\\w*", "reduc\\w*"),
+    *("wilted", "melted", "bubbl\\w*", "hot", "fluffy", "puffed", "caramelis\\w*", "smooth"),
+    *("colou?r\\w*", "fragrant", "clear", "blister\\w*", "collaps\\w*", "break down"),
+    *("float", "risen", "skewer", "doneness", "firm", "set", "syrupy", "coats?", "render\\w*"),
+    *("pink", "no raw", "dissolv\\w*", "glossy", "sticky", "darken\\w*", "spotted", "done"),
+    *("pierced", "slides?", "jammy", "lift\\w*", "blacken\\w*", "moisture", "releases?"),
+)
 _CUE = re.compile(
     DONE.pattern + r"|packet|seconds?\b|heat(?:ed)? through|"
     r"until (?:just )?(?:fragrant|soft|softened|wilted|set|melted|thick|thickened|bubbling|"
     r"hot|heated|warmed|fluffy|puffed|reduced|"
-    r"caramelised|smoking|deep golden|steaming|smooth|coloured|it colours|the garlic just)"
+    r"caramelised|smoking|deep golden|steaming|smooth|coloured|it colours|the garlic just)|"
+    # A few words can come between: "until the onion is translucent", "until lightly golden".
+    r"\buntil\b[^.;:]{0,50}?\b(?:" + "|".join(_CUE_WORDS) + r")\b|preferred doneness|to your liking"
 )
 # A staple cooked by its packet needs no heat or time of its own: "Cook the rice according
 # to the packet." A bare "Cook the rice." still needs one (the product owner's call).
 _STAPLE = re.compile(
-    r"\b(?:meanwhile,? )?cook the (?:rice|pasta|noodles|spaghetti|linguine|penne|couscous|"
-    r"quinoa|soba|udon|rice noodles|egg noodles|gnocchi) (?:according to|following) the packet"
-    r"(?: instructions)?"
+    # A few words may come between ("cook it in a rice cooker per the packet"), but no comma
+    # or number: "cook the chicken for 10 minutes, then the noodles…" must still be checked.
+    r"\b(?:meanwhile,? )?cook\b[^.;,\d]{0,60}?\b(?:according to|following|per|to) (?:the )?packet"
+    r"(?: instructions| directions)?"
 )
 
 
@@ -312,7 +358,8 @@ def check_recipes(recipes: Sequence[SeedRecipe]) -> list[Problem]:
         for term in _mentioned(" ".join(r.method)):
             name = _TERMS[term]
             in_lines = any(re.search(rf"\b{re.escape(f)}\b", written) for f in variants(term))
-            if name in names or name in reported or in_lines:
+            covered = bool(UMBRELLA.get(name, set()) & names)
+            if name in names or name in reported or in_lines or covered:
                 continue
             reported.add(name)
             problems.append(
@@ -364,7 +411,9 @@ def check_recipes(recipes: Sequence[SeedRecipe]) -> list[Problem]:
                 (
                     o
                     for o in checked
-                    if o.cuisine == r.cuisine and _similar(listed[o.slug], listed[r.slug])
+                    if o.cuisine == r.cuisine
+                    and frozenset({o.slug, r.slug}) not in NOT_DUPLICATES
+                    and _similar(listed[o.slug], listed[r.slug])
                 ),
                 None,
             )

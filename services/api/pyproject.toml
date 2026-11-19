@@ -38,7 +38,7 @@ select = ["E", "F", "I", "UP", "B"]
 
 [tool.mypy]
 strict = true
-packages = ["app", "tests", "evals"]
+packages = ["app", "tests", "evals", "scripts"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

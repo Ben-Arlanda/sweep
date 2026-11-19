@@ -104,17 +104,22 @@ UNIT_WORDS: dict[str, str] = {
     **dict.fromkeys(("can", "cans", "tin", "tins"), "can"),
     **dict.fromkeys(("stick", "sticks"), "stick"),
     **dict.fromkeys(("loaf", "loaves"), "loaf"),
+    **dict.fromkeys(("scoop", "scoops"), "scoop"),
+    **dict.fromkeys(("shot", "shots"), "shot"),  # "2 shots espresso"
 }
 # Measures that can come *after* the name: "3 garlic cloves", "4 lettuce leaves".
 TRAILING_MEASURES = {"clove": "clove", "cloves": "clove", "leaf": "leaf", "leaves": "leaf"}
+TRAILING_MEASURES |= {"sprig": "sprig", "sprigs": "sprig", "stalk": "stalk", "stalks": "stalk"}
+TRAILING_MEASURES |= {"sheet": "sheet", "sheets": "sheet"}  # "4 celery stalks", "6 nori sheets"
 STORED_UNITS = sorted({*UNIT_WORDS.values(), *TRAILING_MEASURES.values()})
 # Words that describe the thing but aren't part of its name.
 DESCRIPTORS = {"large", "small", "medium", "fresh", "ripe", "boiling", "cold", "warm", "hot"}
+DESCRIPTORS |= {"lukewarm"}
 # Container words left in front of the name after a weight: "400 g can chickpeas".
 CONTAINERS = {"can", "cans", "tin", "tins", "jar", "jars", "packet", "packets", "of"}
 CONTAINERS |= {"cube", "cubes", "piece", "pieces"}  # "2 cm piece ginger", "1 inch cube of"
 # "4 cups cooked rice": the Ingredient is rice, but the amount isn't an amount you'd buy.
-PREPARED = {"cooked", "leftover"}
+PREPARED = {"cooked", "leftover", "steamed"}
 # Things recipes list but nobody shops for.
 NOT_SHOPPED = {"water", "ice", "ice cubes"}
 # For the second look only (see _second_look). Preparation, which recipe websites
@@ -122,13 +127,16 @@ NOT_SHOPPED = {"water", "ice", "ice cubes"}
 PREP_WORDS = {
     *("chopped", "diced", "sliced", "crushed", "grated", "minced", "peeled", "zested"),
     *("juiced", "halved", "quartered", "torn", "trimmed", "drained", "rinsed", "shredded"),
-    *("cut", "cleaned", "softened", "melted", "beaten", "deseeded", "picked", "washed"),
-    *("finely", "roughly", "thinly", "coarsely", "freshly"),
+    *("cut", "cleaned", "softened", "melted", "beaten", "deseeded", "picked", "washed", "brewed"),
+    *("finely", "roughly", "thinly", "coarsely", "freshly", "soaked"),
 }
 # ...and loose words in front of the name: "½ a lemon", "handful of ice", "frozen".
 # Not plain DESCRIPTORS: "frozen peas" is a starter, and the first look must find it.
 LOOSE_WORDS = {"a", "an", "and", "of", "handful", "handfuls", "pinch", "knob", "splash", "dash"}
 LOOSE_WORDS |= {"frozen", "chilled", "mixed"}  # "mixed herbs" is found by the first look
+# Describing words: "boneless chicken thighs", "toasted sesame seeds", "firm pears".
+LOOSE_WORDS |= {"boneless", "bone-in", "skinless", "raw", "toasted", "firm", "fine", "flaky"}
+LOOSE_WORDS |= {"thick", "stale", "day-old", "extra", "very", "plain", "dry"}
 
 
 def core_name(text: str) -> str:
@@ -289,9 +297,12 @@ def _second_look(
         word = words.pop(0)
         if _clean_word(word) in PREP_WORDS:
             leading.append(word)
-    trailing: list[str] = []  # "onion finely chopped", "parmesan to serve", "if you can"
+    unit = None  # "4 thick slices sourdough": the unit comes after a describing word
+    if can_take_unit and len(words) > 1 and _clean_word(words[0]) in UNIT_WORDS:
+        unit = UNIT_WORDS[_clean_word(words.pop(0))]
+    trailing: list[str] = []  # "onion finely chopped", "parmesan to serve", "oil for frying"
     for i, word in enumerate(words[1:], start=1):
-        if _clean_word(word) in PREP_WORDS or _clean_word(word) in ("to", "if"):
+        if _clean_word(word) in PREP_WORDS or _clean_word(word) in ("to", "if", "for"):
             words, trailing = words[:i], words[i:]
             break
     note = "; ".join(part for part in (" ".join(leading), " ".join(trailing)) if part) or None
@@ -314,12 +325,12 @@ def _second_look(
         if measure is not None:  # "garlic cloves" → garlic, in cloves (not bulbs)
             found = index.lookup(" ".join(parts[:-1]))
             if found is not None:
-                return " ".join(parts[:-1]), found, note, measure if can_take_unit else None
+                return " ".join(parts[:-1]), found, note, measure if can_take_unit else unit
         found = index.lookup(candidate)
         if found is not None:
-            return candidate, found, note, None
+            return candidate, found, note, unit
         if core_name(candidate) in NOT_SHOPPED:
-            return candidate, None, note, None
+            return candidate, None, note, unit
     return None
 
 

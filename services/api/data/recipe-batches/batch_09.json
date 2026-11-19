@@ -1,0 +1,692 @@
+[
+  {
+    "title": "Japanese Oyakodon",
+    "summary": "Tender chicken and softly set eggs simmered in a sweet-savoury dashi broth over steaming rice.",
+    "cuisine": "japanese",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 57,
+    "difficulty": "easy",
+    "ingredients": [
+      "450 g chicken thighs",
+      "4 eggs",
+      "1 onion",
+      "250 ml dashi stock",
+      "3 tbsp soy sauce",
+      "2 tbsp mirin",
+      "1 tbsp sugar",
+      "300 g jasmine rice",
+      "2 spring onions"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 10,
+        "steps": [
+          "Cook rice according to packet directions and slice chicken and onion thinly."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Simmer dashi, soy, mirin and sugar in a wide pan; add onion and cook until softened."
+        ]
+      },
+      {
+        "title": "Cook the dish",
+        "minutes": 40,
+        "steps": [
+          "Add chicken in one layer and simmer 7–9 minutes until cooked through; drizzle beaten eggs over and cover for 1–2 minutes."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Spoon chicken and just-set eggs over hot rice and scatter with sliced spring onions."
+        ]
+      }
+    ],
+    "tips": [
+      "For japanese oyakodon, follow the cooking cues in each stage rather than relying only on the clock."
+    ],
+    "variations": [
+      "Adjust seasoning and accompaniments to taste while preserving the defining ingredients of japanese oyakodon."
+    ],
+    "storage": "Cool promptly, refrigerate in a sealed container for up to 3 days and reheat thoroughly when appropriate."
+  },
+  {
+    "title": "Thai Tom Kha Gai",
+    "summary": "Creamy coconut chicken soup infused with galangal, lemongrass, makrut lime and fresh lime juice.",
+    "cuisine": "thai",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 57,
+    "difficulty": "easy",
+    "ingredients": [
+      "500 g chicken thighs",
+      "400 ml coconut milk",
+      "500 ml chicken stock",
+      "3 lemongrass stalks",
+      "40 g galangal",
+      "4 makrut lime leaves",
+      "200 g mushrooms",
+      "2 tbsp fish sauce",
+      "2 limes",
+      "2 red chillies"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 10,
+        "steps": [
+          "Slice chicken thinly; bruise lemongrass and cut galangal into coins."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Simmer stock with lemongrass, galangal and lime leaves for 10 minutes to infuse; add coconut milk."
+        ]
+      },
+      {
+        "title": "Cook the dish",
+        "minutes": 40,
+        "steps": [
+          "Add chicken and mushrooms; simmer gently 10–12 minutes until chicken reaches 75°C, without boiling hard."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Remove woody aromatics; season with fish sauce and lime juice, add sliced chilli and serve."
+        ]
+      }
+    ],
+    "tips": [
+      "For thai tom kha gai, follow the cooking cues in each stage rather than relying only on the clock."
+    ],
+    "variations": [
+      "Adjust seasoning and accompaniments to taste while preserving the defining ingredients of thai tom kha gai."
+    ],
+    "storage": "Cool promptly, refrigerate in a sealed container for up to 3 days and reheat thoroughly when appropriate."
+  },
+  {
+    "title": "British Toad in the Hole",
+    "summary": "Juicy sausages baked inside a towering, crisp-edged Yorkshire pudding with rich onion gravy.",
+    "cuisine": "british",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 57,
+    "difficulty": "easy",
+    "ingredients": [
+      "8 pork sausages",
+      "140 g plain flour",
+      "3 eggs",
+      "200 ml milk",
+      "2 tbsp vegetable oil",
+      "2 onions",
+      "400 ml beef stock",
+      "1 tbsp Worcestershire sauce"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 10,
+        "steps": [
+          "Heat oven to 220°C; whisk flour, eggs and milk into smooth batter and rest 20 minutes."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Brown sausages in a hot baking dish with oil for 12 minutes; meanwhile soften sliced onions in a saucepan."
+        ]
+      },
+      {
+        "title": "Cook the dish",
+        "minutes": 40,
+        "steps": [
+          "Pour batter quickly around sizzling sausages and bake 25–30 minutes without opening oven; cook onions with stock and Worcestershire until thick."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Serve puffed pudding immediately with onion gravy and steamed greens."
+        ]
+      }
+    ],
+    "tips": [
+      "For british toad in the hole, follow the cooking cues in each stage rather than relying only on the clock."
+    ],
+    "variations": [
+      "Adjust seasoning and accompaniments to taste while preserving the defining ingredients of british toad in the hole."
+    ],
+    "storage": "Cool promptly, refrigerate in a sealed container for up to 3 days and reheat thoroughly when appropriate."
+  },
+  {
+    "title": "Indian Dal Tadka",
+    "summary": "Creamy yellow lentils finished with sizzling cumin, garlic and chilli-spiced ghee.",
+    "cuisine": "indian",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 42,
+    "difficulty": "easy",
+    "ingredients": [
+      "250 g yellow split moong dal",
+      "1 onion",
+      "2 tomatoes",
+      "1 tsp turmeric",
+      "1 tsp cumin seeds",
+      "4 garlic cloves",
+      "2 dried red chillies",
+      "3 tbsp ghee",
+      "1 litre water",
+      "1 lemon"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 10,
+        "steps": [
+          "Rinse lentils until water runs clear; chop onion and tomatoes."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Simmer lentils with turmeric, onion, tomatoes and water for 30–35 minutes until soft, stirring occasionally."
+        ]
+      },
+      {
+        "title": "Cook the dish",
+        "minutes": 25,
+        "steps": [
+          "Heat ghee in a small pan, add cumin seeds, sliced garlic and dried chillies and fry until garlic is golden."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Pour sizzling tadka over lentils, season with salt and lemon and serve with rice."
+        ]
+      }
+    ],
+    "tips": [
+      "For indian dal tadka, follow the cooking cues in each stage rather than relying only on the clock."
+    ],
+    "variations": [
+      "Adjust seasoning and accompaniments to taste while preserving the defining ingredients of indian dal tadka."
+    ],
+    "storage": "Cool promptly, refrigerate in a sealed container for up to 3 days and reheat thoroughly when appropriate."
+  },
+  {
+    "title": "Turkish Lentil Köfte",
+    "summary": "Soft red-lentil and bulgur patties seasoned with tomato paste, cumin, parsley and lemon.",
+    "cuisine": "turkish",
+    "course": "lunch",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 42,
+    "difficulty": "easy",
+    "ingredients": [
+      "200 g red lentils",
+      "120 g fine bulgur",
+      "1 onion",
+      "2 tbsp tomato paste",
+      "1 tsp cumin",
+      "1 tsp paprika",
+      "3 tbsp olive oil",
+      "1 bunch parsley",
+      "1 lemon",
+      "lettuce leaves"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 10,
+        "steps": [
+          "Rinse lentils and chop onion and parsley."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Simmer lentils in 550 ml water for 15 minutes until soft; stir in bulgur, cover and rest 15 minutes."
+        ]
+      },
+      {
+        "title": "Cook the dish",
+        "minutes": 25,
+        "steps": [
+          "Fry onion in oil with tomato paste, cumin and paprika; mix into lentils with parsley and lemon until mouldable."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Shape into small oval patties with damp hands and serve in lettuce leaves."
+        ]
+      }
+    ],
+    "tips": [
+      "For turkish lentil köfte, follow the cooking cues in each stage rather than relying only on the clock."
+    ],
+    "variations": [
+      "Adjust seasoning and accompaniments to taste while preserving the defining ingredients of turkish lentil köfte."
+    ],
+    "storage": "Serve immediately for best texture; refrigerate leftovers promptly and consume within 2 days."
+  },
+  {
+    "title": "Japanese Chicken Karaage",
+    "summary": "Crisp ginger-soy marinated chicken bites with juicy centres and a squeeze of lemon.",
+    "cuisine": "japanese",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 60,
+    "difficulty": "easy",
+    "ingredients": [
+      "650 g chicken thighs",
+      "3 tbsp soy sauce",
+      "2 tbsp sake",
+      "20 g ginger",
+      "2 garlic cloves",
+      "120 g potato starch",
+      "750 ml neutral frying oil",
+      "1 lemon"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 10,
+        "steps": [
+          "Cut chicken into 4 cm chunks and pat dry."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 30,
+        "steps": [
+          "Mix soy, sake, grated ginger and garlic; marinate chicken chilled for 20–30 minutes."
+        ]
+      },
+      {
+        "title": "Cook the dish",
+        "minutes": 25,
+        "steps": [
+          "Drain chicken, coat in potato starch and fry in batches at 170–175°C for 4–6 minutes until crisp and 75°C inside."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Drain on a rack, season lightly and serve hot with lemon wedges."
+        ]
+      }
+    ],
+    "tips": [
+      "For japanese chicken karaage, follow the cooking cues in each stage rather than relying only on the clock."
+    ],
+    "variations": [
+      "Adjust seasoning and accompaniments to taste while preserving the defining ingredients of japanese chicken karaage."
+    ],
+    "storage": "Cool promptly, refrigerate in a sealed container for up to 3 days and reheat thoroughly when appropriate."
+  },
+  {
+    "title": "Mexican Esquites",
+    "summary": "Sweet charred corn tossed with lime, chilli, creamy dressing and crumbled cotija cheese.",
+    "cuisine": "mexican",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 42,
+    "difficulty": "easy",
+    "ingredients": [
+      "500 g corn kernels",
+      "2 tbsp butter",
+      "3 tbsp mayonnaise",
+      "60 g cotija or feta",
+      "1 lime",
+      "1 tsp chilli powder",
+      "1 tbsp coriander"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 10,
+        "steps": [
+          "Drain corn well if using canned; zest and juice lime."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Heat butter in a skillet over high heat and char corn for 6–8 minutes without stirring constantly."
+        ]
+      },
+      {
+        "title": "Cook the dish",
+        "minutes": 25,
+        "steps": [
+          "Remove from heat and toss with mayonnaise, lime juice, chilli powder and a pinch of salt."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Spoon into bowls and finish with crumbled cheese and coriander."
+        ]
+      }
+    ],
+    "tips": [
+      "For mexican esquites, follow the cooking cues in each stage rather than relying only on the clock."
+    ],
+    "variations": [
+      "Adjust seasoning and accompaniments to taste while preserving the defining ingredients of mexican esquites."
+    ],
+    "storage": "Serve immediately for best texture; refrigerate leftovers promptly and consume within 2 days."
+  },
+  {
+    "title": "French Pommes Dauphinoise",
+    "summary": "Paper-thin potatoes baked slowly in garlic-infused cream beneath a golden, bubbling crust.",
+    "cuisine": "french",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 57,
+    "difficulty": "easy",
+    "ingredients": [
+      "1 kg waxy potatoes",
+      "400 ml thickened cream",
+      "200 ml milk",
+      "2 garlic cloves",
+      "30 g butter",
+      "1 tsp thyme",
+      "1/2 tsp nutmeg"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 10,
+        "steps": [
+          "Heat oven to 170°C; peel potatoes and slice 2–3 mm thick without rinsing."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Warm cream, milk, garlic, thyme and nutmeg gently; butter a shallow baking dish."
+        ]
+      },
+      {
+        "title": "Cook the dish",
+        "minutes": 40,
+        "steps": [
+          "Layer potatoes, seasoning each layer lightly; pour warm cream over and bake covered 50 minutes, then uncovered 25 minutes until tender and golden."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Rest 15 minutes so the sauce thickens before cutting portions."
+        ]
+      }
+    ],
+    "tips": [
+      "For french pommes dauphinoise, follow the cooking cues in each stage rather than relying only on the clock."
+    ],
+    "variations": [
+      "Adjust seasoning and accompaniments to taste while preserving the defining ingredients of french pommes dauphinoise."
+    ],
+    "storage": "Serve immediately for best texture; refrigerate leftovers promptly and consume within 2 days."
+  },
+  {
+    "title": "Thai Mango Salad",
+    "summary": "Crunchy green mango, herbs and roasted peanuts tossed in a lively lime-chilli dressing.",
+    "cuisine": "thai",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 42,
+    "difficulty": "easy",
+    "ingredients": [
+      "2 green mangoes",
+      "1 carrot",
+      "1 red chilli",
+      "2 tbsp fish sauce",
+      "2 tbsp lime juice",
+      "1 tbsp palm sugar",
+      "50 g roasted peanuts",
+      "1 bunch coriander",
+      "1 shallot"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 10,
+        "steps": [
+          "Peel and julienne mangoes and carrot; slice shallot and chilli thinly."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Whisk fish sauce, lime juice and sugar until dissolved; adjust sweet, sour and salty balance."
+        ]
+      },
+      {
+        "title": "Cook the dish",
+        "minutes": 25,
+        "steps": [
+          "Toss mango, carrot, shallot and chilli with dressing and let stand 5 minutes."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Scatter chopped peanuts and coriander over salad and serve fresh."
+        ]
+      }
+    ],
+    "tips": [
+      "For thai mango salad, follow the cooking cues in each stage rather than relying only on the clock."
+    ],
+    "variations": [
+      "Adjust seasoning and accompaniments to taste while preserving the defining ingredients of thai mango salad."
+    ],
+    "storage": "Serve immediately for best texture; refrigerate leftovers promptly and consume within 2 days."
+  },
+  {
+    "title": "Italian Semifreddo",
+    "summary": "Airy frozen vanilla cream folded with whipped eggs and studded with toasted hazelnuts.",
+    "cuisine": "italian",
+    "course": "dessert",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 377,
+    "difficulty": "medium",
+    "ingredients": [
+      "3 eggs",
+      "100 g caster sugar",
+      "300 ml whipping cream",
+      "1 tsp vanilla",
+      "80 g toasted hazelnuts",
+      "1 pinch salt"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 10,
+        "steps": [
+          "Line a loaf tin with baking paper; chop toasted hazelnuts."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Whisk eggs and sugar over a bain-marie until mixture reaches 71°C, then beat until thick and cool; whip cream separately to soft peaks."
+        ]
+      },
+      {
+        "title": "Cook the dish",
+        "minutes": 360,
+        "steps": [
+          "Fold cooled egg mixture, vanilla and hazelnuts gently into cream; pour into tin and freeze at least 6 hours."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Unmould, rest 5 minutes and slice with a warm knife."
+        ]
+      }
+    ],
+    "tips": [
+      "For italian semifreddo, follow the cooking cues in each stage rather than relying only on the clock."
+    ],
+    "variations": [
+      "Adjust seasoning and accompaniments to taste while preserving the defining ingredients of italian semifreddo."
+    ],
+    "storage": "Store covered in the refrigerator for up to 3 days; freeze only if suitable for the dessert."
+  },
+  {
+    "title": "Mexican Sopa de Tortilla",
+    "summary": "Smoky tomato-chilli soup topped with crisp tortilla strips, avocado, lime and fresh coriander.",
+    "cuisine": "mexican",
+    "course": "lunch",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 57,
+    "difficulty": "easy",
+    "ingredients": [
+      "800 g canned tomatoes",
+      "1 onion",
+      "3 garlic cloves",
+      "1 dried ancho chilli",
+      "1 litre chicken stock",
+      "4 corn tortillas",
+      "1 avocado",
+      "1 lime",
+      "2 tbsp oil",
+      "1 tsp cumin"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 10,
+        "steps": [
+          "Soak dried chilli in hot water until soft; cut tortillas into strips."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Blend chilli with tomatoes, onion and garlic; fry puree in oil 5 minutes until darker and fragrant."
+        ]
+      },
+      {
+        "title": "Cook the dish",
+        "minutes": 40,
+        "steps": [
+          "Add stock and cumin and simmer 20 minutes; meanwhile bake tortilla strips at 200°C until crisp."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Ladle soup into bowls and top with tortilla strips, avocado, lime and coriander."
+        ]
+      }
+    ],
+    "tips": [
+      "For mexican sopa de tortilla, follow the cooking cues in each stage rather than relying only on the clock."
+    ],
+    "variations": [
+      "Adjust seasoning and accompaniments to taste while preserving the defining ingredients of mexican sopa de tortilla."
+    ],
+    "storage": "Serve immediately for best texture; refrigerate leftovers promptly and consume within 2 days."
+  },
+  {
+    "title": "Greek Revithia",
+    "summary": "Slow-baked chickpeas with lemon, rosemary and olive oil until buttery-soft and fragrant.",
+    "cuisine": "greek",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 57,
+    "difficulty": "easy",
+    "ingredients": [
+      "800 g canned chickpeas",
+      "2 onions",
+      "4 garlic cloves",
+      "1 lemon",
+      "100 ml olive oil",
+      "2 rosemary sprigs",
+      "500 ml vegetable stock",
+      "1 bay leaf"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 10,
+        "steps": [
+          "Heat oven to 180°C; drain chickpeas and thinly slice onions."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Soften onions in olive oil for 10 minutes, then add garlic, rosemary and bay."
+        ]
+      },
+      {
+        "title": "Cook the dish",
+        "minutes": 40,
+        "steps": [
+          "Combine with chickpeas and stock in covered casserole; bake 50 minutes, uncover and bake 15 minutes to reduce."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Finish with lemon juice and zest; season and serve with bread."
+        ]
+      }
+    ],
+    "tips": [
+      "For greek revithia, follow the cooking cues in each stage rather than relying only on the clock."
+    ],
+    "variations": [
+      "Adjust seasoning and accompaniments to taste while preserving the defining ingredients of greek revithia."
+    ],
+    "storage": "Cool promptly, refrigerate in a sealed container for up to 3 days and reheat thoroughly when appropriate."
+  }
+]

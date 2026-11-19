@@ -166,6 +166,21 @@ def test_converts_to_the_ingredients_own_unit_only_when_honest(
         ("6 curry leaves if you can get them", "curry leaves", D("6"), None, "if you can get them"),
         ("salt flakes, to serve", "salt", None, None, "to serve"),
         ("cooking oil spray", "vegetable oil", None, None, None),
+        # Slice 4g's library: what it's for, and words that describe the thing
+        ("neutral oil for frying", "vegetable oil", None, None, "for frying"),
+        ("1 egg for batter", "eggs", D("1"), None, "for batter"),
+        ("600 g boneless chicken thighs", "chicken thigh", D("600"), "g", None),
+        ("500 g raw peeled prawns", "prawns", D("500"), "g", "peeled"),
+        ("1 tbsp toasted sesame seeds", "sesame seeds", D("1"), "tbsp", None),
+        ("2 firm pears", "pears", D("2"), None, None),
+        ("1 tsp fine salt", "salt", D("1"), "tsp", None),
+        ("250 ml lukewarm water", None, D("250"), "ml", None),
+        ("4 celery stalks", "celery", D("4"), "stalk", None),
+        ("2 rosemary sprigs", "rosemary", D("2"), "sprig", None),
+        ("6 filo pastry sheets", "filo pastry", D("6"), "sheet", None),
+        ("4 thick slices sourdough", "bread", D("4"), "slice", None),
+        ("2 shots hot espresso", "coffee", D("2"), "shot", None),
+        ("200 g soaked dried chickpeas", "chickpeas", D("200"), "g", "soaked"),
     ],
 )
 def test_reads_lines_the_way_recipe_websites_write_them(
@@ -190,6 +205,10 @@ def test_the_new_rules_only_run_when_the_old_ones_found_nothing() -> None:
     # Loose words go, and what's left can still be something nobody shops for.
     ice = parse_line("handful of ice", INDEX)
     assert (ice.ingredient, ice.needs_review) == (None, False)
+    # Steamed rice is cooked rice: rice, with an amount you wouldn't buy.
+    steamed = parse_line("2 cups steamed jasmine rice", INDEX)
+    assert steamed.ingredient is not None and steamed.ingredient.name == "rice"
+    assert steamed.prepared
     # Still no guessing: an unknown thing stays unknown.
     assert parse_line("2 tbsp finely chopped unobtainium", INDEX).needs_review
 

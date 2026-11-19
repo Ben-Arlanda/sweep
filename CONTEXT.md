@@ -89,6 +89,18 @@ _Avoid_: default recipe, built-in recipe
 A method a confident home cook can follow without guessing: every ingredient is used in a step, each cooking step gives heat and time, risky steps (meat, fish, baking) give a doneness cue, the order makes sense, and the total time roughly matches the steps. Every Seed Recipe must have one; a recipe that can't be fixed to meet it is removed.
 _Avoid_: full recipe, detailed method
 
+**Recipe Stage**:
+A named part of a Seed Recipe's method ("Make the ragù") with its own minutes and steps. A recipe's stages add up to its total time.
+_Avoid_: section, phase
+
+**Quick View** / **Detailed View**:
+Two ways to read the same method. The Detailed View shows the Recipe Stages in full, with tips, variations and storage; the Quick View shows a few short steps for someone who has cooked the dish before. Both describe the same cooking (same heats, times and order) and both must be a Cookable Method. A recipe with no stages (an Imported Recipe) has only one view.
+_Avoid_: short/long method, summary steps
+
+**Cook Mode**:
+A full-screen, one-step-at-a-time view of a method that keeps the phone's screen awake while you cook.
+_Avoid_: kitchen mode, step mode
+
 **Recipe Image**:
 The picture shown for a recipe. For a Seed Recipe it is an openly licensed photo (credited to its author) or one generated for Sweep, and it must be checked against the recipe before it's shown. For an Imported Recipe it is only ever the Member's own photo.
 _Avoid_: thumbnail, hero image, recipe photo
