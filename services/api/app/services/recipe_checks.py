@@ -244,10 +244,12 @@ _CUE = re.compile(
     r"hot|heated|warmed|fluffy|puffed|reduced|"
     r"caramelised|smoking|deep golden|steaming|smooth|coloured|it colours|the garlic just)"
 )
-# Cooking a staple is something a confident home cook knows: "Cook the rice."
+# A staple cooked by its packet needs no heat or time of its own: "Cook the rice according
+# to the packet." A bare "Cook the rice." still needs one (the product owner's call).
 _STAPLE = re.compile(
     r"\b(?:meanwhile,? )?cook the (?:rice|pasta|noodles|spaghetti|linguine|penne|couscous|"
-    r"quinoa|soba|udon|rice noodles|egg noodles|gnocchi)(?: and drain(?: well)?)?\b"
+    r"quinoa|soba|udon|rice noodles|egg noodles|gnocchi) (?:according to|following) the packet"
+    r"(?: instructions)?"
 )
 
 

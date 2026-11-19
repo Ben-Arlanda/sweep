@@ -126,7 +126,7 @@ def test_a_vegetarian_claim_with_meat_or_hidden_seafood_is_flagged() -> None:
 
 def test_a_vegan_claim_with_dairy_or_eggs_is_flagged() -> None:
     lines = ["400 g pasta", "40 g parmesan, grated", "1 tbsp olive oil"]
-    method = ["Cook the pasta for 10 minutes and toss with the oil and parmesan."]
+    method = ["Cook the pasta in boiling water for 10 minutes and toss with the oil and parmesan."]
     pasta = recipe(ingredients=lines, method=method, summary="Simple pasta. Vegan.")
     assert kinds([pasta]) == ["diet_claim"]
 
@@ -260,7 +260,9 @@ def test_a_cooking_step_needs_a_time_or_a_cue() -> None:
         assert check_recipes([recipe(ingredients=lines, method=fixed, minutes=10)]) == []
 
 
-def test_cooking_a_staple_needs_no_time_or_heat() -> None:
+def test_a_staple_cooked_by_its_packet_needs_no_time_or_heat() -> None:
     lines = ["300 g rice", "1 tbsp soy sauce"]
-    method = ["Cook the rice.", "Toss the rice with the soy sauce."]
+    method = ["Cook the rice according to the packet.", "Toss the rice with the soy sauce."]
     assert check_recipes([recipe(ingredients=lines, method=method, minutes=20)]) == []
+    bare = ["Cook the rice.", "Toss the rice with the soy sauce."]
+    assert kinds([recipe(ingredients=lines, method=bare, minutes=20)]) == ["no_heat", "no_time"]
