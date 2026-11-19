@@ -508,7 +508,10 @@ function StockPill({
       >
         <StockDot stock={stock} ring={on} />
         <Text style={{ fontFamily: t.fonts.medium, fontSize: 13, color: fg }}>
-          <Text style={{ fontFamily: t.fonts.bold, fontVariant: ['tabular-nums'] }}>{count}</Text>{' '}
+          {/* Our Text sets its own colour, so the count must be told the pill's colour too. */}
+          <Text style={{ fontFamily: t.fonts.bold, fontVariant: ['tabular-nums'], color: fg }}>
+            {count}
+          </Text>{' '}
           {STOCK_LABEL[stock]}
         </Text>
       </View>
