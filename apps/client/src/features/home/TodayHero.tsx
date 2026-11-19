@@ -1,6 +1,6 @@
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
-import { CalendarDays, ChefHat, User, type LucideIcon } from 'lucide-react-native';
+import { CalendarDays, ChefHat, UserRound, type LucideIcon } from 'lucide-react-native';
 import { useState } from 'react';
 import { View } from 'react-native';
 
@@ -249,7 +249,7 @@ function LogoRow() {
             backgroundColor: t.colors.fill,
           }}
         >
-          <Icon icon={User} size={22} color={t.colors.text} />
+          <Icon icon={UserRound} size={22} color={t.colors.text} />
         </View>
       </PressableScale>
     </View>
