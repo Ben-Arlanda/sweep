@@ -294,9 +294,10 @@ _CUE = re.compile(
 # A staple cooked by its packet needs no heat or time of its own: "Cook the rice according
 # to the packet." A bare "Cook the rice." still needs one (the product owner's call).
 _STAPLE = re.compile(
-    r"\b(?:meanwhile,? )?cook (?:the )?(?:(?:rice|pasta|noodles|spaghetti|linguine|penne|"
-    r"couscous|quinoa|soba|udon|rice noodles|egg noodles|gnocchi|vermicelli|oven chips) )?"
-    r"(?:according to|following) (?:the )?packet(?: instructions| directions)?"
+    # A few words may come between ("cook it in a rice cooker per the packet"), but no comma
+    # or number: "cook the chicken for 10 minutes, then the noodles…" must still be checked.
+    r"\b(?:meanwhile,? )?cook\b[^.;,\d]{0,60}?\b(?:according to|following|per|to) (?:the )?packet"
+    r"(?: instructions| directions)?"
 )
 
 

@@ -3,6 +3,7 @@ that fail the checks (slice 4g, ADR 0028). Costs money: one Claude call per reci
 
     uv run python -m scripts.build_recipe_library --limit 5      # try a few first
     uv run python -m scripts.build_recipe_library --max-spend 15  # the rest
+    uv run python -m scripts.build_recipe_library --regate        # free: re-check saved drafts
 
 Generated text is never trusted on its own: `gate` (plain code) checks every draft, and a
 failing draft is retried with its problems. What still fails after the retries is left
@@ -163,20 +164,51 @@ def load_sources() -> list[tuple[str, dict[str, Any]]]:
 async def build(model: ClaudeStructured, source: dict[str, Any]) -> tuple[dict[str, Any], Decimal]:
     problems, spent = problems_of(source), Decimal(0)
     earlier: list[str] = []
+    last: Draft | None = None
     for attempt in range(1 + RETRIES):
         draft, usage = await model.parse(SYSTEM, prompt(source, problems, earlier), Draft)
         spent += cost_usd(usage) or Decimal(0)
         if draft is None:
             earlier = ["no answer came back"]
             continue
-        earlier = gate(source, draft)
+        earlier, last = gate(source, draft), draft
         if not earlier:
             return {
                 "ok": True,
                 "attempts": attempt + 1,
                 **draft.model_dump(exclude_none=True),
             }, spent
-    return {"ok": False, "problems": earlier, "fixing": problems}, spent
+    # The last draft stays with the failure, so a person can finish it rather than start over.
+    draft_out = last.model_dump(exclude_none=True) if last else None
+    return {"ok": False, "problems": earlier, "fixing": problems, "draft": draft_out}, spent
+
+
+def regate() -> int:
+    """Run the gate again over every saved draft (after the checks change). No model calls."""
+    done: dict[str, Any] = json.loads(OUT.read_text())
+    sources = {key(f, r["title"]): r for f, r in load_sources()}
+    failed = 0
+    for k, result in done.items():
+        saved = result if result["ok"] else result.get("draft")
+        if saved is None or k not in sources:
+            failed += 1
+            continue
+        draft = Draft.model_validate({f: saved[f] for f in Draft.model_fields if f in saved})
+        problems = gate(sources[k], draft)
+        if problems:
+            done[k] = {
+                "ok": False,
+                "problems": problems,
+                "draft": draft.model_dump(exclude_none=True),
+            }
+            failed += 1
+            print(f"  FAIL {k}: {problems}")
+        elif not result["ok"]:
+            done[k] = {"ok": True, "attempts": "regated", **draft.model_dump(exclude_none=True)}
+            print(f"  ok   {k} (passes now)")
+    OUT.write_text(json.dumps(done, ensure_ascii=False, indent=1) + "\n")
+    print(f"{len(done) - failed} ok, {failed} for a person")
+    return 1 if failed else 0
 
 
 async def main(limit: int | None, max_spend: Decimal, at_once: int) -> int:
@@ -216,5 +248,8 @@ if __name__ == "__main__":
     parser.add_argument("--limit", type=int)
     parser.add_argument("--max-spend", type=Decimal, default=Decimal("15"))
     parser.add_argument("--at-once", type=int, default=4)
+    parser.add_argument("--regate", action="store_true", help="re-check saved drafts, free")
     args = parser.parse_args()
+    if args.regate:
+        sys.exit(regate())
     sys.exit(asyncio.run(main(args.limit, args.max_spend, args.at_once)))

@@ -327,6 +327,8 @@ def test_a_packet_step_needs_no_the() -> None:
     for step in (
         "Cook rice according to packet instructions.",
         "Add the rice and cook according to the packet.",
+        "Rinse the rice, then cook it per the packet.",
+        "Cook the jasmine rice to packet directions.",
     ):
         method = [step, "Toss the rice with the soy sauce."]
         assert check_recipes([recipe(ingredients=lines, method=method, minutes=20)]) == [], step
@@ -437,3 +439,12 @@ def test_the_cheese_uses_queso_fresco_and_pecorino() -> None:
         lines = ["4 slices bread", f"80 g {cheese}, crumbled"]
         method = ["Scatter the cheese over the bread."]
         assert kinds([recipe(ingredients=lines, method=method, minutes=5)]) == [], cheese
+
+
+def test_a_packet_step_never_hides_another_cooking_step() -> None:
+    lines = ["300 g rice noodles", "600 g chicken thigh", "1 tbsp soy sauce"]
+    method = [
+        "Cook the chicken for 10 minutes, then the noodles according to the packet.",
+        "Toss with the soy sauce.",
+    ]
+    assert "no_heat" in kinds([recipe(ingredients=lines, method=method, minutes=20)])
