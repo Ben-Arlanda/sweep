@@ -190,6 +190,10 @@ def _longest_step(method: Sequence[str]) -> int:
 # --- duplicate ---------------------------------------------------------------------
 
 
+# Different dishes from the same shopping, kept on purpose (the product owner decided).
+NOT_DUPLICATES = {frozenset({"elote", "elote-salad"})}
+
+
 def _similar(a: set[str], b: set[str]) -> bool:
     """Nearly the same shopping: 85% of the combined ingredients are shared."""
     return bool(a and b) and len(a & b) / len(a | b) >= 0.85
@@ -407,7 +411,9 @@ def check_recipes(recipes: Sequence[SeedRecipe]) -> list[Problem]:
                 (
                     o
                     for o in checked
-                    if o.cuisine == r.cuisine and _similar(listed[o.slug], listed[r.slug])
+                    if o.cuisine == r.cuisine
+                    and frozenset({o.slug, r.slug}) not in NOT_DUPLICATES
+                    and _similar(listed[o.slug], listed[r.slug])
                 ),
                 None,
             )

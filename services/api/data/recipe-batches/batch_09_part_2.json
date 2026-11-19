@@ -1,0 +1,2116 @@
+[
+  {
+    "title": "French Salade Niçoise",
+    "summary": "A Provençal salad of tuna, eggs, tomatoes, olives and green beans dressed with sharp Dijon vinaigrette.",
+    "cuisine": "french",
+    "course": "lunch",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "250 g tinned tuna",
+      "3 eggs",
+      "200 g green beans",
+      "250 g cherry tomatoes",
+      "80 g black olives",
+      "1 lettuce",
+      "3 tbsp olive oil",
+      "1 tbsp lemon juice",
+      "1 tsp Dijon mustard"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 15,
+        "steps": [
+          "Boil eggs 9 minutes and cool; blanch beans 3 minutes and refresh in cold water."
+        ]
+      },
+      {
+        "title": "Develop the flavour",
+        "minutes": 15,
+        "steps": [
+          "Whisk olive oil, lemon juice and mustard with salt and pepper until emulsified."
+        ]
+      },
+      {
+        "title": "Cook the dish",
+        "minutes": 30,
+        "steps": [
+          "Drain tuna, halve tomatoes and eggs, and arrange lettuce, beans, tuna, olives and eggs on a platter."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Drizzle dressing over just before serving, keeping the ingredients distinct and colourful."
+        ]
+      }
+    ],
+    "tips": [
+      "Taste and adjust seasoning at the end; the balance of salt, acidity and texture matters for this dish."
+    ],
+    "variations": [
+      "Adjust chilli or fresh herbs to taste without changing the main cooking method."
+    ],
+    "storage": "Refrigerate promptly and eat within 1 day; do not leave at room temperature."
+  },
+  {
+    "title": "Mexican Chilaquiles Verdes",
+    "summary": "Crisp tortilla triangles softened in tangy green salsa, topped with fried eggs, crema and fresh coriander.",
+    "cuisine": "mexican",
+    "course": "breakfast",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "8 corn tortillas",
+      "400 g tomatillos",
+      "1 jalapeño",
+      "1 onion",
+      "2 garlic cloves",
+      "4 eggs",
+      "80 g sour cream",
+      "2 tbsp oil",
+      "1 bunch coriander"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 15,
+        "steps": [
+          "Cut tortillas into triangles and bake at 200°C until crisp; husk and rinse tomatillos."
+        ]
+      },
+      {
+        "title": "Develop the flavour",
+        "minutes": 15,
+        "steps": [
+          "Simmer tomatillos, jalapeño, onion and garlic 10 minutes, then blend into a bright green salsa."
+        ]
+      },
+      {
+        "title": "Cook the dish",
+        "minutes": 30,
+        "steps": [
+          "Heat salsa in a skillet, add tortilla chips and toss briefly so some edges remain crisp; fry eggs separately."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Top chilaquiles with eggs, sour cream and chopped coriander; serve immediately."
+        ]
+      }
+    ],
+    "tips": [
+      "Taste and adjust seasoning at the end; the balance of salt, acidity and texture matters for this dish."
+    ],
+    "variations": [
+      "Adjust chilli or fresh herbs to taste without changing the main cooking method."
+    ],
+    "storage": "Refrigerate promptly in a sealed container for up to 2 days; serve chilled or reheat as appropriate."
+  },
+  {
+    "title": "Lebanese Batata Harra",
+    "summary": "Crisp roasted potatoes tossed with garlic, coriander, chilli and fresh lemon for a lively mezze side.",
+    "cuisine": "lebanese",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "800 g potatoes",
+      "3 tbsp olive oil",
+      "3 garlic cloves",
+      "1 tsp chilli flakes",
+      "1 bunch coriander",
+      "1 lemon"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 15,
+        "steps": [
+          "Heat oven to 220°C and cut potatoes into 2 cm cubes; dry thoroughly."
+        ]
+      },
+      {
+        "title": "Develop the flavour",
+        "minutes": 15,
+        "steps": [
+          "Toss potatoes with oil and salt and roast 30–35 minutes, turning once until crisp and golden."
+        ]
+      },
+      {
+        "title": "Cook the dish",
+        "minutes": 30,
+        "steps": [
+          "Briefly fry minced garlic and chilli in a little oil, then add chopped coriander off heat."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Toss hot potatoes with fragrant oil and lemon juice and serve while crisp."
+        ]
+      }
+    ],
+    "tips": [
+      "Taste and adjust seasoning at the end; the balance of salt, acidity and texture matters for this dish."
+    ],
+    "variations": [
+      "Adjust chilli or fresh herbs to taste without changing the main cooking method."
+    ],
+    "storage": "Refrigerate promptly in a sealed container for up to 2 days; serve chilled or reheat as appropriate."
+  },
+  {
+    "title": "Italian Zuppa Toscana",
+    "summary": "A hearty Tuscan-style soup of sausage, potatoes and kale in a lightly creamy garlic broth.",
+    "cuisine": "italian",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "350 g Italian sausage",
+      "400 g potatoes",
+      "150 g kale",
+      "1 onion",
+      "3 garlic cloves",
+      "800 ml chicken stock",
+      "150 ml cream",
+      "1 tsp chilli flakes"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 15,
+        "steps": [
+          "Slice potatoes thinly, strip kale from stems and remove sausage meat from casings."
+        ]
+      },
+      {
+        "title": "Develop the flavour",
+        "minutes": 15,
+        "steps": [
+          "Brown sausage in a large pot until crumbled and golden; soften onion and garlic in the rendered fat."
+        ]
+      },
+      {
+        "title": "Cook the dish",
+        "minutes": 30,
+        "steps": [
+          "Add potatoes and stock and simmer 15 minutes until tender; stir in kale and cook 5 minutes more."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Add cream and chilli flakes, warm gently without boiling and season before serving."
+        ]
+      }
+    ],
+    "tips": [
+      "Taste and adjust seasoning at the end; the balance of salt, acidity and texture matters for this dish."
+    ],
+    "variations": [
+      "Adjust chilli or fresh herbs to taste without changing the main cooking method."
+    ],
+    "storage": "Refrigerate promptly in a sealed container for up to 3 days; reheat until steaming hot."
+  },
+  {
+    "title": "Chinese Egg Drop Soup",
+    "summary": "Silky ribbons of egg swirl through a light ginger-scented broth with spring onions and white pepper.",
+    "cuisine": "chinese",
+    "course": "lunch",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "1 litre chicken stock",
+      "3 eggs",
+      "15 g ginger",
+      "2 spring onions",
+      "1 tbsp cornflour",
+      "2 tbsp water",
+      "1 tsp sesame oil"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 15,
+        "steps": [
+          "Slice ginger and spring onions; beat eggs lightly in a jug with a fork."
+        ]
+      },
+      {
+        "title": "Develop the flavour",
+        "minutes": 15,
+        "steps": [
+          "Simmer stock with ginger for 8 minutes, then remove ginger and season with white pepper."
+        ]
+      },
+      {
+        "title": "Cook the dish",
+        "minutes": 30,
+        "steps": [
+          "Stir cornflour with water and add to gently simmering broth; pour beaten eggs in a thin stream while stirring slowly in one direction."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Turn off heat, add sesame oil and spring onions and serve immediately."
+        ]
+      }
+    ],
+    "tips": [
+      "Taste and adjust seasoning at the end; the balance of salt, acidity and texture matters for this dish."
+    ],
+    "variations": [
+      "Adjust chilli or fresh herbs to taste without changing the main cooking method."
+    ],
+    "storage": "Refrigerate promptly in a sealed container for up to 2 days; serve chilled or reheat as appropriate."
+  },
+  {
+    "title": "Moroccan Briouats with Almonds",
+    "summary": "Crisp triangular pastries filled with fragrant almond paste, cinnamon and orange blossom, dipped in honey.",
+    "cuisine": "moroccan",
+    "course": "dessert",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "medium",
+    "ingredients": [
+      "200 g ground almonds",
+      "80 g icing sugar",
+      "1 tsp cinnamon",
+      "1 tbsp orange blossom water",
+      "8 filo sheets",
+      "60 g melted butter",
+      "120 g honey"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 15,
+        "steps": [
+          "Heat oven to 190°C; mix almonds, sugar, cinnamon and orange blossom water into a firm paste."
+        ]
+      },
+      {
+        "title": "Develop the flavour",
+        "minutes": 15,
+        "steps": [
+          "Cut filo into long strips, brush with butter and place a spoonful of filling at one end."
+        ]
+      },
+      {
+        "title": "Cook the dish",
+        "minutes": 30,
+        "steps": [
+          "Fold each strip into a tight triangle, seal edge with butter and bake 15–18 minutes until golden and crisp."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Warm honey gently and dip pastries briefly; drain on a rack before serving."
+        ]
+      }
+    ],
+    "tips": [
+      "Taste and adjust seasoning at the end; the balance of salt, acidity and texture matters for this dish."
+    ],
+    "variations": [
+      "Adjust chilli or fresh herbs to taste without changing the main cooking method."
+    ],
+    "storage": "Keep covered in the refrigerator for up to 3 days; crisp pastries and fried desserts are best eaten the day they are made."
+  },
+  {
+    "title": "Irish Colcannon",
+    "summary": "Buttery mashed potatoes folded with tender cabbage and spring onions for a comforting Irish classic.",
+    "cuisine": "irish",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "800 g floury potatoes",
+      "250 g savoy cabbage",
+      "4 spring onions",
+      "70 g butter",
+      "100 ml milk"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Peel and quarter potatoes; shred cabbage and slice spring onions."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Boil potatoes in salted water for 18–20 minutes until tender; steam cabbage separately for 5 minutes."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Drain potatoes well and mash with warm milk and butter until fluffy; fold in cabbage and spring onions."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Season generously with pepper and serve with a small well of melted butter."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if appropriate."
+  },
+  {
+    "title": "Japanese Hiyayakko",
+    "summary": "Chilled silken tofu topped with ginger, spring onions and soy for a clean, refreshing starter.",
+    "cuisine": "japanese",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "400 g silken tofu",
+      "2 spring onions",
+      "15 g ginger",
+      "2 tbsp soy sauce",
+      "1 tsp sesame seeds"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Chill tofu thoroughly and drain excess liquid without breaking the block."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Grate ginger finely and slice spring onions as thinly as possible."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Cut tofu into four portions with a wet knife and arrange on cold plates."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Top with ginger, onions and sesame; drizzle soy sauce immediately before eating."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if appropriate."
+  },
+  {
+    "title": "Brazilian Pao de Queijo",
+    "summary": "Chewy, golden cheese rolls made with tapioca starch and Parmesan, crisp outside and stretchy within.",
+    "cuisine": "brazilian",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "250 g tapioca starch",
+      "120 ml milk",
+      "60 ml oil",
+      "1 egg",
+      "120 g grated Parmesan",
+      "1 tsp salt"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Heat oven to 200°C and grease a mini muffin tin."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Heat milk, oil and salt until just steaming; pour over tapioca starch and stir to hydrate."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Cool briefly, beat in egg and cheese to form a sticky dough; divide between muffin cups."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Bake 18–22 minutes until puffed and golden; serve warm for the best texture."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if appropriate."
+  },
+  {
+    "title": "Italian Pasta e Ceci",
+    "summary": "Chickpeas and small pasta simmered in a rosemary-scented tomato broth until thick and comforting.",
+    "cuisine": "italian",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "400 g canned chickpeas",
+      "180 g ditalini",
+      "1 onion",
+      "2 garlic cloves",
+      "200 g passata",
+      "800 ml vegetable stock",
+      "1 rosemary sprig",
+      "2 tbsp olive oil"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Dice onion and garlic; rinse chickpeas and reserve a handful for garnish."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Soften onion in olive oil 8 minutes; add garlic and rosemary and cook 1 minute."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Add passata, chickpeas and stock; simmer 15 minutes, blend a ladle of chickpeas, then add pasta and cook until tender."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Return blended chickpeas to thicken, season and finish with olive oil."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if appropriate."
+  },
+  {
+    "title": "Mexican Nopales Salad",
+    "summary": "Tender cactus paddles tossed with tomatoes, onion, coriander and lime for a tangy fresh salad.",
+    "cuisine": "mexican",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "400 g cleaned nopales",
+      "2 tomatoes",
+      "1 red onion",
+      "1 lime",
+      "2 tbsp olive oil",
+      "1 bunch coriander"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Slice nopales into strips and rinse; chop tomatoes and onion finely."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Simmer nopales in salted water 12–15 minutes until tender; drain and rinse to remove excess slime."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Whisk lime juice with olive oil and salt, then toss with cooled nopales and vegetables."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Chill 15 minutes and scatter coriander over before serving."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if appropriate."
+  },
+  {
+    "title": "French Gougeres",
+    "summary": "Airy choux pastry puffs with nutty Gruyère and a delicate crisp shell.",
+    "cuisine": "french",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "125 ml water",
+      "125 ml milk",
+      "90 g butter",
+      "150 g plain flour",
+      "4 eggs",
+      "120 g Gruyère"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Heat oven to 200°C and line two trays; grate cheese finely."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Bring water, milk and butter to a boil, add flour at once and stir vigorously until dough pulls from pan."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Cool 5 minutes; beat in eggs one by one, then fold in cheese and pipe small mounds."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Bake 20–25 minutes until deeply golden; avoid opening the oven early or they may collapse."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if appropriate."
+  },
+  {
+    "title": "Korean Hobak Jeon",
+    "summary": "Tender courgette rounds coated in a light egg batter and pan-fried until delicately golden.",
+    "cuisine": "korean",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "2 courgettes",
+      "60 g flour",
+      "2 eggs",
+      "2 tbsp oil",
+      "2 tbsp soy sauce",
+      "1 tbsp rice vinegar"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Slice courgettes into 5 mm rounds and sprinkle lightly with salt; pat dry after 10 minutes."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Place flour and beaten eggs in separate shallow dishes."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Dust courgette slices with flour, dip in egg and pan-fry in a lightly oiled skillet 2 minutes each side."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Serve warm with soy sauce and rice vinegar mixed as a dipping sauce."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if appropriate."
+  },
+  {
+    "title": "Vietnamese Che Ba Mau",
+    "summary": "Colourful layers of sweet beans, pandan jelly and coconut milk served over crushed ice.",
+    "cuisine": "vietnamese",
+    "course": "dessert",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "medium",
+    "ingredients": [
+      "200 g cooked red beans",
+      "200 g cooked mung beans",
+      "200 ml coconut milk",
+      "80 g sugar",
+      "150 g pandan jelly",
+      "2 cups crushed ice"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Sweeten cooked beans separately with some sugar and cool completely."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Cut pandan jelly into small strips and chill coconut milk."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Layer mung beans, red beans and pandan jelly into tall glasses."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Add crushed ice, pour over coconut milk and serve with a long spoon."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Store covered and chilled for up to 3 days; crisp baked items are best fresh."
+  },
+  {
+    "title": "Italian Sbrisolona",
+    "summary": "Crumbly almond shortbread from Mantua with a sandy texture and buttery toasted edges.",
+    "cuisine": "italian",
+    "course": "dessert",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "medium",
+    "ingredients": [
+      "200 g plain flour",
+      "150 g polenta",
+      "150 g ground almonds",
+      "150 g sugar",
+      "170 g cold butter",
+      "2 egg yolks",
+      "1 lemon zest"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Heat oven to 170°C and line a 24 cm round tin."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Rub cold butter into flour, polenta, almonds and sugar until coarse crumbs form."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Mix in yolks and zest without kneading smooth; scatter loosely into tin and press only lightly."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Bake 35–40 minutes until golden; cool completely and break into rustic pieces."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Store covered and chilled for up to 3 days; crisp baked items are best fresh."
+  },
+  {
+    "title": "British Bakewell Tart",
+    "summary": "Buttery pastry layered with raspberry jam and almond frangipane, finished with flaked almonds.",
+    "cuisine": "british",
+    "course": "dessert",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "medium",
+    "ingredients": [
+      "1 shortcrust pastry sheet",
+      "100 g butter",
+      "100 g sugar",
+      "2 eggs",
+      "100 g ground almonds",
+      "100 g raspberry jam",
+      "30 g flaked almonds"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Heat oven to 180°C and line a 23 cm tart tin with pastry; chill 15 minutes."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Blind-bake pastry 15 minutes with weights and 5 minutes without; cream butter and sugar and beat in eggs."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Fold ground almonds into butter mixture; spread jam over pastry base and spoon frangipane on top."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Scatter flaked almonds and bake 30–35 minutes until golden and set; cool before slicing."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Store covered and chilled for up to 3 days; crisp baked items are best fresh."
+  },
+  {
+    "title": "Spanish Crema Catalana",
+    "summary": "Silky citrus-and-cinnamon custard topped with a brittle layer of caramelised sugar.",
+    "cuisine": "spanish",
+    "course": "dessert",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "medium",
+    "ingredients": [
+      "500 ml milk",
+      "4 egg yolks",
+      "90 g sugar",
+      "25 g cornflour",
+      "1 cinnamon stick",
+      "1 lemon peel",
+      "1 orange peel"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Warm milk with cinnamon and citrus peels; steep 10 minutes and strain."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Whisk yolks with 60 g sugar and cornflour until smooth."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Slowly whisk warm milk into yolks, return to pan and stir over low heat until thick; divide among ramekins and chill."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Sprinkle remaining sugar thinly and caramelise with a kitchen torch immediately before serving."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Store covered and chilled for up to 3 days; crisp baked items are best fresh."
+  },
+  {
+    "title": "Greek Skordalia",
+    "summary": "A punchy garlic-and-potato dip whipped with olive oil and lemon until creamy and smooth.",
+    "cuisine": "greek",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "500 g potatoes",
+      "5 garlic cloves",
+      "100 ml olive oil",
+      "2 tbsp lemon juice",
+      "1 tsp salt"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Peel and boil potatoes until very tender, then drain and steam dry."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Crush garlic with salt into a paste using a mortar or the flat of a knife."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Mash potatoes until smooth, then slowly beat in garlic, olive oil and lemon juice without overworking."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Adjust seasoning and serve at room temperature with vegetables or grilled fish."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if appropriate."
+  },
+  {
+    "title": "Peruvian Causa Limena",
+    "summary": "Chilled lime-and-chilli mashed potato layers filled with creamy tuna and avocado.",
+    "cuisine": "peruvian",
+    "course": "lunch",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "800 g yellow potatoes",
+      "2 tbsp aji amarillo paste",
+      "2 limes",
+      "200 g canned tuna",
+      "3 tbsp mayonnaise",
+      "1 avocado"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Boil potatoes until tender, drain and mash very smoothly while warm."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Mix potato with lime juice, chilli paste and salt; cool until firm enough to shape."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Mix tuna with mayonnaise and slice avocado; layer half potato, tuna and avocado in a ring mould."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Top with remaining potato, chill 30 minutes and unmould carefully."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if appropriate."
+  },
+  {
+    "title": "Japanese Chawanmushi",
+    "summary": "Delicate savoury egg custard steamed with dashi, mushrooms and prawns until barely set.",
+    "cuisine": "japanese",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "3 eggs",
+      "450 ml dashi",
+      "1 tbsp soy sauce",
+      "4 shiitake mushrooms",
+      "100 g cooked prawns",
+      "1 tsp mirin"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Whisk eggs gently and combine with cooled dashi, soy and mirin; strain through a sieve."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Divide sliced mushrooms and prawns among four heatproof cups."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Pour custard over fillings, cover cups with foil and steam over low heat 15–20 minutes until softly set."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Rest 3 minutes and serve warm, avoiding vigorous boiling that creates bubbles."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if appropriate."
+  },
+  {
+    "title": "Indian Sabudana Khichdi",
+    "summary": "Tender tapioca pearls tossed with cumin, peanuts, potatoes and lime for a lightly spiced breakfast.",
+    "cuisine": "indian",
+    "course": "breakfast",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "200 g sabudana pearls",
+      "1 potato",
+      "50 g roasted peanuts",
+      "1 tsp cumin seeds",
+      "1 green chilli",
+      "2 tbsp ghee",
+      "1 lime"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Rinse tapioca pearls and soak in just enough water for 4–6 hours until softened; drain thoroughly."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Dice potato small and fry in ghee until cooked through; add cumin and chopped chilli."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Fold in pearls and crushed peanuts; cook over medium-low heat 5–7 minutes until pearls turn translucent."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Season with salt and lime juice and serve immediately."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if appropriate."
+  },
+  {
+    "title": "French Socca",
+    "summary": "Thin chickpea-flour flatbread baked until blistered, with crisp edges and a peppery olive-oil finish.",
+    "cuisine": "french",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "200 g chickpea flour",
+      "300 ml water",
+      "3 tbsp olive oil",
+      "1 tsp salt",
+      "1 tsp black pepper"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Whisk chickpea flour, water, salt and 1 tbsp oil until smooth; rest 30 minutes."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Heat oven grill to high and place a cast-iron pan inside until very hot."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Carefully oil hot pan, pour in a thin layer of batter and grill 5–8 minutes until blistered and golden."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Scatter black pepper over, slice into wedges and eat while hot."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if appropriate."
+  },
+  {
+    "title": "Portuguese Bifana",
+    "summary": "Thin pork steaks simmered in garlicky white-wine sauce and tucked into crusty bread rolls.",
+    "cuisine": "portuguese",
+    "course": "lunch",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "500 g pork loin",
+      "4 bread rolls",
+      "150 ml white wine",
+      "4 garlic cloves",
+      "1 tsp paprika",
+      "2 bay leaves",
+      "2 tbsp olive oil"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Slice pork very thinly and lightly pound to even thickness; mince garlic."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Marinate pork with wine, garlic, paprika and bay leaves for 30 minutes in the fridge."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Sear pork quickly in hot oil, add marinade and simmer 5–7 minutes until cooked through."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Stuff warm bread rolls with pork and spoon over a little reduced pan sauce."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if appropriate."
+  },
+  {
+    "title": "Moroccan Baghrir",
+    "summary": "Soft semolina pancakes dotted with tiny holes that soak up warm honey and melted butter.",
+    "cuisine": "moroccan",
+    "course": "breakfast",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "200 g fine semolina",
+      "80 g plain flour",
+      "7 g instant yeast",
+      "1 tsp baking powder",
+      "450 ml warm water",
+      "50 g butter",
+      "80 g honey"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Blend semolina, flour, yeast, baking powder and water into a smooth thin batter; rest 30 minutes."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Heat a non-stick pan over medium heat without greasing heavily."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Pour a small ladle of batter and cook on one side only until bubbles form and surface dries, about 2 minutes."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Stack pancakes without pressing and drizzle with melted butter and honey."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if appropriate."
+  },
+  {
+    "title": "Chinese Sesame Balls",
+    "summary": "Crisp golden glutinous-rice balls coated in sesame seeds with a sweet red-bean centre.",
+    "cuisine": "chinese",
+    "course": "dessert",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "medium",
+    "ingredients": [
+      "250 g glutinous rice flour",
+      "150 ml warm water",
+      "70 g sugar",
+      "160 g red bean paste",
+      "100 g sesame seeds",
+      "600 ml frying oil"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Dissolve sugar in warm water and mix into glutinous rice flour to make pliable dough."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Divide dough into balls, flatten, enclose a teaspoon of red bean paste and seal carefully."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Roll in sesame seeds; fry at 150–160°C for 6–8 minutes, turning gently until puffed and golden."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Drain on a rack and allow filling to cool slightly before eating."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Store covered and chilled for up to 3 days; crisp baked items are best fresh."
+  },
+  {
+    "title": "Italian Frittata di Zucchine",
+    "summary": "A tender courgette-and-Parmesan omelette with golden edges and fresh basil.",
+    "cuisine": "italian",
+    "course": "breakfast",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "6 eggs",
+      "2 courgettes",
+      "1 onion",
+      "60 g Parmesan",
+      "2 tbsp olive oil",
+      "1 bunch basil"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Thinly slice courgettes and onion; beat eggs with grated Parmesan and pepper."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Cook onion in oil until soft, add courgettes and sauté 8 minutes until moisture evaporates."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Pour eggs over vegetables, reduce heat and cook 5 minutes until edges set; finish under grill 2–3 minutes."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Rest briefly, scatter torn basil over and slice into wedges."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if appropriate."
+  },
+  {
+    "title": "German Rote Grutze",
+    "summary": "Glossy summer berries gently thickened into a ruby fruit pudding, served with cold vanilla cream.",
+    "cuisine": "german",
+    "course": "dessert",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "medium",
+    "ingredients": [
+      "500 g mixed berries",
+      "250 ml cherry juice",
+      "70 g sugar",
+      "30 g cornflour",
+      "150 ml pouring cream"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Wash berries and reserve a handful of delicate fruit for finishing."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Warm cherry juice and sugar, add firmer berries and simmer 3 minutes."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Whisk cornflour with cold water, stir into hot fruit and cook 1–2 minutes until glossy; fold in remaining berries."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Chill until softly set and serve with pouring cream."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Store covered and chilled for up to 3 days; crisp baked items are best fresh."
+  },
+  {
+    "title": "Greek Fasolakia Lathera",
+    "summary": "Green beans slowly braised with tomatoes, potatoes and olive oil until meltingly tender.",
+    "cuisine": "greek",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "500 g green beans",
+      "300 g potatoes",
+      "400 g tomatoes",
+      "1 onion",
+      "3 garlic cloves",
+      "80 ml olive oil",
+      "2 tbsp parsley"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Trim beans, cut potatoes into chunks and grate tomatoes."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Soften onion and garlic in olive oil 8 minutes, then add tomatoes and simmer until fragrant."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Add potatoes, beans and 200 ml water; cover and braise gently 35–40 minutes until tender."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Uncover to reduce sauce, add parsley and serve warm with feta if desired."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if appropriate."
+  },
+  {
+    "title": "Vietnamese Banh Xeo",
+    "summary": "Crisp turmeric rice crêpes filled with prawns, pork and bean sprouts, wrapped in fresh herbs.",
+    "cuisine": "vietnamese",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "200 g rice flour",
+      "1 tsp turmeric",
+      "300 ml coconut milk",
+      "200 g prawns",
+      "150 g pork strips",
+      "150 g bean sprouts",
+      "1 bunch mint"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Whisk rice flour, turmeric and coconut milk with 150 ml water; rest batter 20 minutes."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Cook pork strips in a hot non-stick pan until browned; add prawns and cook until opaque."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Pour a thin layer of batter around fillings, scatter sprouts on one half and cover 2 minutes; uncover until edges crisp."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Fold crêpe and serve with mint, lettuce and a lime-fish-sauce dip."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if appropriate."
+  },
+  {
+    "title": "American Devilled Eggs",
+    "summary": "Creamy mustard-and-mayo yolk filling piped into tender egg whites with a dusting of paprika.",
+    "cuisine": "american",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "6 eggs",
+      "3 tbsp mayonnaise",
+      "1 tsp Dijon mustard",
+      "1 tsp white vinegar",
+      "1 tsp paprika",
+      "1 tbsp chives"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Boil eggs 10 minutes, cool in ice water and peel carefully."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Halve eggs lengthways and scoop yolks into a bowl without tearing whites."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Mash yolks with mayonnaise, mustard and vinegar until smooth; season with salt and pepper."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Spoon or pipe filling into whites and finish with paprika and chives; keep chilled until serving."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if appropriate."
+  },
+  {
+    "title": "Indian Bhindi Masala",
+    "summary": "Tender okra stir-fried with onions, tomatoes and aromatic spices until lightly crisp and savoury.",
+    "cuisine": "indian",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "500 g okra",
+      "1 onion",
+      "2 tomatoes",
+      "2 garlic cloves",
+      "1 tsp cumin",
+      "1 tsp coriander",
+      "1 tsp turmeric",
+      "3 tbsp oil"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Wash okra and dry completely before slicing to reduce sliminess."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Fry okra in hot oil 8–10 minutes until edges brown; remove from pan."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Cook onion, garlic and spices, add tomatoes and reduce to a thick masala."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Return okra and toss gently 3 minutes; season and serve with roti."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if appropriate."
+  },
+  {
+    "title": "French Tarte Flambée",
+    "summary": "A paper-thin Alsatian flatbread topped with crème fraîche, onions and smoky bacon.",
+    "cuisine": "french",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "250 g plain flour",
+      "125 ml water",
+      "2 tbsp olive oil",
+      "150 g crème fraîche",
+      "1 onion",
+      "150 g bacon lardons"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Heat oven to 250°C with a baking tray inside; mix flour, water and oil into smooth dough."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Roll dough very thinly on baking paper and spread with crème fraîche, leaving a small border."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Scatter thin onion slices and bacon lardons evenly over the top."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Slide onto hot tray and bake 10–12 minutes until edges crisp and bacon is cooked; slice and serve hot."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if appropriate."
+  },
+  {
+    "title": "Italian Ricotta Gnocchi",
+    "summary": "Pillowy ricotta dumplings tossed in brown butter and sage for a delicate, comforting pasta dish.",
+    "cuisine": "italian",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "400 g well-drained ricotta",
+      "100 g flour",
+      "1 egg",
+      "60 g Parmesan",
+      "70 g butter",
+      "10 sage leaves"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Drain ricotta thoroughly, then mix with egg, Parmesan and flour just until combined."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Dust work surface lightly, roll mixture into ropes and cut into small pillows without overworking."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Poach gnocchi in gently simmering salted water until they float, about 2–3 minutes."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Brown butter with sage in a pan, add drained gnocchi and toss gently before serving."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if appropriate."
+  },
+  {
+    "title": "Italian Carciofi alla Romana",
+    "summary": "Tender artichokes braised in olive oil, garlic, mint and lemon in the Roman style.",
+    "cuisine": "italian",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "4 artichokes",
+      "2 lemons",
+      "3 garlic cloves",
+      "3 tbsp olive oil",
+      "2 tbsp parsley",
+      "1 tbsp mint",
+      "200 ml water"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Trim artichokes to tender hearts and stems, rubbing cut surfaces with lemon to prevent browning."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Chop garlic, parsley and mint and press mixture between artichoke leaves."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Stand artichokes stem-up in a small saucepan with olive oil and water; cover and braise gently 30–40 minutes until a knife slips in easily."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Rest in their cooking juices and serve warm with a squeeze of lemon."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if appropriate."
+  },
+  {
+    "title": "French Ile Flottante",
+    "summary": "Cloudlike poached meringues floating on chilled vanilla custard with ribbons of amber caramel.",
+    "cuisine": "french",
+    "course": "dessert",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "medium",
+    "ingredients": [
+      "4 eggs",
+      "500 ml milk",
+      "120 g sugar",
+      "1 vanilla pod",
+      "2 tbsp water"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Separate eggs; warm milk with vanilla and whisk yolks with 60 g sugar."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Temper yolks with warm milk, then stir over low heat until custard coats a spoon; strain and chill."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Whisk whites with 40 g sugar to firm peaks; poach spoonfuls in barely simmering water for 1 minute each side."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Make light caramel from remaining sugar and water; serve meringues over cold custard with caramel drizzled on top."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Store covered and chilled for up to 3 days; crisp baked items are best fresh."
+  },
+  {
+    "title": "Lebanese Shish Barak",
+    "summary": "Tiny lamb-filled dumplings gently simmered in warm garlicky yoghurt sauce with dried mint.",
+    "cuisine": "lebanese",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "250 g plain flour",
+      "130 ml water",
+      "300 g lamb mince",
+      "1 onion",
+      "600 g plain yoghurt",
+      "1 egg",
+      "2 garlic cloves",
+      "1 tsp dried mint"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 15,
+        "steps": [
+          "Mix flour and water into a smooth dough and rest 20 minutes; finely chop onion."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 15,
+        "steps": [
+          "Brown lamb and onion together until cooked and dry; cool, then roll dough thin and cut small circles."
+        ]
+      },
+      {
+        "title": "Cook",
+        "minutes": 30,
+        "steps": [
+          "Fill and seal dumplings; whisk yoghurt with egg and warm gently, stirring continuously; add dumplings and simmer 12–15 minutes until dough cooks."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Fry garlic and mint briefly in oil and swirl through yoghurt sauce before serving."
+        ]
+      }
+    ],
+    "tips": [
+      "Follow the visual and texture cues in the method; pan heat and ingredient size can change cooking times."
+    ],
+    "variations": [
+      "Adjust the herbs, chilli or serving accompaniment to taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if appropriate."
+  },
+  {
+    "title": "Tunisian Lablabi",
+    "summary": "Warm chickpeas in a cumin-garlic broth poured over torn bread, finished with lemon and harissa.",
+    "cuisine": "tunisian",
+    "course": "lunch",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 30,
+    "difficulty": "easy",
+    "ingredients": [
+      "800 g canned chickpeas",
+      "800 ml vegetable stock",
+      "3 garlic cloves",
+      "1 tsp ground cumin",
+      "2 tbsp harissa",
+      "1 lemon",
+      "4 slices crusty bread",
+      "2 tbsp olive oil"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 10,
+        "steps": [
+          "Drain chickpeas and reserve a little liquid; tear bread into bite-sized pieces and place in deep bowls."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 8,
+        "steps": [
+          "Warm olive oil with crushed garlic and cumin for 30 seconds, then add chickpeas and stock."
+        ]
+      },
+      {
+        "title": "Cook gently",
+        "minutes": 20,
+        "steps": [
+          "Simmer 15 minutes, crushing a few chickpeas to give the broth body; season with salt and lemon juice."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Ladle hot chickpeas and broth over bread, add a little harissa to each bowl and serve immediately."
+        ]
+      }
+    ],
+    "tips": [
+      "Use a gentle simmer to preserve the texture of the main ingredients."
+    ],
+    "variations": [
+      "Adjust fresh herbs and lemon to suit your taste."
+    ],
+    "storage": "Cool promptly and refrigerate in a sealed container for up to 2 days; reheat thoroughly."
+  },
+  {
+    "title": "Finnish Lohikeitto",
+    "summary": "Tender salmon, potatoes and leeks in a delicate creamy dill broth with a fresh lemon finish.",
+    "cuisine": "finnish",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 30,
+    "difficulty": "easy",
+    "ingredients": [
+      "500 g skinless salmon fillet",
+      "500 g waxy potatoes",
+      "2 leeks",
+      "1 carrot",
+      "800 ml fish stock",
+      "200 ml cream",
+      "1 bunch dill",
+      "1 lemon",
+      "30 g butter"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 10,
+        "steps": [
+          "Cut salmon into 3 cm cubes; dice potatoes and carrot and wash sliced leeks thoroughly."
+        ]
+      },
+      {
+        "title": "Build flavour",
+        "minutes": 8,
+        "steps": [
+          "Melt butter in a pot and soften leeks and carrot for 6 minutes without browning."
+        ]
+      },
+      {
+        "title": "Cook gently",
+        "minutes": 20,
+        "steps": [
+          "Add potatoes and stock and simmer 12–15 minutes until potatoes are tender; add salmon and cook gently 4–5 minutes until opaque."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Stir in cream and chopped dill, warm without boiling, then season with lemon juice and black pepper."
+        ]
+      }
+    ],
+    "tips": [
+      "Use a gentle simmer to preserve the texture of the main ingredients."
+    ],
+    "variations": [
+      "Adjust fresh herbs and lemon to suit your taste."
+    ],
+    "storage": "Cool promptly and refrigerate in a sealed container for up to 2 days; reheat thoroughly."
+  }
+]

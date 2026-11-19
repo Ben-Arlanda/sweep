@@ -20,6 +20,7 @@ import asyncio
 import json
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
 
 from app.config import settings
 from app.data.recipes import SeedRecipe, load_seed_recipes
@@ -38,12 +39,20 @@ class Case:
     note: str
 
 
+def as_seed(row: dict[str, Any]) -> SeedRecipe:
+    """The cases predate Recipe Stages: their method is read as one stage."""
+    minutes = row.pop("minutes")
+    stage = {"title": "Method", "minutes": minutes, "steps": row["method"]}
+    fields = {"prep_minutes": 0, "cook_minutes": minutes, "difficulty": "easy", "stages": [stage]}
+    return SeedRecipe.model_validate(row | fields)
+
+
 def load_cases(path: Path = DATASET) -> list[Case]:
     cases = []
     for line in path.read_text().splitlines():
         if line.strip():
             row = json.loads(line)
-            cases.append(Case(SeedRecipe(**row["recipe"]), row["planted"], row["note"]))
+            cases.append(Case(as_seed(row["recipe"]), row["planted"], row["note"]))
     return cases
 
 

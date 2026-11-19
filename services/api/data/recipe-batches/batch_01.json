@@ -1,0 +1,867 @@
+[
+  {
+    "title": "Spaghetti Bolognese",
+    "summary": "Slow-simmered beef and pancetta ragù enriched with white wine, tomatoes and milk, served with pasta and Parmesan.",
+    "cuisine": "italian",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 165,
+    "difficulty": "easy",
+    "ingredients": [
+      "400 g beef mince (15–20% fat)",
+      "150 g pancetta, finely diced",
+      "1 onion, finely diced",
+      "1 carrot, finely diced",
+      "1 celery stalk, finely diced",
+      "150 ml dry white wine",
+      "200 g passata",
+      "150 ml whole milk",
+      "150–250 ml beef stock or water",
+      "2 tbsp olive oil",
+      "400 g spaghetti or tagliatelle",
+      "Salt and black pepper",
+      "60 g Parmigiano Reggiano, grated"
+    ],
+    "stages": [
+      {
+        "title": "Soften the soffritto",
+        "minutes": 15,
+        "steps": [
+          "Heat olive oil in a heavy-based pot over medium-low heat. Add pancetta and cook for 4–5 minutes until its fat renders.",
+          "Add onion, carrot and celery and cook gently for 8–10 minutes, stirring, until soft but not browned."
+        ]
+      },
+      {
+        "title": "Brown the beef",
+        "minutes": 12,
+        "steps": [
+          "Increase heat to medium, add beef and break it into small pieces with a wooden spoon.",
+          "Cook until the meat loses its pink colour and the released liquid has evaporated; allow a little browning for depth."
+        ]
+      },
+      {
+        "title": "Reduce the wine",
+        "minutes": 8,
+        "steps": [
+          "Pour in white wine and scrape any browned bits from the base of the pan.",
+          "Simmer until the wine has almost completely evaporated so the sauce tastes rounded rather than alcoholic."
+        ]
+      },
+      {
+        "title": "Slow-simmer the ragù",
+        "minutes": 100,
+        "steps": [
+          "Stir in passata and 150 ml stock or water. Season lightly and bring to a very gentle simmer.",
+          "Partially cover and cook for about 100 minutes, stirring occasionally; add a splash of water whenever the sauce starts sticking or drying out."
+        ]
+      },
+      {
+        "title": "Finish with milk",
+        "minutes": 30,
+        "steps": [
+          "Stir in milk and continue simmering gently for 25–30 minutes until the meat is tender and sauce thick.",
+          "Taste and adjust salt and pepper. The finished ragù should be meaty and moist, not watery."
+        ]
+      },
+      {
+        "title": "Cook pasta and serve",
+        "minutes": 10,
+        "steps": [
+          "Boil pasta in well-salted water until al dente; reserve a cup of pasta water before draining.",
+          "Toss pasta with ragù and a splash of pasta water, then serve with grated Parmigiano Reggiano."
+        ]
+      }
+    ],
+    "tips": [
+      "Use beef with some fat; extra-lean mince can turn dry during long cooking.",
+      "Keep the simmer very gentle: rapid boiling toughens the meat and dries the sauce.",
+      "Tagliatelle is the traditional pairing in Bologna."
+    ],
+    "variations": [
+      "Replace 100 g beef with 100 g pork mince for a richer ragù.",
+      "Use tagliatelle instead of spaghetti for a more traditional presentation."
+    ],
+    "storage": "Cool promptly. Refrigerate ragù up to 3–4 days or freeze up to 3 months. Reheat until steaming hot; cook pasta fresh."
+  },
+  {
+    "title": "Chicken Tikka Masala",
+    "summary": "Tender chicken in a creamy tomato curry fragrant with ginger, garlic, garam masala and warming spices.",
+    "cuisine": "indian",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 25,
+    "cook_minutes": 45,
+    "difficulty": "medium",
+    "ingredients": [
+      "650 g boneless chicken thighs, cut into 3 cm pieces",
+      "150 g plain yoghurt",
+      "2 tbsp lemon juice",
+      "3 garlic cloves, minced",
+      "20 g ginger, grated",
+      "2 tsp garam masala",
+      "2 tsp ground cumin",
+      "2 tsp paprika",
+      "1 tsp turmeric",
+      "1 tsp chilli powder, optional",
+      "1 onion, finely chopped",
+      "400 g crushed tomatoes",
+      "150 ml thickened cream",
+      "2 tbsp neutral oil",
+      "1 tsp salt, plus more to taste",
+      "Fresh coriander and cooked basmati rice, to serve"
+    ],
+    "stages": [
+      {
+        "title": "Marinate the chicken",
+        "minutes": 10,
+        "steps": [
+          "Mix yoghurt, lemon juice, half the garlic and ginger, half the garam masala, 1 tsp cumin, paprika and salt.",
+          "Coat chicken thoroughly and refrigerate for at least 30 minutes if possible; keep chilled until cooking."
+        ]
+      },
+      {
+        "title": "Sear the chicken",
+        "minutes": 12,
+        "steps": [
+          "Heat 1 tbsp oil in a wide heavy pan over medium-high heat. Lift chicken from marinade, letting excess drip off.",
+          "Sear in batches for 2–3 minutes per side until lightly charred; the chicken will finish cooking in the sauce."
+        ]
+      },
+      {
+        "title": "Build the spiced base",
+        "minutes": 10,
+        "steps": [
+          "Lower heat to medium and add remaining oil and onion. Cook 6–8 minutes until soft and golden.",
+          "Stir in remaining garlic, ginger, garam masala, cumin, turmeric and chilli powder; cook 30 seconds until fragrant without burning."
+        ]
+      },
+      {
+        "title": "Simmer the tomato sauce",
+        "minutes": 12,
+        "steps": [
+          "Add crushed tomatoes and 100 ml water. Scrape up browned bits and simmer 10–12 minutes until slightly thickened.",
+          "For a smooth restaurant-style sauce, carefully blend the sauce before returning it to the pan."
+        ]
+      },
+      {
+        "title": "Finish the chicken",
+        "minutes": 12,
+        "steps": [
+          "Stir in cream, add seared chicken and any juices, and simmer gently for 8–12 minutes.",
+          "Check the thickest piece reaches 75°C, season to taste, and serve with rice and coriander."
+        ]
+      }
+    ],
+    "tips": [
+      "Thigh meat stays juicier than breast during simmering.",
+      "Avoid boiling vigorously after adding cream to prevent splitting.",
+      "Cook chicken in batches so it sears rather than steams."
+    ],
+    "variations": [
+      "Use coconut cream instead of dairy cream for a different flavour (the yoghurt marinade still contains dairy).",
+      "Add 150 g baby spinach during the final 2 minutes."
+    ],
+    "storage": "Cool promptly and refrigerate up to 3 days; freeze sauce and chicken up to 2 months. Reheat thoroughly."
+  },
+  {
+    "title": "Thai Green Chicken Curry",
+    "summary": "Chicken and vegetables simmered in fragrant green curry paste, coconut milk, Thai basil and lime.",
+    "cuisine": "thai",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 25,
+    "difficulty": "easy",
+    "ingredients": [
+      "500 g boneless chicken thighs, sliced",
+      "3 tbsp Thai green curry paste",
+      "400 ml coconut milk",
+      "150 ml chicken stock",
+      "1 small aubergine, diced",
+      "150 g green beans, trimmed",
+      "1 red capsicum, sliced",
+      "2 tbsp fish sauce",
+      "1 tsp palm sugar or brown sugar",
+      "4 makrut lime leaves, torn",
+      "1 tbsp neutral oil",
+      "1 handful Thai basil leaves",
+      "1 lime, cut into wedges",
+      "Steamed jasmine rice, to serve"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the vegetables",
+        "minutes": 8,
+        "steps": [
+          "Slice chicken into even bite-sized pieces and dice aubergine into 2 cm cubes.",
+          "Trim green beans and slice capsicum so the vegetables cook at similar speeds."
+        ]
+      },
+      {
+        "title": "Fry the curry paste",
+        "minutes": 5,
+        "steps": [
+          "Heat oil and 3 tbsp of the thick coconut cream from the top of the tin in a saucepan over medium heat.",
+          "Add green curry paste and stir-fry 2–3 minutes until aromatic; add a splash of coconut milk if it starts catching."
+        ]
+      },
+      {
+        "title": "Simmer chicken and aubergine",
+        "minutes": 12,
+        "steps": [
+          "Pour in remaining coconut milk and stock, stirring until smooth. Add lime leaves, chicken and aubergine.",
+          "Bring to a gentle simmer and cook 10–12 minutes, stirring occasionally, until chicken is nearly cooked and aubergine softens."
+        ]
+      },
+      {
+        "title": "Add vegetables and balance",
+        "minutes": 8,
+        "steps": [
+          "Add green beans and capsicum; simmer 4–6 minutes until just tender and chicken reaches 75°C.",
+          "Season with fish sauce and sugar, adjusting until savoury, lightly sweet and fragrant."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 2,
+        "steps": [
+          "Turn off heat and fold in Thai basil so its aroma stays fresh.",
+          "Serve immediately over jasmine rice with lime wedges for squeezing."
+        ]
+      }
+    ],
+    "tips": [
+      "Taste the curry paste before adding extra chilli; brands vary greatly in heat.",
+      "Keep coconut milk at a gentle simmer to maintain a smooth sauce."
+    ],
+    "variations": [
+      "Use firm tofu and vegetable stock; replace fish sauce with soy sauce for a vegetarian version.",
+      "Swap aubergine for courgette, adding it later so it stays tender-crisp."
+    ],
+    "storage": "Refrigerate up to 3 days; freeze up to 2 months. Reheat gently until piping hot; store rice separately and chill promptly."
+  },
+  {
+    "title": "Classic Beef Lasagne",
+    "summary": "Layers of tender beef ragù, silky béchamel and pasta baked beneath a golden, bubbling cheese crust.",
+    "cuisine": "italian",
+    "course": "main",
+    "servings": 6,
+    "prep_minutes": 30,
+    "cook_minutes": 95,
+    "difficulty": "medium",
+    "ingredients": [
+      "500 g beef mince",
+      "100 g pancetta, diced",
+      "1 onion, finely chopped",
+      "1 carrot, finely chopped",
+      "1 celery stalk, finely chopped",
+      "2 tbsp olive oil",
+      "2 tbsp tomato paste",
+      "400 g crushed tomatoes",
+      "150 ml red wine",
+      "250 ml beef stock",
+      "9–12 dried lasagne sheets",
+      "60 g butter",
+      "60 g plain flour",
+      "700 ml whole milk",
+      "1 pinch nutmeg",
+      "120 g Parmesan, grated",
+      "150 g mozzarella, grated",
+      "Salt and pepper"
+    ],
+    "stages": [
+      {
+        "title": "Cook the ragù base",
+        "minutes": 15,
+        "steps": [
+          "Heat olive oil in a deep pan. Cook pancetta for 3 minutes, then add onion, carrot and celery and soften for 8 minutes.",
+          "Add mince and brown thoroughly, breaking up lumps; stir in tomato paste and cook 1 minute."
+        ]
+      },
+      {
+        "title": "Simmer the meat sauce",
+        "minutes": 45,
+        "steps": [
+          "Pour in wine and reduce by half, scraping up any browned bits. Add tomatoes and stock.",
+          "Simmer uncovered for 40–45 minutes until thick but spoonable, stirring occasionally; season with salt and pepper."
+        ]
+      },
+      {
+        "title": "Make the béchamel",
+        "minutes": 12,
+        "steps": [
+          "Melt butter in a saucepan over medium-low heat; whisk in flour and cook for 1–2 minutes without browning.",
+          "Gradually whisk in milk and simmer 5–7 minutes until smooth and thick enough to coat a spoon. Add nutmeg, salt and pepper."
+        ]
+      },
+      {
+        "title": "Layer the lasagne",
+        "minutes": 10,
+        "steps": [
+          "Heat oven to 190°C conventional (170°C fan). Spread a thin layer of ragù in a 23 x 33 cm baking dish.",
+          "Layer pasta sheets, ragù, béchamel and a little Parmesan; repeat, finishing with béchamel, Parmesan and mozzarella. Check packet instructions for dried sheets."
+        ]
+      },
+      {
+        "title": "Bake and rest",
+        "minutes": 45,
+        "steps": [
+          "Cover loosely with foil and bake 25 minutes; remove foil and bake another 15–20 minutes until bubbling and golden.",
+          "Rest for 15 minutes before slicing so the layers hold together."
+        ]
+      }
+    ],
+    "tips": [
+      "Keep ragù fairly thick to avoid a watery lasagne.",
+      "Resting after baking makes serving much neater."
+    ],
+    "variations": [
+      "Add 150 g sautéed mushrooms to the ragù.",
+      "Replace part of the beef with pork mince for a fuller flavour."
+    ],
+    "storage": "Refrigerate up to 3 days or freeze individual portions up to 3 months. Reheat until steaming hot throughout."
+  },
+  {
+    "title": "Shakshuka",
+    "summary": "Eggs gently poached in a smoky tomato and pepper sauce with cumin, paprika and fresh herbs.",
+    "cuisine": "north african",
+    "course": "breakfast",
+    "servings": 4,
+    "prep_minutes": 15,
+    "cook_minutes": 25,
+    "difficulty": "easy",
+    "ingredients": [
+      "6 large eggs",
+      "1 onion, diced",
+      "1 red capsicum, diced",
+      "2 garlic cloves, minced",
+      "800 g canned chopped tomatoes",
+      "2 tbsp olive oil",
+      "2 tsp ground cumin",
+      "1 tsp smoked paprika",
+      "1/4 tsp chilli flakes",
+      "1 tsp salt, to taste",
+      "Fresh parsley or coriander",
+      "Crusty bread, to serve"
+    ],
+    "stages": [
+      {
+        "title": "Soften the vegetables",
+        "minutes": 10,
+        "steps": [
+          "Heat olive oil in a wide lidded frying pan over medium heat. Add onion and capsicum.",
+          "Cook 8–10 minutes until the vegetables soften and the onion becomes translucent."
+        ]
+      },
+      {
+        "title": "Toast the spices",
+        "minutes": 2,
+        "steps": [
+          "Add garlic, cumin, smoked paprika and chilli flakes.",
+          "Stir for 30–60 seconds until fragrant, taking care not to scorch the garlic."
+        ]
+      },
+      {
+        "title": "Reduce the tomato sauce",
+        "minutes": 12,
+        "steps": [
+          "Add chopped tomatoes and season with salt and pepper.",
+          "Simmer uncovered for 10–12 minutes until the sauce thickens enough to hold shallow wells. Taste and adjust seasoning."
+        ]
+      },
+      {
+        "title": "Poach the eggs",
+        "minutes": 8,
+        "steps": [
+          "Make six small wells in the sauce and crack an egg into each.",
+          "Cover and cook over low heat for 5–8 minutes until whites are set and yolks are cooked to your preference."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 2,
+        "steps": [
+          "Scatter with chopped parsley or coriander.",
+          "Bring the pan to the table and serve with bread for scooping up the sauce."
+        ]
+      }
+    ],
+    "tips": [
+      "Use a wide pan so the eggs cook evenly.",
+      "For firmer yolks, leave the lid on for an extra minute or two."
+    ],
+    "variations": [
+      "Add crumbled feta just before serving.",
+      "Stir in cooked chickpeas before adding eggs for a heartier meal."
+    ],
+    "storage": "Best served immediately. Refrigerate leftover tomato base up to 3 days; add fresh eggs when reheating."
+  },
+  {
+    "title": "Fluffy Buttermilk Pancakes",
+    "summary": "Tall, tender buttermilk pancakes with lightly crisp edges, perfect with maple syrup and fresh fruit.",
+    "cuisine": "american",
+    "course": "breakfast",
+    "servings": 4,
+    "prep_minutes": 15,
+    "cook_minutes": 20,
+    "difficulty": "easy",
+    "ingredients": [
+      "250 g plain flour",
+      "2 tbsp caster sugar",
+      "2 tsp baking powder",
+      "1/2 tsp bicarbonate of soda",
+      "1/2 tsp salt",
+      "2 large eggs",
+      "350 ml buttermilk",
+      "50 g unsalted butter, melted",
+      "1 tsp vanilla extract",
+      "Butter or neutral oil for frying",
+      "Maple syrup and berries, to serve"
+    ],
+    "stages": [
+      {
+        "title": "Mix the dry ingredients",
+        "minutes": 3,
+        "steps": [
+          "Whisk flour, sugar, baking powder, bicarbonate of soda and salt together in a large bowl.",
+          "Break up any lumps so the raising agents distribute evenly."
+        ]
+      },
+      {
+        "title": "Mix the wet ingredients",
+        "minutes": 3,
+        "steps": [
+          "In a jug, whisk eggs, buttermilk, melted cooled butter and vanilla.",
+          "Make a well in the dry ingredients and pour in the wet mixture."
+        ]
+      },
+      {
+        "title": "Combine gently",
+        "minutes": 4,
+        "steps": [
+          "Fold with a spatula just until no large pockets of dry flour remain. Small lumps are fine.",
+          "Let batter rest for 5 minutes while heating the pan; overmixing makes pancakes tough."
+        ]
+      },
+      {
+        "title": "Cook in batches",
+        "minutes": 15,
+        "steps": [
+          "Heat a non-stick pan over medium-low heat and lightly grease. Spoon in about 60 ml batter per pancake.",
+          "Cook 2–3 minutes until bubbles form and edges look set; flip once and cook another 1–2 minutes until golden and cooked through."
+        ]
+      },
+      {
+        "title": "Serve warm",
+        "minutes": 2,
+        "steps": [
+          "Keep cooked pancakes warm on a rack in a low oven while finishing the batch.",
+          "Serve with maple syrup, berries or yoghurt."
+        ]
+      }
+    ],
+    "tips": [
+      "Use medium-low heat so the centres cook before the outsides brown.",
+      "Avoid pressing down after flipping; it deflates the pancakes."
+    ],
+    "variations": [
+      "Fold 100 g blueberries into the batter.",
+      "Add 1 tsp cinnamon to the dry mix for a warming flavour."
+    ],
+    "storage": "Refrigerate cooked pancakes up to 3 days or freeze with baking paper between them up to 2 months. Reheat in toaster or pan."
+  },
+  {
+    "title": "Greek Salad",
+    "summary": "Crisp cucumber, juicy tomatoes, olives and feta tossed with oregano and a bright olive oil dressing.",
+    "cuisine": "greek",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 15,
+    "cook_minutes": 0,
+    "difficulty": "easy",
+    "ingredients": [
+      "4 ripe tomatoes, cut into wedges",
+      "1 cucumber, thickly sliced",
+      "1 small red onion, thinly sliced",
+      "1 green capsicum, sliced",
+      "150 g feta cheese",
+      "80 g Kalamata olives",
+      "3 tbsp extra virgin olive oil",
+      "1 tbsp red wine vinegar",
+      "1 tsp dried oregano",
+      "Salt and freshly ground black pepper"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the vegetables",
+        "minutes": 8,
+        "steps": [
+          "Cut tomatoes into generous wedges and slice cucumber into thick half-moons.",
+          "Thinly slice red onion and capsicum; soak onion in cold water for 5 minutes if you prefer a milder bite, then drain."
+        ]
+      },
+      {
+        "title": "Make the dressing",
+        "minutes": 3,
+        "steps": [
+          "Whisk olive oil, red wine vinegar, oregano and a pinch of pepper.",
+          "Taste and add a little salt only if needed; feta and olives already provide plenty."
+        ]
+      },
+      {
+        "title": "Assemble and serve",
+        "minutes": 4,
+        "steps": [
+          "Arrange vegetables and olives in a broad serving bowl and gently toss with dressing.",
+          "Place feta in large pieces on top, scatter a little extra oregano and serve immediately."
+        ]
+      }
+    ],
+    "tips": [
+      "Use ripe room-temperature tomatoes for the best flavour.",
+      "Keep feta in larger pieces rather than crumbling it finely."
+    ],
+    "variations": [
+      "Add a handful of capers for extra brininess.",
+      "Serve with warm pita and grilled chicken to make a fuller meal."
+    ],
+    "storage": "Best fresh. Refrigerate undressed chopped vegetables up to 2 days; add feta and dressing just before serving."
+  },
+  {
+    "title": "Garlic Butter Roast Potatoes",
+    "summary": "Golden roast potatoes with fluffy centres, crisp edges, garlic, butter and fragrant herbs.",
+    "cuisine": "british",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 15,
+    "cook_minutes": 55,
+    "difficulty": "easy",
+    "ingredients": [
+      "1 kg floury potatoes (such as Maris Piper or Sebago)",
+      "3 tbsp olive oil",
+      "40 g butter",
+      "5 garlic cloves, lightly crushed",
+      "2 rosemary sprigs",
+      "1 tsp flaky salt",
+      "Freshly ground black pepper"
+    ],
+    "stages": [
+      {
+        "title": "Parboil the potatoes",
+        "minutes": 15,
+        "steps": [
+          "Heat oven to 220°C conventional (200°C fan). Peel potatoes if desired and cut into even 4–5 cm pieces.",
+          "Boil in well-salted water for 8–10 minutes until the edges are just beginning to soften, then drain thoroughly."
+        ]
+      },
+      {
+        "title": "Rough up the edges",
+        "minutes": 5,
+        "steps": [
+          "Return drained potatoes to the empty hot pot and shake gently to fluff up their surfaces.",
+          "Leave uncovered for 3–5 minutes so steam escapes; dry surfaces roast more crisply."
+        ]
+      },
+      {
+        "title": "Roast until golden",
+        "minutes": 40,
+        "steps": [
+          "Heat olive oil in a large roasting tray in the oven for 5 minutes. Carefully add potatoes in a single layer and turn to coat.",
+          "Roast 35–40 minutes, turning halfway, until deeply golden and crisp. Avoid crowding the tray."
+        ]
+      },
+      {
+        "title": "Add garlic butter",
+        "minutes": 10,
+        "steps": [
+          "Melt butter with crushed garlic and rosemary in a small pan over low heat for 2 minutes without browning garlic.",
+          "Toss potatoes with fragrant butter and roast a further 5 minutes. Season with salt and pepper before serving."
+        ]
+      }
+    ],
+    "tips": [
+      "Floury potatoes give the fluffiest centres.",
+      "Do not add garlic at the start of roasting; it can burn at high heat."
+    ],
+    "variations": [
+      "Use thyme instead of rosemary.",
+      "Add a little finely grated lemon zest after roasting."
+    ],
+    "storage": "Refrigerate up to 3 days. Reheat uncovered in a hot oven or air fryer until crisp and steaming hot."
+  },
+  {
+    "title": "Classic Chocolate Brownies",
+    "summary": "Fudgy chocolate brownies with a crackly top, deep cocoa flavour and a soft, rich centre.",
+    "cuisine": "american",
+    "course": "dessert",
+    "servings": 9,
+    "prep_minutes": 15,
+    "cook_minutes": 30,
+    "difficulty": "easy",
+    "ingredients": [
+      "180 g dark chocolate (60–70%), chopped",
+      "150 g unsalted butter",
+      "220 g caster sugar",
+      "3 large eggs",
+      "1 tsp vanilla extract",
+      "90 g plain flour",
+      "25 g cocoa powder",
+      "1/2 tsp fine salt"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the tin",
+        "minutes": 5,
+        "steps": [
+          "Heat oven to 175°C conventional (155°C fan). Line a 20 cm square tin with baking paper, leaving overhang.",
+          "Measure ingredients before starting so the chocolate mixture does not cool too far."
+        ]
+      },
+      {
+        "title": "Melt chocolate and butter",
+        "minutes": 5,
+        "steps": [
+          "Melt butter and chocolate together over very low heat or in short microwave bursts, stirring until smooth.",
+          "Set aside for a few minutes so it is warm rather than hot before mixing with eggs."
+        ]
+      },
+      {
+        "title": "Mix the batter",
+        "minutes": 8,
+        "steps": [
+          "Whisk eggs and sugar for 2–3 minutes until slightly thickened; stir in vanilla.",
+          "Fold in melted chocolate mixture, then sift in flour, cocoa and salt. Mix only until no dry streaks remain."
+        ]
+      },
+      {
+        "title": "Bake until just set",
+        "minutes": 27,
+        "steps": [
+          "Spread batter evenly in the tin and bake 24–30 minutes.",
+          "The edges should be set and the centre should have a slight wobble; a skewer should show moist crumbs rather than wet batter."
+        ]
+      },
+      {
+        "title": "Cool before slicing",
+        "minutes": 30,
+        "steps": [
+          "Cool completely in the tin so the centre firms up.",
+          "Lift out using the baking paper and cut into nine squares with a sharp knife."
+        ]
+      }
+    ],
+    "tips": [
+      "Do not overbake; brownies continue setting as they cool.",
+      "For neat slices, chill for 30 minutes and wipe the knife between cuts."
+    ],
+    "variations": [
+      "Fold in 80 g toasted walnuts.",
+      "Add 1 tsp instant espresso powder to intensify the chocolate flavour."
+    ],
+    "storage": "Keep airtight at room temperature up to 3 days or refrigerate up to 5 days. Freeze squares up to 2 months."
+  },
+  {
+    "title": "Lemon Drizzle Cake",
+    "summary": "Soft lemon sponge soaked with tangy citrus syrup and finished with a delicate sugary crust.",
+    "cuisine": "british",
+    "course": "dessert",
+    "servings": 10,
+    "prep_minutes": 20,
+    "cook_minutes": 50,
+    "difficulty": "easy",
+    "ingredients": [
+      "200 g unsalted butter, softened",
+      "200 g caster sugar",
+      "3 large eggs",
+      "200 g self-raising flour",
+      "2 lemons, zest and juice",
+      "2 tbsp milk",
+      "100 g granulated sugar for drizzle"
+    ],
+    "stages": [
+      {
+        "title": "Prepare oven and tin",
+        "minutes": 5,
+        "steps": [
+          "Heat oven to 180°C conventional (160°C fan). Grease and line a 900 g loaf tin.",
+          "Finely zest both lemons, avoiding the bitter white pith."
+        ]
+      },
+      {
+        "title": "Cream butter and sugar",
+        "minutes": 7,
+        "steps": [
+          "Beat softened butter and caster sugar for 3–4 minutes until pale and fluffy.",
+          "Add eggs one at a time, beating after each; add a spoonful of flour if mixture begins to curdle."
+        ]
+      },
+      {
+        "title": "Finish the batter",
+        "minutes": 5,
+        "steps": [
+          "Fold in self-raising flour and lemon zest gently, then add milk until batter drops slowly from a spoon.",
+          "Spoon into the prepared tin and level the surface."
+        ]
+      },
+      {
+        "title": "Bake the loaf",
+        "minutes": 45,
+        "steps": [
+          "Bake 40–50 minutes until golden, springy and a skewer inserted into the centre comes out clean.",
+          "If browning too quickly, loosely cover with foil during the final 10 minutes."
+        ]
+      },
+      {
+        "title": "Add the drizzle",
+        "minutes": 8,
+        "steps": [
+          "Mix juice from the lemons with granulated sugar until combined but still slightly grainy.",
+          "Prick the warm cake all over with a skewer, spoon over drizzle and cool in the tin before slicing."
+        ]
+      }
+    ],
+    "tips": [
+      "Drizzle while cake is warm so syrup soaks in.",
+      "Room-temperature butter and eggs make a smoother batter."
+    ],
+    "variations": [
+      "Add 1 tbsp poppy seeds to the batter.",
+      "Replace one lemon with an orange for a sweeter citrus note."
+    ],
+    "storage": "Store airtight at room temperature up to 3 days or freeze slices up to 2 months."
+  },
+  {
+    "title": "Chicken Caesar Salad",
+    "summary": "Crunchy romaine, juicy chicken, Parmesan and croutons tossed in a creamy, punchy Caesar dressing.",
+    "cuisine": "american",
+    "course": "lunch",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 20,
+    "difficulty": "easy",
+    "ingredients": [
+      "2 chicken breasts (about 450 g)",
+      "2 romaine lettuces",
+      "120 g day-old bread, cubed",
+      "3 tbsp olive oil",
+      "40 g Parmesan, shaved",
+      "1 egg yolk (pasteurised) or 2 tbsp mayonnaise",
+      "2 anchovy fillets, finely mashed",
+      "1 garlic clove, minced",
+      "1 tsp Dijon mustard",
+      "2 tbsp lemon juice",
+      "60 ml olive oil for dressing",
+      "Salt and pepper"
+    ],
+    "stages": [
+      {
+        "title": "Make the croutons",
+        "minutes": 10,
+        "steps": [
+          "Heat oven to 200°C conventional (180°C fan). Toss bread cubes with 2 tbsp olive oil, salt and pepper.",
+          "Bake 8–10 minutes, turning once, until crisp and golden. Set aside to cool."
+        ]
+      },
+      {
+        "title": "Cook the chicken",
+        "minutes": 12,
+        "steps": [
+          "Season chicken with salt and pepper and rub with 1 tbsp olive oil.",
+          "Sear in a frying pan over medium heat for 5–6 minutes per side, adjusting for thickness, until the centre reaches 75°C. Rest 5 minutes, then slice."
+        ]
+      },
+      {
+        "title": "Whisk the dressing",
+        "minutes": 5,
+        "steps": [
+          "Mash anchovies with garlic and mustard. Whisk in pasteurised yolk or mayonnaise and lemon juice.",
+          "Slowly whisk in 60 ml olive oil until creamy; add a spoonful of water if too thick and season to taste."
+        ]
+      },
+      {
+        "title": "Assemble",
+        "minutes": 5,
+        "steps": [
+          "Wash and dry romaine leaves thoroughly, then tear into large bite-sized pieces.",
+          "Toss lettuce lightly with dressing, add chicken and croutons, and finish with Parmesan shavings."
+        ]
+      }
+    ],
+    "tips": [
+      "Dry lettuce thoroughly so the dressing clings rather than becoming watery.",
+      "Rest chicken before slicing to keep it juicy."
+    ],
+    "variations": [
+      "Use grilled prawns instead of chicken, cooking until opaque throughout.",
+      "Add halved boiled eggs for a more filling lunch."
+    ],
+    "storage": "Keep cooked chicken refrigerated up to 3 days. Store lettuce, croutons and dressing separately; assemble just before eating."
+  },
+  {
+    "title": "Mushroom Risotto",
+    "summary": "Creamy Arborio rice slowly cooked with savoury mushrooms, white wine, stock and Parmesan.",
+    "cuisine": "italian",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 15,
+    "cook_minutes": 35,
+    "difficulty": "medium",
+    "ingredients": [
+      "320 g arborio or carnaroli rice",
+      "400 g mixed mushrooms, sliced",
+      "1 small onion, finely diced",
+      "2 garlic cloves, minced",
+      "1 litre warm vegetable stock",
+      "120 ml dry white wine",
+      "2 tbsp olive oil",
+      "40 g butter",
+      "60 g Parmesan, finely grated",
+      "1 tbsp chopped parsley",
+      "Salt and black pepper"
+    ],
+    "stages": [
+      {
+        "title": "Brown the mushrooms",
+        "minutes": 10,
+        "steps": [
+          "Heat 1 tbsp oil in a wide frying pan over medium-high heat. Add mushrooms in batches to avoid crowding.",
+          "Cook until moisture evaporates and edges turn golden; season lightly and set aside."
+        ]
+      },
+      {
+        "title": "Soften aromatics and toast rice",
+        "minutes": 7,
+        "steps": [
+          "In a heavy saucepan, warm remaining oil and half the butter. Cook onion gently for 4 minutes until soft, then garlic for 30 seconds.",
+          "Add rice and stir for 2 minutes until grains are glossy and lightly translucent around the edges."
+        ]
+      },
+      {
+        "title": "Reduce wine and add stock",
+        "minutes": 22,
+        "steps": [
+          "Pour in wine and stir until nearly absorbed. Add a ladle of warm stock and stir regularly until absorbed.",
+          "Continue adding stock a ladle at a time for about 18–22 minutes, keeping a gentle simmer, until rice is tender with a slight bite."
+        ]
+      },
+      {
+        "title": "Finish the risotto",
+        "minutes": 5,
+        "steps": [
+          "Fold browned mushrooms into the rice and add a little more stock if it looks stiff; risotto should flow slowly across the plate.",
+          "Turn off heat and stir in remaining butter, Parmesan and parsley. Cover for 2 minutes, taste and serve immediately."
+        ]
+      }
+    ],
+    "tips": [
+      "Keep stock warm to maintain a steady simmer.",
+      "Do not rinse risotto rice; its starch creates the creamy texture."
+    ],
+    "variations": [
+      "Add a handful of peas during the final 3 minutes.",
+      "Use thyme instead of parsley for a woodsy finish."
+    ],
+    "storage": "Best served immediately. Refrigerate leftovers promptly up to 2 days and reheat thoroughly; alternatively form chilled leftovers into arancini."
+  }
+]

@@ -1,0 +1,613 @@
+{
+ "same": [
+  {
+   "keep": "British Apple Crumble",
+   "keep_size": 13,
+   "drop": [
+    [
+     "Classic Apple Crumble",
+     10
+    ]
+   ]
+  },
+  {
+   "keep": "Classic French Quiche Lorraine",
+   "keep_size": 12,
+   "drop": [
+    [
+     "French Quiche Lorraine",
+     10
+    ]
+   ]
+  },
+  {
+   "keep": "Chinese Tomato Egg Stir-Fry",
+   "keep_size": 20,
+   "drop": [
+    [
+     "Chinese Tomato Egg Stir Fry",
+     17
+    ],
+    [
+     "Chinese Tomato and Egg Stir-Fry",
+     9
+    ]
+   ]
+  },
+  {
+   "keep": "Middle Eastern Fattoush Salad",
+   "keep_size": 12,
+   "drop": [
+    [
+     "Middle Eastern Fattoush",
+     10
+    ],
+    [
+     "Lebanese Fattoush",
+     10
+    ]
+   ]
+  },
+  {
+   "keep": "American Breakfast Burritos",
+   "keep_size": 12,
+   "drop": [
+    [
+     "Breakfast Burritos",
+     10
+    ]
+   ]
+  },
+  {
+   "keep": "Sichuan Mapo Tofu",
+   "keep_size": 18,
+   "drop": [
+    [
+     "Chinese Mapo Tofu",
+     10
+    ]
+   ]
+  },
+  {
+   "keep": "Middle Eastern Mujadara",
+   "keep_size": 18,
+   "drop": [
+    [
+     "Lebanese Mujadara",
+     10
+    ]
+   ]
+  },
+  {
+   "keep": "German Kaiserschmarrn",
+   "keep_size": 19,
+   "drop": [
+    [
+     "Austrian Kaiserschmarrn",
+     7
+    ]
+   ]
+  },
+  {
+   "keep": "Italian Caprese Panini",
+   "keep_size": 18,
+   "drop": [
+    [
+     "Caprese Panini",
+     10
+    ],
+    [
+     "Italian Caprese Stuffed Ciabatta",
+     12
+    ]
+   ]
+  },
+  {
+   "keep": "Chinese Steamed Ginger Fish",
+   "keep_size": 18,
+   "drop": [
+    [
+     "Chinese Steamed Fish with Ginger",
+     7
+    ]
+   ]
+  },
+  {
+   "keep": "Japanese Miso-Glazed Aubergine",
+   "keep_size": 21,
+   "drop": [
+    [
+     "Japanese Miso Glazed Aubergine",
+     12
+    ]
+   ]
+  },
+  {
+   "keep": "Mexican Elote Street Corn",
+   "keep_size": 12,
+   "drop": [
+    [
+     "Mexican Elote Corn",
+     10
+    ],
+    [
+     "Mexican Elote",
+     10
+    ]
+   ]
+  },
+  {
+   "keep": "Japanese Dorayaki",
+   "keep_size": 18,
+   "drop": [
+    [
+     "Japanese Dorayaki Pancakes",
+     13
+    ]
+   ]
+  },
+  {
+   "keep": "Italian Focaccia",
+   "keep_size": 22,
+   "drop": [
+    [
+     "Italian Rosemary Focaccia",
+     12
+    ]
+   ]
+  },
+  {
+   "keep": "Brazilian Pao de Queijo",
+   "keep_size": 18,
+   "drop": [
+    [
+     "Brazilian Pão de Queijo",
+     17
+    ]
+   ]
+  },
+  {
+   "keep": "Italian Panzanella Salad",
+   "keep_size": 13,
+   "drop": [
+    [
+     "Italian Panzanella Bread Salad",
+     12
+    ],
+    [
+     "Italian Panzanella",
+     10
+    ]
+   ]
+  },
+  {
+   "keep": "Japanese Tamagoyaki Omelette",
+   "keep_size": 13,
+   "drop": [
+    [
+     "Japanese Tamagoyaki Rolled Omelette",
+     12
+    ],
+    [
+     "Japanese Tamagoyaki",
+     10
+    ]
+   ]
+  },
+  {
+   "keep": "Indian Masala Dosa with Potato Filling",
+   "keep_size": 13,
+   "drop": [
+    [
+     "Indian Masala Dosa",
+     10
+    ]
+   ]
+  },
+  {
+   "keep": "Italian Zuppa Toscana",
+   "keep_size": 21,
+   "drop": [
+    [
+     "Italian Zuppa Toscana with Kale",
+     7
+    ]
+   ]
+  },
+  {
+   "keep": "Baked Macaroni and Cheese",
+   "keep_size": 10,
+   "drop": [
+    [
+     "American Macaroni and Cheese",
+     10
+    ]
+   ]
+  },
+  {
+   "keep": "German Warm Potato Salad",
+   "keep_size": 12,
+   "drop": [
+    [
+     "German Potato Salad",
+     10
+    ]
+   ]
+  },
+  {
+   "keep": "Indian Poha with Peanuts",
+   "keep_size": 10,
+   "drop": [
+    [
+     "Indian Poha",
+     10
+    ]
+   ]
+  },
+  {
+   "keep": "Spanish Tortilla",
+   "keep_size": 10,
+   "drop": [
+    [
+     "Spanish Tortilla de Patatas",
+     10
+    ]
+   ]
+  },
+  {
+   "keep": "Syrian Muhammara",
+   "keep_size": 18,
+   "drop": [
+    [
+     "Middle Eastern Muhammara",
+     9
+    ]
+   ]
+  },
+  {
+   "keep": "Indian Kheer Rice Pudding",
+   "keep_size": 19,
+   "drop": [
+    [
+     "Indian Cardamom Rice Pudding (Kheer)",
+     13
+    ],
+    [
+     "Indian Kheer",
+     10
+    ]
+   ]
+  },
+  {
+   "keep": "Thai Larb Gai",
+   "keep_size": 20,
+   "drop": [
+    [
+     "Thai Larb Gai Chicken Salad",
+     12
+    ]
+   ]
+  },
+  {
+   "keep": "Turkish Mercimek Kofte",
+   "keep_size": 20,
+   "drop": [
+    [
+     "Turkish Lentil Köfte (Mercimek Köftesi)",
+     13
+    ],
+    [
+     "Turkish Lentil Köfte",
+     19
+    ]
+   ]
+  },
+  {
+   "keep": "Italian Polenta con Funghi",
+   "keep_size": 19,
+   "drop": [
+    [
+     "Italian Polenta with Mushrooms",
+     18
+    ]
+   ]
+  },
+  {
+   "keep": "Indian Upma",
+   "keep_size": 18,
+   "drop": [
+    [
+     "Indian Vegetable Upma",
+     12
+    ],
+    [
+     "Indian Rava Upma",
+     10
+    ]
+   ]
+  },
+  {
+   "keep": "French Pommes Dauphinoise",
+   "keep_size": 21,
+   "drop": [
+    [
+     "French Dauphinoise Potatoes",
+     10
+    ],
+    [
+     "French Gratin Dauphinois",
+     12
+    ]
+   ]
+  },
+  {
+   "keep": "Spanish Gambas al Ajillo",
+   "keep_size": 16,
+   "drop": [
+    [
+     "Spanish Garlic Prawns Gambas al Ajillo",
+     12
+    ]
+   ]
+  },
+  {
+   "keep": "Indian Chana Masala",
+   "keep_size": 12,
+   "drop": [
+    [
+     "Indian Chole Masala",
+     8
+    ]
+   ]
+  },
+  {
+   "keep": "French Salade Niçoise",
+   "keep_size": 17,
+   "drop": [
+    [
+     "French Niçoise Salad",
+     13
+    ]
+   ]
+  },
+  {
+   "keep": "French Clafoutis with Cherries",
+   "keep_size": 19,
+   "drop": [
+    [
+     "French Clafoutis",
+     10
+    ],
+    [
+     "French Clafoutis aux Cerises",
+     18
+    ]
+   ]
+  },
+  {
+   "keep": "Tunisian Brik",
+   "keep_size": 20,
+   "drop": [
+    [
+     "Tunisian Brik with Egg",
+     10
+    ]
+   ]
+  },
+  {
+   "keep": "Cajun Shrimp and Grits",
+   "keep_size": 10,
+   "drop": [
+    [
+     "American Shrimp and Grits",
+     10
+    ]
+   ]
+  },
+  {
+   "keep": "Mexican Breakfast Chilaquiles Rojos",
+   "keep_size": 13,
+   "drop": [
+    [
+     "Mexican Chilaquiles Rojos",
+     10
+    ]
+   ]
+  },
+  {
+   "keep": "American BBQ Pulled Pork",
+   "keep_size": 13,
+   "drop": [
+    [
+     "Pulled Pork Sandwiches",
+     10
+    ]
+   ]
+  },
+  {
+   "keep": "Italian Affogato",
+   "keep_size": 10,
+   "drop": [
+    [
+     "Italian Affogato al Caffè",
+     9
+    ]
+   ]
+  },
+  {
+   "keep": "Mexican Tostadas de Tinga",
+   "keep_size": 20,
+   "drop": [
+    [
+     "Mexican Chicken Tinga Tostadas",
+     8
+    ]
+   ]
+  },
+  {
+   "keep": "Vietnamese Rice Paper Rolls",
+   "keep_size": 22,
+   "drop": [
+    [
+     "Vietnamese Fresh Spring Rolls",
+     13
+    ],
+    [
+     "Vietnamese Goi Cuon",
+     22
+    ]
+   ]
+  },
+  {
+   "keep": "Turkish Mercimek Corbasi",
+   "keep_size": 18,
+   "drop": [
+    [
+     "Turkish Red Lentil Soup",
+     10
+    ],
+    [
+     "Turkish Lentil Soup Mercimek Corbasi",
+     10
+    ],
+    [
+     "Turkish Mercimek Çorbası",
+     17
+    ]
+   ]
+  },
+  {
+   "keep": "Vietnamese Banh Xeo",
+   "keep_size": 21,
+   "drop": [
+    [
+     "Vietnamese Banh Xeo Crispy Crepes",
+     12
+    ]
+   ]
+  },
+  {
+   "keep": "Moroccan Harira Soup",
+   "keep_size": 10,
+   "drop": [
+    [
+     "Moroccan Harira",
+     10
+    ]
+   ]
+  },
+  {
+   "keep": "Turkish İmam Bayıldı",
+   "keep_size": 21,
+   "drop": [
+    [
+     "Turkish Imam Bayildi",
+     12
+    ]
+   ]
+  },
+  {
+   "keep": "Swedish Overnight Oats with Berries",
+   "keep_size": 17,
+   "drop": [
+    [
+     "Overnight Oats with Berries",
+     8
+    ]
+   ]
+  }
+ ],
+ "maybe": [
+  {
+   "keep": "Shakshuka",
+   "keep_size": 14,
+   "drop": [
+    [
+     "Shakshuka with Feta",
+     10
+    ]
+   ]
+  },
+  {
+   "keep": "Greek Spanakopita Triangles",
+   "keep_size": 12,
+   "drop": [
+    [
+     "Greek Spanakopita",
+     10
+    ]
+   ]
+  },
+  {
+   "keep": "Italian Tiramisu Cups",
+   "keep_size": 13,
+   "drop": [
+    [
+     "Classic Tiramisu",
+     10
+    ]
+   ]
+  },
+  {
+   "keep": "Greek Yoghurt Honey Bowls",
+   "keep_size": 16,
+   "drop": [
+    [
+     "Greek Honey Yoghurt Parfait",
+     10
+    ]
+   ]
+  },
+  {
+   "keep": "Korean Bibimbap Vegetable Bowls",
+   "keep_size": 13,
+   "drop": [
+    [
+     "Korean Bibimbap",
+     10
+    ]
+   ]
+  },
+  {
+   "keep": "Mexican Arroz con Leche",
+   "keep_size": 16,
+   "drop": [
+    [
+     "Spanish Arroz con Leche",
+     8
+    ]
+   ]
+  },
+  {
+   "keep": "Chinese Congee with Ginger",
+   "keep_size": 10,
+   "drop": [
+    [
+     "Chinese Congee with Ginger Chicken",
+     8
+    ]
+   ]
+  },
+  {
+   "keep": "Moroccan Chicken Tagine with Preserved Lemon",
+   "keep_size": 21,
+   "drop": [
+    [
+     "Moroccan Chicken Tagine",
+     10
+    ]
+   ]
+  },
+  {
+   "keep": "French Pear Tarte Tatin",
+   "keep_size": 21,
+   "drop": [
+    [
+     "French Tarte Tatin",
+     10
+    ]
+   ]
+  }
+ ],
+ "approved": "2026-11-19: product owner approved; congee, tarte tatin and tiramisu keep both"
+}

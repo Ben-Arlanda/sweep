@@ -11,7 +11,8 @@ def recipe(**overrides: object) -> SeedRecipe:
         "cuisine": "australian",
         "course": "main",
         "servings": 4,
-        "minutes": 30,
+        "prep_minutes": 0,
+        "difficulty": "easy",
         "summary": "Chicken thighs fried with garlic.",
         "ingredients": ["600 g chicken thigh", "2 cloves garlic, crushed", "1 tbsp olive oil"],
         "method": [
@@ -20,7 +21,10 @@ def recipe(**overrides: object) -> SeedRecipe:
             "Add the garlic for the last minute.",
         ],
     }
-    return SeedRecipe.model_validate(base | overrides)
+    fields = base | overrides
+    fields["cook_minutes"] = fields.pop("minutes", 30)
+    fields.setdefault("stages", [{"title": "Cook", "minutes": 1, "steps": fields["method"]}])
+    return SeedRecipe.model_validate(fields)
 
 
 def kinds(recipes: list[SeedRecipe]) -> list[str]:
@@ -103,10 +107,31 @@ def test_near_identical_ingredients_in_the_same_cuisine_are_flagged() -> None:
     assert kinds([recipe(), twin]) == ["duplicate"]
 
 
-def test_every_seed_recipe_passes_the_checks() -> None:
-    # The gate for the real library: a new recipe can't land until it passes.
-    problems = check_recipes(load_seed_recipes())
-    assert [f"{p.slug}: {p.check}: {p.message}" for p in problems] == []
+def test_every_seed_recipe_passes_the_checks_in_both_views() -> None:
+    # The gate for the real library: a new recipe can't land until it passes, Quick View
+    # (method) and Detailed View (stages) alike (ADR 0028).
+    library = load_seed_recipes()
+    for view in (library, [r.detailed() for r in library]):
+        problems = check_recipes(view)
+        assert [f"{p.slug}: {p.check}: {p.message}" for p in problems] == []
+
+
+def test_the_detailed_view_reads_the_stage_steps_as_the_method() -> None:
+    r = recipe(stages=[{"title": "Fry", "minutes": 12, "steps": ["Fry it.", "Rest it."]}])
+    assert r.detailed().method == ["Fry it.", "Rest it."]
+
+
+def test_dishes_on_the_not_a_duplicate_list_can_share_ingredients() -> None:
+    corn = ["4 corn cobs", "60 g mayonnaise", "60 g feta", "1 lime", "1 tsp chilli powder"]
+    method = [
+        "Grill the corn over high heat for 10 minutes until charred.",
+        "Spread with the mayonnaise, then the feta, lime and chilli powder.",
+    ]
+    elote = recipe(slug="elote", title="Elote", cuisine="mexican", ingredients=corn, method=method)
+    other = elote.model_copy(update={"slug": "corn-cobs", "title": "Corn cobs"})
+    salad = elote.model_copy(update={"slug": "elote-salad", "title": "Elote salad"})
+    assert kinds([elote, other]) == ["duplicate"]
+    assert kinds([elote, salad]) == []
 
 
 def test_steaming_counts_as_cooking() -> None:

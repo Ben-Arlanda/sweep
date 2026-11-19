@@ -111,3 +111,11 @@ def test_rank_fusion_rewards_being_high_in_either_list() -> None:
     assert [i for i, _score in fused] == [c, a, b, d]
     assert recipes.fuse([[], []]) == []
     assert [i for i, _ in recipes.fuse([[a, b]])] == [a, b]  # one list keeps its order
+
+
+async def test_accents_dont_matter_either_way(database_url: str, load: Loader) -> None:
+    brulee = seed("creme-brulee", "Crème brûlée", 60, "french", ["4 egg yolks", "300 ml cream"])
+    helene = seed("pear-belle-helene", "Pear belle helene", 40, "french", ["4 pears"])
+    await load([brulee, helene])
+    assert await titles(database_url, "creme brulee") == ["Crème brûlée"]
+    assert await titles(database_url, "hélène") == ["Pear belle helene"]

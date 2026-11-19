@@ -1,0 +1,212 @@
+1|Spaghetti Bolognese|Slow-simmered beef and pancetta ragù enriched with white wine, tomatoes and milk, served with pasta and Parmesan.
+1|Chicken Tikka Masala|Tender chicken in a creamy tomato curry fragrant with ginger, garlic, garam masala and warming spices.
+1|Thai Green Chicken Curry|Chicken and vegetables simmered in fragrant green curry paste, coconut milk, Thai basil and lime.
+1|Classic Beef Lasagne|Layers of tender beef ragù, silky béchamel and pasta baked beneath a golden, bubbling cheese crust.
+1|Shakshuka|Eggs gently poached in a smoky tomato and pepper sauce with cumin, paprika and fresh herbs.
+1|Fluffy Buttermilk Pancakes|Tall, tender buttermilk pancakes with lightly crisp edges, perfect with maple syrup and fresh fruit.
+1|Greek Salad|Crisp cucumber, juicy tomatoes, olives and feta tossed with oregano and a bright olive oil dressing.
+1|Garlic Butter Roast Potatoes|Golden roast potatoes with fluffy centres, crisp edges, garlic, butter and fragrant herbs.
+1|Classic Chocolate Brownies|Fudgy chocolate brownies with a crackly top, deep cocoa flavour and a soft, rich centre.
+1|Lemon Drizzle Cake|Soft lemon sponge soaked with tangy citrus syrup and finished with a delicate sugary crust.
+1|Chicken Caesar Salad|Crunchy romaine, juicy chicken, Parmesan and croutons tossed in a creamy, punchy Caesar dressing.
+1|Mushroom Risotto|Creamy Arborio rice slowly cooked with savoury mushrooms, white wine, stock and Parmesan.
+2|Chicken Parmesan|Crispy breaded chicken cutlets topped with tomato sauce, melted mozzarella and Parmesan.
+2|Beef Stroganoff|Tender strips of beef and mushrooms coated in a silky mustard and sour cream sauce.
+2|Teriyaki Salmon Bowls|Glazed salmon over fluffy rice with sweet-savoury teriyaki sauce, vegetables and sesame.
+2|Vegetable Pad Thai|Rice noodles stir-fried with vegetables, egg, tamarind and peanuts for a sweet, tangy finish.
+2|Lamb Kofta with Yoghurt|Juicy spiced lamb kofta served with cooling garlic yoghurt, herbs and warm flatbread.
+2|Classic Fish Tacos|Flaky seasoned fish tucked into tortillas with crunchy slaw and a tangy lime dressing.
+2|Chicken Fajitas|Sizzling chicken strips with peppers and onions, smoky spices and warm flour tortillas.
+2|Prawn Linguine with Chilli|Linguine tossed with juicy prawns, garlic, chilli, olive oil and a bright squeeze of lemon.
+2|Roast Chicken with Lemon|Golden roast chicken with crisp skin, juicy meat, lemon, garlic and fragrant herbs.
+2|Beef and Broccoli Stir-Fry|Tender beef and crisp broccoli coated in a glossy ginger, garlic and soy sauce.
+2|Chickpea and Spinach Curry|Chickpeas and spinach simmered in a warming tomato curry with ginger and aromatic spices.
+2|Creamy Mushroom Pasta|Silky pasta coated in a savoury mushroom cream sauce with garlic and Parmesan.
+2|Moroccan Chicken Tagine|Slow-braised chicken with Moroccan spices, sweet dried fruit and a fragrant, savoury sauce.
+2|Eggplant Parmigiana|Soft aubergine layered with rich tomato sauce, basil, mozzarella and Parmesan, baked until bubbling.
+2|Chicken Noodle Soup|Comforting chicken broth filled with tender chicken, vegetables and soft noodles.
+2|Pulled Pork Sandwiches|Slow-cooked shredded pork piled into soft buns with tangy barbecue sauce and crunchy slaw.
+2|Spinach and Ricotta Cannelloni|Pasta tubes stuffed with creamy spinach and ricotta, baked in tomato sauce and melted cheese.
+2|Honey Soy Chicken Thighs|Juicy chicken thighs glazed with sticky honey, soy, garlic and ginger.
+2|Turkey Meatballs in Tomato Sauce|Tender turkey meatballs simmered in a herby tomato sauce, ideal with pasta or crusty bread.
+2|Korean Beef Bibimbap|Rice topped with seasoned beef, colourful vegetables, a fried egg and spicy gochujang sauce.
+2|Baked Macaroni and Cheese|Tender macaroni baked in a rich cheese sauce beneath a crisp, golden topping.
+2|Lentil Shepherd’s Pie|Savoury lentils and vegetables beneath a fluffy, golden mashed potato topping.
+2|Greek Chicken Souvlaki|Lemon-oregano chicken skewers served with warm pita, crisp salad and creamy tzatziki.
+2|Crispy Tofu Rice Bowls|Crispy tofu over rice with crunchy vegetables and a punchy sesame-soy dressing.
+2|Spanish Tortilla|A thick Spanish potato and onion omelette with a golden exterior and tender centre.
+2|Tuna and White Bean Salad|Creamy white beans and flaky tuna tossed with lemon, parsley, red onion and olive oil.
+2|Roasted Vegetable Couscous|Fluffy couscous with caramelised roast vegetables, fresh herbs and a lemony dressing.
+2|Turkey and Avocado Wraps|Soft wraps packed with turkey, creamy avocado, crunchy greens and a tangy spread.
+2|Caprese Panini|Toasted bread filled with ripe tomato, fresh mozzarella, basil and melting cheese.
+2|Falafel Pita Pockets|Golden falafel tucked into pita with crisp vegetables, pickles and creamy tahini sauce.
+2|Tomato and Red Pepper Soup|Velvety roasted tomato and red pepper soup with garlic, herbs and a gentle smoky sweetness.
+2|Egg and Spinach Breakfast Muffins|Portable egg muffins packed with spinach, vegetables and cheese, baked until just set.
+2|Overnight Oats with Berries|Creamy overnight oats with yoghurt, berries and a hint of honey, ready straight from the fridge.
+2|French Toast with Cinnamon|Thick slices of bread soaked in cinnamon custard and pan-fried until golden and soft inside.
+2|Breakfast Burritos|Warm tortillas stuffed with fluffy eggs, seasoned potatoes, beans and melted cheese.
+2|Banana Oat Pancakes|Naturally sweet banana and oat pancakes with tender centres and lightly golden edges.
+2|Shakshuka with Feta|Soft eggs poached in spiced tomato and pepper sauce, finished with tangy crumbled feta.
+2|Baked Oatmeal with Apple|Warm baked oats with tender apple, cinnamon and a lightly golden, comforting top.
+2|Breakfast Hash with Potatoes|Crispy pan-fried potatoes with peppers, onions and eggs for a hearty breakfast skillet.
+2|Garlic Green Beans with Almonds|Tender green beans tossed with garlic butter and toasted almonds for a crisp, nutty side.
+2|Honey Roasted Carrots|Roasted carrots caramelised with honey, olive oil and herbs until sweet and tender.
+2|Creamy Coleslaw|Shredded cabbage and carrot in a creamy, tangy dressing with a satisfying crunch.
+2|Crispy Smashed Potatoes|Boiled potatoes smashed and roasted until deeply crisp, with fluffy middles and savoury seasoning.
+2|Sesame Cucumber Salad|Cool, crunchy cucumber tossed in a tangy sesame-soy dressing with chilli and garlic.
+2|Cornbread with Honey Butter|Tender golden cornbread with a lightly crisp crust, served with sweet honey butter.
+2|Roasted Cauliflower with Tahini|Caramelised cauliflower florets drizzled with lemony tahini and finished with fresh herbs.
+2|Garlic Butter Mushrooms|Golden sautéed mushrooms coated in garlic butter, herbs and their own savoury juices.
+2|Classic Apple Crumble|Warm cinnamon apples under a buttery, crisp oat crumble, delicious with vanilla custard.
+2|Vanilla Panna Cotta|Silky vanilla cream set into a delicate dessert and served with bright fruit sauce.
+2|Classic Tiramisu|Coffee-soaked sponge layered with airy mascarpone cream and a dusting of cocoa.
+3|Vietnamese Lemongrass Chicken|Juicy lemongrass-marinated chicken with garlic, fish sauce and a caramelised, savoury crust.
+3|Japanese Chicken Katsu Curry|Crispy panko chicken served over rice with a mild, richly spiced Japanese curry sauce.
+3|Persian Herb Frittata (Kuku Sabzi)|A fragrant Persian herb omelette packed with parsley, coriander, dill and spring onions.
+3|Turkish Red Lentil Soup|Smooth red lentil soup with cumin, paprika and lemon, finished with fragrant chilli butter.
+3|Mexican Pozole Verde|Hearty Mexican hominy soup with shredded chicken, tangy green chilli broth and crisp toppings.
+3|Lebanese Mujadara|Sweet caramelised onions and tender lentils folded through rice with warming Middle Eastern spices.
+3|Spanish Seafood Paella|Saffron rice studded with seafood, peppers and peas, cooked until a crisp socarrat forms underneath.
+3|French Ratatouille|Slow-cooked aubergine, courgette, peppers and tomatoes infused with garlic and Provençal herbs.
+3|Chinese Mapo Tofu|Silky tofu and minced meat in a fiery Sichuan chilli-bean sauce with tingling peppercorns.
+3|Korean Kimchi Fried Rice|Day-old rice stir-fried with tangy kimchi, sesame oil and a golden fried egg.
+3|Indian Palak Paneer|Soft paneer cubes in a velvety spinach curry scented with garlic, ginger and garam masala.
+3|Moroccan Harira Soup|Warming Moroccan tomato soup with lentils, chickpeas, herbs and fragrant spices.
+3|Greek Spanakopita|Flaky filo pastry wrapped around a savoury filling of spinach, feta and fresh herbs.
+3|Ethiopian Misir Wot|Tender red lentils simmered in a deeply spiced Ethiopian berbere sauce.
+3|Italian Gnocchi alla Sorrentina|Pillowy potato gnocchi baked with tomato, basil and melted mozzarella until bubbling.
+3|Portuguese Piri Piri Chicken|Juicy chicken marinated in fiery piri piri, lemon and garlic, roasted until charred at the edges.
+3|American Turkey Chilli|Hearty turkey chilli with beans, tomatoes, peppers and smoky spices.
+3|Peruvian Lomo Saltado|Stir-fried beef, tomatoes and onions tossed with chips in a punchy soy-vinegar sauce.
+3|Cajun Shrimp and Grits|Creamy stone-ground grits topped with juicy Cajun-spiced prawns and a buttery pan sauce.
+3|Brazilian Black Bean Stew|Slow-simmered black beans with vegetables, garlic and spices for a hearty Brazilian-style stew.
+3|Thai Basil Chicken (Pad Krapow)|Minced chicken flash-fried with garlic, chilli and holy basil, served over rice.
+3|German Potato Salad|Tender potatoes tossed warm with bacon, onion, mustard and a sharp vinegar dressing.
+3|Middle Eastern Fattoush|Crisp vegetables, toasted pita and fresh herbs dressed with lemon, olive oil and sumac.
+3|Italian Arancini|Crisp golden rice balls filled with savoury risotto and melting cheese.
+3|Japanese Miso Aubergine (Nasu Dengaku)|Roasted aubergine glazed with sweet-savoury miso, mirin and sesame until tender and caramelised.
+3|Indian Aloo Gobi|Cauliflower and potatoes cooked with turmeric, cumin, ginger and fragrant Indian spices.
+3|Mexican Elote Corn|Charred corn brushed with creamy lime dressing and sprinkled with chilli, cheese and coriander.
+3|French Dauphinoise Potatoes|Thinly sliced potatoes baked slowly in garlic-infused cream until tender and golden.
+3|Mediterranean Stuffed Peppers|Sweet peppers filled with herbed rice, vegetables and savoury tomato sauce, then baked until tender.
+3|Vietnamese Banh Mi Sandwich|Crusty Vietnamese baguette stuffed with savoury fillings, pickled vegetables, cucumber and fresh coriander.
+3|Italian Minestrone|Rustic Italian vegetable soup with beans, pasta and tomatoes in a deeply savoury broth.
+3|Tunisian Brik with Egg|Crisp pastry wrapped around a runny egg and fragrant tuna-herb filling, fried until golden.
+3|American Cobb Salad|A hearty chopped salad with chicken, avocado, bacon, egg, tomato and tangy dressing.
+3|Japanese Onigiri Rice Balls|Hand-shaped rice triangles with savoury fillings, wrapped in crisp sheets of nori.
+3|Turkish Menemen|Soft scrambled eggs cooked with tomatoes, green peppers and Turkish spices, served with bread.
+3|Scottish Porridge with Stewed Pears|Creamy slow-cooked oats topped with tender cinnamon pears and a drizzle of honey.
+3|Mexican Huevos Rancheros|Fried eggs on crisp tortillas with smoky beans, tomato salsa and fresh coriander.
+3|French Croque Monsieur|Toasted ham and cheese sandwich with creamy béchamel and a golden Gruyère crust.
+3|Chinese Congee with Ginger|Comforting rice porridge simmered until silky, finished with ginger, spring onion and savoury toppings.
+3|Australian Smashed Avocado Toast|Crunchy sourdough topped with smashed avocado, lemon, chilli and fresh herbs.
+3|Indian Poha with Peanuts|Fluffy flattened rice tossed with turmeric, curry leaves, peanuts and fresh lemon.
+3|American Blueberry Muffins|Soft blueberry muffins with tender crumb, juicy berries and lightly golden tops.
+3|Italian Affogato|Hot espresso poured over cold vanilla ice cream for a simple bittersweet Italian dessert.
+3|British Sticky Toffee Pudding|Soft date sponge drenched in warm, buttery toffee sauce.
+3|Greek Honey Yoghurt Parfait|Thick Greek yoghurt layered with honey, toasted nuts and fresh fruit.
+3|French Chocolate Mousse|Airy dark chocolate mousse with a silky texture and intense cocoa flavour.
+3|New York Baked Cheesecake|Dense, creamy baked cheesecake with a buttery biscuit base and delicate vanilla tang.
+3|Japanese Matcha Shortbread|Buttery shortbread biscuits with earthy matcha flavour and a delicate, crisp bite.
+3|Indian Mango Lassi|Cool, creamy mango yoghurt drink with cardamom and a gentle tang.
+3|Chinese Scallion Pancakes|Flaky, chewy scallion pancakes with crisp golden layers and a savoury spring onion filling.
+4|Chicken Adobo|Tender chicken braised in soy sauce, vinegar, garlic and bay leaves until glossy and deeply savoury.
+4|Beef Rendang|Slow-cooked beef infused with coconut milk, lemongrass, galangal and spices until dark and caramelised.
+4|Classic French Quiche Lorraine|Buttery pastry filled with smoky bacon, Gruyère and a delicate savoury egg custard.
+4|Japanese Teriyaki Chicken Donburi|Tender teriyaki-glazed chicken over steamed rice with spring onions and sesame.
+4|Korean Beef Bulgogi|Thinly sliced beef marinated in soy, pear, garlic and sesame, quickly seared until caramelised.
+4|Moroccan Chicken Tagine with Olives|Chicken gently braised with olives, preserved lemon and aromatic Moroccan spices.
+4|Italian Chicken Cacciatore|Rustic chicken simmered with tomatoes, peppers, mushrooms and herbs in a savoury Italian sauce.
+4|Mexican Chicken Enchiladas Rojas|Soft tortillas rolled around spiced chicken and baked under red chilli sauce and melted cheese.
+4|Chinese Char Siu Pork|Sticky Cantonese-style roast pork glazed with honey, hoisin and fragrant five-spice.
+4|Indian Butter Chicken|Tender tandoori-spiced chicken in a buttery tomato cream sauce with warming spices.
+4|Spanish Chicken and Chorizo Rice|One-pan saffron-tinted rice with juicy chicken, smoky chorizo and sweet peppers.
+4|Turkish Lamb Köfte|Chargrilled lamb kofta with cumin, garlic and parsley, served with flatbread and yoghurt.
+4|Vietnamese Beef Pho|Fragrant beef broth with rice noodles, tender beef, fresh herbs and warming spices.
+4|Italian Pasta alla Norma|Silky aubergine in a tangy tomato and basil sauce tossed with pasta and salty ricotta salata.
+4|American BBQ Pulled Pork|Slow-smoked-style shredded pork with a sweet, tangy barbecue glaze and crisp edges.
+4|French Beef Bourguignon|Beef slowly braised in red wine with mushrooms, carrots and pearl onions until fork-tender.
+4|Sicilian Caponata|Sweet-and-sour Sicilian aubergine with tomatoes, celery, olives, capers and vinegar.
+4|Greek Lemon Potatoes|Roast potatoes infused with lemon, oregano, garlic and olive oil until golden and tender.
+4|Japanese Sesame Spinach (Goma-ae)|Blanched spinach tossed with a delicate sesame dressing, soy and a touch of sweetness.
+4|Indian Cucumber Raita|Cool yoghurt mixed with cucumber, cumin and mint to balance spicy curries.
+4|Mexican Refried Beans|Creamy mashed pinto beans cooked with onion, garlic and savoury Mexican spices.
+4|Chinese Garlic Bok Choy|Tender bok choy quickly stir-fried with garlic and a light savoury sauce.
+4|French Green Beans Almondine|Crisp-tender green beans tossed in browned butter and toasted almonds.
+4|Italian Polenta with Parmesan|Creamy soft polenta enriched with butter and Parmesan for a comforting Italian side.
+4|Turkish Ezme Salad|Finely chopped tomato, pepper and onion tossed with parsley, chilli and pomegranate molasses.
+4|American Fluffy Banana Pancakes|Thick, fluffy banana pancakes with caramelised edges and naturally sweet fruit flavour.
+4|Turkish Simit Breakfast Sandwich|Toasted sesame bread rings filled with cheese, tomato, cucumber and fresh herbs.
+4|Japanese Tamagoyaki Omelette|A delicately layered Japanese rolled omelette with a tender texture and subtle savoury sweetness.
+4|Indian Masala Dosa with Potato Filling|Crisp fermented rice-lentil crêpes wrapped around warmly spiced potatoes and onions.
+4|Mexican Breakfast Chilaquiles Rojos|Crisp tortilla pieces coated in red salsa, topped with eggs, crema and fresh cheese.
+4|British Scrambled Eggs on Toast|Soft, buttery scrambled eggs piled onto golden toast with a sprinkle of chives.
+4|French Buckwheat Galettes with Egg and Cheese|Nutty buckwheat crêpes folded around melted cheese, ham and a softly cooked egg.
+4|Australian Bircher Muesli|Creamy soaked oats with grated apple, yoghurt, nuts and a touch of lemon.
+4|Vietnamese Fresh Spring Rolls|Fresh rice paper rolls packed with herbs, crunchy vegetables and noodles, served with dipping sauce.
+4|Italian Panzanella Salad|Juicy ripe tomatoes, crusty bread and basil tossed with olive oil and red wine vinegar.
+4|Mexican Black Bean Quesadillas|Golden tortillas filled with seasoned black beans and melted cheese, served with fresh salsa.
+4|Japanese Soba Noodle Salad|Chilled soba noodles tossed with crunchy vegetables and a sesame-soy dressing.
+4|Middle Eastern Falafel Wraps|Warm flatbread wrapped around crisp falafel, pickles, vegetables and tahini sauce.
+4|French Niçoise Salad|Tuna, green beans, potatoes, eggs and olives arranged with tomatoes and mustard vinaigrette.
+4|Korean Bibimbap Vegetable Bowls|Steamed rice topped with colourful seasoned vegetables, sesame and spicy gochujang.
+4|British Coronation Chicken Sandwiches|Tender chicken in a lightly curried, creamy dressing with mango chutney and crunchy greens.
+4|Turkish Lentil Köfte (Mercimek Köftesi)|Soft red lentil and bulgur patties flavoured with tomato paste, cumin and fresh herbs.
+4|Italian Tiramisu Cups|Individual layers of espresso-soaked sponge and mascarpone cream, finished with cocoa.
+4|French Crème Brûlée|Smooth vanilla custard beneath a brittle, caramelised sugar crust.
+4|British Apple Crumble|Tender baked apples with cinnamon beneath a buttery golden crumble topping.
+4|Japanese Dorayaki Pancakes|Soft Japanese pancakes sandwiched around sweet red bean paste.
+4|Indian Cardamom Rice Pudding (Kheer)|Creamy rice pudding perfumed with cardamom, saffron and toasted nuts.
+4|American Baked New York Cookies|Thick bakery-style cookies with golden edges, soft centres and generous chocolate chunks.
+4|Portuguese Pastéis de Nata|Flaky Portuguese custard tarts with blistered tops and crisp buttery pastry.
+4|Greek Orange and Yoghurt Cake|Moist Greek yoghurt cake with fresh orange zest and a fragrant citrus syrup.
+5|Tuscan White Bean and Kale Soup|Rustic Tuscan soup with creamy white beans, tender kale, garlic and rosemary.
+5|Turkish Imam Bayildi|Silky aubergine halves stuffed with slow-cooked onions, tomatoes and olive oil.
+5|Brazilian Black Bean Feijoada|Rich Brazilian black bean stew with slow-cooked pork, smoky sausage and fragrant seasonings.
+5|Spanish Garlic Prawns Gambas al Ajillo|Juicy prawns sizzling in garlic-infused olive oil with chilli and parsley.
+5|Indian Chana Masala|Tender chickpeas in a tangy tomato curry with ginger, cumin and garam masala.
+5|Vietnamese Lemongrass Pork Bowls|Caramelised lemongrass pork served over rice with crunchy pickles, herbs and a savoury dressing.
+5|Japanese Miso Glazed Aubergine|Tender roasted aubergine coated in a glossy sweet-salty miso glaze and sesame.
+5|Greek Gigantes Plaki|Giant butter beans baked in a herby tomato sauce until creamy and deeply savoury.
+5|Korean Cucumber Salad Oi Muchim|Crunchy cucumber dressed with Korean chilli flakes, garlic, sesame and rice vinegar.
+5|Middle Eastern Fattoush Salad|Crisp lettuce, cucumber, tomatoes and toasted pita with a lemony sumac dressing.
+5|Italian Rosemary Focaccia|Airy olive oil bread with a golden crust, rosemary and pockets of flaky sea salt.
+5|French Gratin Dauphinois|Thin potato slices baked in garlic cream until meltingly tender beneath a golden top.
+5|Chinese Smashed Cucumber Salad|Smashed cucumber pieces tossed in garlicky soy-vinegar dressing with sesame and chilli.
+5|Mexican Elote Street Corn|Charred sweetcorn coated in tangy lime crema, chilli and crumbly cheese.
+5|Japanese Tamagoyaki Rolled Omelette|A soft, layered Japanese omelette rolled into neat slices with delicate savoury flavour.
+5|French Croque Madame|Golden toasted ham and cheese topped with creamy béchamel and a sunny fried egg.
+5|Scottish Porridge with Stewed Apples|Creamy porridge with gently stewed cinnamon apples and a touch of brown sugar.
+5|American Breakfast Burritos|Warm tortillas filled with scrambled eggs, crispy potatoes, beans and salsa.
+5|Vietnamese Banh Xeo Crispy Crepes|Crispy turmeric rice crêpes filled with prawns, pork and bean sprouts, served with fresh herbs.
+5|Italian Panzanella Bread Salad|Juicy tomatoes and torn stale bread tossed with basil, red onion and tangy vinaigrette.
+5|Greek Spanakopita Triangles|Crisp filo triangles stuffed with spinach, salty feta and fresh dill.
+5|Mexican Chicken Tostadas|Crunchy tostadas layered with seasoned chicken, beans, lettuce, salsa and crema.
+5|Thai Larb Gai Chicken Salad|Minced chicken tossed with lime, fish sauce, chilli, toasted rice and fresh herbs.
+5|British Ploughmans Lunch|A traditional cold lunch of crusty bread, mature cheese, chutney, pickles and crisp vegetables.
+5|Italian Caprese Stuffed Ciabatta|Crusty ciabatta filled with creamy mozzarella, ripe tomato, basil and olive oil.
+5|Indian Vegetable Upma|Warm savoury semolina with mustard seeds, curry leaves, vegetables and toasted nuts.
+5|Chinese Scallion Pancakes Cong You Bing|Pan-fried Chinese flatbreads with flaky layers, crisp edges and fragrant spring onions.
+5|Moroccan Carrot and Orange Salad|Sweet carrots and juicy orange segments tossed with cumin, cinnamon and fresh herbs.
+5|German Warm Potato Salad|Tender warm potatoes with bacon, mustard, onion and tangy vinegar dressing.
+5|American Macaroni Salad|Tender macaroni with crunchy celery, peppers and a creamy, tangy dressing.
+5|Thai Mango Sticky Rice|Sweet coconut sticky rice topped with ripe mango and a drizzle of salted coconut cream.
+5|Italian Lemon Ricotta Cake|Tender lemon cake enriched with ricotta, bright citrus zest and a delicate golden crust.
+5|American Banana Bread|Moist banana loaf with a soft crumb, caramelised sweetness and warm vanilla notes.
+5|Portuguese Arroz Doce|Creamy Portuguese rice pudding scented with lemon peel and cinnamon.
+5|Indian Gajar Halwa|Slow-cooked grated carrots with milk, cardamom, ghee and nuts for a rich Indian dessert.
+5|Spanish Basque Burnt Cheesecake|Deeply caramelised cheesecake with a dark burnt top and soft, custardy centre.
+5|Australian Lamingtons|Soft chocolate-coated sponge squares rolled in desiccated coconut, often filled with jam and cream.
+5|Greek Baklava|Crisp layers of filo, nuts and butter soaked in fragrant honey syrup.
+5|Japanese Matcha Panna Cotta|Delicate matcha-infused cream dessert with a smooth set and subtle earthy sweetness.
+5|Georgian Khachapuri Cheese Bread|Boat-shaped Georgian bread filled with molten cheese, butter and a soft egg yolk.
+5|Egyptian Koshari|Egyptian comfort food layering rice, lentils and pasta with spicy tomato sauce and crisp onions.
+5|Persian Zereshk Polo with Chicken|Saffron chicken served with fragrant Persian rice and tart ruby-red barberries.
+5|Polish Pierogi Ruskie|Tender Polish dumplings filled with potato, cheese and onion, served with buttery fried onions.
+5|Caribbean Jerk Chicken with Rice|Smoky, spicy jerk chicken paired with coconut rice and beans for a vibrant Caribbean meal.
+5|Swedish Meatballs with Cream Sauce|Tender Swedish meatballs coated in a silky cream gravy, traditionally served with potatoes and lingonberries.
+5|Colombian Arepas with Cheese|Golden cornmeal cakes split and stuffed with melting cheese, crisp outside and soft within.
+5|Turkish Simit Sesame Rings|Chewy sesame-crusted Turkish bread rings with a lightly crisp exterior and fluffy centre.
+5|Danish Æbleskiver Pancake Balls|Small round Danish pancake puffs with golden shells and soft centres, served with jam and sugar.
+5|Filipino Turon Banana Rolls|Crispy caramelised banana spring rolls with a sweet filling and golden pastry shell.
+5|Nepalese Aloo Tama Bamboo Shoot Curry|Tangy Nepalese curry of potatoes and bamboo shoots simmered with beans and aromatic spices.

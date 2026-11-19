@@ -17,16 +17,16 @@ const ingredientNames = [
 ].map((m) => m[1]);
 
 const recipeTitles = readdirSync(join(API_DATA, 'recipes'))
-  .filter((f) => f.endsWith('.toml'))
+  .filter((f) => f.endsWith('.json'))
   .flatMap((f) =>
-    [...readFileSync(join(API_DATA, 'recipes', f), 'utf8').matchAll(/^title = "(.+)"$/gm)].map(
-      (m) => m[1],
+    (JSON.parse(readFileSync(join(API_DATA, 'recipes', f), 'utf8')) as { title: string }[]).map(
+      (r) => r.title,
     ),
   );
 
 test('found the API data (guards against a wrong path making the next tests pass trivially)', () => {
   expect(ingredientNames.length).toBeGreaterThan(200);
-  expect(recipeTitles.length).toBeGreaterThan(150);
+  expect(recipeTitles.length).toBeGreaterThan(400);
 });
 
 test('every Ingredient has its own emoji', () => {

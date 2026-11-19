@@ -412,6 +412,12 @@ class Course(StrEnum):
     LUNCH = "lunch"  # sandwiches, wraps, rolls, toasties
 
 
+class Difficulty(StrEnum):
+    EASY = "easy"
+    MEDIUM = "medium"
+    HARD = "hard"
+
+
 class RecipeKind(StrEnum):
     SEED = "seed"  # written for Sweep, shared by every Household
     IMPORTED = "imported"  # a Household's own: pasted, photo, link, file or typed (4d)
@@ -468,8 +474,18 @@ class Recipe(Base):
     course: Mapped[Course] = mapped_column(str_enum(Course, "recipe_course"))
     servings: Mapped[int] = mapped_column(SmallInteger)
     total_minutes: Mapped[int | None] = mapped_column(SmallInteger)
-    # Steps, for recipes we're allowed to show in full. Imported Recipes link out instead.
+    # Seed Recipes only (ADR 0028); Imported Recipes leave them empty.
+    prep_minutes: Mapped[int | None] = mapped_column(SmallInteger)
+    cook_minutes: Mapped[int | None] = mapped_column(SmallInteger)
+    difficulty: Mapped[Difficulty | None] = mapped_column(str_enum(Difficulty, "recipe_difficulty"))
+    # Steps, for recipes we're allowed to show in full: the Quick View. Imported Recipes
+    # link out instead.
     method: Mapped[list[str] | None] = mapped_column(JSONB)
+    # The Detailed View: [{"title", "minutes", "steps"}], same cooking as `method`.
+    stages: Mapped[list[dict[str, Any]] | None] = mapped_column(JSONB)
+    tips: Mapped[list[str] | None] = mapped_column(JSONB)
+    variations: Mapped[list[str] | None] = mapped_column(JSONB)
+    storage: Mapped[str | None] = mapped_column(String(1000))
     source_url: Mapped[str | None] = mapped_column(String(2048))
     licence: Mapped[str] = mapped_column(String(100))
     attribution: Mapped[str] = mapped_column(String(200))

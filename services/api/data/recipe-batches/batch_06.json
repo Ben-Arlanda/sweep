@@ -1,0 +1,3048 @@
+[
+  {
+    "title": "Korean Bibimbap",
+    "summary": "Warm rice topped with colourful sautéed vegetables, a fried egg and punchy gochujang sauce.",
+    "cuisine": "korean",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 48,
+    "difficulty": "medium",
+    "ingredients": [
+      "250 g short-grain rice",
+      "2 carrots, julienned",
+      "200 g spinach",
+      "200 g mushrooms, sliced",
+      "1 courgette, julienned",
+      "4 eggs",
+      "3 tbsp gochujang",
+      "2 tbsp sesame oil",
+      "1 tbsp soy sauce",
+      "1 tsp sugar"
+    ],
+    "stages": [
+      {
+        "title": "Cook the rice",
+        "minutes": 20,
+        "steps": [
+          "Rinse rice until water runs mostly clear and cook with the appropriate amount of water.",
+          "Leave covered for five minutes after cooking to let the grains settle."
+        ]
+      },
+      {
+        "title": "Prepare the vegetables",
+        "minutes": 15,
+        "steps": [
+          "Blanch spinach briefly, squeeze dry and dress with a little sesame oil.",
+          "Sauté carrots, mushrooms and courgette separately until just tender, seasoning lightly."
+        ]
+      },
+      {
+        "title": "Make sauce and eggs",
+        "minutes": 8,
+        "steps": [
+          "Mix gochujang with soy sauce, sugar and a splash of water until spoonable.",
+          "Fry eggs sunny-side up so the whites set and yolks remain soft."
+        ]
+      },
+      {
+        "title": "Assemble bowls",
+        "minutes": 5,
+        "steps": [
+          "Divide warm rice between four bowls and arrange vegetables in distinct sections.",
+          "Top with eggs, drizzle with sauce and mix everything thoroughly before eating."
+        ]
+      }
+    ],
+    "tips": [
+      "Keep vegetable toppings separate for colour and texture."
+    ],
+    "variations": [
+      "Add thinly sliced cooked beef or use tofu."
+    ],
+    "storage": "Refrigerate components separately up to 2 days; reheat rice thoroughly."
+  },
+  {
+    "title": "Indian Masala Dosa",
+    "summary": "Crisp fermented rice-and-lentil crêpes wrapped around turmeric-spiced potatoes and mustard seeds.",
+    "cuisine": "indian",
+    "course": "breakfast",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 48,
+    "difficulty": "easy",
+    "ingredients": [
+      "500 ml prepared dosa batter",
+      "500 g potatoes",
+      "1 onion, sliced",
+      "1 tsp black mustard seeds",
+      "1 tsp turmeric",
+      "10 curry leaves",
+      "2 green chillies",
+      "2 tbsp oil",
+      "1 tbsp lemon juice"
+    ],
+    "stages": [
+      {
+        "title": "Cook potato filling",
+        "minutes": 20,
+        "steps": [
+          "Boil potatoes until tender, drain and roughly crush with a fork.",
+          "Keep a little texture rather than mashing them completely smooth."
+        ]
+      },
+      {
+        "title": "Temper the spices",
+        "minutes": 8,
+        "steps": [
+          "Heat oil in a pan and add mustard seeds until they begin to pop.",
+          "Add curry leaves, chilli and onion and cook until softened, then stir in turmeric."
+        ]
+      },
+      {
+        "title": "Combine the masala",
+        "minutes": 5,
+        "steps": [
+          "Fold potatoes into the spiced onion mixture with a splash of water.",
+          "Season with salt and lemon juice and keep warm."
+        ]
+      },
+      {
+        "title": "Cook and fill dosas",
+        "minutes": 15,
+        "steps": [
+          "Heat a flat non-stick pan and spread a thin ladleful of dosa batter in outward circles.",
+          "Drizzle the edges with oil, cook until crisp and golden, then add filling and fold."
+        ]
+      }
+    ],
+    "tips": [
+      "Use properly fermented dosa batter for the best crispness."
+    ],
+    "variations": [
+      "Add peas to the potato filling."
+    ],
+    "storage": "Refrigerate filling up to 3 days; cook dosas fresh."
+  },
+  {
+    "title": "Vietnamese Pho Ga",
+    "summary": "Fragrant chicken noodle soup with ginger, star anise, rice noodles and fresh herbs.",
+    "cuisine": "vietnamese",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 100,
+    "difficulty": "easy",
+    "ingredients": [
+      "1 whole chicken, about 1.3 kg",
+      "2 litres water",
+      "1 onion",
+      "60 g ginger",
+      "2 star anise",
+      "1 cinnamon stick",
+      "2 tbsp fish sauce",
+      "300 g rice noodles",
+      "2 spring onions",
+      "1 bunch Thai basil",
+      "2 limes"
+    ],
+    "stages": [
+      {
+        "title": "Char the aromatics",
+        "minutes": 10,
+        "steps": [
+          "Char halved onion and ginger in a dry pan until fragrant and lightly blackened.",
+          "Rinse off loose burnt bits and place in a large pot with spices."
+        ]
+      },
+      {
+        "title": "Simmer the broth",
+        "minutes": 65,
+        "steps": [
+          "Add chicken and water and bring just to a gentle simmer, skimming foam.",
+          "Cook until chicken is fully cooked, then remove it and continue steeping the broth briefly."
+        ]
+      },
+      {
+        "title": "Shred and strain",
+        "minutes": 15,
+        "steps": [
+          "Cool chicken enough to handle, remove bones and shred the meat.",
+          "Strain broth and season gradually with fish sauce and salt."
+        ]
+      },
+      {
+        "title": "Assemble bowls",
+        "minutes": 10,
+        "steps": [
+          "Soak or cook rice noodles according to the packet and divide into bowls.",
+          "Top with chicken and hot broth, then add spring onions, herbs and lime."
+        ]
+      }
+    ],
+    "tips": [
+      "Avoid a rolling boil for a clearer broth."
+    ],
+    "variations": [
+      "Add bean sprouts and sliced chilli at the table."
+    ],
+    "storage": "Refrigerate broth and chicken up to 3 days; store noodles separately."
+  },
+  {
+    "title": "Moroccan Harira",
+    "summary": "Hearty tomato soup with lentils, chickpeas, celery, warming spices and fresh coriander.",
+    "cuisine": "moroccan",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 60,
+    "difficulty": "easy",
+    "ingredients": [
+      "1 onion, diced",
+      "2 celery stalks",
+      "400 g tinned tomatoes",
+      "200 g cooked chickpeas",
+      "120 g green lentils",
+      "1 litre vegetable stock",
+      "1 tsp ginger",
+      "1 tsp turmeric",
+      "1 tsp cinnamon",
+      "2 tbsp flour",
+      "1 bunch coriander"
+    ],
+    "stages": [
+      {
+        "title": "Soften the vegetables",
+        "minutes": 10,
+        "steps": [
+          "Cook onion and celery in olive oil until soft and fragrant.",
+          "Stir in ginger, turmeric and cinnamon for one minute."
+        ]
+      },
+      {
+        "title": "Simmer legumes",
+        "minutes": 35,
+        "steps": [
+          "Add tomatoes, rinsed lentils and stock and bring to a gentle simmer.",
+          "Cook until lentils are almost tender, then add drained chickpeas."
+        ]
+      },
+      {
+        "title": "Thicken the soup",
+        "minutes": 10,
+        "steps": [
+          "Whisk flour with cold water to make a smooth slurry.",
+          "Stir gradually into simmering soup and cook until lightly thickened."
+        ]
+      },
+      {
+        "title": "Finish with herbs",
+        "minutes": 5,
+        "steps": [
+          "Add chopped coriander and adjust salt and lemon if desired.",
+          "Serve hot with bread or dates on the side."
+        ]
+      }
+    ],
+    "tips": [
+      "Add flour slurry gradually to avoid lumps."
+    ],
+    "variations": [
+      "Add small pieces of lamb for a meat version."
+    ],
+    "storage": "Refrigerate up to 4 days; freeze up to 2 months."
+  },
+  {
+    "title": "American Eggs Benedict",
+    "summary": "Toasted English muffins layered with ham, poached eggs and buttery lemon hollandaise.",
+    "cuisine": "american",
+    "course": "breakfast",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 32,
+    "difficulty": "easy",
+    "ingredients": [
+      "4 English muffins",
+      "8 eggs",
+      "8 slices ham",
+      "180 g unsalted butter",
+      "3 egg yolks",
+      "1 tbsp lemon juice",
+      "1 tsp white vinegar",
+      "1 pinch cayenne"
+    ],
+    "stages": [
+      {
+        "title": "Prepare hollandaise",
+        "minutes": 12,
+        "steps": [
+          "Melt butter and let it cool slightly while whisking egg yolks with lemon over gentle heat.",
+          "Slowly whisk in warm butter until thick and silky, keeping the mixture below a simmer."
+        ]
+      },
+      {
+        "title": "Toast and warm ham",
+        "minutes": 6,
+        "steps": [
+          "Split and toast muffins until golden at the edges.",
+          "Warm ham in a dry skillet and arrange on muffin halves."
+        ]
+      },
+      {
+        "title": "Poach the eggs",
+        "minutes": 10,
+        "steps": [
+          "Bring a wide pan of water to a bare simmer and add vinegar.",
+          "Crack eggs into small cups and slide into water, cooking until whites set and yolks remain soft."
+        ]
+      },
+      {
+        "title": "Assemble immediately",
+        "minutes": 4,
+        "steps": [
+          "Lift eggs out with a slotted spoon and blot excess water.",
+          "Place on ham, spoon over hollandaise and finish with cayenne."
+        ]
+      }
+    ],
+    "tips": [
+      "Keep hollandaise warm, not hot, to avoid splitting."
+    ],
+    "variations": [
+      "Use smoked salmon instead of ham."
+    ],
+    "storage": "Best eaten immediately; do not store assembled eggs Benedict."
+  },
+  {
+    "title": "Italian Cacio e Pepe",
+    "summary": "Silky spaghetti coated in Pecorino Romano, freshly cracked black pepper and starchy pasta water.",
+    "cuisine": "italian",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 21,
+    "difficulty": "easy",
+    "ingredients": [
+      "400 g spaghetti",
+      "150 g Pecorino Romano, finely grated",
+      "2 tsp black peppercorns",
+      "Salt for pasta water"
+    ],
+    "stages": [
+      {
+        "title": "Toast the pepper",
+        "minutes": 3,
+        "steps": [
+          "Crush peppercorns coarsely and toast briefly in a wide dry pan.",
+          "Add a ladle of hot pasta water to release their aroma."
+        ]
+      },
+      {
+        "title": "Cook pasta",
+        "minutes": 10,
+        "steps": [
+          "Boil spaghetti in lightly salted water until just shy of al dente.",
+          "Reserve at least two cups of starchy cooking water before draining."
+        ]
+      },
+      {
+        "title": "Make cheese paste",
+        "minutes": 4,
+        "steps": [
+          "Mix finely grated Pecorino with a little warm, not boiling, pasta water.",
+          "Stir until a thick smooth paste forms without clumping."
+        ]
+      },
+      {
+        "title": "Emulsify and serve",
+        "minutes": 4,
+        "steps": [
+          "Toss pasta in pepper water off the heat, then stir in cheese paste gradually.",
+          "Add small splashes of pasta water until glossy and creamy; serve immediately."
+        ]
+      }
+    ],
+    "tips": [
+      "Keep cheese away from direct heat to prevent clumps."
+    ],
+    "variations": [
+      "Use tonnarelli instead of spaghetti."
+    ],
+    "storage": "Best eaten fresh; leftovers can become grainy."
+  },
+  {
+    "title": "Chinese Dan Dan Noodles",
+    "summary": "Wheat noodles tossed in chilli oil, sesame paste and savoury pork with Sichuan pepper.",
+    "cuisine": "chinese",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 26,
+    "difficulty": "medium",
+    "ingredients": [
+      "350 g wheat noodles",
+      "250 g pork mince",
+      "3 tbsp Chinese sesame paste",
+      "2 tbsp chilli oil",
+      "2 tbsp light soy sauce",
+      "1 tbsp black vinegar",
+      "1 tsp Sichuan pepper",
+      "2 garlic cloves",
+      "2 spring onions"
+    ],
+    "stages": [
+      {
+        "title": "Mix the sauce",
+        "minutes": 6,
+        "steps": [
+          "Whisk sesame paste, soy sauce, vinegar and chilli oil with warm water.",
+          "Adjust until smooth and pourable, then divide between bowls."
+        ]
+      },
+      {
+        "title": "Brown the pork",
+        "minutes": 10,
+        "steps": [
+          "Fry pork mince in a hot pan, breaking it into small crumbles.",
+          "Add garlic and Sichuan pepper and cook until fragrant and pork is fully cooked."
+        ]
+      },
+      {
+        "title": "Cook noodles",
+        "minutes": 6,
+        "steps": [
+          "Boil noodles according to their packet until springy and tender.",
+          "Reserve a little noodle water and drain well."
+        ]
+      },
+      {
+        "title": "Toss and serve",
+        "minutes": 4,
+        "steps": [
+          "Add noodles to sauce bowls and spoon over hot pork.",
+          "Toss thoroughly, loosening with noodle water and topping with spring onions."
+        ]
+      }
+    ],
+    "tips": [
+      "Use Chinese sesame paste for a robust toasted flavour."
+    ],
+    "variations": [
+      "Swap pork for finely chopped mushrooms."
+    ],
+    "storage": "Refrigerate pork topping up to 3 days; cook noodles fresh."
+  },
+  {
+    "title": "Lebanese Fattoush",
+    "summary": "Crunchy toasted pita tossed with cucumber, tomatoes, herbs and tangy sumac-lemon dressing.",
+    "cuisine": "lebanese",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 24,
+    "difficulty": "easy",
+    "ingredients": [
+      "2 pita breads",
+      "2 tomatoes",
+      "1 cucumber",
+      "4 radishes",
+      "1 romaine lettuce",
+      "1 bunch parsley",
+      "1 bunch mint",
+      "3 tbsp olive oil",
+      "2 tbsp lemon juice",
+      "1 tsp sumac"
+    ],
+    "stages": [
+      {
+        "title": "Toast the pita",
+        "minutes": 8,
+        "steps": [
+          "Tear pita into bite-sized pieces and brush lightly with olive oil.",
+          "Bake at 190°C until golden and crisp, then cool."
+        ]
+      },
+      {
+        "title": "Chop vegetables",
+        "minutes": 10,
+        "steps": [
+          "Cut cucumber, tomatoes and radishes into small chunks.",
+          "Wash and dry lettuce thoroughly and roughly chop the herbs."
+        ]
+      },
+      {
+        "title": "Whisk dressing",
+        "minutes": 3,
+        "steps": [
+          "Whisk olive oil, lemon juice, sumac and salt until combined.",
+          "Taste for a bright, tangy balance."
+        ]
+      },
+      {
+        "title": "Toss at the last minute",
+        "minutes": 3,
+        "steps": [
+          "Combine vegetables and herbs in a large bowl and coat lightly with dressing.",
+          "Fold through toasted pita just before serving so it stays crunchy."
+        ]
+      }
+    ],
+    "tips": [
+      "Dry lettuce well so dressing clings."
+    ],
+    "variations": [
+      "Add pomegranate seeds in season."
+    ],
+    "storage": "Refrigerate vegetables and dressing separately up to 2 days; add pita fresh."
+  },
+  {
+    "title": "Japanese Onigiri",
+    "summary": "Hand-shaped seasoned rice triangles with savoury tuna filling, wrapped in crisp nori.",
+    "cuisine": "japanese",
+    "course": "lunch",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "300 g Japanese short-grain rice",
+      "400 ml water",
+      "1 tin tuna, drained",
+      "2 tbsp Japanese mayonnaise",
+      "1 tsp soy sauce",
+      "4 nori sheets",
+      "1 tsp salt"
+    ],
+    "stages": [
+      {
+        "title": "Cook sticky rice",
+        "minutes": 25,
+        "steps": [
+          "Rinse rice until water is mostly clear and cook according to packet directions.",
+          "Rest covered for ten minutes, then fluff gently."
+        ]
+      },
+      {
+        "title": "Prepare the filling",
+        "minutes": 5,
+        "steps": [
+          "Mix drained tuna with mayonnaise and soy sauce.",
+          "Taste and keep the filling fairly thick so it does not leak."
+        ]
+      },
+      {
+        "title": "Shape the rice",
+        "minutes": 12,
+        "steps": [
+          "Wet hands with clean water and lightly salt palms.",
+          "Flatten a handful of warm rice, add filling and enclose it, shaping into a firm triangle."
+        ]
+      },
+      {
+        "title": "Wrap and serve",
+        "minutes": 3,
+        "steps": [
+          "Wrap each triangle with a strip of nori just before eating.",
+          "Serve at room temperature soon after preparation."
+        ]
+      }
+    ],
+    "tips": [
+      "Use warm, not hot, rice for easier shaping."
+    ],
+    "variations": [
+      "Fill with cooked salmon flakes or pickled plum."
+    ],
+    "storage": "Eat promptly; refrigerate up to 1 day and keep chilled."
+  },
+  {
+    "title": "Thai Som Tam",
+    "summary": "Crunchy green papaya salad pounded with lime, fish sauce, chilli, peanuts and tomatoes.",
+    "cuisine": "thai",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 21,
+    "difficulty": "easy",
+    "ingredients": [
+      "400 g shredded green papaya",
+      "2 long beans",
+      "8 cherry tomatoes",
+      "2 garlic cloves",
+      "1 red chilli",
+      "2 tbsp fish sauce",
+      "2 tbsp lime juice",
+      "1 tbsp palm sugar",
+      "30 g roasted peanuts"
+    ],
+    "stages": [
+      {
+        "title": "Prepare vegetables",
+        "minutes": 10,
+        "steps": [
+          "Peel and shred firm green papaya into thin strands.",
+          "Cut beans into short lengths and halve cherry tomatoes."
+        ]
+      },
+      {
+        "title": "Pound aromatics",
+        "minutes": 4,
+        "steps": [
+          "Lightly pound garlic and chilli in a mortar to release their fragrance.",
+          "Add palm sugar, fish sauce and lime juice and mix until dissolved."
+        ]
+      },
+      {
+        "title": "Bruise the salad",
+        "minutes": 5,
+        "steps": [
+          "Add beans and tomatoes and gently pound just enough to crack their surfaces.",
+          "Fold in shredded papaya, tossing with a spoon between gentle presses."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 2,
+        "steps": [
+          "Add roasted peanuts and toss to coat everything evenly.",
+          "Taste for a lively balance of sour, salty, sweet and spicy."
+        ]
+      }
+    ],
+    "tips": [
+      "Do not pound papaya into mush; keep it crunchy."
+    ],
+    "variations": [
+      "Use shredded carrot if green papaya is unavailable."
+    ],
+    "storage": "Best eaten fresh; refrigerate without peanuts up to 1 day."
+  },
+  {
+    "title": "Spanish Patatas Bravas",
+    "summary": "Crisp golden potato cubes served with smoky tomato-chilli bravas sauce and optional garlic aioli.",
+    "cuisine": "spanish",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 60,
+    "difficulty": "easy",
+    "ingredients": [
+      "800 g potatoes",
+      "3 tbsp olive oil",
+      "200 g passata",
+      "2 garlic cloves",
+      "1 tsp smoked paprika",
+      "1/2 tsp chilli flakes",
+      "1 tbsp sherry vinegar",
+      "1 tsp sugar",
+      "Salt"
+    ],
+    "stages": [
+      {
+        "title": "Parboil potatoes",
+        "minutes": 10,
+        "steps": [
+          "Cut potatoes into even cubes and simmer in salted water until barely tender.",
+          "Drain thoroughly and steam-dry for several minutes."
+        ]
+      },
+      {
+        "title": "Roast until crisp",
+        "minutes": 35,
+        "steps": [
+          "Toss potatoes with oil and salt and spread on a preheated tray.",
+          "Roast at 220°C, turning once, until deeply golden and crunchy."
+        ]
+      },
+      {
+        "title": "Cook bravas sauce",
+        "minutes": 12,
+        "steps": [
+          "Gently fry garlic with smoked paprika and chilli for a few seconds.",
+          "Add passata, vinegar and sugar and simmer until thickened."
+        ]
+      },
+      {
+        "title": "Serve with sauce",
+        "minutes": 3,
+        "steps": [
+          "Season potatoes while hot and transfer to a serving dish.",
+          "Spoon sauce over some of the potatoes, leaving others crisp."
+        ]
+      }
+    ],
+    "tips": [
+      "Dry potatoes thoroughly before roasting."
+    ],
+    "variations": [
+      "Serve with garlic aioli."
+    ],
+    "storage": "Refrigerate sauce up to 4 days; potatoes are best fresh."
+  },
+  {
+    "title": "French Quiche Lorraine",
+    "summary": "Buttery pastry filled with smoky bacon and a silky egg-and-cream custard.",
+    "cuisine": "french",
+    "course": "lunch",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 68,
+    "difficulty": "medium",
+    "ingredients": [
+      "1 sheet shortcrust pastry",
+      "180 g bacon lardons",
+      "4 eggs",
+      "250 ml cream",
+      "100 ml milk",
+      "1 pinch nutmeg",
+      "100 g Gruyère, optional",
+      "Black pepper"
+    ],
+    "stages": [
+      {
+        "title": "Blind-bake the crust",
+        "minutes": 20,
+        "steps": [
+          "Line a tart tin with pastry, prick the base and chill briefly.",
+          "Bake with baking weights at 190°C for 15 minutes, then remove weights and bake five more."
+        ]
+      },
+      {
+        "title": "Cook the bacon",
+        "minutes": 8,
+        "steps": [
+          "Fry bacon lardons until lightly crisp and drain excess fat.",
+          "Spread evenly over the partially baked pastry shell."
+        ]
+      },
+      {
+        "title": "Mix the custard",
+        "minutes": 5,
+        "steps": [
+          "Whisk eggs, cream, milk, nutmeg and black pepper until smooth.",
+          "Pour gently over bacon and scatter cheese if using."
+        ]
+      },
+      {
+        "title": "Bake and rest",
+        "minutes": 35,
+        "steps": [
+          "Bake at 170°C until edges are set and centre has a slight wobble.",
+          "Rest at least ten minutes before slicing."
+        ]
+      }
+    ],
+    "tips": [
+      "Do not overbake; custard firms as it cools."
+    ],
+    "variations": [
+      "Add sautéed leeks for a variation."
+    ],
+    "storage": "Refrigerate up to 3 days; reheat gently."
+  },
+  {
+    "title": "Mexican Chilaquiles Rojos",
+    "summary": "Crisp tortilla chips lightly coated in smoky red salsa, topped with eggs, crema and cheese.",
+    "cuisine": "mexican",
+    "course": "breakfast",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "medium",
+    "ingredients": [
+      "10 corn tortillas",
+      "400 g tinned tomatoes",
+      "1 dried guajillo chilli",
+      "1 onion",
+      "2 garlic cloves",
+      "4 eggs",
+      "80 g queso fresco",
+      "100 ml crema",
+      "3 tbsp oil"
+    ],
+    "stages": [
+      {
+        "title": "Crisp the tortillas",
+        "minutes": 15,
+        "steps": [
+          "Cut tortillas into triangles, toss with oil and bake at 200°C until crisp.",
+          "Cool on a rack while preparing the sauce."
+        ]
+      },
+      {
+        "title": "Blend the salsa",
+        "minutes": 10,
+        "steps": [
+          "Soak dried chilli in hot water until soft and remove seeds.",
+          "Blend with tomatoes, onion and garlic until smooth."
+        ]
+      },
+      {
+        "title": "Simmer and combine",
+        "minutes": 12,
+        "steps": [
+          "Cook blended salsa in a skillet until slightly thickened and fragrant.",
+          "Fold tortilla chips through briefly, leaving some edges crunchy."
+        ]
+      },
+      {
+        "title": "Top and serve",
+        "minutes": 8,
+        "steps": [
+          "Fry eggs to your liking and place over sauced tortillas.",
+          "Finish with crema, crumbled cheese and sliced onion."
+        ]
+      }
+    ],
+    "tips": [
+      "Add chips just before serving for contrasting textures."
+    ],
+    "variations": [
+      "Use salsa verde instead of red salsa."
+    ],
+    "storage": "Best eaten immediately; refrigerate salsa up to 3 days."
+  },
+  {
+    "title": "Indian Kheer",
+    "summary": "Creamy cardamom-scented rice pudding simmered slowly in milk with nuts and saffron.",
+    "cuisine": "indian",
+    "course": "dessert",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 70,
+    "difficulty": "easy",
+    "ingredients": [
+      "100 g basmati rice",
+      "1 litre whole milk",
+      "80 g sugar",
+      "4 cardamom pods",
+      "1 pinch saffron",
+      "30 g pistachios",
+      "20 g almonds",
+      "1 tsp rose water"
+    ],
+    "stages": [
+      {
+        "title": "Rinse and soak rice",
+        "minutes": 15,
+        "steps": [
+          "Rinse rice until the water is mostly clear and soak briefly.",
+          "Crush cardamom pods lightly to expose their seeds."
+        ]
+      },
+      {
+        "title": "Simmer in milk",
+        "minutes": 40,
+        "steps": [
+          "Bring milk to a gentle simmer in a heavy pot and add drained rice and cardamom.",
+          "Stir frequently over low heat until grains soften and milk reduces."
+        ]
+      },
+      {
+        "title": "Sweeten and flavour",
+        "minutes": 10,
+        "steps": [
+          "Add sugar and saffron and simmer until creamy and lightly thickened.",
+          "Stir in rose water off the heat and remove cardamom husks if preferred."
+        ]
+      },
+      {
+        "title": "Garnish and serve",
+        "minutes": 5,
+        "steps": [
+          "Toast chopped pistachios and almonds lightly in a dry pan.",
+          "Spoon kheer into bowls and scatter nuts over the top."
+        ]
+      }
+    ],
+    "tips": [
+      "Stir often to prevent milk catching on the base."
+    ],
+    "variations": [
+      "Replace rose water with vanilla."
+    ],
+    "storage": "Refrigerate up to 3 days; stir in milk when reheating."
+  },
+  {
+    "title": "Italian Panzanella",
+    "summary": "Juicy summer tomatoes and toasted bread tossed with cucumber, basil and red wine vinaigrette.",
+    "cuisine": "italian",
+    "course": "lunch",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 39,
+    "difficulty": "easy",
+    "ingredients": [
+      "500 g ripe tomatoes",
+      "200 g day-old sourdough",
+      "1 cucumber",
+      "1 small red onion",
+      "1 bunch basil",
+      "4 tbsp olive oil",
+      "2 tbsp red wine vinegar",
+      "1 garlic clove"
+    ],
+    "stages": [
+      {
+        "title": "Prepare bread",
+        "minutes": 10,
+        "steps": [
+          "Tear day-old bread into rustic pieces and toast lightly if very soft.",
+          "Allow to cool so it absorbs dressing without disintegrating."
+        ]
+      },
+      {
+        "title": "Salt tomatoes",
+        "minutes": 10,
+        "steps": [
+          "Chop tomatoes and toss with a pinch of salt in a bowl.",
+          "Let stand until they release their juices, saving all the liquid."
+        ]
+      },
+      {
+        "title": "Make vinaigrette",
+        "minutes": 4,
+        "steps": [
+          "Whisk olive oil, vinegar and grated garlic into tomato juices.",
+          "Add sliced onion and cucumber and toss gently."
+        ]
+      },
+      {
+        "title": "Combine and rest",
+        "minutes": 15,
+        "steps": [
+          "Fold bread and torn basil into the tomato mixture.",
+          "Rest for ten to fifteen minutes so the bread absorbs the dressing but retains bite."
+        ]
+      }
+    ],
+    "tips": [
+      "Use the ripest tomatoes available."
+    ],
+    "variations": [
+      "Add capers or olives."
+    ],
+    "storage": "Best eaten same day; refrigerate up to 1 day."
+  },
+  {
+    "title": "American Macaroni and Cheese",
+    "summary": "Tender macaroni folded into a velvety cheddar sauce beneath a golden breadcrumb crust.",
+    "cuisine": "american",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 50,
+    "difficulty": "easy",
+    "ingredients": [
+      "350 g macaroni",
+      "50 g butter",
+      "45 g plain flour",
+      "650 ml milk",
+      "250 g mature cheddar",
+      "80 g Parmesan",
+      "80 g breadcrumbs",
+      "1 tsp Dijon mustard"
+    ],
+    "stages": [
+      {
+        "title": "Cook the pasta",
+        "minutes": 8,
+        "steps": [
+          "Boil macaroni in salted water until two minutes shy of al dente.",
+          "Drain well; it will finish cooking in the oven."
+        ]
+      },
+      {
+        "title": "Make cheese sauce",
+        "minutes": 12,
+        "steps": [
+          "Melt butter, whisk in flour and cook one minute without browning.",
+          "Gradually whisk in milk until thick, then remove from heat and stir in cheeses and mustard."
+        ]
+      },
+      {
+        "title": "Assemble the bake",
+        "minutes": 5,
+        "steps": [
+          "Fold pasta through the cheese sauce until evenly coated.",
+          "Transfer to a buttered baking dish and sprinkle breadcrumbs over the top."
+        ]
+      },
+      {
+        "title": "Bake until bubbling",
+        "minutes": 25,
+        "steps": [
+          "Bake at 190°C until golden and bubbling around the edges.",
+          "Rest five minutes before serving so the sauce settles."
+        ]
+      }
+    ],
+    "tips": [
+      "Grate cheese yourself for a smoother sauce."
+    ],
+    "variations": [
+      "Add steamed broccoli before baking."
+    ],
+    "storage": "Refrigerate up to 3 days; reheat covered with a splash of milk."
+  },
+  {
+    "title": "Japanese Tamagoyaki",
+    "summary": "Soft rolled Japanese omelette with delicate layers and a lightly sweet soy-seasoned flavour.",
+    "cuisine": "japanese",
+    "course": "breakfast",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 24,
+    "difficulty": "easy",
+    "ingredients": [
+      "5 eggs",
+      "2 tbsp dashi stock",
+      "1 tsp soy sauce",
+      "1 tsp sugar",
+      "1 tsp mirin",
+      "1 tbsp neutral oil"
+    ],
+    "stages": [
+      {
+        "title": "Mix the eggs",
+        "minutes": 5,
+        "steps": [
+          "Beat eggs gently with dashi, soy sauce, sugar and mirin.",
+          "Strain if desired for an especially smooth texture."
+        ]
+      },
+      {
+        "title": "Cook first layer",
+        "minutes": 4,
+        "steps": [
+          "Lightly oil a small rectangular or round non-stick pan over medium-low heat.",
+          "Pour in a thin layer of egg and roll it towards one side while still slightly soft."
+        ]
+      },
+      {
+        "title": "Build the layers",
+        "minutes": 10,
+        "steps": [
+          "Re-oil the exposed pan and add another thin layer, lifting the roll so egg flows beneath.",
+          "Roll the cooked egg over the new layer and repeat until mixture is used."
+        ]
+      },
+      {
+        "title": "Shape and slice",
+        "minutes": 5,
+        "steps": [
+          "Rest the omelette briefly, then gently press into a neat log with a clean mat if available.",
+          "Slice into thick pieces and serve warm."
+        ]
+      }
+    ],
+    "tips": [
+      "Keep heat moderate to prevent browned layers."
+    ],
+    "variations": [
+      "Omit sugar for a savoury version."
+    ],
+    "storage": "Refrigerate up to 2 days; serve chilled or gently warmed."
+  },
+  {
+    "title": "Turkish Lentil Soup Mercimek Corbasi",
+    "summary": "Velvety red lentil soup with carrot, cumin and lemon, finished with paprika butter.",
+    "cuisine": "turkish",
+    "course": "lunch",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "250 g red lentils",
+      "1 onion",
+      "1 carrot",
+      "1 potato",
+      "1 litre vegetable stock",
+      "1 tsp cumin",
+      "2 tbsp butter",
+      "1 tsp paprika",
+      "1 lemon"
+    ],
+    "stages": [
+      {
+        "title": "Soften the vegetables",
+        "minutes": 10,
+        "steps": [
+          "Dice onion, carrot and potato into small pieces.",
+          "Cook onion and carrot in a little oil until softened."
+        ]
+      },
+      {
+        "title": "Simmer lentils",
+        "minutes": 25,
+        "steps": [
+          "Add rinsed lentils, potato, cumin and stock.",
+          "Simmer until the lentils and vegetables are completely tender."
+        ]
+      },
+      {
+        "title": "Blend until silky",
+        "minutes": 5,
+        "steps": [
+          "Blend carefully with a stick blender until smooth.",
+          "Add hot water as needed for a pourable, velvety texture."
+        ]
+      },
+      {
+        "title": "Finish with butter",
+        "minutes": 5,
+        "steps": [
+          "Melt butter in a small pan and stir in paprika briefly without burning.",
+          "Drizzle over soup and serve with lemon wedges."
+        ]
+      }
+    ],
+    "tips": [
+      "Red lentils naturally thicken the soup as they break down."
+    ],
+    "variations": [
+      "Add dried mint to the paprika butter."
+    ],
+    "storage": "Refrigerate up to 4 days; freeze up to 2 months."
+  },
+  {
+    "title": "Mexican Elote",
+    "summary": "Charred sweetcorn brushed with lime mayonnaise, chilli and salty crumbled cheese.",
+    "cuisine": "mexican",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 21,
+    "difficulty": "easy",
+    "ingredients": [
+      "4 corn cobs",
+      "4 tbsp mayonnaise",
+      "2 tbsp sour cream",
+      "1 lime",
+      "80 g cotija or feta",
+      "1 tsp chilli powder",
+      "1 tbsp coriander"
+    ],
+    "stages": [
+      {
+        "title": "Char the corn",
+        "minutes": 12,
+        "steps": [
+          "Grill corn over medium-high heat, turning often, until kernels are tender and spotted with char.",
+          "Alternatively roast under a hot oven grill, turning frequently."
+        ]
+      },
+      {
+        "title": "Make the crema",
+        "minutes": 4,
+        "steps": [
+          "Mix mayonnaise, sour cream and lime juice until smooth.",
+          "Taste and add a pinch of salt if needed."
+        ]
+      },
+      {
+        "title": "Coat the cobs",
+        "minutes": 3,
+        "steps": [
+          "Brush hot corn generously with the creamy dressing.",
+          "Roll in crumbled cheese so it sticks to the surface."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 2,
+        "steps": [
+          "Dust lightly with chilli powder and scatter coriander.",
+          "Serve immediately with extra lime wedges."
+        ]
+      }
+    ],
+    "tips": [
+      "Charred spots give elote its signature smoky flavour."
+    ],
+    "variations": [
+      "Cut kernels off the cob for esquites-style cups."
+    ],
+    "storage": "Best eaten fresh; refrigerate cooked corn up to 2 days."
+  },
+  {
+    "title": "Indian Chicken Biryani",
+    "summary": "Fragrant basmati rice layered with spiced chicken, caramelised onions, saffron and fresh mint.",
+    "cuisine": "indian",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 85,
+    "difficulty": "medium",
+    "ingredients": [
+      "600 g chicken thighs",
+      "350 g basmati rice",
+      "200 g yoghurt",
+      "2 onions",
+      "2 tbsp biryani masala",
+      "1 tsp turmeric",
+      "1 tbsp ginger-garlic paste",
+      "1 pinch saffron",
+      "2 tbsp milk",
+      "1 bunch mint"
+    ],
+    "stages": [
+      {
+        "title": "Marinate chicken",
+        "minutes": 30,
+        "steps": [
+          "Mix chicken with yoghurt, ginger-garlic paste, biryani masala and turmeric.",
+          "Refrigerate for at least thirty minutes while preparing rice and onions."
+        ]
+      },
+      {
+        "title": "Parboil rice",
+        "minutes": 10,
+        "steps": [
+          "Rinse and soak basmati rice briefly, then boil in salted water until about seventy percent cooked.",
+          "Drain promptly so grains remain firm enough to finish steaming."
+        ]
+      },
+      {
+        "title": "Layer the biryani",
+        "minutes": 15,
+        "steps": [
+          "Fry sliced onions until deeply golden and cook marinated chicken until nearly cooked through.",
+          "Layer chicken, rice, onions, mint and saffron-infused milk in a heavy pot."
+        ]
+      },
+      {
+        "title": "Steam and rest",
+        "minutes": 30,
+        "steps": [
+          "Cover tightly and cook on very low heat until chicken is cooked through and rice tender.",
+          "Rest covered ten minutes, then fluff gently without crushing the grains."
+        ]
+      }
+    ],
+    "tips": [
+      "Keep rice slightly undercooked before layering."
+    ],
+    "variations": [
+      "Add boiled eggs and toasted cashews."
+    ],
+    "storage": "Refrigerate promptly up to 2 days; reheat thoroughly."
+  },
+  {
+    "title": "Spanish Tortilla de Patatas",
+    "summary": "Thick Spanish omelette with tender potatoes and sweet onions bound in softly set eggs.",
+    "cuisine": "spanish",
+    "course": "lunch",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 53,
+    "difficulty": "easy",
+    "ingredients": [
+      "600 g potatoes",
+      "1 onion",
+      "6 eggs",
+      "150 ml olive oil",
+      "1 tsp salt"
+    ],
+    "stages": [
+      {
+        "title": "Slice the potatoes",
+        "minutes": 10,
+        "steps": [
+          "Peel potatoes and slice thinly and evenly.",
+          "Slice onion into thin half-moons."
+        ]
+      },
+      {
+        "title": "Cook gently in oil",
+        "minutes": 20,
+        "steps": [
+          "Heat olive oil in a non-stick pan and add potatoes and onion.",
+          "Cook gently until completely tender without becoming crisp, then drain excess oil."
+        ]
+      },
+      {
+        "title": "Combine with eggs",
+        "minutes": 8,
+        "steps": [
+          "Beat eggs with salt in a large bowl and fold in warm potatoes.",
+          "Rest five minutes so the potatoes absorb some egg."
+        ]
+      },
+      {
+        "title": "Set and turn",
+        "minutes": 15,
+        "steps": [
+          "Pour mixture into a lightly oiled non-stick skillet and cook over medium-low heat until edges set.",
+          "Invert carefully onto a plate, slide back and cook until the centre reaches your preferred doneness."
+        ]
+      }
+    ],
+    "tips": [
+      "Cook potatoes gently rather than frying them crisp."
+    ],
+    "variations": [
+      "Add roasted red peppers."
+    ],
+    "storage": "Refrigerate up to 3 days; serve chilled or reheated."
+  },
+  {
+    "title": "Middle Eastern Baba Ganoush",
+    "summary": "Smoky roasted aubergine blended with tahini, lemon and garlic for a silky dip.",
+    "cuisine": "middle eastern",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 53,
+    "difficulty": "easy",
+    "ingredients": [
+      "2 large aubergines",
+      "3 tbsp tahini",
+      "2 tbsp lemon juice",
+      "1 garlic clove",
+      "2 tbsp olive oil",
+      "1/2 tsp cumin",
+      "1 tbsp parsley"
+    ],
+    "stages": [
+      {
+        "title": "Char the aubergines",
+        "minutes": 35,
+        "steps": [
+          "Prick aubergines and roast at 220°C until skins collapse and flesh is very soft.",
+          "For a smokier flavour, char the skins over a gas flame first."
+        ]
+      },
+      {
+        "title": "Drain the flesh",
+        "minutes": 10,
+        "steps": [
+          "Cool until manageable, then scoop out the soft flesh.",
+          "Drain in a sieve briefly to remove excess liquid and bitterness."
+        ]
+      },
+      {
+        "title": "Mix the dip",
+        "minutes": 5,
+        "steps": [
+          "Mash aubergine with tahini, lemon juice, grated garlic and cumin.",
+          "Stir until creamy but still slightly textured."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 3,
+        "steps": [
+          "Taste for salt and lemon and drizzle with olive oil.",
+          "Scatter parsley on top and serve with warm flatbread."
+        ]
+      }
+    ],
+    "tips": [
+      "Drain roasted aubergine to avoid a watery dip."
+    ],
+    "variations": [
+      "Add a spoon of yoghurt for extra creaminess."
+    ],
+    "storage": "Refrigerate up to 3 days in an airtight container."
+  },
+  {
+    "title": "British Eton Mess",
+    "summary": "Crushed crisp meringue folded through softly whipped cream and juicy strawberries.",
+    "cuisine": "british",
+    "course": "dessert",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 20,
+    "difficulty": "easy",
+    "ingredients": [
+      "400 g strawberries",
+      "300 ml thickened cream",
+      "100 g ready-made meringues",
+      "1 tbsp icing sugar",
+      "1 tsp vanilla",
+      "1 tsp lemon juice"
+    ],
+    "stages": [
+      {
+        "title": "Macerate berries",
+        "minutes": 10,
+        "steps": [
+          "Hull and quarter strawberries and toss with lemon juice and a little icing sugar.",
+          "Leave until they release a light syrup."
+        ]
+      },
+      {
+        "title": "Whip the cream",
+        "minutes": 5,
+        "steps": [
+          "Whip chilled cream with vanilla to soft peaks.",
+          "Stop before it becomes stiff or grainy."
+        ]
+      },
+      {
+        "title": "Fold together",
+        "minutes": 3,
+        "steps": [
+          "Crush meringues into uneven chunks, keeping some large pieces.",
+          "Fold most berries and meringue gently into the cream."
+        ]
+      },
+      {
+        "title": "Assemble and serve",
+        "minutes": 2,
+        "steps": [
+          "Spoon into glasses and top with reserved berries and meringue.",
+          "Serve immediately while the meringue is still crunchy."
+        ]
+      }
+    ],
+    "tips": [
+      "Fold meringue in at the last minute for contrast."
+    ],
+    "variations": [
+      "Use raspberries instead of strawberries."
+    ],
+    "storage": "Store components separately chilled up to 1 day; assemble fresh."
+  },
+  {
+    "title": "Korean Japchae",
+    "summary": "Springy sweet potato noodles tossed with beef, spinach and vegetables in a glossy sesame-soy dressing.",
+    "cuisine": "korean",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 35,
+    "difficulty": "easy",
+    "ingredients": [
+      "250 g sweet potato glass noodles",
+      "250 g beef strips",
+      "1 carrot",
+      "1 red pepper",
+      "150 g spinach",
+      "150 g mushrooms",
+      "3 tbsp soy sauce",
+      "1 tbsp sugar",
+      "2 tbsp sesame oil",
+      "2 garlic cloves"
+    ],
+    "stages": [
+      {
+        "title": "Cook noodles",
+        "minutes": 10,
+        "steps": [
+          "Boil sweet potato noodles until tender and pleasantly chewy.",
+          "Drain, rinse briefly and toss with a little sesame oil."
+        ]
+      },
+      {
+        "title": "Prepare toppings",
+        "minutes": 12,
+        "steps": [
+          "Blanch spinach, squeeze dry and season lightly.",
+          "Sauté carrot, pepper and mushrooms separately so each stays distinct."
+        ]
+      },
+      {
+        "title": "Cook beef",
+        "minutes": 8,
+        "steps": [
+          "Sear thin beef strips in a hot pan until cooked through.",
+          "Add garlic, soy sauce and sugar and toss briefly."
+        ]
+      },
+      {
+        "title": "Combine and finish",
+        "minutes": 5,
+        "steps": [
+          "Toss noodles with vegetables, beef and remaining sesame oil.",
+          "Taste for soy and sweetness and serve warm or at room temperature."
+        ]
+      }
+    ],
+    "tips": [
+      "Cook vegetables separately to retain their colours."
+    ],
+    "variations": [
+      "Omit beef and add tofu."
+    ],
+    "storage": "Refrigerate up to 3 days; reheat gently."
+  },
+  {
+    "title": "Mexican Sopa de Lima",
+    "summary": "Light Yucatán-style chicken soup scented with lime, oregano and toasted tortilla strips.",
+    "cuisine": "mexican",
+    "course": "lunch",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 47,
+    "difficulty": "easy",
+    "ingredients": [
+      "400 g chicken breast",
+      "1 litre chicken stock",
+      "2 tomatoes",
+      "1 onion",
+      "2 garlic cloves",
+      "2 limes",
+      "1 tsp oregano",
+      "4 corn tortillas",
+      "2 tbsp oil"
+    ],
+    "stages": [
+      {
+        "title": "Cook the chicken",
+        "minutes": 20,
+        "steps": [
+          "Simmer chicken gently in stock until cooked through.",
+          "Remove and shred, keeping the broth warm."
+        ]
+      },
+      {
+        "title": "Build the soup",
+        "minutes": 12,
+        "steps": [
+          "Sauté chopped onion and garlic until soft, then add diced tomatoes and oregano.",
+          "Cook until tomatoes begin to break down and stir into broth."
+        ]
+      },
+      {
+        "title": "Crisp tortilla strips",
+        "minutes": 10,
+        "steps": [
+          "Cut tortillas into thin strips and toss with oil.",
+          "Bake at 200°C until crisp and golden, then cool on a rack."
+        ]
+      },
+      {
+        "title": "Finish with lime",
+        "minutes": 5,
+        "steps": [
+          "Return shredded chicken to broth and warm through.",
+          "Add lime juice off the heat and serve with tortilla strips."
+        ]
+      }
+    ],
+    "tips": [
+      "Add lime at the end for a fresh citrus aroma."
+    ],
+    "variations": [
+      "Add sliced avocado at serving."
+    ],
+    "storage": "Refrigerate soup up to 3 days; keep tortilla strips separate."
+  },
+  {
+    "title": "French Tarte Tatin",
+    "summary": "Caramelised apples baked beneath buttery pastry, then turned out into a glossy upside-down tart.",
+    "cuisine": "french",
+    "course": "dessert",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 67,
+    "difficulty": "medium",
+    "ingredients": [
+      "6 firm apples",
+      "120 g caster sugar",
+      "60 g butter",
+      "1 sheet puff pastry",
+      "1 tsp lemon juice",
+      "1 pinch salt"
+    ],
+    "stages": [
+      {
+        "title": "Prepare apples",
+        "minutes": 12,
+        "steps": [
+          "Peel, core and quarter apples, keeping pieces similar in size.",
+          "Toss with lemon juice to prevent browning."
+        ]
+      },
+      {
+        "title": "Make caramel",
+        "minutes": 12,
+        "steps": [
+          "Melt sugar in an ovenproof skillet over medium heat until amber.",
+          "Swirl in butter carefully and arrange apples snugly in the caramel."
+        ]
+      },
+      {
+        "title": "Cover with pastry",
+        "minutes": 8,
+        "steps": [
+          "Cook apples briefly to release some moisture, then remove from heat.",
+          "Lay pastry over apples and tuck edges inside the pan."
+        ]
+      },
+      {
+        "title": "Bake and invert",
+        "minutes": 35,
+        "steps": [
+          "Bake at 190°C until pastry is puffed and golden.",
+          "Rest five minutes, then invert carefully onto a large plate while caramel is still fluid."
+        ]
+      }
+    ],
+    "tips": [
+      "Choose firm apples that hold shape during cooking."
+    ],
+    "variations": [
+      "Add a pinch of cinnamon to the caramel."
+    ],
+    "storage": "Refrigerate up to 2 days; reheat in oven."
+  },
+  {
+    "title": "Thai Coconut Rice",
+    "summary": "Fluffy jasmine rice gently cooked in coconut milk with a delicate sweetness and pandan aroma.",
+    "cuisine": "thai",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 33,
+    "difficulty": "easy",
+    "ingredients": [
+      "300 g jasmine rice",
+      "300 ml coconut milk",
+      "250 ml water",
+      "1 tsp sugar",
+      "1/2 tsp salt",
+      "1 pandan leaf, optional"
+    ],
+    "stages": [
+      {
+        "title": "Rinse the rice",
+        "minutes": 5,
+        "steps": [
+          "Rinse jasmine rice gently until the water runs mostly clear.",
+          "Drain well so the liquid ratio stays accurate."
+        ]
+      },
+      {
+        "title": "Combine liquids",
+        "minutes": 3,
+        "steps": [
+          "Stir coconut milk, water, sugar and salt in a heavy saucepan.",
+          "Add pandan leaf if using and bring just to a gentle simmer."
+        ]
+      },
+      {
+        "title": "Steam the rice",
+        "minutes": 15,
+        "steps": [
+          "Add rice, cover tightly and reduce heat to very low.",
+          "Cook without lifting the lid until liquid is absorbed and rice tender."
+        ]
+      },
+      {
+        "title": "Rest and fluff",
+        "minutes": 10,
+        "steps": [
+          "Remove from heat and leave covered for ten minutes.",
+          "Discard pandan and fluff gently with a fork before serving."
+        ]
+      }
+    ],
+    "tips": [
+      "Use full-fat coconut milk for richer flavour."
+    ],
+    "variations": [
+      "Add lime zest for a fresh note."
+    ],
+    "storage": "Refrigerate promptly up to 2 days; reheat thoroughly."
+  },
+  {
+    "title": "Italian Caprese Salad",
+    "summary": "Ripe tomatoes, fresh mozzarella and basil layered with olive oil and a little sea salt.",
+    "cuisine": "italian",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 16,
+    "difficulty": "easy",
+    "ingredients": [
+      "4 ripe tomatoes",
+      "250 g fresh mozzarella",
+      "1 bunch basil",
+      "3 tbsp extra virgin olive oil",
+      "Sea salt",
+      "Black pepper"
+    ],
+    "stages": [
+      {
+        "title": "Prepare tomatoes",
+        "minutes": 5,
+        "steps": [
+          "Slice ripe tomatoes into even rounds with a sharp knife.",
+          "Arrange on a plate and season lightly with sea salt."
+        ]
+      },
+      {
+        "title": "Slice mozzarella",
+        "minutes": 4,
+        "steps": [
+          "Drain mozzarella and pat gently to remove excess whey.",
+          "Slice into rounds similar in thickness to the tomatoes."
+        ]
+      },
+      {
+        "title": "Layer with basil",
+        "minutes": 5,
+        "steps": [
+          "Alternate tomatoes and mozzarella, tucking fresh basil leaves between them.",
+          "Avoid tearing basil too early to preserve its fragrance."
+        ]
+      },
+      {
+        "title": "Dress and serve",
+        "minutes": 2,
+        "steps": [
+          "Drizzle with good extra virgin olive oil and add freshly ground pepper.",
+          "Serve immediately at room temperature for best flavour."
+        ]
+      }
+    ],
+    "tips": [
+      "Use room-temperature tomatoes for fuller flavour."
+    ],
+    "variations": [
+      "Add a few drops of balsamic vinegar if desired."
+    ],
+    "storage": "Best eaten fresh; refrigerate leftovers up to 1 day."
+  },
+  {
+    "title": "Indian Poha",
+    "summary": "Light flattened rice tossed with turmeric, mustard seeds, peanuts, curry leaves and lemon.",
+    "cuisine": "indian",
+    "course": "breakfast",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 29,
+    "difficulty": "easy",
+    "ingredients": [
+      "250 g thick poha",
+      "1 onion",
+      "1 potato",
+      "50 g peanuts",
+      "1 tsp mustard seeds",
+      "10 curry leaves",
+      "1 green chilli",
+      "1/2 tsp turmeric",
+      "2 tbsp oil",
+      "1 lemon"
+    ],
+    "stages": [
+      {
+        "title": "Rinse the poha",
+        "minutes": 5,
+        "steps": [
+          "Rinse flattened rice briefly in a sieve until just softened.",
+          "Drain and leave to hydrate without soaking it into mush."
+        ]
+      },
+      {
+        "title": "Cook peanuts and spices",
+        "minutes": 7,
+        "steps": [
+          "Toast peanuts in a little oil until golden, then remove.",
+          "Add mustard seeds and curry leaves to the pan until fragrant."
+        ]
+      },
+      {
+        "title": "Cook vegetables",
+        "minutes": 12,
+        "steps": [
+          "Add diced potato and onion and cook until potato is tender.",
+          "Stir in chilli and turmeric for thirty seconds."
+        ]
+      },
+      {
+        "title": "Fold and finish",
+        "minutes": 5,
+        "steps": [
+          "Add softened poha and peanuts and toss gently until heated through.",
+          "Finish with lemon juice and coriander if available."
+        ]
+      }
+    ],
+    "tips": [
+      "Use thick poha; thin flakes can disintegrate."
+    ],
+    "variations": [
+      "Add peas or grated coconut."
+    ],
+    "storage": "Refrigerate up to 2 days; reheat gently."
+  },
+  {
+    "title": "Greek Loukoumades",
+    "summary": "Little golden fried doughnuts drizzled with honey, cinnamon and crunchy walnuts.",
+    "cuisine": "greek",
+    "course": "dessert",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 88,
+    "difficulty": "medium",
+    "ingredients": [
+      "250 g plain flour",
+      "7 g instant yeast",
+      "220 ml warm water",
+      "1 tbsp sugar",
+      "1 pinch salt",
+      "500 ml frying oil",
+      "100 g honey",
+      "1 tsp cinnamon",
+      "40 g walnuts"
+    ],
+    "stages": [
+      {
+        "title": "Mix and prove dough",
+        "minutes": 60,
+        "steps": [
+          "Whisk flour, yeast, sugar, salt and warm water into a thick sticky batter.",
+          "Cover and leave in a warm place until visibly bubbly and doubled."
+        ]
+      },
+      {
+        "title": "Heat the oil",
+        "minutes": 8,
+        "steps": [
+          "Heat oil in a deep pot to about 175°C.",
+          "Prepare two teaspoons dipped in oil for shaping the batter."
+        ]
+      },
+      {
+        "title": "Fry doughnuts",
+        "minutes": 15,
+        "steps": [
+          "Drop small spoonfuls of batter into oil in batches without crowding.",
+          "Turn until evenly puffed and golden, then drain on a rack."
+        ]
+      },
+      {
+        "title": "Honey and serve",
+        "minutes": 5,
+        "steps": [
+          "Warm honey gently so it pours easily.",
+          "Drizzle over hot doughnuts and finish with cinnamon and chopped walnuts."
+        ]
+      }
+    ],
+    "tips": [
+      "Maintain steady oil temperature for light centres."
+    ],
+    "variations": [
+      "Serve with melted dark chocolate instead of honey."
+    ],
+    "storage": "Best eaten immediately; fried dough softens in storage."
+  },
+  {
+    "title": "Japanese Chicken Yakitori",
+    "summary": "Chargrilled chicken skewers brushed with a glossy soy, mirin and sake glaze.",
+    "cuisine": "japanese",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 42,
+    "difficulty": "easy",
+    "ingredients": [
+      "600 g boneless chicken thighs",
+      "6 spring onions",
+      "80 ml soy sauce",
+      "80 ml mirin",
+      "60 ml sake",
+      "2 tbsp sugar",
+      "12 bamboo skewers"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the glaze",
+        "minutes": 10,
+        "steps": [
+          "Simmer soy sauce, mirin, sake and sugar until slightly syrupy.",
+          "Set aside some clean sauce for serving and use the rest for basting."
+        ]
+      },
+      {
+        "title": "Thread the skewers",
+        "minutes": 12,
+        "steps": [
+          "Cut chicken into even bite-sized pieces and spring onions into short lengths.",
+          "Thread alternating pieces onto soaked bamboo skewers."
+        ]
+      },
+      {
+        "title": "Grill the chicken",
+        "minutes": 15,
+        "steps": [
+          "Grill over medium-high heat, turning regularly so all sides cook evenly.",
+          "Brush with glaze during the final minutes to build a shiny coating without burning."
+        ]
+      },
+      {
+        "title": "Rest and serve",
+        "minutes": 5,
+        "steps": [
+          "Check chicken is fully cooked through before removing from heat.",
+          "Rest briefly and brush with reserved clean glaze."
+        ]
+      }
+    ],
+    "tips": [
+      "Glaze near the end to prevent sugar scorching."
+    ],
+    "variations": [
+      "Use mushrooms between chicken pieces."
+    ],
+    "storage": "Refrigerate cooked skewers up to 3 days; reheat thoroughly."
+  },
+  {
+    "title": "Turkish Kisir",
+    "summary": "Fine bulgur salad with tomato and pepper pastes, parsley, lemon and pomegranate molasses.",
+    "cuisine": "turkish",
+    "course": "lunch",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 35,
+    "difficulty": "easy",
+    "ingredients": [
+      "250 g fine bulgur",
+      "300 ml boiling water",
+      "2 tbsp tomato paste",
+      "1 tbsp pepper paste",
+      "4 spring onions",
+      "1 bunch parsley",
+      "1 cucumber",
+      "2 tbsp pomegranate molasses",
+      "2 tbsp olive oil",
+      "1 lemon"
+    ],
+    "stages": [
+      {
+        "title": "Hydrate bulgur",
+        "minutes": 15,
+        "steps": [
+          "Place fine bulgur in a bowl and pour over boiling water.",
+          "Cover tightly until tender, then fluff with a fork."
+        ]
+      },
+      {
+        "title": "Mix the pastes",
+        "minutes": 5,
+        "steps": [
+          "Stir tomato paste and pepper paste into warm bulgur.",
+          "Work through evenly until grains turn reddish and fragrant."
+        ]
+      },
+      {
+        "title": "Chop vegetables",
+        "minutes": 10,
+        "steps": [
+          "Finely chop spring onions, parsley and cucumber.",
+          "Fold into cooled bulgur so herbs stay fresh."
+        ]
+      },
+      {
+        "title": "Dress and serve",
+        "minutes": 5,
+        "steps": [
+          "Add pomegranate molasses, olive oil and lemon juice.",
+          "Taste for tanginess and salt, then serve with lettuce leaves."
+        ]
+      }
+    ],
+    "tips": [
+      "Use fine bulgur, which hydrates without boiling."
+    ],
+    "variations": [
+      "Add chopped walnuts for crunch."
+    ],
+    "storage": "Refrigerate up to 3 days."
+  },
+  {
+    "title": "French Clafoutis",
+    "summary": "Juicy cherries baked in a tender vanilla custard batter with a lightly golden top.",
+    "cuisine": "french",
+    "course": "dessert",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 68,
+    "difficulty": "easy",
+    "ingredients": [
+      "400 g cherries, pitted",
+      "3 eggs",
+      "100 g sugar",
+      "100 g plain flour",
+      "250 ml milk",
+      "50 ml cream",
+      "1 tsp vanilla",
+      "20 g butter"
+    ],
+    "stages": [
+      {
+        "title": "Prepare dish and cherries",
+        "minutes": 10,
+        "steps": [
+          "Heat oven to 180°C and butter a shallow baking dish.",
+          "Spread pitted cherries evenly across the base."
+        ]
+      },
+      {
+        "title": "Whisk the batter",
+        "minutes": 8,
+        "steps": [
+          "Whisk eggs and sugar until combined, then add flour gradually.",
+          "Pour in milk, cream and vanilla and whisk until smooth."
+        ]
+      },
+      {
+        "title": "Bake gently",
+        "minutes": 35,
+        "steps": [
+          "Pour batter around cherries and bake until puffed and lightly golden.",
+          "The centre should be just set with a slight wobble, not liquid."
+        ]
+      },
+      {
+        "title": "Cool and serve",
+        "minutes": 15,
+        "steps": [
+          "Let clafoutis cool until warm so the custard settles.",
+          "Dust lightly with icing sugar if desired and serve in spoonfuls."
+        ]
+      }
+    ],
+    "tips": [
+      "Do not overbake or the custard may become rubbery."
+    ],
+    "variations": [
+      "Use plums or berries instead of cherries."
+    ],
+    "storage": "Refrigerate up to 2 days; serve warm or chilled."
+  },
+  {
+    "title": "Moroccan Zaalouk",
+    "summary": "Smoky aubergine and tomato dip simmered with cumin, paprika, garlic and olive oil.",
+    "cuisine": "moroccan",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 60,
+    "difficulty": "easy",
+    "ingredients": [
+      "2 aubergines",
+      "4 tomatoes",
+      "3 garlic cloves",
+      "3 tbsp olive oil",
+      "1 tsp cumin",
+      "1 tsp paprika",
+      "1 tbsp lemon juice",
+      "1 bunch coriander"
+    ],
+    "stages": [
+      {
+        "title": "Roast aubergines",
+        "minutes": 30,
+        "steps": [
+          "Prick aubergines and roast at 220°C until collapsed and very soft.",
+          "Cool slightly and scoop flesh from the skins."
+        ]
+      },
+      {
+        "title": "Cook tomatoes",
+        "minutes": 15,
+        "steps": [
+          "Heat olive oil with garlic, cumin and paprika until fragrant.",
+          "Add diced tomatoes and simmer until thick and jammy."
+        ]
+      },
+      {
+        "title": "Combine and reduce",
+        "minutes": 12,
+        "steps": [
+          "Mash aubergine flesh into the tomato sauce with a fork.",
+          "Cook uncovered, stirring, until excess moisture evaporates."
+        ]
+      },
+      {
+        "title": "Finish with herbs",
+        "minutes": 3,
+        "steps": [
+          "Add lemon juice and chopped coriander.",
+          "Taste for salt and serve warm or at room temperature with bread."
+        ]
+      }
+    ],
+    "tips": [
+      "Reduce thoroughly for a spreadable texture."
+    ],
+    "variations": [
+      "Add a pinch of chilli for heat."
+    ],
+    "storage": "Refrigerate up to 4 days."
+  },
+  {
+    "title": "British Welsh Rarebit",
+    "summary": "Thick toast covered in sharp cheddar, mustard and ale sauce, grilled until bubbling.",
+    "cuisine": "british",
+    "course": "lunch",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 22,
+    "difficulty": "easy",
+    "ingredients": [
+      "4 thick slices sourdough",
+      "200 g mature cheddar",
+      "25 g butter",
+      "1 tbsp plain flour",
+      "80 ml ale",
+      "1 tsp English mustard",
+      "1 tsp Worcestershire sauce",
+      "1 egg yolk"
+    ],
+    "stages": [
+      {
+        "title": "Make the base",
+        "minutes": 6,
+        "steps": [
+          "Melt butter in a saucepan and stir in flour for one minute.",
+          "Gradually whisk in ale to make a thick smooth sauce."
+        ]
+      },
+      {
+        "title": "Add cheese",
+        "minutes": 5,
+        "steps": [
+          "Remove from direct heat and stir in grated cheddar, mustard and Worcestershire sauce.",
+          "Mix in egg yolk once slightly cooled until smooth."
+        ]
+      },
+      {
+        "title": "Prepare toast",
+        "minutes": 5,
+        "steps": [
+          "Toast bread lightly on both sides so it stays firm under the topping.",
+          "Spread cheese mixture thickly to the edges."
+        ]
+      },
+      {
+        "title": "Grill and serve",
+        "minutes": 6,
+        "steps": [
+          "Place under a hot grill until puffed, golden and bubbling.",
+          "Allow to cool briefly before eating as the cheese is very hot."
+        ]
+      }
+    ],
+    "tips": [
+      "Use mature cheddar for a pronounced flavour."
+    ],
+    "variations": [
+      "Replace ale with milk for an alcohol-free version."
+    ],
+    "storage": "Best eaten fresh; refrigerate cheese mixture up to 1 day."
+  },
+  {
+    "title": "Indian Rava Upma",
+    "summary": "Fluffy savoury semolina cooked with mustard seeds, curry leaves, vegetables and toasted cashews.",
+    "cuisine": "indian",
+    "course": "breakfast",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 30,
+    "difficulty": "easy",
+    "ingredients": [
+      "200 g semolina",
+      "1 onion",
+      "1 carrot",
+      "50 g peas",
+      "1 tsp mustard seeds",
+      "10 curry leaves",
+      "1 green chilli",
+      "2 tbsp ghee",
+      "500 ml water",
+      "30 g cashews"
+    ],
+    "stages": [
+      {
+        "title": "Toast semolina",
+        "minutes": 8,
+        "steps": [
+          "Dry-toast semolina over medium-low heat until fragrant but not browned.",
+          "Transfer to a bowl so it does not continue cooking."
+        ]
+      },
+      {
+        "title": "Temper aromatics",
+        "minutes": 7,
+        "steps": [
+          "Heat ghee and pop mustard seeds, then add curry leaves and chilli.",
+          "Cook onion and diced carrot until slightly softened."
+        ]
+      },
+      {
+        "title": "Cook semolina",
+        "minutes": 10,
+        "steps": [
+          "Add water and peas and bring to a gentle boil.",
+          "Sprinkle semolina in gradually while stirring continuously to prevent lumps."
+        ]
+      },
+      {
+        "title": "Steam and finish",
+        "minutes": 5,
+        "steps": [
+          "Cover on low heat until water is absorbed and grains are fluffy.",
+          "Top with toasted cashews and serve with lemon wedges."
+        ]
+      }
+    ],
+    "tips": [
+      "Add semolina slowly while stirring to prevent clumps."
+    ],
+    "variations": [
+      "Add grated ginger with the onion."
+    ],
+    "storage": "Refrigerate up to 2 days; reheat with a splash of water."
+  },
+  {
+    "title": "Mexican Tres Leches Cake",
+    "summary": "Light vanilla sponge soaked in three milks and topped with softly whipped cream.",
+    "cuisine": "mexican",
+    "course": "dessert",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 225,
+    "difficulty": "easy",
+    "ingredients": [
+      "150 g plain flour",
+      "5 eggs",
+      "150 g sugar",
+      "1 tsp baking powder",
+      "1 tsp vanilla",
+      "300 ml evaporated milk",
+      "300 ml condensed milk",
+      "200 ml whole milk",
+      "250 ml cream"
+    ],
+    "stages": [
+      {
+        "title": "Bake the sponge",
+        "minutes": 30,
+        "steps": [
+          "Whip eggs and sugar until pale and voluminous, then fold in flour and baking powder.",
+          "Bake in a lined dish at 175°C until golden and springy."
+        ]
+      },
+      {
+        "title": "Mix the milks",
+        "minutes": 5,
+        "steps": [
+          "Whisk evaporated milk, condensed milk and whole milk until combined.",
+          "Allow sponge to cool slightly, then prick all over with a skewer."
+        ]
+      },
+      {
+        "title": "Soak and chill",
+        "minutes": 180,
+        "steps": [
+          "Pour milk mixture slowly over the cake in several additions.",
+          "Refrigerate at least three hours until fully absorbed."
+        ]
+      },
+      {
+        "title": "Whip and finish",
+        "minutes": 10,
+        "steps": [
+          "Whip cream to soft peaks and spread over chilled cake.",
+          "Slice and serve cold, adding berries if desired."
+        ]
+      }
+    ],
+    "tips": [
+      "Pour milk gradually to avoid pooling."
+    ],
+    "variations": [
+      "Add cinnamon to the milk mixture."
+    ],
+    "storage": "Refrigerate covered up to 3 days; do not leave unrefrigerated."
+  },
+  {
+    "title": "Greek Avgolemono Soup",
+    "summary": "Silky lemon-and-egg chicken soup with tender rice and fresh dill.",
+    "cuisine": "greek",
+    "course": "lunch",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 35,
+    "difficulty": "easy",
+    "ingredients": [
+      "350 g cooked shredded chicken",
+      "1 litre chicken stock",
+      "100 g rice",
+      "2 eggs",
+      "2 lemons",
+      "2 tbsp dill",
+      "1 carrot, diced"
+    ],
+    "stages": [
+      {
+        "title": "Simmer rice",
+        "minutes": 20,
+        "steps": [
+          "Bring stock to a gentle simmer and add rice and diced carrot.",
+          "Cook until rice is tender, then reduce heat to low."
+        ]
+      },
+      {
+        "title": "Warm chicken",
+        "minutes": 5,
+        "steps": [
+          "Add shredded cooked chicken and heat through gently.",
+          "Keep the soup below a rolling boil."
+        ]
+      },
+      {
+        "title": "Temper eggs",
+        "minutes": 6,
+        "steps": [
+          "Whisk eggs and lemon juice until frothy in a bowl.",
+          "Slowly whisk in several ladles of hot broth to warm the eggs without scrambling."
+        ]
+      },
+      {
+        "title": "Finish gently",
+        "minutes": 4,
+        "steps": [
+          "Stir tempered egg mixture back into soup off the heat.",
+          "Warm gently without boiling and finish with dill."
+        ]
+      }
+    ],
+    "tips": [
+      "Never boil after adding eggs or the soup may curdle."
+    ],
+    "variations": [
+      "Use orzo instead of rice."
+    ],
+    "storage": "Refrigerate up to 2 days; reheat gently without boiling."
+  },
+  {
+    "title": "Lebanese Chicken Shawarma Bowls",
+    "summary": "Spiced grilled chicken over rice with cucumber, tomato, pickles and garlicky yoghurt sauce.",
+    "cuisine": "lebanese",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 60,
+    "difficulty": "easy",
+    "ingredients": [
+      "600 g chicken thighs",
+      "250 g basmati rice",
+      "150 g yoghurt",
+      "2 garlic cloves",
+      "1 lemon",
+      "1 tsp cumin",
+      "1 tsp paprika",
+      "1/2 tsp cinnamon",
+      "1 cucumber",
+      "2 tomatoes"
+    ],
+    "stages": [
+      {
+        "title": "Marinate chicken",
+        "minutes": 20,
+        "steps": [
+          "Mix chicken with half the yoghurt, garlic, lemon, cumin, paprika and cinnamon.",
+          "Rest refrigerated while rice and vegetables are prepared."
+        ]
+      },
+      {
+        "title": "Cook rice and salad",
+        "minutes": 20,
+        "steps": [
+          "Rinse and cook basmati rice until fluffy.",
+          "Dice cucumber and tomatoes and season lightly with lemon."
+        ]
+      },
+      {
+        "title": "Grill chicken",
+        "minutes": 15,
+        "steps": [
+          "Cook chicken in a hot skillet or grill pan until charred in places and fully cooked through.",
+          "Rest five minutes before slicing across the grain."
+        ]
+      },
+      {
+        "title": "Assemble bowls",
+        "minutes": 5,
+        "steps": [
+          "Mix remaining yoghurt with garlic and lemon for a quick sauce.",
+          "Serve chicken over rice with salad and drizzle with sauce."
+        ]
+      }
+    ],
+    "tips": [
+      "Chicken thighs stay juicy under high heat."
+    ],
+    "variations": [
+      "Add hummus and pickled turnips."
+    ],
+    "storage": "Refrigerate cooked chicken and rice separately up to 3 days; reheat thoroughly."
+  },
+  {
+    "title": "Portuguese Caldo Verde",
+    "summary": "Velvety potato soup with ribbons of kale and smoky chouriço in a garlicky broth.",
+    "cuisine": "portuguese",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 15,
+    "cook_minutes": 42,
+    "difficulty": "easy",
+    "ingredients": [
+      "500 g potatoes",
+      "200 g kale",
+      "180 g chouriço",
+      "1 onion",
+      "3 garlic cloves",
+      "1 litre chicken stock",
+      "2 tbsp olive oil"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 10,
+        "steps": [
+          "Cook diced onion and garlic gently in olive oil until translucent.",
+          "Keep the pieces evenly sized so they cook at a similar rate."
+        ]
+      },
+      {
+        "title": "Build the base",
+        "minutes": 12,
+        "steps": [
+          "Add peeled cubed potatoes and stock, then simmer until the potatoes are very soft.",
+          "Use moderate heat to develop flavour without scorching."
+        ]
+      },
+      {
+        "title": "Cook gently",
+        "minutes": 15,
+        "steps": [
+          "Blend the potato broth until smooth and stir in finely shredded kale.",
+          "Check texture and doneness before moving to the final step."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Add sliced chouriço and simmer until kale is tender and sausage piping hot.",
+          "Taste and adjust seasoning before serving."
+        ]
+      }
+    ],
+    "tips": [
+      "Read the method before starting and prepare all ingredients first."
+    ],
+    "variations": [
+      "Adjust seasoning and garnishes to suit your taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if served hot."
+  },
+  {
+    "title": "Persian Shirazi Salad",
+    "summary": "Finely diced cucumber, tomatoes and onion brightened with lime, dried mint and olive oil.",
+    "cuisine": "persian",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 15,
+    "cook_minutes": 42,
+    "difficulty": "easy",
+    "ingredients": [
+      "3 cucumbers",
+      "4 tomatoes",
+      "1 red onion",
+      "2 limes",
+      "2 tbsp olive oil",
+      "1 tsp dried mint"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 10,
+        "steps": [
+          "Dice cucumbers into small even cubes and place in a mixing bowl.",
+          "Keep the pieces evenly sized so they cook at a similar rate."
+        ]
+      },
+      {
+        "title": "Build the base",
+        "minutes": 12,
+        "steps": [
+          "Remove watery tomato cores, dice flesh and finely chop red onion.",
+          "Use moderate heat to develop flavour without scorching."
+        ]
+      },
+      {
+        "title": "Cook gently",
+        "minutes": 15,
+        "steps": [
+          "Whisk lime juice with olive oil, dried mint and a pinch of salt.",
+          "Check texture and doneness before moving to the final step."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Toss vegetables with dressing immediately before serving to preserve their crunch.",
+          "Taste and adjust seasoning before serving."
+        ]
+      }
+    ],
+    "tips": [
+      "Read the method before starting and prepare all ingredients first."
+    ],
+    "variations": [
+      "Adjust seasoning and garnishes to suit your taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if served hot."
+  },
+  {
+    "title": "German Apple Pancake",
+    "summary": "Puffed oven-baked pancake with buttery apples, cinnamon and crisp golden edges.",
+    "cuisine": "german",
+    "course": "breakfast",
+    "servings": 4,
+    "prep_minutes": 15,
+    "cook_minutes": 42,
+    "difficulty": "easy",
+    "ingredients": [
+      "3 eggs",
+      "120 g plain flour",
+      "180 ml milk",
+      "2 apples",
+      "35 g butter",
+      "2 tbsp sugar",
+      "1 tsp cinnamon"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 10,
+        "steps": [
+          "Preheat oven to 220°C and place a heavy ovenproof skillet inside.",
+          "Keep the pieces evenly sized so they cook at a similar rate."
+        ]
+      },
+      {
+        "title": "Build the base",
+        "minutes": 12,
+        "steps": [
+          "Whisk eggs, flour and milk into a smooth thin batter and let stand briefly.",
+          "Use moderate heat to develop flavour without scorching."
+        ]
+      },
+      {
+        "title": "Cook gently",
+        "minutes": 15,
+        "steps": [
+          "Melt butter in the hot skillet and arrange thinly sliced apples with cinnamon sugar.",
+          "Check texture and doneness before moving to the final step."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Pour batter over apples and bake until dramatically puffed and golden; serve immediately.",
+          "Taste and adjust seasoning before serving."
+        ]
+      }
+    ],
+    "tips": [
+      "Read the method before starting and prepare all ingredients first."
+    ],
+    "variations": [
+      "Adjust seasoning and garnishes to suit your taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if served hot."
+  },
+  {
+    "title": "Indonesian Gado Gado",
+    "summary": "Blanched vegetables, tofu and eggs with a rich peanut dressing and crunchy toppings.",
+    "cuisine": "indonesian",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 15,
+    "cook_minutes": 42,
+    "difficulty": "easy",
+    "ingredients": [
+      "200 g firm tofu",
+      "200 g green beans",
+      "2 potatoes",
+      "4 eggs",
+      "150 g cabbage",
+      "4 tbsp peanut butter",
+      "1 lime",
+      "1 tbsp kecap manis"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 10,
+        "steps": [
+          "Boil potatoes and eggs until cooked, then cool and slice into bite-sized pieces.",
+          "Keep the pieces evenly sized so they cook at a similar rate."
+        ]
+      },
+      {
+        "title": "Build the base",
+        "minutes": 12,
+        "steps": [
+          "Blanch green beans and cabbage briefly so they stay vibrant and crisp.",
+          "Use moderate heat to develop flavour without scorching."
+        ]
+      },
+      {
+        "title": "Cook gently",
+        "minutes": 15,
+        "steps": [
+          "Pan-fry cubed tofu until golden on all sides and drain excess oil.",
+          "Check texture and doneness before moving to the final step."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Whisk peanut butter with lime, kecap manis and warm water; arrange ingredients and drizzle generously.",
+          "Taste and adjust seasoning before serving."
+        ]
+      }
+    ],
+    "tips": [
+      "Read the method before starting and prepare all ingredients first."
+    ],
+    "variations": [
+      "Adjust seasoning and garnishes to suit your taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if served hot."
+  },
+  {
+    "title": "Scottish Cullen Skink",
+    "summary": "Creamy smoked haddock chowder with tender potatoes, leek and parsley.",
+    "cuisine": "scottish",
+    "course": "lunch",
+    "servings": 4,
+    "prep_minutes": 15,
+    "cook_minutes": 42,
+    "difficulty": "easy",
+    "ingredients": [
+      "400 g smoked haddock",
+      "400 g potatoes",
+      "1 leek",
+      "500 ml milk",
+      "300 ml water",
+      "30 g butter",
+      "2 tbsp parsley"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 10,
+        "steps": [
+          "Poach smoked haddock gently in milk and water until just cooked, then lift out.",
+          "Keep the pieces evenly sized so they cook at a similar rate."
+        ]
+      },
+      {
+        "title": "Build the base",
+        "minutes": 12,
+        "steps": [
+          "Soften sliced leek in butter without browning and add cubed potatoes.",
+          "Use moderate heat to develop flavour without scorching."
+        ]
+      },
+      {
+        "title": "Cook gently",
+        "minutes": 15,
+        "steps": [
+          "Pour in the strained poaching liquid and simmer until potatoes are soft.",
+          "Check texture and doneness before moving to the final step."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Flake fish into the soup, warm through and finish with chopped parsley.",
+          "Taste and adjust seasoning before serving."
+        ]
+      }
+    ],
+    "tips": [
+      "Read the method before starting and prepare all ingredients first."
+    ],
+    "variations": [
+      "Adjust seasoning and garnishes to suit your taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if served hot."
+  },
+  {
+    "title": "Italian Gnocchi with Brown Butter and Sage",
+    "summary": "Pillowy potato gnocchi tossed in nutty browned butter with crisp sage leaves and Parmesan.",
+    "cuisine": "italian",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 15,
+    "cook_minutes": 42,
+    "difficulty": "easy",
+    "ingredients": [
+      "700 g potato gnocchi",
+      "100 g unsalted butter",
+      "16 sage leaves",
+      "70 g Parmesan",
+      "1 lemon",
+      "Black pepper"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 10,
+        "steps": [
+          "Melt butter over medium heat until the milk solids turn golden and smell nutty.",
+          "Keep the pieces evenly sized so they cook at a similar rate."
+        ]
+      },
+      {
+        "title": "Build the base",
+        "minutes": 12,
+        "steps": [
+          "Add sage leaves to the brown butter and cook until crisp, then remove from direct heat.",
+          "Use moderate heat to develop flavour without scorching."
+        ]
+      },
+      {
+        "title": "Cook gently",
+        "minutes": 15,
+        "steps": [
+          "Boil gnocchi until they float and transfer directly into the sage butter with a little cooking water.",
+          "Check texture and doneness before moving to the final step."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Toss gently to coat, add lemon zest and Parmesan and serve while hot.",
+          "Taste and adjust seasoning before serving."
+        ]
+      }
+    ],
+    "tips": [
+      "Read the method before starting and prepare all ingredients first."
+    ],
+    "variations": [
+      "Adjust seasoning and garnishes to suit your taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if served hot."
+  },
+  {
+    "title": "Jamaican Rice and Peas",
+    "summary": "Fluffy coconut rice with kidney beans, thyme, spring onion and gentle allspice warmth.",
+    "cuisine": "jamaican",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 15,
+    "cook_minutes": 42,
+    "difficulty": "easy",
+    "ingredients": [
+      "300 g long-grain rice",
+      "400 g kidney beans, drained",
+      "300 ml coconut milk",
+      "300 ml water",
+      "2 spring onions",
+      "2 thyme sprigs",
+      "1/4 tsp allspice"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 10,
+        "steps": [
+          "Rinse rice thoroughly and drain to remove excess surface starch.",
+          "Keep the pieces evenly sized so they cook at a similar rate."
+        ]
+      },
+      {
+        "title": "Build the base",
+        "minutes": 12,
+        "steps": [
+          "Simmer coconut milk with water, thyme, spring onions and allspice for five minutes.",
+          "Use moderate heat to develop flavour without scorching."
+        ]
+      },
+      {
+        "title": "Cook gently",
+        "minutes": 15,
+        "steps": [
+          "Add rice and drained kidney beans, cover and cook on very low heat until tender.",
+          "Check texture and doneness before moving to the final step."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Rest covered for ten minutes, discard herb stems and fluff gently with a fork.",
+          "Taste and adjust seasoning before serving."
+        ]
+      }
+    ],
+    "tips": [
+      "Read the method before starting and prepare all ingredients first."
+    ],
+    "variations": [
+      "Adjust seasoning and garnishes to suit your taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if served hot."
+  },
+  {
+    "title": "French Pear Belle Hélène",
+    "summary": "Tender poached pears with warm dark chocolate sauce and vanilla ice cream.",
+    "cuisine": "french",
+    "course": "dessert",
+    "servings": 4,
+    "prep_minutes": 15,
+    "cook_minutes": 42,
+    "difficulty": "easy",
+    "ingredients": [
+      "4 firm pears",
+      "600 ml water",
+      "120 g sugar",
+      "1 vanilla pod",
+      "120 g dark chocolate",
+      "100 ml cream",
+      "4 scoops vanilla ice cream"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 10,
+        "steps": [
+          "Peel pears leaving stems intact and simmer water with sugar and vanilla.",
+          "Keep the pieces evenly sized so they cook at a similar rate."
+        ]
+      },
+      {
+        "title": "Build the base",
+        "minutes": 12,
+        "steps": [
+          "Poach pears gently until a knife slides in easily, then cool in the syrup.",
+          "Use moderate heat to develop flavour without scorching."
+        ]
+      },
+      {
+        "title": "Cook gently",
+        "minutes": 15,
+        "steps": [
+          "Warm cream and pour over chopped chocolate, stirring until glossy and smooth.",
+          "Check texture and doneness before moving to the final step."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Place drained pears over vanilla ice cream and drizzle with warm chocolate sauce.",
+          "Taste and adjust seasoning before serving."
+        ]
+      }
+    ],
+    "tips": [
+      "Read the method before starting and prepare all ingredients first."
+    ],
+    "variations": [
+      "Adjust seasoning and garnishes to suit your taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if served hot."
+  },
+  {
+    "title": "Chinese Tomato Egg Stir Fry",
+    "summary": "Soft scrambled eggs folded into juicy tomatoes with a lightly sweet, savoury sauce.",
+    "cuisine": "chinese",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 15,
+    "cook_minutes": 42,
+    "difficulty": "easy",
+    "ingredients": [
+      "6 eggs",
+      "5 ripe tomatoes",
+      "2 spring onions",
+      "2 tbsp neutral oil",
+      "1 tsp sugar",
+      "1 tbsp soy sauce"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 10,
+        "steps": [
+          "Beat eggs with a pinch of salt and cut tomatoes into generous wedges.",
+          "Keep the pieces evenly sized so they cook at a similar rate."
+        ]
+      },
+      {
+        "title": "Build the base",
+        "minutes": 12,
+        "steps": [
+          "Quickly scramble eggs in hot oil until softly set, then transfer to a plate.",
+          "Use moderate heat to develop flavour without scorching."
+        ]
+      },
+      {
+        "title": "Cook gently",
+        "minutes": 15,
+        "steps": [
+          "Cook tomatoes with sugar and soy sauce until they release juices and soften.",
+          "Check texture and doneness before moving to the final step."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Return eggs to the pan, fold gently through the sauce and finish with spring onions.",
+          "Taste and adjust seasoning before serving."
+        ]
+      }
+    ],
+    "tips": [
+      "Read the method before starting and prepare all ingredients first."
+    ],
+    "variations": [
+      "Adjust seasoning and garnishes to suit your taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if served hot."
+  },
+  {
+    "title": "Mexican Arroz Rojo",
+    "summary": "Fluffy tomato-red rice with onion, garlic and stock, a classic accompaniment to tacos.",
+    "cuisine": "mexican",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 15,
+    "cook_minutes": 42,
+    "difficulty": "easy",
+    "ingredients": [
+      "300 g long-grain rice",
+      "300 g tomatoes",
+      "1 onion",
+      "2 garlic cloves",
+      "500 ml chicken stock",
+      "2 tbsp oil",
+      "80 g peas"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 10,
+        "steps": [
+          "Blend tomatoes, onion and garlic into a smooth sauce.",
+          "Keep the pieces evenly sized so they cook at a similar rate."
+        ]
+      },
+      {
+        "title": "Build the base",
+        "minutes": 12,
+        "steps": [
+          "Toast dry rice in oil over medium heat until lightly golden and nutty.",
+          "Use moderate heat to develop flavour without scorching."
+        ]
+      },
+      {
+        "title": "Cook gently",
+        "minutes": 15,
+        "steps": [
+          "Add tomato mixture carefully and cook until the raw aroma fades.",
+          "Check texture and doneness before moving to the final step."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Pour in stock and peas, cover and simmer until rice is tender; rest before fluffing.",
+          "Taste and adjust seasoning before serving."
+        ]
+      }
+    ],
+    "tips": [
+      "Read the method before starting and prepare all ingredients first."
+    ],
+    "variations": [
+      "Adjust seasoning and garnishes to suit your taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if served hot."
+  },
+  {
+    "title": "Indian Besan Chilla",
+    "summary": "Golden chickpea-flour pancakes speckled with onion, coriander, chilli and cumin.",
+    "cuisine": "indian",
+    "course": "breakfast",
+    "servings": 4,
+    "prep_minutes": 15,
+    "cook_minutes": 42,
+    "difficulty": "easy",
+    "ingredients": [
+      "200 g chickpea flour",
+      "260 ml water",
+      "1 onion",
+      "1 green chilli",
+      "1 tsp cumin",
+      "2 tbsp coriander",
+      "2 tbsp oil"
+    ],
+    "stages": [
+      {
+        "title": "Prepare ingredients",
+        "minutes": 10,
+        "steps": [
+          "Whisk chickpea flour with water until smooth and free of lumps.",
+          "Keep the pieces evenly sized so they cook at a similar rate."
+        ]
+      },
+      {
+        "title": "Build the base",
+        "minutes": 12,
+        "steps": [
+          "Fold in finely chopped onion, chilli, coriander and cumin with a pinch of salt.",
+          "Use moderate heat to develop flavour without scorching."
+        ]
+      },
+      {
+        "title": "Cook gently",
+        "minutes": 15,
+        "steps": [
+          "Heat a lightly oiled skillet and spread batter into thin circles with a ladle.",
+          "Check texture and doneness before moving to the final step."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Cook each side until golden and fully set, then serve hot with chutney.",
+          "Taste and adjust seasoning before serving."
+        ]
+      }
+    ],
+    "tips": [
+      "Read the method before starting and prepare all ingredients first."
+    ],
+    "variations": [
+      "Adjust seasoning and garnishes to suit your taste."
+    ],
+    "storage": "Refrigerate promptly in an airtight container for up to 2 days; reheat thoroughly if served hot."
+  }
+]

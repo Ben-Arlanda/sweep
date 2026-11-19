@@ -1,0 +1,2863 @@
+[
+  {
+    "title": "Moroccan Chicken Tagine with Preserved Lemon",
+    "summary": "Tender chicken braised with olives, preserved lemon and saffron in a fragrant onion sauce.",
+    "cuisine": "moroccan",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 55,
+    "difficulty": "easy",
+    "ingredients": [
+      "800 g chicken thighs",
+      "2 onions",
+      "3 garlic cloves",
+      "1 preserved lemon",
+      "100 g green olives",
+      "1 tsp ground ginger",
+      "1 tsp turmeric",
+      "1 pinch saffron",
+      "2 tbsp olive oil",
+      "250 ml chicken stock"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Season chicken with salt, ginger and turmeric; finely slice onions and mince garlic."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Brown chicken skin-side down in olive oil for 6 minutes, turn and lift onto a plate; soften onions in the same pot."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 25,
+        "steps": [
+          "Add garlic, saffron and stock; return chicken, cover and simmer gently for 35 minutes until cooked through."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 8,
+        "steps": [
+          "Add rinsed preserved lemon strips and olives for the last 10 minutes; reduce uncovered until glossy and serve with couscous."
+        ]
+      }
+    ],
+    "tips": [
+      "Rinse preserved lemon to control saltiness."
+    ],
+    "variations": [
+      "Add chopped coriander and parsley at the end."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "Sichuan Mapo Tofu",
+    "summary": "Silken tofu and minced pork simmered in a fiery, numbing chilli-bean sauce with Sichuan pepper.",
+    "cuisine": "chinese",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 55,
+    "difficulty": "easy",
+    "ingredients": [
+      "500 g soft tofu",
+      "200 g pork mince",
+      "2 tbsp doubanjiang",
+      "1 tbsp fermented black beans",
+      "2 garlic cloves",
+      "1 tbsp ginger",
+      "250 ml chicken stock",
+      "1 tsp Sichuan peppercorns",
+      "1 tbsp cornflour",
+      "2 spring onions"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Cut tofu into cubes and briefly blanch in salted simmering water; drain carefully to keep pieces intact."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Brown pork in a hot wok, then fry minced ginger, garlic, doubanjiang and black beans until the oil turns red."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 25,
+        "steps": [
+          "Add stock and tofu; simmer gently 6–8 minutes without vigorous stirring so the tofu absorbs the sauce."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 8,
+        "steps": [
+          "Stir cornflour with 2 tbsp cold water and add gradually to thicken; finish with crushed toasted peppercorns and spring onion."
+        ]
+      }
+    ],
+    "tips": [
+      "Use a gentle folding motion to keep the tofu whole."
+    ],
+    "variations": [
+      "Use finely chopped mushrooms instead of pork."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "Jamaican Jerk Chicken",
+    "summary": "Smoky grilled chicken with allspice, thyme, spring onion and Scotch bonnet heat, brightened with lime.",
+    "cuisine": "jamaican",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 55,
+    "difficulty": "easy",
+    "ingredients": [
+      "900 g chicken drumsticks",
+      "4 spring onions",
+      "3 garlic cloves",
+      "1 Scotch bonnet chilli",
+      "2 tsp ground allspice",
+      "1 tsp dried thyme",
+      "2 tbsp soy sauce",
+      "2 tbsp lime juice",
+      "1 tbsp brown sugar",
+      "2 tbsp oil"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Blend spring onions, garlic, chilli, allspice, thyme, soy, lime, sugar and oil into a rough marinade."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Score the chicken, rub marinade under the skin and refrigerate for at least 4 hours in a covered dish."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 25,
+        "steps": [
+          "Grill over medium indirect heat, turning regularly for 35–45 minutes, until the thickest meat reaches 75°C."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 8,
+        "steps": [
+          "Move briefly over direct heat to char the skin without burning the sugar; rest 5 minutes and serve with lime."
+        ]
+      }
+    ],
+    "tips": [
+      "Wear gloves when handling Scotch bonnet and start with half for milder heat."
+    ],
+    "variations": [
+      "Roast at 200°C if you do not have a grill."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "Turkish İmam Bayıldı",
+    "summary": "Soft roasted aubergines filled with sweet onions, tomatoes and garlic, finished with fruity olive oil.",
+    "cuisine": "turkish",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 55,
+    "difficulty": "easy",
+    "ingredients": [
+      "3 aubergines",
+      "2 onions",
+      "4 tomatoes",
+      "4 garlic cloves",
+      "80 ml olive oil",
+      "1 tsp sugar",
+      "1 tbsp lemon juice",
+      "1 bunch parsley"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Halve aubergines lengthways, score flesh, brush with oil and roast cut-side up at 200°C for 25 minutes."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Slowly soften sliced onions in olive oil; add garlic, diced tomatoes and sugar and cook until jammy."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 25,
+        "steps": [
+          "Press a hollow into each softened aubergine and spoon in tomato-onion filling; drizzle with remaining oil."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 8,
+        "steps": [
+          "Cover and bake 20 minutes more until collapsing tender; cool slightly and finish with lemon and parsley."
+        ]
+      }
+    ],
+    "tips": [
+      "This dish is excellent warm or at room temperature."
+    ],
+    "variations": [
+      "Add toasted pine nuts to the filling."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "French Chicken Chasseur",
+    "summary": "Golden chicken braised with mushrooms, shallots, white wine and tomatoes in a glossy herb sauce.",
+    "cuisine": "french",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 55,
+    "difficulty": "easy",
+    "ingredients": [
+      "800 g chicken thighs",
+      "300 g mushrooms",
+      "3 shallots",
+      "2 garlic cloves",
+      "150 ml dry white wine",
+      "250 ml chicken stock",
+      "200 g chopped tomatoes",
+      "1 tbsp tomato paste",
+      "2 tbsp butter",
+      "1 tbsp olive oil",
+      "2 tbsp tarragon"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Pat chicken dry, season and brown in butter and oil for 5 minutes per side; set aside."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Sauté sliced mushrooms until moisture evaporates, then add shallots and garlic and soften for 3 minutes."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 25,
+        "steps": [
+          "Stir in tomato paste, pour in wine and reduce by half; add stock and tomatoes and return chicken."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 8,
+        "steps": [
+          "Cover and simmer 25–30 minutes until chicken reaches 75°C; uncover to reduce and finish with tarragon."
+        ]
+      }
+    ],
+    "tips": [
+      "Brown mushrooms well before adding liquid for deeper flavour."
+    ],
+    "variations": [
+      "Use parsley instead of tarragon."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "Mexican Pozole Rojo",
+    "summary": "Hearty pork and hominy soup in a deep red guajillo chilli broth with crunchy fresh toppings.",
+    "cuisine": "mexican",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 55,
+    "difficulty": "easy",
+    "ingredients": [
+      "700 g pork shoulder",
+      "800 g canned hominy",
+      "4 dried guajillo chillies",
+      "1 onion",
+      "4 garlic cloves",
+      "1 tsp oregano",
+      "1.5 litres chicken stock",
+      "1 lime",
+      "150 g shredded cabbage",
+      "4 radishes"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Remove chilli stems and seeds, toast briefly in a dry pan and soak in hot water for 15 minutes."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Simmer pork with half the onion, stock and salt for 75–90 minutes until tender; skim foam as needed."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 25,
+        "steps": [
+          "Blend softened chillies with garlic, remaining onion and a ladle of stock; strain into pork and add drained hominy."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 8,
+        "steps": [
+          "Simmer 20 minutes more, shred pork into bite-sized pieces and serve with cabbage, radish, oregano and lime."
+        ]
+      }
+    ],
+    "tips": [
+      "Straining the chilli purée makes the broth smoother."
+    ],
+    "variations": [
+      "Use chicken thighs for a quicker version."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "Greek Lemon Chicken and Potatoes",
+    "summary": "Roasted chicken and potatoes soaked in lemon, oregano and garlic, with crisp edges and savoury pan juices.",
+    "cuisine": "greek",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 55,
+    "difficulty": "easy",
+    "ingredients": [
+      "900 g chicken thighs",
+      "800 g potatoes",
+      "2 lemons",
+      "5 garlic cloves",
+      "80 ml olive oil",
+      "2 tsp dried oregano",
+      "250 ml chicken stock",
+      "1 tsp paprika"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Cut potatoes into thick wedges and arrange around seasoned chicken in a large roasting dish."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Whisk lemon juice, olive oil, crushed garlic, oregano, paprika and stock; pour evenly over the dish."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 25,
+        "steps": [
+          "Roast at 200°C for 45 minutes, turning potatoes once and basting chicken with pan juices."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 8,
+        "steps": [
+          "Cook until chicken reaches 75°C and potatoes are tender; increase heat briefly for golden edges and rest 5 minutes."
+        ]
+      }
+    ],
+    "tips": [
+      "Use a wide dish so potatoes roast rather than steam."
+    ],
+    "variations": [
+      "Add artichoke hearts for the last 20 minutes."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "Japanese Miso-Glazed Aubergine",
+    "summary": "Tender roasted aubergine lacquered with sweet-salty miso glaze and finished with toasted sesame.",
+    "cuisine": "japanese",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 55,
+    "difficulty": "easy",
+    "ingredients": [
+      "3 aubergines",
+      "3 tbsp white miso",
+      "2 tbsp mirin",
+      "1 tbsp sugar",
+      "1 tbsp soy sauce",
+      "2 tbsp neutral oil",
+      "2 spring onions",
+      "1 tsp sesame seeds"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Halve aubergines lengthways and score the flesh in a diamond pattern without cutting through the skin."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Brush with oil and roast cut-side up at 210°C for 20–25 minutes until soft and lightly browned."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 25,
+        "steps": [
+          "Whisk miso, mirin, sugar and soy sauce; spread a thin layer over the hot aubergine flesh."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 8,
+        "steps": [
+          "Grill for 2–3 minutes until bubbling and caramelised, watching closely; top with spring onions and sesame."
+        ]
+      }
+    ],
+    "tips": [
+      "Miso glaze burns quickly, so apply it near the end."
+    ],
+    "variations": [
+      "Use red miso for a stronger, saltier finish."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "Spanish Albóndigas in Tomato Sauce",
+    "summary": "Juicy pork-and-beef meatballs simmered in smoky tomato sauce with paprika and garlic.",
+    "cuisine": "spanish",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 55,
+    "difficulty": "easy",
+    "ingredients": [
+      "300 g beef mince",
+      "300 g pork mince",
+      "1 egg",
+      "60 g breadcrumbs",
+      "1 onion",
+      "3 garlic cloves",
+      "400 g passata",
+      "1 tsp smoked paprika",
+      "3 tbsp olive oil",
+      "2 tbsp parsley"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Mix mince, egg, breadcrumbs, half the garlic and salt gently; roll into walnut-sized balls without compacting."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Brown meatballs in olive oil in batches, turning carefully; transfer to a plate before fully cooked."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 25,
+        "steps": [
+          "Soften diced onion and remaining garlic, add paprika and passata and simmer for 10 minutes."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 8,
+        "steps": [
+          "Return meatballs and simmer 12–15 minutes until cooked through to 75°C; finish with parsley and crusty bread."
+        ]
+      }
+    ],
+    "tips": [
+      "Overmixing the mince makes meatballs tough."
+    ],
+    "variations": [
+      "Add a pinch of chilli flakes to the sauce."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "Vietnamese Caramelised Pork Bowls",
+    "summary": "Sticky minced pork cooked with fish sauce, caramel and garlic, served over rice with crisp cucumber.",
+    "cuisine": "vietnamese",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 55,
+    "difficulty": "easy",
+    "ingredients": [
+      "500 g pork mince",
+      "3 tbsp fish sauce",
+      "2 tbsp brown sugar",
+      "3 garlic cloves",
+      "1 shallot",
+      "1 tbsp neutral oil",
+      "250 g jasmine rice",
+      "1 cucumber",
+      "1 lime"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Rinse jasmine rice and cook with measured water; keep covered while preparing the pork."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Heat sugar with 1 tbsp water in a small pan until amber, then carefully add 3 tbsp warm water to loosen."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 25,
+        "steps": [
+          "Brown pork in a hot wok, add minced shallot and garlic, then stir in caramel and fish sauce."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 8,
+        "steps": [
+          "Cook until glossy and reduced, taste for sweet-salty balance and spoon over rice with cucumber and lime."
+        ]
+      }
+    ],
+    "tips": [
+      "Stand back when adding water to hot caramel because it may splutter."
+    ],
+    "variations": [
+      "Add chopped lemongrass with the garlic."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "Tunisian Harissa Baked Fish",
+    "summary": "Flaky white fish baked over peppers and tomatoes with smoky harissa, cumin and bright lemon.",
+    "cuisine": "tunisian",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 55,
+    "difficulty": "easy",
+    "ingredients": [
+      "700 g firm white fish",
+      "2 red peppers",
+      "400 g cherry tomatoes",
+      "1 red onion",
+      "2 tbsp harissa paste",
+      "1 tsp cumin",
+      "3 tbsp olive oil",
+      "1 lemon",
+      "2 tbsp parsley"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Slice peppers and onion, toss with oil and cumin and roast at 200°C for 20 minutes."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Stir harissa with lemon juice and a spoonful of oil; pat fish dry and brush with the mixture."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 25,
+        "steps": [
+          "Nestle fish among softened vegetables, scatter tomatoes around and return to oven for 12–15 minutes."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 8,
+        "steps": [
+          "Check fish is opaque and flakes easily, then scatter parsley and serve with couscous."
+        ]
+      }
+    ],
+    "tips": [
+      "Harissa heat varies by brand; taste before coating fish."
+    ],
+    "variations": [
+      "Use salmon fillets instead of white fish."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "Polish Bigos Hunter's Stew",
+    "summary": "Slow-cooked pork, sausage, sauerkraut and mushrooms in a tangy, deeply savoury cabbage stew.",
+    "cuisine": "polish",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 55,
+    "difficulty": "easy",
+    "ingredients": [
+      "500 g pork shoulder",
+      "250 g smoked sausage",
+      "500 g sauerkraut",
+      "300 g white cabbage",
+      "200 g mushrooms",
+      "1 onion",
+      "2 bay leaves",
+      "1 tsp caraway",
+      "300 ml stock",
+      "2 tbsp oil"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Cube pork and brown in oil in batches; transfer to a plate and sauté onion and mushrooms."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Add sliced sausage, shredded cabbage, rinsed sauerkraut, caraway and bay leaves."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 25,
+        "steps": [
+          "Return pork, pour in stock and simmer covered over low heat for 90 minutes, stirring occasionally."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 8,
+        "steps": [
+          "Uncover and cook another 20 minutes until pork is tender and the stew thickens; adjust acidity and salt."
+        ]
+      }
+    ],
+    "tips": [
+      "Taste sauerkraut before rinsing; some batches need their tang preserved."
+    ],
+    "variations": [
+      "Add dried porcini and their strained soaking liquid."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "Chinese Steamed Ginger Fish",
+    "summary": "Delicate steamed fish with ginger, spring onions and a sizzling soy-sesame dressing.",
+    "cuisine": "chinese",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 55,
+    "difficulty": "easy",
+    "ingredients": [
+      "700 g white fish fillets",
+      "50 g ginger",
+      "4 spring onions",
+      "3 tbsp light soy sauce",
+      "1 tbsp Shaoxing wine",
+      "2 tbsp neutral oil",
+      "1 tsp sesame oil",
+      "1 bunch coriander"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Pat fish dry, lay on a heatproof plate and scatter half the julienned ginger and spring onions over it."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Place plate in a covered steamer over boiling water and steam 8–12 minutes, depending on thickness."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 25,
+        "steps": [
+          "Check fish is opaque and flakes easily; carefully pour away excess steaming liquid."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 8,
+        "steps": [
+          "Top with remaining ginger and spring onion, drizzle with soy and wine, then pour over hot oil and finish with sesame oil."
+        ]
+      }
+    ],
+    "tips": [
+      "Use a plate with a rim to catch the juices safely."
+    ],
+    "variations": [
+      "Add sliced fresh chilli for heat."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "American Turkey Meatloaf",
+    "summary": "Juicy turkey meatloaf with sautéed vegetables and a sticky tomato glaze, sliced thick for dinner.",
+    "cuisine": "american",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 55,
+    "difficulty": "easy",
+    "ingredients": [
+      "700 g turkey mince",
+      "1 onion",
+      "1 carrot",
+      "2 garlic cloves",
+      "1 egg",
+      "80 g breadcrumbs",
+      "80 ml milk",
+      "120 g ketchup",
+      "1 tbsp Worcestershire sauce",
+      "1 tbsp brown sugar"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Soften finely diced onion, carrot and garlic in a little oil; cool so they do not warm the raw mince."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Mix turkey with egg, breadcrumbs, milk, vegetables and seasoning just until combined; shape into a loaf."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 25,
+        "steps": [
+          "Whisk ketchup, Worcestershire and sugar; spread half over loaf and bake at 180°C for 35 minutes."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 8,
+        "steps": [
+          "Add remaining glaze and bake until centre reaches 74°C; rest 10 minutes before slicing."
+        ]
+      }
+    ],
+    "tips": [
+      "Do not pack the loaf tightly or it can turn dense."
+    ],
+    "variations": [
+      "Use chicken mince in place of turkey."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "Turkish Mercimek Çorbası",
+    "summary": "Velvety red lentil soup with carrot, cumin and lemon, finished with chilli butter.",
+    "cuisine": "turkish",
+    "course": "lunch",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 40,
+    "difficulty": "easy",
+    "ingredients": [
+      "250 g red lentils",
+      "1 onion",
+      "1 carrot",
+      "1 potato",
+      "1 tbsp tomato paste",
+      "1 tsp cumin",
+      "1 litre vegetable stock",
+      "2 tbsp butter",
+      "1 tsp paprika",
+      "1 lemon"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Rinse lentils until the water runs mostly clear; dice onion, carrot and potato evenly."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 10,
+        "steps": [
+          "Soften onion in 1 tbsp butter, add carrot and potato, then stir in tomato paste and cumin."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 15,
+        "steps": [
+          "Add lentils and stock; simmer 25 minutes until everything is soft, then blend until smooth."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Melt remaining butter with paprika, spoon over bowls and serve with lemon wedges."
+        ]
+      }
+    ],
+    "tips": [
+      "Add hot stock gradually when blending if you prefer a thinner soup."
+    ],
+    "variations": [
+      "Add dried mint to the chilli butter."
+    ],
+    "storage": "Refrigerate in an airtight container for up to 2 days; serve cold or reheat as appropriate."
+  },
+  {
+    "title": "Japanese Onigiri with Tuna Mayo",
+    "summary": "Soft salted rice triangles stuffed with creamy tuna and wrapped in crisp nori.",
+    "cuisine": "japanese",
+    "course": "lunch",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 40,
+    "difficulty": "easy",
+    "ingredients": [
+      "300 g Japanese short-grain rice",
+      "400 ml water",
+      "150 g canned tuna",
+      "3 tbsp Japanese mayonnaise",
+      "1 tsp soy sauce",
+      "3 nori sheets",
+      "1 tsp salt"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Rinse rice several times until water is clearer, then cook covered and rest 10 minutes off heat."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 10,
+        "steps": [
+          "Drain tuna thoroughly and mix with mayonnaise and soy sauce; taste before adding extra salt."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 15,
+        "steps": [
+          "Wet and lightly salt your hands, flatten a scoop of warm rice and add a teaspoon of filling in the centre."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Enclose filling with more rice, shape gently into a triangle and wrap with nori immediately before eating."
+        ]
+      }
+    ],
+    "tips": [
+      "Use warm, not hot, rice so it holds together comfortably."
+    ],
+    "variations": [
+      "Fill with flaked cooked salmon instead."
+    ],
+    "storage": "Refrigerate in an airtight container for up to 2 days; serve cold or reheat as appropriate."
+  },
+  {
+    "title": "Mexican Tostadas de Frijoles",
+    "summary": "Crunchy corn tortillas layered with creamy refried beans, shredded lettuce, salsa and crumbly cheese.",
+    "cuisine": "mexican",
+    "course": "lunch",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 40,
+    "difficulty": "easy",
+    "ingredients": [
+      "8 corn tortillas",
+      "400 g canned pinto beans",
+      "1 onion",
+      "2 garlic cloves",
+      "1 tsp cumin",
+      "1 lettuce",
+      "2 tomatoes",
+      "100 g feta",
+      "1 avocado",
+      "2 tbsp oil",
+      "1 lime"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Brush tortillas lightly with oil and bake at 200°C for 8–10 minutes until crisp, turning once."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 10,
+        "steps": [
+          "Soften diced onion and garlic, add beans with a splash of water and cumin, then mash to a spreadable consistency."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 15,
+        "steps": [
+          "Chop lettuce and tomatoes, crumble cheese and slice avocado just before assembling."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Spread warm beans over each tortilla, add lettuce, tomato, avocado and cheese, then finish with lime."
+        ]
+      }
+    ],
+    "tips": [
+      "Assemble at the last moment so tostadas stay crisp."
+    ],
+    "variations": [
+      "Top with shredded cooked chicken."
+    ],
+    "storage": "Refrigerate in an airtight container for up to 2 days; serve cold or reheat as appropriate."
+  },
+  {
+    "title": "Vietnamese Rice Paper Rolls",
+    "summary": "Fresh translucent rolls filled with prawns, rice noodles, lettuce and herbs, served with tangy dipping sauce.",
+    "cuisine": "vietnamese",
+    "course": "lunch",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 40,
+    "difficulty": "easy",
+    "ingredients": [
+      "12 rice paper sheets",
+      "300 g cooked prawns",
+      "120 g rice vermicelli",
+      "1 carrot",
+      "1 cucumber",
+      "1 lettuce",
+      "1 bunch mint",
+      "1 bunch coriander",
+      "3 tbsp hoisin sauce",
+      "2 tbsp peanut butter",
+      "1 lime"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Cook vermicelli, rinse under cool water and drain; cut vegetables into fine matchsticks."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 10,
+        "steps": [
+          "Mix hoisin and peanut butter with warm water and lime juice to make a pourable dipping sauce."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 15,
+        "steps": [
+          "Dip one rice paper sheet briefly in warm water, lay flat and arrange lettuce, noodles, vegetables, herbs and prawns."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Fold sides inward and roll tightly without tearing; repeat and serve promptly with sauce."
+        ]
+      }
+    ],
+    "tips": [
+      "Avoid over-soaking rice paper because it softens further on the board."
+    ],
+    "variations": [
+      "Use tofu strips instead of prawns."
+    ],
+    "storage": "Refrigerate in an airtight container for up to 2 days; serve cold or reheat as appropriate."
+  },
+  {
+    "title": "Swedish Overnight Oats with Berries",
+    "summary": "Creamy chilled oats with yoghurt, cardamom, tart berries and toasted almonds for an easy make-ahead breakfast.",
+    "cuisine": "swedish",
+    "course": "breakfast",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 35,
+    "difficulty": "easy",
+    "ingredients": [
+      "200 g rolled oats",
+      "350 ml milk",
+      "200 g plain yoghurt",
+      "2 tbsp honey",
+      "1 tsp ground cardamom",
+      "200 g mixed berries",
+      "40 g almonds"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 8,
+        "steps": [
+          "Stir oats, milk, yoghurt, honey and cardamom together in a bowl until evenly mixed."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 10,
+        "steps": [
+          "Divide between four jars, cover and refrigerate for at least 6 hours to soften."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 12,
+        "steps": [
+          "Toast almonds in a dry pan until fragrant, then cool and roughly chop."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Stir oats before serving, loosen with milk if needed and top with berries and almonds."
+        ]
+      }
+    ],
+    "tips": [
+      "Add toppings just before eating to keep nuts crunchy."
+    ],
+    "variations": [
+      "Use grated apple and cinnamon instead of berries."
+    ],
+    "storage": "Refrigerate in an airtight container for up to 2 days; serve cold or reheat as appropriate."
+  },
+  {
+    "title": "Italian Ricotta Pancakes",
+    "summary": "Light, tender pancakes enriched with ricotta and lemon zest, served with warm berries.",
+    "cuisine": "italian",
+    "course": "breakfast",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 35,
+    "difficulty": "easy",
+    "ingredients": [
+      "250 g ricotta",
+      "2 eggs",
+      "150 g plain flour",
+      "180 ml milk",
+      "1 tbsp sugar",
+      "1 tsp baking powder",
+      "1 lemon",
+      "200 g berries",
+      "1 tbsp butter"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 8,
+        "steps": [
+          "Whisk ricotta, egg yolks, milk, sugar and lemon zest until smooth; fold in flour and baking powder."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 10,
+        "steps": [
+          "Beat egg whites to soft peaks and fold gently into batter without knocking out the air."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 12,
+        "steps": [
+          "Cook small pancakes in a lightly buttered non-stick pan over medium-low heat for 2–3 minutes per side."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Warm berries briefly in a saucepan until juicy and spoon over pancakes just before serving."
+        ]
+      }
+    ],
+    "tips": [
+      "Do not press the pancakes while cooking or they lose their airy texture."
+    ],
+    "variations": [
+      "Swap lemon zest for orange zest."
+    ],
+    "storage": "Refrigerate in an airtight container for up to 2 days; serve cold or reheat as appropriate."
+  },
+  {
+    "title": "Greek Yoghurt Honey Bowls",
+    "summary": "Thick yoghurt topped with floral honey, toasted walnuts and juicy figs for a refreshing breakfast.",
+    "cuisine": "greek",
+    "course": "breakfast",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 35,
+    "difficulty": "easy",
+    "ingredients": [
+      "600 g thick Greek yoghurt",
+      "4 fresh figs",
+      "80 g walnuts",
+      "4 tbsp honey",
+      "1 tsp cinnamon",
+      "1 orange"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 8,
+        "steps": [
+          "Toast walnuts in a dry pan over medium-low heat for 3–4 minutes until fragrant; cool completely."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 10,
+        "steps": [
+          "Wash figs, trim stems and cut into quarters; finely grate a little orange zest."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 12,
+        "steps": [
+          "Spoon chilled yoghurt into bowls and arrange figs and walnuts on top."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Drizzle with honey, sprinkle cinnamon and orange zest, and serve immediately."
+        ]
+      }
+    ],
+    "tips": [
+      "Use thick strained yoghurt so the toppings stay suspended."
+    ],
+    "variations": [
+      "Swap figs for berries or sliced peaches."
+    ],
+    "storage": "Refrigerate in an airtight container for up to 2 days; serve cold or reheat as appropriate."
+  },
+  {
+    "title": "Spanish Pan con Tomate",
+    "summary": "Toasted rustic bread rubbed with garlic and ripe tomato, finished with olive oil and flaky salt.",
+    "cuisine": "spanish",
+    "course": "breakfast",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 35,
+    "difficulty": "easy",
+    "ingredients": [
+      "4 thick slices sourdough",
+      "3 ripe tomatoes",
+      "1 garlic clove",
+      "3 tbsp extra virgin olive oil",
+      "1 pinch flaky salt"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 8,
+        "steps": [
+          "Toast sourdough on a grill or in a hot pan until crisp outside but still tender inside."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 10,
+        "steps": [
+          "Halve garlic and rub the cut side lightly over the hot bread."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 12,
+        "steps": [
+          "Halve ripe tomatoes and grate the flesh onto the toast, leaving skins behind."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Drizzle generously with olive oil, add flaky salt and serve while the toast is crisp."
+        ]
+      }
+    ],
+    "tips": [
+      "Very ripe tomatoes make the best juicy topping."
+    ],
+    "variations": [
+      "Add thin slices of jamón or grated Manchego."
+    ],
+    "storage": "Refrigerate in an airtight container for up to 2 days; serve cold or reheat as appropriate."
+  },
+  {
+    "title": "Japanese Sunomono Cucumber Salad",
+    "summary": "Thin cucumber ribbons in a delicate sweet rice-vinegar dressing with toasted sesame seeds.",
+    "cuisine": "japanese",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 36,
+    "difficulty": "easy",
+    "ingredients": [
+      "2 cucumbers",
+      "3 tbsp rice vinegar",
+      "1 tbsp sugar",
+      "1 tsp soy sauce",
+      "1 tsp sesame seeds",
+      "1 tsp salt"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 8,
+        "steps": [
+          "Slice cucumbers paper-thin, sprinkle with salt and rest for 10 minutes to soften."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 8,
+        "steps": [
+          "Rinse quickly and squeeze gently to remove moisture without crushing the slices."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 15,
+        "steps": [
+          "Stir rice vinegar, sugar and soy sauce until sugar dissolves completely."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Toss cucumber with dressing, chill briefly and sprinkle toasted sesame over the top."
+        ]
+      }
+    ],
+    "tips": [
+      "A mandoline gives evenly thin slices; use its hand guard."
+    ],
+    "variations": [
+      "Add cooked wakame seaweed for a classic variation."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "Italian Marinated Artichokes",
+    "summary": "Tender artichoke hearts dressed with lemon, parsley, garlic and olive oil for a bright antipasto.",
+    "cuisine": "italian",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 36,
+    "difficulty": "easy",
+    "ingredients": [
+      "400 g jarred artichoke hearts",
+      "1 lemon",
+      "3 tbsp olive oil",
+      "2 garlic cloves",
+      "2 tbsp parsley",
+      "1 tsp dried oregano",
+      "1 pinch chilli flakes"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 8,
+        "steps": [
+          "Drain artichoke hearts thoroughly and cut large pieces in half for even dressing."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 8,
+        "steps": [
+          "Finely mince garlic and parsley, then whisk with lemon zest, juice, olive oil and oregano."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 15,
+        "steps": [
+          "Toss artichokes gently in the dressing, coating all surfaces without breaking the hearts."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Refrigerate 30 minutes to meld flavours; bring close to room temperature before serving."
+        ]
+      }
+    ],
+    "tips": [
+      "Use artichokes packed in water for better control of the marinade."
+    ],
+    "variations": [
+      "Add capers and chopped olives."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "Chinese Garlic Green Beans",
+    "summary": "Blistered green beans tossed with sizzling garlic and a savoury soy sauce glaze.",
+    "cuisine": "chinese",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 36,
+    "difficulty": "easy",
+    "ingredients": [
+      "500 g green beans",
+      "4 garlic cloves",
+      "1 tbsp soy sauce",
+      "1 tsp sugar",
+      "2 tbsp neutral oil",
+      "1 tsp sesame oil"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 8,
+        "steps": [
+          "Trim beans and dry thoroughly with a clean towel so they blister rather than steam."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 8,
+        "steps": [
+          "Heat oil in a wide wok until shimmering and stir-fry beans in batches until wrinkled and tender-crisp."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 15,
+        "steps": [
+          "Reduce heat, add minced garlic and stir for 30 seconds until fragrant but not brown."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Add soy and sugar, toss until lightly glazed and finish with sesame oil."
+        ]
+      }
+    ],
+    "tips": [
+      "Keep beans moving in the hot wok to prevent scorching."
+    ],
+    "variations": [
+      "Add chilli crisp for a spicy finish."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "Greek Tzatziki",
+    "summary": "Thick yoghurt dip with grated cucumber, garlic, dill and lemon, perfect beside grilled meats.",
+    "cuisine": "greek",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 36,
+    "difficulty": "easy",
+    "ingredients": [
+      "400 g Greek yoghurt",
+      "1 cucumber",
+      "2 garlic cloves",
+      "2 tbsp dill",
+      "1 tbsp lemon juice",
+      "1 tbsp olive oil",
+      "1 pinch salt"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 8,
+        "steps": [
+          "Grate cucumber and squeeze it firmly in a clean cloth to remove excess moisture."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 8,
+        "steps": [
+          "Crush garlic with a pinch of salt into a paste to distribute its flavour evenly."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 15,
+        "steps": [
+          "Fold cucumber, garlic, chopped dill and lemon juice into thick yoghurt."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Chill at least 20 minutes, drizzle with olive oil and serve cold."
+        ]
+      }
+    ],
+    "tips": [
+      "Start with one garlic clove if you prefer a gentler flavour."
+    ],
+    "variations": [
+      "Add fresh mint alongside dill."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "French Pear Tarte Tatin",
+    "summary": "Caramelised pears baked beneath buttery puff pastry and turned out into a glossy upside-down tart.",
+    "cuisine": "french",
+    "course": "dessert",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 65,
+    "difficulty": "medium",
+    "ingredients": [
+      "4 firm pears",
+      "120 g caster sugar",
+      "60 g butter",
+      "1 sheet puff pastry",
+      "1 tsp vanilla",
+      "1 lemon"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Peel and halve pears, remove cores and toss with a little lemon juice to prevent browning."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 15,
+        "steps": [
+          "Melt sugar in an ovenproof skillet until amber, then swirl in butter carefully and arrange pears cut-side up."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 30,
+        "steps": [
+          "Cook pears in caramel for 8 minutes, drape pastry over and tuck edges down around the fruit."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 10,
+        "steps": [
+          "Bake at 200°C for 25–30 minutes until puffed and golden; rest 5 minutes before carefully inverting."
+        ]
+      }
+    ],
+    "tips": [
+      "Use firm pears so they keep their shape in the caramel."
+    ],
+    "variations": [
+      "Add a pinch of cardamom to the caramel."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "Indian Kheer Rice Pudding",
+    "summary": "Creamy slow-simmered rice pudding scented with cardamom, saffron and toasted pistachios.",
+    "cuisine": "indian",
+    "course": "dessert",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 65,
+    "difficulty": "medium",
+    "ingredients": [
+      "100 g basmati rice",
+      "1 litre whole milk",
+      "70 g sugar",
+      "5 cardamom pods",
+      "1 pinch saffron",
+      "40 g pistachios",
+      "1 tbsp rosewater"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Rinse rice, soak for 15 minutes and drain; crush cardamom pods lightly to release aroma."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 15,
+        "steps": [
+          "Bring milk to a gentle simmer in a heavy saucepan and add rice, cardamom and saffron."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 30,
+        "steps": [
+          "Cook over low heat 40–50 minutes, stirring often, until rice is soft and milk thickened; add sugar near the end."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 10,
+        "steps": [
+          "Remove cardamom pods, stir in rosewater and top with chopped pistachios; serve warm or chilled."
+        ]
+      }
+    ],
+    "tips": [
+      "Scrape the bottom of the pan regularly to prevent milk catching."
+    ],
+    "variations": [
+      "Use almonds instead of pistachios."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "Turkish Sütlaç Rice Pudding",
+    "summary": "Silky baked rice pudding with a lightly caramelised top and delicate vanilla flavour.",
+    "cuisine": "turkish",
+    "course": "dessert",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 65,
+    "difficulty": "medium",
+    "ingredients": [
+      "100 g short-grain rice",
+      "700 ml milk",
+      "250 ml water",
+      "100 g sugar",
+      "1 tbsp cornflour",
+      "1 tsp vanilla"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Simmer rice in water until very soft and most liquid is absorbed, about 15 minutes."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 15,
+        "steps": [
+          "Add milk and sugar, simmer gently for 15 minutes, then stir in cornflour mixed with cold milk."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 30,
+        "steps": [
+          "Cook 3 minutes until lightly thickened, add vanilla and divide among ovenproof ramekins."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 10,
+        "steps": [
+          "Place ramekins in a shallow water bath and grill tops until mottled golden; cool and refrigerate before serving."
+        ]
+      }
+    ],
+    "tips": [
+      "Watch closely under the grill because the surface browns quickly."
+    ],
+    "variations": [
+      "Sprinkle cinnamon over the chilled pudding."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "American Peach Cobbler",
+    "summary": "Juicy cinnamon peaches baked beneath a golden, tender biscuit topping and served warm.",
+    "cuisine": "american",
+    "course": "dessert",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 65,
+    "difficulty": "medium",
+    "ingredients": [
+      "800 g peaches",
+      "100 g sugar",
+      "1 tbsp lemon juice",
+      "1 tsp cinnamon",
+      "180 g plain flour",
+      "2 tsp baking powder",
+      "80 g butter",
+      "120 ml milk"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Slice peaches and toss with half the sugar, lemon juice and cinnamon in a baking dish."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 15,
+        "steps": [
+          "Mix flour, baking powder and remaining sugar, then rub in cold butter until crumbly."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 30,
+        "steps": [
+          "Stir in milk just until a soft dough forms and drop spoonfuls over the fruit, leaving gaps for steam."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 10,
+        "steps": [
+          "Bake at 190°C for 35–40 minutes until topping is golden and peach juices bubble; rest 10 minutes."
+        ]
+      }
+    ],
+    "tips": [
+      "Use ripe but firm peaches so the filling does not turn mushy."
+    ],
+    "variations": [
+      "Swap peaches for nectarines or plums."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "French Clafoutis with Cherries",
+    "summary": "Juicy cherries baked in a delicate vanilla custard batter with lightly crisp edges.",
+    "cuisine": "french",
+    "course": "dessert",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 65,
+    "difficulty": "medium",
+    "ingredients": [
+      "450 g cherries",
+      "3 eggs",
+      "100 g sugar",
+      "100 g plain flour",
+      "250 ml milk",
+      "30 g melted butter",
+      "1 tsp vanilla"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Butter a shallow baking dish and scatter pitted cherries evenly over the base."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 15,
+        "steps": [
+          "Whisk eggs and sugar until combined, then whisk in flour, milk, melted butter and vanilla until smooth."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 30,
+        "steps": [
+          "Pour batter carefully around cherries and bake at 180°C for 35–40 minutes until puffed and just set."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 10,
+        "steps": [
+          "Rest 10 minutes as custard settles, then dust lightly with icing sugar and serve warm."
+        ]
+      }
+    ],
+    "tips": [
+      "Avoid overbaking; the centre should retain a gentle wobble."
+    ],
+    "variations": [
+      "Use sliced apricots when cherries are out of season."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "Mexican Churros with Chocolate Sauce",
+    "summary": "Crisp cinnamon-sugar churros with soft centres, dipped into warm dark chocolate sauce.",
+    "cuisine": "mexican",
+    "course": "dessert",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 65,
+    "difficulty": "medium",
+    "ingredients": [
+      "250 ml water",
+      "60 g butter",
+      "150 g plain flour",
+      "2 eggs",
+      "70 g sugar",
+      "1 tsp cinnamon",
+      "150 g dark chocolate",
+      "150 ml cream",
+      "500 ml frying oil"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Bring water and butter to a boil, add flour at once and stir vigorously until dough pulls from pan; cool 5 minutes."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 15,
+        "steps": [
+          "Beat eggs into warm dough one at a time, then pipe short ridged lengths onto baking paper."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 30,
+        "steps": [
+          "Fry batches in oil at 175°C until deeply golden and cooked through; drain and toss in cinnamon sugar."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 10,
+        "steps": [
+          "Heat cream until steaming, pour over chopped chocolate and stir smooth; serve with hot churros."
+        ]
+      }
+    ],
+    "tips": [
+      "Use a thermometer to keep oil at a steady 175°C."
+    ],
+    "variations": [
+      "Add orange zest to the chocolate sauce."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "Greek Portokalopita",
+    "summary": "Syrup-soaked orange and yoghurt cake made with crisp filo pieces and fragrant citrus zest.",
+    "cuisine": "greek",
+    "course": "dessert",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 65,
+    "difficulty": "medium",
+    "ingredients": [
+      "250 g filo pastry",
+      "3 eggs",
+      "200 g Greek yoghurt",
+      "150 ml olive oil",
+      "150 g sugar",
+      "2 oranges",
+      "2 tsp baking powder",
+      "200 ml water"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Tear filo into small pieces and dry in a low oven at 100°C until crisp, then cool."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 15,
+        "steps": [
+          "Whisk eggs, yoghurt, olive oil, orange zest and baking powder; fold in dried filo evenly."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 30,
+        "steps": [
+          "Pour into a greased baking dish and bake at 180°C for 35–40 minutes until golden and set."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 10,
+        "steps": [
+          "Simmer water, sugar and orange juice into a light syrup; pour cooled syrup over hot cake and rest to absorb."
+        ]
+      }
+    ],
+    "tips": [
+      "Dry filo thoroughly so it absorbs batter without clumping."
+    ],
+    "variations": [
+      "Add a cinnamon stick to the syrup."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "Australian Anzac Biscuits",
+    "summary": "Golden oat-and-coconut biscuits with crisp edges, chewy centres and rich golden syrup flavour.",
+    "cuisine": "australian",
+    "course": "dessert",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 65,
+    "difficulty": "medium",
+    "ingredients": [
+      "120 g rolled oats",
+      "150 g plain flour",
+      "100 g desiccated coconut",
+      "120 g brown sugar",
+      "125 g butter",
+      "2 tbsp golden syrup",
+      "1 tsp bicarbonate of soda",
+      "2 tbsp boiling water"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Combine oats, flour, coconut and brown sugar in a large bowl and preheat oven to 170°C."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 15,
+        "steps": [
+          "Melt butter with golden syrup over low heat, then dissolve bicarbonate in boiling water and stir into butter mixture."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 30,
+        "steps": [
+          "Pour foaming mixture into dry ingredients and mix until evenly moistened; roll into walnut-sized balls."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 10,
+        "steps": [
+          "Space balls on lined trays, flatten slightly and bake 12–15 minutes until golden; cool on trays to firm."
+        ]
+      }
+    ],
+    "tips": [
+      "Bake a little longer for crisp biscuits or less for chewy centres."
+    ],
+    "variations": [
+      "Add finely grated orange zest."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "American Banana Cream Pie",
+    "summary": "Buttery biscuit crust filled with sliced bananas and vanilla custard, crowned with whipped cream.",
+    "cuisine": "american",
+    "course": "dessert",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 65,
+    "difficulty": "medium",
+    "ingredients": [
+      "220 g digestive biscuits",
+      "90 g butter",
+      "3 bananas",
+      "500 ml milk",
+      "4 egg yolks",
+      "90 g sugar",
+      "35 g cornflour",
+      "1 tsp vanilla",
+      "200 ml cream"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Crush biscuits, mix with melted butter and press into a pie tin; chill until firm."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 15,
+        "steps": [
+          "Whisk egg yolks, sugar and cornflour; slowly whisk in hot milk, then return to heat and stir until thick."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 30,
+        "steps": [
+          "Cool custard slightly, layer sliced bananas in crust and pour custard over; chill at least 4 hours."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 10,
+        "steps": [
+          "Whip cream to soft peaks, spread over set pie and garnish with fresh banana just before serving."
+        ]
+      }
+    ],
+    "tips": [
+      "Press cling film directly onto custard to prevent a skin."
+    ],
+    "variations": [
+      "Add toasted coconut over the whipped cream."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "Peruvian Aji de Gallina",
+    "summary": "Shredded chicken in a creamy yellow chilli and walnut sauce, served with rice and olives.",
+    "cuisine": "peruvian",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 55,
+    "difficulty": "easy",
+    "ingredients": [
+      "650 g chicken breast",
+      "1 onion",
+      "3 tbsp aji amarillo paste",
+      "200 ml evaporated milk",
+      "70 g walnuts",
+      "3 slices white bread",
+      "400 ml chicken stock",
+      "250 g rice",
+      "2 eggs"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Poach chicken gently in stock until it reaches 75°C, then shred and reserve broth."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Soak bread in evaporated milk; blend with walnuts and chilli paste until smooth."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 25,
+        "steps": [
+          "Soften onion in oil, add blended sauce and enough reserved broth to make a thick simmering sauce."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 8,
+        "steps": [
+          "Fold in chicken and warm through; serve over cooked rice with boiled egg and olives if available."
+        ]
+      }
+    ],
+    "tips": [
+      "Add aji amarillo gradually because brands vary in heat."
+    ],
+    "variations": [
+      "Replace walnuts with pecans."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "Thai Larb Gai",
+    "summary": "Warm minced chicken salad with lime, fish sauce, mint and toasted rice powder.",
+    "cuisine": "thai",
+    "course": "lunch",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 40,
+    "difficulty": "easy",
+    "ingredients": [
+      "500 g chicken mince",
+      "2 limes",
+      "2 tbsp fish sauce",
+      "2 shallots",
+      "1 bunch mint",
+      "1 bunch coriander",
+      "2 tbsp uncooked jasmine rice",
+      "1 tsp chilli flakes",
+      "1 lettuce"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Toast uncooked rice in a dry skillet until golden, cool and grind into a coarse powder."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 10,
+        "steps": [
+          "Cook chicken mince with a splash of water over medium heat until no pink remains and it reaches 75°C."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 15,
+        "steps": [
+          "Remove from heat, toss with lime juice, fish sauce, finely sliced shallots and chilli."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Fold in mint, coriander and toasted rice powder; spoon into crisp lettuce leaves."
+        ]
+      }
+    ],
+    "tips": [
+      "Add herbs off the heat to keep them fresh."
+    ],
+    "variations": [
+      "Use pork mince for larb moo."
+    ],
+    "storage": "Refrigerate in an airtight container for up to 2 days; serve cold or reheat as appropriate."
+  },
+  {
+    "title": "Italian Ribollita",
+    "summary": "Rustic Tuscan bean-and-vegetable soup thickened with bread, kale and olive oil.",
+    "cuisine": "italian",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 55,
+    "difficulty": "easy",
+    "ingredients": [
+      "400 g canned cannellini beans",
+      "200 g kale",
+      "2 carrots",
+      "2 celery stalks",
+      "1 onion",
+      "400 g chopped tomatoes",
+      "800 ml vegetable stock",
+      "200 g stale bread",
+      "3 tbsp olive oil"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Soften finely diced onion, carrot and celery in olive oil for 10 minutes."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Add tomatoes and stock, then simmer 15 minutes until vegetables soften."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 25,
+        "steps": [
+          "Mash half the beans and add with remaining beans and chopped kale; simmer 10 minutes."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 8,
+        "steps": [
+          "Stir in torn stale bread and rest 10 minutes to thicken; drizzle with olive oil before serving."
+        ]
+      }
+    ],
+    "tips": [
+      "Use day-old bread so it absorbs broth without dissolving instantly."
+    ],
+    "variations": [
+      "Add a Parmesan rind while simmering."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "Indian Baingan Bharta",
+    "summary": "Smoky mashed aubergine cooked with onion, tomato, ginger and green chilli.",
+    "cuisine": "indian",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 55,
+    "difficulty": "easy",
+    "ingredients": [
+      "2 large aubergines",
+      "1 onion",
+      "3 tomatoes",
+      "3 garlic cloves",
+      "1 tbsp ginger",
+      "1 green chilli",
+      "1 tsp cumin seeds",
+      "1 tsp turmeric",
+      "2 tbsp oil",
+      "2 tbsp coriander"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Char aubergines over a gas flame or roast at 230°C until skin blackens and flesh collapses."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Cool, peel and mash the soft flesh, discarding tough skin and excess liquid."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 25,
+        "steps": [
+          "Sizzle cumin seeds in oil, soften onion, then cook garlic, ginger, chilli and tomatoes until thick."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 8,
+        "steps": [
+          "Add turmeric and aubergine, cook 8 minutes while stirring and finish with coriander."
+        ]
+      }
+    ],
+    "tips": [
+      "Blackened aubergine skin contributes the characteristic smoky flavour."
+    ],
+    "variations": [
+      "Stir in peas for extra sweetness."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "German Kartoffelsalat",
+    "summary": "Warm potato salad dressed with tangy mustard, vinegar and bacon instead of mayonnaise.",
+    "cuisine": "german",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 36,
+    "difficulty": "easy",
+    "ingredients": [
+      "800 g waxy potatoes",
+      "120 g bacon",
+      "1 onion",
+      "150 ml vegetable stock",
+      "3 tbsp white wine vinegar",
+      "1 tbsp Dijon mustard",
+      "2 tbsp parsley"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 8,
+        "steps": [
+          "Boil whole potatoes in salted water until just tender, drain and peel while warm."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 8,
+        "steps": [
+          "Cook diced bacon until crisp, then soften chopped onion in the rendered fat."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 15,
+        "steps": [
+          "Whisk warm stock, vinegar and mustard into the pan and season generously."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Slice warm potatoes, pour over dressing and fold gently; rest 15 minutes and finish with parsley."
+        ]
+      }
+    ],
+    "tips": [
+      "Waxy potatoes hold their shape when tossed warm."
+    ],
+    "variations": [
+      "Leave out bacon and add extra olive oil."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "Chinese Tomato Egg Stir-Fry",
+    "summary": "Soft scrambled eggs folded into juicy sweet-savoury tomatoes for a quick homestyle meal.",
+    "cuisine": "chinese",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 55,
+    "difficulty": "easy",
+    "ingredients": [
+      "6 eggs",
+      "5 ripe tomatoes",
+      "3 spring onions",
+      "1 tsp sugar",
+      "1 tbsp soy sauce",
+      "3 tbsp neutral oil",
+      "1 tsp cornflour"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Beat eggs with a pinch of salt; cut tomatoes into wedges and slice spring onions."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Heat half the oil in a wok and scramble eggs gently until just set; transfer to a plate."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 25,
+        "steps": [
+          "Add remaining oil and tomatoes, cook until juicy, then add sugar and soy sauce."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 8,
+        "steps": [
+          "Return eggs, fold through tomatoes and thicken lightly with cornflour slurry if needed; serve with rice."
+        ]
+      }
+    ],
+    "tips": [
+      "Remove eggs while still soft because they cook again in the sauce."
+    ],
+    "variations": [
+      "Add a dash of sesame oil before serving."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "Egyptian Ful Medames",
+    "summary": "Warm mashed fava beans with cumin, lemon, garlic and olive oil, scooped up with flatbread.",
+    "cuisine": "egyptian",
+    "course": "breakfast",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 35,
+    "difficulty": "easy",
+    "ingredients": [
+      "800 g canned fava beans",
+      "2 garlic cloves",
+      "1 lemon",
+      "1 tsp cumin",
+      "3 tbsp olive oil",
+      "2 tomatoes",
+      "2 tbsp parsley",
+      "4 flatbreads"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 8,
+        "steps": [
+          "Drain and rinse fava beans, then simmer gently in a saucepan with 150 ml water for 10 minutes."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 10,
+        "steps": [
+          "Mash some beans with a fork while leaving others whole for texture."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 12,
+        "steps": [
+          "Stir in crushed garlic, cumin, lemon juice and salt, then warm through without drying out."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Spoon into bowls and top with olive oil, chopped tomatoes and parsley; serve with flatbread."
+        ]
+      }
+    ],
+    "tips": [
+      "Add warm water gradually to keep the beans creamy."
+    ],
+    "variations": [
+      "Top with a chopped boiled egg."
+    ],
+    "storage": "Refrigerate in an airtight container for up to 2 days; serve cold or reheat as appropriate."
+  },
+  {
+    "title": "Japanese Chicken Soboro Don",
+    "summary": "Sweet-savoury minced chicken and fluffy scrambled egg served in colourful stripes over rice.",
+    "cuisine": "japanese",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 55,
+    "difficulty": "easy",
+    "ingredients": [
+      "500 g chicken mince",
+      "300 g short-grain rice",
+      "4 eggs",
+      "3 tbsp soy sauce",
+      "2 tbsp mirin",
+      "1 tbsp sugar",
+      "1 tbsp ginger",
+      "2 spring onions"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Rinse rice and cook covered according to packet directions; rest off heat before fluffing."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Cook chicken mince with soy, mirin, sugar and grated ginger, stirring until fine and fully cooked."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 25,
+        "steps": [
+          "Beat eggs with a pinch of salt and scramble over low heat into small, soft curds."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 8,
+        "steps": [
+          "Divide rice among bowls and arrange chicken and eggs side by side; finish with spring onions."
+        ]
+      }
+    ],
+    "tips": [
+      "Stir the chicken frequently for a fine, even mince texture."
+    ],
+    "variations": [
+      "Add blanched green beans as a third topping."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "Italian Polenta with Mushrooms",
+    "summary": "Creamy Parmesan polenta topped with golden sautéed mushrooms, garlic and thyme.",
+    "cuisine": "italian",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 55,
+    "difficulty": "easy",
+    "ingredients": [
+      "200 g instant polenta",
+      "800 ml vegetable stock",
+      "300 g mixed mushrooms",
+      "50 g Parmesan",
+      "30 g butter",
+      "2 garlic cloves",
+      "1 tsp thyme",
+      "2 tbsp olive oil"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Bring stock to a simmer and whisk in polenta gradually to avoid lumps."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Cook according to packet instructions, stirring frequently until thick and creamy."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 25,
+        "steps": [
+          "Sear sliced mushrooms in hot olive oil until golden, then add garlic and thyme for the final minute."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 8,
+        "steps": [
+          "Stir butter and Parmesan into polenta, loosen with hot water if needed and spoon mushrooms over top."
+        ]
+      }
+    ],
+    "tips": [
+      "Avoid overcrowding mushrooms so they brown rather than steam."
+    ],
+    "variations": [
+      "Finish with a little truffle oil."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "French Madeleines",
+    "summary": "Delicate shell-shaped sponge cakes with buttery edges, lemon zest and a soft centre.",
+    "cuisine": "french",
+    "course": "dessert",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 65,
+    "difficulty": "medium",
+    "ingredients": [
+      "120 g plain flour",
+      "100 g sugar",
+      "2 eggs",
+      "110 g butter",
+      "1 tsp baking powder",
+      "1 lemon",
+      "1 tsp vanilla"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Whisk eggs and sugar until pale and slightly thickened; fold in flour and baking powder."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 15,
+        "steps": [
+          "Stir in cooled melted butter, lemon zest and vanilla, then chill batter for 45 minutes."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 30,
+        "steps": [
+          "Butter and flour a madeleine tin, then spoon batter into shell moulds without spreading."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 10,
+        "steps": [
+          "Bake at 200°C for 9–11 minutes until risen and golden at edges; unmould and cool briefly."
+        ]
+      }
+    ],
+    "tips": [
+      "Chilled batter helps create the characteristic hump."
+    ],
+    "variations": [
+      "Dip cooled madeleines in melted dark chocolate."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "Greek Gemista Stuffed Tomatoes",
+    "summary": "Oven-baked tomatoes and peppers filled with herbed rice, pine nuts and sweet onions.",
+    "cuisine": "greek",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 55,
+    "difficulty": "easy",
+    "ingredients": [
+      "4 large tomatoes",
+      "4 bell peppers",
+      "200 g rice",
+      "1 onion",
+      "3 garlic cloves",
+      "3 tbsp olive oil",
+      "2 tbsp parsley",
+      "1 tbsp mint",
+      "40 g pine nuts",
+      "300 ml vegetable stock"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Slice tops from tomatoes and peppers, scoop out centres and reserve tomato pulp; arrange shells in a baking dish."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 12,
+        "steps": [
+          "Soften chopped onion and garlic in olive oil, add rice, tomato pulp, herbs and pine nuts."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 25,
+        "steps": [
+          "Fill vegetables loosely to allow rice to expand, replace tops and pour stock around them."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 8,
+        "steps": [
+          "Cover and bake at 190°C for 45 minutes, then uncover 15 minutes until rice is tender and tops browned."
+        ]
+      }
+    ],
+    "tips": [
+      "Do not overfill shells because the rice expands as it cooks."
+    ],
+    "variations": [
+      "Add raisins for a sweet-savoury variation."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "Brazilian Pão de Queijo",
+    "summary": "Warm, chewy cheese breads with crisp shells made from tapioca starch and Parmesan.",
+    "cuisine": "brazilian",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 36,
+    "difficulty": "easy",
+    "ingredients": [
+      "250 g tapioca starch",
+      "120 ml milk",
+      "60 ml neutral oil",
+      "2 eggs",
+      "120 g Parmesan",
+      "1 tsp salt"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 8,
+        "steps": [
+          "Heat milk, oil and salt until steaming, then pour over tapioca starch and stir into a sticky dough."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 8,
+        "steps": [
+          "Cool 5 minutes so eggs do not scramble, then beat in eggs one at a time."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 15,
+        "steps": [
+          "Fold in finely grated Parmesan and roll mixture into small balls with lightly oiled hands."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Bake at 200°C for 20–25 minutes until puffed and golden; serve while warm."
+        ]
+      }
+    ],
+    "tips": [
+      "Tapioca starch gives the signature stretchy texture."
+    ],
+    "variations": [
+      "Use half mozzarella and half Parmesan."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  },
+  {
+    "title": "French Leek and Potato Soup",
+    "summary": "Smooth, buttery leek and potato soup finished with cream and fresh chives.",
+    "cuisine": "french",
+    "course": "lunch",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 40,
+    "difficulty": "easy",
+    "ingredients": [
+      "3 leeks",
+      "500 g potatoes",
+      "40 g butter",
+      "900 ml vegetable stock",
+      "100 ml cream",
+      "2 tbsp chives",
+      "1 pinch nutmeg"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Split and rinse leeks thoroughly to remove grit, then slice white and pale-green parts."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 10,
+        "steps": [
+          "Melt butter and soften leeks over low heat for 10 minutes without browning."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 15,
+        "steps": [
+          "Add diced potatoes and stock, simmer 20 minutes until tender, then blend until smooth."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Stir in cream and nutmeg, heat gently and serve with chopped chives."
+        ]
+      }
+    ],
+    "tips": [
+      "Avoid browning leeks to preserve the delicate flavour."
+    ],
+    "variations": [
+      "Chill the soup for a vichyssoise-style version."
+    ],
+    "storage": "Refrigerate in an airtight container for up to 2 days; serve cold or reheat as appropriate."
+  },
+  {
+    "title": "Mexican Sopa de Fideo",
+    "summary": "Toasted vermicelli noodles simmered in a light tomato and garlic broth with lime.",
+    "cuisine": "mexican",
+    "course": "lunch",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 40,
+    "difficulty": "easy",
+    "ingredients": [
+      "200 g thin vermicelli",
+      "400 g tomatoes",
+      "1 onion",
+      "2 garlic cloves",
+      "1 litre chicken stock",
+      "2 tbsp oil",
+      "1 lime",
+      "2 tbsp coriander"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 10,
+        "steps": [
+          "Blend tomatoes with onion, garlic and a ladle of stock until smooth."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 10,
+        "steps": [
+          "Break vermicelli into short lengths and toast in oil until evenly golden, stirring constantly."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 15,
+        "steps": [
+          "Carefully add blended tomato mixture and simmer 5 minutes to soften its raw flavour."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Pour in remaining stock and cook until noodles are tender; finish with lime and coriander."
+        ]
+      }
+    ],
+    "tips": [
+      "Keep stirring noodles while toasting because they colour quickly."
+    ],
+    "variations": [
+      "Add shredded cooked chicken for a heartier soup."
+    ],
+    "storage": "Refrigerate in an airtight container for up to 2 days; serve cold or reheat as appropriate."
+  },
+  {
+    "title": "Italian Caprese Stuffed Peppers",
+    "summary": "Sweet roasted peppers filled with mozzarella, cherry tomatoes and basil, finished with balsamic glaze.",
+    "cuisine": "italian",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 36,
+    "difficulty": "easy",
+    "ingredients": [
+      "4 bell peppers",
+      "250 g mozzarella",
+      "250 g cherry tomatoes",
+      "1 bunch basil",
+      "2 tbsp olive oil",
+      "1 tbsp balsamic glaze",
+      "1 garlic clove"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 8,
+        "steps": [
+          "Halve peppers lengthways and remove seeds while keeping the stems intact for structure."
+        ]
+      },
+      {
+        "title": "Build the flavour",
+        "minutes": 8,
+        "steps": [
+          "Brush with olive oil and roast at 200°C for 20 minutes until beginning to soften."
+        ]
+      },
+      {
+        "title": "Cook until ready",
+        "minutes": 15,
+        "steps": [
+          "Toss halved tomatoes with chopped garlic and basil, then spoon into peppers and add mozzarella."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Return to oven for 10 minutes until cheese melts and peppers are tender; drizzle balsamic glaze to serve."
+        ]
+      }
+    ],
+    "tips": [
+      "Drain mozzarella well to prevent watery filling."
+    ],
+    "variations": [
+      "Add cooked quinoa beneath the tomato filling."
+    ],
+    "storage": "Refrigerate leftovers promptly in an airtight container for up to 3 days; freeze only if suitable for the dish."
+  }
+]

@@ -1,0 +1,830 @@
+[
+  {
+    "title": "Japanese Oyakodon",
+    "summary": "Tender chicken and softly set eggs simmered in a sweet-savoury dashi broth over steaming rice.",
+    "cuisine": "japanese",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 15,
+    "cook_minutes": 35,
+    "difficulty": "easy",
+    "ingredients": [
+      "300 g rice",
+      "450 g chicken thigh, trimmed and cut into 2 cm pieces",
+      "1 onion, thinly sliced",
+      "250 ml dashi stock",
+      "3 tbsp soy sauce",
+      "2 tbsp mirin",
+      "1 tbsp white sugar",
+      "4 eggs",
+      "2 spring onions, thinly sliced"
+    ],
+    "stages": [
+      {
+        "title": "Cook the rice and prepare the toppings",
+        "minutes": 25,
+        "steps": [
+          "Cook the rice according to the packet, then keep it covered and warm.",
+          "Trim the chicken thighs of excess fat and cut into 2 cm pieces.",
+          "Thinly slice the onion and the spring onions, keeping them separate.",
+          "Lightly beat the eggs in a jug with a fork, so the whites and yolks are only just combined."
+        ]
+      },
+      {
+        "title": "Make the simmering sauce",
+        "minutes": 8,
+        "steps": [
+          "Combine the dashi stock, soy sauce, mirin and sugar in a wide, deep frying pan.",
+          "Bring to a simmer over medium heat, stirring until the sugar dissolves, about 2 minutes.",
+          "Add the onion and simmer over medium heat for 5–6 minutes, until soft and translucent."
+        ]
+      },
+      {
+        "title": "Cook the chicken and eggs",
+        "minutes": 14,
+        "steps": [
+          "Add the chicken to the pan in a single layer and simmer over medium heat for 8–9 minutes, turning once, until cooked through and no longer pink in the middle.",
+          "Pour the beaten eggs slowly over the chicken in a circular motion, without stirring.",
+          "Cover and cook over medium-low heat for 1–2 minutes, until the whites are just set and the yolks are soft and slightly runny, or cook a little longer if you prefer the egg firm."
+        ]
+      },
+      {
+        "title": "Assemble the bowls",
+        "minutes": 3,
+        "steps": [
+          "Divide the hot rice among four deep bowls.",
+          "Slide the chicken and egg over each portion with a large spoon, adding some of the pan juices to soak into the rice.",
+          "Scatter the spring onions over the top and serve straight away."
+        ]
+      }
+    ],
+    "tips": [
+      "Chicken thigh stays tender in the simmering sauce, whereas breast can turn dry and stringy in the same time.",
+      "Beat the eggs only lightly so you get ribbons of white and yolk rather than a uniform scramble.",
+      "Use a wide pan so the chicken sits in one layer and cooks evenly in the shallow sauce.",
+      "Take the pan off the heat while the egg is still slightly wet, because residual heat and the hot rice will finish setting it."
+    ],
+    "variations": [
+      "Swap the chicken for thinly sliced pork loin for tanin-style katsudon-like flavour, simmering 4–5 minutes until no longer pink.",
+      "Add a handful of sliced mushrooms with the onion for extra savoury depth."
+    ],
+    "storage": "Best eaten straight away. Refrigerate leftover chicken and egg separately from the rice in sealed containers for up to 2 days, and reheat until steaming hot."
+  },
+  {
+    "title": "Thai Tom Kha Gai",
+    "summary": "Creamy coconut chicken soup infused with galangal, lemongrass, makrut lime and fresh lime juice.",
+    "cuisine": "thai",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 15,
+    "cook_minutes": 30,
+    "difficulty": "easy",
+    "ingredients": [
+      "500 g chicken thigh, thinly sliced",
+      "400 ml coconut milk",
+      "500 ml chicken stock",
+      "3 lemongrass, bruised and cut into 5 cm lengths",
+      "40 g ginger, sliced into thin coins",
+      "4 kaffir lime leaves, torn",
+      "200 g mushrooms, halved or quartered",
+      "2 tbsp fish sauce",
+      "2 limes, 1 juiced and 1 cut into wedges",
+      "2 red chillies, thinly sliced",
+      "1 tbsp vegetable oil",
+      "1 bunch coriander, leaves picked"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the aromatics",
+        "minutes": 15,
+        "steps": [
+          "Slice the chicken thinly against the grain into bite-sized strips.",
+          "Bruise the lemongrass with the back of a knife, then cut it into 5 cm lengths.",
+          "Slice the ginger into thin coins and tear the kaffir lime leaves.",
+          "Halve or quarter the mushrooms and thinly slice the red chillies."
+        ]
+      },
+      {
+        "title": "Infuse the broth",
+        "minutes": 12,
+        "steps": [
+          "Heat the vegetable oil in a large saucepan over medium heat, add the lemongrass, ginger and lime leaves and stir for 1 minute until fragrant.",
+          "Pour in the chicken stock and bring to a simmer over medium heat.",
+          "Reduce the heat to low and simmer for 10 minutes to infuse the broth.",
+          "Stir in the coconut milk and return to a gentle simmer."
+        ]
+      },
+      {
+        "title": "Cook the chicken and mushrooms",
+        "minutes": 14,
+        "steps": [
+          "Add the chicken and mushrooms to the broth.",
+          "Simmer gently over medium-low heat for 10–12 minutes, stirring occasionally, until the chicken is cooked through with no pink in the centre.",
+          "Keep the heat low, as boiling hard can split the coconut milk."
+        ]
+      },
+      {
+        "title": "Season and serve",
+        "minutes": 4,
+        "steps": [
+          "Remove the pan from the heat and stir in the fish sauce and the juice of 1 lime.",
+          "Taste and add more fish sauce or lime juice if needed.",
+          "Ladle into bowls and top with the sliced chilli and coriander leaves.",
+          "Serve with the lime wedges, and tell diners the lemongrass, ginger and lime leaves are not for eating."
+        ]
+      }
+    ],
+    "tips": [
+      "Bruising the lemongrass breaks its fibres so it releases more fragrance into the broth.",
+      "Add the lime juice off the heat, because boiling dulls its fresh flavour and can make it bitter.",
+      "Chicken thigh stays tender in the simmering broth, while breast tends to dry out.",
+      "Fish sauce differs in saltiness between brands, so add it gradually and taste as you go."
+    ],
+    "variations": [
+      "Replace the chicken with 300 g peeled prawns and simmer for 3–4 minutes until pink and cooked through.",
+      "Add 1 tbsp of sugar-free chilli paste or extra chilli for a spicier soup."
+    ],
+    "storage": "Cool quickly, then refrigerate in a sealed container for up to 3 days. Reheat gently on the stovetop until steaming hot throughout. Not suitable for freezing, as the coconut milk may separate."
+  },
+  {
+    "title": "British Toad in the Hole",
+    "summary": "Juicy sausages baked inside a towering, crisp-edged Yorkshire pudding with rich onion gravy.",
+    "cuisine": "british",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 57,
+    "difficulty": "easy",
+    "ingredients": [
+      "8 pork sausages",
+      "150 g plain flour",
+      "3 eggs",
+      "200 ml milk",
+      "2 tbsp vegetable oil",
+      "2 onions, thinly sliced",
+      "400 ml beef stock",
+      "1 tbsp worcestershire sauce",
+      "1/2 tsp salt",
+      "black pepper, to taste",
+      "1 tbsp butter"
+    ],
+    "stages": [
+      {
+        "title": "Make the batter and slice the onions",
+        "minutes": 20,
+        "steps": [
+          "Sift 140 g of the plain flour and 1/4 tsp of the salt into a large bowl and make a well in the centre.",
+          "Add the eggs and half the milk, then whisk until thick and smooth.",
+          "Whisk in the remaining milk and 100 ml water until the batter is the consistency of pouring cream, then season with black pepper.",
+          "Thinly slice the onions and set them aside for the gravy."
+        ]
+      },
+      {
+        "title": "Rest the batter and brown the sausages",
+        "minutes": 25,
+        "steps": [
+          "Heat the oven to 220°C (200°C fan) and leave the batter to rest on the bench for 20 minutes while the oven heats and the sausages cook.",
+          "Once the oven is hot, put the vegetable oil in a 20 x 30 cm metal baking dish, add the sausages and roast for 12 minutes, turning once, until browned all over.",
+          "Return the dish to the oven for 3 minutes, until the oil is smoking hot and the sausages are sizzling."
+        ]
+      },
+      {
+        "title": "Bake the pudding and make the gravy",
+        "minutes": 30,
+        "steps": [
+          "Carefully pull the hot dish out and quickly pour the batter around the sausages. It should sizzle as it hits the oil.",
+          "Bake for 25–30 minutes without opening the oven door, until the batter is risen, deep golden and crisp at the edges, and the sausages are cooked through with no pink in the centre.",
+          "While the pudding bakes, melt the butter in a saucepan over medium heat. Add the onions and the remaining 1/4 tsp salt and cook, stirring, for 10 minutes until soft and golden.",
+          "Stir in the remaining 1 tbsp plain flour and cook for 1 minute.",
+          "Gradually stir in the beef stock and worcestershire sauce, then simmer over medium heat for 8–10 minutes, stirring occasionally, until the gravy coats the back of a spoon."
+        ]
+      },
+      {
+        "title": "Serve",
+        "minutes": 2,
+        "steps": [
+          "Cut the pudding into four portions with two sausages each.",
+          "Serve straight away with the onion gravy spooned over, before the batter deflates."
+        ]
+      }
+    ],
+    "tips": [
+      "Pouring batter into smoking-hot oil makes it puff and crisp straight away instead of turning dense and soggy.",
+      "Resting the batter lets the flour absorb the liquid, which gives a lighter, taller rise.",
+      "Keep the oven door shut for the first 25 minutes because escaping heat makes the batter collapse.",
+      "Use a metal dish rather than glass or ceramic, as it holds heat better and gives a crisper base."
+    ],
+    "variations": [
+      "Add the leaves from 2 sprigs of thyme to the batter for an herbal note.",
+      "Replace the pork sausages with beef or chicken sausages, cooking until no pink remains in the centre."
+    ],
+    "storage": "Refrigerate leftovers and gravy separately in sealed containers for up to 3 days. Reheat the pudding at 180°C (160°C fan) for 10–15 minutes until hot through, and warm the gravy in a saucepan until steaming."
+  },
+  {
+    "title": "Indian Dal Tadka",
+    "summary": "Creamy yellow lentils finished with sizzling cumin, garlic and chilli-spiced ghee.",
+    "cuisine": "indian",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 15,
+    "cook_minutes": 45,
+    "difficulty": "easy",
+    "ingredients": [
+      "250 g yellow split moong dal",
+      "1 onion, finely chopped",
+      "2 tomatoes, chopped",
+      "1 tsp ground turmeric",
+      "1 tsp cumin seeds",
+      "4 cloves garlic, thinly sliced",
+      "2 dried chillies",
+      "3 tbsp ghee",
+      "1 lemon, cut into wedges",
+      "1/2 tsp salt",
+      "1 bunch coriander, chopped",
+      "rice, to serve"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the dal and vegetables",
+        "minutes": 15,
+        "steps": [
+          "Rinse the moong dal in a sieve under cold running water until the water runs almost clear.",
+          "Finely chop the onion and chop the tomatoes.",
+          "Thinly slice the garlic and roughly chop the coriander."
+        ]
+      },
+      {
+        "title": "Simmer the dal and cook the rice",
+        "minutes": 33,
+        "steps": [
+          "Put the dal, turmeric, half the onion and the tomatoes in a large saucepan with 1 litre water and bring to the boil over high heat.",
+          "Reduce the heat to medium-low and simmer, partly covered, for 30 minutes, stirring occasionally, until the dal is very soft and starting to break down.",
+          "About 15 minutes before the dal is ready, cook the rice according to the packet, then keep it covered and warm.",
+          "Stir the salt into the dal and add a splash of hot water if it is thicker than a pourable soup."
+        ]
+      },
+      {
+        "title": "Make the tadka",
+        "minutes": 8,
+        "steps": [
+          "Heat the ghee in a small frying pan over medium heat for 1 minute.",
+          "Add the cumin seeds and cook for 30 seconds until they sizzle and smell fragrant.",
+          "Add the remaining onion and cook for 3–4 minutes, stirring, until softened and lightly browned.",
+          "Add the garlic and dried chillies and cook for 1 minute, stirring, until the garlic is golden but not dark."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 4,
+        "steps": [
+          "Pour the hot tadka over the dal and stir through briefly.",
+          "Serve the dal over the rice, scattered with the coriander, with the lemon wedges for squeezing over."
+        ]
+      }
+    ],
+    "tips": [
+      "Rinsing the dal removes surface starch, which reduces scum and keeps the cooked dal clean tasting.",
+      "Take the garlic off the heat as soon as it turns golden, because it turns bitter quickly once it browns.",
+      "Make the tadka just before serving so the spiced ghee is hot and fragrant when it hits the dal."
+    ],
+    "variations": [
+      "Replace half the moong dal with red lentils for a creamier, thicker dal.",
+      "Stir 2 handfuls of baby spinach through the dal just before adding the tadka."
+    ],
+    "storage": "Refrigerate the dal in a sealed container for up to 3 days or freeze for up to 3 months. Reheat in a saucepan over medium heat until steaming hot, adding a splash of water to loosen."
+  },
+  {
+    "title": "Japanese Chicken Karaage",
+    "summary": "Crisp ginger-soy marinated chicken bites with juicy centres and a squeeze of lemon.",
+    "cuisine": "japanese",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 15,
+    "cook_minutes": 50,
+    "difficulty": "easy",
+    "ingredients": [
+      "650 g chicken thigh, skin on, boneless",
+      "3 tbsp soy sauce",
+      "2 tbsp mirin",
+      "20 g ginger, finely grated",
+      "2 cloves garlic, finely grated",
+      "120 g cornflour",
+      "750 ml vegetable oil",
+      "1 lemon, cut into wedges",
+      "1/4 tsp salt"
+    ],
+    "stages": [
+      {
+        "title": "Cut the chicken",
+        "minutes": 10,
+        "steps": [
+          "Trim any excess fat from the chicken thigh and cut it into 4 cm chunks.",
+          "Pat the chicken pieces dry with paper towel so the coating sticks later."
+        ]
+      },
+      {
+        "title": "Marinate the chicken",
+        "minutes": 35,
+        "steps": [
+          "In a bowl, stir together the soy sauce, mirin, ginger and garlic.",
+          "Add the chicken and toss until every piece is coated.",
+          "Cover and refrigerate for 30 minutes, turning the pieces once halfway."
+        ]
+      },
+      {
+        "title": "Coat the chicken",
+        "minutes": 5,
+        "steps": [
+          "Tip the cornflour onto a large plate or tray.",
+          "Lift the chicken from the marinade, letting the excess drip off, and discard the leftover marinade.",
+          "Press each piece into the cornflour until thickly and evenly coated, then shake off the excess."
+        ]
+      },
+      {
+        "title": "Fry in batches",
+        "minutes": 12,
+        "steps": [
+          "Pour the vegetable oil into a large heavy-based pot so it is about 5 cm deep, and heat over medium-high heat to 170°C, or until a pinch of cornflour sizzles steadily.",
+          "Fry a third of the chicken for 5–6 minutes, turning occasionally, until deep golden and cooked through with no pink in the centre.",
+          "Lift the pieces onto a wire rack set over a tray. Return the oil to 170°C and fry the remaining chicken in two more batches."
+        ]
+      },
+      {
+        "title": "Season and serve",
+        "minutes": 3,
+        "steps": [
+          "Sprinkle the hot chicken with the salt.",
+          "Serve straight away with the lemon wedges for squeezing over."
+        ]
+      }
+    ],
+    "tips": [
+      "Marinating for no longer than 30 minutes keeps the chicken juicy without making it too salty from the soy.",
+      "Thigh meat stays tender in the hot oil, whereas breast tends to dry out.",
+      "Frying in batches keeps the oil temperature steady, so the coating turns crisp rather than greasy.",
+      "Draining on a rack rather than paper towel stops steam softening the underside of the crust."
+    ],
+    "variations": [
+      "Add 1 tsp sesame oil to the marinade for a nuttier flavour.",
+      "Serve with Japanese-style mayonnaise mixed with a squeeze of lemon juice for dipping."
+    ],
+    "storage": "Cool completely, then refrigerate in a sealed container for up to 3 days. Reheat on a tray in a 200°C (180°C fan) oven for 8–10 minutes until hot and crisp."
+  },
+  {
+    "title": "Mexican Esquites",
+    "summary": "Sweet charred corn tossed with lime, chilli, creamy dressing and crumbled cotija cheese.",
+    "cuisine": "mexican",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 12,
+    "cook_minutes": 15,
+    "difficulty": "easy",
+    "ingredients": [
+      "500 g corn kernels, drained and patted dry if canned, or thawed if frozen",
+      "2 tbsp butter",
+      "3 tbsp mayonnaise",
+      "60 g feta, crumbled",
+      "1 lime, zested and juiced",
+      "1 tsp chilli powder",
+      "1/2 cup coriander leaves, roughly chopped",
+      "1/2 tsp salt"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the corn and toppings",
+        "minutes": 12,
+        "steps": [
+          "Drain the corn well if canned, or thaw it if frozen, then pat it very dry with paper towel so it chars rather than steams.",
+          "Zest the lime finely, then juice it and keep the zest and juice separate.",
+          "Crumble the feta into small pieces and roughly chop the coriander.",
+          "Stir the mayonnaise, lime zest, half the lime juice and half the chilli powder together in a large bowl."
+        ]
+      },
+      {
+        "title": "Char the corn",
+        "minutes": 12,
+        "steps": [
+          "Heat the butter in a large frying pan over high heat until it foams.",
+          "Add the corn in a single layer and cook for 3 minutes without stirring, until browned underneath.",
+          "Stir, then cook for another 4–5 minutes, stirring only every minute or so, until the kernels are charred in spots and lightly popping.",
+          "Stir in the salt and the remaining lime juice, then remove the pan from the heat."
+        ]
+      },
+      {
+        "title": "Dress and serve",
+        "minutes": 3,
+        "steps": [
+          "Tip the hot corn into the bowl with the mayonnaise mixture and toss until evenly coated.",
+          "Spoon into 4 small bowls or cups.",
+          "Top with the feta, coriander and the remaining chilli powder, and serve warm."
+        ]
+      }
+    ],
+    "tips": [
+      "Drying the corn thoroughly lets it brown and char instead of steaming, which gives the smoky flavour esquites are known for.",
+      "Leaving the corn undisturbed for the first 3 minutes builds charred patches; constant stirring keeps the pan temperature down.",
+      "Dress the corn while still hot so the mayonnaise loosens slightly and coats every kernel.",
+      "Feta is a salty, crumbly stand-in for cotija; it is already salty, so taste before adding more salt."
+    ],
+    "variations": [
+      "Add 1 finely chopped red chilli or a few slices of pickled jalapenos to the pan for a hotter version.",
+      "Swap half the mayonnaise for sour cream for a tangier, lighter dressing."
+    ],
+    "storage": "Best eaten straight away. Refrigerate leftovers in an airtight container for up to 2 days and reheat in a frying pan over medium heat for 2–3 minutes, or eat cold as a salad."
+  },
+  {
+    "title": "French Pommes Dauphinoise",
+    "summary": "Paper-thin potatoes baked slowly in garlic-infused cream beneath a golden, bubbling crust.",
+    "cuisine": "french",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 100,
+    "difficulty": "easy",
+    "ingredients": [
+      "1 kg potatoes, waxy such as Desiree or Nicola",
+      "400 ml thickened cream",
+      "200 ml milk",
+      "2 cloves garlic, crushed",
+      "30 g butter, softened",
+      "1 tsp thyme, leaves picked",
+      "1/2 tsp ground nutmeg",
+      "1 tsp salt",
+      "1/2 tsp black pepper"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the potatoes and dish",
+        "minutes": 20,
+        "steps": [
+          "Heat the oven to 170°C (150°C fan).",
+          "Grease a 20 x 25 cm baking dish with half the butter.",
+          "Peel the potatoes and slice them 2–3 mm thick, keeping the starch by not rinsing them.",
+          "Pat the slices dry with a clean tea towel if they are wet."
+        ]
+      },
+      {
+        "title": "Warm the cream mixture",
+        "minutes": 8,
+        "steps": [
+          "Combine the cream, milk, garlic, thyme, nutmeg, salt and black pepper in a saucepan.",
+          "Warm over medium heat for 3–4 minutes, until steaming and just starting to bubble at the edges; do not let it boil.",
+          "Remove from the heat and taste the liquid, adding a little more salt if it seems bland."
+        ]
+      },
+      {
+        "title": "Layer and bake covered",
+        "minutes": 50,
+        "steps": [
+          "Arrange a third of the potato slices in overlapping layers in the dish.",
+          "Pour over a third of the warm cream mixture, then repeat the layers twice more, finishing with the cream.",
+          "Press the potatoes down so they are mostly submerged, then cover tightly with foil.",
+          "Bake for 50 minutes, until the potatoes are nearly tender when pierced with a knife."
+        ]
+      },
+      {
+        "title": "Brown the top",
+        "minutes": 25,
+        "steps": [
+          "Remove the foil and dot the top with the remaining butter.",
+          "Bake uncovered for 25 minutes, until the top is deep golden and the knife slides in with no resistance."
+        ]
+      },
+      {
+        "title": "Rest and serve",
+        "minutes": 17,
+        "steps": [
+          "Rest the dish for 15 minutes so the sauce thickens and the layers hold together.",
+          "Cut into portions and serve hot."
+        ]
+      }
+    ],
+    "tips": [
+      "Leave the sliced potatoes unrinsed because their surface starch thickens the cream as it bakes.",
+      "Warm the cream before pouring so the potatoes start cooking straight away and the sauce is less likely to split.",
+      "Cover the dish for the first stage so the potatoes steam through without the top drying out or browning too early.",
+      "A mandoline gives even slices, and even slices cook at the same rate."
+    ],
+    "variations": [
+      "Scatter 60 g grated gruyere between the layers and over the top for the final uncovered bake.",
+      "Rub the dish with a cut garlic clove instead of crushing garlic into the cream for a milder garlic flavour."
+    ],
+    "storage": "Refrigerate leftovers in a covered container for up to 2 days. Reheat portions in a 160°C (140°C fan) oven for 15–20 minutes, until hot through."
+  },
+  {
+    "title": "Thai Mango Salad",
+    "summary": "Crunchy green mango, herbs and roasted peanuts tossed in a lively lime-chilli dressing.",
+    "cuisine": "thai",
+    "course": "side",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 10,
+    "difficulty": "easy",
+    "ingredients": [
+      "2 green mangoes",
+      "1 carrot",
+      "1 red chilli, thinly sliced",
+      "2 tbsp fish sauce",
+      "1 lime, juiced (about 2 tbsp)",
+      "1 tbsp brown sugar",
+      "50 g peanuts",
+      "1 bunch coriander, leaves picked",
+      "1 shallot, thinly sliced"
+    ],
+    "stages": [
+      {
+        "title": "Toast the peanuts",
+        "minutes": 5,
+        "steps": [
+          "Heat a small frying pan over medium heat and add the peanuts.",
+          "Toast for 3–4 minutes, shaking the pan often, until golden and fragrant.",
+          "Tip onto a board, cool for a minute, then roughly chop."
+        ]
+      },
+      {
+        "title": "Prepare the vegetables",
+        "minutes": 10,
+        "steps": [
+          "Peel the green mangoes and cut the flesh from the stones, then cut it into thin matchsticks.",
+          "Peel the carrot and cut it into matchsticks of a similar size.",
+          "Thinly slice the shallot and the red chilli, and pick the coriander leaves from the stems."
+        ]
+      },
+      {
+        "title": "Make the dressing",
+        "minutes": 3,
+        "steps": [
+          "In a small bowl, stir the fish sauce, lime juice and brown sugar for about 1 minute, until the sugar has dissolved.",
+          "Taste and add a little more sugar if too sour or a little more lime juice if too sweet."
+        ]
+      },
+      {
+        "title": "Dress and rest",
+        "minutes": 7,
+        "steps": [
+          "Combine the mango, carrot, shallot and chilli in a large bowl.",
+          "Pour over the dressing and toss well for about 1 minute.",
+          "Leave to stand for 5 minutes, until the mango softens slightly and absorbs the dressing."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 5,
+        "steps": [
+          "Add the coriander leaves and toss gently.",
+          "Transfer to a serving plate and scatter the chopped peanuts on top.",
+          "Serve straight away."
+        ]
+      }
+    ],
+    "tips": [
+      "Use firm, unripe green mangoes: ripe ones turn mushy and sweet and lose the crisp bite the dressing is built around.",
+      "Toasting the peanuts brings out their oil and flavour, and chopping them just before serving keeps them crunchy.",
+      "Taste the dressing before it goes on, as fish sauce saltiness and lime sourness vary between brands and fruit.",
+      "Cut the mango and carrot into matchsticks of the same thickness so every mouthful has an even texture."
+    ],
+    "variations": [
+      "Add 200 g cooked prawns for a more filling dish, tossing them through with the dressing.",
+      "Swap the carrot for thinly sliced green beans or cucumber for a different crunch."
+    ],
+    "storage": "Best eaten straight away. Leftovers keep in the fridge in a covered container for up to 1 day, but the mango will soften and the peanuts will lose their crunch."
+  },
+  {
+    "title": "Italian Semifreddo",
+    "summary": "Airy frozen vanilla cream folded with whipped eggs and studded with toasted hazelnuts.",
+    "cuisine": "italian",
+    "course": "dessert",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 377,
+    "difficulty": "medium",
+    "ingredients": [
+      "3 eggs",
+      "100 g caster sugar",
+      "300 ml thickened cream",
+      "1 tsp vanilla extract",
+      "80 g hazelnuts, toasted and roughly chopped",
+      "1 pinch salt"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the tin and hazelnuts",
+        "minutes": 10,
+        "steps": [
+          "Line a 1 litre loaf tin with baking paper, leaving an overhang on the long sides so you can lift the semifreddo out later.",
+          "Roughly chop the toasted hazelnuts and set aside.",
+          "Half-fill a medium saucepan with water and bring to a gentle simmer over low heat."
+        ]
+      },
+      {
+        "title": "Cook and whisk the egg mixture",
+        "minutes": 14,
+        "steps": [
+          "In a large heatproof bowl, whisk the eggs, caster sugar and salt together until combined.",
+          "Set the bowl over the pan of simmering water, making sure the base does not touch the water. Whisk constantly for 6–8 minutes, until the mixture is pale, thick and reaches 71°C on a thermometer.",
+          "Remove the bowl from the heat and beat with electric beaters on high for 5–6 minutes, until thick, glossy and completely cool to the touch."
+        ]
+      },
+      {
+        "title": "Whip the cream and fold together",
+        "minutes": 8,
+        "steps": [
+          "In a separate bowl, whip the thickened cream to soft peaks, so it holds its shape but still looks billowy.",
+          "Stir the vanilla extract into the cooled egg mixture.",
+          "Gently fold the egg mixture into the whipped cream in two batches, until just combined with no streaks of cream.",
+          "Fold in the chopped hazelnuts, keeping back a small handful if you want to scatter them on top."
+        ]
+      },
+      {
+        "title": "Freeze",
+        "minutes": 360,
+        "steps": [
+          "Pour the mixture into the lined tin and smooth the top with a spatula.",
+          "Fold the baking paper overhang over the top, or cover with plastic wrap, then freeze for at least 6 hours, until firm all the way through."
+        ]
+      },
+      {
+        "title": "Unmould and serve",
+        "minutes": 5,
+        "steps": [
+          "Lift the semifreddo out of the tin using the paper overhang and set it on a board.",
+          "Let it stand for 5 minutes at room temperature to soften slightly.",
+          "Slice with a knife dipped in hot water and wiped dry, and serve straight away."
+        ]
+      }
+    ],
+    "tips": [
+      "Heating the eggs to 71°C cooks them safely and makes a stable, thick base that holds the air for a smooth texture.",
+      "Cool the egg mixture completely before folding in the cream, or the warmth will deflate the cream and the semifreddo will freeze icy.",
+      "Whip the cream only to soft peaks; stiffer cream is hard to fold and can turn grainy.",
+      "A knife dipped in hot water gives clean slices without cracking the frozen surface."
+    ],
+    "variations": [
+      "Swap the hazelnuts for toasted pistachios and add the finely grated zest of 1 lemon to the egg mixture.",
+      "Fold 80 g chopped dark chocolate through with the hazelnuts for a chocolate-hazelnut version."
+    ],
+    "storage": "Keep wrapped in the freezer for up to 1 week. Do not refreeze once softened or sliced portions have melted."
+  },
+  {
+    "title": "Mexican Sopa de Tortilla",
+    "summary": "Smoky tomato-chilli soup topped with crisp tortilla strips, avocado, lime and fresh coriander.",
+    "cuisine": "mexican",
+    "course": "lunch",
+    "servings": 4,
+    "prep_minutes": 20,
+    "cook_minutes": 57,
+    "difficulty": "easy",
+    "ingredients": [
+      "1 dried ancho chilli",
+      "800 g canned tomatoes",
+      "1 onion, roughly chopped",
+      "3 cloves garlic, peeled",
+      "2 tbsp olive oil",
+      "1 tsp ground cumin",
+      "1 litre chicken stock",
+      "1/2 tsp salt",
+      "4 corn tortillas, cut into 1 cm strips",
+      "1 tbsp vegetable oil",
+      "1 avocado, diced",
+      "1 lime, cut into wedges",
+      "1 bunch coriander, leaves picked"
+    ],
+    "stages": [
+      {
+        "title": "Soak the chilli and cut the tortillas",
+        "minutes": 20,
+        "steps": [
+          "Remove the stem and seeds from the dried ancho chilli, then tear it into pieces and place in a heatproof bowl.",
+          "Pour over 250 ml boiling water and soak for 15 minutes, until the chilli is soft and pliable.",
+          "Meanwhile, cut the corn tortillas into 1 cm strips, then roughly chop the onion and peel the garlic."
+        ]
+      },
+      {
+        "title": "Blend the base",
+        "minutes": 5,
+        "steps": [
+          "Put the soaked chilli in a blender with 2 tbsp of its soaking water, discarding the rest of the water.",
+          "Add the canned tomatoes (800 g, with their juice), the onion and the garlic.",
+          "Blend for 1 minute until smooth."
+        ]
+      },
+      {
+        "title": "Fry the puree and simmer the soup",
+        "minutes": 37,
+        "steps": [
+          "Heat the olive oil in a large saucepan over medium heat.",
+          "Pour in the blended puree carefully, as it will spit, and cook, stirring often, for 5 minutes until it darkens and smells fragrant.",
+          "Stir in the ground cumin and salt and cook for 30 seconds.",
+          "Add the chicken stock and bring to a simmer over medium heat, then reduce the heat to low and simmer gently for 30 minutes, until slightly thickened."
+        ]
+      },
+      {
+        "title": "Crisp the tortilla strips",
+        "minutes": 12,
+        "steps": [
+          "While the soup simmers, heat the oven to 200°C (180°C fan) and line a baking tray with baking paper.",
+          "Toss the tortilla strips with the vegetable oil on the tray and spread them in a single layer.",
+          "Bake for 8–10 minutes, turning once, until golden and crisp. They will crisp further as they cool."
+        ]
+      },
+      {
+        "title": "Serve",
+        "minutes": 3,
+        "steps": [
+          "Taste the soup and add a little more salt if needed.",
+          "Ladle the soup into four bowls.",
+          "Top with the crisp tortilla strips, diced avocado and coriander leaves, and serve with the lime wedges to squeeze over."
+        ]
+      }
+    ],
+    "tips": [
+      "Soaking the chilli in hot water softens its tough skin so it blends smoothly without leaving flecks in the soup.",
+      "Frying the puree until it darkens cooks off the raw tomato taste and deepens the flavour of the soup.",
+      "Add the tortilla strips at the table so they stay crisp rather than going soft in the broth."
+    ],
+    "variations": [
+      "Stir 2 cups of shredded cooked chicken into the soup for the last 5 minutes of simmering to make it more filling.",
+      "Top each bowl with crumbled feta and a spoonful of sour cream for a creamy finish."
+    ],
+    "storage": "Refrigerate the soup without toppings in an airtight container for up to 2 days, or freeze for up to 3 months. Reheat gently over medium heat until steaming hot. Store the tortilla strips separately in an airtight container."
+  },
+  {
+    "title": "Greek Revithia",
+    "summary": "Slow-baked chickpeas with lemon, rosemary and olive oil until buttery-soft and fragrant.",
+    "cuisine": "greek",
+    "course": "main",
+    "servings": 4,
+    "prep_minutes": 15,
+    "cook_minutes": 85,
+    "difficulty": "easy",
+    "ingredients": [
+      "2 x 400 g cans chickpeas, drained and rinsed",
+      "2 onions, thinly sliced",
+      "4 cloves garlic, thinly sliced",
+      "1 lemon, zested and juiced",
+      "100 ml olive oil",
+      "2 sprigs rosemary",
+      "500 ml vegetable stock",
+      "1 bay leaves",
+      "1/2 tsp salt",
+      "1/2 tsp black pepper",
+      "bread, to serve"
+    ],
+    "stages": [
+      {
+        "title": "Prepare the ingredients",
+        "minutes": 15,
+        "steps": [
+          "Heat the oven to 180°C (160°C fan).",
+          "Drain and rinse the chickpeas, then leave them to drain in a colander.",
+          "Thinly slice the onions and garlic.",
+          "Zest the lemon, then juice it and set both aside."
+        ]
+      },
+      {
+        "title": "Soften the onions",
+        "minutes": 12,
+        "steps": [
+          "Heat half the olive oil in a large ovenproof casserole over medium heat.",
+          "Add the onions and the salt and cook, stirring often, for 10 minutes until soft and golden.",
+          "Add the garlic, rosemary sprigs and bay leaf and cook for 1–2 minutes until fragrant."
+        ]
+      },
+      {
+        "title": "Bake covered",
+        "minutes": 50,
+        "steps": [
+          "Add the chickpeas, stock, black pepper and the remaining olive oil to the casserole and bring to a simmer over medium heat.",
+          "Cover with a lid and bake for 50 minutes, until the chickpeas are very tender and the liquid has thickened slightly."
+        ]
+      },
+      {
+        "title": "Reduce uncovered",
+        "minutes": 15,
+        "steps": [
+          "Remove the lid and bake for a further 15 minutes, until the top is lightly browned and the liquid is thick and glossy.",
+          "Remove the rosemary sprigs and bay leaf."
+        ]
+      },
+      {
+        "title": "Finish and serve",
+        "minutes": 8,
+        "steps": [
+          "Stir in the lemon juice and most of the zest, then taste and add more salt and pepper if needed.",
+          "Rest for 5 minutes, then spoon into bowls, scatter with the remaining zest and serve with bread."
+        ]
+      }
+    ],
+    "tips": [
+      "Slow-cooking the onions until golden builds sweetness that balances the lemon at the end.",
+      "Generous olive oil gives the chickpeas a silky, creamy sauce, so do not cut it back too far.",
+      "Adding the lemon juice off the heat keeps its flavour bright, as long cooking dulls it.",
+      "Rinsing canned chickpeas removes the tinny liquid and keeps the sauce clean tasting."
+    ],
+    "variations": [
+      "Stir in 2 handfuls of baby spinach after baking and let it wilt in the heat for 2 minutes.",
+      "Replace the rosemary with 1 tsp dried oregano and add 1 tbsp tomato paste with the garlic."
+    ],
+    "storage": "Cool, then refrigerate in a sealed container for up to 3 days or freeze for 2 months. Reheat in a saucepan over medium heat until steaming hot, adding a splash of water if thick."
+  }
+]

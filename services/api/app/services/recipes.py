@@ -85,7 +85,12 @@ async def upsert_seed_recipes(
         recipe.title, recipe.summary, recipe.cuisine = seed.title, seed.summary, seed.cuisine
         recipe.course = seed.course
         recipe.servings, recipe.total_minutes = seed.servings, seed.minutes
+        recipe.prep_minutes, recipe.cook_minutes = seed.prep_minutes, seed.cook_minutes
+        recipe.difficulty = seed.difficulty
         recipe.method = list(seed.method)
+        recipe.stages = [stage.model_dump() for stage in seed.stages]
+        recipe.tips, recipe.variations = list(seed.tips), list(seed.variations)
+        recipe.storage = seed.storage
         recipe.licence, recipe.attribution = LICENCE, ATTRIBUTION
 
         # Rules only (no LLM) for the seed: we wrote these lines, so they should parse.
@@ -123,11 +128,12 @@ async def upsert_seed_recipes(
 # One statement builds every recipe's keyword document, so seed loading, imports and edits
 # can't disagree about what's in it. Weights: A title, B Ingredient names and their
 # aliases (so "shrimp" finds prawns), C cuisine and summary. Unlinked lines use their
-# raw text, like embedding_text. The migration that added the column has a frozen copy.
+# raw text, like embedding_text. Accents are dropped on both sides (unaccent), so
+# "creme" finds "crème". Migrations that change it keep a frozen copy.
 SEARCH_DOCUMENT_SQL = """
 UPDATE recipes AS r SET search_document =
-    setweight(to_tsvector('english', r.title), 'A')
-    || setweight(to_tsvector('english', coalesce((
+    setweight(to_tsvector('english', unaccent(r.title)), 'A')
+    || setweight(to_tsvector('english', unaccent(coalesce((
         SELECT string_agg(coalesce(i.name, ri.raw_text) || coalesce(' ' || (
                    SELECT string_agg(a.alias, ' ') FROM ingredient_aliases AS a
                    WHERE a.ingredient_id = i.id
@@ -135,8 +141,10 @@ UPDATE recipes AS r SET search_document =
         FROM recipe_ingredients AS ri
         LEFT JOIN ingredients AS i ON i.id = ri.ingredient_id
         WHERE ri.recipe_id = r.id
-    ), '')), 'B')
-    || setweight(to_tsvector('english', coalesce(r.cuisine, '') || ' ' || r.summary), 'C')
+    ), ''))), 'B')
+    || setweight(
+        to_tsvector('english', unaccent(coalesce(r.cuisine, '') || ' ' || r.summary)), 'C'
+    )
 """
 
 
@@ -478,9 +486,9 @@ async def keyword_search(
     words = _words(query)
     if not words:
         return []
-    tsquery: ColumnElement[Any] = func.plainto_tsquery("english", words[0])
+    tsquery: ColumnElement[Any] = func.plainto_tsquery("english", func.unaccent(words[0]))
     for word in words[1:]:
-        tsquery = tsquery.op("||")(func.plainto_tsquery("english", word))
+        tsquery = tsquery.op("||")(func.plainto_tsquery("english", func.unaccent(word)))
     rank = func.ts_rank_cd(Recipe.search_document, tsquery)
     found = (
         _filtered(visible_to(household_id), filters)

@@ -10,11 +10,11 @@ from sqlalchemy import Engine, text
 from sqlalchemy.exc import IntegrityError
 
 from app.config import Settings
-from app.data.recipes import SeedRecipe, load_seed_recipes
+from app.data.recipes import RecipeStage, SeedRecipe, load_seed_recipes
 from app.db import make_engine, make_sessionmaker
 from app.embeddings import HashingEmbedder
 from app.main import create_app
-from app.models import Course
+from app.models import Course, Difficulty
 from app.services import recipes
 from app.services.ingredient_lines import index_from_db
 from tests.conftest import FakeIssuer, Loader
@@ -37,10 +37,13 @@ def seed(
         cuisine=cuisine,
         course=course,
         servings=4,
-        minutes=minutes,
+        prep_minutes=0,
+        cook_minutes=minutes,
+        difficulty=Difficulty.EASY,
         summary=title,
         ingredients=lines,
         method=["Cook it."],
+        stages=[RecipeStage(title="Cook", minutes=minutes, steps=["Cook it slowly."])],
     )
 
 
@@ -84,8 +87,28 @@ async def get(
 async def test_every_seed_recipe_line_parses_and_matches(database_url: str, load: Loader) -> None:
     # The real seed files: we wrote them, so every line must parse with plain rules.
     report = await load(load_seed_recipes())
-    assert report.loaded >= 150
+    assert report.loaded >= 400
     assert report.needs_review == []
+
+
+def test_every_seed_recipe_has_both_views() -> None:
+    # ADR 0028: the Detailed View (stages) and a 3-6 step Quick View (method).
+    for r in load_seed_recipes():
+        assert r.stages and 3 <= len(r.method) <= 6, r.slug
+
+
+def test_a_seed_recipe_needs_stages_and_says_its_difficulty() -> None:
+    fields = CURRY.model_dump()
+    with pytest.raises(ValidationError):
+        SeedRecipe(**fields | {"stages": []})
+    with pytest.raises(ValidationError):
+        SeedRecipe(**fields | {"difficulty": "fiendish"})
+    with pytest.raises(ValidationError):
+        SeedRecipe(**fields | {"prep_minutes": 0, "cook_minutes": 0})
+
+
+def test_total_minutes_is_prep_plus_cook() -> None:
+    assert CURRY.model_copy(update={"prep_minutes": 15, "cook_minutes": 30}).minutes == 45
 
 
 async def test_reloading_the_seed_updates_instead_of_duplicating(db: Engine, load: Loader) -> None:
@@ -170,11 +193,12 @@ def test_a_seed_recipe_must_say_its_course() -> None:
         SeedRecipe(**fields, course="snack")  # type: ignore[arg-type]
 
 
-def test_every_seed_file_recipe_has_a_course_and_most_are_mains() -> None:
+def test_every_seed_file_recipe_has_a_course_and_mains_lead() -> None:
     seeds = load_seed_recipes()
     by_course = {c: sum(s.course == c for s in seeds) for c in Course}
     assert all(by_course.values()), by_course  # every Course is used
-    assert by_course[Course.MAIN] > len(seeds) / 2  # it's a dinner app
+    # It's a dinner app: plans offer mains only, so they're the biggest Course.
+    assert by_course[Course.MAIN] == max(by_course.values()) and by_course[Course.MAIN] >= 100
 
 
 async def test_course_is_a_hard_filter_and_comes_back_on_each_recipe(
@@ -252,6 +276,40 @@ async def test_reads_one_recipe_with_its_understood_ingredients(
     recipe = response.json()
     assert recipe["method"] == ["Cook it."]
     assert recipe["licence"] == "Sweep original"
+    assert (recipe["prep_minutes"], recipe["cook_minutes"], recipe["total_minutes"]) == (0, 20, 20)
+    assert recipe["difficulty"] == "easy"
+    assert recipe["stages"] == [{"title": "Cook", "minutes": 20, "steps": ["Cook it slowly."]}]
+    assert (recipe["tips"], recipe["variations"], recipe["storage"]) == ([], [], None)
+
+
+async def test_reloading_the_seed_updates_stages_tips_and_storage(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, load: Loader
+) -> None:
+    await load([PASTA])
+    richer = PASTA.model_copy(
+        update={
+            "prep_minutes": 5,
+            "cook_minutes": 15,
+            "difficulty": Difficulty.MEDIUM,
+            "stages": [
+                RecipeStage(title="Sauce", minutes=10, steps=["Simmer the tomatoes."]),
+                RecipeStage(title="Pasta", minutes=10, steps=["Boil the pasta."]),
+            ],
+            "tips": ["Salt the water well."],
+            "variations": ["Add chilli."],
+            "storage": "Keeps 2 days in the fridge.",
+        }
+    )
+    await load([richer])
+    await create_household(client, fake_issuer, "ana")
+    [summary] = (await get(client, fake_issuer, "/recipes")).json()
+    assert summary["total_minutes"] == 20
+    recipe = (await get(client, fake_issuer, f"/recipes/{summary['id']}")).json()
+    assert recipe["difficulty"] == "medium"
+    assert [s["title"] for s in recipe["stages"]] == ["Sauce", "Pasta"]
+    assert recipe["tips"] == ["Salt the water well."]
+    assert recipe["variations"] == ["Add chilli."]
+    assert recipe["storage"] == "Keeps 2 days in the fridge."
     garlic = recipe["ingredients"][2]
     assert garlic["ingredient"]["name"] == "garlic"
     assert (garlic["quantity"], garlic["unit"], garlic["base_quantity"]) == ("2", "clove", None)
