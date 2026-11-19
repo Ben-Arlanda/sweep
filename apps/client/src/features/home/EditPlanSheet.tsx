@@ -24,14 +24,14 @@ export function EditPlanSheet({
   return (
     <Sheet label="Edit your meal plan" title="Edit your meal plan" onClose={onClose}>
       <View style={{ gap: t.space.sm }}>
-        <Option
+        <SheetOption
           icon={Pencil}
           title="Edit this week"
           hint="Swap, change or add meals"
           highlight
           onPress={onEdit}
         />
-        <Option
+        <SheetOption
           icon={Trash2}
           title="Start fresh"
           hint="Clear this week and plan again"
@@ -42,7 +42,8 @@ export function EditPlanSheet({
   );
 }
 
-function Option({
+/** A big choice row in a sheet: icon tile, title, hint and a chevron. */
+export function SheetOption({
   icon,
   title,
   hint,
