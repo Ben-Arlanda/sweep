@@ -50,7 +50,7 @@ export function AskSweep() {
       </View>
       <TextInput
         accessibilityLabel="Ask Sweep"
-        placeholder="Ask Sweep about dinner"
+        placeholder="Ask Sweep anything"
         placeholderTextColor={t.colors.textMuted}
         value={text}
         onChangeText={setText}
@@ -58,7 +58,10 @@ export function AskSweep() {
         returnKeyType="send"
         submitBehavior="blurAndSubmit"
         onSubmitEditing={send}
-        style={[t.type.body, { flex: 1, minHeight: t.touchTarget, color: t.colors.text }]}
+        style={[
+          t.type.body,
+          { flex: 1, minHeight: t.touchTarget, fontSize: 14, lineHeight: 20, color: t.colors.text },
+        ]}
       />
       <PressableScale
         accessibilityRole="button"
