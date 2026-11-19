@@ -128,7 +128,7 @@ export const colors: Record<'light' | 'dark', ColorTokens> = {
     onChef: palette.ink,
     onBackground: palette.ink,
     onBackgroundMuted: palette.stone600,
-    sheet: palette.white,
+    sheet: palette.page, // grey sheet, white cards inside
     strong: palette.navy,
     onStrong: palette.white,
     lavender: '#e4e8f0',

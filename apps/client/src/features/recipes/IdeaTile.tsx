@@ -70,17 +70,17 @@ export function IdeaTile({
                 flexDirection: 'row',
                 alignItems: 'center',
                 gap: 2,
-                backgroundColor: ready ? t.colors.actionSoft : t.colors.surface,
+                backgroundColor: ready ? t.stock.in_stock.bg : t.colors.surface,
                 borderRadius: t.radius.pill,
                 paddingHorizontal: t.space.sm,
                 paddingVertical: 2,
               }}
             >
-              {ready ? <Icon icon={Check} size={12} color={t.colors.onActionSoft} strong /> : null}
+              {ready ? <Icon icon={Check} size={12} color={t.stock.in_stock.fg} strong /> : null}
               <Text
                 variant="caption"
                 numberOfLines={1}
-                style={{ color: ready ? t.colors.onActionSoft : t.colors.text }}
+                style={{ color: ready ? t.stock.in_stock.fg : t.colors.text }}
               >
                 {ready ? uses : `${idea.missing.length} to buy`}
               </Text>

@@ -286,7 +286,7 @@ function Option({
   onPress: () => void;
 }) {
   const t = useTheme();
-  const fg = compact && selected ? t.colors.surface : t.colors.text;
+  const fg = compact && selected ? t.colors.onSelected : t.colors.text;
   return (
     <Pressable
       accessibilityRole={role}
@@ -303,16 +303,11 @@ function Option({
         gap: compact ? 4 : t.space.md,
         paddingHorizontal: compact ? t.space.xs : t.space.md,
         paddingVertical: t.space.sm,
-        borderRadius: t.radius.md,
-        borderWidth: 1.5,
-        borderColor: selected ? t.colors.text : t.colors.border,
-        backgroundColor: compact
-          ? selected
-            ? t.colors.tabSelected
-            : t.colors.surface
-          : selected
-            ? t.colors.actionSoft
-            : t.colors.surface,
+        borderRadius: compact ? t.radius.md : t.radius.lg,
+        // Selected: a 2pt navy edge (and a filled radio), never colour alone.
+        borderWidth: selected && !compact ? 2 : 1,
+        borderColor: selected ? t.colors.selected : t.colors.border,
+        backgroundColor: compact && selected ? t.colors.selected : t.colors.surface,
       }}
     >
       {icon ? <Icon icon={icon} size={compact ? 20 : 22} color={fg} /> : null}
@@ -324,11 +319,24 @@ function Option({
           {title}
         </Text>
         {detail ? (
-          <Text variant="caption" muted={!selected}>
+          <Text variant="caption" muted>
             {detail}
           </Text>
         ) : null}
       </View>
+      {compact ? null : (
+        <View
+          aria-hidden
+          style={{
+            marginLeft: 'auto',
+            width: 20,
+            height: 20,
+            borderRadius: 10,
+            borderWidth: selected ? 6 : 1.5,
+            borderColor: selected ? t.colors.selected : t.colors.switchOff,
+          }}
+        />
+      )}
     </Pressable>
   );
 }

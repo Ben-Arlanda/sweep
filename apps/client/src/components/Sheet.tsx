@@ -52,7 +52,7 @@ export function Sheet({
           style={{
             position: 'absolute',
             inset: 0,
-            backgroundColor: 'rgba(0,0,0,0.55)',
+            backgroundColor: 'rgba(18, 26, 46, 0.36)',
           }}
         />
         <View
@@ -63,8 +63,9 @@ export function Sheet({
             backgroundColor: t.colors.sheet,
             borderTopLeftRadius: t.radius.xl,
             borderTopRightRadius: t.radius.xl,
-            paddingTop: t.space.sm,
-            paddingBottom: Math.max(insets.bottom, t.space.lg),
+            paddingTop: 10,
+            paddingBottom: Math.max(insets.bottom, t.space.xxl),
+            boxShadow: '0 -8px 32px -8px rgba(18, 26, 46, 0.25)',
           }}
         >
           {/* The grab handle: tells people this is a sheet. Decorative only. */}
@@ -72,22 +73,32 @@ export function Sheet({
             aria-hidden
             style={{
               alignSelf: 'center',
-              width: 40,
+              width: 36,
               height: 5,
               borderRadius: 3,
-              backgroundColor: t.colors.border,
-              marginBottom: t.space.md,
+              backgroundColor: t.colors.switchOff,
+              opacity: 0.5,
+              marginBottom: 14,
             }}
           />
           <ScrollView
             contentContainerStyle={{
               paddingHorizontal: t.space.lg,
-              gap: t.space.lg,
+              gap: 14,
             }}
             keyboardShouldPersistTaps="handled"
           >
             {header ?? (
-              <Text variant="heading" accessibilityRole="header">
+              <Text
+                accessibilityRole="header"
+                style={{
+                  fontFamily: t.fonts.display,
+                  fontSize: 21,
+                  lineHeight: 26,
+                  letterSpacing: -0.2,
+                  color: t.colors.text,
+                }}
+              >
                 {title}
               </Text>
             )}

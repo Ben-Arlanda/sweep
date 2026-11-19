@@ -119,31 +119,20 @@ export function DinnerSetupScreen() {
                   paddingVertical: t.space.md,
                   borderTopWidth: i === 0 ? 0 : 1,
                   borderTopColor: t.colors.border,
-                  backgroundColor: on ? t.colors.actionSoft : t.colors.surface,
+                  backgroundColor: t.colors.surface,
                 }}
               >
                 <View
                   style={{
-                    width: 24,
-                    height: 24,
-                    borderRadius: 12,
-                    borderWidth: 2,
-                    borderColor: on ? t.colors.tabSelected : t.colors.textMuted,
+                    width: 20,
+                    height: 20,
+                    borderRadius: 10,
+                    borderWidth: on ? 6 : 1.5,
+                    borderColor: on ? t.colors.selected : t.colors.switchOff,
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}
-                >
-                  {on ? (
-                    <View
-                      style={{
-                        width: 12,
-                        height: 12,
-                        borderRadius: 6,
-                        backgroundColor: t.colors.tabSelected,
-                      }}
-                    />
-                  ) : null}
-                </View>
+                ></View>
                 <View style={{ flex: 1 }}>
                   <Text variant="label">{c.title}</Text>
                   <Text variant="caption" muted>

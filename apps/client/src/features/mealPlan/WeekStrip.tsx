@@ -49,8 +49,9 @@ export function WeekStrip({
         const past = !canPick(date, today);
         const isPicked = picked?.includes(date) ?? false;
 
-        const fill = isPicked ? t.colors.action : meal ? t.colors.actionSoft : 'transparent';
-        const ink = isPicked ? t.colors.onAction : meal ? t.colors.onActionSoft : t.colors.text;
+        // Picked: navy (selection). Planned: the quiet grey fill. Otherwise a white tile.
+        const fill = isPicked ? t.colors.selected : meal ? t.colors.fill : t.colors.surface;
+        const ink = isPicked ? t.colors.onSelected : t.colors.text;
         const mark = isPicked ? '●' : meal ? '✓' : '–';
         const dayName = `${NAMES[i]} ${Number(date.slice(8))}`;
 
@@ -60,10 +61,14 @@ export function WeekStrip({
               alignItems: 'center',
               gap: 2,
               paddingVertical: 8,
-              borderRadius: t.radius.sm,
+              borderRadius: t.radius.md,
               backgroundColor: fill,
               borderWidth: isToday ? 2 : 1,
-              borderColor: isToday ? t.colors.text : t.colors.border,
+              borderColor: isToday
+                ? t.colors.selected
+                : isPicked
+                  ? t.colors.selected
+                  : t.colors.border,
               minHeight: t.touchTarget + 28,
             }}
           >

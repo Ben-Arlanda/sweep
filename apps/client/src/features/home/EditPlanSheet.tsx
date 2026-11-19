@@ -66,23 +66,32 @@ function Option({
         alignItems: 'center',
         gap: t.space.md,
         minHeight: 68,
-        paddingHorizontal: t.space.md,
+        paddingHorizontal: 14,
         borderRadius: t.radius.lg,
-        backgroundColor: highlight ? t.colors.actionSoft : t.colors.surface,
-        boxShadow: highlight ? undefined : t.shadow.card,
+        backgroundColor: t.colors.surface,
+        boxShadow: t.shadow.card,
       }}
     >
-      <Icon icon={icon} size={24} color={t.colors.text} />
+      {/* The first choice gets the navy icon tile, the others a quiet one. */}
+      <View
+        style={{
+          width: 36,
+          height: 36,
+          borderRadius: 10,
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: highlight ? t.colors.selected : t.colors.fill,
+        }}
+      >
+        <Icon icon={icon} size={18} color={highlight ? t.colors.onSelected : t.colors.text} />
+      </View>
       <View style={{ flex: 1 }}>
         <Text variant="label">{title}</Text>
-        <Text
-          variant="caption"
-          style={{ color: highlight ? t.colors.onActionSoft : t.colors.textMuted }}
-        >
+        <Text variant="caption" style={{ color: t.colors.textMuted }}>
           {hint}
         </Text>
       </View>
-      <Icon icon={ChevronRight} size={20} color={t.colors.text} strong />
+      <Icon icon={ChevronRight} size={18} color={t.colors.textMuted} />
     </PressableScale>
   );
 }
