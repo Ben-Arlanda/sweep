@@ -39,7 +39,9 @@ export function ChoiceChips<T>({
       style={{
         flexDirection: 'row',
         flexWrap: fill ? 'nowrap' : 'wrap',
-        gap: fill ? t.space.xs + 2 : t.space.sm,
+        columnGap: fill ? t.space.xs + 2 : small ? 6 : t.space.sm,
+        // Small chips already sit in a 44pt tap area, so wrapped rows need no extra gap.
+        rowGap: small ? 0 : t.space.sm,
       }}
     >
       {options.map((option) => {
@@ -74,7 +76,7 @@ export function ChoiceChips<T>({
                 variant="label"
                 numberOfLines={1}
                 style={[
-                  small ? { fontSize: 14, lineHeight: 18 } : null,
+                  small ? { fontSize: 13, lineHeight: 18 } : null,
                   {
                     color: selected ? t.colors.onSelected : t.colors.text,
                     fontFamily: t.fonts.medium,

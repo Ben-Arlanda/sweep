@@ -16,12 +16,12 @@ import {
   type RecipeFilters,
   type RecipeSort,
 } from '@/lib/api/recipes';
+import { inputText } from '@/theme/inputText';
 import { useTheme } from '@/theme/useTheme';
 
-import { CourseTiles } from './CourseTiles';
 import { COURSES, type Course } from './courses';
 import { cuisineName } from './kitchenMatch';
-import { RecipeRow } from './RecipeRow';
+import { RecipeCard } from './RecipeCard';
 
 const TIMES = [
   { label: 'Any time', value: null },
@@ -84,9 +84,9 @@ export function AllRecipesScreen() {
           flexDirection: 'row',
           alignItems: 'center',
           gap: t.space.sm,
-          minHeight: t.touchTarget + 4,
-          paddingHorizontal: t.space.lg,
-          borderRadius: t.radius.pill,
+          minHeight: 46,
+          paddingHorizontal: t.space.md,
+          borderRadius: t.radius.md,
           backgroundColor: t.colors.surface,
           borderWidth: 1,
           borderColor: t.colors.border,
@@ -101,13 +101,27 @@ export function AllRecipesScreen() {
           onChangeText={setText}
           autoCorrect={false}
           returnKeyType="search"
-          style={[t.type.body, { flex: 1, minHeight: t.touchTarget, color: t.colors.text }]}
+          style={[
+            inputText(t.type.body),
+            { flex: 1, minHeight: t.touchTarget, color: t.colors.text },
+          ]}
         />
       </View>
 
-      <CourseTiles value={course} onChange={setCourse} />
+      <ChoiceChips
+        label="Course"
+        size="small"
+        value={course}
+        onChange={setCourse}
+        options={[
+          { label: 'All', value: null as Course | null, accessibilityLabel: 'All courses' },
+          ...COURSES.map((c) => ({ label: c.label, value: c.value as Course | null })),
+        ]}
+      />
 
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.sm }}>
+      <View
+        style={{ flexDirection: 'row', flexWrap: 'wrap', columnGap: 6, marginTop: -t.space.sm }}
+      >
         <FilterChip
           label={maxMinutes ? `≤ ${maxMinutes} min` : 'Ready in'}
           active={maxMinutes !== null}
@@ -138,11 +152,7 @@ export function AllRecipesScreen() {
       </View>
 
       {countText ? (
-        <Text
-          variant="label"
-          accessibilityLiveRegion="polite"
-          style={{ color: t.colors.onBackground }}
-        >
+        <Text variant="caption" muted accessibilityLiveRegion="polite">
           {countText}
         </Text>
       ) : null}
@@ -152,10 +162,12 @@ export function AllRecipesScreen() {
         error={(searching ? search.error : browse.error)?.message ?? null}
         empty={shown.length === 0}
       />
-      <View style={{ gap: t.space.sm }}>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 10 }}>
         {shown.map((r) => (
-          <RecipeRow key={r.id} recipe={r} />
+          <RecipeCard key={r.id} recipe={r} />
         ))}
+        {/* Keeps an odd last card half width instead of stretching across. */}
+        {shown.length % 2 === 1 ? <View style={{ flexGrow: 1, flexBasis: 140 }} /> : null}
       </View>
       {!searching && browse.hasNextPage ? (
         <Button
@@ -234,7 +246,7 @@ function Results({
   return null;
 }
 
-/** A filter pill: deep green when it's narrowing the list; ▾ when it opens a menu. */
+/** A filter pill: navy when it's narrowing the list; ▾ when it opens a menu. */
 function FilterChip({
   label,
   accessibilityLabel,
@@ -251,7 +263,7 @@ function FilterChip({
   onPress: () => void;
 }) {
   const t = useTheme();
-  const color = active ? t.colors.surface : t.colors.text;
+  const color = active ? t.colors.onSelected : t.colors.text;
   return (
     <Pressable
       accessibilityRole="button"
@@ -259,23 +271,29 @@ function FilterChip({
       accessibilityState={menu ? { expanded: false } : { selected: active }}
       aria-pressed={menu ? undefined : active}
       onPress={onPress}
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 4,
-        minHeight: t.touchTarget,
-        paddingHorizontal: t.space.md,
-        borderRadius: t.radius.pill,
-        borderWidth: 1,
-        borderColor: active ? t.colors.tabSelected : t.colors.border,
-        backgroundColor: active ? t.colors.tabSelected : t.colors.surface,
-      }}
+      style={{ minHeight: t.touchTarget, justifyContent: 'center' }}
     >
-      {icon ? <Icon icon={icon} size={16} color={color} fill={active ? color : undefined} /> : null}
-      <Text variant="label" style={{ color }}>
-        {label}
-      </Text>
-      {menu ? <Icon icon={ChevronDown} size={16} color={color} /> : null}
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 4,
+          minHeight: 36,
+          paddingHorizontal: t.space.md - 1,
+          borderRadius: t.radius.pill,
+          borderWidth: 1,
+          borderColor: active ? t.colors.selected : t.colors.border,
+          backgroundColor: active ? t.colors.selected : t.colors.surface,
+        }}
+      >
+        {icon ? (
+          <Icon icon={icon} size={15} color={color} fill={active ? color : undefined} />
+        ) : null}
+        <Text style={{ color, fontFamily: t.fonts.medium, fontSize: 13, lineHeight: 18 }}>
+          {label}
+        </Text>
+        {menu ? <Icon icon={ChevronDown} size={15} color={color} /> : null}
+      </View>
     </Pressable>
   );
 }
