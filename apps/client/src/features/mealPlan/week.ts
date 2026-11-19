@@ -105,3 +105,12 @@ export function weekRange(monday: string): string {
     ? `${a.weekday} ${a.day} – ${end}`
     : `${a.weekday} ${a.day} ${a.month} – ${end}`;
 }
+
+/** "16–22 Nov", or "30 Nov – 6 Dec" across a month: short enough for a tab. */
+export function shortWeekRange(monday: string): string {
+  const a = dayParts(monday);
+  const b = dayParts(addDays(monday, 6));
+  return a.month === b.month
+    ? `${a.day}–${b.day} ${b.month}`
+    : `${a.day} ${a.month} – ${b.day} ${b.month}`;
+}

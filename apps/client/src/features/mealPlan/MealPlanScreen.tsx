@@ -1,26 +1,18 @@
 import { router } from 'expo-router';
-import {
-  CalendarDays,
-  Check,
-  ChevronLeft,
-  ChevronRight,
-  Ellipsis,
-  Pencil,
-  Plus,
-  RefreshCw,
-  Trash2,
-  Undo2,
-} from 'lucide-react-native';
+import { CalendarDays, Check, Ellipsis, Plus, RefreshCw, Trash2, Undo2 } from 'lucide-react-native';
+import { Image } from 'expo-image';
 import { useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { View } from 'react-native';
+import { useReducedMotion } from 'react-native-reanimated';
 
 import { Icon } from '@/components/Icon';
 import { PageHeader } from '@/components/PageHeader';
 import { PressableScale } from '@/components/PressableScale';
-import { RecipeArt } from '@/components/RecipeArt';
+import { Segmented } from '@/components/Segmented';
 import { Sheet } from '@/components/Sheet';
 import { Button, ErrorText, Loading, Screen, Text } from '@/components/ui';
 import { mealTap, useMealPlan, useMealPlanActions } from '@/lib/api/mealPlan';
+import { sectionTints } from '@/theme/tokens';
 import { useTheme } from '@/theme/useTheme';
 
 import { PlanSheet, startPlan } from './PlanSheet';
@@ -29,6 +21,7 @@ import {
   canPick,
   dayParts,
   mondayOf,
+  shortWeekRange,
   weekDays,
   weekRange,
   type Day,
@@ -57,21 +50,21 @@ export function MealPlanScreen() {
   const [ask, setAsk] = useState<SheetAsk | null>(null);
 
   const meals = week.data?.meals ?? [];
-  const footer =
-    week.data && meals.length > 0 ? (
-      <Button
-        title="Update plan"
-        icon={Pencil}
-        onPress={() =>
-          setAsk({ title: next ? 'Edit next week' : 'Edit my week', week: week.data.start })
-        }
-      />
-    ) : undefined;
 
   return (
-    <Screen edges={['top', 'left', 'right']} footer={footer}>
+    <Screen edges={['top', 'left', 'right']}>
       <PageHeader icon={CalendarDays} section="plan" title="Plan my week" />
-      <WeekToggle next={next} onChange={setNext} />
+      {today && nextMonday ? (
+        <Segmented
+          label="Week"
+          value={next ? 'next' : 'this'}
+          onChange={(v) => setNext(v === 'next')}
+          options={[
+            { value: 'this', label: shortWeekRange(mondayOf(today)) },
+            { value: 'next', label: shortWeekRange(nextMonday) },
+          ]}
+        />
+      ) : null}
 
       {week.isPending || !today ? (
         <Loading />
@@ -82,39 +75,6 @@ export function MealPlanScreen() {
         </>
       ) : (
         <>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.sm }}>
-            <RoundButton
-              label="This week"
-              icon={ChevronLeft}
-              disabled={!next}
-              onPress={() => setNext(false)}
-            />
-            <View
-              style={{
-                flex: 1,
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: t.space.sm,
-              }}
-            >
-              <Icon icon={CalendarDays} size={18} color={t.colors.onBackground} />
-              <Text
-                variant="label"
-                accessibilityLiveRegion="polite"
-                style={{ color: t.colors.onBackground }}
-              >
-                {weekRange(week.data.start)}
-              </Text>
-            </View>
-            <RoundButton
-              label="Next week"
-              icon={ChevronRight}
-              disabled={next}
-              onPress={() => setNext(true)}
-            />
-          </View>
-
           {meals.length === 0 ? (
             <EmptyWeek
               next={next}
@@ -123,11 +83,27 @@ export function MealPlanScreen() {
               }
             />
           ) : (
-            <View style={{ gap: t.space.sm }}>
-              {weekDays(week.data.start, meals).map((day) => (
-                <DayRow key={day.date} day={day} today={today} onMore={setMenu} />
-              ))}
-            </View>
+            <>
+              <View
+                accessibilityLabel={weekRange(week.data.start)}
+                style={{
+                  backgroundColor: t.colors.surface,
+                  borderRadius: t.radius.lg,
+                  boxShadow: t.shadow.card,
+                  overflow: 'hidden',
+                }}
+              >
+                {weekDays(week.data.start, meals).map((day, i) => (
+                  <DayRow key={day.date} day={day} today={today} first={i === 0} onMore={setMenu} />
+                ))}
+              </View>
+              <Button
+                title="Update plan"
+                onPress={() =>
+                  setAsk({ title: next ? 'Edit next week' : 'Edit my week', week: week.data.start })
+                }
+              />
+            </>
           )}
         </>
       )}
@@ -146,116 +122,38 @@ export function MealPlanScreen() {
   );
 }
 
-/** This week / Next week: two tabs on a pill, the chosen one dark. */
-function WeekToggle({ next, onChange }: { next: boolean; onChange: (next: boolean) => void }) {
-  const t = useTheme();
-  const tab = (label: string, selected: boolean, value: boolean) => (
-    <Pressable
-      key={label}
-      accessibilityRole="tab"
-      accessibilityState={{ selected }}
-      onPress={() => onChange(value)}
-      style={{
-        flex: 1,
-        minHeight: t.touchTarget,
-        borderRadius: t.radius.pill,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: selected ? t.colors.selected : 'transparent',
-      }}
-    >
-      <Text variant="label" style={{ color: selected ? t.colors.onSelected : t.colors.text }}>
-        {label}
-      </Text>
-    </Pressable>
-  );
-  return (
-    <View
-      accessibilityRole="tablist"
-      style={{
-        flexDirection: 'row',
-        gap: 4,
-        padding: 4,
-        borderRadius: t.radius.pill,
-        backgroundColor: t.colors.surface,
-        boxShadow: t.shadow.card,
-      }}
-    >
-      {tab('This week', !next, false)}
-      {tab('Next week', next, true)}
-    </View>
-  );
-}
-
-function RoundButton({
-  label,
-  icon,
-  disabled,
-  onPress,
-}: {
-  label: string;
-  icon: typeof ChevronLeft;
-  disabled: boolean;
-  onPress: () => void;
-}) {
-  const t = useTheme();
-  return (
-    <PressableScale
-      accessibilityRole="button"
-      accessibilityLabel={label}
-      accessibilityState={{ disabled }}
-      disabled={disabled}
-      onPress={onPress}
-      style={{
-        width: t.touchTarget,
-        height: t.touchTarget,
-        borderRadius: t.radius.pill,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: t.colors.surface,
-        boxShadow: t.shadow.card,
-        opacity: disabled ? 0.4 : 1,
-      }}
-    >
-      <Icon icon={icon} size={18} color={t.colors.text} strong />
-    </PressableScale>
-  );
-}
-
 function EmptyWeek({ next, onPlan }: { next: boolean; onPlan: () => void }) {
   const t = useTheme();
+  const reduceMotion = useReducedMotion();
   return (
     <View
       style={{
         alignItems: 'center',
-        gap: t.space.sm,
-        padding: t.space.xl,
+        gap: 10,
+        paddingVertical: 28,
+        paddingHorizontal: 20,
         borderRadius: t.radius.lg,
         backgroundColor: t.colors.surface,
         boxShadow: t.shadow.card,
       }}
     >
-      <View
+      <Image
         aria-hidden
-        style={{
-          width: 64,
-          height: 64,
-          borderRadius: 32,
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: t.colors.actionSoft,
-        }}
-      >
-        <Icon icon={CalendarDays} size={30} color={t.colors.onActionSoft} />
-      </View>
+        source={require('../../../assets/images/chef-blink.webp')}
+        style={{ width: 72, height: 72 }}
+        contentFit="contain"
+        autoplay={!reduceMotion}
+      />
       <Text variant="heading" role="heading" aria-level={2} style={{ textAlign: 'center' }}>
-        {next ? 'Nothing planned for next week' : 'No plan for this week yet'}
+        {next ? 'Next week is open' : 'No plan for this week yet'}
       </Text>
-      <Text muted style={{ textAlign: 'center' }}>
-        Sweep plans dinners around your Kitchen and Dietary Rules, then adds only what&apos;s
-        missing to the list.
+      <Text muted style={{ textAlign: 'center', fontSize: 14, lineHeight: 20 }}>
+        Sweep can plan it from what&apos;s in your Kitchen, then adds only what&apos;s missing to
+        the list.
       </Text>
-      <Button title={next ? 'Plan next week' : 'Plan my week'} onPress={onPlan} />
+      <View>
+        <Button title={next ? 'Plan next week' : 'Plan my week'} compact onPress={onPlan} />
+      </View>
     </View>
   );
 }
@@ -263,10 +161,12 @@ function EmptyWeek({ next, onPlan }: { next: boolean; onPlan: () => void }) {
 function DayRow({
   day,
   today,
+  first,
   onMore,
 }: {
   day: Day;
   today: string;
+  first: boolean;
   onMore: (meal: PlannedMeal) => void;
 }) {
   const t = useTheme();
@@ -274,45 +174,45 @@ function DayRow({
   const { weekday, day: num } = dayParts(day.date);
   const meal = day.meal;
   const cooked = meal?.cooked_at != null;
-  const meta = meal
-    ? [
-        meal.total_minutes ? `${meal.total_minutes} min` : null,
-        `Serves ${meal.servings}`,
-        cooked ? 'Cooked ✓' : null,
-      ]
-        .filter(Boolean)
-        .join(' · ')
-    : '';
+  const sub = meal
+    ? cooked
+      ? '✓ Cooked'
+      : [isToday ? 'Tonight' : null, meal.total_minutes ? `${meal.total_minutes} min` : null]
+          .filter(Boolean)
+          .join(' · ') || `Serves ${meal.servings}`
+    : null;
 
   return (
     <View
       style={{
         flexDirection: 'row',
         alignItems: 'center',
-        gap: t.space.sm,
-        minHeight: 68,
-        paddingVertical: t.space.xs,
+        gap: t.space.md,
+        minHeight: 64,
+        paddingVertical: t.space.sm,
         paddingLeft: t.space.sm,
-        paddingRight: t.space.xs,
-        borderRadius: t.radius.md,
-        backgroundColor: isToday ? t.colors.actionSoft : t.colors.surface,
-        boxShadow: t.shadow.card,
+        paddingRight: 6,
+        borderTopWidth: first ? 0 : 1,
+        borderTopColor: t.colors.border,
       }}
     >
       <View
         accessibilityLabel={isToday ? `Today, ${weekday} ${num}` : `${weekday} ${num}`}
-        style={{
-          width: 44,
-          paddingVertical: t.space.xs,
-          borderRadius: t.radius.sm,
-          alignItems: 'center',
-          backgroundColor: isToday ? t.colors.action : t.colors.background,
-        }}
+        style={{ width: 40, alignItems: 'center' }}
       >
-        <Text variant="caption" style={{ color: isToday ? t.colors.onAction : t.colors.text }}>
-          {weekday}
+        <Text
+          style={{
+            fontSize: 11,
+            lineHeight: 14,
+            fontFamily: isToday ? t.fonts.bold : t.fonts.body,
+            color: isToday ? sectionTints.plan.fg : t.colors.textMuted,
+          }}
+        >
+          {isToday ? 'Today' : weekday}
         </Text>
-        <Text variant="label" style={{ color: isToday ? t.colors.onAction : t.colors.text }}>
+        <Text
+          style={{ fontSize: 17, lineHeight: 22, fontFamily: t.fonts.bold, color: t.colors.text }}
+        >
           {num}
         </Text>
       </View>
@@ -321,19 +221,22 @@ function DayRow({
         <>
           <PressableScale
             accessibilityRole="link"
-            accessibilityLabel={`${meal.title}. ${meta}. See the recipe`}
+            accessibilityLabel={`${meal.title}. ${sub}. See the recipe`}
             onPress={() => router.push(`/recipe/${meal.recipe_id}`)}
-            style={{ flex: 1, flexDirection: 'row', alignItems: 'center', gap: t.space.sm }}
+            style={{ flex: 1, gap: 2, minHeight: t.touchTarget, justifyContent: 'center' }}
           >
-            <RecipeArt title={meal.title} width={60} height={50} radius={12} emojiSize={28} />
-            <View style={{ flex: 1 }}>
-              <Text variant="label" numberOfLines={2}>
-                {meal.title}
-              </Text>
-              <Text variant="caption" muted>
-                {meta}
-              </Text>
-            </View>
+            <Text variant="label" numberOfLines={2}>
+              {meal.title}
+            </Text>
+            <Text
+              variant="caption"
+              style={{
+                color: cooked ? t.stock.in_stock.fg : t.colors.textMuted,
+                fontFamily: cooked ? t.fonts.medium : t.fonts.body,
+              }}
+            >
+              {sub}
+            </Text>
           </PressableScale>
           <PressableScale
             accessibilityRole="button"
@@ -351,8 +254,8 @@ function DayRow({
         </>
       ) : (
         <>
-          <Text muted style={{ flex: 1 }}>
-            Nothing planned
+          <Text style={{ flex: 1, fontFamily: t.fonts.medium, color: t.colors.textMuted }}>
+            No dinner planned
           </Text>
           {canPick(day.date, today) ? (
             <Button
@@ -361,6 +264,7 @@ function DayRow({
               accessibilityLabel={`Add a dinner on ${weekday} ${num}`}
               variant="secondary"
               compact
+              tight
               onPress={() => openIdeas(day.date)}
             />
           ) : null}

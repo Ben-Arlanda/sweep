@@ -1,8 +1,6 @@
-import { Image } from 'expo-image';
 import { router, type Href } from 'expo-router';
 import {
   Bookmark,
-  CalendarDays,
   ChevronRight,
   Clock,
   Refrigerator,
@@ -13,7 +11,6 @@ import {
 } from 'lucide-react-native';
 import { useState } from 'react';
 import { View } from 'react-native';
-import { useReducedMotion } from 'react-native-reanimated';
 
 import { Icon } from '@/components/Icon';
 import { PressableScale } from '@/components/PressableScale';
@@ -143,18 +140,18 @@ function TonightCard({ today, meals }: { today: string; meals: PlannedMeal[] }) 
   const meal = state.tonight;
   const isCooked = state.kind === 'cooked';
   return (
-    <Card>
+    <Card flush>
       <PressableScale
         accessibilityRole="link"
         accessibilityLabel={`Tonight: ${meal.title}${isCooked ? ', cooked' : ''}. See the recipe`}
         onPress={() => router.push(`/recipe/${meal.recipe_id}`)}
-        style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.md }}
       >
-        <View style={{ flex: 1, gap: 2 }}>
+        <RecipeArt title={meal.title} width="100%" height={132} radius={0} emojiSize={56} />
+        <View style={{ paddingHorizontal: t.space.lg, paddingTop: 14, gap: 4 }}>
           <Text
             variant="caption"
             accessibilityLiveRegion="polite"
-            style={{ color: isCooked ? t.colors.tabSelected : t.colors.textMuted }}
+            style={{ color: t.colors.textMuted, fontFamily: t.fonts.medium }}
           >
             {isCooked ? 'Tonight · Cooked ✓' : 'Tonight'}
           </Text>
@@ -169,10 +166,28 @@ function TonightCard({ today, meals }: { today: string; meals: PlannedMeal[] }) 
             <MealMeta meal={meal} />
           )}
         </View>
-        <RecipeArt title={meal.title} width={112} height={84} radius={16} emojiSize={44} />
       </PressableScale>
-      <View>
-        <CookedButton meal={meal} />
+      <View
+        style={{
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          gap: t.space.sm,
+          padding: t.space.lg,
+          paddingTop: t.space.md,
+        }}
+      >
+        {isCooked ? null : (
+          <View style={{ flexGrow: 1, flexBasis: 140 }}>
+            <Button
+              title="View recipe"
+              tight
+              onPress={() => router.push(`/recipe/${meal.recipe_id}`)}
+            />
+          </View>
+        )}
+        <View style={{ flexGrow: 1, flexBasis: 140 }}>
+          <CookedButton meal={meal} />
+        </View>
       </View>
     </Card>
   );

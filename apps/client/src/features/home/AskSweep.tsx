@@ -72,11 +72,16 @@ export function AskSweep() {
           borderRadius: t.radius.md,
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: t.colors.selected,
-          opacity: canSend ? 1 : 0.35,
+          // Quiet until there's something to send, then a solid navy button.
+          backgroundColor: canSend ? t.colors.selected : 'transparent',
         }}
       >
-        <Icon icon={ArrowUp} size={20} color={t.colors.surface} strong />
+        <Icon
+          icon={ArrowUp}
+          size={20}
+          color={canSend ? t.colors.onSelected : t.colors.textMuted}
+          strong
+        />
       </PressableScale>
     </View>
   );
