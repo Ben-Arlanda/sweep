@@ -1,6 +1,6 @@
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
-import { Settings } from 'lucide-react-native';
+import { CalendarDays, ChefHat, Settings, type LucideIcon } from 'lucide-react-native';
 import { useState } from 'react';
 import { View } from 'react-native';
 import { useReducedMotion } from 'react-native-reanimated';
@@ -14,6 +14,7 @@ import { PlanSheet, startPlan } from '@/features/mealPlan/PlanSheet';
 import { addDays, mondayOf } from '@/features/mealPlan/week';
 import type { MeOut } from '@/lib/api/client';
 import { mealTap, useMealPlan, useMealPlanActions } from '@/lib/api/mealPlan';
+import { sectionTints } from '@/theme/tokens';
 import { useTheme } from '@/theme/useTheme';
 
 import { AskSweep } from './AskSweep';
@@ -140,10 +141,17 @@ export function TodayHero({ me, flow }: { me: MeOut; flow: PlanFlow }) {
         </Text>
       </View>
       <AskSweep />
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.sm }}>
-        <Chip label="Just tonight" onPress={() => router.push('/tonight')} />
-        {/* Edit plan lives on the meal plan card; the chip is for planning a week. */}
-        {cta && cta.label !== 'Edit plan' ? <Chip label={cta.label} onPress={flow.plan} /> : null}
+      <View style={{ flexDirection: 'row', gap: t.space.sm }}>
+        <QuickAction
+          icon={ChefHat}
+          tint="recipes"
+          label="Just tonight"
+          onPress={() => router.push('/tonight')}
+        />
+        {/* Edit plan lives on the meal plan card; this button is for planning a week. */}
+        {cta && cta.label !== 'Edit plan' ? (
+          <QuickAction icon={CalendarDays} tint="plan" label={cta.label} onPress={flow.plan} />
+        ) : null}
       </View>
       <ErrorText message={flow.error} />
       {flow.sheets}
@@ -151,28 +159,50 @@ export function TodayHero({ me, flow }: { me: MeOut; flow: PlanFlow }) {
   );
 }
 
-/** A quick action chip under Ask Sweep: white with a hairline, never lime. */
-function Chip({ label, onPress }: { label: string; onPress: () => void }) {
+/** A big quick action under Ask Sweep: a white card with a tinted icon tile, never lime. */
+function QuickAction({
+  icon,
+  tint,
+  label,
+  onPress,
+}: {
+  icon: LucideIcon;
+  tint: keyof typeof sectionTints;
+  label: string;
+  onPress: () => void;
+}) {
   const t = useTheme();
   return (
     <PressableScale
       accessibilityRole="button"
       onPress={onPress}
-      style={{ minHeight: t.touchTarget, justifyContent: 'center' }}
+      style={{
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: t.space.sm,
+        minHeight: 56,
+        paddingHorizontal: t.space.sm + 2,
+        borderRadius: t.radius.lg,
+        backgroundColor: t.colors.surface,
+        boxShadow: t.shadow.card,
+      }}
     >
       <View
         style={{
-          minHeight: 36,
-          paddingHorizontal: t.space.md,
-          borderRadius: t.radius.pill,
-          borderWidth: 1,
-          borderColor: t.colors.border,
-          backgroundColor: t.colors.surface,
+          width: 36,
+          height: 36,
+          borderRadius: 10,
+          alignItems: 'center',
           justifyContent: 'center',
+          backgroundColor: sectionTints[tint].bg,
         }}
       >
-        <Text style={{ fontFamily: t.fonts.medium, fontSize: 14, lineHeight: 18 }}>{label}</Text>
+        <Icon icon={icon} size={20} color={sectionTints[tint].fg} />
       </View>
+      <Text variant="label" style={{ flexShrink: 1 }}>
+        {label}
+      </Text>
     </PressableScale>
   );
 }
