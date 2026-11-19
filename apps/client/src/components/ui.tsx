@@ -126,7 +126,7 @@ export function Screen({
 }
 
 /**
- * A rounded panel. Plain cards are white with a soft shadow; `tint` makes it a pastel
+ * A rounded panel. Plain cards are white with a hairline edge; `tint` makes it a pastel
  * card (one per list, day or Member); `inverse` is the single strong anchor on a screen.
  */
 export function Card({
@@ -172,7 +172,7 @@ type ButtonVariant =
   | 'dangerSolid';
 
 /**
- * Pill buttons. `primary` is lime: use one per screen, for the main thing to do next.
+ * Buttons (12pt corners). `primary` is lime: use one per screen, for the main thing to do next.
  * Everything else is `secondary` (white), `ghost` (text only) or `danger`. `dark` is
  * the deep green for a screen whose main step is "go and look" (Dinner planned!).
  */
@@ -223,6 +223,8 @@ export function Button({
     dangerSolid: { bg: t.colors.danger, fg: t.colors.onDanger, border: 'transparent' },
   };
   const { bg, fg, border } = look[variant];
+  // Filled buttons get the heavier label; outlined and text-only ones stay quieter.
+  const quiet = variant === 'secondary' || variant === 'ghost' || variant === 'outline';
 
   return (
     <PressableScale
@@ -236,13 +238,13 @@ export function Button({
       disabled={inactive}
       style={{
         minHeight: t.touchTarget,
-        borderRadius: t.radius.pill,
-        paddingHorizontal: tight ? t.space.md : t.space.xl,
+        borderRadius: t.radius.md,
+        paddingHorizontal: tight ? t.space.md : t.space.lg,
         alignItems: 'center',
         justifyContent: 'center',
         alignSelf: compact ? 'flex-start' : 'stretch',
         backgroundColor: bg,
-        borderWidth: border === 'transparent' ? 0 : 1.5,
+        borderWidth: border === 'transparent' ? 0 : 1,
         borderColor: border,
         opacity: inactive ? 0.45 : 1,
       }}
@@ -253,7 +255,7 @@ export function Button({
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.sm }}>
           {icon ? <Icon icon={icon} size={20} color={fg} /> : null}
           <RNText
-            style={[t.type.label, { color: fg, fontFamily: t.fonts.displayBold, fontSize: 16 }]}
+            style={[t.type.label, { color: fg, fontFamily: quiet ? t.fonts.medium : t.fonts.bold }]}
           >
             {title}
           </RNText>
@@ -298,7 +300,7 @@ export function Field({
           props.multiline ? t.type.body : inputText(t.type.body), // multi-line keeps its line spacing
           {
             minHeight: t.touchTarget + 4,
-            borderWidth: 1.5,
+            borderWidth: 1,
             borderColor: error ? t.colors.danger : focused ? t.colors.text : t.colors.border,
             borderRadius: t.radius.md,
             paddingHorizontal: t.space.lg,

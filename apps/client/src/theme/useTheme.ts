@@ -20,7 +20,7 @@ export function useScheme(): 'light' | 'dark' {
   return 'light';
 }
 
-/** Colours a screen swaps in for everything inside it (Home's blue page: `homeColors`). */
+/** Colours a screen swaps in for everything inside it (PAGE_COLORS). */
 export const ColorOverride = createContext<Partial<ColorTokens> | null>(null);
 
 /** The current theme. Re-renders automatically when the scheme changes. */

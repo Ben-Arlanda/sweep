@@ -3,7 +3,6 @@ import { initials, tintFor } from './tint';
 import {
   colors,
   hero,
-  homeColors,
   PAGE_COLORS,
   palette,
   statusColors,
@@ -30,6 +29,8 @@ describe('contrastRatio', () => {
 
 describe.each(schemes)('%s theme meets WCAG AA for text', (scheme) => {
   const c = colors[scheme];
+  // A see-through hero shows the page under it.
+  const heroBg = c.hero === 'transparent' ? c.background : c.hero;
 
   it.each([
     ['text on background', c.text, c.background],
@@ -48,11 +49,14 @@ describe.each(schemes)('%s theme meets WCAG AA for text', (scheme) => {
     ['danger on soft danger', c.danger, c.dangerSoft],
     ['text on the chef yellow', c.onChef, c.chef],
     ['text on a grey pill (On list)', c.text, c.border],
-    ['hero title', c.onHero, c.hero],
-    ['hero text', c.onHeroMuted, c.hero],
+    ['hero title', c.onHero, heroBg],
+    ['hero text', c.onHeroMuted, heroBg],
     ['hero search text', c.onHero, c.heroField],
     ['hero search placeholder', c.onHeroMuted, c.heroField],
     ['lime highlight in the hero', c.onAction, c.action],
+    ['text on a selected chip', c.onSelected, c.selected],
+    ['text on the quiet fill', c.text, c.fill],
+    ['muted text on the quiet fill', c.textMuted, c.fill],
   ])('%s', (_, fg, bg) => {
     expect(contrastRatio(fg, bg)).toBeGreaterThanOrEqual(AA);
   });
@@ -132,34 +136,6 @@ describe('initials', () => {
   });
 });
 
-describe("Home's blue page (homeColors) meets WCAG AA", () => {
-  const c = { ...colors.light, ...homeColors };
-
-  it.each([
-    ['page text on the blue', c.onBackground, c.background],
-    ['muted page text on the blue', c.onBackgroundMuted, c.background],
-    ['hero title on the blue', c.onHero, c.background],
-    ['hero subtitle on the blue', c.onHeroMuted, c.background],
-    ['card text on warm white', c.text, c.surface],
-    ['muted card text on warm white', c.textMuted, c.surface],
-    ['field text on warm white', c.text, c.heroField],
-  ])('%s', (_name, fg, bg) => {
-    expect(contrastRatio(fg as string, bg as string)).toBeGreaterThanOrEqual(AA);
-  });
-
-  it('lime words in the Home title read on the blue (AA text)', () => {
-    expect(contrastRatio(c.action, c.background)).toBeGreaterThanOrEqual(AA);
-  });
-
-  it('lime buttons stand out from the blue (3:1 for controls)', () => {
-    expect(contrastRatio(c.action, c.background)).toBeGreaterThanOrEqual(3);
-  });
-
-  it('ink text would fail on the blue, which is why onBackground exists', () => {
-    expect(contrastRatio(c.text, c.background)).toBeLessThan(AA);
-  });
-});
-
 describe.each(Object.keys(PAGE_COLORS) as (keyof typeof PAGE_COLORS)[])(
   'the %s page colour meets WCAG AA',
   (page) => {
@@ -176,20 +152,16 @@ describe.each(Object.keys(PAGE_COLORS) as (keyof typeof PAGE_COLORS)[])(
   },
 );
 
-describe('lime words in a large hero title (34pt: AA large text is 3:1)', () => {
-  it.each(['home', 'recipes'] as const)('read on the %s page', (page) => {
-    const c = { ...colors.light, ...PAGE_COLORS[page] };
-    expect(contrastRatio(c.action, c.background)).toBeGreaterThanOrEqual(3);
-  });
-});
-
 describe('floating tab bar meets WCAG AA', () => {
   it('labels on the frost, even over black content', () => {
     const worst = mix(palette.paper, palette.ink, TAB_BAR_FROST);
     expect(contrastRatio(palette.ink700, worst)).toBeGreaterThanOrEqual(AA);
   });
-  it('selected label on its grey pill, even over black content', () => {
-    const pill = mix(palette.ink, mix(palette.paper, palette.ink, TAB_BAR_FROST), TAB_PILL_SHADE);
+  it('a selected chip stands out from the page (3:1, WCAG 1.4.11)', () => {
+    expect(contrastRatio(palette.navy, palette.page)).toBeGreaterThanOrEqual(3);
+  });
+  it('selected label on its navy pill, even over black content', () => {
+    const pill = mix(palette.navy, mix(palette.paper, palette.ink, TAB_BAR_FROST), TAB_PILL_SHADE);
     expect(contrastRatio(palette.ink, pill)).toBeGreaterThanOrEqual(AA);
   });
 });

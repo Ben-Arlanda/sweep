@@ -1,8 +1,9 @@
 /**
  * Design tokens: the app's shared visual decisions, named once and used everywhere.
  *
- * Direction: "Zest + Kitchen Table" (ADR 0007). Lime and ink are the brand; warm white
- * and soft pastels make it feel like a household kitchen rather than a shop.
+ * Direction: "Lime & Navy" on the Warm Neutral layout (premium redesign, 2026-11-19): one
+ * cool neutral page, white cards with a hairline edge, navy ink, and lime kept for the one
+ * main action and Sweep's AI.
  *
  * Components never hard-code a colour or a spacing value. They ask for a *role*
  * ("action", "textMuted", a tint) rather than a raw colour, so each colour has one job:
@@ -19,12 +20,17 @@ export const palette = {
   limePressed: '#c5de25',
   limeSoft: '#eef8b8',
   chef: '#fcb608', // the chef mascot's golden yellow, sampled from his artwork
-  ink: '#12150f',
-  ink700: '#2a2f24',
-  paper: '#fffaf4',
+  ink: '#121a2e', // navy ink
+  ink700: '#2b3550',
+  navy: '#1b2a4e', // selection: chips, segmented tabs, step numbers
+  page: '#f1f3f7', // the one page colour on every tab
+  line: '#dce0e9',
+  fill: '#e4e8f0', // photo placeholders and quiet fills
+  aiSoft: '#eef6c8',
+  paper: '#ffffff',
   white: '#ffffff',
-  stone600: '#5d6155',
-  stone300: '#e7e2d6',
+  stone600: '#4f5770',
+  stone300: '#dce0e9',
   night900: '#0f110d',
   night800: '#181b15',
   night700: '#22261e',
@@ -43,12 +49,17 @@ export type ColorTokens = {
   text: string;
   textMuted: string;
   border: string;
+  /** Quiet fill: photo placeholders, segmented-control tracks. */
+  fill: string;
   /** Lime: main buttons, ticks, the AI. */
   action: string;
   actionPressed: string;
   onAction: string;
   actionSoft: string;
   onActionSoft: string;
+  /** Selection (chips, segmented tabs): navy, white text on it. Lime stays for actions. */
+  selected: string;
+  onSelected: string;
   /** The one strong dark (light in dark mode) surface: toasts and anchor cards. */
   inverse: string;
   onInverse: string;
@@ -87,39 +98,45 @@ export type ColorTokens = {
 
 export const colors: Record<'light' | 'dark', ColorTokens> = {
   light: {
-    background: palette.paper,
+    background: palette.page,
     surface: palette.white,
     text: palette.ink,
     textMuted: palette.stone600,
-    border: palette.stone300,
+    border: palette.line,
+    fill: palette.fill,
     action: palette.lime,
     actionPressed: palette.limePressed,
     onAction: palette.ink,
-    actionSoft: palette.limeSoft,
+    actionSoft: palette.aiSoft,
     onActionSoft: '#2f3600',
+    selected: palette.navy,
+    onSelected: palette.white,
     inverse: palette.ink,
     onInverse: palette.white,
     danger: palette.red600,
     dangerSoft: palette.red100,
-    switchOff: '#8f8a7d',
-    tabSelected: '#174a20',
-    hero: palette.limeSoft,
+    switchOff: '#858ca0',
+    tabSelected: palette.navy,
+    hero: 'transparent',
     onHero: palette.ink,
-    onHeroMuted: '#4d5338',
+    onHeroMuted: palette.stone600,
     heroField: palette.white,
     chef: palette.chef,
     onChef: palette.ink,
     onBackground: palette.ink,
     onBackgroundMuted: palette.stone600,
-    sheet: palette.paper,
-    strong: '#171a14',
+    sheet: palette.white,
+    strong: palette.navy,
     onStrong: palette.white,
-    lavender: '#e9deff',
+    lavender: '#e4e8f0',
     onLavender: palette.ink,
     onDanger: palette.white,
   },
   dark: {
     background: palette.night900,
+    fill: palette.night700,
+    selected: palette.mist100,
+    onSelected: palette.ink,
     surface: palette.night800,
     text: palette.mist100,
     textMuted: palette.mist400,
@@ -153,35 +170,29 @@ export const colors: Record<'light' | 'dark', ColorTokens> = {
 };
 
 /**
- * Each main screen's page colour (2026-11-18): no coloured hero, warm white (paper)
- * cards and fields on top. Text straight on the page is white on the darker colours and
- * ink on the lighter ones, whichever passes AA (checked in tokens.test.ts).
+ * Each main screen's page colour. Since the premium redesign (2026-11-19) every tab shares
+ * the one neutral page; the map stays so a screen could get its own colour again.
  */
-function pageColors(background: string, text: 'white' | 'ink', muted?: string) {
-  const on = text === 'white' ? palette.white : palette.ink;
-  const onMuted = muted ?? (text === 'white' ? palette.white : palette.ink700);
-  return {
-    background,
-    surface: palette.paper,
-    hero: 'transparent',
-    onHero: on,
-    onHeroMuted: onMuted,
-    heroField: palette.paper,
-    onBackground: on,
-    onBackgroundMuted: onMuted,
-  } satisfies Partial<ColorTokens>;
-}
+const neutralPage = {
+  background: palette.page,
+  surface: palette.white,
+  hero: 'transparent',
+  onHero: palette.ink,
+  onHeroMuted: palette.stone600,
+  heroField: palette.white,
+  onBackground: palette.ink,
+  onBackgroundMuted: palette.stone600,
+} satisfies Partial<ColorTokens>;
 
 export const PAGE_COLORS = {
-  home: pageColors('#2447c6', 'white', '#dbe3ff'),
-  kitchen: pageColors('#007f73', 'white'), // white is only 4.9:1 here, so no paler muted
-  list: pageColors('#f4a48e', 'ink'),
-  recipes: pageColors('#7450c7', 'white', '#f1ecfd'),
-  plan: pageColors('#f6b94d', 'ink'),
-  household: pageColors('#183b76', 'white', '#dbe3ff'),
+  home: neutralPage,
+  kitchen: neutralPage,
+  list: neutralPage,
+  recipes: neutralPage,
+  plan: neutralPage,
+  household: neutralPage,
 };
 export type Page = keyof typeof PAGE_COLORS;
-export const homeColors = PAGE_COLORS.home;
 
 /** The household pastels. `bg` for cards and thumbnails, `pill`/`onPill` for quantity pills. */
 export const TINT_NAMES = ['butter', 'blush', 'mint', 'sky', 'lilac'] as const;
@@ -268,32 +279,35 @@ export const hero = {
  * never set `fontWeight` alongside these.
  */
 export const fonts = {
-  display: 'Urbanist_700Bold',
-  displayBold: 'Urbanist_600SemiBold',
-  body: 'Urbanist_500Medium',
-  medium: 'Urbanist_600SemiBold',
-  bold: 'Urbanist_700Bold',
+  display: 'Urbanist_600SemiBold', // screen titles only
+  displayBold: 'Inter_600SemiBold',
+  body: 'Inter_400Regular',
+  medium: 'Inter_500Medium',
+  bold: 'Inter_600SemiBold',
 } as const;
 
 // A 4-point scale: every gap and padding is one of these, which keeps layouts even.
 export const space = { xs: 4, sm: 8, md: 12, lg: 16, xl: 24, xxl: 32 } as const;
 
-// Soft and round throughout: nothing sharp.
-export const radius = { sm: 8, md: 14, lg: 20, xl: 28, hero: 32, pill: 999 } as const;
+// Buttons and fields 12, cards 16, sheets 24, chips fully round.
+export const radius = { sm: 8, md: 12, lg: 16, xl: 24, hero: 24, pill: 999 } as const;
 
 export const type = {
   display: { fontFamily: fonts.display, fontSize: 34, lineHeight: 40, letterSpacing: -0.6 },
-  title: { fontFamily: fonts.display, fontSize: 28, lineHeight: 34, letterSpacing: -0.4 },
-  heading: { fontFamily: fonts.displayBold, fontSize: 20, lineHeight: 26, letterSpacing: -0.2 },
-  body: { fontFamily: fonts.body, fontSize: 16, lineHeight: 23 },
+  title: { fontFamily: fonts.display, fontSize: 30, lineHeight: 36, letterSpacing: -0.4 },
+  heading: { fontFamily: fonts.displayBold, fontSize: 18, lineHeight: 24, letterSpacing: -0.2 },
+  body: { fontFamily: fonts.body, fontSize: 15, lineHeight: 22 },
   label: { fontFamily: fonts.bold, fontSize: 15, lineHeight: 20 },
   caption: { fontFamily: fonts.body, fontSize: 13, lineHeight: 18 },
   pill: { fontFamily: fonts.bold, fontSize: 12, lineHeight: 16 },
 } as const;
 
-/** CSS-style shadows (supported on iOS, Android and web with the New Architecture). */
+/**
+ * CSS-style shadows (iOS, Android and web with the New Architecture). `card` is no shadow
+ * at all but a 1px hairline: a spread-only shadow draws the edge without taking up space.
+ */
 export const shadow = {
-  card: '0px 4px 14px -8px rgba(0, 0, 0, 0.30)',
+  card: `0px 0px 0px 1px ${palette.line}`,
   raised: '0px 12px 28px -14px rgba(0, 0, 0, 0.40)',
 } as const;
 
@@ -319,12 +333,12 @@ export const motion = {
 export const tabBarHeight = 68;
 
 /**
- * The floating tab bar's frosting: warm white at this opacity over the blur. 0.7 keeps
- * its ink700 labels at AA even over black content (tested in tokens.test.ts).
+ * The floating tab bar's frosting: white at this opacity over the blur. High enough that
+ * its labels pass AA even over black content (tested in tokens.test.ts).
  */
-export const TAB_BAR_FROST = 0.7;
-/** The selected tab's pill: ink at this opacity over the frost, the same on every page. */
-export const TAB_PILL_SHADE = 0.1;
+export const TAB_BAR_FROST = 0.86;
+/** The selected tab's pill: navy at this opacity over the frost. */
+export const TAB_PILL_SHADE = 0.09;
 
 /** Minimum tappable size (Apple HIG 44pt). Applies to every button and row. */
 export const touchTarget = 44;

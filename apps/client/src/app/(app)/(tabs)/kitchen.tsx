@@ -994,7 +994,7 @@ function ItemSheet({
             >
               {KINDS.filter(({ kind }) => kinds.has(kind)).map(({ kind, label }) => {
                 const on = kindOf(unit) === kind;
-                const fg = on ? t.colors.onInverse : t.colors.text;
+                const fg = on ? t.colors.onSelected : t.colors.text;
                 return (
                   <Pressable
                     key={kind}
@@ -1006,8 +1006,8 @@ function ItemSheet({
                       minHeight: 46,
                       borderRadius: t.radius.pill,
                       borderWidth: 1.5,
-                      borderColor: on ? t.colors.inverse : t.colors.border,
-                      backgroundColor: on ? t.colors.inverse : t.colors.surface,
+                      borderColor: on ? t.colors.selected : t.colors.border,
+                      backgroundColor: on ? t.colors.selected : t.colors.surface,
                       flexDirection: 'row',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -1084,7 +1084,7 @@ function ItemSheet({
                   paddingHorizontal: t.space.md,
                   borderRadius: t.radius.pill,
                   borderWidth: 1.5,
-                  borderColor: value === pick ? t.colors.inverse : t.colors.border,
+                  borderColor: value === pick ? t.colors.selected : t.colors.border,
                   backgroundColor: t.colors.surface,
                   alignItems: 'center',
                   justifyContent: 'center',

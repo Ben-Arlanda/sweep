@@ -161,10 +161,10 @@ function WeekToggle({ next, onChange }: { next: boolean; onChange: (next: boolea
         borderRadius: t.radius.pill,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: selected ? t.colors.inverse : 'transparent',
+        backgroundColor: selected ? t.colors.selected : 'transparent',
       }}
     >
-      <Text variant="label" style={{ color: selected ? t.colors.onInverse : t.colors.text }}>
+      <Text variant="label" style={{ color: selected ? t.colors.onSelected : t.colors.text }}>
         {label}
       </Text>
     </Pressable>

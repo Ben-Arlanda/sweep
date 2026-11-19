@@ -1,8 +1,5 @@
-import {
-  Urbanist_500Medium,
-  Urbanist_600SemiBold,
-  Urbanist_700Bold,
-} from '@expo-google-fonts/urbanist';
+import { Inter_400Regular, Inter_500Medium, Inter_600SemiBold } from '@expo-google-fonts/inter';
+import { Urbanist_600SemiBold } from '@expo-google-fonts/urbanist';
 import { ClerkProvider, useAuth } from '@clerk/expo';
 import { tokenCache } from '@clerk/expo/token-cache';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
@@ -38,9 +35,10 @@ export default function RootLayout() {
   // useState so the cache is created once, not on every render.
   const [queryClient] = useState(makeQueryClient);
   const [fontsLoaded, fontError] = useFonts({
-    Urbanist_500Medium,
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
     Urbanist_600SemiBold,
-    Urbanist_700Bold,
   });
   const scheme = useScheme();
   const fontsReady = fontsLoaded || Boolean(fontError); // on a font error, carry on with system fonts

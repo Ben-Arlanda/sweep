@@ -271,11 +271,11 @@ function CuisineChips(props: { selected: string[]; onToggle: (cuisine: string) =
                 borderRadius: t.radius.pill,
                 borderWidth: 1.5,
                 // Selected shows as fill AND a tick, not colour alone (WCAG 1.4.1).
-                borderColor: on ? t.colors.text : t.colors.border,
-                backgroundColor: on ? t.colors.inverse : t.colors.surface,
+                borderColor: on ? t.colors.selected : t.colors.border,
+                backgroundColor: on ? t.colors.selected : t.colors.surface,
               }}
             >
-              <Text style={{ color: on ? t.colors.onInverse : t.colors.text }}>
+              <Text style={{ color: on ? t.colors.onSelected : t.colors.text }}>
                 {on ? '✓ ' : ''}
                 {cuisineLabel(c)}
               </Text>

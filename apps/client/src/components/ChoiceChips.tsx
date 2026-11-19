@@ -65,9 +65,9 @@ export function ChoiceChips<T>({
                 borderRadius: t.radius.pill,
                 alignItems: 'center',
                 justifyContent: 'center',
-                backgroundColor: selected ? t.colors.inverse : t.colors.surface,
+                backgroundColor: selected ? t.colors.selected : t.colors.surface,
                 borderWidth: 1,
-                borderColor: selected ? t.colors.inverse : t.colors.border,
+                borderColor: selected ? t.colors.selected : t.colors.border,
               }}
             >
               <Text
@@ -75,7 +75,7 @@ export function ChoiceChips<T>({
                 numberOfLines={1}
                 style={[
                   small ? { fontSize: 14, lineHeight: 18 } : null,
-                  { color: selected ? t.colors.onInverse : t.colors.text },
+                  { color: selected ? t.colors.onSelected : t.colors.text, fontFamily: t.fonts.medium },
                 ]}
               >
                 {option.label}
