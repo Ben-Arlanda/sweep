@@ -342,6 +342,8 @@ Each slice is a feature branch and a focused PR that works end to end.
 | 9 | `feature/retrieval-evals` | Retrieval Set (51 queries), R2 keyword, R3 fusion, R4 rerank, comparison report; R1 stays (ADR 0022) | Advanced RAG |
 | 3e | `feature/kitchen-photos` | Kitchen Photos: photos of a Place suggest Kitchen items, a pre-ticked review adds or refreshes them (never removes), photo eval with a pre-set bar (ADR 0023) | Multimodal input, AI security, evaluation |
 | 10 | `feature/ai-security` | Injection eval cases, rate limits, budget limits, hardening | AI security |
+| 4e | `feature/recipe-audit` | Every Seed Recipe has a Cookable Method: new `unused` and no-heat-or-time checks (CI), the LLM reviewer re-aimed at the bar and measured on planted vague methods, then run on all 500 (Haiku); fixes drafted in session, deletions and fixes approved by the product owner | Evaluation (LLM-as-judge vs deterministic checks) |
+| 4f | `feature/recipe-images`, `-client` | Recipe Images for Seed Recipes: openly licensed photos from Openverse + Wikimedia, a measured Haiku vision check, a contact-sheet sign-off, WebP 960/360 under size limits, credits; shown with `expo-image` where `RecipeArt` is today (ADR 0027) | Multimodal (vision), evaluation |
 | 11 | `feature/aws-deployment` | ECS, RDS, Secrets Manager, IAM, Bedrock as second LLM provider, web hosting (TestFlight optional) | Cloud (Bedrock + IAM, deployment) |
 
 **Slice 5b steps** (built 2026-11-15; decided: chat opens from a "Plan my week" button on Home, not a 6th tab; the chat reopens the Member's latest Conversation on any device, with a "New plan" button):
@@ -642,6 +644,23 @@ Also built: the sheet's This week chips are stored on the Conversation (`plan_tw
 1. ✅ **API:** `/dinner-ideas` gains `mood` (`kitchen`|`surprise`|`specific`), `q`, `vegetarian`; `PUT /meal-plan/days/{day}` accepts `servings`; `GET /recipes` gains `sort` (`title`|`newest`|`recommended`) and `GET /recipes/count`.
 2. ✅ **Client:** Recipes main (tiles, browse chips, Recommended for you, Your recipes kept for rule-break notes), All recipes, Dinner ideas setup, results as uniform cards (shared with Just tonight), Serves into planning; any main's recipe page offers Cook tonight / Another day (`PickDaySheet`).
 3. **Checks:** both suites ✅ (API 860, client 344); web bundle builds ✅; browser walk-through when the tools connect.
+
+**Slice 4e steps** (`feature/recipe-audit`; build test-first; before 4f so no images are found for recipes that get removed):
+
+1. **Checks (CI):** `unused` (a listed ingredient no step uses) and `no_heat_time` (a cooking step with no heat or no time). Run on the 500, record the counts.
+2. **Reviewer:** `recipe_review` prompt re-aimed at the Cookable Method bar (doneness cues, step order); add planted vague-method cases to `evals/recipe_review.jsonl`; measure it (several runs), then run it on all 500 with Haiku and report the cost.
+3. **Fix or remove:** fix first (drafted in session, no API cost); remove only a recipe that isn't a real dish or can't be saved. The product owner approves both lists. Removing deletes from the seed files and the dev DB; Favourites, Planned Meals and Adaptations cascade, which is fine with test users only. Before real users, add a "retired" state instead (hidden from browsing and the agent, kept for existing plans).
+4. **Spot check:** the product owner reads 15 random passing recipes.
+
+**Slice 4f steps** (ADR 0027; 4f-a `feature/recipe-images`, API + eval; 4f-b `feature/recipe-images-client`; build test-first):
+
+1. **Search:** Openverse API (`license_type=commercial,modification`) + Wikimedia Commons, up to 8 candidates per recipe. Code filters: CC0, Public Domain, CC BY, CC BY-SA only (never NC or ND); at least 960px wide; croppable to 4:3; not used by another recipe.
+2. **Vision check (Haiku):** is it this dish (yes / close / no)? Anything that clashes with the recipe or its Dietary Rules (meat on a vegetarian dish)? A finished, cooked dish (not raw ingredients)? No watermark, text or people's faces. "Close" passes; any clash fails. Measured first on ~30 labelled recipe/image pairs with planted wrong dishes and clashes, with a bar set before the run.
+3. **Contact sheet:** an artifact grid (title, chosen image, check notes) the product owner approves or rejects in bulk; a rejected recipe tries its next candidate or keeps `RecipeArt`.
+4. **Files:** WebP 960px (≤ 70 KB, hero) and 360px (≤ 15 KB, rows and cards); a test fails on any file over its limit. Served from the API's `static/recipes/`; `image_url` on Recipe, always from our database, never from model output (§10). A committed credit record per image: source URL, author, licence, licence URL, check result.
+5. **Client (4f-b):** `expo-image` wherever `RecipeArt` is used (recipe hero, `RecipeRow`, `RecipeCard`, `IdeaTile`, Home, Tonight and Week screens), `RecipeArt` as the fallback; credit line under the hero only ("Photo: Name · CC BY 2.0", linked); alt text from the recipe title; bump `CACHE_BUSTER`.
+
+Parked: AI-generated images for recipes with no licensed photo (decide once 4f-a shows the coverage; check the provider's commercial-use terms first). After slice 11: Member photos for Imported Recipes (private S3, signed URLs, EXIF stripped by re-encoding, deleted with the recipe; needs its own ADR, since Sweep stores no user photos today).
 
 Experiments (`experiments/`, any time after slice 4):
 
