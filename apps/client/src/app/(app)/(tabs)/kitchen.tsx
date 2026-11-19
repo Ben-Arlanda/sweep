@@ -371,7 +371,6 @@ function KitchenScreenContent() {
             key={section.category}
             category={section.category}
             label={section.label}
-            count={section.rows.length}
             open={open}
             onToggle={() => setClosed((now) => toggled(now, section.category))}
           >
