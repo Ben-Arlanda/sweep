@@ -1,20 +1,13 @@
-"""Recipe Images (slice 4f, ADR 0027): the committed files and credits, and the API."""
+"""Recipe Images (slice 4f, ADR 0029): the committed credits, and the API."""
 
 import uuid
 
 import httpx
 import pytest
-from PIL import Image
+from pydantic import ValidationError
 from sqlalchemy import Engine, text
 
-from app.data.recipe_images import (
-    ALLOWED,
-    FILES,
-    SIZES,
-    RecipeImage,
-    file_name,
-    load_recipe_images,
-)
+from app.data.recipe_images import RecipeImage, load_recipe_images, sized
 from app.data.recipes import load_seed_recipes
 from app.db import make_engine, make_sessionmaker
 from app.services import adaptations
@@ -25,35 +18,24 @@ from tests.test_recipes import PASTA, STIR_FRY
 pytestmark = pytest.mark.anyio
 
 RECORDS = load_recipe_images()
+RAW = "https://images.unsplash.com/photo-1?ixid=M3xyz&ixlib=rb-4.1.0"
 PASTA_PHOTO = RecipeImage(
     slug="tomato-pasta",
-    author="Joe Mahoney",
-    licence="CC BY 2.0",
-    licence_url="https://creativecommons.org/licenses/by/2.0",
-    source_url="https://commons.wikimedia.org/wiki/File:Pasta.jpg",
-    seen="Spaghetti in a red tomato sauce.",
-    dish="yes",
+    source="unsplash",
+    photo_id="abc123",
+    raw_url=RAW,
+    author="Ana Cook",
+    author_url="https://unsplash.com/@anacook",
+    photo_url="https://unsplash.com/photos/pasta-abc123",
 )
+UTM = "?utm_source=sweep&utm_medium=referral"
 
 
-def test_every_credit_is_for_a_seed_recipe_with_an_open_licence() -> None:
+def test_every_credit_is_for_a_seed_recipe_and_a_different_photo() -> None:
     slugs = {r.slug for r in load_seed_recipes()}
     assert {r.slug for r in RECORDS} <= slugs
-    assert all(r.licence.startswith(ALLOWED) for r in RECORDS)
-    assert all(r.dish in ("yes", "close") for r in RECORDS)
-    assert len({r.source_url for r in RECORDS}) == len(RECORDS)  # no photo used twice
     assert len({r.slug for r in RECORDS}) == len(RECORDS)
-
-
-def test_every_image_file_is_small_4_by_3_webp_with_a_credit() -> None:
-    expected = {file_name(r.slug, size) for r in RECORDS for size in SIZES}
-    assert {p.name for p in FILES.glob("*")} == expected  # nothing missing, nothing extra
-    for record in RECORDS:
-        for size, (width, most) in SIZES.items():
-            path = FILES / file_name(record.slug, size)
-            assert path.stat().st_size <= most, path.name
-            with Image.open(path) as image:
-                assert (image.format, image.size) == ("WEBP", (width, width * 3 // 4))
+    assert len({r.photo_id for r in RECORDS}) == len(RECORDS)  # no photo used twice
 
 
 async def get(client: httpx.AsyncClient, issuer: FakeIssuer, path: str) -> httpx.Response:
@@ -70,12 +52,12 @@ async def test_a_seed_recipe_with_a_photo_returns_its_files_and_credit(
     listed = {r["title"]: r for r in (await get(client, fake_issuer, "/recipes")).json()}
     image = listed["Quick tomato pasta"]["image"]
     assert image == {
-        "thumb_url": "/static/recipes/tomato-pasta-360.webp",
-        "hero_url": "/static/recipes/tomato-pasta-960.webp",
-        "author": "Joe Mahoney",
-        "licence": "CC BY 2.0",
-        "licence_url": "https://creativecommons.org/licenses/by/2.0",
-        "source_url": "https://commons.wikimedia.org/wiki/File:Pasta.jpg",
+        "thumb_url": sized(RAW, 360),
+        "hero_url": sized(RAW, 960),
+        "author": "Ana Cook",
+        "author_url": f"https://unsplash.com/@anacook{UTM}",
+        "source": "Unsplash",
+        "source_url": f"https://unsplash.com/{UTM}",
     }
     assert listed["Beef and broccoli stir-fry"]["image"] is None
     recipe_id = listed["Quick tomato pasta"]["id"]
@@ -109,12 +91,13 @@ async def test_an_adaptation_has_no_photo_since_its_dish_changed(
     assert (await get(client, fake_issuer, f"/recipes/{made_id}")).json()["image"] is None
 
 
-async def test_the_api_serves_the_image_files(client: httpx.AsyncClient) -> None:
-    files = sorted(FILES.glob("*.webp"))
-    assert files, "no Recipe Images written yet"
-    response = await client.get(f"/static/recipes/{files[0].name}")
-    assert response.status_code == 200
-    assert response.headers["content-type"] == "image/webp"
-    assert "max-age" in response.headers.get("cache-control", "")
-    assert (await client.get("/static/recipes/nope.webp")).status_code == 404
-    assert (await client.get("/static/recipes/../recipe_images.json")).status_code == 404
+def test_a_credit_must_point_at_unsplash() -> None:
+    fields = PASTA_PHOTO.model_dump()
+    for bad in (
+        {"raw_url": "https://evil.test/photo-1?ixid=x"},
+        {"raw_url": "https://images.unsplash.com/photo-1"},  # ixid dropped
+        {"author_url": "https://unsplash.com/@ana?x=1"},
+        {"source": "wikimedia"},
+    ):
+        with pytest.raises(ValidationError):
+            RecipeImage.model_validate(fields | bad)

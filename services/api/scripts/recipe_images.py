@@ -1,123 +1,65 @@
-"""Find, check and write Recipe Images for the Seed Recipes (slice 4f, ADR 0027).
+"""Find and pick Recipe Images for the Seed Recipes from Unsplash (slice 4f, ADR 0029).
 
-    uv run python -m scripts.recipe_images search            # free; resumable
-    uv run python -m scripts.recipe_images check --max-spend 6   # COSTS MONEY (Haiku)
-    uv run python -m scripts.recipe_images write             # free: WebP files + credits
+    uv run python -m scripts.recipe_images search   # free; slow (50 searches an hour)
+    uv run python -m scripts.recipe_images review   # http://127.0.0.1:8765, pick by eye
+    uv run python -m scripts.recipe_images apply    # credits file + Unsplash download notices
 
-search: Wikimedia Commons, then Openverse (200 searches a day without a key, so a
-second day's run carries on), keeping only open licences and photos big enough for a
-4:3 hero. check: Haiku looks at each recipe's candidates in order until one passes,
-skipping any photo another recipe already has. write: crops, resizes and saves the
-chosen photos, minus any the product owner rejected on the contact sheet.
+search keeps up to four options per recipe, dropping any whose description names a meat
+or fish the recipe doesn't have. No model looks at Unsplash photos: their API terms send
+AI use to a separate agreement. The product owner picks one option, or none, per recipe
+on the review page, which shows the photos from Unsplash itself (hotlinked, as their
+terms require). apply tells Unsplash each picked photo was used (their "download"
+event) and writes `app/data/recipe_images.json`. Every step is resumable.
 """
 
 import argparse
-import asyncio
 import html
-import io
 import json
 import re
 import sys
 import time
 from collections.abc import Sequence
-from decimal import Decimal
+from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 from typing import Any
 
 import httpx
-from PIL import Image
 from pydantic import BaseModel
 
 from app.config import settings
-from app.data.recipe_images import FILES, RECORDS, SIZES, RecipeImage, file_name
+from app.data.recipe_images import RECORDS, RecipeImage, sized
 from app.data.recipes import SeedRecipe, load_seed_recipes
-from app.llm_costs import cost_usd
-from app.services.recipe_image_check import ClaudeImageChecker, passes, title_clash
-from app.services.recipe_import import Photo, photo_type
+from app.services.recipe_image_check import title_clash
 
 WORK = Path(__file__).parents[1] / "data" / "recipe-images"
-CANDIDATES = WORK / "candidates.json"
-CHECKS = WORK / "checks.json"
-REJECTED = WORK / "rejected.json"  # source URLs the product owner turned down
-CACHE = WORK / "cache"  # downloads, git-ignored
-# Wikimedia wants a link in the User-Agent; a generic one, with no personal details.
-AGENT = {"User-Agent": "SweepRecipeImages/0.1 (+https://www.mediawiki.org/wiki/API:Etiquette)"}
-MOST = 8  # candidates per recipe
-HERO_W, HERO_H = 960, 720
-KEEP = 0.6  # a 4:3 crop must keep this much of the photo
+OPTIONS = WORK / "unsplash.json"  # slug -> {"queries": [...], "options": [...]}
+CHOICES = WORK / "choices.json"  # slug -> photo id, or null for no photo
+NOTIFIED = WORK / "notified.json"  # photo ids Unsplash was told about
+API = "https://api.unsplash.com"
+MOST = 4
+PACE = 75  # seconds between requests: demo mode allows 50 an hour
 
 
-class Candidate(BaseModel):
-    source: str  # "wikimedia" or "openverse"
-    download_url: str
-    source_url: str
-    title: str
+class Option(BaseModel):
+    photo_id: str
+    raw_url: str
     author: str
-    licence: str
-    licence_url: str | None
+    author_url: str
+    photo_url: str
+    download_location: str
+    description: str
     width: int
     height: int
 
 
-# --- Rules (tested) -------------------------------------------------------------------
-
-_CC = re.compile(r"^cc (by|by sa) (\d\.\d)(?: ([a-z]{2}))?$")
-LICENCE_URLS = {
-    "CC0 1.0": "https://creativecommons.org/publicdomain/zero/1.0/",
-    "Public Domain": "https://creativecommons.org/publicdomain/mark/1.0/",
-}
-
-
-def licence_name(given: str) -> str | None:
-    """CC0, Public Domain, CC BY or CC BY-SA with a version, in one spelling; else None."""
-    s = " ".join(given.lower().replace("-", " ").replace("_", " ").split())
-    if s in ("cc0", "cc0 1.0", "cc zero"):
-        return "CC0 1.0"
-    if s in ("public domain", "pd", "pdm", "public domain mark", "no restrictions"):
-        return "Public Domain"
-    if match := _CC.match(s):
-        kind = "CC BY-SA" if match[1] == "by sa" else "CC BY"
-        return " ".join(filter(None, [kind, match[2], (match[3] or "").upper()]))
-    return None
-
-
-def fits(width: int, height: int) -> bool:
-    crop_w = min(width, height * 4 / 3)
-    kept = (crop_w * crop_w * 3 / 4) / (width * height)
-    return crop_w >= HERO_W and kept >= KEEP
-
-
-def crop_box(width: int, height: int) -> tuple[int, int, int, int]:
-    if width * 3 > height * 4:
-        crop_w = round(height * 4 / 3)
-        left = (width - crop_w) // 2
-        return (left, 0, left + crop_w, height)
-    crop_h = round(width * 3 / 4)
-    top = (height - crop_h) // 2
-    return (0, top, width, top + crop_h)
-
-
 FILLER = {
-    "classic",
-    "fluffy",
-    "creamy",
-    "crispy",
-    "easy",
-    "quick",
-    "simple",
-    "homemade",
-    "hearty",
-    "sticky",
-    "golden",
-    "best",
-    "perfect",
-    "rustic",
-    "healthy",
+    *("classic", "fluffy", "creamy", "crispy", "easy", "quick", "simple", "homemade"),
+    *("hearty", "sticky", "golden", "best", "perfect", "rustic", "healthy"),
 }
 
 
 def queries(title: str) -> list[str]:
-    """The title, then shorter forms: a long title finds nothing, since every word must match."""
+    """The title, then shorter forms: a long title finds little, since every word must match."""
     plain = re.sub(r"\s*\(.*?\)", "", title).strip()
     words = [w for w in plain.split() if w.lower() not in FILLER]
     core = re.split(r"\s+(?:with|in|on)\s+", " ".join(words), maxsplit=1)[0]
@@ -125,344 +67,228 @@ def queries(title: str) -> list[str]:
     return list(dict.fromkeys(q for q in tries if q))
 
 
-def plain_text(value: str) -> str:
-    return " ".join(html.unescape(re.sub(r"<[^>]+>", " ", value)).split())
-
-
-def _credit(author: str, licence: str) -> str | None:
-    if author:
-        return author[:200]
-    return "Unknown" if licence in LICENCE_URLS else None  # BY and BY-SA must name someone
-
-
-def commons_candidate(page: dict[str, Any]) -> Candidate | None:
-    info = page.get("imageinfo", [{}])[0]
-    meta = info.get("extmetadata", {})
-    licence = licence_name(meta.get("LicenseShortName", {}).get("value", ""))
-    if licence is None or info.get("mime") not in ("image/jpeg", "image/png"):
+def option(result: dict[str, Any], recipe: SeedRecipe) -> Option | None:
+    """An Unsplash search result as an option, or None if code rules it out."""
+    words = " ".join(filter(None, [result.get("description"), result.get("alt_description")]))
+    if title_clash(recipe, words) or min(result["width"], result["height"]) < 1200:
         return None
-    if not fits(info.get("width", 0), info.get("height", 0)):
-        return None
-    author = _credit(plain_text(meta.get("Artist", {}).get("value", "")), licence)
-    if author is None:
-        return None
-    return Candidate(
-        source="wikimedia",
-        download_url=info["thumburl"],
-        source_url=info["descriptionurl"],
-        title=page["title"].removeprefix("File:"),
-        author=author,
-        licence=licence,
-        licence_url=meta.get("LicenseUrl", {}).get("value") or LICENCE_URLS.get(licence),
-        width=info["width"],
-        height=info["height"],
+    user = result["user"]
+    return Option(
+        photo_id=result["id"],
+        raw_url=result["urls"]["raw"],
+        author=" ".join((user.get("name") or user["username"]).split()),
+        author_url=user["links"]["html"],
+        photo_url=result["links"]["html"],
+        download_location=result["links"]["download_location"],
+        description=words[:300],
+        width=result["width"],
+        height=result["height"],
     )
 
 
-def openverse_candidate(result: dict[str, Any]) -> Candidate | None:
-    if result.get("source") == "wikimedia":
-        return None  # searched directly, with fuller credits
-    code, version = result.get("license", ""), result.get("license_version") or ""
-    licence = licence_name(code if code in ("cc0", "pdm") else f"cc {code} {version}")
-    width, height = result.get("width"), result.get("height")
-    if licence is None or not width or not height or not fits(width, height):
-        return None
-    author = _credit(plain_text(result.get("creator") or ""), licence)
-    if author is None:
-        return None
-    return Candidate(
-        source="openverse",
-        download_url=result["url"],
-        source_url=result["foreign_landing_url"],
-        title=plain_text(result.get("title") or ""),
-        author=author,
-        licence=licence,
-        licence_url=result.get("license_url") or LICENCE_URLS.get(licence),
-        width=width,
-        height=height,
-    )
-
-
-# --- search ---------------------------------------------------------------------------
-
-
-def _load(path: Path) -> dict[str, Any]:
+def _load(path: Path) -> Any:
     return json.loads(path.read_text()) if path.exists() else {}
 
 
-def _save(path: Path, data: dict[str, Any]) -> None:
+def _save(path: Path, data: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data, indent=1, ensure_ascii=False, sort_keys=True) + "\n")
 
 
-def polite_get(client: httpx.Client, url: str, params: dict[str, str]) -> httpx.Response:
-    """GET, waiting as long as the server asks whenever it says "too many requests"."""
-    for _ in range(6):
-        response = client.get(url, params=params)
-        if response.status_code != 429:
-            response.raise_for_status()
-            return response
-        wait = int(response.headers.get("retry-after", "30"))
-        print(f"  429: waiting {wait}s")
-        time.sleep(wait)
-    response.raise_for_status()
-    return response
+def _client() -> httpx.Client:
+    if settings.unsplash_access_key is None:
+        sys.exit("UNSPLASH_ACCESS_KEY is not set in services/api/.env")
+    key = settings.unsplash_access_key.get_secret_value()
+    headers = {"Authorization": f"Client-ID {key}", "Accept-Version": "v1"}
+    return httpx.Client(base_url=API, headers=headers, timeout=30)
 
 
-def search_commons(client: httpx.Client, title: str) -> list[dict[str, Any]]:
-    params = {
-        "action": "query",
-        "format": "json",
-        "generator": "search",
-        "gsrnamespace": "6",
-        "gsrsearch": f"{title} filetype:bitmap",
-        "gsrlimit": "20",
-        "prop": "imageinfo",
-        "iiprop": "url|size|mime|extmetadata",
-        "iiurlwidth": "1600",
-        "iiextmetadatafilter": "LicenseShortName|LicenseUrl|Artist",
-    }
-    response = polite_get(client, "https://commons.wikimedia.org/w/api.php", params)
-    pages = response.json().get("query", {}).get("pages", {}).values()
-    found = (commons_candidate(p) for p in sorted(pages, key=lambda p: p.get("index", 0)))
-    return [c.model_dump() for c in found if c]
-
-
-def search_openverse(client: httpx.Client, title: str) -> tuple[list[dict[str, Any]], int]:
-    params = {"q": title, "license": "cc0,pdm,by,by-sa", "page_size": "20", "mature": "false"}
-    response = client.get("https://api.openverse.org/v1/images/", params=params)
-    left = int(response.headers.get("x-ratelimit-available-anon_sustained", "1"))
-    response.raise_for_status()
-    found = (openverse_candidate(r) for r in response.json().get("results", []))
-    return [c.model_dump() for c in found if c], left
+def _get(client: httpx.Client, path: str, params: dict[str, str] | None = None) -> Any:
+    while True:
+        response = client.get(path, params=params)
+        if response.status_code in (403, 429) and "Rate Limit" in response.text:
+            print("  hourly limit reached: waiting 10 minutes", flush=True)
+            time.sleep(600)
+            continue
+        response.raise_for_status()
+        time.sleep(PACE)
+        return response.json()
 
 
 def search(recipes: Sequence[SeedRecipe]) -> None:
-    found = _load(CANDIDATES)
-    openverse_open = True
-    with httpx.Client(headers=AGENT, timeout=30, follow_redirects=True) as client:
+    found = _load(OPTIONS)
+    with _client() as client:
         for n, recipe in enumerate(recipes, 1):
-            row = found.setdefault(recipe.slug, {})
-            if "wikimedia" not in row:
-                row["wikimedia"] = []
-                for query in queries(recipe.title):
-                    urls = {c["source_url"] for c in row["wikimedia"]}
-                    more = search_commons(client, query)
-                    row["wikimedia"] += [c for c in more if c["source_url"] not in urls]
-                    time.sleep(1.5)
-                    if len(row["wikimedia"]) >= MOST:
-                        break
-            if "openverse" not in row and openverse_open:
-                try:  # one search each (200 a day): the shortened title finds most
-                    query = queries(recipe.title)[min(2, len(queries(recipe.title)) - 1)]
-                    row["openverse"], left = search_openverse(client, query)
-                    openverse_open = left > 1
-                except httpx.HTTPStatusError as error:
-                    print(f"  Openverse stopped: {error.response.status_code}")
-                    openverse_open = False
-                time.sleep(3.2)  # 20 a minute
-            _save(CANDIDATES, found)
-            print(
-                f"{n:3} {recipe.slug:40} {len(row['wikimedia']):2} commons "
-                f"{len(row.get('openverse') or []):2} openverse"
-            )
-    waiting = sum("openverse" not in row for row in found.values())
-    print(f"{len(found)} searched; {waiting} still to search on Openverse (re-run tomorrow)")
-
-
-def candidates_for(slug: str, found: dict[str, Any]) -> list[Candidate]:
-    row = found.get(slug, {})
-    seen: set[str] = set()
-    out: list[Candidate] = []
-    for raw in [*row.get("wikimedia", []), *(row.get("openverse") or [])]:
-        c = Candidate.model_validate(raw)
-        if c.source_url not in seen:
-            seen.add(c.source_url)
-            out.append(c)
-    return out[:MOST]
-
-
-# --- check ----------------------------------------------------------------------------
-
-
-def cache_path(candidate: Candidate) -> Path:
-    name = re.sub(r"[^A-Za-z0-9]+", "-", candidate.source_url.split("//", 1)[-1])[-120:]
-    return CACHE / f"{name}.img"
-
-
-async def download(client: httpx.AsyncClient, candidate: Candidate) -> bytes | None:
-    path = cache_path(candidate)
-    if path.exists():
-        return path.read_bytes()
-    try:
-        response = await client.get(candidate.download_url)
-        response.raise_for_status()
-    except httpx.HTTPError:
-        return None
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_bytes(response.content)
-    return response.content
-
-
-def for_checking(data: bytes) -> Photo | None:
-    """A 1024px JPEG copy of the 4:3 crop: what will be shown, at fewer tokens."""
-    try:
-        image = Image.open(io.BytesIO(data)).convert("RGB")
-    except OSError:
-        return None
-    image = image.crop(crop_box(*image.size))
-    image.thumbnail((1024, 768))
-    out = io.BytesIO()
-    image.save(out, "JPEG", quality=85)
-    kind = photo_type(out.getvalue())
-    return Photo(kind, out.getvalue()) if kind else None
-
-
-def chosen(checks: dict[str, Any], rejected: set[str]) -> dict[str, dict[str, Any]]:
-    """Each recipe's first passing candidate that no earlier recipe took."""
-    taken: set[str] = set()
-    out: dict[str, dict[str, Any]] = {}
-    for slug in sorted(checks):
-        for entry in checks[slug]:
-            url = entry["candidate"]["source_url"]
-            if entry["passes"] and url not in taken and url not in rejected:
-                taken.add(url)
-                out[slug] = entry
-                break
-    return out
-
-
-async def check(recipes: Sequence[SeedRecipe], max_spend: Decimal, workers: int) -> None:
-    if settings.anthropic_api_key is None:
-        sys.exit("ANTHROPIC_API_KEY is not set")
-    found, checks = _load(CANDIDATES), _load(CHECKS)
-    rejected = set(json.loads(REJECTED.read_text())) if REJECTED.exists() else set()
-    checker = ClaudeImageChecker(settings.anthropic_api_key.get_secret_value(), "claude-haiku-5-5")
-    spent = Decimal(0)
-    lock = asyncio.Lock()
-    queue = list(recipes)
-
-    async def one(client: httpx.AsyncClient, recipe: SeedRecipe) -> None:
-        nonlocal spent
-        done = checks.setdefault(recipe.slug, [])
-        for candidate in candidates_for(recipe.slug, found):
-            async with lock:
-                taken = {e["candidate"]["source_url"] for e in chosen(checks, rejected).values()}
-            entry = next((e for e in done if e["candidate"] == candidate.model_dump()), None)
-            if entry and entry["passes"] and candidate.source_url not in taken | rejected:
-                return
-            if entry or candidate.source_url in taken | rejected:
+            if recipe.slug in found:
                 continue
-            if spent >= max_spend:
-                return
-            if why := title_clash(recipe, candidate.title):
-                done.append(
-                    {
-                        "candidate": candidate.model_dump(),
-                        "passes": False,
-                        "check": None,
-                        "error": why,
-                    }
-                )
-                continue
-            data = await download(client, candidate)
-            photo = for_checking(data) if data else None
-            if photo is None:
-                done.append(
-                    {
-                        "candidate": candidate.model_dump(),
-                        "passes": False,
-                        "check": None,
-                        "error": "couldn't download or open",
-                    }
-                )
-                continue
-            result, usage = await checker.check(recipe, photo)
-            async with lock:
-                spent += cost_usd(usage) or Decimal(0)
-                done.append(
-                    {
-                        "candidate": candidate.model_dump(),
-                        "passes": bool(result and passes(result)),
-                        "check": result.model_dump() if result else None,
-                    }
-                )
-                _save(CHECKS, checks)
-            if result and passes(result):
-                return
-
-    async def worker(client: httpx.AsyncClient) -> None:
-        while queue:
-            recipe = queue.pop(0)
-            await one(client, recipe)
-
-    async with httpx.AsyncClient(headers=AGENT, timeout=60, follow_redirects=True) as client:
-        await asyncio.gather(*(worker(client) for _ in range(workers)))
-    _save(CHECKS, checks)
-    picked = chosen(checks, rejected)
-    print(f"spent ${spent:.4f}; {len(picked)}/{len(recipes)} recipes have a passing photo")
+            row: dict[str, Any] = {"queries": [], "options": []}
+            for query in queries(recipe.title):
+                params = {
+                    "query": query,
+                    "per_page": "10",
+                    "orientation": "landscape",
+                    "content_filter": "high",
+                }
+                results = _get(client, "/search/photos", params)["results"]
+                row["queries"].append(query)
+                ids = {o["photo_id"] for o in row["options"]}
+                for result in results:
+                    if (o := option(result, recipe)) and o.photo_id not in ids:
+                        row["options"].append(o.model_dump())
+                        ids.add(o.photo_id)
+                if len(row["options"]) >= MOST:
+                    break
+            row["options"] = row["options"][:MOST]
+            found[recipe.slug] = row
+            _save(OPTIONS, found)
+            print(f"{n:3} {recipe.slug:40} {len(row['options'])} options", flush=True)
+    print(f"{len(found)} recipes searched")
 
 
-# --- write ----------------------------------------------------------------------------
+# --- review ---------------------------------------------------------------------------
+
+PAGE = """<!doctype html><meta charset="utf-8"><title>Pick recipe photos</title>
+<style>
+body{font:15px system-ui,sans-serif;margin:0;background:#f6f8f1;color:#17233d}
+header{position:sticky;top:0;background:#17233d;color:#fff;padding:12px 20px;z-index:2}
+main{padding:16px 20px;display:grid;gap:18px}
+section{background:#fff;border:1px solid #dfe4d6;border-radius:10px;padding:12px}
+h2{font-size:16px;margin:0 0 2px} p{margin:0 0 10px;color:#5b6577;font-size:13px}
+.row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+button{border:3px solid transparent;border-radius:8px;padding:0;background:#eef1e8;
+cursor:pointer;font:inherit;color:inherit;min-height:60px}
+button img{width:100%;aspect-ratio:4/3;display:block;border-radius:5px}
+button[aria-pressed=true]{border-color:#7aa80f;box-shadow:0 0 0 2px #c6f05a}
+button.none{font-weight:600}
+section.done{opacity:.75} section.done:hover{opacity:1}
+small{display:block;color:#5b6577;font-size:11px;padding:3px}
+</style>
+<header><b>Pick one photo per recipe, or "No photo".</b> Choices save as you click.
+<span id=count></span>
+<label><input type=checkbox id=todo> Only show recipes not yet picked</label>
+</header><main id=main>__SECTIONS__</main>
+<script>
+const total = document.querySelectorAll('section').length;
+function count(){document.getElementById('count').textContent =
+  ` ${document.querySelectorAll('section.done').length} of ${total} picked.`}
+function filter(){const on = document.getElementById('todo').checked;
+  document.querySelectorAll('section').forEach(s =>
+    s.hidden = on && s.classList.contains('done'))}
+document.querySelectorAll('section').forEach(sec =>
+  sec.querySelectorAll('button').forEach(b => b.onclick = async () => {
+    const r = await fetch('/choice', {method: 'POST', body: JSON.stringify(
+      {slug: sec.dataset.slug, photo_id: b.dataset.id || null})});
+    if (!r.ok) { b.textContent = 'Not saved: is the review server running?'; return; }
+    sec.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b));
+    sec.classList.add('done'); count(); filter();
+  }));
+document.getElementById('todo').onchange = filter; count();
+</script>"""
 
 
-def webp(image: Image.Image, width: int, most: int) -> bytes:
-    sized = image.resize((width, width * 3 // 4), Image.Resampling.LANCZOS)
-    for quality in range(80, 29, -5):
-        out = io.BytesIO()
-        sized.save(out, "WEBP", quality=quality, method=6)
-        if out.tell() <= most:
-            return out.getvalue()
-    raise ValueError(f"can't fit {width}px under {most} bytes")
-
-
-def write(recipes: Sequence[SeedRecipe]) -> None:
-    checks = _load(CHECKS)
-    rejected = set(json.loads(REJECTED.read_text())) if REJECTED.exists() else set()
-    slugs = {r.slug for r in recipes}
-    records: list[RecipeImage] = []
-    FILES.mkdir(parents=True, exist_ok=True)
-    for old in FILES.glob("*.webp"):
-        old.unlink()
-    for slug, entry in sorted(chosen(checks, rejected).items()):
-        if slug not in slugs:
-            continue
-        candidate, result = Candidate.model_validate(entry["candidate"]), entry["check"]
-        image = Image.open(cache_path(candidate)).convert("RGB")
-        image = image.crop(crop_box(*image.size))
-        for size, (width, most) in SIZES.items():
-            (FILES / file_name(slug, size)).write_bytes(webp(image, width, most))
-        records.append(
-            RecipeImage(
-                slug=slug,
-                author=candidate.author,
-                licence=candidate.licence,
-                licence_url=candidate.licence_url,
-                source_url=candidate.source_url,
-                seen=result["seen"],
-                dish=result["dish"],
-            )
+def review_page(recipes: Sequence[SeedRecipe]) -> str:
+    found, chosen = _load(OPTIONS), _load(CHOICES)
+    sections = []
+    for recipe in sorted(recipes, key=lambda r: r.title.lower()):
+        rows = found.get(recipe.slug, {}).get("options", [])
+        pick = chosen.get(recipe.slug, "unset")
+        buttons = [
+            f'<button data-id="{o.photo_id}" aria-pressed="{str(pick == o.photo_id).lower()}">'
+            f'<img loading=lazy alt="" src="{html.escape(sized(o.raw_url, 360))}">'
+            f"<small>{html.escape(o.description[:90])}</small></button>"
+            for o in (Option.model_validate(row) for row in rows)
+        ]
+        buttons.append(
+            f'<button class=none aria-pressed="{str(pick is None).lower()}">No photo</button>'
         )
+        done = " class=done" if pick != "unset" else ""
+        sections.append(
+            f'<section data-slug="{recipe.slug}"{done}><h2>{html.escape(recipe.title)}</h2>'
+            f"<p>{recipe.course.value} · {html.escape(recipe.summary)}</p>"
+            f"<div class=row>{''.join(buttons)}</div></section>"
+        )
+    return PAGE.replace("__SECTIONS__", "\n".join(sections))
+
+
+def review(recipes: Sequence[SeedRecipe]) -> None:
+    found = _load(OPTIONS)
+    allowed = {
+        r.slug: {o["photo_id"] for o in found[r.slug]["options"]}
+        for r in recipes
+        if r.slug in found
+    }
+
+    class Handler(BaseHTTPRequestHandler):
+        def do_GET(self) -> None:
+            body = review_page(recipes).encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(body)
+
+        def do_POST(self) -> None:
+            data = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
+            slug, photo = data.get("slug"), data.get("photo_id")
+            if slug not in allowed or (photo is not None and photo not in allowed[slug]):
+                self.send_response(400)
+                self.end_headers()
+                return
+            chosen = _load(CHOICES)
+            chosen[slug] = photo
+            _save(CHOICES, chosen)
+            self.send_response(204)
+            self.end_headers()
+
+        def log_message(self, *args: Any) -> None:
+            pass
+
+    print("Review at http://127.0.0.1:8765 (Ctrl-C to stop)")
+    HTTPServer(("127.0.0.1", 8765), Handler).serve_forever()
+
+
+# --- apply ----------------------------------------------------------------------------
+
+
+def apply(recipes: Sequence[SeedRecipe]) -> None:
+    found, chosen = _load(OPTIONS), _load(CHOICES)
+    notified = set(_load(NOTIFIED) or [])
+    records: list[RecipeImage] = []
+    with _client() as client:
+        for recipe in recipes:
+            photo = chosen.get(recipe.slug)
+            rows = found.get(recipe.slug, {}).get("options", [])
+            options = {row["photo_id"]: Option.model_validate(row) for row in rows}
+            if photo is None or photo not in options:
+                continue
+            o = options[photo]
+            if photo not in notified:  # Unsplash's "download" event, once per photo
+                _get(client, o.download_location.removeprefix(API))
+                notified.add(photo)
+                _save(NOTIFIED, sorted(notified))
+            records.append(
+                RecipeImage(
+                    slug=recipe.slug,
+                    source="unsplash",
+                    photo_id=photo,
+                    raw_url=o.raw_url,
+                    author=o.author,
+                    author_url=o.author_url,
+                    photo_url=o.photo_url,
+                )
+            )
     RECORDS.write_text(
         json.dumps([r.model_dump() for r in records], indent=1, ensure_ascii=False) + "\n"
     )
-    print(f"{len(records)} images written to {FILES}")
+    print(f"{len(records)} Recipe Images written to {RECORDS}")
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("step", choices=["search", "check", "write"])
+    parser.add_argument("step", choices=["search", "review", "apply"])
     parser.add_argument("--only", nargs="*", help="these slugs only")
-    parser.add_argument("--max-spend", type=Decimal, default=Decimal("6"))
-    parser.add_argument("--workers", type=int, default=4)
     args = parser.parse_args()
     recipes = [r for r in load_seed_recipes() if not args.only or r.slug in args.only]
-    if args.step == "search":
-        search(recipes)
-    elif args.step == "check":
-        asyncio.run(check(recipes, args.max_spend, args.workers))
-    else:
-        write(recipes)
+    {"search": search, "review": review, "apply": apply}[args.step](recipes)
     return 0
 
 

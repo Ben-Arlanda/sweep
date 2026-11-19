@@ -19,7 +19,7 @@ from pydantic import (
 
 from app.data.diet import Diet
 from app.data.places import Place
-from app.data.recipe_images import URL_PATH, file_name
+from app.data.recipe_images import SOURCES, WIDTHS, sized, with_utm
 from app.models import (
     AddedBy,
     ChangeSource,
@@ -330,13 +330,14 @@ Amount = Annotated[Decimal, PlainSerializer(lambda d: f"{d.normalize():f}", retu
 
 
 class RecipeImageOut(BaseModel):
-    """An approved, openly licensed photo (ADR 0027) and the credit it needs."""
+    """A picked stock photo (ADR 0029), hotlinked, and the credit it must show:
+    "Photo by {author} on {source}", each name linking to its page."""
 
-    thumb_url: str  # 360px, rows and cards
-    hero_url: str  # 960px, the recipe page
+    thumb_url: str  # 360px 4:3, rows and cards
+    hero_url: str  # 960px 4:3, the recipe page
     author: str
-    licence: str
-    licence_url: str | None
+    author_url: str
+    source: str  # "Unsplash"
     source_url: str
 
 
@@ -359,11 +360,15 @@ class RecipeSummaryOut(BaseModel):
     @field_validator("image", mode="before")
     @classmethod
     def _image_urls(cls, value: object) -> object:
-        if isinstance(value, dict) and "file" in value:
-            stored = {k: v for k, v in value.items() if k != "file"}
-            return stored | {
-                "thumb_url": f"{URL_PATH}/{file_name(value['file'], 'thumb')}",
-                "hero_url": f"{URL_PATH}/{file_name(value['file'], 'hero')}",
+        if isinstance(value, dict) and "raw_url" in value:
+            name, home = SOURCES[value["source"]]
+            return {
+                "thumb_url": sized(value["raw_url"], WIDTHS["thumb"]),
+                "hero_url": sized(value["raw_url"], WIDTHS["hero"]),
+                "author": value["author"],
+                "author_url": with_utm(value["author_url"]),
+                "source": name,
+                "source_url": with_utm(home),
             }
         return value
 
