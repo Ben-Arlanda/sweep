@@ -166,11 +166,6 @@ export function PlanSheet({
         </View>
 
         <WeekStrip monday={monday} today={today} meals={meals} picked={picked} onToggle={toggle} />
-        <Text variant="caption" muted accessibilityLiveRegion="polite">
-          {picked.length === 0
-            ? 'Pick at least one day.'
-            : `${picked.length} ${picked.length === 1 ? 'day' : 'days'} · ✓ already planned (tick one to replace it)`}
-        </Text>
 
         <Group label="Build my plan using">
           <Option
