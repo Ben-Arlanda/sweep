@@ -81,6 +81,8 @@ function RecipesScreenContent() {
                 flex: 1,
                 minHeight: BIG,
                 borderRadius: t.radius.lg,
+                borderWidth: 1,
+                borderColor: t.colors.border, // the same hairline as the Favourites square
                 backgroundColor: t.colors.action,
                 flexDirection: 'row',
                 alignItems: 'center',
