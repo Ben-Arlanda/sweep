@@ -7,8 +7,7 @@ import { haptic } from '@/lib/haptics';
 import { useTheme } from '@/theme/useTheme';
 
 /**
- * Text tabs sharing the width equally over a hairline track; a bar as wide as the chosen
- * tab slides to the next. For a
+ * Text tabs over a hairline track; a bar under the chosen one slides to the next. For a
  * page's sections (a recipe's Overview, Ingredients, Method). Screen readers hear a tab
  * list, like Segmented.
  */
@@ -37,7 +36,7 @@ export function UnderlineTabs<T extends string>({
 
   return (
     <View accessibilityRole="tablist" accessibilityLabel={label}>
-      <View style={{ flexDirection: 'row' }}>
+      <View style={{ flexDirection: 'row', gap: t.space.xl }}>
         {options.map((o) => {
           const on = o.value === value;
           return (
@@ -55,12 +54,7 @@ export function UnderlineTabs<T extends string>({
                 const next = e.nativeEvent.layout;
                 setBoxes((now) => ({ ...now, [o.value]: next }));
               }}
-              style={{
-                flex: 1,
-                minHeight: t.touchTarget,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
+              style={{ minHeight: t.touchTarget, justifyContent: 'center' }}
             >
               <Text
                 style={{
