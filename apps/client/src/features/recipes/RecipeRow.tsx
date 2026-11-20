@@ -67,7 +67,7 @@ export function RecipeRow({
             paddingLeft: t.space.sm,
           }}
         >
-          <RecipeArt title={recipe.title} width={44} />
+          <RecipeArt title={recipe.title} image={recipe.image} width={44} />
           <View style={{ flex: 1, gap: 2 }}>
             <Text variant="label">{recipe.title}</Text>
             <Text variant="caption" muted>

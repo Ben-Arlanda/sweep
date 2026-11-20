@@ -12,7 +12,7 @@ from app.data.recipes import load_seed_recipes
 from app.db import make_engine, make_sessionmaker
 from app.services import adaptations
 from tests.conftest import FakeIssuer, Loader
-from tests.helpers import create_household
+from tests.helpers import create_household, idem
 from tests.test_recipes import PASTA, STIR_FRY
 
 pytestmark = pytest.mark.anyio
@@ -101,3 +101,22 @@ def test_a_credit_must_point_at_unsplash() -> None:
     ):
         with pytest.raises(ValidationError):
             RecipeImage.model_validate(fields | bad)
+
+
+async def test_a_planned_meal_carries_its_recipes_photo(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, load: Loader, db: Engine
+) -> None:
+    await load([PASTA, STIR_FRY], images=[PASTA_PHOTO])
+    await create_household(client, fake_issuer, "ana")
+    today = (await get(client, fake_issuer, "/meal-plan")).json()["today"]
+    with db.connect() as conn:
+        pasta = conn.execute(text("SELECT id FROM recipes WHERE slug = 'tomato-pasta'")).scalar()
+    response = await client.put(
+        f"/meal-plan/days/{today}",
+        json={"recipe_id": str(pasta)},
+        headers=fake_issuer.headers("ana") | idem(),
+    )
+    assert response.status_code == 200, response.text
+    assert response.json()["image"]["thumb_url"] == sized(RAW, 360)
+    week = (await get(client, fake_issuer, "/meal-plan")).json()
+    assert week["meals"][0]["image"]["author"] == "Ana Cook"

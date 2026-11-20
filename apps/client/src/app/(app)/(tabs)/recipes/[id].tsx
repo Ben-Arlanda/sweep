@@ -45,6 +45,7 @@ import { useTheme, type Theme } from '@/theme/useTheme';
 
 type Line = components['schemas']['RecipeIngredientOut'];
 type Recipe = components['schemas']['RecipeOut'];
+type RecipeImage = components['schemas']['RecipeImageOut'];
 
 /**
  * One recipe, checked against the Kitchen: each ingredient says whether you have it.
@@ -144,6 +145,7 @@ function RecipeContent() {
       hero={
         <RecipePhoto
           title={r.title}
+          image={r.image}
           heart={
             r.kind === 'adaptation' ? null : (
               <HeartButton recipeId={r.id} title={r.title} favourite={r.favourite ?? false} />
@@ -853,7 +855,15 @@ function StatusMark({ have, name, onAdd }: { have: Have; name: string; onAdd?: (
  * The full-width picture at the top, under the status bar, with round Back and heart
  * buttons floating on it (the stack's header bar is hidden on this screen).
  */
-function RecipePhoto({ title, heart }: { title: string; heart: React.ReactNode }) {
+function RecipePhoto({
+  title,
+  image,
+  heart,
+}: {
+  title: string;
+  image?: RecipeImage | null;
+  heart: React.ReactNode;
+}) {
   const t = useTheme();
   const insets = useSafeAreaInsets();
   const float = {
@@ -863,7 +873,16 @@ function RecipePhoto({ title, heart }: { title: string; heart: React.ReactNode }
   return (
     <View>
       <Stack.Screen options={{ headerShown: false }} />
-      <RecipeArt title={title} width="100%" height={260 + insets.top} radius={0} emojiSize={96} />
+      <RecipeArt
+        title={title}
+        image={image}
+        hero
+        width="100%"
+        height={260 + insets.top}
+        radius={0}
+        emojiSize={96}
+      />
+      {image ? <PhotoCredit image={image} /> : null}
       <PressableScale
         accessibilityRole="button"
         accessibilityLabel="Back"
@@ -884,6 +903,38 @@ function RecipePhoto({ title, heart }: { title: string; heart: React.ReactNode }
       {heart ? (
         <View style={{ ...float, right: Math.max(insets.right, t.space.lg) }}>{heart}</View>
       ) : null}
+    </View>
+  );
+}
+
+/** "Photo by Ana on Unsplash", both names linked, as Unsplash's terms ask (ADR 0029). */
+function PhotoCredit({ image }: { image: RecipeImage }) {
+  const t = useTheme();
+  const link = (label: string, url: string) => (
+    <Text
+      accessibilityRole="link"
+      onPress={() => Linking.openURL(url)}
+      style={{ color: '#fff', fontSize: 12, textDecorationLine: 'underline' }}
+    >
+      {label}
+    </Text>
+  );
+  return (
+    <View
+      style={{
+        position: 'absolute',
+        right: t.space.sm,
+        bottom: t.space.sm,
+        maxWidth: '80%',
+        paddingHorizontal: t.space.sm,
+        paddingVertical: 4,
+        borderRadius: t.radius.sm,
+        backgroundColor: 'rgba(0, 0, 0, 0.62)',
+      }}
+    >
+      <Text style={{ color: '#fff', fontSize: 12 }} numberOfLines={1}>
+        Photo by {link(image.author, image.author_url)} on {link(image.source, image.source_url)}
+      </Text>
     </View>
   );
 }

@@ -3448,6 +3448,16 @@
             "title": "Favourite",
             "default": false
           },
+          "image": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RecipeImageOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "parent_recipe_id": {
             "type": "string",
             "format": "uuid",
@@ -4197,6 +4207,16 @@
             "type": "boolean",
             "title": "Favourite",
             "default": false
+          },
+          "image": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RecipeImageOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "have": {
             "items": {
@@ -4979,6 +4999,16 @@
             "type": "boolean",
             "title": "Favourite",
             "default": false
+          },
+          "image": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RecipeImageOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "rule_breaks": {
             "items": {
@@ -5867,6 +5897,16 @@
             ],
             "title": "Cooked By"
           },
+          "image": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RecipeImageOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "kitchen_uses": {
             "items": {
               "type": "string"
@@ -6218,6 +6258,45 @@
         ],
         "title": "ProposalSwapOut"
       },
+      "RecipeImageOut": {
+        "properties": {
+          "thumb_url": {
+            "type": "string",
+            "title": "Thumb Url"
+          },
+          "hero_url": {
+            "type": "string",
+            "title": "Hero Url"
+          },
+          "author": {
+            "type": "string",
+            "title": "Author"
+          },
+          "author_url": {
+            "type": "string",
+            "title": "Author Url"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "source_url": {
+            "type": "string",
+            "title": "Source Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "thumb_url",
+          "hero_url",
+          "author",
+          "author_url",
+          "source",
+          "source_url"
+        ],
+        "title": "RecipeImageOut",
+        "description": "A picked stock photo (ADR 0029), hotlinked, and the credit it must show:\n\"Photo by {author} on {source}\", each name linking to its page."
+      },
       "RecipeIngredientOut": {
         "properties": {
           "raw_text": {
@@ -6386,6 +6465,16 @@
             "type": "boolean",
             "title": "Favourite",
             "default": false
+          },
+          "image": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RecipeImageOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "parent_recipe_id": {
             "anyOf": [
@@ -6625,6 +6714,16 @@
             "type": "boolean",
             "title": "Favourite",
             "default": false
+          },
+          "image": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RecipeImageOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "type": "object",

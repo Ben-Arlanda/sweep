@@ -3,11 +3,12 @@
 import uuid
 from datetime import date, datetime
 from decimal import Decimal
-from typing import Annotated, Literal, Self
+from typing import Annotated, Any, Literal, Self
 
 from pydantic import (
     AfterValidator,
     BaseModel,
+    BeforeValidator,
     ConfigDict,
     Field,
     PlainSerializer,
@@ -341,6 +342,29 @@ class RecipeImageOut(BaseModel):
     source_url: str
 
 
+def _image_urls(value: object) -> object:
+    """A stored `recipes.image` as the sized photo links and credit the app shows."""
+    if isinstance(value, dict) and "raw_url" in value:
+        name, home = SOURCES[value["source"]]
+        return {
+            "thumb_url": sized(value["raw_url"], WIDTHS["thumb"]),
+            "hero_url": sized(value["raw_url"], WIDTHS["hero"]),
+            "author": value["author"],
+            "author_url": with_utm(value["author_url"]),
+            "source": name,
+            "source_url": with_utm(home),
+        }
+    return value
+
+
+def image_out(stored: dict[str, Any] | None) -> RecipeImageOut | None:
+    return RecipeImageOut.model_validate(_image_urls(stored)) if stored else None
+
+
+# None: the app draws RecipeArt.
+RecipeImageField = Annotated[RecipeImageOut | None, BeforeValidator(_image_urls)]
+
+
 class RecipeSummaryOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
@@ -355,22 +379,7 @@ class RecipeSummaryOut(BaseModel):
     # How close to the search (1 = identical meaning). Only set for a search.
     score: float | None = None
     favourite: bool = False  # hearted by this Household (ADR 0025)
-    image: RecipeImageOut | None = None  # none: the app draws RecipeArt
-
-    @field_validator("image", mode="before")
-    @classmethod
-    def _image_urls(cls, value: object) -> object:
-        if isinstance(value, dict) and "raw_url" in value:
-            name, home = SOURCES[value["source"]]
-            return {
-                "thumb_url": sized(value["raw_url"], WIDTHS["thumb"]),
-                "hero_url": sized(value["raw_url"], WIDTHS["hero"]),
-                "author": value["author"],
-                "author_url": with_utm(value["author_url"]),
-                "source": name,
-                "source_url": with_utm(home),
-            }
-        return value
+    image: RecipeImageField = None
 
 
 class ImportedRecipeOut(RecipeSummaryOut):
@@ -501,6 +510,7 @@ class PlannedMealOut(BaseModel):
     total_minutes: int | None  # the recipe's, for "25 min" on the Plan tab
     cooked_at: datetime | None
     cooked_by: uuid.UUID | None
+    image: RecipeImageField = None
     # Before Cooked: Tracked items in the Kitchen it uses. After: what Cooked took out.
     kitchen_uses: list[str]
 
