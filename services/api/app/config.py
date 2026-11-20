@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from pydantic import BaseModel, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -31,6 +33,10 @@ class Settings(BaseSettings):
     voyage_api_key: SecretStr | None = None
     # Recipe Images (ADR 0029): only the build script searches Unsplash; the app never does.
     unsplash_access_key: SecretStr | None = None
+    # Members' photos on their own recipes (ADR 0031): a folder in development, S3 later.
+    photo_dir: Path = Path("data/photos")
+    # Signs the short-lived photo links. Without one, each start makes a random key.
+    photo_signing_key: SecretStr | None = None
     # Small, fast model for reading ingredient lines the rules couldn't (plan §8).
     parsing_model: str = "claude-haiku-5-5"
     # Reads pasted recipes into fields (slice 4d). The import eval decides if it's enough.

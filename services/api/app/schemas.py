@@ -33,6 +33,7 @@ from app.models import (
     RecipeKind,
     Role,
 )
+from app.services import recipe_photos
 from app.services.ingredients import normalise
 from app.text import ONE_LINE
 from app.web_fetch import check_url
@@ -331,19 +332,23 @@ Amount = Annotated[Decimal, PlainSerializer(lambda d: f"{d.normalize():f}", retu
 
 
 class RecipeImageOut(BaseModel):
-    """A picked stock photo (ADR 0029), hotlinked, and the credit it must show:
-    "Photo by {author} on {source}", each name linking to its page."""
+    """A recipe's photo. A stock photo (ADR 0029) is hotlinked and must show its credit:
+    "Photo by {author} on {source}", each name linking to its page. A Member's own photo
+    (ADR 0031) has no credit, and its links are signed, short-lived and relative to the API.
+    """
 
     thumb_url: str  # 360px 4:3, rows and cards
     hero_url: str  # 960px 4:3, the recipe page
-    author: str
-    author_url: str
-    source: str  # "Unsplash"
-    source_url: str
+    author: str | None = None
+    author_url: str | None = None
+    source: str | None = None  # "Unsplash"
+    source_url: str | None = None
 
 
 def _image_urls(value: object) -> object:
     """A stored `recipes.image` as the sized photo links and credit the app shows."""
+    if isinstance(value, dict) and value.get("source") == "member":
+        return recipe_photos.links(value)
     if isinstance(value, dict) and "raw_url" in value:
         name, home = SOURCES[value["source"]]
         return {

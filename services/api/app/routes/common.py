@@ -19,9 +19,12 @@ async def idempotent(
     key: str,
     work: Callable[[], Awaitable[BaseModel | None]],
     status_code: int = status.HTTP_200_OK,
+    body: bytes | None = None,
 ) -> Response:
-    """Do `work` once per key: claim the key, run, store the response, commit together."""
-    print_ = idempotency.fingerprint(request, await request.body())
+    """Do `work` once per key: claim the key, run, store the response, commit together.
+    An upload passes its file as `body`: FastAPI has already read the raw request."""
+    raw = body if body is not None else await request.body()
+    print_ = idempotency.fingerprint(request, raw)
     replay = await idempotency.claim(session, ctx.member.id, key, print_)
     if replay is not None:
         return _response(replay.status_code, replay.response)

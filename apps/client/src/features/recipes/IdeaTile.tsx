@@ -60,7 +60,7 @@ export function IdeaTile({
             width="100%"
             height={104}
             radius={0}
-            emojiSize={48}
+            iconSize={36}
           />
           <View
             style={{

@@ -52,5 +52,12 @@ function EditRecipe({ id }: { id: string }) {
       </Screen>
     );
   }
-  return <ReviewScreen start={formFromRecipe(recipe.data)} recipeId={id} draftId={undefined} />;
+  return (
+    <ReviewScreen
+      start={formFromRecipe(recipe.data)}
+      recipeId={id}
+      draftId={undefined}
+      image={recipe.data.image}
+    />
+  );
 }

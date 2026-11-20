@@ -597,6 +597,27 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/recipes/imported/{recipe_id}/photo": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Put Photo
+         * @description Add or replace the recipe's own photo (ADR 0031): cleaned, stored privately.
+         */
+        put: operations["put_photo_recipes_imported__recipe_id__photo_put"];
+        post?: never;
+        /** Delete Photo */
+        delete: operations["delete_photo_recipes_imported__recipe_id__photo_delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/recipes/{recipe_id}/adaptations": {
         parameters: {
             query?: never;
@@ -661,6 +682,23 @@ export interface paths {
         };
         /** Get Recipe */
         get: operations["get_recipe_recipes__recipe_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/recipe-photos/{household_id}/{recipe_id}/{photo_id}/{size}.webp": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Photo */
+        get: operations["photo_recipe_photos__household_id___recipe_id___photo_id___size__webp_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -992,6 +1030,14 @@ export interface components {
          * @enum {string}
          */
         AddedBy: "member" | "agent";
+        /** Body_put_photo_recipes_imported__recipe_id__photo_put */
+        Body_put_photo_recipes_imported__recipe_id__photo_put: {
+            /**
+             * Photo
+             * @description JPEG, PNG or WebP, up to 5 MB
+             */
+            photo: string;
+        };
         /** Body_read_file_recipes_imports_file_post */
         Body_read_file_recipes_imports_file_post: {
             /**
@@ -1906,8 +1952,9 @@ export interface components {
         };
         /**
          * RecipeImageOut
-         * @description A picked stock photo (ADR 0029), hotlinked, and the credit it must show:
-         *     "Photo by {author} on {source}", each name linking to its page.
+         * @description A recipe's photo. A stock photo (ADR 0029) is hotlinked and must show its credit:
+         *     "Photo by {author} on {source}", each name linking to its page. A Member's own photo
+         *     (ADR 0031) has no credit, and its links are signed, short-lived and relative to the API.
          */
         RecipeImageOut: {
             /** Thumb Url */
@@ -1915,13 +1962,13 @@ export interface components {
             /** Hero Url */
             hero_url: string;
             /** Author */
-            author: string;
+            author?: string | null;
             /** Author Url */
-            author_url: string;
+            author_url?: string | null;
             /** Source */
-            source: string;
+            source?: string | null;
             /** Source Url */
-            source_url: string;
+            source_url?: string | null;
         };
         /** RecipeIngredientOut */
         RecipeIngredientOut: {
@@ -3431,6 +3478,76 @@ export interface operations {
             };
         };
     };
+    put_photo_recipes_imported__recipe_id__photo_put: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                recipe_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_put_photo_recipes_imported__recipe_id__photo_put"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecipeOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_photo_recipes_imported__recipe_id__photo_delete: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                recipe_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecipeOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     list_adaptations_recipes__recipe_id__adaptations_get: {
         parameters: {
             query?: never;
@@ -3569,6 +3686,43 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["RecipeOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    photo_recipe_photos__household_id___recipe_id___photo_id___size__webp_get: {
+        parameters: {
+            query?: {
+                expires?: number;
+                sig?: string;
+            };
+            header?: never;
+            path: {
+                household_id: string;
+                recipe_id: string;
+                photo_id: string;
+                size: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
                 };
             };
             /** @description Validation Error */

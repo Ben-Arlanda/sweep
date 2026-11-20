@@ -19,6 +19,7 @@ import { dayParts } from '@/features/mealPlan/week';
 import { hostOf } from '@/features/imports/ReviewScreen';
 import { ruleBreakHint, ruleBreakText } from '@/features/imports/ruleBreaks';
 import { CookMode } from '@/features/recipes/CookMode';
+import { PhotoButton } from '@/features/recipes/OwnPhoto';
 import {
   addText,
   haveSummary,
@@ -33,7 +34,8 @@ import { PickDaySheet } from '@/features/mealPlan/PickDaySheet';
 import { RecipeRow } from '@/features/recipes/RecipeRow';
 import { useRecipePath } from '@/features/recipes/recipePath';
 import { conversationKeys, useDecideProposal } from '@/lib/api/conversations';
-import { useImportedRecipeActions, useImportedRecipes } from '@/lib/api/imports';
+import { photoTap, useImportedRecipeActions, useImportedRecipes } from '@/lib/api/imports';
+import type { PickedFile } from '@/lib/api/upload';
 import { useKitchen } from '@/lib/api/kitchen';
 import { useList, useListActions } from '@/lib/api/lists';
 import { useMealPlan } from '@/lib/api/mealPlan';
@@ -146,6 +148,7 @@ function RecipeContent() {
         <RecipePhoto
           title={r.title}
           image={r.image}
+          ownRecipeId={r.kind === 'imported' ? r.id : null}
           heart={
             r.kind === 'adaptation' ? null : (
               <HeartButton recipeId={r.id} title={r.title} favourite={r.favourite ?? false} />
@@ -858,14 +861,25 @@ function StatusMark({ have, name, onAdd }: { have: Have; name: string; onAdd?: (
 function RecipePhoto({
   title,
   image,
+  ownRecipeId,
   heart,
 }: {
   title: string;
   image?: RecipeImage | null;
+  /** A Member's own recipe: they can add, change or remove its photo (ADR 0031). */
+  ownRecipeId: string | null;
   heart: React.ReactNode;
 }) {
   const t = useTheme();
   const insets = useSafeAreaInsets();
+  const toast = useToast();
+  const { photo } = useImportedRecipeActions();
+  const change = (file: PickedFile | null) => {
+    if (!ownRecipeId) return;
+    photo.mutate(photoTap(ownRecipeId, file), {
+      onError: (error) => toast({ tag: 'Recipes', text: error.message }),
+    });
+  };
   const float = {
     position: 'absolute' as const,
     top: insets.top + t.space.sm,
@@ -880,9 +894,9 @@ function RecipePhoto({
         width="100%"
         height={260 + insets.top}
         radius={0}
-        emojiSize={96}
+        iconSize={64}
       />
-      {image ? <PhotoCredit image={image} /> : null}
+      {image?.author ? <PhotoCredit image={image} /> : null}
       <PressableScale
         accessibilityRole="button"
         accessibilityLabel="Back"
@@ -903,6 +917,16 @@ function RecipePhoto({
       {heart ? (
         <View style={{ ...float, right: Math.max(insets.right, t.space.lg) }}>{heart}</View>
       ) : null}
+      {/* After Back and the heart, so a screen reader meets them first. */}
+      {ownRecipeId ? (
+        <PhotoButton
+          hasPhoto={!!image}
+          busy={photo.isPending}
+          onPicked={change}
+          onRemove={() => change(null)}
+          style={{ position: 'absolute', left: t.space.lg, bottom: t.space.md }}
+        />
+      ) : null}
     </View>
   );
 }
@@ -910,6 +934,8 @@ function RecipePhoto({
 /** "Photo by Ana on Unsplash", both names linked, as Unsplash's terms ask (ADR 0029). */
 function PhotoCredit({ image }: { image: RecipeImage }) {
   const t = useTheme();
+  const { author, author_url: authorUrl, source, source_url: sourceUrl } = image;
+  if (!author || !authorUrl || !source || !sourceUrl) return null;
   const link = (label: string, url: string) => (
     <Text
       accessibilityRole="link"
@@ -933,7 +959,7 @@ function PhotoCredit({ image }: { image: RecipeImage }) {
       }}
     >
       <Text style={{ color: '#fff', fontSize: 12 }} numberOfLines={1}>
-        Photo by {link(image.author, image.author_url)} on {link(image.source, image.source_url)}
+        Photo by {link(author, authorUrl)} on {link(source, sourceUrl)}
       </Text>
     </View>
   );

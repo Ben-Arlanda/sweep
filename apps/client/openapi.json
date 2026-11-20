@@ -2156,6 +2156,133 @@
         }
       }
     },
+    "/recipes/imported/{recipe_id}/photo": {
+      "put": {
+        "tags": [
+          "recipes"
+        ],
+        "summary": "Put Photo",
+        "description": "Add or replace the recipe's own photo (ADR 0031): cleaned, stored privately.",
+        "operationId": "put_photo_recipes_imported__recipe_id__photo_put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "recipe_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Recipe Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_put_photo_recipes_imported__recipe_id__photo_put"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipeOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "recipes"
+        ],
+        "summary": "Delete Photo",
+        "operationId": "delete_photo_recipes_imported__recipe_id__photo_delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "recipe_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Recipe Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipeOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/recipes/{recipe_id}/adaptations": {
       "get": {
         "tags": [
@@ -2373,6 +2500,93 @@
                 "schema": {
                   "$ref": "#/components/schemas/RecipeOut"
                 }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipe-photos/{household_id}/{recipe_id}/{photo_id}/{size}.webp": {
+      "get": {
+        "tags": [
+          "recipes"
+        ],
+        "summary": "Photo",
+        "operationId": "photo_recipe_photos__household_id___recipe_id___photo_id___size__webp_get",
+        "parameters": [
+          {
+            "name": "household_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Household Id"
+            }
+          },
+          {
+            "name": "recipe_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Recipe Id"
+            }
+          },
+          {
+            "name": "photo_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Photo Id"
+            }
+          },
+          {
+            "name": "size",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Size"
+            }
+          },
+          {
+            "name": "expires",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "title": "Expires"
+            }
+          },
+          {
+            "name": "sig",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "Sig"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
               }
             }
           },
@@ -3573,6 +3787,21 @@
           "agent"
         ],
         "title": "AddedBy"
+      },
+      "Body_put_photo_recipes_imported__recipe_id__photo_put": {
+        "properties": {
+          "photo": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "Photo",
+            "description": "JPEG, PNG or WebP, up to 5 MB"
+          }
+        },
+        "type": "object",
+        "required": [
+          "photo"
+        ],
+        "title": "Body_put_photo_recipes_imported__recipe_id__photo_put"
       },
       "Body_read_file_recipes_imports_file_post": {
         "properties": {
@@ -6269,33 +6498,57 @@
             "title": "Hero Url"
           },
           "author": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Author"
           },
           "author_url": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Author Url"
           },
           "source": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Source"
           },
           "source_url": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Source Url"
           }
         },
         "type": "object",
         "required": [
           "thumb_url",
-          "hero_url",
-          "author",
-          "author_url",
-          "source",
-          "source_url"
+          "hero_url"
         ],
         "title": "RecipeImageOut",
-        "description": "A picked stock photo (ADR 0029), hotlinked, and the credit it must show:\n\"Photo by {author} on {source}\", each name linking to its page."
+        "description": "A recipe's photo. A stock photo (ADR 0029) is hotlinked and must show its credit:\n\"Photo by {author} on {source}\", each name linking to its page. A Member's own photo\n(ADR 0031) has no credit, and its links are signed, short-lived and relative to the API."
       },
       "RecipeIngredientOut": {
         "properties": {

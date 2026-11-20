@@ -281,9 +281,50 @@ async def delete_imported(
     key: IdempotencyKeyHeader,
 ) -> Response:
     async def work() -> None:
-        await imported_recipes.delete(session, ctx, recipe_id)
+        await imported_recipes.delete(session, ctx, recipe_id, request.app.state.photo_store)
 
     return await idempotent(request, session, ctx, key, work, status.HTTP_204_NO_CONTENT)
+
+
+@router.put("/imported/{recipe_id}/photo", response_model=RecipeOut)
+async def put_photo(
+    recipe_id: uuid.UUID,
+    request: Request,
+    ctx: MemberDep,
+    session: SessionDep,
+    key: IdempotencyKeyHeader,
+    photo: Annotated[UploadFile, File(description="JPEG, PNG or WebP, up to 5 MB")],
+) -> Response:
+    """Add or replace the recipe's own photo (ADR 0031): cleaned, stored privately."""
+    (checked,) = await checked_photos([photo], "")
+
+    async def work() -> RecipeOut:
+        store = request.app.state.photo_store
+        recipe = await imported_recipes.set_photo(session, ctx, recipe_id, store, checked.data)
+        return await _with_favourite(session, ctx, recipe)
+
+    return await idempotent(request, session, ctx, key, work, body=checked.data)
+
+
+@router.delete("/imported/{recipe_id}/photo", response_model=RecipeOut)
+async def delete_photo(
+    recipe_id: uuid.UUID,
+    request: Request,
+    ctx: MemberDep,
+    session: SessionDep,
+    key: IdempotencyKeyHeader,
+) -> Response:
+    async def work() -> RecipeOut:
+        store = request.app.state.photo_store
+        recipe = await imported_recipes.set_photo(session, ctx, recipe_id, store, None)
+        return await _with_favourite(session, ctx, recipe)
+
+    return await idempotent(request, session, ctx, key, work)
+
+
+async def _with_favourite(session: AsyncSession, ctx: MemberContext, recipe: Recipe) -> RecipeOut:
+    hearted = recipe.id in await favourites.ids(session, ctx.household.id)
+    return RecipeOut.model_validate(recipe).model_copy(update={"favourite": hearted})
 
 
 # Recipe Adaptations (ADR 0021). No POST: only an approved Proposal makes one.

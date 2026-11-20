@@ -24,6 +24,7 @@ from app.routes import (
     meal_plan,
     proposals,
     realtime,
+    recipe_photos,
     recipes,
     shopping_lists,
 )
@@ -31,6 +32,7 @@ from app.services import recipes as recipe_service
 from app.services.conversations import Agent
 from app.services.kitchen_photos import KitchenPhotoReader
 from app.services.recipe_import import PageFetcher, RecipeReader
+from app.services.recipe_photos import FolderStore
 from app.web_fetch import SafeFetcher
 
 # The one place domain errors become HTTP status codes.
@@ -149,6 +151,7 @@ def create_app(
         app_settings.auth_issuers
     )
     app.state.embedder = embedder or default_embedder(app_settings)
+    app.state.photo_store = FolderStore(app_settings.photo_dir)  # S3 in slice 11 (ADR 0031)
     app.state.recipe_reader = recipe_reader or default_recipe_reader(app_settings)
     app.state.kitchen_reader = kitchen_reader or default_kitchen_reader(app_settings)
     # One budget per Household per day, shared by the agent and the import doors.
@@ -184,6 +187,7 @@ def create_app(
     app.include_router(shopping_lists.shops_router)
     app.include_router(kitchen.router)
     app.include_router(recipes.router)
+    app.include_router(recipe_photos.router)
     app.include_router(dietary_rules.router)
     app.include_router(conversations.router)
     app.include_router(proposals.router)
