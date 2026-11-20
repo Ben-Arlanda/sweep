@@ -17,7 +17,6 @@ import {
   type TextInputInstance,
 } from 'react-native';
 
-import { AvatarStack } from '@/components/Avatar';
 import { toggled } from '@/components/CategoryAccordion';
 import { Checkbox } from '@/components/Checkbox';
 import { ChoiceChips } from '@/components/ChoiceChips';
@@ -29,12 +28,14 @@ import { measureAnchor, Popover, type Anchor } from '@/components/Popover';
 import { useToast } from '@/components/Toast';
 import { Button, ErrorText, Loading, Screen, TAB_ROOT, Text } from '@/components/ui';
 import { useMembers } from '@/features/household/useMembers';
+import { addedByText } from '@/features/lists/addedBy';
 import { listSections } from '@/features/lists/categories';
 import { shoppingOrder } from '@/features/lists/listCache';
 import { LinkSheet } from '@/features/lists/LinkSheet';
 import { ShopSheet } from '@/features/lists/ShopSheet';
 import { filterByShop, knownShop, shopName, type ShopFilter } from '@/features/lists/shops';
 import type { Item, ListDetail } from '@/lib/api/client';
+import { useMe } from '@/lib/api/households';
 import { useIsOnline, useList, useListActions, usePendingListChanges } from '@/lib/api/lists';
 import { haptic } from '@/lib/haptics';
 import { inputText } from '@/theme/inputText';
@@ -67,7 +68,8 @@ function ListScreenContent() {
 function ListContent({ list }: { list: ListDetail }) {
   const t = useTheme();
   const actions = useListActions(list.id);
-  const { members } = useMembers();
+  const { byId } = useMembers();
+  const me = useMe().data?.member.id;
   const [filter, setFilter] = useState<ShopFilter>(ALL);
   const toast = useToast();
   // Which item's ••• menu, Shop sheet or Kitchen link sheet is open, if any.
@@ -105,7 +107,6 @@ function ListContent({ list }: { list: ListDetail }) {
         icon={ShoppingBasket}
         section="list"
         title="Shopping list"
-        right={<AvatarStack members={members} size={28} />}
         subtitle={`${summary}${sync ? ` · ${sync}` : ''}`}
       />
 
@@ -158,6 +159,7 @@ function ListContent({ list }: { list: ListDetail }) {
         >
           <ItemMenu
             item={menu.item}
+            addedBy={addedByText(menu.item, me, byId)}
             shop={shopName(shops, menu.item.shop_id)}
             onShop={() => {
               setMenu(null);
@@ -435,12 +437,14 @@ function ItemRow({
 /** ••• on an item: its Shop, what it is in the Kitchen (ADR 0012), and Remove. */
 function ItemMenu({
   item,
+  addedBy,
   shop,
   onShop,
   onLink,
   onRemove,
 }: {
   item: Item;
+  addedBy: string;
   shop: string | null;
   onShop: () => void;
   onLink: () => void;
@@ -448,20 +452,32 @@ function ItemMenu({
 }) {
   const t = useTheme();
   return (
-    <View
-      accessibilityRole="menu"
-      style={{ marginHorizontal: -t.space.md, marginVertical: -t.space.xs }}
-    >
-      <MenuItem icon={Store} label="Shop" detail={shop ?? 'Any shop'} chevron onPress={onShop} />
-      <MenuItem
-        icon={Link2}
-        label="Link item"
-        detail={item.ingredient?.name ?? 'None'}
-        chevron
-        divider
-        onPress={onLink}
-      />
-      <MenuItem icon={Trash2} label="Remove from list" danger divider onPress={onRemove} />
+    <View style={{ marginHorizontal: -t.space.md, marginVertical: -t.space.xs }}>
+      <View accessibilityRole="menu">
+        <MenuItem icon={Store} label="Shop" detail={shop ?? 'Any shop'} chevron onPress={onShop} />
+        <MenuItem
+          icon={Link2}
+          label="Link item"
+          detail={item.ingredient?.name ?? 'None'}
+          chevron
+          divider
+          onPress={onLink}
+        />
+        <MenuItem icon={Trash2} label="Remove from list" danger divider onPress={onRemove} />
+      </View>
+      {/* Outside the menu: screen readers only announce menu items inside one. */}
+      <Text
+        variant="caption"
+        muted
+        style={{
+          paddingHorizontal: t.space.lg,
+          paddingVertical: t.space.sm,
+          borderTopWidth: 1,
+          borderTopColor: t.colors.border,
+        }}
+      >
+        {addedBy}
+      </Text>
     </View>
   );
 }
