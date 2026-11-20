@@ -211,12 +211,7 @@ def review_page(recipes: Sequence[SeedRecipe]) -> str:
 
 
 def review(recipes: Sequence[SeedRecipe]) -> None:
-    found = _load(OPTIONS)
-    allowed = {
-        r.slug: {o["photo_id"] for o in found[r.slug]["options"]}
-        for r in recipes
-        if r.slug in found
-    }
+    slugs = {r.slug for r in recipes}
 
     class Handler(BaseHTTPRequestHandler):
         def do_GET(self) -> None:
@@ -229,7 +224,9 @@ def review(recipes: Sequence[SeedRecipe]) -> None:
         def do_POST(self) -> None:
             data = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
             slug, photo = data.get("slug"), data.get("photo_id")
-            if slug not in allowed or (photo is not None and photo not in allowed[slug]):
+            row = _load(OPTIONS).get(slug)  # read now: the search may still be adding
+            ids = {o["photo_id"] for o in row["options"]} if row else set()
+            if slug not in slugs or row is None or (photo is not None and photo not in ids):
                 self.send_response(400)
                 self.end_headers()
                 return
