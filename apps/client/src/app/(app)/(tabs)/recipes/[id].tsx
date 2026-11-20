@@ -20,6 +20,7 @@ import { dayParts } from '@/features/mealPlan/week';
 import { hostOf } from '@/features/imports/ReviewScreen';
 import { ruleBreakHint, ruleBreakText } from '@/features/imports/ruleBreaks';
 import { CookMode } from '@/features/recipes/CookMode';
+import { MethodViewPicker } from '@/features/recipes/MethodViewPicker';
 import { PhotoButton } from '@/features/recipes/OwnPhoto';
 import {
   addText,
@@ -264,15 +265,9 @@ function RecipeContent() {
             </Text>
           ) : null}
           {views.length > 1 ? (
-            <Segmented
-              label="Method view"
-              value={view}
-              onChange={setView}
-              options={[
-                { value: 'detailed', label: 'Detailed' },
-                { value: 'quick', label: 'Quick' },
-              ]}
-            />
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+              <MethodViewPicker value={view} onChange={setView} />
+            </View>
           ) : null}
           {steps.length > 0 ? (
             <Button
