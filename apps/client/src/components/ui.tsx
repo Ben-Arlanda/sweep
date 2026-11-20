@@ -61,9 +61,12 @@ export function Screen({
   hero,
   footer,
   scrollRef,
+  onScroll,
 }: {
   children: ReactNode;
   scrollRef?: Ref<ScrollViewInstance>;
+  /** How far the page has scrolled, as it scrolls. */
+  onScroll?: (y: number) => void;
   /**
    * Which phone edges (notch, home bar) to keep clear of. The tab bar already keeps
    * clear of the bottom, so most screens need only the sides. Add 'top' on a screen
@@ -103,6 +106,8 @@ export function Screen({
         ref={scrollRef}
         keyboardShouldPersistTaps="handled"
         automaticallyAdjustKeyboardInsets
+        onScroll={onScroll ? (e) => onScroll(e.nativeEvent.contentOffset.y) : undefined}
+        scrollEventThrottle={16}
       >
         {hero}
         {content}

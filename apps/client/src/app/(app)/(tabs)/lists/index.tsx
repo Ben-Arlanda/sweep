@@ -7,10 +7,11 @@ import {
   Store,
   Trash2,
 } from 'lucide-react-native';
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useRef, useState, type ReactNode, type Ref } from 'react';
 import Animated, { LayoutAnimationConfig } from 'react-native-reanimated';
 import {
   Keyboard,
+  Platform,
   Pressable,
   type ScrollViewInstance,
   TextInput,
@@ -43,7 +44,7 @@ import { haptic } from '@/lib/haptics';
 import { inputText } from '@/theme/inputText';
 import { rowEntering, rowExiting, rowLayout } from '@/theme/listMotion';
 import { PageColors } from '@/theme/PageColors';
-import { useTheme } from '@/theme/useTheme';
+import { useTheme, type Theme } from '@/theme/useTheme';
 
 const ALL = 'all';
 
@@ -81,24 +82,45 @@ function ListContent({ list }: { list: ListDetail }) {
   // Food categories folded away, by category (open by default).
   const [closed, setClosed] = useState<Set<string>>(() => new Set());
   const page = useRef<ScrollViewInstance>(null);
-  const addAt = useRef(0);
-  const adding = useRef(false);
+  const scrolled = useRef(0);
+  // Adding works like Reminders: type in a new row at the end of the list, Return for the
+  // next one. New items stay down there, in the order typed, until the keyboard closes.
+  const [adding, setAdding] = useState(false);
+  const [justAdded, setJustAdded] = useState<string[]>([]);
+  const newRow = useRef<HostInstance>(null);
 
-  // While adding, lift the add box to the top so the list shows above the keyboard.
+  // Scroll just enough to keep the row being typed in above the keyboard.
+  const keepAboveKeyboard = useCallback(
+    (keyboardTop?: number) => {
+      if (Platform.OS === 'web') return; // no on-screen keyboard
+      const top = keyboardTop ?? Keyboard.metrics()?.screenY;
+      if (top === undefined) return;
+      newRow.current?.measureInWindow((_x, y, _w, height) => {
+        const hidden = y + height + t.space.md - top;
+        if (hidden > 0) page.current?.scrollTo({ y: scrolled.current + hidden, animated: true });
+      });
+    },
+    [t.space.md],
+  );
+
   useEffect(() => {
-    const shown = Keyboard.addListener('keyboardDidShow', () => {
-      if (adding.current) page.current?.scrollTo({ y: addAt.current, animated: true });
+    // iOS: scroll while the keyboard slides up, not after.
+    const event = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
+    const shown = Keyboard.addListener(event, (e) => {
+      if (newRow.current) keepAboveKeyboard(e.endCoordinates.screenY);
     });
     return () => shown.remove();
-  }, []);
+  }, [keepAboveKeyboard]);
 
   const { shops } = list;
   // A Shop deleted on another phone while we were filtering by it: show everything.
   const shown = filter === ALL ? ALL : (knownShop(filter, shops) ?? ALL);
   // Ticked items are off the list: no "In the trolley" section (Undo brings one back).
-  const { toBuy } = shoppingOrder(filterByShop(list.items, shown));
+  const { toBuy: all } = shoppingOrder(filterByShop(list.items, shown));
+  const fresh = justAdded.flatMap((id) => all.filter((item) => item.id === id));
+  const toBuy = all.filter((item) => !justAdded.includes(item.id));
   const at = shown === ALL ? '' : ` at ${shopName(shops, shown)}`;
-  const summary = toBuy.length === 0 ? `Nothing left to buy${at}` : `${toBuy.length} to buy${at}`;
+  const summary = all.length === 0 ? `Nothing left to buy${at}` : `${all.length} to buy${at}`;
   const sync = useSyncStatus();
 
   const row = (item: Item, i: number) => (
@@ -115,18 +137,19 @@ function ListContent({ list }: { list: ListDetail }) {
   );
 
   return (
-    <Screen edges={TAB_ROOT} scrollRef={page}>
+    <Screen
+      edges={TAB_ROOT}
+      scrollRef={page}
+      onScroll={(y) => (scrolled.current = y)}
+      footer={
+        adding ? undefined : <Button title="New item" icon={Plus} onPress={() => setAdding(true)} />
+      }
+    >
       <PageHeader
         icon={ShoppingBasket}
         section="list"
         title="Shopping list"
         subtitle={`${summary}${sync ? ` · ${sync}` : ''}`}
-      />
-
-      <AddItem
-        onAdd={actions.addItem}
-        onY={(y) => (addAt.current = y)}
-        onAdding={(on) => (adding.current = on)}
       />
 
       {shops.length > 0 ? (
@@ -144,7 +167,7 @@ function ListContent({ list }: { list: ListDetail }) {
 
       <ErrorText message={actions.error?.message} />
 
-      {toBuy.length === 0 ? (
+      {all.length === 0 && !adding ? (
         <Text style={{ color: t.colors.onBackgroundMuted }}>Nothing left to buy. Nice work.</Text>
       ) : null}
       <LayoutAnimationConfig skipEntering>
@@ -166,6 +189,28 @@ function ListContent({ list }: { list: ListDetail }) {
           </Animated.View>
         ))}
       </LayoutAnimationConfig>
+
+      {adding || fresh.length > 0 ? (
+        <Animated.View layout={rowLayout} style={cardStyle(t)}>
+          {fresh.map(row)}
+          {adding ? (
+            <NewItemRow
+              ref={newRow}
+              first={fresh.length === 0}
+              onAdd={(text) => {
+                const id = actions.addItem(text);
+                setJustAdded((now) => [...now, id]);
+                // After the new item's row is laid out, keep the typing row in view.
+                requestAnimationFrame(() => requestAnimationFrame(() => keepAboveKeyboard()));
+              }}
+              onDone={() => {
+                setAdding(false);
+                setJustAdded([]);
+              }}
+            />
+          ) : null}
+        </Animated.View>
+      ) : null}
 
       {menu ? (
         <Popover
@@ -226,22 +271,31 @@ function ListContent({ list }: { list: ListDetail }) {
 
 type Actions = ReturnType<typeof useListActions>;
 
-/** The add box. New items are "any shop"; pick one from the item's ••• menu. */
-function AddItem({
+/**
+ * The row you type a new item into, at the end of the list. Return adds it and leaves a
+ * fresh empty row; Return on an empty row, or tapping away, finishes. New items are "any
+ * shop"; pick one from the item's ••• menu.
+ */
+function NewItemRow({
+  ref,
+  first,
   onAdd,
-  onY,
-  onAdding,
+  onDone,
 }: {
+  ref: Ref<HostInstance>;
+  first: boolean;
   onAdd: (text: string) => void;
-  onY: (y: number) => void;
-  onAdding: (on: boolean) => void;
+  onDone: () => void;
 }) {
   const t = useTheme();
   const [text, setText] = useState('');
   const input = useRef<TextInputInstance>(null);
 
   function submit() {
-    if (!text.trim()) return;
+    if (!text.trim()) {
+      input.current?.blur();
+      return;
+    }
     onAdd(text.trim());
     setText('');
     input.current?.focus(); // keep the keyboard up for the next item
@@ -249,32 +303,35 @@ function AddItem({
 
   return (
     <View
-      onLayout={(e) => onY(e.nativeEvent.layout.y)}
+      ref={ref}
       style={{
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 10,
-        minHeight: 46,
-        paddingHorizontal: t.space.md,
-        borderRadius: t.radius.md,
-        borderWidth: 1,
-        borderColor: t.colors.border,
-        backgroundColor: t.colors.surface,
+        gap: t.space.sm,
+        minHeight: 60,
+        paddingLeft: t.space.xs,
+        paddingRight: t.space.md,
+        borderTopWidth: first ? 0 : 1,
+        borderTopColor: t.colors.border,
       }}
     >
-      <Icon icon={Plus} size={18} color={t.colors.textMuted} />
+      <View style={{ width: 36, alignItems: 'center' }}>
+        <Checkbox checked={false} size={22} />
+      </View>
       <TextInput
         ref={input}
-        accessibilityLabel="Add an item"
-        placeholder="Add an item, e.g. 2 L milk"
+        autoFocus
+        accessibilityLabel="New item"
+        placeholder="New item, e.g. 2 L milk"
         placeholderTextColor={t.colors.textMuted}
         value={text}
         onChangeText={setText}
         onSubmitEditing={submit}
-        onFocus={() => onAdding(true)}
-        onBlur={() => onAdding(false)}
+        onBlur={onDone}
         submitBehavior="submit"
-        returnKeyType="done"
+        // The web ignores submitBehavior and drops focus after Enter unless told not to.
+        {...(Platform.OS === 'web' ? { blurOnSubmit: false } : null)}
+        returnKeyType="next"
         maxLength={200}
         style={[
           inputText(t.type.body),
@@ -283,6 +340,16 @@ function AddItem({
       />
     </View>
   );
+}
+
+/** The white card a group of rows sits on. */
+function cardStyle(t: Theme) {
+  return {
+    backgroundColor: t.colors.surface,
+    borderRadius: t.radius.lg,
+    boxShadow: t.shadow.card,
+    overflow: 'hidden',
+  } as const;
 }
 
 /**
@@ -335,18 +402,7 @@ function ListGroup({
           <Icon icon={ChevronUp} size={14} color={t.colors.textMuted} strong />
         </View>
       </Pressable>
-      {open ? (
-        <View
-          style={{
-            backgroundColor: t.colors.surface,
-            borderRadius: t.radius.lg,
-            boxShadow: t.shadow.card,
-            overflow: 'hidden',
-          }}
-        >
-          {children}
-        </View>
-      ) : null}
+      {open ? <View style={cardStyle(t)}>{children}</View> : null}
     </View>
   );
 }
@@ -357,8 +413,8 @@ function ListGroup({
  * the Kitchen (ADR 0003), so the toast says so: that's the loop, made visible. ••• opens
  * Shop, Kitchen link and Remove (which doesn't stock the Kitchen).
  */
-/** How long a ticked row stays to show its tick before it leaves the list. */
-const TICK_MS = 180;
+/** How long a ticked row stays (tap again to untick) before it leaves the list. */
+const TICK_MS = 1000;
 
 function ItemRow({
   item,
@@ -382,13 +438,18 @@ function ItemRow({
   const detail = [amount, shop].filter(Boolean).join(' · ');
 
   const [ticked, setTicked] = useState(false);
+  const leaving = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   function tick() {
-    if (ticked) return;
+    if (ticked) {
+      clearTimeout(leaving.current); // changed their mind before it left
+      setTicked(false);
+      haptic.select();
+      return;
+    }
     setTicked(true);
     haptic.tap();
-    // Let the tick land before the row leaves.
-    setTimeout(() => {
+    leaving.current = setTimeout(() => {
       // Send what the Member *sees* as the new state, not "toggle" (ADR 0004).
       actions.setChecked(item.id, true);
       toast({
