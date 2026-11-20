@@ -122,15 +122,12 @@ function TonightCard({ today, meals }: { today: string; meals: PlannedMeal[] }) 
           <Text variant="heading" role="heading" aria-level={2}>
             No meal planned
           </Text>
-          <Text variant="caption" muted>
-            Get a dinner idea in seconds.
-          </Text>
         </View>
         <View>
           <Button
             title="Find dinner ideas"
             icon={Sparkles}
-            onPress={() => router.push('/tonight')}
+            onPress={() => router.push('/dinner-ideas')} // the mood step, as on Recipes
           />
         </View>
       </Card>
