@@ -132,5 +132,37 @@ export function useImportedRecipeActions() {
     },
   });
 
-  return { save, remove };
+  // A recipe's own photo (ADR 0031): a file adds or replaces it, null removes it.
+  const photo = useMutation({
+    onSettled: async () => {
+      await refresh();
+      await queryClient.invalidateQueries({ queryKey: mealPlanKeys.all }); // plans show it
+    },
+    mutationFn: async ({ id, file, idempotencyKey }: PhotoVars) => {
+      const params = { path: { recipe_id: id }, header: { 'Idempotency-Key': idempotencyKey } };
+      if (!file) {
+        return unwrap(await api.DELETE('/recipes/imported/{recipe_id}/photo', { params }));
+      }
+      const form = new FormData();
+      await appendFile(form, 'photo', file);
+      return unwrap(
+        await api.PUT('/recipes/imported/{recipe_id}/photo', {
+          params,
+          body: form as never,
+          bodySerializer: asIs,
+        }),
+      );
+    },
+  });
+
+  return { save, remove, photo };
 }
+
+type PhotoVars = { id: string; file: PickedFile | null; idempotencyKey: string };
+
+/** Make the variables at tap time, like `saveTap`. */
+export const photoTap = (id: string, file: PickedFile | null): PhotoVars => ({
+  id,
+  file,
+  idempotencyKey: randomUUID(),
+});

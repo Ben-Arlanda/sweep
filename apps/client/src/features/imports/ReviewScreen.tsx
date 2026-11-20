@@ -8,12 +8,17 @@ import { ConfirmDialog } from '@/components/ConfirmDialog';
 import { Icon } from '@/components/Icon';
 import { Tag } from '@/components/Pill';
 import { PressableScale } from '@/components/PressableScale';
+import { RecipeArt } from '@/components/RecipeArt';
+import { useToast } from '@/components/Toast';
 import { Button, ErrorText, Field, Screen, SectionLabel, Text } from '@/components/ui';
 import { displayName } from '@/features/kitchen/format';
 import { LinkSheet } from '@/features/lists/LinkSheet';
 import { COURSES } from '@/features/recipes/courses';
+import { PhotoButton } from '@/features/recipes/OwnPhoto';
+import type { RecipeImage } from '@/features/recipes/photo';
 import { cuisineName } from '@/features/recipes/kitchenMatch';
-import { saveTap, useImportedRecipeActions, useReadLines } from '@/lib/api/imports';
+import { photoTap, saveTap, useImportedRecipeActions, useReadLines } from '@/lib/api/imports';
+import type { PickedFile } from '@/lib/api/upload';
 import { useTheme } from '@/theme/useTheme';
 
 import { dropDraft } from './drafts';
@@ -45,10 +50,12 @@ export function ReviewScreen({
   start,
   recipeId,
   draftId,
+  image = null,
 }: {
   start: ReviewForm;
   recipeId: string | null; // editing a saved one
   draftId: string | undefined;
+  image?: RecipeImage | null; // its photo now, when editing
 }) {
   const t = useTheme();
   const [form, setForm] = useState(start);
@@ -56,10 +63,20 @@ export function ReviewScreen({
   const [linking, setLinking] = useState<FormLine | null>(null);
   const [newLine, setNewLine] = useState('');
   const [leave, setLeave] = useState<(() => void) | null>(null);
-  const { save } = useImportedRecipeActions();
+  const { save, photo: savePhoto } = useImportedRecipeActions();
+  const toast = useToast();
+  // The photo to save with it (ADR 0031): a new one, 'remove', or null for no change.
+  const [photo, setPhoto] = useState<{ file: PickedFile } | 'remove' | null>(null);
+  const shown =
+    photo === 'remove'
+      ? null
+      : photo
+        ? { thumb_url: photo.file.uri, hero_url: photo.file.uri }
+        : image;
   const read = useReadLines();
 
-  const changed = hasChanges(start, form) || (recipeId === null && draftId !== undefined);
+  const changed =
+    hasChanges(start, form) || (recipeId === null && draftId !== undefined) || photo !== null;
   const disablePrevention = usePreventRemove(changed && !save.isSuccess, ({ repeat }) =>
     setLeave(() => repeat),
   );
@@ -84,6 +101,14 @@ export function ReviewScreen({
     if (Object.keys(saveProblems(form)).length) return;
     try {
       const saved = await save.mutateAsync(saveTap(recipeId, toImportedRecipe(form)));
+      if (photo) {
+        // The recipe is saved either way; a failed photo can be added from its page.
+        await savePhoto
+          .mutateAsync(photoTap(saved.id, photo === 'remove' ? null : photo.file))
+          .catch(() =>
+            toast({ tag: 'Recipes', text: "Saved, but the photo didn't upload. Add it again." }),
+          );
+      }
       dropDraft(draftId);
       disablePrevention();
       router.replace({ pathname: '/recipes/[id]', params: { id: saved.id } });
@@ -97,6 +122,23 @@ export function ReviewScreen({
       <Text variant="title" accessibilityRole="header">
         {recipeId ? 'Edit recipe' : 'Check your recipe'}
       </Text>
+      <View>
+        <RecipeArt
+          title={form.title || 'New recipe'}
+          image={shown}
+          width="100%"
+          height={180}
+          radius={t.radius.lg}
+          iconSize={48}
+        />
+        <PhotoButton
+          hasPhoto={!!shown}
+          busy={savePhoto.isPending}
+          onPicked={(file) => setPhoto({ file })}
+          onRemove={() => setPhoto(image ? 'remove' : null)}
+          style={{ position: 'absolute', left: t.space.sm, bottom: t.space.sm }}
+        />
+      </View>
       {form.moreRecipes ? (
         <Text>This file has more than one recipe: we&apos;ve taken the first.</Text>
       ) : null}

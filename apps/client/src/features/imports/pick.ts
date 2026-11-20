@@ -24,8 +24,8 @@ export function resizeFor(width: number, height: number) {
 
 const TOO_MANY = 'Up to 3 photos, one recipe. Pick the pages again.';
 
-export function checkPhotoCount(n: number, tooMany = TOO_MANY): string | null {
-  return n > MAX_PHOTOS ? tooMany : null;
+export function checkPhotoCount(n: number, tooMany = TOO_MANY, max = MAX_PHOTOS): string | null {
+  return n > max ? tooMany : null;
 }
 
 export function checkPdf(file: { name: string; mimeType?: string; size?: number }): string | null {
@@ -39,15 +39,17 @@ export function checkPdf(file: { name: string; mimeType?: string; size?: number 
 
 export type Picked<T> = { ok: true; value: T } | { ok: false; error: string | null }; // null: cancelled
 
-type PickOptions = { camera?: boolean; tooMany?: string };
+type PickOptions = { camera?: boolean; tooMany?: string; max?: number };
 
 /**
- * Up to 3 photos from the library, in the order picked, or one from the camera; each
- * shrunk to JPEG. Recipes use the library (cookbook pages); the Kitchen offers both.
+ * Up to `max` photos from the library (3 by default), in the order picked, or one from
+ * the camera; each shrunk to JPEG. A recipe's own photo is `max: 1`.
  */
-export async function pickPhotos({ camera = false, tooMany = TOO_MANY }: PickOptions = {}): Promise<
-  Picked<PickedFile[]>
-> {
+export async function pickPhotos({
+  camera = false,
+  tooMany = TOO_MANY,
+  max = MAX_PHOTOS,
+}: PickOptions = {}): Promise<Picked<PickedFile[]>> {
   if (camera) {
     const permission = await ImagePicker.requestCameraPermissionsAsync();
     if (!permission.granted) {
@@ -61,13 +63,13 @@ export async function pickPhotos({ camera = false, tooMany = TOO_MANY }: PickOpt
     ? await ImagePicker.launchCameraAsync({ mediaTypes: ['images'], quality: 1 })
     : await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ['images'],
-        allowsMultipleSelection: true,
-        selectionLimit: MAX_PHOTOS, // the web picker can't enforce this, hence checkPhotoCount
+        allowsMultipleSelection: max > 1,
+        selectionLimit: max, // the web picker can't enforce this, hence checkPhotoCount
         orderedSelection: true,
         quality: 1, // compressed once, below
       });
   if (result.canceled) return { ok: false, error: null };
-  const problem = checkPhotoCount(result.assets.length, tooMany);
+  const problem = checkPhotoCount(result.assets.length, tooMany, max);
   if (problem) return { ok: false, error: problem };
 
   const photos: PickedFile[] = [];
