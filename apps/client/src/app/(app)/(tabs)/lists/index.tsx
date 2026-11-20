@@ -7,16 +7,12 @@ import {
   Store,
   Trash2,
 } from 'lucide-react-native';
-import { useRef, useState, type ReactNode } from 'react';
-import Animated, {
-  LayoutAnimationConfig,
-  useAnimatedKeyboard,
-  useAnimatedStyle,
-  useSharedValue,
-} from 'react-native-reanimated';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
+import Animated, { LayoutAnimationConfig } from 'react-native-reanimated';
 import {
-  Platform,
+  Keyboard,
   Pressable,
+  type ScrollViewInstance,
   TextInput,
   View,
   type HostInstance,
@@ -84,21 +80,25 @@ function ListContent({ list }: { list: ListDetail }) {
   const [linking, setLinking] = useState<Item | null>(null);
   // Food categories folded away, by category (open by default).
   const [closed, setClosed] = useState<Set<string>>(() => new Set());
-  // Items added since the add box was focused: shown at the top until the keyboard closes.
-  const [justAdded, setJustAdded] = useState<string[]>([]);
+  const page = useRef<ScrollViewInstance>(null);
+  const addAt = useRef(0);
+  const adding = useRef(false);
+
+  // While adding, lift the add box to the top so the list shows above the keyboard.
+  useEffect(() => {
+    const shown = Keyboard.addListener('keyboardDidShow', () => {
+      if (adding.current) page.current?.scrollTo({ y: addAt.current, animated: true });
+    });
+    return () => shown.remove();
+  }, []);
 
   const { shops } = list;
   // A Shop deleted on another phone while we were filtering by it: show everything.
   const shown = filter === ALL ? ALL : (knownShop(filter, shops) ?? ALL);
   // Ticked items are off the list: no "In the trolley" section (Undo brings one back).
-  const { toBuy: all } = shoppingOrder(filterByShop(list.items, shown));
-  const fresh = justAdded
-    .map((id) => all.find((item) => item.id === id))
-    .filter((item): item is Item => item !== undefined)
-    .reverse();
-  const toBuy = all.filter((item) => !justAdded.includes(item.id));
+  const { toBuy } = shoppingOrder(filterByShop(list.items, shown));
   const at = shown === ALL ? '' : ` at ${shopName(shops, shown)}`;
-  const summary = all.length === 0 ? `Nothing left to buy${at}` : `${all.length} to buy${at}`;
+  const summary = toBuy.length === 0 ? `Nothing left to buy${at}` : `${toBuy.length} to buy${at}`;
   const sync = useSyncStatus();
 
   const row = (item: Item, i: number) => (
@@ -115,31 +115,19 @@ function ListContent({ list }: { list: ListDetail }) {
   );
 
   return (
-    <Screen edges={TAB_ROOT}>
-      <FoldsForKeyboard>
-        <PageHeader
-          icon={ShoppingBasket}
-          section="list"
-          title="Shopping list"
-          subtitle={`${summary}${sync ? ` · ${sync}` : ''}`}
-        />
-      </FoldsForKeyboard>
-
-      <AddItem
-        onAdd={(text) => {
-          const id = actions.addItem(text);
-          setJustAdded((now) => [...now, id]);
-        }}
-        onDone={() => setJustAdded([])}
+    <Screen edges={TAB_ROOT} scrollRef={page}>
+      <PageHeader
+        icon={ShoppingBasket}
+        section="list"
+        title="Shopping list"
+        subtitle={`${summary}${sync ? ` · ${sync}` : ''}`}
       />
 
-      {fresh.length > 0 ? (
-        <Animated.View entering={rowEntering} exiting={rowExiting} layout={rowLayout}>
-          <ListGroup label="Just added" count={fresh.length} open>
-            {fresh.map(row)}
-          </ListGroup>
-        </Animated.View>
-      ) : null}
+      <AddItem
+        onAdd={actions.addItem}
+        onY={(y) => (addAt.current = y)}
+        onAdding={(on) => (adding.current = on)}
+      />
 
       {shops.length > 0 ? (
         <ChoiceChips
@@ -156,7 +144,7 @@ function ListContent({ list }: { list: ListDetail }) {
 
       <ErrorText message={actions.error?.message} />
 
-      {toBuy.length === 0 && fresh.length === 0 ? (
+      {toBuy.length === 0 ? (
         <Text style={{ color: t.colors.onBackgroundMuted }}>Nothing left to buy. Nice work.</Text>
       ) : null}
       <LayoutAnimationConfig skipEntering>
@@ -239,7 +227,15 @@ function ListContent({ list }: { list: ListDetail }) {
 type Actions = ReturnType<typeof useListActions>;
 
 /** The add box. New items are "any shop"; pick one from the item's ••• menu. */
-function AddItem({ onAdd, onDone }: { onAdd: (text: string) => void; onDone: () => void }) {
+function AddItem({
+  onAdd,
+  onY,
+  onAdding,
+}: {
+  onAdd: (text: string) => void;
+  onY: (y: number) => void;
+  onAdding: (on: boolean) => void;
+}) {
   const t = useTheme();
   const [text, setText] = useState('');
   const input = useRef<TextInputInstance>(null);
@@ -253,6 +249,7 @@ function AddItem({ onAdd, onDone }: { onAdd: (text: string) => void; onDone: () 
 
   return (
     <View
+      onLayout={(e) => onY(e.nativeEvent.layout.y)}
       style={{
         flexDirection: 'row',
         alignItems: 'center',
@@ -274,10 +271,9 @@ function AddItem({ onAdd, onDone }: { onAdd: (text: string) => void; onDone: () 
         value={text}
         onChangeText={setText}
         onSubmitEditing={submit}
-        onBlur={onDone}
+        onFocus={() => onAdding(true)}
+        onBlur={() => onAdding(false)}
         submitBehavior="submit"
-        // The web ignores submitBehavior and drops focus after Enter unless told not to.
-        {...(Platform.OS === 'web' ? { blurOnSubmit: false } : null)}
         returnKeyType="done"
         maxLength={200}
         style={[
@@ -286,31 +282,6 @@ function AddItem({ onAdd, onDone }: { onAdd: (text: string) => void; onDone: () 
         ]}
       />
     </View>
-  );
-}
-
-/**
- * Folds the page heading away as the keyboard rises, frame by frame with it, so the add
- * box and the list move up together; it unfolds as the keyboard goes. Phones only.
- */
-function FoldsForKeyboard({ children }: { children: ReactNode }) {
-  if (Platform.OS === 'web') return children;
-  return <Fold>{children}</Fold>;
-}
-
-function Fold({ children }: { children: ReactNode }) {
-  const keyboard = useAnimatedKeyboard();
-  const natural = useSharedValue(0);
-  const folding = useAnimatedStyle(() => {
-    const full = natural.get();
-    if (full === 0) return {};
-    const shut = Math.min(1, keyboard.height.get() / full);
-    return { height: full * (1 - shut), opacity: 1 - shut };
-  });
-  return (
-    <Animated.View style={[{ overflow: 'hidden' }, folding]}>
-      <View onLayout={(e) => natural.set(e.nativeEvent.layout.height)}>{children}</View>
-    </Animated.View>
   );
 }
 
@@ -328,17 +299,15 @@ function ListGroup({
   label: string;
   count: number;
   open: boolean;
-  /** Without it the heading doesn't fold (Just added). */
-  onToggle?: () => void;
+  onToggle: () => void;
   children: ReactNode;
 }) {
   const t = useTheme();
   return (
     <View style={{ gap: t.space.sm }}>
       <Pressable
-        disabled={!onToggle}
-        accessibilityRole={onToggle ? 'button' : undefined}
-        accessibilityState={onToggle ? { expanded: open } : undefined}
+        accessibilityRole="button"
+        accessibilityState={{ expanded: open }}
         accessibilityLabel={`${label}, ${count} ${count === 1 ? 'item' : 'items'}`}
         onPress={onToggle}
         style={{
@@ -362,11 +331,9 @@ function ListGroup({
         >
           {label}
         </Text>
-        {onToggle ? (
-          <View style={{ transform: [{ rotate: open ? '0deg' : '180deg' }] }}>
-            <Icon icon={ChevronUp} size={14} color={t.colors.textMuted} strong />
-          </View>
-        ) : null}
+        <View style={{ transform: [{ rotate: open ? '0deg' : '180deg' }] }}>
+          <Icon icon={ChevronUp} size={14} color={t.colors.textMuted} strong />
+        </View>
       </Pressable>
       {open ? (
         <View
