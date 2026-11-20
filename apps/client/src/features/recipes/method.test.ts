@@ -47,15 +47,10 @@ test('Cook Mode in the Quick View uses the short steps, with no stage names', ()
   expect(cookSteps({ ...imported, method: null }, 'quick')).toEqual([]);
 });
 
-test('the meta line splits prep and cook time and says how hard it is', () => {
-  expect(metaParts(seed)).toEqual(['Prep 20 min', 'Cook 2 h 35 min', 'Easy', 'Serves 4', 'Main']);
+test('the meta line splits prep and cook time, without how hard it is', () => {
+  expect(metaParts(seed)).toEqual(['Prep 20 min', 'Cook 2 h 35 min', 'Serves 4', 'Main']);
   expect(metaParts(imported)).toEqual(['40 min', 'Serves 4', 'Main']);
-  expect(metaParts({ ...seed, prep_minutes: 0 })).toEqual([
-    'Cook 2 h 35 min',
-    'Easy',
-    'Serves 4',
-    'Main',
-  ]);
+  expect(metaParts({ ...seed, prep_minutes: 0 })).toEqual(['Cook 2 h 35 min', 'Serves 4', 'Main']);
 });
 
 test('only a known view is remembered', () => {

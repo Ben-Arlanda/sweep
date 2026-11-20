@@ -9,7 +9,6 @@ import { courseName, type Course } from './courses';
 import { minutesText } from './kitchenMatch';
 
 type Stage = components['schemas']['RecipeStageOut'];
-type Difficulty = components['schemas']['Difficulty'];
 
 export type MethodView = 'detailed' | 'quick';
 
@@ -35,14 +34,11 @@ export function cookSteps(
   return (recipe.method ?? []).map((text) => ({ stage: null, text }));
 }
 
-const DIFFICULTY: Record<Difficulty, string> = { easy: 'Easy', medium: 'Medium', hard: 'Hard' };
-
-/** "Prep 20 min · Cook 2 h 35 min · Easy · Serves 4 · Main", or the total when it's all we have. */
+/** "Prep 20 min · Cook 2 h 35 min · Serves 4 · Main", or the total when it's all we have. */
 export function metaParts(recipe: {
   prep_minutes: number | null;
   cook_minutes: number | null;
   total_minutes: number | null;
-  difficulty: Difficulty | null;
   servings: number;
   course: Course;
 }): string[] {
@@ -53,10 +49,7 @@ export function metaParts(recipe: {
         recipe.cook_minutes ? `Cook ${minutesText(recipe.cook_minutes)}` : null,
       ]
     : [recipe.total_minutes ? minutesText(recipe.total_minutes) : null];
-  return [
-    ...times,
-    recipe.difficulty ? DIFFICULTY[recipe.difficulty] : null,
-    `Serves ${recipe.servings}`,
-    courseName(recipe.course),
-  ].filter((part): part is string => Boolean(part));
+  return [...times, `Serves ${recipe.servings}`, courseName(recipe.course)].filter(
+    (part): part is string => Boolean(part),
+  );
 }
