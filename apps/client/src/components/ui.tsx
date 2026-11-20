@@ -4,7 +4,7 @@
  * Browse them all at /design (src/app/(app)/design.tsx).
  */
 import type { LucideIcon } from 'lucide-react-native';
-import { use, useState, type ReactNode, type Ref } from 'react';
+import { use, useEffect, useState, type ReactNode, type Ref } from 'react';
 import {
   ActivityIndicator,
   Text as RNText,
@@ -25,6 +25,7 @@ import { PressableScale } from '@/components/PressableScale';
 import type { TintName } from '@/theme/tokens';
 import { inputText } from '@/theme/inputText';
 import { useTheme } from '@/theme/useTheme';
+import { haptic } from '@/lib/haptics';
 
 type Variant = 'display' | 'title' | 'heading' | 'body' | 'label' | 'caption';
 
@@ -323,6 +324,9 @@ export function Field({
 /** On its own soft-red pill, so it reads on any page colour as well as on cards. */
 export function ErrorText({ message }: { message: string | null | undefined }) {
   const t = useTheme();
+  useEffect(() => {
+    if (message) haptic.error(); // once per new message, not on every render
+  }, [message]);
   if (!message) return null;
   return (
     <Text

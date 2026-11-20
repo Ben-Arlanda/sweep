@@ -1,11 +1,12 @@
 import { useLocalSearchParams } from 'expo-router';
 import { ChevronDown, Heart, Search } from 'lucide-react-native';
 import { useState } from 'react';
-import { Pressable, TextInput, View } from 'react-native';
+import { TextInput, View } from 'react-native';
 
 import { ChoiceChips } from '@/components/ChoiceChips';
 import { Icon } from '@/components/Icon';
 import { Sheet } from '@/components/Sheet';
+import { PressableScale } from '@/components/PressableScale';
 import { Button, ErrorText, Loading, Screen, Text } from '@/components/ui';
 import { useCuisines } from '@/lib/api/diet';
 import {
@@ -265,7 +266,7 @@ function FilterChip({
   const t = useTheme();
   const color = active ? t.colors.onSelected : t.colors.text;
   return (
-    <Pressable
+    <PressableScale
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel ?? label}
       accessibilityState={menu ? { expanded: false } : { selected: active }}
@@ -294,6 +295,6 @@ function FilterChip({
         </Text>
         {menu ? <Icon icon={ChevronDown} size={15} color={color} /> : null}
       </View>
-    </Pressable>
+    </PressableScale>
   );
 }

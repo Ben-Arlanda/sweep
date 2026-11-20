@@ -10,6 +10,7 @@ import { api, unwrap } from './client';
 import { listKeys } from './lists';
 import { mealPlanKeys } from './mealPlan';
 import type { components } from './schema';
+import { haptic } from '@/lib/haptics';
 
 type Decision = components['schemas']['DecisionIn'];
 
@@ -71,6 +72,9 @@ export function useDecideProposal(conversationId: string | null) {
           body: v.decision,
         }),
       ),
+    onSuccess: (_, v) => {
+      if (v.decision.action === 'approve') haptic.success();
+    },
     onSettled: async () => {
       await Promise.all([
         conversationId

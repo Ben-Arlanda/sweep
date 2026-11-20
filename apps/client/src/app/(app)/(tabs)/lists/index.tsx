@@ -8,6 +8,7 @@ import {
   Trash2,
 } from 'lucide-react-native';
 import { useRef, useState, type ReactNode } from 'react';
+import Animated, { LayoutAnimationConfig } from 'react-native-reanimated';
 import {
   Pressable,
   TextInput,
@@ -35,7 +36,9 @@ import { ShopSheet } from '@/features/lists/ShopSheet';
 import { filterByShop, knownShop, shopName, type ShopFilter } from '@/features/lists/shops';
 import type { Item, ListDetail } from '@/lib/api/client';
 import { useIsOnline, useList, useListActions, usePendingListChanges } from '@/lib/api/lists';
+import { haptic } from '@/lib/haptics';
 import { inputText } from '@/theme/inputText';
+import { rowEntering, rowExiting, rowLayout } from '@/theme/listMotion';
 import { PageColors } from '@/theme/PageColors';
 import { useTheme } from '@/theme/useTheme';
 
@@ -84,15 +87,16 @@ function ListContent({ list }: { list: ListDetail }) {
   const sync = useSyncStatus();
 
   const row = (item: Item, i: number) => (
-    <ItemRow
-      key={item.id}
-      item={item}
-      index={i}
-      actions={actions}
-      // On a Shop's filter every row is that Shop, so its name would just repeat.
-      shop={shown === ALL ? shopName(shops, item.shop_id) : null}
-      onMenu={(anchor) => setMenu({ item, anchor })}
-    />
+    <Animated.View key={item.id} entering={rowEntering} exiting={rowExiting} layout={rowLayout}>
+      <ItemRow
+        item={item}
+        index={i}
+        actions={actions}
+        // On a Shop's filter every row is that Shop, so its name would just repeat.
+        shop={shown === ALL ? shopName(shops, item.shop_id) : null}
+        onMenu={(anchor) => setMenu({ item, anchor })}
+      />
+    </Animated.View>
   );
 
   return (
@@ -125,18 +129,25 @@ function ListContent({ list }: { list: ListDetail }) {
       {toBuy.length === 0 ? (
         <Text style={{ color: t.colors.onBackgroundMuted }}>Nothing left to buy. Nice work.</Text>
       ) : null}
-      {listSections(toBuy).map((section) => (
-        <View key={section.category}>
-          <ListGroup
-            label={section.label}
-            count={section.items.length}
-            open={!closed.has(section.category)}
-            onToggle={() => setClosed((now) => toggled(now, section.category))}
+      <LayoutAnimationConfig skipEntering>
+        {listSections(toBuy).map((section) => (
+          <Animated.View
+            key={section.category}
+            entering={rowEntering}
+            exiting={rowExiting}
+            layout={rowLayout}
           >
-            {section.items.map(row)}
-          </ListGroup>
-        </View>
-      ))}
+            <ListGroup
+              label={section.label}
+              count={section.items.length}
+              open={!closed.has(section.category)}
+              onToggle={() => setClosed((now) => toggled(now, section.category))}
+            >
+              {section.items.map(row)}
+            </ListGroup>
+          </Animated.View>
+        ))}
+      </LayoutAnimationConfig>
 
       {menu ? (
         <Popover
@@ -316,6 +327,9 @@ function ListGroup({
  * the Kitchen (ADR 0003), so the toast says so: that's the loop, made visible. ••• opens
  * Shop, Kitchen link and Remove (which doesn't stock the Kitchen).
  */
+/** How long a ticked row stays to show its tick before it leaves the list. */
+const TICK_MS = 180;
+
 function ItemRow({
   item,
   index,
@@ -337,17 +351,25 @@ function ItemRow({
   // Under the name: the amount, then the Shop on All ("250 g · Aldi").
   const detail = [amount, shop].filter(Boolean).join(' · ');
 
+  const [ticked, setTicked] = useState(false);
+
   function tick() {
-    // Send what the Member *sees* as the new state, not "toggle" (ADR 0004).
-    actions.setChecked(item.id, true);
-    toast({
-      kind: 'undo',
-      text: `Ticked off ${displayName(item.text)}`,
-      detail: item.ingredient
-        ? `Added ${amount ? `${amount} ` : ''}${item.ingredient.name} to your Kitchen`
-        : undefined,
-      onUndo: () => actions.setChecked(item.id, false),
-    });
+    if (ticked) return;
+    setTicked(true);
+    haptic.tap();
+    // Let the tick land before the row leaves.
+    setTimeout(() => {
+      // Send what the Member *sees* as the new state, not "toggle" (ADR 0004).
+      actions.setChecked(item.id, true);
+      toast({
+        kind: 'undo',
+        text: `Ticked off ${displayName(item.text)}`,
+        detail: item.ingredient
+          ? `Added ${amount ? `${amount} ` : ''}${item.ingredient.name} to your Kitchen`
+          : undefined,
+        onUndo: () => actions.setChecked(item.id, false),
+      });
+    }, TICK_MS);
   }
 
   return (
@@ -365,8 +387,8 @@ function ItemRow({
             name, so voice control users can say exactly what they see (WCAG 2.5.3). */}
       <Pressable
         accessibilityRole="checkbox"
-        accessibilityState={{ checked: false }}
-        aria-checked={false}
+        accessibilityState={{ checked: ticked }}
+        aria-checked={ticked}
         onPress={tick}
         style={({ pressed }) => ({
           flex: 1,
@@ -380,7 +402,7 @@ function ItemRow({
         })}
       >
         <View style={{ width: 36, alignItems: 'center' }}>
-          <Checkbox checked={false} size={22} />
+          <Checkbox checked={ticked} size={22} />
         </View>
         <View style={{ flex: 1, gap: 2 }}>
           <Text variant="label">{displayName(item.text)}</Text>

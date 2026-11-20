@@ -1,5 +1,14 @@
 import { Heart } from 'lucide-react-native';
+import Animated, {
+  useAnimatedStyle,
+  useReducedMotion,
+  useSharedValue,
+  withSequence,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated';
 
+import { haptic } from '@/lib/haptics';
 import { useFavourite } from '@/lib/api/planning';
 import { useTheme } from '@/theme/useTheme';
 
@@ -25,13 +34,28 @@ export function HeartButton({
   const t = useTheme();
   const toggle = useFavourite();
   const on = toggle.isPending ? (toggle.variables?.on ?? favourite) : favourite;
+  const reduceMotion = useReducedMotion();
+  const scale = useSharedValue(1);
+  const beat = useAnimatedStyle(() => ({ transform: [{ scale: scale.get() }] }));
+
+  function press() {
+    haptic.tap();
+    if (!reduceMotion) {
+      // Hearting lands from smaller; un-hearting is a smaller, quieter dip.
+      const from = on ? 0.9 : 0.75;
+      scale.set(
+        withSequence(withTiming(from, { duration: 0 }), withSpring(1, t.motion.spring.pop)),
+      );
+    }
+    toggle.mutate({ recipeId, on: !on });
+  }
   return (
     <PressableScale
       accessibilityRole="button"
       accessibilityLabel={`Favourite ${title}`}
       accessibilityState={{ selected: on }}
       aria-pressed={on}
-      onPress={() => toggle.mutate({ recipeId, on: !on })}
+      onPress={press}
       style={{
         width: Math.max(size, t.touchTarget),
         height: Math.max(size, t.touchTarget),
@@ -41,12 +65,14 @@ export function HeartButton({
         backgroundColor: t.colors.surface,
       }}
     >
-      <Icon
-        icon={Heart}
-        size={22}
-        color={on ? t.colors.danger : t.colors.text}
-        fill={on ? t.colors.danger : 'transparent'}
-      />
+      <Animated.View style={beat}>
+        <Icon
+          icon={Heart}
+          size={22}
+          color={on ? t.colors.danger : t.colors.text}
+          fill={on ? t.colors.danger : 'transparent'}
+        />
+      </Animated.View>
     </PressableScale>
   );
 }

@@ -21,6 +21,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FoodThumb } from '@/components/FoodThumb';
 import { Icon } from '@/components/Icon';
 import { tabBarHeight, type TintName } from '@/theme/tokens';
+import { PressableScale } from '@/components/PressableScale';
 import { useTheme } from '@/theme/useTheme';
 
 /** A quick confirmation: shown ~2 s, nothing to press. */
@@ -234,24 +235,23 @@ function UndoCard({
           <Text style={[t.type.caption, { color: t.colors.onInverse }]}>{message.detail}</Text>
         ) : null}
       </View>
-      <Pressable
+      <PressableScale
         accessibilityRole="button"
         accessibilityLabel={`Undo: ${message.text}${message.detail ? `, ${message.detail}` : ''}`}
         onPress={onUndo}
         onFocus={hold}
         onBlur={release}
-        style={({ pressed }) => ({
+        style={{
           minHeight: t.touchTarget,
           paddingHorizontal: t.space.lg,
           borderRadius: t.radius.pill,
           borderWidth: 1.5,
           borderColor: t.colors.onInverse,
           justifyContent: 'center',
-          opacity: pressed ? 0.7 : 1,
-        })}
+        }}
       >
         <Text style={[t.type.label, { color: t.colors.onInverse }]}>Undo</Text>
-      </Pressable>
+      </PressableScale>
     </View>
   );
 }
@@ -289,21 +289,20 @@ function AskCard({
         >
           {message.text}
         </Text>
-        <Pressable
+        <PressableScale
           accessibilityRole="button"
           accessibilityLabel="Close"
           onPress={onClose}
-          style={({ pressed }) => ({
+          style={{
             width: t.touchTarget,
             height: t.touchTarget,
             alignItems: 'center',
             justifyContent: 'center',
             alignSelf: 'flex-start',
-            opacity: pressed ? 0.6 : 1,
-          })}
+          }}
         >
           <Icon icon={X} size={20} color={t.colors.textMuted} />
-        </Pressable>
+        </PressableScale>
       </View>
       <View style={{ flexDirection: 'row', gap: t.space.sm }}>
         <Pressable

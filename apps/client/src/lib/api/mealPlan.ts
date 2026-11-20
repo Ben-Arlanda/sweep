@@ -11,6 +11,7 @@ import { randomUUID } from 'expo-crypto';
 
 import { api, ApiError, unwrap } from './client';
 import { kitchenKeys } from './kitchen';
+import { haptic } from '@/lib/haptics';
 
 export const mealPlanKeys = {
   all: ['meal-plan'] as const,
@@ -49,6 +50,7 @@ export function useMealPlanActions() {
 
   const cooked = useMutation({
     ...opts,
+    onSuccess: haptic.success,
     onSettled: refresh(true),
     mutationFn: async (v: MealVars) =>
       unwrap(

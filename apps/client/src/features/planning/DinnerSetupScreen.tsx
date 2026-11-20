@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ChoiceChips } from '@/components/ChoiceChips';
 import { Icon } from '@/components/Icon';
+import { PressableScale } from '@/components/PressableScale';
 import { Button, Field, Text } from '@/components/ui';
 import { usePreferences } from '@/lib/api/diet';
 import { useTheme } from '@/theme/useTheme';
@@ -251,7 +252,7 @@ function Stepper({
 }) {
   const t = useTheme();
   return (
-    <Pressable
+    <PressableScale
       accessibilityRole="button"
       accessibilityLabel={label}
       accessibilityState={{ disabled }}
@@ -266,6 +267,6 @@ function Stepper({
       }}
     >
       <Icon icon={icon} size={20} color={t.colors.text} />
-    </Pressable>
+    </PressableScale>
   );
 }

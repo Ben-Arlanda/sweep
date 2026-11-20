@@ -328,20 +328,24 @@ export const shadow = {
 } as const;
 
 /**
- * Motion. One feel for the whole app: springy, quick, never slow.
- * - pop: ticks and checkboxes overshoot, then settle.
- * - press: buttons shrink slightly while held.
+ * Motion. One feel for the whole app: quick and calm, settling in about 150–250ms.
+ * Springs are nearly critically damped (damping ratio ~0.7–0.85), so a tick or press
+ * barely overshoots: premium, not bouncy.
+ * - pop: a tick or heart lands, with only a hint of overshoot.
+ * - press: things shrink slightly while held.
  * - gentle: toasts and sheets slide in.
  * Every animation is switched off when the device's "reduce motion" setting is on.
  */
 export const motion = {
-  duration: { fast: 150, base: 250, slow: 400 },
+  duration: { fast: 150, base: 220, slow: 400 },
   spring: {
-    pop: { damping: 9, stiffness: 320, mass: 0.7 },
-    press: { damping: 20, stiffness: 400 },
-    gentle: { damping: 18, stiffness: 200 },
+    pop: { damping: 20, stiffness: 380, mass: 0.6 },
+    press: { damping: 32, stiffness: 420 },
+    gentle: { damping: 22, stiffness: 220 },
   },
   pressScale: 0.97,
+  /** How far list rows slide as they come and go. */
+  slide: 8,
   staggerMs: 45,
 } as const;
 

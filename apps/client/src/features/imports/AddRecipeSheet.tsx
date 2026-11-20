@@ -13,6 +13,7 @@ import { Pressable, View } from 'react-native';
 
 import { Icon } from '@/components/Icon';
 import { Sheet } from '@/components/Sheet';
+import { PressableScale } from '@/components/PressableScale';
 import { Button, ErrorText, Field, Text } from '@/components/ui';
 import { useReadRecipe, type Door } from '@/lib/api/imports';
 import { useTheme } from '@/theme/useTheme';
@@ -183,7 +184,7 @@ export function AddRecipeSheet({ onClose }: { onClose: () => void }) {
               )
             }
           />
-          <Pressable
+          <PressableScale
             accessibilityRole="button"
             onPress={() => {
               read.reset();
@@ -198,7 +199,7 @@ export function AddRecipeSheet({ onClose }: { onClose: () => void }) {
           >
             <Icon icon={ChevronLeft} color={t.colors.text} size={18} />
             <Text variant="label">Other ways to add</Text>
-          </Pressable>
+          </PressableScale>
         </View>
       )}
       <ErrorText message={error} />

@@ -2,11 +2,19 @@ import { useKeepAwake } from 'expo-keep-awake';
 import { ArrowLeft, ArrowRight, X } from 'lucide-react-native';
 import { useEffect, useRef, useState } from 'react';
 import { Modal, Platform, View, type HostInstance } from 'react-native';
+import Animated, {
+  ReduceMotion,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Icon } from '@/components/Icon';
 import { PressableScale } from '@/components/PressableScale';
 import { Button, Text } from '@/components/ui';
+import { haptic } from '@/lib/haptics';
+import { rowEntering } from '@/theme/listMotion';
 import { useTheme } from '@/theme/useTheme';
 
 import type { CookStep } from './method';
@@ -31,6 +39,19 @@ export function CookMode({
   const box = useRef<HostInstance>(null);
   const step = steps[at];
   const last = at === steps.length - 1;
+  const done = useSharedValue((1 / steps.length) * 100);
+  const progress = useAnimatedStyle(() => ({ width: `${done.get()}%` }));
+
+  function go(next: number) {
+    haptic.tap();
+    setAt(next);
+    done.set(
+      withTiming(((next + 1) / steps.length) * 100, {
+        duration: t.motion.duration.base,
+        reduceMotion: ReduceMotion.System,
+      }),
+    );
+  }
 
   // Give web's role="dialog" a name, as the Sheet does.
   useEffect(() => {
@@ -88,24 +109,24 @@ export function CookMode({
           aria-valuenow={at + 1}
           style={{ height: 6, borderRadius: 3, backgroundColor: t.colors.fill }}
         >
-          <View
-            style={{
-              width: `${((at + 1) / steps.length) * 100}%`,
-              height: 6,
-              borderRadius: 3,
-              backgroundColor: t.colors.selected,
-            }}
+          <Animated.View
+            style={[{ height: 6, borderRadius: 3, backgroundColor: t.colors.selected }, progress]}
           />
         </View>
 
-        <View accessibilityLiveRegion="polite" style={{ flex: 1, gap: t.space.md }}>
+        <Animated.View
+          key={at}
+          entering={rowEntering}
+          accessibilityLiveRegion="polite"
+          style={{ flex: 1, gap: t.space.md }}
+        >
           {step.stage ? (
             <Text variant="heading" accessibilityRole="header">
               {step.stage}
             </Text>
           ) : null}
           <Text style={{ fontSize: 26, lineHeight: 38 }}>{step.text}</Text>
-        </View>
+        </Animated.View>
 
         <View style={{ flexDirection: 'row', gap: t.space.sm }}>
           <View style={{ flex: 1 }}>
@@ -114,14 +135,14 @@ export function CookMode({
               icon={ArrowLeft}
               variant="secondary"
               disabled={at === 0}
-              onPress={() => setAt(at - 1)}
+              onPress={() => go(at - 1)}
             />
           </View>
           <View style={{ flex: 1 }}>
             <Button
               title={last ? 'Done' : 'Next'}
               icon={last ? undefined : ArrowRight}
-              onPress={() => (last ? onClose() : setAt(at + 1))}
+              onPress={() => (last ? onClose() : go(at + 1))}
             />
           </View>
         </View>
