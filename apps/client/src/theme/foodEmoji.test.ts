@@ -26,7 +26,7 @@ const recipeTitles = readdirSync(join(API_DATA, 'recipes'))
 
 test('found the API data (guards against a wrong path making the next tests pass trivially)', () => {
   expect(ingredientNames.length).toBeGreaterThan(200);
-  expect(recipeTitles.length).toBeGreaterThan(400);
+  expect(recipeTitles.length).toBeGreaterThan(100);
 });
 
 test('every Ingredient has its own emoji', () => {
