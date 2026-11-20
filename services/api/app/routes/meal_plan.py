@@ -18,7 +18,14 @@ from app.embeddings import Embedder
 from app.idempotency import IdempotencyKeyHeader
 from app.models import Household, PlannedMeal
 from app.routes.common import idempotent
-from app.schemas import DinnerIdeaOut, MealPlanOut, PlanDayIn, PlannedMealOut, RecipeSummaryOut
+from app.schemas import (
+    DinnerIdeaOut,
+    MealPlanOut,
+    PlanDayIn,
+    PlannedMealOut,
+    RecipeSummaryOut,
+    image_out,
+)
 from app.services import dinner_ideas, meal_plan
 from app.services.dinner_ideas import MAX_IDEAS, Mood
 
@@ -43,6 +50,7 @@ def _meal_out(meal: PlannedMeal, kitchen_uses: list[str]) -> PlannedMealOut:
         total_minutes=meal.recipe.total_minutes,
         cooked_at=meal.cooked_at,
         cooked_by=meal.cooked_by,
+        image=image_out(meal.recipe.image),
         kitchen_uses=kitchen_uses,
     )
 
