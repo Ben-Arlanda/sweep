@@ -2,10 +2,13 @@ import { Trash2 } from 'lucide-react-native';
 import { useState, type ReactNode } from 'react';
 import { View } from 'react-native';
 import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
-import Animated, { FadeOut, LinearTransition, ReduceMotion } from 'react-native-reanimated';
+import Animated, { useAnimatedReaction, type SharedValue } from 'react-native-reanimated';
+import { scheduleOnRN } from 'react-native-worklets';
 
 import { Icon } from '@/components/Icon';
 import { Text } from '@/components/ui';
+import { haptic } from '@/lib/haptics';
+import { rowEntering, rowExiting, rowLayout } from '@/theme/listMotion';
 import { useTheme } from '@/theme/useTheme';
 
 /**
@@ -26,21 +29,23 @@ export function SwipeToRemove({
 }) {
   const t = useTheme();
   const [width, setWidth] = useState(0);
+  const threshold = width > 0 ? width * 0.4 : 120;
 
   return (
     <Animated.View
       onLayout={(e) => setWidth(e.nativeEvent.layout.width)}
-      exiting={FadeOut.duration(t.motion.duration.fast).reduceMotion(ReduceMotion.System)}
-      layout={LinearTransition.duration(t.motion.duration.fast).reduceMotion(ReduceMotion.System)}
+      entering={rowEntering}
+      exiting={rowExiting}
+      layout={rowLayout}
     >
       <ReanimatedSwipeable
         friction={1.2}
         overshootRight={false}
-        rightThreshold={width > 0 ? width * 0.4 : 120}
+        rightThreshold={threshold}
         childrenContainerStyle={{ backgroundColor: background }}
         // As soon as the finger lifts past the line, not after the panel finishes opening.
         onSwipeableWillOpen={onRemove}
-        renderRightActions={() => (
+        renderRightActions={(_, translation) => (
           <View
             aria-hidden
             importantForAccessibility="no-hide-descendants"
@@ -54,6 +59,7 @@ export function SwipeToRemove({
               backgroundColor: t.colors.dangerSoft, // with danger text: contrast-tested
             }}
           >
+            <PastLineHaptic translation={translation} threshold={threshold} />
             <Icon icon={Trash2} size={20} color={t.colors.danger} />
             <Text variant="label" style={{ color: t.colors.danger }}>
               Delete
@@ -65,4 +71,21 @@ export function SwipeToRemove({
       </ReanimatedSwipeable>
     </Animated.View>
   );
+}
+
+/** A firm tap as the swipe crosses the line where letting go removes the row, either way. */
+function PastLineHaptic({
+  translation,
+  threshold,
+}: {
+  translation: SharedValue<number>;
+  threshold: number;
+}) {
+  useAnimatedReaction(
+    () => -translation.get() > threshold,
+    (past, was) => {
+      if (was !== null && past !== was) scheduleOnRN(haptic.threshold);
+    },
+  );
+  return null;
 }

@@ -1,6 +1,8 @@
-import { Pressable, View } from 'react-native';
+import { View } from 'react-native';
 
+import { PressableScale } from '@/components/PressableScale';
 import { Text } from '@/components/ui';
+import { haptic } from '@/lib/haptics';
 import { useTheme } from '@/theme/useTheme';
 
 /**
@@ -36,11 +38,15 @@ export function Segmented<T extends string>({
       {options.map((o) => {
         const on = o.value === value;
         return (
-          <Pressable
+          <PressableScale
             key={o.value}
             accessibilityRole="tab"
             accessibilityState={{ selected: on }}
-            onPress={() => onChange(o.value)}
+            onPress={() => {
+              if (on) return;
+              haptic.select();
+              onChange(o.value);
+            }}
             style={{
               flex: 1,
               minHeight: t.touchTarget - 6, // with the track's padding the tap area is 44
@@ -63,7 +69,7 @@ export function Segmented<T extends string>({
             >
               {o.label}
             </Text>
-          </Pressable>
+          </PressableScale>
         );
       })}
     </View>

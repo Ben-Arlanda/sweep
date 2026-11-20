@@ -14,6 +14,7 @@ import { api, unwrap } from './client';
 import { mealPlanKeys } from './mealPlan';
 import { recipeKeys } from './recipes';
 import type { components } from './schema';
+import { haptic } from '@/lib/haptics';
 
 export type DinnerIdea = components['schemas']['DinnerIdeaOut'];
 export type { IdeaFilter } from '@/features/planning/ideaRequest';
@@ -62,6 +63,7 @@ export function usePlanDay() {
           body: { recipe_id: v.recipeId, servings: v.servings ?? null },
         }),
       ),
+    onSuccess: haptic.success,
     onSettled: () => queryClient.invalidateQueries({ queryKey: mealPlanKeys.all }),
   });
 }

@@ -1,6 +1,8 @@
-import { Pressable, View } from 'react-native';
+import { View } from 'react-native';
 
+import { PressableScale } from '@/components/PressableScale';
 import { Text } from '@/components/ui';
+import { haptic } from '@/lib/haptics';
 import { useTheme } from '@/theme/useTheme';
 
 /** How tall a small pill looks. Its tap area stays the full touch target. */
@@ -47,18 +49,20 @@ export function ChoiceChips<T>({
       {options.map((option) => {
         const selected = option.value === value;
         return (
-          <Pressable
+          <PressableScale
             key={option.label}
             accessibilityRole="radio"
             aria-checked={selected}
             accessibilityLabel={option.accessibilityLabel ?? option.label}
-            onPress={() => onChange(option.value)}
-            style={({ pressed }) => ({
+            onPress={() => {
+              if (!selected) haptic.select();
+              onChange(option.value);
+            }}
+            style={{
               minHeight: t.touchTarget,
               justifyContent: 'center',
-              opacity: pressed ? 0.75 : 1,
               ...(fill ? { flex: 1, minWidth: 0 } : null),
-            })}
+            }}
           >
             <View
               style={{
@@ -86,7 +90,7 @@ export function ChoiceChips<T>({
                 {option.label}
               </Text>
             </View>
-          </Pressable>
+          </PressableScale>
         );
       })}
     </View>

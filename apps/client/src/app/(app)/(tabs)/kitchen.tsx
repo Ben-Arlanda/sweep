@@ -24,6 +24,7 @@ import {
 } from 'lucide-react-native';
 import { useRef, useState } from 'react';
 import { Pressable, ScrollView, Switch, TextInput, View, type HostInstance } from 'react-native';
+import { LayoutAnimationConfig } from 'react-native-reanimated';
 
 import { FoodThumb } from '@/components/FoodThumb';
 import { CategoryAccordion, toggled } from '@/components/CategoryAccordion';
@@ -35,6 +36,7 @@ import { Icon } from '@/components/Icon';
 import { measureAnchor, Popover, type Anchor } from '@/components/Popover';
 import { Sheet } from '@/components/Sheet';
 import { useToast } from '@/components/Toast';
+import { PressableScale } from '@/components/PressableScale';
 import { Button, ErrorText, Loading, Screen, TAB_ROOT, Text } from '@/components/ui';
 import { AddFromPhotoSheet } from '@/features/kitchen/AddFromPhotoSheet';
 import {
@@ -364,35 +366,37 @@ function KitchenScreenContent() {
         </Text>
       ) : null}
 
-      {shown.map((section) => {
-        const open = !closed.has(section.category);
-        return (
-          <CategoryAccordion
-            key={section.category}
-            category={section.category}
-            label={section.label}
-            open={open}
-            onToggle={() => setClosed((now) => toggled(now, section.category))}
-          >
-            {section.rows.map((row) => (
-              <SwipeToRemove
-                key={row.id}
-                background={t.colors.surface}
-                onRemove={() => removeFromKitchen(row)}
-              >
-                <ItemRow
-                  row={row}
-                  onList={isOnList(row)}
-                  onStatus={(anchor) => setPopover({ id: row.id, kind: 'status', anchor })}
-                  onMenu={(anchor) => setPopover({ id: row.id, kind: 'menu', anchor })}
-                  onOpen={() => setSheet(row.id)}
-                  onAdd={() => void addToList(row)}
-                />
-              </SwipeToRemove>
-            ))}
-          </CategoryAccordion>
-        );
-      })}
+      <LayoutAnimationConfig skipEntering>
+        {shown.map((section) => {
+          const open = !closed.has(section.category);
+          return (
+            <CategoryAccordion
+              key={section.category}
+              category={section.category}
+              label={section.label}
+              open={open}
+              onToggle={() => setClosed((now) => toggled(now, section.category))}
+            >
+              {section.rows.map((row) => (
+                <SwipeToRemove
+                  key={row.id}
+                  background={t.colors.surface}
+                  onRemove={() => removeFromKitchen(row)}
+                >
+                  <ItemRow
+                    row={row}
+                    onList={isOnList(row)}
+                    onStatus={(anchor) => setPopover({ id: row.id, kind: 'status', anchor })}
+                    onMenu={(anchor) => setPopover({ id: row.id, kind: 'menu', anchor })}
+                    onOpen={() => setSheet(row.id)}
+                    onAdd={() => void addToList(row)}
+                  />
+                </SwipeToRemove>
+              ))}
+            </CategoryAccordion>
+          );
+        })}
+      </LayoutAnimationConfig>
 
       {shown.length > 0 ? (
         <Text variant="caption" muted style={{ textAlign: 'center', fontSize: 12 }}>
@@ -479,17 +483,16 @@ function StockPill({
   const t = useTheme();
   const fg = on ? t.colors.onSelected : t.colors.text;
   return (
-    <Pressable
+    <PressableScale
       accessibilityRole="button"
       accessibilityState={{ selected: on }}
       // The visible "12 In stock" is the name (WCAG 2.5.3); the hint says what tapping does.
       accessibilityHint={on ? 'Showing only these. Tap to show all' : 'Show only these'}
       onPress={onPress}
-      style={({ pressed }) => ({
+      style={{
         minHeight: t.touchTarget,
         justifyContent: 'center',
-        opacity: pressed ? 0.8 : 1,
-      })}
+      }}
     >
       <View
         style={{
@@ -514,7 +517,7 @@ function StockPill({
           {STOCK_LABEL[stock]}
         </Text>
       </View>
-    </Pressable>
+    </PressableScale>
   );
 }
 
@@ -572,12 +575,12 @@ function PlaceChip({
 }) {
   const t = useTheme();
   return (
-    <Pressable
+    <PressableScale
       accessibilityRole="radio"
       accessibilityState={{ checked: on }}
       aria-checked={on}
       onPress={onPress}
-      style={({ pressed }) => ({
+      style={{
         minWidth: 52,
         minHeight: 36,
         marginVertical: 4, // 36 + 4 + 4 = the 44pt tap height
@@ -590,8 +593,7 @@ function PlaceChip({
         alignItems: 'center',
         justifyContent: 'center',
         gap: 5,
-        opacity: pressed ? 0.8 : 1,
-      })}
+      }}
     >
       {icon ? (
         <Icon icon={icon} size={16} color={on ? t.colors.onSelected : t.colors.text} />
@@ -606,7 +608,7 @@ function PlaceChip({
       >
         {label}
       </Text>
-    </Pressable>
+    </PressableScale>
   );
 }
 
@@ -786,13 +788,13 @@ function StatusPicker({ row, onPick }: { row: KitchenRow; onPick: (stock: Stock)
                 : '(Asks to add to list)'
               : null;
           return (
-            <Pressable
+            <PressableScale
               key={stock}
               accessibilityRole="radio"
               accessibilityState={{ checked: on }}
               accessibilityLabel={`${stock === 'out' ? 'Ran out' : STOCK_LABEL[stock]}${hint ? `, ${hint.slice(1, -1)}` : ''}`}
               onPress={() => onPick(stock)}
-              style={({ pressed }) => ({
+              style={{
                 minHeight: 52,
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -803,8 +805,7 @@ function StatusPicker({ row, onPick }: { row: KitchenRow; onPick: (stock: Stock)
                 borderWidth: 1.5,
                 borderColor: on ? t.stock.in_stock.tile : t.colors.border,
                 backgroundColor: on ? t.stock.in_stock.tile : t.colors.surface,
-                opacity: pressed ? 0.8 : 1,
-              })}
+              }}
             >
               <StockIcon stock={stock} size={24} />
               <View style={{ flex: 1 }}>
@@ -816,7 +817,7 @@ function StatusPicker({ row, onPick }: { row: KitchenRow; onPick: (stock: Stock)
                 ) : null}
               </View>
               {on ? <Icon icon={Check} size={20} color={t.stock.in_stock.icon} strong /> : null}
-            </Pressable>
+            </PressableScale>
           );
         })}
       </View>
@@ -930,21 +931,20 @@ function ItemSheet({
           {staple ? 'Staple' : 'Non-staple'} · {placeLabel(place)}
         </Text>
       </View>
-      <Pressable
+      <PressableScale
         accessibilityRole="button"
         accessibilityLabel="Close"
         onPress={onClose}
-        style={({ pressed }) => ({
+        style={{
           width: t.touchTarget,
           height: t.touchTarget,
           alignItems: 'center',
           justifyContent: 'center',
           alignSelf: 'flex-start',
-          opacity: pressed ? 0.6 : 1,
-        })}
+        }}
       >
         <Icon icon={X} color={t.colors.text} strong />
-      </Pressable>
+      </PressableScale>
     </View>
   );
 
@@ -1044,12 +1044,12 @@ function ItemSheet({
           {valid ? null : <ErrorText message="Enter a number above 0, or leave it empty" />}
           <View style={{ flexDirection: 'row', gap: t.space.sm, flexWrap: 'wrap' }}>
             {quickPicks(unit).map((pick) => (
-              <Pressable
+              <PressableScale
                 key={pick}
                 accessibilityRole="button"
                 accessibilityLabel={`${pick} ${unitLabel(unit)}`}
                 onPress={() => setValue(pick)}
-                style={({ pressed }) => ({
+                style={{
                   minHeight: t.touchTarget,
                   minWidth: 64,
                   paddingHorizontal: t.space.md,
@@ -1059,14 +1059,13 @@ function ItemSheet({
                   backgroundColor: t.colors.surface,
                   alignItems: 'center',
                   justifyContent: 'center',
-                  opacity: pressed ? 0.7 : 1,
-                })}
+                }}
               >
                 <Text>
                   {pick}
                   {unit === 'count' ? '' : ` ${unit}`}
                 </Text>
-              </Pressable>
+              </PressableScale>
             ))}
           </View>
         </View>
@@ -1296,23 +1295,23 @@ function MatchRow({
   onPress: () => void;
 }) {
   return (
-    <Pressable
+    <PressableScale
       accessibilityRole="button"
       accessibilityState={{ disabled }}
       disabled={disabled}
       onPress={onPress}
-      style={({ pressed }) => ({
+      style={{
         minHeight: t.touchTarget,
         justifyContent: 'center',
         paddingHorizontal: t.space.sm,
-        opacity: disabled ? 0.5 : pressed ? 0.6 : 1,
-      })}
+        opacity: disabled ? 0.5 : 1,
+      }}
     >
       <Text>
         {name}
         <Text muted> · {note}</Text>
       </Text>
-    </Pressable>
+    </PressableScale>
   );
 }
 

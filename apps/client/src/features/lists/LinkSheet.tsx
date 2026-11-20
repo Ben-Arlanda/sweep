@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { View } from 'react-native';
 
 import { Sheet } from '@/components/Sheet';
+import { PressableScale } from '@/components/PressableScale';
 import { Button, Field, Text } from '@/components/ui';
 import { displayName } from '@/features/kitchen/format';
 import type { Ingredient } from '@/lib/api/client';
@@ -70,16 +71,15 @@ export function LinkSheet({
         {results.data?.slice(0, 8).map((ingredient) => {
           const chosen = ingredient.id === current;
           return (
-            <Pressable
+            <PressableScale
               key={ingredient.id}
               accessibilityRole="button"
               accessibilityState={{ selected: chosen }}
               onPress={() => pick(ingredient)}
-              style={({ pressed }) => ({
+              style={{
                 minHeight: t.touchTarget,
                 justifyContent: 'center',
-                opacity: pressed ? 0.6 : 1,
-              })}
+              }}
             >
               <Text>
                 {displayName(ingredient.name)}
@@ -87,7 +87,7 @@ export function LinkSheet({
                   {chosen ? ' · linked now' : ingredient.is_household_ingredient ? ' · yours' : ''}
                 </Text>
               </Text>
-            </Pressable>
+            </PressableScale>
           );
         })}
       </View>

@@ -3,6 +3,7 @@ import { initials, tintFor } from './tint';
 import {
   colors,
   hero,
+  motion,
   PAGE_COLORS,
   sectionTints,
   palette,
@@ -176,3 +177,19 @@ describe.each(Object.keys(sectionTints) as (keyof typeof sectionTints)[])(
     });
   },
 );
+
+describe('motion stays calm', () => {
+  // Damping ratio: 1 never overshoots, below ~0.6 looks bouncy.
+  const ratio = (s: { damping: number; stiffness: number; mass?: number }) =>
+    s.damping / (2 * Math.sqrt(s.stiffness * (s.mass ?? 1)));
+
+  test.each(Object.entries(motion.spring))('the %s spring barely overshoots', (_, spring) => {
+    expect(ratio(spring)).toBeGreaterThanOrEqual(0.65);
+    expect(ratio(spring)).toBeLessThanOrEqual(1);
+  });
+
+  test('timed animations stay in the 150–250ms band', () => {
+    expect(motion.duration.fast).toBeGreaterThanOrEqual(150);
+    expect(motion.duration.base).toBeLessThanOrEqual(250);
+  });
+});

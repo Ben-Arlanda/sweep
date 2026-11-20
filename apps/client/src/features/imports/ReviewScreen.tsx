@@ -7,6 +7,7 @@ import { ChoiceChips } from '@/components/ChoiceChips';
 import { ConfirmDialog } from '@/components/ConfirmDialog';
 import { Icon } from '@/components/Icon';
 import { Tag } from '@/components/Pill';
+import { PressableScale } from '@/components/PressableScale';
 import { Button, ErrorText, Field, Screen, SectionLabel, Text } from '@/components/ui';
 import { displayName } from '@/features/kitchen/format';
 import { LinkSheet } from '@/features/lists/LinkSheet';
@@ -298,7 +299,7 @@ function LineRow({
           ))}
         </View>
       </Pressable>
-      <Pressable
+      <PressableScale
         accessibilityRole="button"
         accessibilityLabel={`Remove ${line.rawText}`}
         onPress={onRemove}
@@ -310,7 +311,7 @@ function LineRow({
         }}
       >
         <Icon icon={X} color={t.colors.textMuted} size={20} />
-      </Pressable>
+      </PressableScale>
     </View>
   );
 }

@@ -4,13 +4,15 @@
  * Browse them all at /design (src/app/(app)/design.tsx).
  */
 import type { LucideIcon } from 'lucide-react-native';
-import { use, useState, type ReactNode, type Ref } from 'react';
+import { use, useEffect, useState, type ReactNode, type Ref } from 'react';
 import {
   ActivityIndicator,
+  Platform,
   Text as RNText,
   ScrollView,
   TextInput,
   View,
+  type ScrollViewInstance,
   type StyleProp,
   type TextInputInstance,
   type TextInputProps,
@@ -18,13 +20,14 @@ import {
   type ViewStyle,
 } from 'react-native';
 import { BottomTabBarHeightContext } from 'expo-router/tabs';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Icon } from '@/components/Icon';
 import { PressableScale } from '@/components/PressableScale';
 import type { TintName } from '@/theme/tokens';
 import { inputText } from '@/theme/inputText';
 import { useTheme } from '@/theme/useTheme';
+import { haptic } from '@/lib/haptics';
 
 type Variant = 'display' | 'title' | 'heading' | 'body' | 'label' | 'caption';
 
@@ -53,13 +56,24 @@ export function Highlight({ children }: { children: ReactNode }) {
 /** Edges for a tab's first screen: it has no navigation header above it. */
 export const TAB_ROOT = ['top', 'left', 'right'] as const;
 
+/** The floating round button's size. */
+export const FLOATING_SIZE = 56;
+
 export function Screen({
   children,
   edges = ['left', 'right'],
   hero,
   footer,
+  scrollRef,
+  onScroll,
+  floating,
 }: {
   children: ReactNode;
+  scrollRef?: Ref<ScrollViewInstance>;
+  /** A round button floating bottom-right, above the tab bar (the list's +). */
+  floating?: ReactNode;
+  /** How far the page has scrolled, as it scrolls. */
+  onScroll?: (y: number) => void;
   /**
    * Which phone edges (notch, home bar) to keep clear of. The tab bar already keeps
    * clear of the bottom, so most screens need only the sides. Add 'top' on a screen
@@ -74,11 +88,13 @@ export function Screen({
   const t = useTheme();
   // The floating tab bar covers the bottom of the page: leave room so nothing hides under it.
   const tabBar = use(BottomTabBarHeightContext) ?? 0;
+  const insets = useSafeAreaInsets();
   const content = (
     <View
       style={{
         padding: t.space.lg,
-        paddingBottom: t.space.xxl * 2 + tabBar, // room above the toast and the tab bar
+        // Room above the toast and the tab bar, and the floating button if there is one.
+        paddingBottom: t.space.xxl * 2 + tabBar + (floating ? FLOATING_SIZE : 0),
         gap: t.space.lg,
         width: '100%',
         maxWidth: 560, // readable column on tablets and the web
@@ -94,7 +110,16 @@ export function Screen({
       edges={hero ? edges.filter((e) => e === 'bottom') : edges}
       style={{ flex: 1, backgroundColor: t.colors.background }}
     >
-      <ScrollView keyboardShouldPersistTaps="handled">
+      {/* iOS: leave room for the keyboard so the whole page can scroll above it. */}
+      <ScrollView
+        ref={scrollRef}
+        keyboardShouldPersistTaps="handled"
+        // Hide the keyboard when you drag the page (the web would on any scroll at all).
+        keyboardDismissMode={Platform.OS === 'web' ? 'none' : 'on-drag'}
+        automaticallyAdjustKeyboardInsets
+        onScroll={onScroll ? (e) => onScroll(e.nativeEvent.contentOffset.y) : undefined}
+        scrollEventThrottle={16}
+      >
         {hero}
         {content}
       </ScrollView>
@@ -119,6 +144,18 @@ export function Screen({
           >
             {footer}
           </View>
+        </View>
+      ) : null}
+      {floating ? (
+        <View
+          pointerEvents="box-none"
+          style={{
+            position: 'absolute',
+            right: t.space.lg,
+            bottom: insets.bottom + tabBar + t.space.md,
+          }}
+        >
+          {floating}
         </View>
       ) : null}
     </SafeAreaView>
@@ -323,6 +360,9 @@ export function Field({
 /** On its own soft-red pill, so it reads on any page colour as well as on cards. */
 export function ErrorText({ message }: { message: string | null | undefined }) {
   const t = useTheme();
+  useEffect(() => {
+    if (message) haptic.error(); // once per new message, not on every render
+  }, [message]);
   if (!message) return null;
   return (
     <Text
