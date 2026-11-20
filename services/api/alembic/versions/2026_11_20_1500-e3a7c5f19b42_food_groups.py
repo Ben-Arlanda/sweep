@@ -6,7 +6,7 @@ names into the starters, ADR 0012), then regroups. Downgrade leaves the data: a 
 can't be undone.
 
 Revision ID: e3a7c5f19b42
-Revises: d8c91ecb211e
+Revises: 1e533861b60f
 Create Date: 2026-11-20 15:00:00
 
 """
@@ -20,7 +20,7 @@ from app.seed import regroup_household_ingredients, upsert_ingredients
 
 # revision identifiers, used by Alembic.
 revision: str = "e3a7c5f19b42"
-down_revision: Union[str, Sequence[str], None] = "d8c91ecb211e"
+down_revision: Union[str, Sequence[str], None] = "1e533861b60f"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
