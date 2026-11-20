@@ -276,17 +276,8 @@ function RecipeContent() {
             </Text>
           ) : null}
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.md }}>
-            <View style={{ flex: 1, gap: 2 }}>
-              <Text variant="title" role="heading" aria-level={2} style={{ fontSize: 24 }}>
-                Method
-              </Text>
-              <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap' }}>
-                <Text style={{ color: t.colors.onBackgroundMuted }}>
-                  {cards.length} {cards.length === 1 ? 'step' : 'steps'}
-                  {views.length > 1 ? ' · ' : ''}
-                </Text>
-                {views.length > 1 ? <MethodViewPicker value={view} onChange={setView} /> : null}
-              </View>
+            <View style={{ flex: 1, flexDirection: 'row' }}>
+              {views.length > 1 ? <MethodViewPicker value={view} onChange={setView} /> : null}
             </View>
             {steps.length > 0 ? (
               <PressableScale
