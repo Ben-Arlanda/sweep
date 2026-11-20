@@ -21,7 +21,7 @@ from app import errors
 from app.embeddings import Embedder
 from app.models import Favourite, Ingredient, ParseMethod, Recipe, RecipeIngredient, RecipeKind
 from app.schemas import ImportedLineIn, ImportedRecipeIn
-from app.services import diet, ingredients, recipes
+from app.services import diet, ingredients, recipe_photos, recipes
 from app.services.households import MemberContext
 from app.services.ingredient_lines import (
     IngredientIndex,
@@ -30,6 +30,7 @@ from app.services.ingredient_lines import (
     index_from_db,
     parse_line,
 )
+from app.services.recipe_photos import PhotoStore
 
 LICENCE = "Household copy"  # a private copy for this Household, not for sharing
 
@@ -162,10 +163,32 @@ async def update(
     return recipe
 
 
-async def delete(session: AsyncSession, ctx: MemberContext, recipe_id: uuid.UUID) -> None:
-    """Gone for good. Planned Meals that used it go with it (ON DELETE CASCADE)."""
+async def delete(
+    session: AsyncSession, ctx: MemberContext, recipe_id: uuid.UUID, store: PhotoStore
+) -> None:
+    """Gone for good. Planned Meals that used it go with it (ON DELETE CASCADE), and its
+    photo's files (ADR 0031)."""
     await session.delete(await _own(session, ctx.household.id, recipe_id))
     await session.flush()
+    store.delete_prefix(recipe_photos.folder(ctx.household.id, recipe_id))
+
+
+async def set_photo(
+    session: AsyncSession,
+    ctx: MemberContext,
+    recipe_id: uuid.UUID,
+    store: PhotoStore,
+    data: bytes | None,
+) -> Recipe:
+    """Add or replace the recipe's own photo (None removes it); the old files go (ADR 0031)."""
+    recipe = await _own(session, ctx.household.id, recipe_id)
+    old = recipe.image
+    recipe.image = (
+        recipe_photos.save(store, ctx.household.id, recipe.id, data) if data is not None else None
+    )
+    await session.flush()
+    recipe_photos.forget(store, old)
+    return recipe
 
 
 async def listed(

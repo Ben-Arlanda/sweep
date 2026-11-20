@@ -68,3 +68,5 @@ services/api/evals/private/
 
 # Recipe Image downloads (slice 4f): only the chosen WebP files are committed
 services/api/data/recipe-images/cache/
+# Members' recipe photos in development (ADR 0031): private, never committed.
+services/api/data/photos/

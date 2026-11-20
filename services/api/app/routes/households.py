@@ -51,8 +51,10 @@ async def delete_me(request: Request, ctx: MemberDep, session: SessionDep) -> Re
     agent = cast(Agent | None, request.app.state.agent)
     if agent is not None:
         await agent.forget_member(session, ctx.member.id)  # saved chats go too
-    await households.delete_account(session, ctx)
+    household_gone = await households.delete_account(session, ctx)
     await session.commit()
+    if household_gone:  # its recipe photos too (ADR 0031)
+        request.app.state.photo_store.delete_prefix(str(ctx.household.id))
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 

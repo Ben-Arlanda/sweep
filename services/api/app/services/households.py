@@ -196,8 +196,9 @@ async def remove_member(session: AsyncSession, ctx: MemberContext, member_id: uu
     await session.delete(target)
 
 
-async def delete_account(session: AsyncSession, ctx: MemberContext) -> None:
-    """Remove the caller. The last Member out deletes the Household and everything in it."""
+async def delete_account(session: AsyncSession, ctx: MemberContext) -> bool:
+    """Remove the caller. The last Member out deletes the Household and everything in it
+    (and says so, so its stored photos can go too)."""
     # Lock the Household row so two Members deleting at the same moment are handled one
     # after the other. Without it, both could see "someone else is still here", and the
     # Household would be left with no Members at all.
@@ -208,8 +209,9 @@ async def delete_account(session: AsyncSession, ctx: MemberContext) -> None:
 
     if not others:
         await session.delete(ctx.household)  # ON DELETE CASCADE removes members and invites
-        return
+        return True
 
     if ctx.is_owner:
         others[0].role = Role.OWNER  # longest-standing remaining Member
     await session.delete(ctx.member)
+    return False

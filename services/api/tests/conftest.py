@@ -135,15 +135,22 @@ def fetcher() -> ScriptedFetcher:
 
 
 @pytest.fixture
+def photo_dir(tmp_path: Path) -> Path:
+    """Where this test's recipe photos are stored (ADR 0031): never the real folder."""
+    return tmp_path / "photos"
+
+
+@pytest.fixture
 async def client(
     database_url: str,
     db: Engine,
+    photo_dir: Path,
     fake_issuer: FakeIssuer,
     reader: ScriptedReader,
     fetcher: ScriptedFetcher,
 ) -> AsyncIterator[httpx.AsyncClient]:
     app = create_app(
-        Settings(database_url=database_url),
+        Settings(database_url=database_url, photo_dir=photo_dir),
         token_verifier=fake_issuer.verifier(),
         embedder=HashingEmbedder(),
         # Never the real Claude (a local .env may hold a key). Any call fails the test.
@@ -188,13 +195,17 @@ ClientFor = Callable[..., Any]  # (model, embedder=None)
 
 
 @pytest.fixture
-def client_for(database_url: str, db: Engine, fake_issuer: FakeIssuer) -> ClientFor:
+def client_for(
+    database_url: str, db: Engine, fake_issuer: FakeIssuer, photo_dir: Path
+) -> ClientFor:
     @asynccontextmanager
     async def make(
         model: ScriptedModel, embedder: Embedder | None = None
     ) -> AsyncIterator[httpx.AsyncClient]:
         app = create_app(
-            Settings(database_url=database_url, agent_daily_token_budget=50_000),
+            Settings(
+                database_url=database_url, agent_daily_token_budget=50_000, photo_dir=photo_dir
+            ),
             token_verifier=fake_issuer.verifier(),
             embedder=embedder or HashingEmbedder(),
             agent_model=model,
