@@ -36,7 +36,14 @@ export function RecipeCard({ recipe }: { recipe: Summary }) {
     >
       <Link href={{ pathname, params: { id: recipe.id } }} asChild>
         <PressableScale accessibilityRole="link" accessibilityLabel={`${recipe.title}. ${meta}`}>
-          <RecipeArt title={recipe.title} width="100%" height={96} radius={0} emojiSize={44} />
+          <RecipeArt
+            title={recipe.title}
+            image={recipe.image}
+            width="100%"
+            height={96}
+            radius={0}
+            emojiSize={44}
+          />
           <View
             style={{
               paddingTop: 10,

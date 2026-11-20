@@ -146,7 +146,14 @@ function TonightCard({ today, meals }: { today: string; meals: PlannedMeal[] }) 
         accessibilityLabel={`Tonight: ${meal.title}${isCooked ? ', cooked' : ''}. See the recipe`}
         onPress={() => router.push(`/recipe/${meal.recipe_id}`)}
       >
-        <RecipeArt title={meal.title} width="100%" height={132} radius={0} emojiSize={56} />
+        <RecipeArt
+          title={meal.title}
+          image={meal.image}
+          width="100%"
+          height={132}
+          radius={0}
+          emojiSize={56}
+        />
         <View style={{ paddingHorizontal: t.space.lg, paddingTop: 14, gap: 4 }}>
           <Text
             variant="caption"
@@ -326,7 +333,14 @@ function MealPlanCard({
 
         <View accessibilityLiveRegion="polite">
           {day.meal ? (
-            <RecipeArt title={day.meal.title} width="100%" height={132} radius={0} emojiSize={56} />
+            <RecipeArt
+              title={day.meal.title}
+              image={day.meal.image}
+              width="100%"
+              height={132}
+              radius={0}
+              emojiSize={56}
+            />
           ) : null}
           <View style={{ padding: t.space.lg, paddingTop: 14, gap: t.space.md }}>
             <View style={{ gap: 4 }}>

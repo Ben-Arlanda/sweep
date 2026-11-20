@@ -54,7 +54,14 @@ export function IdeaTile({
         onPress={() => router.push({ pathname: path, params: { id: idea.id } })}
       >
         <View>
-          <RecipeArt title={idea.title} width="100%" height={104} radius={0} emojiSize={48} />
+          <RecipeArt
+            title={idea.title}
+            image={idea.image}
+            width="100%"
+            height={104}
+            radius={0}
+            emojiSize={48}
+          />
           <View
             style={{
               position: 'absolute',

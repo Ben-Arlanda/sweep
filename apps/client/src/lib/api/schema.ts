@@ -963,6 +963,7 @@ export interface components {
              * @default false
              */
             favourite: boolean;
+            image?: components["schemas"]["RecipeImageOut"] | null;
             /**
              * Parent Recipe Id
              * Format: uuid
@@ -1212,6 +1213,7 @@ export interface components {
              * @default false
              */
             favourite: boolean;
+            image?: components["schemas"]["RecipeImageOut"] | null;
             /** Have */
             have: string[];
             /** Maybe */
@@ -1452,6 +1454,7 @@ export interface components {
              * @default false
              */
             favourite: boolean;
+            image?: components["schemas"]["RecipeImageOut"] | null;
             /** Rule Breaks */
             rule_breaks: string[];
         };
@@ -1786,6 +1789,7 @@ export interface components {
             cooked_at: string | null;
             /** Cooked By */
             cooked_by: string | null;
+            image?: components["schemas"]["RecipeImageOut"] | null;
             /** Kitchen Uses */
             kitchen_uses: string[];
         };
@@ -1900,6 +1904,25 @@ export interface components {
             /** Raw Text */
             raw_text: string;
         };
+        /**
+         * RecipeImageOut
+         * @description A picked stock photo (ADR 0029), hotlinked, and the credit it must show:
+         *     "Photo by {author} on {source}", each name linking to its page.
+         */
+        RecipeImageOut: {
+            /** Thumb Url */
+            thumb_url: string;
+            /** Hero Url */
+            hero_url: string;
+            /** Author */
+            author: string;
+            /** Author Url */
+            author_url: string;
+            /** Source */
+            source: string;
+            /** Source Url */
+            source_url: string;
+        };
         /** RecipeIngredientOut */
         RecipeIngredientOut: {
             /** Raw Text */
@@ -1952,6 +1975,7 @@ export interface components {
              * @default false
              */
             favourite: boolean;
+            image?: components["schemas"]["RecipeImageOut"] | null;
             /** Parent Recipe Id */
             parent_recipe_id: string | null;
             /** Ingredients */
@@ -2019,6 +2043,7 @@ export interface components {
              * @default false
              */
             favourite: boolean;
+            image?: components["schemas"]["RecipeImageOut"] | null;
         };
         /** ReplanEvent */
         ReplanEvent: {

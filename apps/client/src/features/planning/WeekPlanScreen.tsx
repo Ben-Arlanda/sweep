@@ -674,7 +674,7 @@ function SwapSheet({
                     borderTopColor: t.colors.border,
                   }}
                 >
-                  <RecipeArt title={idea.title} width={40} />
+                  <RecipeArt title={idea.title} image={idea.image} width={40} />
                   <PressableScale
                     accessibilityRole="link"
                     accessibilityLabel={`${idea.title}. ${meta}. See the recipe`}
