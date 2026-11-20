@@ -8,6 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ConfirmDialog } from '@/components/ConfirmDialog';
 import { Segmented } from '@/components/Segmented';
+import { UnderlineTabs } from '@/components/UnderlineTabs';
 import { HeartButton } from '@/components/HeartButton';
 import { Icon } from '@/components/Icon';
 import { PressableScale } from '@/components/PressableScale';
@@ -79,7 +80,7 @@ function RecipeContent() {
   const kitchen = useKitchen();
   // Optional too: without the list, "Need" is just a label, with no + to add it.
   const list = useList();
-  const [tab, setTab] = useState<Tab>('ingredients');
+  const [chosen, setTab] = useState<Tab | null>(null);
   const [remembered, setView] = useMethodView();
   const [cooking, setCooking] = useState(false);
   const need = useNeedActions(list.data?.id ?? '');
@@ -108,6 +109,14 @@ function RecipeContent() {
   const r = recipe.data;
   const views = viewsOf(r);
   const view: MethodView = views.includes(remembered) ? remembered : views[0];
+  // Overview only when there's something to say: a description, tips, variations or storage.
+  const hasOverview = !!(
+    r.summary ||
+    r.storage ||
+    (r.tips ?? []).length ||
+    (r.variations ?? []).length
+  );
+  const tab: Tab = chosen ?? (hasOverview ? 'overview' : 'ingredients');
   const steps = cookSteps(r, view);
   const summary = kitchen.data ? haveSummary(r.ingredients, kitchen.data) : null;
   const parentId = r.kind === 'adaptation' ? r.parent_recipe_id : null;
@@ -164,7 +173,6 @@ function RecipeContent() {
         </Text>
         <MetaRow recipe={r} />
       </View>
-      {r.summary ? <Text>{r.summary}</Text> : null}
       {swap && date ? <SwappingPill proposalId={swap} date={date} /> : null}
       {parentId ? <AdaptedFrom parentId={parentId} /> : null}
 
@@ -201,15 +209,23 @@ function RecipeContent() {
       ) : null}
       {actions}
 
-      <Segmented
+      <UnderlineTabs
         label="Recipe"
         value={tab}
         onChange={setTab}
         options={[
-          { value: 'ingredients', label: `Ingredients (${r.ingredients.length})` },
-          { value: 'method', label: methodLabel(r, view) },
+          ...(hasOverview ? [{ value: 'overview' as const, label: 'Overview' }] : []),
+          { value: 'ingredients', label: 'Ingredients' },
+          { value: 'method', label: 'Method' },
         ]}
       />
+
+      {tab === 'overview' ? (
+        <View style={{ gap: t.space.lg }}>
+          {r.summary ? <Text>{r.summary}</Text> : null}
+          <Extras recipe={r} />
+        </View>
+      ) : null}
 
       {tab === 'ingredients' ? (
         <View style={{ gap: t.space.sm }}>
@@ -284,7 +300,6 @@ function RecipeContent() {
           ) : (
             <Text muted>No method saved for this recipe.</Text>
           )}
-          {view === 'detailed' ? <Extras recipe={r} /> : null}
         </View>
       ) : null}
       {cooking ? (
@@ -333,7 +348,7 @@ function cardStyle(t: Theme) {
   };
 }
 
-type Tab = 'ingredients' | 'method';
+type Tab = 'overview' | 'ingredients' | 'method';
 
 /**
  * "Add to list" and "Add 2 missing": onto the Shopping List (queued if offline), then
@@ -367,14 +382,6 @@ function MetaRow({ recipe }: { recipe: Recipe }) {
       {metaParts(recipe).join('  ·  ')}
     </Text>
   );
-}
-
-/** "Method (6 stages)" in the Detailed View, "Method (4 steps)" in the Quick View. */
-function methodLabel(r: Recipe, view: MethodView): string {
-  const plural = (n: number, one: string) => `${n} ${one}${n === 1 ? '' : 's'}`;
-  if (view === 'detailed' && r.stages?.length)
-    return `Method (${plural(r.stages.length, 'stage')})`;
-  return r.method ? `Method (${plural(r.method.length, 'step')})` : 'Method';
 }
 
 /** One numbered step: a white card with the number in a navy circle. */
