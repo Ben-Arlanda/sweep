@@ -6,10 +6,11 @@
 
 search keeps up to four options per recipe, dropping any whose description names a meat
 or fish the recipe doesn't have. No model looks at Unsplash photos: their API terms send
-AI use to a separate agreement. The product owner picks one option, or none, per recipe
-on the review page, which shows the photos from Unsplash itself (hotlinked, as their
-terms require). apply tells Unsplash each picked photo was used (their "download"
-event) and writes `app/data/recipe_images.json`. Every step is resumable.
+AI use to a separate agreement. The first option is picked unless the product owner
+changes it (or picks none) on the review page, which shows the photos from Unsplash itself
+(hotlinked, as their terms require). apply tells Unsplash each picked photo was used
+(their "download" event) and writes `app/data/recipe_images.json`. Every step is
+resumable.
 """
 
 import argparse
@@ -163,14 +164,15 @@ button.none{font-weight:600}
 section.done{opacity:.75} section.done:hover{opacity:1}
 small{display:block;color:#5b6577;font-size:11px;padding:3px}
 </style>
-<header><b>Pick one photo per recipe, or "No photo".</b> Choices save as you click.
+<header><b>The first photo is picked for you.</b> Click only to change it, or "No photo".
+Changes save as you click.
 <span id=count></span>
-<label><input type=checkbox id=todo> Only show recipes not yet picked</label>
+<label><input type=checkbox id=todo> Hide recipes I've changed</label>
 </header><main id=main>__SECTIONS__</main>
 <script>
 const total = document.querySelectorAll('section').length;
 function count(){document.getElementById('count').textContent =
-  ` ${document.querySelectorAll('section.done').length} of ${total} picked.`}
+  ` ${document.querySelectorAll('section.done').length} of ${total} changed by hand.`}
 function filter(){const on = document.getElementById('todo').checked;
   document.querySelectorAll('section').forEach(s =>
     s.hidden = on && s.classList.contains('done'))}
@@ -186,6 +188,14 @@ document.getElementById('todo').onchange = filter; count();
 </script>"""
 
 
+def picked(slug: str, found: dict[str, Any], chosen: dict[str, Any]) -> str | None:
+    """The product owner's pick, or else the first option: they review by exception."""
+    if slug in chosen:
+        return str(chosen[slug]) if chosen[slug] else None
+    options = found.get(slug, {}).get("options", [])
+    return str(options[0]["photo_id"]) if options else None
+
+
 def review_page(recipes: Sequence[SeedRecipe]) -> str:
     found, chosen = _load(OPTIONS), _load(CHOICES)
     sections = []
@@ -193,7 +203,7 @@ def review_page(recipes: Sequence[SeedRecipe]) -> str:
         if recipe.slug not in found:
             continue  # not searched yet: reload the page later
         rows = found[recipe.slug]["options"]
-        pick = chosen.get(recipe.slug, "unset")
+        pick = picked(recipe.slug, found, chosen)
         buttons = [
             f'<button data-id="{o.photo_id}" aria-pressed="{str(pick == o.photo_id).lower()}">'
             f'<img loading=lazy alt="" src="{html.escape(sized(o.raw_url, 360))}">'
@@ -203,7 +213,7 @@ def review_page(recipes: Sequence[SeedRecipe]) -> str:
         buttons.append(
             f'<button class=none aria-pressed="{str(pick is None).lower()}">No photo</button>'
         )
-        done = " class=done" if pick != "unset" else ""
+        done = " class=done" if recipe.slug in chosen else ""
         sections.append(
             f'<section data-slug="{recipe.slug}"{done}><h2>{html.escape(recipe.title)}</h2>'
             f"<p>{recipe.course.value} · {html.escape(recipe.summary)}</p>"
@@ -254,7 +264,7 @@ def apply(recipes: Sequence[SeedRecipe]) -> None:
     records: list[RecipeImage] = []
     with _client() as client:
         for recipe in recipes:
-            photo = chosen.get(recipe.slug)
+            photo = picked(recipe.slug, found, chosen)
             rows = found.get(recipe.slug, {}).get("options", [])
             options = {row["photo_id"]: Option.model_validate(row) for row in rows}
             if photo is None or photo not in options:

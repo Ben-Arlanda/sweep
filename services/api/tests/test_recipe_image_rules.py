@@ -4,7 +4,7 @@ from typing import Any
 
 from app.data.recipe_images import sized, with_utm
 from app.services.recipe_image_check import ImageCheck, passes, title_clash
-from scripts.recipe_images import option, queries
+from scripts.recipe_images import option, picked, queries
 from tests.test_recipes import PASTA
 
 FALAFEL = PASTA.model_copy(update={"title": "Falafel wraps", "ingredients": ["chickpeas"]})
@@ -101,3 +101,11 @@ def test_the_parked_vision_check_passes_close_dishes_but_no_problem() -> None:
     assert not passes(check(watermark_or_text=True))
     assert not passes(check(faces=True))
     assert passes(check(clash="  "))  # an empty answer isn't a clash
+
+
+def test_the_first_option_is_picked_unless_the_product_owner_changed_it() -> None:
+    found = {"a": {"options": [{"photo_id": "p1"}, {"photo_id": "p2"}]}, "b": {"options": []}}
+    assert picked("a", found, {}) == "p1"
+    assert picked("a", found, {"a": "p2"}) == "p2"
+    assert picked("a", found, {"a": None}) is None  # "No photo"
+    assert picked("b", found, {}) is None
