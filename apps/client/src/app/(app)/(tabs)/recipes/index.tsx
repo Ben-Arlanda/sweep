@@ -1,10 +1,11 @@
 import { router } from 'expo-router';
 import {
   BookOpen,
-  ChefHat,
+  ChevronRight,
   Heart,
   Plus,
   SlidersHorizontal,
+  Sparkles,
   type LucideIcon,
 } from 'lucide-react-native';
 import { useState } from 'react';
@@ -27,10 +28,13 @@ import { useTheme } from '@/theme/useTheme';
 
 /**
  * The Recipes tab (slice 6f, premium redesign): header with Add recipe and Food rules,
- * search, one row of ways in (Dinner ideas, Favourites, Browse all), what fits the
- * Kitchen now, and your added recipes. Typing a search swaps the sections for results,
+ * search, Find dinner ideas with a Favourites square beside it, what fits the Kitchen now
+ * (with Browse all), and your added recipes. Typing a search swaps the sections for results,
  * ranked by meaning.
  */
+/** The Find dinner ideas button and the Favourites square beside it share this height. */
+const BIG = 56;
+
 function RecipesScreenContent() {
   const t = useTheme();
   const [text, setText] = useState('');
@@ -69,22 +73,43 @@ function RecipesScreenContent() {
         <SearchResults search={search} />
       ) : (
         <>
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: -t.space.sm }}>
-            <IconChip
-              icon={ChefHat}
-              label="Dinner ideas"
+          <View style={{ flexDirection: 'row', gap: t.space.sm, marginTop: -t.space.xs }}>
+            <PressableScale
+              accessibilityRole="link"
               onPress={() => router.push('/dinner-ideas')}
-            />
-            <IconChip
-              icon={Heart}
-              label="Favourites"
+              style={{
+                flex: 1,
+                minHeight: BIG,
+                borderRadius: t.radius.lg,
+                backgroundColor: t.colors.action,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: t.space.sm,
+              }}
+            >
+              <Icon icon={Sparkles} size={20} color={t.colors.onAction} strong />
+              <Text style={{ color: t.colors.onAction, fontFamily: t.fonts.bold, fontSize: 17 }}>
+                Find dinner ideas
+              </Text>
+            </PressableScale>
+            <PressableScale
+              accessibilityRole="link"
+              accessibilityLabel="Favourites"
               onPress={() => router.push({ pathname: '/recipes/all', params: { favourites: '1' } })}
-            />
-            <IconChip
-              icon={BookOpen}
-              label="Browse all"
-              onPress={() => router.push('/recipes/all')}
-            />
+              style={{
+                width: BIG,
+                height: BIG,
+                borderRadius: t.radius.lg,
+                borderWidth: 1,
+                borderColor: t.colors.border,
+                backgroundColor: t.colors.surface,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Icon icon={Heart} color={t.colors.text} />
+            </PressableScale>
           </View>
           <Recommended />
           <YourRecipes />
@@ -129,62 +154,35 @@ function BoxButton({
   );
 }
 
-/** A way into recipes: white pill with an icon. */
-function IconChip({
-  icon,
-  label,
-  onPress,
-}: {
-  icon: LucideIcon;
-  label: string;
-  onPress: () => void;
-}) {
-  const t = useTheme();
-  return (
-    <PressableScale
-      accessibilityRole="link"
-      onPress={onPress}
-      style={{ minHeight: t.touchTarget, justifyContent: 'center' }}
-    >
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: 6,
-          minHeight: 36,
-          paddingHorizontal: t.space.md - 1,
-          borderRadius: t.radius.pill,
-          borderWidth: 1,
-          borderColor: t.colors.border,
-          backgroundColor: t.colors.surface,
-        }}
-      >
-        <Icon icon={icon} size={15} color={t.colors.text} />
-        <Text style={{ fontFamily: t.fonts.medium, fontSize: 13, lineHeight: 18 }}>{label}</Text>
-      </View>
-    </PressableScale>
-  );
-}
-
-/** The best Kitchen Matches right now (the same code as Dinner Ideas), two across. */
 function Recommended() {
   const t = useTheme();
   const ideas = useDinnerIdeas(KITCHEN_FIRST, 'all', 4);
   if (ideas.isError) return null; // optional: browsing still works without it
   return (
     <View style={{ gap: t.space.sm }}>
-      <View>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
         <Text
           variant="label"
           role="heading"
           aria-level={2}
-          style={{ color: t.colors.onBackground, fontSize: 17, lineHeight: 22 }}
+          style={{ color: t.colors.onBackground, fontSize: 17, lineHeight: 22, flexShrink: 1 }}
         >
           Recommended for you
         </Text>
-        <Text variant="caption" style={{ color: t.colors.onBackgroundMuted }}>
-          From your Kitchen and Dietary Rules.
-        </Text>
+        <PressableScale
+          accessibilityRole="link"
+          onPress={() => router.push('/recipes/all')}
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 2,
+            minHeight: t.touchTarget,
+            paddingLeft: t.space.sm,
+          }}
+        >
+          <Text style={{ color: t.colors.onBackgroundMuted }}>Browse all</Text>
+          <Icon icon={ChevronRight} size={18} color={t.colors.onBackgroundMuted} />
+        </PressableScale>
       </View>
       {ideas.isPending ? <Loading /> : null}
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.sm }}>
