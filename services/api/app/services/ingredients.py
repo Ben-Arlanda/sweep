@@ -18,6 +18,7 @@ from sqlalchemy import ColumnElement, delete, or_, select
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.data.food_groups import guess_category
 from app.models import HouseholdIngredientLink, Ingredient, IngredientAlias
 
 SEARCH_LIMIT = 20
@@ -114,7 +115,8 @@ async def _by_name(
 
 
 async def _create(session: AsyncSession, household_id: uuid.UUID, name: str) -> Ingredient:
-    """A Household Ingredient: category "other" (so the Cupboard), counted, no density.
+    """A Household Ingredient: in the group its words name ("wagyu beef": Meat), else
+    "other" (so the Cupboard); counted, no density (ADR 0030).
 
     ON CONFLICT DO NOTHING, then read: two Members adding "kale" at the same moment both
     end up with the same row instead of one of them getting an error.
@@ -125,7 +127,7 @@ async def _create(session: AsyncSession, household_id: uuid.UUID, name: str) -> 
             id=uuid.uuid4(),
             household_id=household_id,
             name=name,
-            category="other",
+            category=guess_category(name),
             default_unit="count",
             is_default_staple=False,
         )

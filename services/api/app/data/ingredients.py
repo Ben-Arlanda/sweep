@@ -287,8 +287,15 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
     SeedIngredient(
         "chicken breast", "meat", "g", None, False, ("chicken breasts", "chicken breast fillets")
     ),
-    SeedIngredient("beef mince", "meat", "g", None, False, ("ground beef", "mince", "minced beef")),
-    SeedIngredient("pork mince", "meat", "g", None, False, ("ground pork",)),
+    SeedIngredient(
+        "beef mince",
+        "meat",
+        "g",
+        None,
+        False,
+        ("ground beef", "mince", "minced beef", "mince beef"),
+    ),
+    SeedIngredient("pork mince", "meat", "g", None, False, ("ground pork", "mince pork")),
     SeedIngredient("lamb chops", "meat", "g", None, False, ("lamb cutlets",)),
     SeedIngredient(
         "beef steak",
@@ -655,7 +662,12 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
     SeedIngredient("whole chicken", "meat", "count", None, False, ()),
     SeedIngredient("lamb leg", "meat", "g", None, False, ("leg of lamb",)),
     SeedIngredient("lamb shoulder", "meat", "g", None, False, ()),
-    SeedIngredient("lamb mince", "meat", "g", None, False, ("ground lamb",)),
+    SeedIngredient("lamb mince", "meat", "g", None, False, ("ground lamb", "mince lamb")),
+    # Plain meats, for a list line that doesn't name a cut (ADR 0030).
+    SeedIngredient("chicken", "meat", "g"),
+    SeedIngredient("beef", "meat", "g"),
+    SeedIngredient("lamb", "meat", "g"),
+    SeedIngredient("pork", "meat", "g"),
     SeedIngredient(
         "pork loin", "meat", "g", None, False, ("pork loin steaks", "pork steaks", "pork strips")
     ),

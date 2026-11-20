@@ -51,6 +51,8 @@ VAGUE |= {"cloves", "ice cream", "berries", "fennel"}  # "garlic cloves", "fenne
 # "apple juices bubble", "very long beans", "the chicken pieces", the Spanish tortilla (an omelette)
 VAGUE |= {"apple juice", "cherry juice", "long beans", "chicken pieces", "pork strips", "chutney"}
 VAGUE |= {"tortilla"}
+# A method's "the beef" means whichever cut the list names (ADR 0030).
+VAGUE |= {"chicken", "beef", "lamb", "pork"}
 
 _VAGUE_FORMS = {form for term in VAGUE for form in variants(term)}  # "roll", "wrap" too
 

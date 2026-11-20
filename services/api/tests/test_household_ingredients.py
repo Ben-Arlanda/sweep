@@ -232,7 +232,7 @@ async def kitchen_places(
     return {t["ingredient"]["name"]: t["place"] for t in response.json()["tracked"]}
 
 
-@pytest.mark.parametrize("typed", ["Finger lime", "Bin bags", "Birthday candles"])
+@pytest.mark.parametrize("typed", ["Sparklers", "Bin bags", "Birthday candles"])
 async def test_anything_ticked_reaches_the_kitchen_in_the_cupboard(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer, typed: str
 ) -> None:
