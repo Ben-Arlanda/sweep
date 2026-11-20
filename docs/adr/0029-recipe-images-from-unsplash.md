@@ -17,7 +17,7 @@ Unsplash's API terms (read 2026-11-20) differ from Creative Commons in ways that
 
 - **Source:** Unsplash search, landscape, `content_filter=high`. Up to four options per recipe.
 - **Checking:** plain code only. An option is dropped if its description names a meat or fish the recipe doesn't have, or if it's smaller than 1200px. No model looks at Unsplash photos. The product owner picks one option, or none, per recipe on a local review page.
-- **Showing:** the app loads photos from `images.unsplash.com`, sized and cropped to 4:3 by URL (960px hero, 360px cards, WebP). The URL is kept from the API, never from model output. Credit under the hero: "Photo by {name} on Unsplash", both linked.
+- **Showing:** the app loads photos from `images.unsplash.com`, sized and cropped to 4:3 by URL (960px hero, 360px cards, WebP at quality 55: about 150 KB and 30 KB, since these detailed photos stay over 120 KB even at quality 45). The URL is kept from the API, never from model output. Credit under the hero: "Photo by {name} on Unsplash", both linked.
 - **No photo is fine:** recipes without a pick keep RecipeArt. Adaptations never show their parent's photo, since their dish has changed.
 - **Parked:** the Haiku check and its eval, for if Unsplash agrees to an AI check; Magnific/Freepik as a backup source, once its licence is read (its site refused automated reads) and an API key is available.
 

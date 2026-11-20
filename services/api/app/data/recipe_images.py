@@ -34,7 +34,7 @@ def with_utm(url: str) -> str:
 
 def sized(raw_url: str, width: int) -> str:
     """A 4:3 crop at this width, made by Unsplash's image server. Keeps `ixid`, as asked."""
-    return f"{raw_url}&w={width}&h={width * 3 // 4}&fit=crop&crop=entropy&fm=webp&q=70"
+    return f"{raw_url}&w={width}&h={width * 3 // 4}&fit=crop&crop=entropy&fm=webp&q=55"
 
 
 def load_recipe_images() -> list[RecipeImage]:
