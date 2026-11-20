@@ -665,7 +665,7 @@ Also built: the sheet's This week chips are stored on the Conversation (`plan_tw
 
 **4f-a results (2026-11-20):** Unsplash had options for 344 of 426 recipes (82 had none: the dish names find nothing there). The product owner kept a photo for 130 and chose **every recipe without a picked photo is removed from the library** (296 removed; 130 Seed Recipes left: 63 mains, 22 desserts, 17 sides, 17 breakfasts, 11 lunches). Where two similar dishes defaulted to the same photo, the second got its next option. Retrieval Set filtered to the kept recipes: three queries lost every relevant recipe (pumpkin, scallion pancakes, chili con carne), 44 left; the photo-check eval keeps its 34 cases on kept recipes. Recall numbers above are for the old library; re-run before quoting them.
 
-Parked: AI-generated images for recipes with no licensed photo (decide once 4f-a shows the coverage; check the provider's commercial-use terms first). After slice 11: Member photos for Imported Recipes (private S3, signed URLs, EXIF stripped by re-encoding, deleted with the recipe; needs its own ADR, since Sweep stores no user photos today).
+Parked: AI-generated images for recipes with no licensed photo (decide once 4f-a shows the coverage; check the provider's commercial-use terms first). Member photos for Imported Recipes: built early (2026-11-20, `feature/recipe-photos`, ADR 0031) behind a `PhotoStore` interface, a folder in development; slice 11 adds S3. Recipes with no photo show a plain food icon (the dish-name emoji guesses are gone).
 
 **Slice 4g steps** (ADR 0028; 4g-a `feature/recipe-library`, data + API; 4g-b `feature/recipe-library-client`; build test-first; before 4f so images are found for the new dishes):
 
