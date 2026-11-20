@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
-import { ArrowLeft, ArrowLeftRight, CalendarDays, ChefHat, Plus } from 'lucide-react-native';
+import { ArrowLeft, ArrowLeftRight, CalendarDays, ChefHat, Info, Plus } from 'lucide-react-native';
 import { randomUUID } from 'expo-crypto';
 import { useState } from 'react';
 import { Linking, Pressable, View } from 'react-native';
@@ -920,35 +920,65 @@ function RecipePhoto({
 }
 
 /**
- * The photographer's name on a stock photo, linked to their Unsplash profile. The product
- * owner chose the name alone, without "on Unsplash" (ADR 0029).
+ * A tiny "i" on a stock photo; tapped, it shows the photographer's name, linked to their
+ * Unsplash profile (ADR 0029). The icon is 12px, its tap area the 24px WCAG minimum.
  */
 function PhotoCredit({ image }: { image: RecipeImage }) {
   const t = useTheme();
+  const [open, setOpen] = useState(false);
   const { author, author_url: authorUrl } = image;
   if (!author || !authorUrl) return null;
   return (
-    <Text
-      accessibilityRole="link"
-      accessibilityLabel={`Photo by ${author}`}
-      onPress={() => Linking.openURL(authorUrl)}
-      numberOfLines={1}
+    <View
       style={{
         position: 'absolute',
-        right: t.space.sm,
-        bottom: t.space.sm,
-        maxWidth: '60%',
-        paddingHorizontal: t.space.sm,
-        paddingVertical: 3,
-        borderRadius: t.radius.sm,
-        overflow: 'hidden',
-        backgroundColor: 'rgba(0, 0, 0, 0.45)',
-        color: '#fff',
-        fontSize: 11,
+        right: 4,
+        bottom: 4,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 2,
       }}
     >
-      {author}
-    </Text>
+      {open ? (
+        <Text
+          accessibilityRole="link"
+          accessibilityLabel={`Photo by ${author}`}
+          onPress={() => Linking.openURL(authorUrl)}
+          numberOfLines={1}
+          style={{
+            maxWidth: 220,
+            paddingHorizontal: 6,
+            paddingVertical: 2,
+            borderRadius: t.radius.sm,
+            overflow: 'hidden',
+            backgroundColor: 'rgba(0, 0, 0, 0.45)',
+            color: '#fff',
+            fontSize: 11,
+          }}
+        >
+          {author}
+        </Text>
+      ) : null}
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={open ? 'Hide photo credit' : 'Photo credit'}
+        onPress={() => setOpen((o) => !o)}
+        style={{ width: 24, height: 24, alignItems: 'center', justifyContent: 'center' }}
+      >
+        <View
+          style={{
+            width: 14,
+            height: 14,
+            borderRadius: 7,
+            backgroundColor: 'rgba(0, 0, 0, 0.35)',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Icon icon={Info} size={12} color="#fff" />
+        </View>
+      </Pressable>
+    </View>
   );
 }
 
