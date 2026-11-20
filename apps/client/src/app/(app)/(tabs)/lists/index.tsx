@@ -29,7 +29,8 @@ import { displayName } from '@/features/kitchen/format';
 import { PageHeader } from '@/components/PageHeader';
 import { measureAnchor, Popover, type Anchor } from '@/components/Popover';
 import { useToast } from '@/components/Toast';
-import { Button, ErrorText, Loading, Screen, TAB_ROOT, Text } from '@/components/ui';
+import { PressableScale } from '@/components/PressableScale';
+import { Button, ErrorText, FLOATING_SIZE, Loading, Screen, TAB_ROOT, Text } from '@/components/ui';
 import { useMembers } from '@/features/household/useMembers';
 import { addedByText } from '@/features/lists/addedBy';
 import { listSections } from '@/features/lists/categories';
@@ -141,8 +142,25 @@ function ListContent({ list }: { list: ListDetail }) {
       edges={TAB_ROOT}
       scrollRef={page}
       onScroll={(y) => (scrolled.current = y)}
-      footer={
-        adding ? undefined : <Button title="New item" icon={Plus} onPress={() => setAdding(true)} />
+      floating={
+        adding ? undefined : (
+          <PressableScale
+            accessibilityRole="button"
+            accessibilityLabel="New item"
+            onPress={() => setAdding(true)}
+            style={{
+              width: FLOATING_SIZE,
+              height: FLOATING_SIZE,
+              borderRadius: FLOATING_SIZE / 2,
+              backgroundColor: t.colors.action,
+              boxShadow: t.shadow.raised,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Icon icon={Plus} size={26} color={t.colors.onAction} strong />
+          </PressableScale>
+        )
       }
     >
       <PageHeader

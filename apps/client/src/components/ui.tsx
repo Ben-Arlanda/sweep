@@ -19,7 +19,7 @@ import {
   type ViewStyle,
 } from 'react-native';
 import { BottomTabBarHeightContext } from 'expo-router/tabs';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Icon } from '@/components/Icon';
 import { PressableScale } from '@/components/PressableScale';
@@ -55,6 +55,9 @@ export function Highlight({ children }: { children: ReactNode }) {
 /** Edges for a tab's first screen: it has no navigation header above it. */
 export const TAB_ROOT = ['top', 'left', 'right'] as const;
 
+/** The floating round button's size. */
+export const FLOATING_SIZE = 56;
+
 export function Screen({
   children,
   edges = ['left', 'right'],
@@ -62,9 +65,12 @@ export function Screen({
   footer,
   scrollRef,
   onScroll,
+  floating,
 }: {
   children: ReactNode;
   scrollRef?: Ref<ScrollViewInstance>;
+  /** A round button floating bottom-right, above the tab bar (the list's +). */
+  floating?: ReactNode;
   /** How far the page has scrolled, as it scrolls. */
   onScroll?: (y: number) => void;
   /**
@@ -81,11 +87,13 @@ export function Screen({
   const t = useTheme();
   // The floating tab bar covers the bottom of the page: leave room so nothing hides under it.
   const tabBar = use(BottomTabBarHeightContext) ?? 0;
+  const insets = useSafeAreaInsets();
   const content = (
     <View
       style={{
         padding: t.space.lg,
-        paddingBottom: t.space.xxl * 2 + tabBar, // room above the toast and the tab bar
+        // Room above the toast and the tab bar, and the floating button if there is one.
+        paddingBottom: t.space.xxl * 2 + tabBar + (floating ? FLOATING_SIZE : 0),
         gap: t.space.lg,
         width: '100%',
         maxWidth: 560, // readable column on tablets and the web
@@ -133,6 +141,18 @@ export function Screen({
           >
             {footer}
           </View>
+        </View>
+      ) : null}
+      {floating ? (
+        <View
+          pointerEvents="box-none"
+          style={{
+            position: 'absolute',
+            right: t.space.lg,
+            bottom: insets.bottom + tabBar + t.space.md,
+          }}
+        >
+          {floating}
         </View>
       ) : null}
     </SafeAreaView>
