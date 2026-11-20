@@ -23,7 +23,7 @@ export const palette = {
   ink: '#121a2e', // navy ink
   ink700: '#2b3550',
   navy: '#1b2a4e', // selection: chips, segmented tabs, step numbers
-  page: '#f1f3f7', // the one page colour on every tab
+  page: '#e9eef6', // the one page colour on every tab: cool, a touch of blue
   line: '#dce0e9',
   fill: '#e4e8f0', // photo placeholders and quiet fills
   aiSoft: '#eef6c8',
