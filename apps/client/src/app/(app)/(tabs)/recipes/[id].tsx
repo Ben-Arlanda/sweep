@@ -152,12 +152,7 @@ function RecipeContent() {
           ownRecipeId={r.kind === 'imported' ? r.id : null}
           heart={
             r.kind === 'adaptation' ? null : (
-              <HeartButton
-                recipeId={r.id}
-                title={r.title}
-                favourite={r.favourite ?? false}
-                onPhoto
-              />
+              <HeartButton recipeId={r.id} title={r.title} favourite={r.favourite ?? false} />
             )
           }
         />
