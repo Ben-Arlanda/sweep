@@ -16,7 +16,7 @@ const VIEWS: { value: MethodView; label: string; hint: string; icon: LucideIcon 
 ];
 
 /**
- * "Detailed ▾" on the Method tab: a small button that pops out the two ways to read the
+ * "Detailed view ⌄" under the Method heading: tapped, it pops out the two ways to read the
  * method, each with a line saying what you get. The choice is remembered on the device.
  */
 export function MethodViewPicker({
@@ -36,23 +36,19 @@ export function MethodViewPicker({
       <Pressable
         ref={button}
         accessibilityRole="button"
-        accessibilityLabel={`Method view: ${current.label}. Change`}
+        accessibilityLabel={`${current.label} view. Change`}
         onPress={async () => setAnchor(await measureAnchor(button))}
+        hitSlop={8}
         style={({ pressed }) => ({
-          opacity: pressed ? 0.7 : 1,
           flexDirection: 'row',
           alignItems: 'center',
-          gap: 4,
-          minHeight: t.touchTarget,
-          paddingHorizontal: t.space.md,
-          borderRadius: t.radius.pill,
-          borderWidth: 1,
-          borderColor: t.colors.border,
-          backgroundColor: t.colors.surface,
+          gap: 2,
+          minHeight: 24,
+          opacity: pressed ? 0.7 : 1,
         })}
       >
-        <Text variant="label">{current.label}</Text>
-        <Icon icon={ChevronDown} size={16} color={t.colors.text} />
+        <Text style={{ color: t.colors.onBackgroundMuted }}>{current.label} view</Text>
+        <Icon icon={ChevronDown} size={16} color={t.colors.onBackgroundMuted} />
       </Pressable>
       {anchor ? (
         <Popover anchor={anchor} label="Method view" width={240} onClose={() => setAnchor(null)}>

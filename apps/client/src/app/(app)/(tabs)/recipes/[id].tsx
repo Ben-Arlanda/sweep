@@ -1,13 +1,19 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
-import { ArrowLeft, ArrowLeftRight, CalendarDays, ChefHat, Info, Plus } from 'lucide-react-native';
+import {
+  ArrowLeft,
+  ArrowLeftRight,
+  CalendarDays,
+  CirclePlay,
+  Info,
+  Plus,
+} from 'lucide-react-native';
 import { randomUUID } from 'expo-crypto';
 import { useState } from 'react';
 import { Linking, Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ConfirmDialog } from '@/components/ConfirmDialog';
-import { Segmented } from '@/components/Segmented';
 import { UnderlineTabs } from '@/components/UnderlineTabs';
 import { HeartButton } from '@/components/HeartButton';
 import { Icon } from '@/components/Icon';
@@ -118,6 +124,11 @@ function RecipeContent() {
     (r.variations ?? []).length
   );
   const tab: Tab = chosen ?? (hasOverview ? 'overview' : 'ingredients');
+  // Detailed: one card per Recipe Stage. Quick: one per step.
+  const cards: Card[] =
+    view === 'detailed' && r.stages?.length
+      ? r.stages.map((st) => ({ title: st.title, minutes: st.minutes, body: st.steps }))
+      : (r.method ?? []).map((step) => ({ body: [step] }));
   const steps = cookSteps(r, view);
   const summary = kitchen.data ? haveSummary(r.ingredients, kitchen.data) : null;
   const parentId = r.kind === 'adaptation' ? r.parent_recipe_id : null;
@@ -264,24 +275,43 @@ function RecipeContent() {
               (see Notes below).
             </Text>
           ) : null}
-          {views.length > 1 ? (
-            <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-              <MethodViewPicker value={view} onChange={setView} />
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.md }}>
+            <View style={{ flex: 1, gap: 2 }}>
+              <Text variant="title" role="heading" aria-level={2} style={{ fontSize: 24 }}>
+                Method
+              </Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap' }}>
+                <Text style={{ color: t.colors.onBackgroundMuted }}>
+                  {cards.length} {cards.length === 1 ? 'step' : 'steps'}
+                  {views.length > 1 ? ' · ' : ''}
+                </Text>
+                {views.length > 1 ? <MethodViewPicker value={view} onChange={setView} /> : null}
+              </View>
             </View>
-          ) : null}
-          {steps.length > 0 ? (
-            <Button
-              title="Cook Mode"
-              icon={ChefHat}
-              variant="secondary"
-              accessibilityLabel={`Cook Mode: ${r.title}, one step at a time`}
-              onPress={() => setCooking(true)}
-            />
-          ) : null}
-          {view === 'detailed' && r.stages?.length ? (
-            <Stages stages={r.stages} />
-          ) : r.method ? (
-            r.method.map((step, i) => <StepCard key={i} n={i + 1} text={step} />)
+            {steps.length > 0 ? (
+              <PressableScale
+                accessibilityRole="button"
+                accessibilityLabel={`Cook Mode: ${r.title}, one step at a time`}
+                onPress={() => setCooking(true)}
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: t.space.sm,
+                  minHeight: t.touchTarget,
+                  paddingHorizontal: t.space.lg,
+                  borderRadius: t.radius.pill,
+                  backgroundColor: t.colors.action,
+                }}
+              >
+                <Icon icon={CirclePlay} size={18} color={t.colors.onAction} />
+                <Text style={[t.type.label, { color: t.colors.onAction }]}>Cook Mode</Text>
+              </PressableScale>
+            ) : null}
+          </View>
+          {cards.length > 0 ? (
+            cards.map((card, i) => (
+              <MethodCard key={i} n={i + 1} total={cards.length} card={card} />
+            ))
           ) : r.source_url ? (
             <Pressable
               accessibilityRole="link"
@@ -380,54 +410,36 @@ function MetaRow({ recipe }: { recipe: Recipe }) {
 }
 
 /** One numbered step: a white card with the number in a navy circle. */
-function StepCard({ n, text }: { n: number; text: string }) {
-  const t = useTheme();
-  return (
-    <View style={[cardStyle(t), { flexDirection: 'row', alignItems: 'flex-start', padding: 14 }]}>
-      <View
-        style={{
-          width: 26,
-          height: 26,
-          borderRadius: 13,
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: t.colors.selected,
-        }}
-      >
-        <Text style={{ fontFamily: t.fonts.bold, fontSize: 13, color: t.colors.onSelected }}>
-          {n}
-        </Text>
-      </View>
-      <Text style={{ flex: 1 }}>{text}</Text>
-    </View>
-  );
-}
+type Card = { title?: string; minutes?: number | null; body: string[] };
 
-/**
- * The Detailed View: each Recipe Stage's title and minutes, then its steps. Steps are
- * numbered right through, as Cook Mode counts them.
- */
-function Stages({ stages }: { stages: NonNullable<Recipe['stages']> }) {
+/** "STEP 1 OF 6", a stage's title and minutes when it has them, then what to do. */
+function MethodCard({ n, total, card }: { n: number; total: number; card: Card }) {
   const t = useTheme();
-  const starts = stages.map((_, i) => stages.slice(0, i).reduce((n, s) => n + s.steps.length, 0));
   return (
-    <View style={{ gap: t.space.lg }}>
-      {stages.map((stage, i) => (
-        <View key={i} style={{ gap: t.space.sm }}>
-          <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: t.space.sm }}>
-            <Text variant="label" role="heading" aria-level={3} style={{ flex: 1 }}>
-              {stage.title}
-            </Text>
-            {stage.minutes ? (
-              <Text variant="caption" muted style={{ fontVariant: ['tabular-nums'] }}>
-                {minutesText(stage.minutes)}
-              </Text>
-            ) : null}
-          </View>
-          {stage.steps.map((step, j) => (
-            <StepCard key={j} n={starts[i] + j + 1} text={step} />
-          ))}
-        </View>
+    <View style={[cardStyle(t), { padding: t.space.lg, gap: t.space.sm }]}>
+      <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: t.space.sm }}>
+        <Text
+          variant="caption"
+          muted
+          style={{ flex: 1, textTransform: 'uppercase', letterSpacing: 0.6 }}
+        >
+          Step {n} of {total}
+        </Text>
+        {card.minutes ? (
+          <Text variant="caption" muted style={{ fontVariant: ['tabular-nums'] }}>
+            {minutesText(card.minutes)}
+          </Text>
+        ) : null}
+      </View>
+      {card.title ? (
+        <Text variant="heading" role="heading" aria-level={3}>
+          {card.title}
+        </Text>
+      ) : null}
+      {card.body.map((line, i) => (
+        <Text key={i} muted={!!card.title}>
+          {line}
+        </Text>
       ))}
     </View>
   );
