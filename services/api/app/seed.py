@@ -18,6 +18,7 @@ from sqlalchemy import Connection, create_engine, delete, select
 from sqlalchemy.dialects.postgresql import insert
 
 from app.config import settings
+from app.data.food_groups import guess_category
 from app.data.ingredients import INGREDIENTS, SeedIngredient
 from app.db import sqlalchemy_url
 from app.services.ingredients import normalise, variants
@@ -161,6 +162,24 @@ def merge_into_starters(conn: Connection) -> int:
             conn.execute(sa.text(step), params)
         merged += 1
     return merged
+
+
+def regroup_household_ingredients(conn: Connection) -> int:
+    """ADR 0030: a Household Ingredient still in "other" moves to the group its words name
+    ("wagyu beef": Meat). Run once by a migration; new ones get their group when made."""
+    moved = 0
+    for row in conn.execute(
+        select(Ingredient.c.id, Ingredient.c.name).where(
+            Ingredient.c.household_id.is_not(None), Ingredient.c.category == "other"
+        )
+    ).all():
+        group = guess_category(row.name)
+        if group != "other":
+            conn.execute(
+                sa.update(Ingredient).where(Ingredient.c.id == row.id).values(category=group)
+            )
+            moved += 1
+    return moved
 
 
 if __name__ == "__main__":
