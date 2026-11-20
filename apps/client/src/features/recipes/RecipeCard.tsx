@@ -66,6 +66,7 @@ export function RecipeCard({ recipe }: { recipe: Summary }) {
           recipeId={recipe.id}
           title={recipe.title}
           favourite={recipe.favourite ?? false}
+          onPhoto
         />
       </View>
     </View>

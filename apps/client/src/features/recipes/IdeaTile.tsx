@@ -105,7 +105,12 @@ export function IdeaTile({
         </View>
       </PressableScale>
       <View style={{ position: 'absolute', top: t.space.xs, right: t.space.xs }}>
-        <HeartButton recipeId={idea.id} title={idea.title} favourite={idea.favourite ?? false} />
+        <HeartButton
+          recipeId={idea.id}
+          title={idea.title}
+          favourite={idea.favourite ?? false}
+          onPhoto
+        />
       </View>
     </View>
   );

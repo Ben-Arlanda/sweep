@@ -20,16 +20,21 @@ import { PressableScale } from './PressableScale';
  * puts first among equals when planning. A toggle button, so screen readers hear
  * "Favourite, selected" and not just "heart".
  */
+const PHOTO_CIRCLE = 32;
+
 export function HeartButton({
   recipeId,
   title,
   favourite,
   size = 44,
+  onPhoto = false,
 }: {
   recipeId: string;
   title: string;
   favourite: boolean;
   size?: number;
+  /** On a photo: a smaller, dark see-through circle with a white heart. */
+  onPhoto?: boolean;
 }) {
   const t = useTheme();
   const toggle = useFavourite();
@@ -62,14 +67,27 @@ export function HeartButton({
         borderRadius: t.radius.pill,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: t.colors.surface,
+        // On a photo the circle is drawn smaller inside; the tap area stays full size.
+        backgroundColor: onPhoto ? 'transparent' : t.colors.surface,
       }}
     >
-      <Animated.View style={beat}>
+      <Animated.View
+        style={[
+          beat,
+          onPhoto && {
+            width: PHOTO_CIRCLE,
+            height: PHOTO_CIRCLE,
+            borderRadius: PHOTO_CIRCLE / 2,
+            backgroundColor: 'rgba(0, 0, 0, 0.4)',
+            alignItems: 'center',
+            justifyContent: 'center',
+          },
+        ]}
+      >
         <Icon
           icon={Heart}
-          size={22}
-          color={on ? t.colors.danger : t.colors.text}
+          size={onPhoto ? 17 : 22}
+          color={on ? t.colors.danger : onPhoto ? '#fff' : t.colors.text}
           fill={on ? t.colors.danger : 'transparent'}
         />
       </Animated.View>
