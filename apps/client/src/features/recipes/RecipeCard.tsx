@@ -42,7 +42,7 @@ export function RecipeCard({ recipe }: { recipe: Summary }) {
             width="100%"
             height={96}
             radius={0}
-            emojiSize={44}
+            iconSize={32}
           />
           <View
             style={{

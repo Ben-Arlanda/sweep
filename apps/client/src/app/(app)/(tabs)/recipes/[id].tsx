@@ -880,7 +880,7 @@ function RecipePhoto({
         width="100%"
         height={260 + insets.top}
         radius={0}
-        emojiSize={96}
+        iconSize={64}
       />
       {image ? <PhotoCredit image={image} /> : null}
       <PressableScale

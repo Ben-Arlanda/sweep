@@ -8,7 +8,7 @@ import { ChoiceChips } from '@/components/ChoiceChips';
 import { HeartButton } from '@/components/HeartButton';
 import { Icon } from '@/components/Icon';
 import { PressableScale } from '@/components/PressableScale';
-import { RecipeArt } from '@/components/RecipeArt';
+import { RecipeArtFor } from '@/components/RecipeArt';
 import { Sheet } from '@/components/Sheet';
 import { Button, ErrorText, Text } from '@/components/ui';
 import { allKept, decisionFor } from '@/features/chat/decision';
@@ -572,7 +572,14 @@ function SweepsPick({
             boxShadow: t.shadow.card,
           }}
         >
-          <RecipeArt title={title} width="100%" height={140} radius={t.radius.md} emojiSize={64} />
+          <RecipeArtFor
+            recipeId={recipeId}
+            title={title}
+            width="100%"
+            height={140}
+            radius={t.radius.md}
+            iconSize={48}
+          />
           <Text variant="heading" style={{ paddingHorizontal: t.space.sm }}>
             {title}
           </Text>

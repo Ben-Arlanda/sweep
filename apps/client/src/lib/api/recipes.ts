@@ -108,8 +108,9 @@ export function useRecipeSearch(q: string, filters: RecipeFilters) {
   });
 }
 
-export function useRecipe(id: string) {
+export function useRecipe(id: string, enabled = true) {
   return useQuery({
+    enabled,
     queryKey: recipeKeys.one(id),
     queryFn: async () =>
       unwrap(await api.GET('/recipes/{recipe_id}', { params: { path: { recipe_id: id } } })),

@@ -16,7 +16,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Icon } from '@/components/Icon';
 import { PressableScale } from '@/components/PressableScale';
-import { RecipeArt } from '@/components/RecipeArt';
+import { RecipeArt, RecipeArtFor } from '@/components/RecipeArt';
 import { Sheet } from '@/components/Sheet';
 import { useToast } from '@/components/Toast';
 import { Button, ErrorText, Field, SectionLabel, Text } from '@/components/ui';
@@ -398,7 +398,12 @@ function Review({
                     {day}
                   </Text>
                 </View>
-                <RecipeArt title={meal.title} width={40} />
+                <RecipeArtFor
+                  recipeId={meal.recipe_id}
+                  adapted={!!meal.adaptation}
+                  title={meal.title}
+                  width={40}
+                />
                 <PressableScale
                   accessibilityRole="link"
                   accessibilityLabel={`${weekday} ${day}: ${meal.title}. ${meta}. See the recipe`}

@@ -152,7 +152,7 @@ function TonightCard({ today, meals }: { today: string; meals: PlannedMeal[] }) 
           width="100%"
           height={132}
           radius={0}
-          emojiSize={56}
+          iconSize={40}
         />
         <View style={{ paddingHorizontal: t.space.lg, paddingTop: 14, gap: 4 }}>
           <Text
@@ -339,7 +339,7 @@ function MealPlanCard({
               width="100%"
               height={132}
               radius={0}
-              emojiSize={56}
+              iconSize={40}
             />
           ) : null}
           <View style={{ padding: t.space.lg, paddingTop: 14, gap: t.space.md }}>
