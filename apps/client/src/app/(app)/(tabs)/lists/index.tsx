@@ -120,8 +120,6 @@ function ListContent({ list }: { list: ListDetail }) {
   const { toBuy: all } = shoppingOrder(filterByShop(list.items, shown));
   const fresh = justAdded.flatMap((id) => all.filter((item) => item.id === id));
   const toBuy = all.filter((item) => !justAdded.includes(item.id));
-  const at = shown === ALL ? '' : ` at ${shopName(shops, shown)}`;
-  const summary = all.length === 0 ? `Nothing left to buy${at}` : `${all.length} to buy${at}`;
   const sync = useSyncStatus();
 
   const row = (item: Item, i: number) => (
@@ -163,12 +161,7 @@ function ListContent({ list }: { list: ListDetail }) {
         )
       }
     >
-      <PageHeader
-        icon={ShoppingBasket}
-        section="list"
-        title="Shopping list"
-        subtitle={`${summary}${sync ? ` · ${sync}` : ''}`}
-      />
+      <PageHeader icon={ShoppingBasket} section="list" title="Shopping list" subtitle={sync} />
 
       {shops.length > 0 ? (
         <ChoiceChips
@@ -185,9 +178,6 @@ function ListContent({ list }: { list: ListDetail }) {
 
       <ErrorText message={actions.error?.message} />
 
-      {all.length === 0 && !adding ? (
-        <Text style={{ color: t.colors.onBackgroundMuted }}>Nothing left to buy. Nice work.</Text>
-      ) : null}
       <LayoutAnimationConfig skipEntering>
         {listSections(toBuy).map((section) => (
           <Animated.View
@@ -598,9 +588,8 @@ function ItemMenu({
 }
 
 /**
- * Tells the Member their taps are safe even when the signal isn't. Shown on the summary
- * line, not a line of its own: appearing for a moment on every tick, a line above the
- * add box pushed it down and back up.
+ * Tells the Member their taps are safe even when the signal isn't. Shown under the heading
+ * only while there's something to say.
  */
 function useSyncStatus(): string | null {
   const pending = usePendingListChanges();
