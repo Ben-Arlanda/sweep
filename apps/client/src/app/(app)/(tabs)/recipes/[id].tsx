@@ -919,37 +919,36 @@ function RecipePhoto({
   );
 }
 
-/** "Photo by Ana on Unsplash", both names linked, as Unsplash's terms ask (ADR 0029). */
+/**
+ * The photographer's name on a stock photo, linked to their Unsplash profile. The product
+ * owner chose the name alone, without "on Unsplash" (ADR 0029).
+ */
 function PhotoCredit({ image }: { image: RecipeImage }) {
   const t = useTheme();
-  const { author, author_url: authorUrl, source, source_url: sourceUrl } = image;
-  if (!author || !authorUrl || !source || !sourceUrl) return null;
-  const link = (label: string, url: string) => (
+  const { author, author_url: authorUrl } = image;
+  if (!author || !authorUrl) return null;
+  return (
     <Text
       accessibilityRole="link"
-      onPress={() => Linking.openURL(url)}
-      style={{ color: '#fff', fontSize: 12, textDecorationLine: 'underline' }}
-    >
-      {label}
-    </Text>
-  );
-  return (
-    <View
+      accessibilityLabel={`Photo by ${author}`}
+      onPress={() => Linking.openURL(authorUrl)}
+      numberOfLines={1}
       style={{
         position: 'absolute',
         right: t.space.sm,
         bottom: t.space.sm,
-        maxWidth: '80%',
+        maxWidth: '60%',
         paddingHorizontal: t.space.sm,
-        paddingVertical: 4,
+        paddingVertical: 3,
         borderRadius: t.radius.sm,
-        backgroundColor: 'rgba(0, 0, 0, 0.62)',
+        overflow: 'hidden',
+        backgroundColor: 'rgba(0, 0, 0, 0.45)',
+        color: '#fff',
+        fontSize: 11,
       }}
     >
-      <Text style={{ color: '#fff', fontSize: 12 }} numberOfLines={1}>
-        Photo by {link(author, authorUrl)} on {link(source, sourceUrl)}
-      </Text>
-    </View>
+      {author}
+    </Text>
   );
 }
 
