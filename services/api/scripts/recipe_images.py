@@ -106,7 +106,12 @@ def _client() -> httpx.Client:
 
 def _get(client: httpx.Client, path: str, params: dict[str, str] | None = None) -> Any:
     while True:
-        response = client.get(path, params=params)
+        try:
+            response = client.get(path, params=params)
+        except httpx.TransportError as error:  # a dropped connection: try again shortly
+            print(f"  network error ({error}): retrying in a minute", flush=True)
+            time.sleep(60)
+            continue
         if response.status_code in (403, 429) and "Rate Limit" in response.text:
             print("  hourly limit reached: waiting 10 minutes", flush=True)
             time.sleep(600)
