@@ -33,7 +33,7 @@ export function HeartButton({
   title: string;
   favourite: boolean;
   size?: number;
-  /** On a photo: a smaller, dark see-through circle with a white heart. */
+  /** On a photo: a smaller white circle (the tap area stays full size). */
   onPhoto?: boolean;
 }) {
   const t = useTheme();
@@ -78,7 +78,7 @@ export function HeartButton({
             width: PHOTO_CIRCLE,
             height: PHOTO_CIRCLE,
             borderRadius: PHOTO_CIRCLE / 2,
-            backgroundColor: 'rgba(0, 0, 0, 0.4)',
+            backgroundColor: t.colors.surface,
             alignItems: 'center',
             justifyContent: 'center',
           },
@@ -87,7 +87,7 @@ export function HeartButton({
         <Icon
           icon={Heart}
           size={onPhoto ? 17 : 22}
-          color={on ? t.colors.danger : onPhoto ? '#fff' : t.colors.text}
+          color={on ? t.colors.danger : t.colors.text}
           fill={on ? t.colors.danger : 'transparent'}
         />
       </Animated.View>
