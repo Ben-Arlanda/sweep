@@ -88,10 +88,8 @@ function RecipesScreenContent() {
                 gap: t.space.sm,
               }}
             >
-              <Icon icon={Sparkles} size={20} color={t.colors.onAction} strong />
-              <Text style={{ color: t.colors.onAction, fontFamily: t.fonts.bold, fontSize: 17 }}>
-                Find dinner ideas
-              </Text>
+              <Icon icon={Sparkles} size={20} color={t.colors.onAction} />
+              <Text style={[t.type.label, { color: t.colors.onAction }]}>Find dinner ideas</Text>
             </PressableScale>
             <PressableScale
               accessibilityRole="link"
