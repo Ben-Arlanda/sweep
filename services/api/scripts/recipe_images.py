@@ -190,7 +190,9 @@ def review_page(recipes: Sequence[SeedRecipe]) -> str:
     found, chosen = _load(OPTIONS), _load(CHOICES)
     sections = []
     for recipe in sorted(recipes, key=lambda r: r.title.lower()):
-        rows = found.get(recipe.slug, {}).get("options", [])
+        if recipe.slug not in found:
+            continue  # not searched yet: reload the page later
+        rows = found[recipe.slug]["options"]
         pick = chosen.get(recipe.slug, "unset")
         buttons = [
             f'<button data-id="{o.photo_id}" aria-pressed="{str(pick == o.photo_id).lower()}">'
