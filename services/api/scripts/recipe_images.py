@@ -2,14 +2,15 @@
 
     uv run python -m scripts.recipe_images search   # free; slow (50 searches an hour)
     uv run python -m scripts.recipe_images review   # http://127.0.0.1:8765, pick by eye
-    uv run python -m scripts.recipe_images apply    # credits file + Unsplash download notices
+    uv run python -m scripts.recipe_images apply    # free; writes the credits file
+    uv run python -m scripts.recipe_images notify   # Unsplash download notices (slow)
 
 search keeps up to four options per recipe, dropping any whose description names a meat
 or fish the recipe doesn't have. No model looks at Unsplash photos: their API terms send
 AI use to a separate agreement. The first option is picked unless the product owner
 changes it (or picks none) on the review page, which shows the photos from Unsplash itself
-(hotlinked, as their terms require). apply tells Unsplash each picked photo was used
-(their "download" event) and writes `app/data/recipe_images.json`. Every step is
+(hotlinked, as their terms require). apply writes `app/data/recipe_images.json`;
+notify tells Unsplash each picked photo was used (their "download" event). Every step is
 resumable.
 """
 
@@ -263,46 +264,58 @@ def review(recipes: Sequence[SeedRecipe]) -> None:
 # --- apply ----------------------------------------------------------------------------
 
 
-def apply(recipes: Sequence[SeedRecipe]) -> None:
+def _picked_options(recipes: Sequence[SeedRecipe]) -> list[tuple[str, Option]]:
     found, chosen = _load(OPTIONS), _load(CHOICES)
-    notified = set(_load(NOTIFIED) or [])
-    records: list[RecipeImage] = []
-    with _client() as client:
-        for recipe in recipes:
-            photo = picked(recipe.slug, found, chosen)
-            rows = found.get(recipe.slug, {}).get("options", [])
-            options = {row["photo_id"]: Option.model_validate(row) for row in rows}
-            if photo is None or photo not in options:
-                continue
-            o = options[photo]
-            if photo not in notified:  # Unsplash's "download" event, once per photo
-                _get(client, o.download_location.removeprefix(API))
-                notified.add(photo)
-                _save(NOTIFIED, sorted(notified))
-            records.append(
-                RecipeImage(
-                    slug=recipe.slug,
-                    source="unsplash",
-                    photo_id=photo,
-                    raw_url=o.raw_url,
-                    author=o.author,
-                    author_url=o.author_url,
-                    photo_url=o.photo_url,
-                )
-            )
+    out = []
+    for recipe in recipes:
+        photo = picked(recipe.slug, found, chosen)
+        rows = found.get(recipe.slug, {}).get("options", [])
+        options = {row["photo_id"]: Option.model_validate(row) for row in rows}
+        if photo is not None and photo in options:
+            out.append((recipe.slug, options[photo]))
+    return out
+
+
+def apply(recipes: Sequence[SeedRecipe]) -> None:
+    """Write the picked photos for the app. Free: no API calls (`notify` does those)."""
+    records = [
+        RecipeImage(
+            slug=slug,
+            source="unsplash",
+            photo_id=o.photo_id,
+            raw_url=o.raw_url,
+            author=o.author,
+            author_url=o.author_url,
+            photo_url=o.photo_url,
+        )
+        for slug, o in _picked_options(recipes)
+    ]
     RECORDS.write_text(
         json.dumps([r.model_dump() for r in records], indent=1, ensure_ascii=False) + "\n"
     )
     print(f"{len(records)} Recipe Images written to {RECORDS}")
 
 
+def notify(recipes: Sequence[SeedRecipe]) -> None:
+    """Unsplash's "download" event, once per photo we use (API guidelines). Resumable."""
+    notified = set(_load(NOTIFIED) or [])
+    todo = [o for _, o in _picked_options(recipes) if o.photo_id not in notified]
+    with _client() as client:
+        for n, o in enumerate(todo, 1):
+            _get(client, o.download_location.removeprefix(API))
+            notified.add(o.photo_id)
+            _save(NOTIFIED, sorted(notified))
+            print(f"{n:3}/{len(todo)} {o.photo_id}", flush=True)
+    print(f"{len(notified)} photos notified")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("step", choices=["search", "review", "apply"])
+    parser.add_argument("step", choices=["search", "review", "apply", "notify"])
     parser.add_argument("--only", nargs="*", help="these slugs only")
     args = parser.parse_args()
     recipes = [r for r in load_seed_recipes() if not args.only or r.slug in args.only]
-    {"search": search, "review": review, "apply": apply}[args.step](recipes)
+    {"search": search, "review": review, "apply": apply, "notify": notify}[args.step](recipes)
     return 0
 
 
