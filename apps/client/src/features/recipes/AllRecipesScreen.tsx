@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from 'expo-router';
-import { Search, SlidersHorizontal } from 'lucide-react-native';
+import { Heart, Search, SlidersHorizontal } from 'lucide-react-native';
 import { useState, type ReactNode } from 'react';
 import { TextInput, View } from 'react-native';
 
@@ -45,7 +45,7 @@ type Open = 'filters' | null;
 
 /**
  * Every recipe (slice 6f, "See all"): search, Course pills that slide, then the count
- * and a Filters sheet (Sort, Ready in, Cuisine, Favourites). Browsing pages through; search is ordered by meaning instead.
+ * Favourites toggle and a Filters sheet (Sort, Ready in, Cuisine). Browsing pages through; search is ordered by meaning instead.
  * Opened with params from the Recipes screen's chips (`course`, `max`, `favourites`).
  */
 export function AllRecipesScreen() {
@@ -67,8 +67,8 @@ export function AllRecipesScreen() {
   const q = useDebounced(text.trim());
   const searching = q.length >= 2;
   const filters: RecipeFilters = { maxMinutes, course, favourites, cuisine, sort };
-  // How many filters narrow the list (the course pills are shown, so they don't count).
-  const active = [maxMinutes !== null, cuisine !== null, favourites].filter(Boolean).length;
+  // How many of the sheet's filters narrow the list (course and Favourites show on the page).
+  const active = [maxMinutes !== null, cuisine !== null].filter(Boolean).length;
   const browse = useRecipeBrowse(filters, !searching);
   const search = useRecipeSearch(q, filters);
   const count = useRecipeCount(filters);
@@ -130,9 +130,28 @@ export function AllRecipesScreen() {
           marginTop: -t.space.sm,
         }}
       >
-        <Text style={{ color: t.colors.onBackgroundMuted }} accessibilityLiveRegion="polite">
-          {countText}
-        </Text>
+        <PressableScale
+          accessibilityRole="button"
+          accessibilityLabel="Favourites only"
+          accessibilityState={{ selected: favourites }}
+          aria-pressed={favourites}
+          onPress={() => setFavourites((f) => !f)}
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 6,
+            minHeight: t.touchTarget,
+            paddingRight: t.space.sm,
+          }}
+        >
+          <Icon
+            icon={Heart}
+            size={18}
+            color={favourites ? t.colors.danger : t.colors.text}
+            fill={favourites ? t.colors.danger : 'transparent'}
+          />
+          <Text variant="label">Favourites</Text>
+        </PressableScale>
         <PressableScale
           accessibilityRole="button"
           accessibilityLabel={active ? `Filters, ${active} on` : 'Filters'}
@@ -200,17 +219,6 @@ export function AllRecipesScreen() {
                 onChange={setCuisine}
               />
             </FilterGroup>
-            <FilterGroup title="Show">
-              <ChoiceChips
-                label="Show"
-                options={[
-                  { label: 'All recipes', value: false },
-                  { label: 'Favourites', value: true },
-                ]}
-                value={favourites}
-                onChange={setFavourites}
-              />
-            </FilterGroup>
             <View style={{ flexDirection: 'row', gap: t.space.sm }}>
               {active || sort !== 'recommended' ? (
                 <View style={{ flex: 1 }}>
@@ -220,7 +228,6 @@ export function AllRecipesScreen() {
                     onPress={() => {
                       setMaxMinutes(null);
                       setCuisine(null);
-                      setFavourites(false);
                       setSort('recommended');
                     }}
                   />
