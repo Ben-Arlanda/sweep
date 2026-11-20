@@ -7,6 +7,7 @@ import type { LucideIcon } from 'lucide-react-native';
 import { use, useEffect, useState, type ReactNode, type Ref } from 'react';
 import {
   ActivityIndicator,
+  Platform,
   Text as RNText,
   ScrollView,
   TextInput,
@@ -113,6 +114,8 @@ export function Screen({
       <ScrollView
         ref={scrollRef}
         keyboardShouldPersistTaps="handled"
+        // Hide the keyboard when you drag the page (the web would on any scroll at all).
+        keyboardDismissMode={Platform.OS === 'web' ? 'none' : 'on-drag'}
         automaticallyAdjustKeyboardInsets
         onScroll={onScroll ? (e) => onScroll(e.nativeEvent.contentOffset.y) : undefined}
         scrollEventThrottle={16}

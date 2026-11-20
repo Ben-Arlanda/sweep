@@ -85,7 +85,7 @@ function ListContent({ list }: { list: ListDetail }) {
   const page = useRef<ScrollViewInstance>(null);
   const scrolled = useRef(0);
   // Adding works like Reminders: type in a new row at the end of the list, Return for the
-  // next one. New items stay down there, in the order typed, until the keyboard closes.
+  // next one. Each new item shows there for a moment, then moves into its category.
   const [adding, setAdding] = useState(false);
   const [justAdded, setJustAdded] = useState<string[]>([]);
   const newRow = useRef<HostInstance>(null);
@@ -219,7 +219,12 @@ function ListContent({ list }: { list: ListDetail }) {
                 const id = actions.addItem(text);
                 setJustAdded((now) => [...now, id]);
                 // After the new item's row is laid out, keep the typing row in view.
-                requestAnimationFrame(() => requestAnimationFrame(() => keepAboveKeyboard()));
+                const keep = () => requestAnimationFrame(() => keepAboveKeyboard());
+                keep();
+                setTimeout(() => {
+                  setJustAdded((now) => now.filter((x) => x !== id));
+                  keep(); // the typing row moved when the item left
+                }, SORT_MS);
               }}
               onDone={() => {
                 setAdding(false);
@@ -431,6 +436,9 @@ function ListGroup({
  * the Kitchen (ADR 0003), so the toast says so: that's the loop, made visible. ••• opens
  * Shop, Kitchen link and Remove (which doesn't stock the Kitchen).
  */
+/** How long a new item stays under the typing row before moving into its category. */
+const SORT_MS = 500;
+
 /** How long a ticked row stays (tap again to untick) before it leaves the list. */
 const TICK_MS = 1000;
 
