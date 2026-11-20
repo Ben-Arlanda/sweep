@@ -87,7 +87,7 @@ export function Checkbox({
       {checked && !tick ? (
         <Animated.View
           style={[
-            { width: size * 0.5, height: size * 0.5, borderRadius: size / 4 },
+            { width: size * 0.66, height: size * 0.66, borderRadius: size * 0.33 },
             { backgroundColor: t.colors.action },
             markStyle,
           ]}

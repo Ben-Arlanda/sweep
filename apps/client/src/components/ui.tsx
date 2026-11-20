@@ -11,6 +11,7 @@ import {
   ScrollView,
   TextInput,
   View,
+  type ScrollViewInstance,
   type StyleProp,
   type TextInputInstance,
   type TextInputProps,
@@ -59,8 +60,10 @@ export function Screen({
   edges = ['left', 'right'],
   hero,
   footer,
+  scrollRef,
 }: {
   children: ReactNode;
+  scrollRef?: Ref<ScrollViewInstance>;
   /**
    * Which phone edges (notch, home bar) to keep clear of. The tab bar already keeps
    * clear of the bottom, so most screens need only the sides. Add 'top' on a screen
@@ -95,7 +98,12 @@ export function Screen({
       edges={hero ? edges.filter((e) => e === 'bottom') : edges}
       style={{ flex: 1, backgroundColor: t.colors.background }}
     >
-      <ScrollView keyboardShouldPersistTaps="handled">
+      {/* iOS: leave room for the keyboard so the whole page can scroll above it. */}
+      <ScrollView
+        ref={scrollRef}
+        keyboardShouldPersistTaps="handled"
+        automaticallyAdjustKeyboardInsets
+      >
         {hero}
         {content}
       </ScrollView>

@@ -7,10 +7,12 @@ import {
   Store,
   Trash2,
 } from 'lucide-react-native';
-import { useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import Animated, { LayoutAnimationConfig } from 'react-native-reanimated';
 import {
+  Keyboard,
   Pressable,
+  type ScrollViewInstance,
   TextInput,
   View,
   type HostInstance,
@@ -78,6 +80,17 @@ function ListContent({ list }: { list: ListDetail }) {
   const [linking, setLinking] = useState<Item | null>(null);
   // Food categories folded away, by category (open by default).
   const [closed, setClosed] = useState<Set<string>>(() => new Set());
+  const page = useRef<ScrollViewInstance>(null);
+  const addAt = useRef(0);
+  const adding = useRef(false);
+
+  // While adding, lift the add box to the top so the list shows above the keyboard.
+  useEffect(() => {
+    const shown = Keyboard.addListener('keyboardDidShow', () => {
+      if (adding.current) page.current?.scrollTo({ y: addAt.current, animated: true });
+    });
+    return () => shown.remove();
+  }, []);
 
   const { shops } = list;
   // A Shop deleted on another phone while we were filtering by it: show everything.
@@ -102,7 +115,7 @@ function ListContent({ list }: { list: ListDetail }) {
   );
 
   return (
-    <Screen edges={TAB_ROOT}>
+    <Screen edges={TAB_ROOT} scrollRef={page}>
       <PageHeader
         icon={ShoppingBasket}
         section="list"
@@ -110,7 +123,11 @@ function ListContent({ list }: { list: ListDetail }) {
         subtitle={`${summary}${sync ? ` · ${sync}` : ''}`}
       />
 
-      <AddItem onAdd={actions.addItem} />
+      <AddItem
+        onAdd={actions.addItem}
+        onY={(y) => (addAt.current = y)}
+        onAdding={(on) => (adding.current = on)}
+      />
 
       {shops.length > 0 ? (
         <ChoiceChips
@@ -210,7 +227,15 @@ function ListContent({ list }: { list: ListDetail }) {
 type Actions = ReturnType<typeof useListActions>;
 
 /** The add box. New items are "any shop"; pick one from the item's ••• menu. */
-function AddItem({ onAdd }: { onAdd: (text: string) => void }) {
+function AddItem({
+  onAdd,
+  onY,
+  onAdding,
+}: {
+  onAdd: (text: string) => void;
+  onY: (y: number) => void;
+  onAdding: (on: boolean) => void;
+}) {
   const t = useTheme();
   const [text, setText] = useState('');
   const input = useRef<TextInputInstance>(null);
@@ -224,6 +249,7 @@ function AddItem({ onAdd }: { onAdd: (text: string) => void }) {
 
   return (
     <View
+      onLayout={(e) => onY(e.nativeEvent.layout.y)}
       style={{
         flexDirection: 'row',
         alignItems: 'center',
@@ -245,6 +271,8 @@ function AddItem({ onAdd }: { onAdd: (text: string) => void }) {
         value={text}
         onChangeText={setText}
         onSubmitEditing={submit}
+        onFocus={() => onAdding(true)}
+        onBlur={() => onAdding(false)}
         submitBehavior="submit"
         returnKeyType="done"
         maxLength={200}
