@@ -198,9 +198,11 @@ function DayRow({
     >
       <View
         accessibilityLabel={isToday ? `Today, ${weekday} ${num}` : `${weekday} ${num}`}
-        style={{ width: 40, alignItems: 'center' }}
+        // minWidth, not width: bold "Today" at a larger text size needs more than 40.
+        style={{ minWidth: 46, alignItems: 'center' }}
       >
         <Text
+          numberOfLines={1}
           style={{
             fontSize: 11,
             lineHeight: 14,
