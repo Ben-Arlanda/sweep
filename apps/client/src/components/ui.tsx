@@ -246,7 +246,7 @@ export function Button({
     primary: {
       bg: pressed ? t.colors.actionPressed : t.colors.action,
       fg: t.colors.onAction,
-      border: 'transparent',
+      border: t.colors.border, // a light hairline crisps the lime's edge on the pale page
     },
     secondary: { bg: t.colors.surface, fg: t.colors.text, border: t.colors.border },
     ghost: { bg: 'transparent', fg: t.colors.text, border: 'transparent' },

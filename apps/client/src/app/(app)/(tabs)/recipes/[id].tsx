@@ -291,6 +291,8 @@ function RecipeContent() {
                   minHeight: t.touchTarget,
                   paddingHorizontal: t.space.lg,
                   borderRadius: t.radius.pill,
+                  borderWidth: 1,
+                  borderColor: t.colors.border,
                   backgroundColor: t.colors.action,
                 }}
               >
