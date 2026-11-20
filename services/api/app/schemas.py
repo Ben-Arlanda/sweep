@@ -19,6 +19,7 @@ from pydantic import (
 
 from app.data.diet import Diet
 from app.data.places import Place
+from app.data.recipe_images import SOURCES, WIDTHS, sized, with_utm
 from app.models import (
     AddedBy,
     ChangeSource,
@@ -328,6 +329,18 @@ class KitchenPhotoOut(BaseModel):
 Amount = Annotated[Decimal, PlainSerializer(lambda d: f"{d.normalize():f}", return_type=str)]
 
 
+class RecipeImageOut(BaseModel):
+    """A picked stock photo (ADR 0029), hotlinked, and the credit it must show:
+    "Photo by {author} on {source}", each name linking to its page."""
+
+    thumb_url: str  # 360px 4:3, rows and cards
+    hero_url: str  # 960px 4:3, the recipe page
+    author: str
+    author_url: str
+    source: str  # "Unsplash"
+    source_url: str
+
+
 class RecipeSummaryOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
@@ -342,6 +355,22 @@ class RecipeSummaryOut(BaseModel):
     # How close to the search (1 = identical meaning). Only set for a search.
     score: float | None = None
     favourite: bool = False  # hearted by this Household (ADR 0025)
+    image: RecipeImageOut | None = None  # none: the app draws RecipeArt
+
+    @field_validator("image", mode="before")
+    @classmethod
+    def _image_urls(cls, value: object) -> object:
+        if isinstance(value, dict) and "raw_url" in value:
+            name, home = SOURCES[value["source"]]
+            return {
+                "thumb_url": sized(value["raw_url"], WIDTHS["thumb"]),
+                "hero_url": sized(value["raw_url"], WIDTHS["hero"]),
+                "author": value["author"],
+                "author_url": with_utm(value["author_url"]),
+                "source": name,
+                "source_url": with_utm(home),
+            }
+        return value
 
 
 class ImportedRecipeOut(RecipeSummaryOut):

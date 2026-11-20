@@ -65,3 +65,6 @@ services/api/evals/.cache/
 
 # Recipe import eval inputs (slice 4d): the product owner's own photos and PDFs. Never committed.
 services/api/evals/private/
+
+# Recipe Image downloads (slice 4f): only the chosen WebP files are committed
+services/api/data/recipe-images/cache/

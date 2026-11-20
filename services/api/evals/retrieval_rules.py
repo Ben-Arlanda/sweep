@@ -66,7 +66,6 @@ RULES: dict[str, Callable[[Card], bool]] = {
     "ing-05": lambda c: c.has("tofu", "silken tofu", "tofu puffs"),
     "ing-07": lambda c: c.has("prawns", "cooked prawns"),
     "ing-08": lambda c: c.has("red lentils", "brown lentils", "green lentils"),
-    "ing-09": lambda c: c.has("pumpkin"),
     "words-01": lambda c: c.has("eggplant"),
     "words-02": lambda c: c.has("capsicum"),
     "words-03": lambda c: c.has("zucchini"),

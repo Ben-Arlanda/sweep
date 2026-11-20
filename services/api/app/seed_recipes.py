@@ -13,6 +13,7 @@ import asyncio
 import sys
 
 from app.config import settings
+from app.data.recipe_images import load_recipe_images
 from app.data.recipes import load_seed_recipes
 from app.db import make_engine, make_sessionmaker
 from app.embeddings import VoyageEmbedder
@@ -24,7 +25,7 @@ async def main(embed: bool = True) -> int:
     engine = make_engine(settings.database_url)
     async with make_sessionmaker(engine)() as session:
         report = await recipes.upsert_seed_recipes(
-            session, load_seed_recipes(), await index_from_db(session)
+            session, load_seed_recipes(), await index_from_db(session), load_recipe_images()
         )
         print(f"{report.loaded} Seed Recipes loaded ({report.lines} lines)")
         print(f"{report.removed} removed (no longer in the seed files)")

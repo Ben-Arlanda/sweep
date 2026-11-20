@@ -486,6 +486,8 @@ class Recipe(Base):
     tips: Mapped[list[str] | None] = mapped_column(JSONB)
     variations: Mapped[list[str] | None] = mapped_column(JSONB)
     storage: Mapped[str | None] = mapped_column(String(1000))
+    # A Seed Recipe's picked Unsplash photo (ADR 0029), as `as_stored()`; null shows RecipeArt.
+    image: Mapped[dict[str, Any] | None] = mapped_column(JSONB)
     source_url: Mapped[str | None] = mapped_column(String(2048))
     licence: Mapped[str] = mapped_column(String(100))
     attribution: Mapped[str] = mapped_column(String(200))

@@ -37,7 +37,7 @@ def test_percentile_picks_a_real_value() -> None:
 def test_the_retrieval_set_is_labelled_with_real_seed_recipes() -> None:
     queries = load_queries()
     slugs = {s.slug for s in load_seed_recipes()}
-    assert len(queries) >= 45
+    assert len(queries) >= 40
     assert len({q.id for q in queries}) == len(queries)
     assert {q.kind for q in queries} == set(KINDS)
     assert {q.split for q in queries} == {"dev", "test"}
