@@ -19,7 +19,16 @@ import { useTheme } from '@/theme/useTheme';
  *
  * Purely visual: the row around it is the accessible checkbox.
  */
-export function Checkbox({ checked, size = 26 }: { checked: boolean; size?: number }) {
+export function Checkbox({
+  checked,
+  size = 26,
+  tick = true,
+}: {
+  checked: boolean;
+  size?: number;
+  /** false: checked is a lime ring around a lime dot, no ✓ (the Shopping List). */
+  tick?: boolean;
+}) {
   const t = useTheme();
   const reduceMotion = useReducedMotion();
   const scale = useSharedValue(1);
@@ -54,17 +63,17 @@ export function Checkbox({ checked, size = 26 }: { checked: boolean; size?: numb
           width: size,
           height: size,
           borderRadius: size / 2,
-          borderWidth: checked ? 2 : 1.5,
+          borderWidth: checked ? (tick ? 2 : size * 0.1) : 1.5,
           // Empty ring at 3:1 so the control is visible (WCAG 1.4.11).
           borderColor: checked ? t.colors.action : t.colors.switchOff,
-          backgroundColor: checked ? t.colors.action : 'transparent',
+          backgroundColor: checked && tick ? t.colors.action : 'transparent',
           alignItems: 'center',
           justifyContent: 'center',
         },
         animated,
       ]}
     >
-      {checked ? (
+      {checked && tick ? (
         <Animated.Text
           aria-hidden
           style={[
@@ -74,6 +83,15 @@ export function Checkbox({ checked, size = 26 }: { checked: boolean; size?: numb
         >
           ✓
         </Animated.Text>
+      ) : null}
+      {checked && !tick ? (
+        <Animated.View
+          style={[
+            { width: size * 0.5, height: size * 0.5, borderRadius: size / 4 },
+            { backgroundColor: t.colors.action },
+            markStyle,
+          ]}
+        />
       ) : null}
     </Animated.View>
   );

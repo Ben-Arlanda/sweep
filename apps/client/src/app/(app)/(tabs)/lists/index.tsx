@@ -404,7 +404,7 @@ function ItemRow({
         })}
       >
         <View style={{ width: 36, alignItems: 'center' }}>
-          <Checkbox checked={ticked} size={22} />
+          <Checkbox checked={ticked} size={22} tick={false} />
         </View>
         <View style={{ flex: 1, gap: 2 }}>
           <Text variant="label">{displayName(item.text)}</Text>
