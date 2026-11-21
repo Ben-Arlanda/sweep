@@ -387,7 +387,6 @@ function IdeasMock({ p }: { p: Loop }) {
             Use my Kitchen
           </Animated.Text>
         </Animated.View>
-        <Chip title="Vegetarian" />
       </View>
       <Show p={p} start={0.25} end={0.97}>
         <Card style={{ padding: 10, gap: 8 }}>
@@ -626,7 +625,7 @@ function PlanMock({ p }: { p: Loop }) {
     <View style={{ gap: 10 }}>
       <Card style={{ padding: 14, gap: 6 }}>
         <SuggestedPill />
-        <Label size={17}>4 dinners · 4 things to buy</Label>
+        <Label size={17}>3 dinners · 4 things to buy</Label>
         <Label muted size={13}>
           Built around what you have.
         </Label>
@@ -868,6 +867,9 @@ function PartTile({
 }
 
 // ---------- Welcome ----------
+
+/** The onboarding pictures are drawn at this width; the panel scales them to the phone. */
+export const MOCK_WIDTH = 300;
 
 /** The welcome picture is drawn at this width; the panel scales it to the phone. */
 export const WELCOME_SCENE_WIDTH = 330;

@@ -15,9 +15,9 @@ import { Icon } from '@/components/Icon';
 import { PressableScale } from '@/components/PressableScale';
 import { Button } from '@/components/ui';
 import { FitStage } from '@/features/welcome/FitStage';
-import { OnboardingMock } from '@/features/welcome/OnboardingMocks';
+import { HighlightLines } from '@/features/welcome/HighlightLines';
+import { MOCK_WIDTH, OnboardingMock } from '@/features/welcome/OnboardingMocks';
 import { MAX_TEXT_SCALE, STORY } from '@/features/welcome/story';
-import { hero } from '@/theme/tokens';
 import { useTheme } from '@/theme/useTheme';
 
 /**
@@ -28,6 +28,8 @@ import { useTheme } from '@/theme/useTheme';
  * It's a sideways ScrollView with `pagingEnabled`, which snaps to whole pages. We work
  * out the current page from how far it has scrolled, so swiping and the buttons agree.
  */
+const TITLE = { fontSize: 28, lineHeight: 33, letterSpacing: -0.8 };
+
 export default function HowItWorksScreen() {
   const t = useTheme();
   const scroller = useRef<ScrollViewInstance>(null);
@@ -112,35 +114,33 @@ export default function HowItWorksScreen() {
                       alignSelf: 'center',
                     }}
                   >
-                    <FitStage minHeight={0}>
+                    <FitStage minHeight={0} contentWidth={MOCK_WIDTH}>
                       <OnboardingMock story={story.key} active={active} />
                     </FitStage>
                     <View style={{ gap: t.space.sm, paddingHorizontal: t.space.md }}>
-                      <Text
+                      {/* One heading for screen readers; the lime marker hugs its words. */}
+                      <View
+                        accessible
                         accessibilityRole="header"
-                        maxFontSizeMultiplier={MAX_TEXT_SCALE}
-                        style={[
-                          t.type.display,
-                          {
-                            color: t.colors.text,
-                            fontSize: 28,
-                            lineHeight: 33,
-                            letterSpacing: -0.8,
-                          },
-                        ]}
+                        accessibilityLabel={[story.title, story.highlight]
+                          .filter(Boolean)
+                          .join(' ')}
                       >
-                        {story.title}
+                        <Text
+                          maxFontSizeMultiplier={MAX_TEXT_SCALE}
+                          style={[t.type.display, TITLE, { color: t.colors.text }]}
+                        >
+                          {story.title}
+                        </Text>
                         {story.highlight ? (
-                          <>
-                            {'\n'}
-                            <Text
-                              style={{ backgroundColor: hero.highlight, color: hero.onHighlight }}
-                            >
-                              {story.highlight}
-                            </Text>
-                          </>
+                          <HighlightLines
+                            maxFontSizeMultiplier={MAX_TEXT_SCALE}
+                            style={[t.type.display, TITLE]}
+                          >
+                            {story.highlight}
+                          </HighlightLines>
                         ) : null}
-                      </Text>
+                      </View>
                       <Text
                         maxFontSizeMultiplier={MAX_TEXT_SCALE}
                         style={[

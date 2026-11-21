@@ -1,8 +1,8 @@
 import { useAuth } from '@clerk/expo';
 import { Redirect } from 'expo-router';
 import { Stack } from 'expo-router/stack';
+import { View } from 'react-native';
 
-import { Loading } from '@/components/ui';
 import { useTheme } from '@/theme/useTheme';
 
 /**
@@ -15,7 +15,8 @@ import { useTheme } from '@/theme/useTheme';
 export default function AuthLayout() {
   const t = useTheme();
   const { isLoaded, isSignedIn } = useAuth();
-  if (!isLoaded) return <Loading />;
+  // A blank page while sign-in loads, so the brand intro on welcome starts from nothing.
+  if (!isLoaded) return <View style={{ flex: 1, backgroundColor: t.colors.background }} />;
   if (isSignedIn) return <Redirect href="/" />;
   return (
     <Stack
