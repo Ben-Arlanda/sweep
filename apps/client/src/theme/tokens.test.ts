@@ -9,7 +9,7 @@ import {
   palette,
   statusColors,
   TAB_BAR_FROST,
-  TAB_PILL_SHADE,
+  TAB_LABEL,
   stockColors,
   TINT_NAMES,
   tints,
@@ -156,16 +156,16 @@ describe.each(Object.keys(PAGE_COLORS) as (keyof typeof PAGE_COLORS)[])(
 );
 
 describe('floating tab bar meets WCAG AA', () => {
-  it('labels on the frost, even over black content', () => {
-    const worst = mix(palette.paper, palette.ink, TAB_BAR_FROST);
-    expect(contrastRatio(palette.ink700, worst)).toBeGreaterThanOrEqual(AA);
+  // The bar is navy over whatever scrolls under it; white content is the worst case.
+  const worst = mix(palette.ink, palette.paper, TAB_BAR_FROST);
+  it('labels on the navy bar, even over white content', () => {
+    expect(contrastRatio(TAB_LABEL, worst)).toBeGreaterThanOrEqual(AA);
   });
-  it('a selected chip stands out from the page (3:1, WCAG 1.4.11)', () => {
-    expect(contrastRatio(palette.navy, palette.page)).toBeGreaterThanOrEqual(3);
+  it('the lime pill stands out from the bar (3:1, WCAG 1.4.11)', () => {
+    expect(contrastRatio(palette.lime, worst)).toBeGreaterThanOrEqual(3);
   });
-  it('selected label on its navy pill, even over black content', () => {
-    const pill = mix(palette.navy, mix(palette.paper, palette.ink, TAB_BAR_FROST), TAB_PILL_SHADE);
-    expect(contrastRatio(palette.ink, pill)).toBeGreaterThanOrEqual(AA);
+  it('selected label on its lime pill', () => {
+    expect(contrastRatio(palette.ink, palette.lime)).toBeGreaterThanOrEqual(AA);
   });
 });
 
