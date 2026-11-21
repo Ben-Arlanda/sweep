@@ -800,7 +800,7 @@ function SyncMock({ p }: { p: Loop }) {
     transform: [{ translateY: Math.sin(p.get() * Math.PI * 4) * 6 }],
   }));
   return (
-    <View style={{ height: 300, justifyContent: 'center' }}>
+    <View style={{ height: 320, justifyContent: 'center' }}>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12 }}>
         {PARTS.map((part, i) => (
           <PartTile key={part.title} p={p} turn={TURN[i]} {...part} />
@@ -808,7 +808,7 @@ function SyncMock({ p }: { p: Loop }) {
       </View>
       <Animated.View
         pointerEvents="none"
-        style={[{ position: 'absolute', alignSelf: 'center', top: 95 }, float]}
+        style={[{ position: 'absolute', alignSelf: 'center', top: 110 }, float]}
       >
         <Image
           source={require('../../../assets/images/welcome-chef.webp')}
@@ -847,7 +847,7 @@ function PartTile({
         {
           width: '47%',
           flexGrow: 1,
-          height: 138,
+          height: 148,
           padding: 14,
           borderRadius: 20,
           borderWidth: 2,
@@ -860,7 +860,7 @@ function PartTile({
     >
       <Icon icon={icon} size={20} color={t.colors.text} />
       <Label>{title}</Label>
-      <Label muted size={12}>
+      <Label muted size={12} lines={2}>
         {caption}
       </Label>
     </Animated.View>
