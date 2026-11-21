@@ -7,7 +7,13 @@ import { AccessibilityInfo, Platform, Text, View } from 'react-native';
 
 import { Icon } from '@/components/Icon';
 import { PressableScale } from '@/components/PressableScale';
-import { palette, TAB_BAR_FROST, TAB_PILL_SHADE, tabBarHeight } from '@/theme/tokens';
+import {
+  palette,
+  TAB_BAR_FROST,
+  TAB_GLASS_TINT,
+  TAB_PILL_SHADE,
+  tabBarHeight,
+} from '@/theme/tokens';
 
 import { useTheme } from '@/theme/useTheme';
 
@@ -87,6 +93,7 @@ export function FloatingTabBar({
             <GlassView
               isInteractive
               glassEffectStyle="regular"
+              tintColor={`rgba(27, 42, 78, ${TAB_GLASS_TINT})`} // a cool grey body on white pages
               colorScheme="light"
               style={{ flex: 1, borderRadius: BAR_RADIUS }}
             >

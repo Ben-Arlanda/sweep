@@ -359,6 +359,8 @@ export const tabBarHeight = 68;
 export const TAB_BAR_FROST = 0.86;
 /** The selected tab's pill: navy at this opacity over the frost. */
 export const TAB_PILL_SHADE = 0.09;
+/** Navy tint on the tab bar's Liquid Glass, so it stands out on a light page. */
+export const TAB_GLASS_TINT = 0.08;
 
 /** Minimum tappable size (Apple HIG 44pt). Applies to every button and row. */
 export const touchTarget = 44;
