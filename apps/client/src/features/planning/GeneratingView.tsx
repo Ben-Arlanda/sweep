@@ -1,8 +1,7 @@
-import { Image } from 'expo-image';
 import { Check } from 'lucide-react-native';
 import { View } from 'react-native';
-import { useReducedMotion } from 'react-native-reanimated';
 
+import { BouncingChef } from '@/components/BouncingChef';
 import { Icon } from '@/components/Icon';
 import { Button, Text } from '@/components/ui';
 import { useTheme } from '@/theme/useTheme';
@@ -10,7 +9,7 @@ import { useTheme } from '@/theme/useTheme';
 import type { Step } from './steps';
 
 /**
- * The Generating card (slice 6e, premium redesign): the chef, a heading, and a checklist
+ * The Generating card (slice 6e, premium redesign): the bouncing chef, a heading, and a checklist
  * of what Sweep is doing. The list is a polite live region, so screen readers hear each
  * step.
  */
@@ -26,26 +25,19 @@ export function GeneratingView({
   onCancel?: () => void;
 }) {
   const t = useTheme();
-  const reduceMotion = useReducedMotion();
   return (
     <View style={{ padding: t.space.lg, width: '100%', maxWidth: 560, alignSelf: 'center' }}>
       <View
         style={{
-          gap: t.space.md,
-          padding: t.space.lg,
+          gap: t.space.lg,
+          padding: t.space.xl,
           borderRadius: t.radius.lg,
           backgroundColor: t.colors.surface,
           boxShadow: t.shadow.card,
         }}
       >
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.md }}>
-          <Image
-            aria-hidden
-            source={require('../../../assets/images/chef-blink.webp')}
-            style={{ width: 52, height: 52 }}
-            contentFit="contain"
-            autoplay={!reduceMotion}
-          />
+          <BouncingChef size={64} />
           <View style={{ flex: 1, gap: 2 }}>
             <Text variant="heading" role="heading" aria-level={1}>
               {title}
@@ -55,7 +47,7 @@ export function GeneratingView({
             </Text>
           </View>
         </View>
-        <View accessibilityLiveRegion="polite" style={{ gap: 10 }}>
+        <View accessibilityLiveRegion="polite" style={{ gap: 14 }}>
           {steps.map((step) => (
             <View
               key={step.label}
@@ -65,8 +57,8 @@ export function GeneratingView({
               <StepMark state={step.state} />
               <Text
                 style={{
-                  fontSize: 14,
-                  lineHeight: 20,
+                  fontSize: 15,
+                  lineHeight: 22,
                   fontFamily: step.state === 'active' ? t.fonts.medium : t.fonts.body,
                   color: step.state === 'active' ? t.colors.text : t.colors.textMuted,
                 }}

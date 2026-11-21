@@ -1,14 +1,6 @@
 import { randomUUID } from 'expo-crypto';
 import { router } from 'expo-router';
-import {
-  Heart,
-  Leaf,
-  Refrigerator,
-  ShoppingCart,
-  Sparkles,
-  Zap,
-  type LucideIcon,
-} from 'lucide-react-native';
+import { Refrigerator, ShoppingCart, Sparkles, type LucideIcon } from 'lucide-react-native';
 import { useState, type ReactNode } from 'react';
 import { ActivityIndicator, Pressable, View } from 'react-native';
 
@@ -16,7 +8,7 @@ import { Icon } from '@/components/Icon';
 import { Sheet } from '@/components/Sheet';
 import { Button, ErrorText, Text } from '@/components/ui';
 import { formatDay } from '@/features/chat/format';
-import { requestPlan, type PlanMode, type PlanTweak } from '@/features/chat/starters';
+import { requestPlan, type PlanMode } from '@/features/chat/starters';
 import { usePreferences, useSavePlanWeekdays } from '@/lib/api/diet';
 import { useMealPlan } from '@/lib/api/mealPlan';
 import { useTheme } from '@/theme/useTheme';
@@ -24,15 +16,9 @@ import { useTheme } from '@/theme/useTheme';
 import { addDays, mondayOf, nextWeekdays, pickDays, planWeekFor } from './week';
 import { WeekStrip, type StripMeal } from './WeekStrip';
 
-const TWEAKS: { label: string; value: PlanTweak; icon: LucideIcon }[] = [
-  { label: 'Healthy', value: 'healthy', icon: Heart },
-  { label: 'Under 30 min', value: 'quick', icon: Zap },
-  { label: 'Vegetarian', value: 'vegetarian', icon: Leaf },
-];
-
 /** What every Plan my week sheet does with its answer: ask Sweep, then show the plan. */
-export function startPlan(mode: PlanMode, days: string[], tweaks: PlanTweak[]) {
-  requestPlan(mode, days, tweaks);
+export function startPlan(mode: PlanMode, days: string[]) {
+  requestPlan(mode, days);
   router.push('/plan-week');
 }
 
@@ -43,8 +29,8 @@ export function startPlan(mode: PlanMode, days: string[], tweaks: PlanTweak[]) {
  * next week at the weekend), leaving out past days and days already planned. "How many
  * days" is just how many are ticked: tap a day to add or remove it.
  *
- * The canvas layout (slice 6e): days, Build my plan using, This week chips and
- * one Plan button. Planning remembers the usual days, then hands the mode
+ * The canvas layout (slice 6e): days, Build my plan using and one Plan button. Tastes
+ * like vegetarian are asked for afterwards, with Refine with Sweep. Planning remembers the usual days, then hands the mode
  * and days to `onPick`, which opens the plan screens.
  */
 export function PlanSheet({
@@ -55,7 +41,7 @@ export function PlanSheet({
   days: startDays,
 }: {
   onClose: () => void;
-  onPick: (mode: PlanMode, days: string[], tweaks: PlanTweak[]) => void;
+  onPick: (mode: PlanMode, days: string[]) => void;
   /** A Monday to open on, e.g. the week the Plan tab shows. */
   week?: string;
   /** e.g. "Plan next week" from Home, or "Edit my week" from the Plan tab. */
@@ -72,8 +58,6 @@ export function PlanSheet({
   const week = useMealPlan(monday);
   // null = not touched yet, so it follows the usual weekdays once they've loaded.
   const [touched, setTouched] = useState<string[] | null>(startDays ?? null);
-  // "This week" chips (slice 6e): soft tastes for this plan only, never saved.
-  const [tweaks, setTweaks] = useState<PlanTweak[]>([]);
   const [mode, setMode] = useState<PlanMode>('kitchen');
   const saveWeekdays = useSavePlanWeekdays();
 
@@ -136,7 +120,7 @@ export function PlanSheet({
       });
       saveWeekdays.mutate({ key: randomUUID(), weekdays });
       onClose();
-      onPick(mode, picked, tweaks);
+      onPick(mode, picked);
     }
 
     return (
@@ -169,7 +153,6 @@ export function PlanSheet({
 
         <Group label="Build my plan using">
           <Option
-            role="radio"
             icon={Refrigerator}
             title="What's in my Kitchen"
             detail="Use what you have, buy less"
@@ -177,35 +160,12 @@ export function PlanSheet({
             onPress={() => setMode('kitchen')}
           />
           <Option
-            role="radio"
             icon={ShoppingCart}
             title="New recipes"
             detail="A fresh week, Sweep builds the list"
             selected={mode === 'new'}
             onPress={() => setMode('new')}
           />
-        </Group>
-
-        <Group label="This week (optional)">
-          <View style={{ flexDirection: 'row', gap: t.space.sm }}>
-            {TWEAKS.map((tweak) => (
-              <Option
-                key={tweak.value}
-                role="checkbox"
-                icon={tweak.icon}
-                title={tweak.label}
-                compact
-                selected={tweaks.includes(tweak.value)}
-                onPress={() =>
-                  setTweaks(
-                    tweaks.includes(tweak.value)
-                      ? tweaks.filter((v) => v !== tweak.value)
-                      : [...tweaks, tweak.value],
-                  )
-                }
-              />
-            ))}
-          </View>
         </Group>
 
         <Button
@@ -221,69 +181,54 @@ export function PlanSheet({
 
 function Group({ label, children }: { label: string; children: ReactNode }) {
   const t = useTheme();
-  // Checkboxes in "This week" aren't a radio group: only name the group then.
-  const radio = !label.startsWith('This week');
   return (
-    <View
-      accessibilityRole={radio ? 'radiogroup' : undefined}
-      accessibilityLabel={label}
-      style={{ gap: t.space.sm }}
-    >
+    <View accessibilityRole="radiogroup" accessibilityLabel={label} style={{ gap: t.space.sm }}>
       <Text variant="label">{label}</Text>
       {children}
     </View>
   );
 }
 
-/** A choice card from the canvas: a radio (one of a group) or a checkbox (any number). */
+/** A choice card from the canvas: a radio, one of its group. */
 function Option({
-  role,
   title,
   detail,
   icon,
   selected,
-  compact = false,
   onPress,
 }: {
-  role: 'radio' | 'checkbox';
   title: string;
   detail?: string;
   icon?: LucideIcon;
   selected: boolean;
-  compact?: boolean;
   onPress: () => void;
 }) {
   const t = useTheme();
-  const fg = compact && selected ? t.colors.onSelected : t.colors.text;
   return (
     <Pressable
-      accessibilityRole={role}
+      accessibilityRole="radio"
       aria-checked={selected}
       accessibilityState={{ checked: selected }}
       accessibilityLabel={detail ? `${title}, ${detail}` : title}
       onPress={onPress}
       style={{
         flex: 1,
-        minHeight: compact ? 64 : 56,
-        flexDirection: compact ? 'column' : 'row',
+        minHeight: 56,
+        flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: compact ? 'center' : 'flex-start',
-        gap: compact ? 4 : t.space.md,
-        paddingHorizontal: compact ? t.space.xs : t.space.md,
+        gap: t.space.md,
+        paddingHorizontal: t.space.md,
         paddingVertical: t.space.sm,
-        borderRadius: compact ? t.radius.md : t.radius.lg,
+        borderRadius: t.radius.lg,
         // Selected: a 2pt navy edge (and a filled radio), never colour alone.
-        borderWidth: selected && !compact ? 2 : 1,
+        borderWidth: selected ? 2 : 1,
         borderColor: selected ? t.colors.selected : t.colors.border,
-        backgroundColor: compact && selected ? t.colors.selected : t.colors.surface,
+        backgroundColor: t.colors.surface,
       }}
     >
-      {icon ? <Icon icon={icon} size={compact ? 20 : 22} color={fg} /> : null}
-      <View style={{ flexShrink: 1, alignItems: compact ? 'center' : 'flex-start' }}>
-        <Text
-          variant={compact ? 'caption' : 'label'}
-          style={{ color: fg, textAlign: compact ? 'center' : 'left', fontWeight: '600' }}
-        >
+      {icon ? <Icon icon={icon} size={22} color={t.colors.text} /> : null}
+      <View style={{ flexShrink: 1 }}>
+        <Text variant="label" style={{ fontWeight: '600' }}>
           {title}
         </Text>
         {detail ? (
@@ -292,19 +237,17 @@ function Option({
           </Text>
         ) : null}
       </View>
-      {compact ? null : (
-        <View
-          aria-hidden
-          style={{
-            marginLeft: 'auto',
-            width: 20,
-            height: 20,
-            borderRadius: 10,
-            borderWidth: selected ? 6 : 1.5,
-            borderColor: selected ? t.colors.selected : t.colors.switchOff,
-          }}
-        />
-      )}
+      <View
+        aria-hidden
+        style={{
+          marginLeft: 'auto',
+          width: 20,
+          height: 20,
+          borderRadius: 10,
+          borderWidth: selected ? 6 : 1.5,
+          borderColor: selected ? t.colors.selected : t.colors.switchOff,
+        }}
+      />
     </Pressable>
   );
 }

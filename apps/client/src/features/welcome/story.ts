@@ -1,51 +1,60 @@
 /**
  * The words on the welcome screens, kept apart from the layout so they're easy to
- * review and change. Taken from the chosen design ("Zest + Kitchen Table", ADR 0007).
- *
- * `upcoming` marks a screen about a feature that isn't built yet. Those screens say
- * "Coming soon" so the app never promises something a new user can't try.
+ * review and change. Design: direction A "Clean Slate" on the onboarding canvas
+ * (2026-11-21). Every page shows a feature that exists today.
  */
 export const LANDING = {
   title: "Cook what you've got.",
   highlight: "Buy only what's missing.",
-  lede: "Sweep remembers what's in your kitchen as your household shops, suggests dinners from what you already have, and plans the week for everyone.",
+  lede: 'Sweep tracks your Kitchen, suggests dinners from what you have, plans your week and writes the shopping list for you.',
 } as const;
 
-export type StoryKey = 'shop' | 'kitchen' | 'ask' | 'plan';
+/**
+ * How far the phone's text-size setting may enlarge the onboarding words. Past this the
+ * pages couldn't fit on one screen without scrolling.
+ */
+export const MAX_TEXT_SCALE = 1.2;
+
+export type StoryKey = 'snap' | 'ideas' | 'recipes' | 'plan' | 'list' | 'sync';
 
 export type StoryPage = {
   key: StoryKey;
-  eyebrow: string;
   title: string;
+  /** Words on a lime highlight after the title (the last page's "One app."). */
+  highlight?: string;
   body: string;
-  upcoming?: boolean;
 };
 
 export const STORY: StoryPage[] = [
   {
-    key: 'shop',
-    eyebrow: 'Shop together',
-    title: 'One list for the whole household',
-    body: "See who added what. When Bob ticks an item, his name pops up on Alice's phone and it goes straight into the Kitchen.",
+    key: 'snap',
+    title: 'Stock your kitchen with a photo.',
+    body: 'Snap your fridge or pantry and Sweep adds what it sees for you.',
   },
   {
-    key: 'kitchen',
-    eyebrow: 'Your Kitchen',
-    title: 'It lands in your Kitchen',
-    body: 'Tick it at the shop and Sweep stocks your Kitchen automatically. No typing in what you bought.',
+    key: 'ideas',
+    title: 'Dinner from what you already have.',
+    body: 'Get personalised dinner ideas based on your kitchen and food preferences.',
   },
   {
-    key: 'ask',
-    eyebrow: 'Ask Sweep',
-    title: 'Ask what to cook',
-    body: "Recipe ideas built from what's in your Kitchen, each showing exactly what's missing.",
-    upcoming: true,
+    key: 'recipes',
+    title: 'All your recipes in one place.',
+    body: 'Bring in family favourites from text, photos, links or PDFs.',
   },
   {
     key: 'plan',
-    eyebrow: 'This week',
-    title: 'Plan the week together',
-    body: "A Draft Plan with who's cooking each night. Approve it and only the missing items go on the list.",
-    upcoming: true,
+    title: 'Your week of dinners, sorted.',
+    body: "Plan around what's in your Kitchen. Swap, edit or ask for changes.",
+  },
+  {
+    key: 'list',
+    title: "Shop only for what's missing.",
+    body: 'Your plan adds just what you need, so you buy less and waste less.',
+  },
+  {
+    key: 'sync',
+    title: 'Everything in sync.',
+    highlight: 'One app.',
+    body: 'Your kitchen, recipes, shopping list and meal plan, all working together.',
   },
 ];

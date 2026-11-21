@@ -1,125 +1,114 @@
-import { router } from 'expo-router';
-import { ScrollView, Text, View } from 'react-native';
+import { router, useIsFocused } from 'expo-router';
+import { useCallback, useState } from 'react';
+import { Text, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { PressableScale } from '@/components/PressableScale';
-import { DriftingCards } from '@/features/welcome/DriftingCards';
+import { Button } from '@/components/ui';
+import { FitStage } from '@/features/welcome/FitStage';
+import { HighlightLines } from '@/features/welcome/HighlightLines';
+import { INTRO_MS, Intro } from '@/features/welcome/Intro';
+import { WELCOME_SCENE_WIDTH, WelcomeScene } from '@/features/welcome/OnboardingMocks';
 import { Rise } from '@/features/welcome/Rise';
-import { LANDING } from '@/features/welcome/story';
+import { LANDING, MAX_TEXT_SCALE } from '@/features/welcome/story';
+import { Wordmark } from '@/features/welcome/Wordmark';
 import { hero } from '@/theme/tokens';
 import { useTheme } from '@/theme/useTheme';
 
 /**
- * The first thing a signed-out person sees: the brand at full volume (ink, lime glow,
- * drifting cards) and two ways in. "Get started" tells the story first; people who
- * already have an account go straight to sign-in.
+ * The first thing a signed-out person sees (onboarding direction A, "Clean Slate"): logo,
+ * tonight's idea with Sweep's chef, the promise, and two ways in. "Get started" tells the
+ * story first; people with an account go straight to sign-in.
  */
+// The brand intro plays once per app launch, not every time someone comes back here.
+let introPlayed = false;
+
 export default function WelcomeScreen() {
   const t = useTheme();
+  const focused = useIsFocused(); // the picture only moves while this screen is showing
+  // Short phones get smaller type so everything, buttons included, fits without scrolling.
+  const short = useWindowDimensions().height < 700;
+  const [intro, setIntro] = useState(!introPlayed);
+  const endIntro = useCallback(() => {
+    introPlayed = true;
+    setIntro(false);
+  }, []);
+  // While the intro plays, the words wait to rise in until the logo zooms away.
+  const delay = intro ? INTRO_MS - 450 : 150;
+  const type = {
+    color: hero.text,
+    fontSize: short ? 26 : 30,
+    lineHeight: short ? 31 : 35,
+    letterSpacing: -0.8,
+  };
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: hero.background,
-        backgroundImage: hero.glow,
-      }}
-    >
+    <View style={{ flex: 1, backgroundColor: t.colors.surface }}>
       <SafeAreaView style={{ flex: 1 }}>
-        <ScrollView
-          contentContainerStyle={{
-            flexGrow: 1,
-            padding: t.space.xl,
-            gap: t.space.xl,
+        {/* No scrolling: the picture shrinks so everything else fits on screen. */}
+        <View
+          style={{
+            flex: 1,
+            paddingHorizontal: t.space.lg,
+            paddingTop: t.space.sm,
+            paddingBottom: short ? t.space.md : t.space.xl,
+            gap: short ? t.space.md : t.space.lg,
             width: '100%',
-            maxWidth: 560,
+            maxWidth: 520,
             alignSelf: 'center',
           }}
         >
           <Wordmark />
-          <View style={{ flex: 1, justifyContent: 'center' }}>
-            <DriftingCards />
-          </View>
 
-          <View style={{ gap: t.space.md }}>
-            <Rise delay={300}>
-              <Text
+          <FitStage contentWidth={WELCOME_SCENE_WIDTH} minHeight={0}>
+            <WelcomeScene active={focused && !intro} />
+          </FitStage>
+
+          <View style={{ gap: t.space.sm, paddingHorizontal: t.space.md }}>
+            <Rise delay={delay}>
+              {/* One heading for screen readers; the lime marker is drawn line by line. */}
+              <View
+                accessible
                 accessibilityRole="header"
-                style={[t.type.display, { color: hero.text, fontSize: 40, lineHeight: 44 }]}
+                accessibilityLabel={`${LANDING.title} ${LANDING.highlight}`}
               >
-                {LANDING.title}{' '}
-                <Text style={{ backgroundColor: hero.highlight, color: hero.onHighlight }}>
-                  {LANDING.highlight}
+                <Text maxFontSizeMultiplier={MAX_TEXT_SCALE} style={[t.type.display, type]}>
+                  {LANDING.title}
                 </Text>
-              </Text>
+                <HighlightLines
+                  maxFontSizeMultiplier={MAX_TEXT_SCALE}
+                  style={[t.type.display, type]}
+                >
+                  {LANDING.highlight}
+                </HighlightLines>
+              </View>
             </Rise>
-            <Rise delay={300} index={1}>
-              <Text style={[t.type.body, { color: hero.textMuted, fontSize: 17, lineHeight: 24 }]}>
+            <Rise delay={delay} index={1}>
+              <Text
+                maxFontSizeMultiplier={MAX_TEXT_SCALE}
+                style={[
+                  t.type.body,
+                  {
+                    color: t.colors.textMuted,
+                    fontSize: 15,
+                    lineHeight: short ? 21 : 22,
+                  },
+                ]}
+              >
                 {LANDING.lede}
               </Text>
             </Rise>
           </View>
 
-          <Rise delay={300} index={2} style={{ gap: t.space.sm }}>
-            <HeroButton title="Get started" primary onPress={() => router.push('/how-it-works')} />
-            <HeroButton title="I already have an account" onPress={() => router.push('/sign-in')} />
+          <Rise delay={delay} index={2} style={{ gap: t.space.md, paddingHorizontal: t.space.sm }}>
+            <Button title="Get started" onPress={() => router.push('/how-it-works')} />
+            <Button
+              title="I already have an account"
+              variant="secondary"
+              onPress={() => router.push('/sign-in')}
+            />
           </Rise>
-        </ScrollView>
+        </View>
       </SafeAreaView>
+      {intro ? <Intro onDone={endIntro} /> : null}
     </View>
-  );
-}
-
-function Wordmark() {
-  const t = useTheme();
-  return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.sm }}>
-      <View
-        aria-hidden
-        style={{ width: 14, height: 14, borderRadius: 7, backgroundColor: hero.highlight }}
-      />
-      <Text style={[t.type.heading, { color: hero.text }]}>Sweep</Text>
-    </View>
-  );
-}
-
-/** The ui Button is themed for light and dark screens; this one is for the ink hero. */
-function HeroButton({
-  title,
-  onPress,
-  primary,
-}: {
-  title: string;
-  onPress: () => void;
-  primary?: boolean;
-}) {
-  const t = useTheme();
-  return (
-    <PressableScale
-      accessibilityRole="button"
-      onPress={onPress}
-      style={{
-        minHeight: t.touchTarget + 8,
-        borderRadius: t.radius.pill,
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingHorizontal: t.space.xl,
-        backgroundColor: primary ? hero.highlight : 'transparent',
-        borderWidth: primary ? 0 : 1.5,
-        borderColor: hero.border,
-      }}
-    >
-      <Text
-        style={[
-          t.type.label,
-          {
-            fontFamily: t.fonts.displayBold,
-            fontSize: 17,
-            color: primary ? hero.onHighlight : hero.text,
-          },
-        ]}
-      >
-        {title}
-      </Text>
-    </PressableScale>
   );
 }

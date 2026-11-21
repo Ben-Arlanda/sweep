@@ -148,7 +148,7 @@ How well a recipe fits what's in the Kitchen: which of its ingredients the House
 _Avoid_: coverage score, pantry match
 
 **Dinner Ideas**:
-What "Just tonight" shows: tonight's best Kitchen Matches that pass the Dietary Rules, chosen by code, not the agent. A Member picking one plans it directly, like editing the Meal Plan by hand, so there's no Proposal. Asking Sweep to tweak them starts a Conversation, which ends in a one-dinner Proposal.
+What "Find dinner ideas" shows (after the mood step): tonight's best Kitchen Matches that pass the Dietary Rules, chosen by code, not the agent. A Member picking one plans it directly, like editing the Meal Plan by hand, so there's no Proposal. Asking Sweep to tweak them starts a Conversation, which ends in a one-dinner Proposal.
 _Avoid_: suggestions, AI picks
 
 ### The agent

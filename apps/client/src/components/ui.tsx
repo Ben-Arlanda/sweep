@@ -242,22 +242,23 @@ export function Button({
   const [pressed, setPressed] = useState(false);
   const inactive = disabled || loading;
 
+  // Every button but ghost (text only) shares the same light hairline edge.
   const look: Record<ButtonVariant, { bg: string; fg: string; border: string }> = {
     primary: {
       bg: pressed ? t.colors.actionPressed : t.colors.action,
       fg: t.colors.onAction,
-      border: 'transparent',
+      border: t.colors.border,
     },
     secondary: { bg: t.colors.surface, fg: t.colors.text, border: t.colors.border },
     ghost: { bg: 'transparent', fg: t.colors.text, border: 'transparent' },
-    danger: { bg: 'transparent', fg: t.colors.danger, border: t.colors.danger },
-    dark: { bg: t.colors.tabSelected, fg: t.colors.surface, border: 'transparent' },
-    strong: { bg: t.colors.strong, fg: t.colors.onStrong, border: 'transparent' },
+    danger: { bg: 'transparent', fg: t.colors.danger, border: t.colors.border },
+    dark: { bg: t.colors.tabSelected, fg: t.colors.surface, border: t.colors.border },
+    strong: { bg: t.colors.strong, fg: t.colors.onStrong, border: t.colors.border },
     // A quiet second action (Undo): see-through, thin border, muted text.
     outline: { bg: 'transparent', fg: t.colors.textMuted, border: t.colors.border },
-    lavender: { bg: t.colors.lavender, fg: t.colors.onLavender, border: 'transparent' },
+    lavender: { bg: t.colors.lavender, fg: t.colors.onLavender, border: t.colors.border },
     // The step that actually deletes something: solid red, white text.
-    dangerSolid: { bg: t.colors.danger, fg: t.colors.onDanger, border: 'transparent' },
+    dangerSolid: { bg: t.colors.danger, fg: t.colors.onDanger, border: t.colors.border },
   };
   const { bg, fg, border } = look[variant];
   // Filled buttons get the heavier label; outlined and text-only ones stay quieter.

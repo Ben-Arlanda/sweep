@@ -32,6 +32,8 @@ export function Segmented<T extends string>({
         gap: 3,
         padding: 3,
         borderRadius: t.radius.md,
+        borderWidth: 1,
+        borderColor: t.colors.border,
         backgroundColor: t.colors.fill,
       }}
     >

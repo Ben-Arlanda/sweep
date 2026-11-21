@@ -13,9 +13,8 @@
 import type { components } from '@/lib/api/schema';
 
 export type PlanMode = components['schemas']['PlanMode'];
-export type PlanTweak = components['schemas']['PlanTweak'];
-/** What the sheet picked: the kind of plan, the days, and this week's chips (slice 6e). */
-export type Plan = { mode: PlanMode; days: string[]; tweaks?: PlanTweak[] };
+/** What the sheet picked: the kind of plan and the days. */
+export type Plan = { mode: PlanMode; days: string[] };
 export type Start = { text: string; plan: Plan | null };
 
 let pending: Start | null = null;
@@ -34,11 +33,11 @@ export function requestStart(_start: 'tonight'): void {
 }
 
 /** The "Plan my week" sheet, once the Member has picked the days and the kind of plan. */
-export function requestPlan(mode: PlanMode, days: string[], tweaks: PlanTweak[] = []): void {
+export function requestPlan(mode: PlanMode, days: string[]): void {
   const sorted = [...days].sort();
   pending = {
     text: planMessage(mode, sorted),
-    plan: { mode, days: sorted, ...(tweaks.length ? { tweaks } : {}) },
+    plan: { mode, days: sorted },
   };
 }
 

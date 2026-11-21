@@ -308,6 +308,8 @@ function KitchenScreenContent() {
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: t.radius.md,
+            borderWidth: 1,
+            borderColor: t.colors.border,
             backgroundColor: pressed ? t.colors.actionPressed : t.colors.action,
           })}
         >
@@ -367,17 +369,18 @@ function KitchenScreenContent() {
       ) : null}
 
       <LayoutAnimationConfig skipEntering>
-        {shown.map((section) => {
+        {shown.map((section, index) => {
           const open = !closed.has(section.category);
           return (
             <CategoryAccordion
               key={section.category}
-              category={section.category}
               label={section.label}
+              count={section.rows.length}
+              first={index === 0}
               open={open}
               onToggle={() => setClosed((now) => toggled(now, section.category))}
             >
-              {section.rows.map((row) => (
+              {section.rows.map((row, i) => (
                 <SwipeToRemove
                   key={row.id}
                   background={t.colors.surface}
@@ -385,6 +388,7 @@ function KitchenScreenContent() {
                 >
                   <ItemRow
                     row={row}
+                    first={i === 0}
                     onList={isOnList(row)}
                     onStatus={(anchor) => setPopover({ id: row.id, kind: 'status', anchor })}
                     onMenu={(anchor) => setPopover({ id: row.id, kind: 'menu', anchor })}
@@ -640,6 +644,7 @@ function StockBadge({ stock }: { stock: Stock }) {
  */
 function ItemRow({
   row,
+  first,
   onList,
   onStatus,
   onMenu,
@@ -647,6 +652,8 @@ function ItemRow({
   onAdd,
 }: {
   row: KitchenRow;
+  /** The card's first row has no line above it. */
+  first: boolean;
   onList: boolean;
   onStatus: (anchor: Anchor) => void;
   onMenu: (anchor: Anchor) => void;
@@ -670,7 +677,7 @@ function ItemRow({
         paddingVertical: t.space.sm,
         paddingLeft: 14,
         paddingRight: 6,
-        borderTopWidth: 1,
+        borderTopWidth: first ? 0 : 1,
         borderTopColor: t.colors.border,
       }}
     >

@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from 'expo-router';
-import { ChevronDown, Heart, Search } from 'lucide-react-native';
-import { useState } from 'react';
+import { Heart, Search, SlidersHorizontal } from 'lucide-react-native';
+import { useState, type ReactNode } from 'react';
 import { TextInput, View } from 'react-native';
 
 import { ChoiceChips } from '@/components/ChoiceChips';
@@ -41,11 +41,11 @@ const SORTS: { label: string; value: RecipeSort; accessibilityLabel?: string }[]
   { label: 'A–Z', value: 'title', accessibilityLabel: 'A to Z' },
 ];
 
-type Open = 'time' | 'cuisine' | 'sort' | null;
+type Open = 'filters' | null;
 
 /**
- * Every recipe (slice 6f, "See all"): search, Course tiles, Ready in, Cuisine,
- * Favourites and Sort. Browsing pages through; search is ordered by meaning instead.
+ * Every recipe (slice 6f, "See all"): search, Course pills that slide, then the count
+ * Favourites toggle and a Filters sheet (Sort, Ready in, Cuisine). Browsing pages through; search is ordered by meaning instead.
  * Opened with params from the Recipes screen's chips (`course`, `max`, `favourites`).
  */
 export function AllRecipesScreen() {
@@ -67,6 +67,8 @@ export function AllRecipesScreen() {
   const q = useDebounced(text.trim());
   const searching = q.length >= 2;
   const filters: RecipeFilters = { maxMinutes, course, favourites, cuisine, sort };
+  // How many of the sheet's filters narrow the list (course and Favourites show on the page).
+  const active = [maxMinutes !== null, cuisine !== null].filter(Boolean).length;
   const browse = useRecipeBrowse(filters, !searching);
   const search = useRecipeSearch(q, filters);
   const count = useRecipeCount(filters);
@@ -111,7 +113,7 @@ export function AllRecipesScreen() {
 
       <ChoiceChips
         label="Course"
-        size="small"
+        scroll
         value={course}
         onChange={setCourse}
         options={[
@@ -121,42 +123,51 @@ export function AllRecipesScreen() {
       />
 
       <View
-        style={{ flexDirection: 'row', flexWrap: 'wrap', columnGap: 6, marginTop: -t.space.sm }}
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginTop: -t.space.sm,
+        }}
       >
-        <FilterChip
-          label={maxMinutes ? `≤ ${maxMinutes} min` : 'Ready in'}
-          active={maxMinutes !== null}
-          menu
-          onPress={() => setOpen('time')}
-        />
-        <FilterChip
-          label={cuisine ? (cuisineName(cuisine) ?? cuisine) : 'Cuisine'}
-          active={cuisine !== null}
-          menu
-          onPress={() => setOpen('cuisine')}
-        />
-        <FilterChip
-          label="Favourites"
-          icon={Heart}
-          active={favourites}
+        <PressableScale
+          accessibilityRole="button"
+          accessibilityLabel="Favourites only"
+          accessibilityState={{ selected: favourites }}
+          aria-pressed={favourites}
           onPress={() => setFavourites((f) => !f)}
-        />
-        {searching ? null : (
-          <FilterChip
-            label={SORTS.find((s) => s.value === sort)?.label ?? 'Sort'}
-            accessibilityLabel={`Sort: ${SORTS.find((s) => s.value === sort)?.label}`}
-            active={false}
-            menu
-            onPress={() => setOpen('sort')}
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 6,
+            minHeight: t.touchTarget,
+            paddingRight: t.space.sm,
+          }}
+        >
+          <Icon
+            icon={Heart}
+            size={18}
+            color={favourites ? t.colors.danger : t.colors.text}
+            fill={favourites ? t.colors.danger : 'transparent'}
           />
-        )}
+          <Text variant="label">Favourites</Text>
+        </PressableScale>
+        <PressableScale
+          accessibilityRole="button"
+          accessibilityLabel={active ? `Filters, ${active} on` : 'Filters'}
+          onPress={() => setOpen('filters')}
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 6,
+            minHeight: t.touchTarget,
+            paddingLeft: t.space.sm,
+          }}
+        >
+          <Icon icon={SlidersHorizontal} size={18} color={t.colors.text} />
+          <Text variant="label">{active ? `Filters · ${active}` : 'Filters'}</Text>
+        </PressableScale>
       </View>
-
-      {countText ? (
-        <Text variant="caption" muted accessibilityLiveRegion="polite">
-          {countText}
-        </Text>
-      ) : null}
 
       <Results
         loading={searching ? search.isPending : browse.isPending}
@@ -179,47 +190,57 @@ export function AllRecipesScreen() {
         />
       ) : null}
 
-      {open === 'time' ? (
-        <Sheet label="Ready in" title="Ready in" onClose={() => setOpen(null)}>
-          <ChoiceChips
-            label="Ready in"
-            options={TIMES}
-            value={maxMinutes}
-            onChange={(v) => {
-              setMaxMinutes(v);
-              setOpen(null);
-            }}
-          />
-        </Sheet>
-      ) : null}
-      {open === 'cuisine' ? (
-        <Sheet label="Cuisine" title="Cuisine" onClose={() => setOpen(null)}>
-          <ErrorText message={cuisines.error?.message} />
-          <ChoiceChips
-            label="Cuisine"
-            options={[
-              { label: 'Any', value: null as string | null },
-              ...(cuisines.data ?? []).map((c) => ({ label: cuisineName(c) ?? c, value: c })),
-            ]}
-            value={cuisine}
-            onChange={(v) => {
-              setCuisine(v);
-              setOpen(null);
-            }}
-          />
-        </Sheet>
-      ) : null}
-      {open === 'sort' ? (
-        <Sheet label="Sort" title="Sort by" onClose={() => setOpen(null)}>
-          <ChoiceChips
-            label="Sort by"
-            options={SORTS}
-            value={sort}
-            onChange={(v) => {
-              setSort(v);
-              setOpen(null);
-            }}
-          />
+      {open === 'filters' ? (
+        <Sheet label="Filters" title="Filters" onClose={() => setOpen(null)}>
+          <View style={{ gap: t.space.lg }}>
+            {searching ? null : (
+              <FilterGroup title="Sort by">
+                <ChoiceChips label="Sort by" options={SORTS} value={sort} onChange={setSort} />
+              </FilterGroup>
+            )}
+            <FilterGroup title="Ready in">
+              <ChoiceChips
+                label="Ready in"
+                options={TIMES}
+                value={maxMinutes}
+                onChange={setMaxMinutes}
+              />
+            </FilterGroup>
+            <FilterGroup title="Cuisine">
+              <ErrorText message={cuisines.error?.message} />
+              <ChoiceChips
+                label="Cuisine"
+                scroll
+                options={[
+                  { label: 'Any', value: null as string | null },
+                  ...(cuisines.data ?? []).map((c) => ({ label: cuisineName(c) ?? c, value: c })),
+                ]}
+                value={cuisine}
+                onChange={setCuisine}
+              />
+            </FilterGroup>
+            <View style={{ flexDirection: 'row', gap: t.space.sm }}>
+              {active || sort !== 'recommended' ? (
+                <View style={{ flex: 1 }}>
+                  <Button
+                    title="Clear all"
+                    variant="secondary"
+                    onPress={() => {
+                      setMaxMinutes(null);
+                      setCuisine(null);
+                      setSort('recommended');
+                    }}
+                  />
+                </View>
+              ) : null}
+              <View style={{ flex: 1 }}>
+                <Button
+                  title={countText ? `Show ${countText}` : 'Done'}
+                  onPress={() => setOpen(null)}
+                />
+              </View>
+            </View>
+          </View>
         </Sheet>
       ) : null}
     </Screen>
@@ -247,54 +268,15 @@ function Results({
   return null;
 }
 
-/** A filter pill: navy when it's narrowing the list; ▾ when it opens a menu. */
-function FilterChip({
-  label,
-  accessibilityLabel,
-  icon,
-  active,
-  menu,
-  onPress,
-}: {
-  label: string;
-  accessibilityLabel?: string;
-  icon?: typeof Heart;
-  active: boolean;
-  menu?: boolean;
-  onPress: () => void;
-}) {
+/** One group in the Filters sheet: a small heading over its options. */
+function FilterGroup({ title, children }: { title: string; children: ReactNode }) {
   const t = useTheme();
-  const color = active ? t.colors.onSelected : t.colors.text;
   return (
-    <PressableScale
-      accessibilityRole="button"
-      accessibilityLabel={accessibilityLabel ?? label}
-      accessibilityState={menu ? { expanded: false } : { selected: active }}
-      aria-pressed={menu ? undefined : active}
-      onPress={onPress}
-      style={{ minHeight: t.touchTarget, justifyContent: 'center' }}
-    >
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: 4,
-          minHeight: 36,
-          paddingHorizontal: t.space.md - 1,
-          borderRadius: t.radius.pill,
-          borderWidth: 1,
-          borderColor: active ? t.colors.selected : t.colors.border,
-          backgroundColor: active ? t.colors.selected : t.colors.surface,
-        }}
-      >
-        {icon ? (
-          <Icon icon={icon} size={15} color={color} fill={active ? color : undefined} />
-        ) : null}
-        <Text style={{ color, fontFamily: t.fonts.medium, fontSize: 13, lineHeight: 18 }}>
-          {label}
-        </Text>
-        {menu ? <Icon icon={ChevronDown} size={15} color={color} /> : null}
-      </View>
-    </PressableScale>
+    <View style={{ gap: t.space.sm }}>
+      <Text variant="label" role="heading" aria-level={2}>
+        {title}
+      </Text>
+      {children}
+    </View>
   );
 }

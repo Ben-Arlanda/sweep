@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 
 import { PressableScale } from '@/components/PressableScale';
 import { Text } from '@/components/ui';
@@ -14,7 +14,8 @@ const SMALL_PILL = 36;
  *
  * `size="small"` draws a shorter pill inside a full-size tap area (a transparent
  * Pressable around it), so it still meets the 44pt touch target on every platform.
- * `fill` shares the width equally, so the pills stay on one row.
+ * `fill` shares the width equally, so the pills stay on one row. `scroll` keeps them on one
+ * row that slides sideways, for more pills than fit.
  */
 export function ChoiceChips<T>({
   label,
@@ -23,6 +24,7 @@ export function ChoiceChips<T>({
   onChange,
   size = 'regular',
   fill = false,
+  scroll = false,
 }: {
   /** What the group is for, read out before the options ("Ready in", "Appearance"). */
   label: string;
@@ -31,16 +33,17 @@ export function ChoiceChips<T>({
   onChange: (value: T) => void;
   size?: 'regular' | 'small';
   fill?: boolean;
+  scroll?: boolean;
 }) {
   const t = useTheme();
   const small = size === 'small';
-  return (
+  const row = (
     <View
       accessibilityRole="radiogroup"
       accessibilityLabel={label}
       style={{
         flexDirection: 'row',
-        flexWrap: fill ? 'nowrap' : 'wrap',
+        flexWrap: fill || scroll ? 'nowrap' : 'wrap',
         columnGap: fill ? t.space.xs + 2 : small ? 6 : t.space.sm,
         // Small chips already sit in a 44pt tap area, so wrapped rows need no extra gap.
         rowGap: small ? 0 : t.space.sm,
@@ -94,5 +97,15 @@ export function ChoiceChips<T>({
         );
       })}
     </View>
+  );
+  if (!scroll) return row;
+  return (
+    <ScrollView
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      keyboardShouldPersistTaps="handled"
+    >
+      {row}
+    </ScrollView>
   );
 }

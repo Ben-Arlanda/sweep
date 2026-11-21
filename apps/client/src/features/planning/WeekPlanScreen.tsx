@@ -3,9 +3,6 @@ import {
   ArrowLeftRight,
   Check,
   ChevronDown,
-  Ellipsis,
-  MessageCircle,
-  RotateCcw,
   ShoppingBasket,
   ShoppingCart,
   Sparkles,
@@ -21,7 +18,6 @@ import { Sheet } from '@/components/Sheet';
 import { useToast } from '@/components/Toast';
 import { Button, ErrorText, Field, SectionLabel, Text } from '@/components/ui';
 import { amountOf, formatDay } from '@/features/chat/format';
-import { SheetOption } from '@/features/home/EditPlanSheet';
 import { decisionFor } from '@/features/chat/decision';
 import { peekStart, takeStart } from '@/features/chat/starters';
 import type { Proposal } from '@/features/chat/turn';
@@ -61,10 +57,11 @@ const REFINE_IDEAS = ['Make it quicker', 'More vegetarian', 'Use more of my Kitc
 
 /**
  * "Plan my week" as screens (slice 6e, ADR 0025): Generating, then the plan to review.
- * The same Conversation and Proposal as the chat underneath, so "Conversation" opens it.
+ * The same Conversation and Proposal as the chat underneath; the chat opens only when
+ * Sweep answers without a plan.
  *
  * Review: swap any day for an alternative (code, instant), refine with Sweep (a chat
- * message, answered on this screen), or add it to the week (approve).
+ * message, answered on this screen), add it to the week (approve), or start over (reject).
  */
 export function WeekPlanScreen() {
   const t = useTheme();
@@ -72,7 +69,6 @@ export function WeekPlanScreen() {
   // Whether the sheet asked for a plan: known on the first render, taken in the effect.
   const [startPlan] = useState(() => peekStart()?.plan ?? null);
   const started = startPlan !== null;
-  const [menu, setMenu] = useState(false);
   const [swapDay, setSwapDay] = useState<string | null>(null);
   const [refining, setRefining] = useState(false);
   // Things to buy already put on the list from here ("800 g canned tomatoes").
@@ -142,6 +138,12 @@ export function WeekPlanScreen() {
         setListed={setListed}
         onSwap={setSwapDay}
         onRefine={() => setRefining(true)}
+        onStartOver={() => {
+          // Closes this plan without saving it; Home has Plan my week.
+          if (proposal.id)
+            decide.mutate({ proposalId: proposal.id, decision: { action: 'reject' } });
+          router.dismissTo('/');
+        }}
         onApprove={() => {
           const ticks = approveTicks(proposal, listed);
           const decision = decisionFor(proposal, ticks);
@@ -177,22 +179,6 @@ export function WeekPlanScreen() {
       <Stack.Screen
         options={{
           title: 'Your meal plan',
-          headerRight: () =>
-            run.conversationId ? (
-              <PressableScale
-                accessibilityRole="button"
-                accessibilityLabel="More options"
-                onPress={() => setMenu(true)}
-                style={{
-                  width: t.touchTarget,
-                  height: t.touchTarget,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <Icon icon={Ellipsis} color={t.colors.text} />
-              </PressableScale>
-            ) : null,
         }}
       />
       {body()}
@@ -214,33 +200,6 @@ export function WeekPlanScreen() {
             );
           }}
         />
-      ) : null}
-      {menu ? (
-        <Sheet label="More options" title="More options" onClose={() => setMenu(false)}>
-          <View style={{ gap: t.space.sm }}>
-            <SheetOption
-              icon={MessageCircle}
-              title="See the conversation"
-              hint="Everything you and Sweep said"
-              onPress={() => {
-                setMenu(false);
-                router.push('/plan');
-              }}
-            />
-            <SheetOption
-              icon={RotateCcw}
-              title="Start a new plan"
-              hint="Close this one without saving"
-              onPress={() => {
-                setMenu(false);
-                // Closes this plan without saving it; Home has Plan my week.
-                if (proposal?.id)
-                  decide.mutate({ proposalId: proposal.id, decision: { action: 'reject' } });
-                router.dismissTo('/');
-              }}
-            />
-          </View>
-        </Sheet>
       ) : null}
       {refining ? (
         <RefineSheet
@@ -284,6 +243,7 @@ function Review({
   setListed,
   onSwap,
   onRefine,
+  onStartOver,
   onApprove,
 }: {
   proposal: Proposal;
@@ -294,6 +254,7 @@ function Review({
   setListed: Dispatch<SetStateAction<string[]>>;
   onSwap: (date: string) => void;
   onRefine: () => void;
+  onStartOver: () => void;
   onApprove: () => void;
 }) {
   const t = useTheme();
@@ -518,6 +479,7 @@ function Review({
       <View style={{ gap: 10 }}>
         <Button title="Refine with Sweep" icon={Sparkles} variant="secondary" onPress={onRefine} />
         <Button title="Add to my week" loading={approving} onPress={onApprove} />
+        <Button title="Start a new plan" variant="secondary" onPress={onStartOver} />
       </View>
     </ScrollView>
   );

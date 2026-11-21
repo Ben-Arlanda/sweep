@@ -36,7 +36,7 @@ const TWEAKS = ['Make it quicker', 'More vegetarian'];
 
 /**
  * Dinner Ideas (slice 6e, ADR 0025): chosen by code from the Kitchen and Dietary Rules.
- * Two ways in: "Just tonight" on Home, or the Recipes tab's setup (slice 6f), whose mood,
+ * Reached from the Dinner ideas setup (Home's Tonight card or Recipes, slice 6f), whose mood,
  * Ready in and Serves arrive as route params. Choosing one opens its recipe to plan it.
  * Asking Sweep to tweak them (or "Healthy") starts a Conversation that answers here.
  * A `date` param (the Plan tab's Swap or Add) plans that day instead of tonight; asking
@@ -208,8 +208,8 @@ export function TonightScreen() {
       {planning ? (
         <PlanSheet
           onClose={() => setPlanning(false)}
-          onPick={(mode, days, tweaks) => {
-            requestPlan(mode, days, tweaks);
+          onPick={(mode, days) => {
+            requestPlan(mode, days);
             router.replace('/plan-week');
           }}
         />

@@ -1,13 +1,20 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
-import { ArrowLeft, ArrowLeftRight, CalendarDays, ChefHat, Plus } from 'lucide-react-native';
+import {
+  ArrowLeft,
+  ArrowLeftRight,
+  CalendarDays,
+  CirclePlay,
+  Info,
+  Plus,
+} from 'lucide-react-native';
 import { randomUUID } from 'expo-crypto';
 import { useState } from 'react';
 import { Linking, Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ConfirmDialog } from '@/components/ConfirmDialog';
-import { Segmented } from '@/components/Segmented';
+import { UnderlineTabs } from '@/components/UnderlineTabs';
 import { HeartButton } from '@/components/HeartButton';
 import { Icon } from '@/components/Icon';
 import { PressableScale } from '@/components/PressableScale';
@@ -19,6 +26,7 @@ import { dayParts } from '@/features/mealPlan/week';
 import { hostOf } from '@/features/imports/ReviewScreen';
 import { ruleBreakHint, ruleBreakText } from '@/features/imports/ruleBreaks';
 import { CookMode } from '@/features/recipes/CookMode';
+import { MethodViewPicker } from '@/features/recipes/MethodViewPicker';
 import { PhotoButton } from '@/features/recipes/OwnPhoto';
 import {
   addText,
@@ -79,7 +87,7 @@ function RecipeContent() {
   const kitchen = useKitchen();
   // Optional too: without the list, "Need" is just a label, with no + to add it.
   const list = useList();
-  const [tab, setTab] = useState<Tab>('ingredients');
+  const [chosen, setTab] = useState<Tab | null>(null);
   const [remembered, setView] = useMethodView();
   const [cooking, setCooking] = useState(false);
   const need = useNeedActions(list.data?.id ?? '');
@@ -108,6 +116,19 @@ function RecipeContent() {
   const r = recipe.data;
   const views = viewsOf(r);
   const view: MethodView = views.includes(remembered) ? remembered : views[0];
+  // Overview only when there's something to say: a description, tips, variations or storage.
+  const hasOverview = !!(
+    r.summary ||
+    r.storage ||
+    (r.tips ?? []).length ||
+    (r.variations ?? []).length
+  );
+  const tab: Tab = chosen ?? (hasOverview ? 'overview' : 'ingredients');
+  // Detailed: one card per Recipe Stage. Quick: one per step.
+  const cards: Card[] =
+    view === 'detailed' && r.stages?.length
+      ? r.stages.map((st) => ({ title: st.title, minutes: st.minutes, body: st.steps }))
+      : (r.method ?? []).map((step) => ({ body: [step] }));
   const steps = cookSteps(r, view);
   const summary = kitchen.data ? haveSummary(r.ingredients, kitchen.data) : null;
   const parentId = r.kind === 'adaptation' ? r.parent_recipe_id : null;
@@ -164,7 +185,6 @@ function RecipeContent() {
         </Text>
         <MetaRow recipe={r} />
       </View>
-      {r.summary ? <Text>{r.summary}</Text> : null}
       {swap && date ? <SwappingPill proposalId={swap} date={date} /> : null}
       {parentId ? <AdaptedFrom parentId={parentId} /> : null}
 
@@ -179,6 +199,8 @@ function RecipeContent() {
             paddingLeft: t.space.md,
             paddingRight: 4,
             borderRadius: 10,
+            borderWidth: 1,
+            borderColor: t.colors.border,
             backgroundColor: t.colors.fill,
           }}
         >
@@ -201,15 +223,23 @@ function RecipeContent() {
       ) : null}
       {actions}
 
-      <Segmented
+      <UnderlineTabs
         label="Recipe"
         value={tab}
         onChange={setTab}
         options={[
-          { value: 'ingredients', label: `Ingredients (${r.ingredients.length})` },
-          { value: 'method', label: methodLabel(r, view) },
+          ...(hasOverview ? [{ value: 'overview' as const, label: 'Overview' }] : []),
+          { value: 'ingredients', label: 'Ingredients' },
+          { value: 'method', label: 'Method' },
         ]}
       />
+
+      {tab === 'overview' ? (
+        <View style={{ gap: t.space.lg }}>
+          {r.summary ? <Text>{r.summary}</Text> : null}
+          <Extras recipe={r} />
+        </View>
+      ) : null}
 
       {tab === 'ingredients' ? (
         <View style={{ gap: t.space.sm }}>
@@ -247,30 +277,36 @@ function RecipeContent() {
               (see Notes below).
             </Text>
           ) : null}
-          {views.length > 1 ? (
-            <Segmented
-              label="Method view"
-              value={view}
-              onChange={setView}
-              options={[
-                { value: 'detailed', label: 'Detailed' },
-                { value: 'quick', label: 'Quick' },
-              ]}
-            />
-          ) : null}
-          {steps.length > 0 ? (
-            <Button
-              title="Cook Mode"
-              icon={ChefHat}
-              variant="secondary"
-              accessibilityLabel={`Cook Mode: ${r.title}, one step at a time`}
-              onPress={() => setCooking(true)}
-            />
-          ) : null}
-          {view === 'detailed' && r.stages?.length ? (
-            <Stages stages={r.stages} />
-          ) : r.method ? (
-            r.method.map((step, i) => <StepCard key={i} n={i + 1} text={step} />)
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.md }}>
+            <View style={{ flex: 1, flexDirection: 'row' }}>
+              {views.length > 1 ? <MethodViewPicker value={view} onChange={setView} /> : null}
+            </View>
+            {steps.length > 0 ? (
+              <PressableScale
+                accessibilityRole="button"
+                accessibilityLabel={`Cook Mode: ${r.title}, one step at a time`}
+                onPress={() => setCooking(true)}
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: t.space.sm,
+                  minHeight: t.touchTarget,
+                  paddingHorizontal: t.space.lg,
+                  borderRadius: t.radius.pill,
+                  borderWidth: 1,
+                  borderColor: t.colors.border,
+                  backgroundColor: t.colors.action,
+                }}
+              >
+                <Icon icon={CirclePlay} size={18} color={t.colors.onAction} />
+                <Text style={[t.type.label, { color: t.colors.onAction }]}>Cook Mode</Text>
+              </PressableScale>
+            ) : null}
+          </View>
+          {cards.length > 0 ? (
+            cards.map((card, i) => (
+              <MethodCard key={i} n={i + 1} total={cards.length} card={card} />
+            ))
           ) : r.source_url ? (
             <Pressable
               accessibilityRole="link"
@@ -284,7 +320,6 @@ function RecipeContent() {
           ) : (
             <Text muted>No method saved for this recipe.</Text>
           )}
-          {view === 'detailed' ? <Extras recipe={r} /> : null}
         </View>
       ) : null}
       {cooking ? (
@@ -333,7 +368,7 @@ function cardStyle(t: Theme) {
   };
 }
 
-type Tab = 'ingredients' | 'method';
+type Tab = 'overview' | 'ingredients' | 'method';
 
 /**
  * "Add to list" and "Add 2 missing": onto the Shopping List (queued if offline), then
@@ -369,63 +404,37 @@ function MetaRow({ recipe }: { recipe: Recipe }) {
   );
 }
 
-/** "Method (6 stages)" in the Detailed View, "Method (4 steps)" in the Quick View. */
-function methodLabel(r: Recipe, view: MethodView): string {
-  const plural = (n: number, one: string) => `${n} ${one}${n === 1 ? '' : 's'}`;
-  if (view === 'detailed' && r.stages?.length)
-    return `Method (${plural(r.stages.length, 'stage')})`;
-  return r.method ? `Method (${plural(r.method.length, 'step')})` : 'Method';
-}
-
 /** One numbered step: a white card with the number in a navy circle. */
-function StepCard({ n, text }: { n: number; text: string }) {
-  const t = useTheme();
-  return (
-    <View style={[cardStyle(t), { flexDirection: 'row', alignItems: 'flex-start', padding: 14 }]}>
-      <View
-        style={{
-          width: 26,
-          height: 26,
-          borderRadius: 13,
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: t.colors.selected,
-        }}
-      >
-        <Text style={{ fontFamily: t.fonts.bold, fontSize: 13, color: t.colors.onSelected }}>
-          {n}
-        </Text>
-      </View>
-      <Text style={{ flex: 1 }}>{text}</Text>
-    </View>
-  );
-}
+type Card = { title?: string; minutes?: number | null; body: string[] };
 
-/**
- * The Detailed View: each Recipe Stage's title and minutes, then its steps. Steps are
- * numbered right through, as Cook Mode counts them.
- */
-function Stages({ stages }: { stages: NonNullable<Recipe['stages']> }) {
+/** "STEP 1 OF 6", a stage's title and minutes when it has them, then what to do. */
+function MethodCard({ n, total, card }: { n: number; total: number; card: Card }) {
   const t = useTheme();
-  const starts = stages.map((_, i) => stages.slice(0, i).reduce((n, s) => n + s.steps.length, 0));
   return (
-    <View style={{ gap: t.space.lg }}>
-      {stages.map((stage, i) => (
-        <View key={i} style={{ gap: t.space.sm }}>
-          <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: t.space.sm }}>
-            <Text variant="label" role="heading" aria-level={3} style={{ flex: 1 }}>
-              {stage.title}
-            </Text>
-            {stage.minutes ? (
-              <Text variant="caption" muted style={{ fontVariant: ['tabular-nums'] }}>
-                {minutesText(stage.minutes)}
-              </Text>
-            ) : null}
-          </View>
-          {stage.steps.map((step, j) => (
-            <StepCard key={j} n={starts[i] + j + 1} text={step} />
-          ))}
-        </View>
+    <View style={[cardStyle(t), { padding: t.space.lg, gap: t.space.sm }]}>
+      <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: t.space.sm }}>
+        <Text
+          variant="caption"
+          muted
+          style={{ flex: 1, textTransform: 'uppercase', letterSpacing: 0.6 }}
+        >
+          Step {n} of {total}
+        </Text>
+        {card.minutes ? (
+          <Text variant="caption" muted style={{ fontVariant: ['tabular-nums'] }}>
+            {minutesText(card.minutes)}
+          </Text>
+        ) : null}
+      </View>
+      {card.title ? (
+        <Text variant="heading" role="heading" aria-level={3}>
+          {card.title}
+        </Text>
+      ) : null}
+      {card.body.map((line, i) => (
+        <Text key={i} muted={!!card.title}>
+          {line}
+        </Text>
       ))}
     </View>
   );
@@ -919,36 +928,65 @@ function RecipePhoto({
   );
 }
 
-/** "Photo by Ana on Unsplash", both names linked, as Unsplash's terms ask (ADR 0029). */
+/**
+ * A tiny "i" on a stock photo; tapped, it shows the photographer's name, linked to their
+ * Unsplash profile (ADR 0029). The icon is 12px, its tap area the 24px WCAG minimum.
+ */
 function PhotoCredit({ image }: { image: RecipeImage }) {
   const t = useTheme();
-  const { author, author_url: authorUrl, source, source_url: sourceUrl } = image;
-  if (!author || !authorUrl || !source || !sourceUrl) return null;
-  const link = (label: string, url: string) => (
-    <Text
-      accessibilityRole="link"
-      onPress={() => Linking.openURL(url)}
-      style={{ color: '#fff', fontSize: 12, textDecorationLine: 'underline' }}
-    >
-      {label}
-    </Text>
-  );
+  const [open, setOpen] = useState(false);
+  const { author, author_url: authorUrl } = image;
+  if (!author || !authorUrl) return null;
   return (
     <View
       style={{
         position: 'absolute',
-        right: t.space.sm,
-        bottom: t.space.sm,
-        maxWidth: '80%',
-        paddingHorizontal: t.space.sm,
-        paddingVertical: 4,
-        borderRadius: t.radius.sm,
-        backgroundColor: 'rgba(0, 0, 0, 0.62)',
+        right: 4,
+        bottom: 4,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 2,
       }}
     >
-      <Text style={{ color: '#fff', fontSize: 12 }} numberOfLines={1}>
-        Photo by {link(author, authorUrl)} on {link(source, sourceUrl)}
-      </Text>
+      {open ? (
+        <Text
+          accessibilityRole="link"
+          accessibilityLabel={`Photo by ${author}`}
+          onPress={() => Linking.openURL(authorUrl)}
+          numberOfLines={1}
+          style={{
+            maxWidth: 220,
+            paddingHorizontal: 6,
+            paddingVertical: 2,
+            borderRadius: t.radius.sm,
+            overflow: 'hidden',
+            backgroundColor: 'rgba(0, 0, 0, 0.45)',
+            color: '#fff',
+            fontSize: 11,
+          }}
+        >
+          {author}
+        </Text>
+      ) : null}
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={open ? 'Hide photo credit' : 'Photo credit'}
+        onPress={() => setOpen((o) => !o)}
+        style={{ width: 24, height: 24, alignItems: 'center', justifyContent: 'center' }}
+      >
+        <View
+          style={{
+            width: 14,
+            height: 14,
+            borderRadius: 7,
+            backgroundColor: 'rgba(0, 0, 0, 0.35)',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Icon icon={Info} size={12} color="#fff" />
+        </View>
+      </Pressable>
     </View>
   );
 }

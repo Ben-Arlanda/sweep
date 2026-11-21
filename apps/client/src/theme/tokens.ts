@@ -23,7 +23,7 @@ export const palette = {
   ink: '#121a2e', // navy ink
   ink700: '#2b3550',
   navy: '#1b2a4e', // selection: chips, segmented tabs, step numbers
-  page: '#f1f3f7', // the one page colour on every tab
+  page: '#e9eef6', // the one page colour on every tab: cool, a touch of blue
   line: '#dce0e9',
   fill: '#e4e8f0', // photo placeholders and quiet fills
   aiSoft: '#eef6c8',
@@ -272,19 +272,13 @@ export const stockColors: Record<'light' | 'dark', Record<StockName, StockColors
 };
 
 /**
- * The welcome hero: always ink with a lime glow, in light and dark mode alike, like the
- * website hero. It's the one place the brand is shown "full volume".
+ * The welcome screen (onboarding direction A, "Clean Slate"): a plain white page, navy
+ * ink text and the lime highlight on the promise.
  */
 export const hero = {
-  background: palette.ink,
-  /**
-   * A soft lime light behind the floating cards (a CSS radial gradient). It stays in the
-   * top half on purpose: text sits on plain ink, so its contrast is the tested value.
-   */
-  glow: 'radial-gradient(circle at 70% 25%, rgba(216, 242, 60, 0.4) 0%, rgba(216, 242, 60, 0) 55%)',
-  text: palette.white,
-  textMuted: '#c8ccbd',
-  border: '#3b3f35',
+  background: palette.white,
+  text: palette.ink,
+  textMuted: palette.ink,
   highlight: palette.lime,
   onHighlight: palette.ink,
 } as const;
@@ -357,8 +351,8 @@ export const tabBarHeight = 68;
  * its labels pass AA even over black content (tested in tokens.test.ts).
  */
 export const TAB_BAR_FROST = 0.86;
-/** The selected tab's pill: navy at this opacity over the frost. */
-export const TAB_PILL_SHADE = 0.09;
+/** Navy tint on the tab bar's Liquid Glass, so it stands out on a light page. */
+export const TAB_GLASS_TINT = 0.12;
 
 /** Minimum tappable size (Apple HIG 44pt). Applies to every button and row. */
 export const touchTarget = 44;
