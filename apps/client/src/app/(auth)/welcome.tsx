@@ -8,6 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Icon } from '@/components/Icon';
 import { Button } from '@/components/ui';
 import { Rise } from '@/features/welcome/Rise';
+import { PHOTOS } from '@/features/welcome/photos';
 import { LANDING } from '@/features/welcome/story';
 import { hero } from '@/theme/tokens';
 import { useTheme } from '@/theme/useTheme';
@@ -101,10 +102,6 @@ export default function WelcomeScreen() {
   );
 }
 
-/** A real library photo (Chana masala), hotlinked like every recipe photo (ADR 0029). */
-const RECIPE_PHOTO =
-  'https://images.unsplash.com/photo-1617355057919-2aa713486c9c?ixid=M3wxMTM5MTAxfDB8MXxzZWFyY2h8Mnx8Q2hhbmElMjBtYXNhbGF8ZW58MXwwfHx8MTc5NTE0NTY1NHww&ixlib=rb-4.1.0&w=720&h=540&fit=crop&crop=entropy&fm=webp&q=55';
-
 /** Sweep's chef beside a tilted recipe card, like the Recipes tab. Decorative. */
 function ChefWithRecipe({ width }: { width: number }) {
   const t = useTheme();
@@ -130,7 +127,7 @@ function ChefWithRecipe({ width }: { width: number }) {
         }}
       >
         <Image
-          source={{ uri: RECIPE_PHOTO }}
+          source={{ uri: PHOTOS.chanaMasala }}
           style={{ width: '100%', aspectRatio: 4 / 3, borderRadius: t.radius.lg }}
           contentFit="cover"
           transition={200}
