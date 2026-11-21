@@ -23,3 +23,4 @@ Date: 2026-11-18 · Status: Accepted
 - A Proposal still never changes. Each swap leaves a superseded row, which also records what Members swap away from.
 - The next agent turn must see the current Draft, including swaps, so the model doesn't undo them.
 - The Generating screen for Just tonight has almost nothing to wait for, so it shows a brief branded moment.
+- **Update 2026-11-21:** Home's "Just tonight" button is gone. It led to the same Dinner Ideas as the Tonight card's "Find dinner ideas", minus the mood step, so Home showed one feature as two. Dinner Ideas now always start from the setup (Home's Tonight card or Recipes). The plan button sits alone at the top and hides once the week is planned; Edit plan stays on the meal plan card.

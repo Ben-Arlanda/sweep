@@ -25,7 +25,7 @@ import type { LucideIcon } from 'lucide-react-native';
 const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`;
 
 /**
- * After a plan is saved (slice 6e): "Dinner planned!" for Just tonight, "Plan saved!"
+ * After a plan is saved (slice 6e): "Dinner planned!" for one dinner, "Plan saved!"
  * for a week. Says what changed, then what you might do next.
  */
 export function PlannedScreen() {

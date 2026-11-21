@@ -1,6 +1,6 @@
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
-import { CalendarDays, ChefHat, User, type LucideIcon } from 'lucide-react-native';
+import { CalendarDays, User, type LucideIcon } from 'lucide-react-native';
 import { useState } from 'react';
 import { View } from 'react-native';
 
@@ -114,12 +114,10 @@ export function usePlanFlow() {
 export type PlanFlow = ReturnType<typeof usePlanFlow>;
 
 /**
- * Home's header: the logo and account button, a hidden page heading, Ask Sweep, and
- * buttons for Just tonight and planning the week. Tonight's dinner and the week sit in
- * cards below it, so the top never changes shape.
+ * Home's header: the logo and account button, a hidden page heading, Ask Sweep, and the
+ * plan button (gone once the week is planned). Dinner ideas start from the Tonight card.
  */
 export function TodayHero({ me, flow }: { me: MeOut; flow: PlanFlow }) {
-  const t = useTheme();
   const { cta } = flow;
   return (
     <Hero top={<LogoRow />}>
@@ -128,18 +126,12 @@ export function TodayHero({ me, flow }: { me: MeOut; flow: PlanFlow }) {
         {`Home, ${me.household.name}`}
       </Text>
       <AskSweep />
-      <View style={{ flexDirection: 'row', gap: t.space.sm }}>
-        <QuickAction
-          icon={ChefHat}
-          tint="recipes"
-          label="Just tonight"
-          onPress={() => router.push('/tonight')}
-        />
-        {/* Edit plan lives on the meal plan card; this button is for planning a week. */}
-        {cta && cta.label !== 'Edit plan' ? (
+      {/* Edit plan lives on the meal plan card; this button is for planning a week. */}
+      {cta && cta.label !== 'Edit plan' ? (
+        <View style={{ flexDirection: 'row' }}>
           <QuickAction icon={CalendarDays} tint="plan" label={cta.label} onPress={flow.plan} />
-        ) : null}
-      </View>
+        </View>
+      ) : null}
       <ErrorText message={flow.error} />
       {flow.sheets}
     </Hero>

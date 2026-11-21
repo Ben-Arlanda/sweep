@@ -30,8 +30,8 @@ const TIMES = [
 ];
 
 /**
- * The Recipes tab's way into Dinner Ideas (slice 6f): an optional mood, Ready in and
- * Serves, then the same ideas screen as Just tonight. Nothing here calls the AI except
+ * The way into Dinner Ideas from Recipes and Home's Tonight card (slice 6f): an optional mood, Ready in and
+ * Serves, then the Dinner Ideas screen. Nothing here calls the AI except
  * "Healthy", which has no data to filter on and so asks Sweep.
  */
 export function DinnerSetupScreen() {
