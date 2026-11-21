@@ -141,8 +141,8 @@ def test_converts_to_the_ingredients_own_unit_only_when_honest(
         # Hyphens, frozen, "X or Y", loose measures
         ("60 ml extra-virgin olive oil", "olive oil", D("60"), "ml", None),
         ("½ frozen banana", "bananas", D("0.5"), None, None),
-        ("1 cup frozen spinach or kale", "baby spinach", D("1"), "cup", None),
-        ("3 cups chicken or vegetable stock", "chicken stock", D("3"), "cup", None),
+        ("1 cup frozen spinach or kale", "baby spinach", D("1"), "cup", "or kale"),
+        ("3 cups chicken or vegetable stock", "chicken stock", D("3"), "cup", "or vegetable stock"),
         ("large handful parsley leaves chopped", "parsley", None, None, "chopped"),
         ("2 tbsp basil leaves", "basil", D("2"), "tbsp", None),
         # New starters and aliases (2026-11-16)
@@ -194,6 +194,62 @@ def test_reads_lines_the_way_recipe_websites_write_them(
     assert (line.ingredient.name if line.ingredient else None) == ingredient, text
     assert (line.quantity, line.unit, line.note) == (quantity, unit, note)
     assert not line.needs_review
+
+
+# An imported Jambalaya (RecipeTin Eats, 2026-11-21): 7 of 22 lines were Not linked.
+@pytest.mark.parametrize(
+    ("text", "ingredient", "quantity", "unit", "note"),
+    [
+        # Nested notes left a stray ")" in the name; "or" names the other choice
+        (
+            '200g (7oz) andouille or smoked sausage (, sliced 0.5cm / 1/5" thick (Note 1))',
+            "smoked sausage",
+            D("200"),
+            "g",
+            'or andouille sausage; 7oz; sliced 0.5cm / 1/5" thick; Note 1',
+        ),
+        (
+            '2 celery ribs (, cut into 1.5 cm / 0.5" pieces)',
+            "celery",
+            D("2"),
+            "stalk",
+            'cut into 1.5 cm / 0.5" pieces',
+        ),
+        (
+            "1.25 cups long grain rice (, uncooked (Note 2))",
+            "rice",
+            D("1.25"),
+            "cup",
+            "uncooked; Note 2",
+        ),
+        # "broth / stock" are both chicken stock, so no "or"; "low-sodium" is worth keeping
+        (
+            "2.5 cups (625ml) low-sodium chicken broth / stock ((Note 3))",
+            "chicken stock",
+            D("2.5"),
+            "cup",
+            "low-sodium; 625ml; Note 3",
+        ),
+        ("4 tsp sweet paprika", "paprika", D("4"), "tsp", None),
+        ("1 tsp onion powder", "onion powder", D("1"), "tsp", None),
+        (
+            "1/2 tsp cayenne powder ((adjust spice to taste))",
+            "cayenne pepper",
+            D("0.5"),
+            "tsp",
+            "adjust spice to taste",
+        ),
+        # Brackets someone forgot to close
+        ("1 cup rice (Note 1", "rice", D("1"), "cup", "Note 1"),
+    ],
+)
+def test_reads_the_jambalaya_lines_it_used_to_miss(
+    text: str, ingredient: str, quantity: Decimal, unit: str, note: str
+) -> None:
+    line = parse_line(text, INDEX)
+    assert line.ingredient is not None and line.ingredient.name == ingredient, text
+    assert (line.quantity, line.unit, line.note) == (quantity, unit, note)
+    assert "(" not in line.name and ")" not in line.name
 
 
 def test_the_new_rules_only_run_when_the_old_ones_found_nothing() -> None:
