@@ -55,7 +55,7 @@ A canonical food item ("plain flour", "chicken thigh") that recipes, the Shoppin
 _Avoid_: product, item (an item is a line on a list)
 
 **Household Ingredient**:
-An Ingredient one Household created by adding something Sweep didn't know ("kale", "bin bags"). Works like any Ingredient in that Household's list and Kitchen; merged into the shared one if Sweep adds it later.
+An Ingredient one Household created by adding something Sweep didn't know ("kale", "bin bags"), on the list, in the Kitchen or in an Imported Recipe's line ("andouille sausage"). Works like any Ingredient in that Household's list, Kitchen and recipes; merged into the shared one if Sweep adds it later.
 _Avoid_: custom item, unknown item
 
 **Ingredient link**:
@@ -136,7 +136,7 @@ A Member's confirmation that a Planned Meal was actually made. Only Cooked meals
 _Avoid_: completed, done
 
 **Dietary Rule**:
-A hard constraint that must never be broken, such as an allergy or "no mushrooms". Enforced by the app, not left to the agent's judgement.
+A hard constraint the app enforces, not the agent: a diet (vegetarian, vegan, gluten free, dairy free) or an excluded food ("no mushrooms"). Foods Sweep knows are checked against their recorded contents; a food new to Sweep is judged by the words in its name, so a recipe is held back only when it's likely to break the rule. A careful household guide that can make mistakes, not allergen-certified; the Dietary Rules screen says so.
 _Avoid_: preference, restriction (ambiguous)
 
 **Preference**:
@@ -219,6 +219,7 @@ _Avoid_: Scenario (that's an agent test), benchmark
 - Marking a **Planned Meal** as **Cooked** deducts its Ingredients, which makes those quantities **Estimated**
 - **Estimated** becomes **Unknown** over time. **Staples** never carry a quantity.
 - The **Recipe Knowledge Base** contains **Seed Recipes** and each Household's **Imported Recipes**
+- Every recipe line refers to an **Ingredient** (a shared one or a **Household Ingredient**), except things nobody shops for, like water
 - The agent only recommends recipes in the **Recipe Knowledge Base**, or **Recipe Adaptations** of them. It never invents a recipe from nothing.
 - A **Conversation** builds a **Draft Plan**, which becomes a **Proposal**. Only an **Approval** turns it into **Meal Plan** and **Shopping List** changes.
 - **Dietary Rules** are enforced before anything reaches a **Proposal**. **Preferences** only influence ranking.
