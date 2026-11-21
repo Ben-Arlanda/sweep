@@ -269,6 +269,23 @@ def test_the_new_rules_only_run_when_the_old_ones_found_nothing() -> None:
     assert parse_line("2 tbsp finely chopped unobtainium", INDEX).needs_review
 
 
+@pytest.mark.parametrize(
+    ("text", "name", "note"),
+    [
+        ("200 g andouille sausage, sliced", "andouille sausage", "sliced"),
+        ("2 tbsp finely chopped zorblax", "zorblax", "finely chopped"),
+        ("1 cup low-sodium glorp stock (Note 1)", "glorp stock", "low-sodium; Note 1"),
+        ("1 zorblax finely sliced", "zorblax", "finely sliced"),
+        ("1 cup zorblax or glorp", "zorblax", "or glorp"),
+    ],
+)
+def test_a_line_it_cannot_match_still_gets_a_clean_name(text: str, name: str, note: str) -> None:
+    # The name a new Household Ingredient will get (ADR 0032), so no "finely chopped zorblax"
+    line = parse_line(text, INDEX)
+    assert (line.ingredient, line.needs_review) == (None, True)
+    assert (line.name, line.note) == (name, note)
+
+
 def test_flags_lines_it_cannot_match_instead_of_guessing() -> None:
     line = parse_line("1 cup unobtainium shavings", INDEX)
     assert line.ingredient is None

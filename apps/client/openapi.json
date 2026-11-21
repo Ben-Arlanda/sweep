@@ -4692,6 +4692,17 @@
             ],
             "title": "Replaces"
           },
+          "new_ingredient": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "New Ingredient"
+          },
           "check": {
             "type": "boolean",
             "title": "Check"
@@ -6631,6 +6642,17 @@
               }
             ],
             "title": "Replaces"
+          },
+          "new_ingredient": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "New Ingredient"
           }
         },
         "type": "object",

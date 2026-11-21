@@ -24,13 +24,17 @@ from app.services.ingredient_lines import index_from_db
 async def main(embed: bool = True) -> int:
     engine = make_engine(settings.database_url)
     async with make_sessionmaker(engine)() as session:
-        report = await recipes.upsert_seed_recipes(
-            session, load_seed_recipes(), await index_from_db(session), load_recipe_images()
-        )
+        try:
+            report = await recipes.upsert_seed_recipes(
+                session, load_seed_recipes(), await index_from_db(session), load_recipe_images()
+            )
+        except recipes.UnmatchedSeedLines as error:
+            for line in error.lines:
+                print(f"  no Ingredient: {line}")
+            await engine.dispose()
+            return 1
         print(f"{report.loaded} Seed Recipes loaded ({report.lines} lines)")
         print(f"{report.removed} removed (no longer in the seed files)")
-        for line in report.needs_review:
-            print(f"  needs review: {line}")
         # Save the recipes now, so a failed embedding run doesn't lose them. Embedding
         # is resumable: the next run only embeds what's still missing.
         await session.commit()
@@ -56,7 +60,7 @@ async def main(embed: bool = True) -> int:
                 print(f"  {total} embedded…")
             print(f"{total} recipes embedded with {embedder.model}")
     await engine.dispose()
-    return 1 if report.needs_review else 0
+    return 0
 
 
 if __name__ == "__main__":

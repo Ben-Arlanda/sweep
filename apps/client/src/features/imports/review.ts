@@ -20,6 +20,7 @@ export type FormLine = {
   rawText: string;
   ingredient: Ingredient | null;
   needsReview: boolean; // unmatched, and something people shop for
+  newIngredient: string | null; // unmatched: the Household Ingredient Save will add (ADR 0032)
   check: boolean; // Sweep wants a person to look: from a photo, or not found in the text
   memberLinked: boolean; // chosen in the Link sheet: the server must keep this choice
   pending: boolean; // just added: the server hasn't read it yet
@@ -50,6 +51,7 @@ function fromLine(line: DraftLine | SavedLine, check: boolean): FormLine {
     rawText: line.raw_text,
     ingredient: line.ingredient,
     needsReview: line.needs_review,
+    newIngredient: line.new_ingredient ?? null,
     check,
     memberLinked: line.parse_method === 'member',
     pending: false,
@@ -111,13 +113,20 @@ export function emptyForm(): ReviewForm {
 export function lineMarks(line: FormLine): Mark[] {
   const marks: Mark[] = [];
   if (line.check) marks.push('check');
-  if (!line.ingredient && line.needsReview) marks.push('not_linked');
+  if (!line.ingredient && !line.newIngredient && line.needsReview) marks.push('not_linked');
   return marks;
 }
 
 /** The Member picked it in the Link sheet: they've looked, so the marks go. */
 export function linkLine(line: FormLine, ingredient: Ingredient): FormLine {
-  return { ...line, ingredient, needsReview: false, check: false, memberLinked: true };
+  return {
+    ...line,
+    ingredient,
+    needsReview: false,
+    newIngredient: null,
+    check: false,
+    memberLinked: true,
+  };
 }
 
 export function addLine(form: ReviewForm, text: string): ReviewForm {
@@ -128,6 +137,7 @@ export function addLine(form: ReviewForm, text: string): ReviewForm {
     rawText,
     ingredient: null,
     needsReview: false,
+    newIngredient: null,
     check: false,
     memberLinked: false,
     pending: true,

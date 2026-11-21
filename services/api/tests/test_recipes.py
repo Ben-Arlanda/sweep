@@ -88,7 +88,15 @@ async def test_every_seed_recipe_line_parses_and_matches(database_url: str, load
     # The real seed files: we wrote them, so every line must parse with plain rules.
     report = await load(load_seed_recipes())
     assert report.loaded >= 120
-    assert report.needs_review == []
+
+
+async def test_a_seed_recipe_line_no_rule_matches_stops_the_load(load: Loader, db: Engine) -> None:
+    # Seed Recipes only use starters, and every line needs an Ingredient (ADR 0032)
+    bad = seed("mystery", "Mystery stew", 30, "british", ["1 jar zorblax relish", "1 onion"])
+    with pytest.raises(recipes.UnmatchedSeedLines, match="mystery: 1 jar zorblax relish"):
+        await load([PASTA, bad])
+    with db.connect() as conn:  # checked first, so nothing was loaded
+        assert conn.execute(text("SELECT count(*) FROM recipes")).scalar_one() == 0
 
 
 def test_every_seed_recipe_has_both_views() -> None:

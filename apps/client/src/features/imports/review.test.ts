@@ -129,6 +129,26 @@ describe('lineMarks', () => {
   it('linking a line by hand clears both marks: a person has looked at it', () => {
     expect(lineMarks(linkLine(saffron, SHALLOT))).toEqual([]);
   });
+  // ADR 0032: Save adds a food Sweep doesn't know, so it's "New", not Not linked
+  const [andouille] = formFromDraft({
+    ...DRAFT,
+    lines: [
+      line('200 g andouille sausage', {
+        ingredient: null,
+        needs_review: true,
+        new_ingredient: 'andouille sausage',
+      }),
+    ],
+  }).lines;
+
+  it('a food Save will add is New, not Not linked', () => {
+    expect(andouille.newIngredient).toBe('andouille sausage');
+    expect(lineMarks(andouille)).toEqual([]);
+  });
+
+  it('linking a New line by hand means nothing new is added', () => {
+    expect(linkLine(andouille, ONION).newIngredient).toBeNull();
+  });
 });
 
 describe('saveProblems', () => {

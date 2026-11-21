@@ -421,6 +421,7 @@ class RecipeIngredientOut(BaseModel):
     needs_review: bool
     parse_method: ParseMethod  # "llm" = the review screen's "Check" mark
     replaces: str | None = None  # Adaptations: the parent's line this Swap replaced
+    new_ingredient: str | None = None  # review screen: "New: andouille sausage" on Save
 
 
 class RecipeStageOut(BaseModel):

@@ -1326,6 +1326,8 @@ export interface components {
             parse_method: components["schemas"]["ParseMethod"];
             /** Replaces */
             replaces?: string | null;
+            /** New Ingredient */
+            new_ingredient?: string | null;
             /** Check */
             check: boolean;
         };
@@ -1990,6 +1992,8 @@ export interface components {
             parse_method: components["schemas"]["ParseMethod"];
             /** Replaces */
             replaces?: string | null;
+            /** New Ingredient */
+            new_ingredient?: string | null;
         };
         /**
          * RecipeKind

@@ -277,13 +277,13 @@ def parse_line(text: str, index: IngredientIndex) -> ParsedLine:
         if len(words) > 1 and words[0] in PREPARED:
             ingredient = index.lookup(" ".join(words[1:]))
             prepared = ingredient is not None
-    if ingredient is None:
-        second = _second_look(head, index, can_take_unit=quantity is not None and unit is None)
-        if second is not None:
-            head, ingredient, extra_note, trailing_unit = second
-            unit = trailing_unit or unit
-            if extra_note:
-                notes.insert(0, extra_note)
+    if ingredient is None:  # matched or not, the name comes back cleaned (ADR 0032)
+        head, ingredient, extra_note, trailing_unit = _second_look(
+            head, index, can_take_unit=quantity is not None and unit is None
+        )
+        unit = trailing_unit or unit
+        if extra_note:
+            notes.insert(0, extra_note)
 
     return ParsedLine(
         raw_text=raw,
@@ -304,13 +304,14 @@ def _clean_word(word: str) -> str:
 
 def _second_look(
     head: str, index: IngredientIndex, *, can_take_unit: bool
-) -> tuple[str, KnownIngredient | None, str | None, str | None] | None:
+) -> tuple[str, KnownIngredient | None, str | None, str | None]:
     """Only for a line the first look couldn't match. Recipe websites write lines our
     rules never saw ("2 garlic cloves crushed", "1 cup frozen spinach or kale"), so try
     simpler readings of the name, still only exact names and aliases: no guessing.
 
-    Returns (name, Ingredient or None for something nobody shops for, note, unit from a
-    trailing measure), or None if nothing matched.
+    Returns (name, Ingredient or None, note, unit from a trailing measure). With no
+    Ingredient, the name is the cleaned first choice: what a new Household Ingredient
+    would be called.
     """
     words = head.split()
     leading: list[str] = []  # "finely grated parmesan": the preparation goes to the note
@@ -357,7 +358,10 @@ def _second_look(
             if other is not None and _find(other, index)[0] != found:
                 note = "; ".join(part for part in (f"or {other}", note) if part)
             return cut, found, note, measure if (measure and can_take_unit) else unit
-    return None
+    fallback, other = candidates[1] if len(candidates) > 1 else candidates[0]
+    if other is not None:
+        note = "; ".join(part for part in (f"or {other}", note) if part)
+    return fallback.strip(" ,;.") or head, None, note, unit
 
 
 def _find(name: str, index: IngredientIndex) -> tuple[KnownIngredient | None, str, str | None]:

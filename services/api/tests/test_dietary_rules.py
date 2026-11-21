@@ -266,12 +266,21 @@ async def test_rules_filter_browsing_and_search(
     assert "Quick tomato pasta" not in await titles(client, fake_issuer)
 
 
-async def test_a_recipe_with_an_unmatched_line_is_hidden_when_rules_are_set(
+async def test_a_recipe_with_a_household_ingredient_is_hidden_when_rules_are_set(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer, load: Loader
 ) -> None:
-    mystery = seed("mystery", "Mystery stew", 30, "british", ["1 jar zorblax relish", "1 onion"])
-    await load([mystery, SALAD])
+    await load([SALAD])
     await create_household(client, fake_issuer, "ana")
+    mystery = {
+        "title": "Mystery stew",
+        "servings": 4,
+        "course": "main",
+        "lines": [{"raw_text": "1 jar zorblax relish"}, {"raw_text": "1 onion"}],
+    }  # Save makes "zorblax relish" a Household Ingredient (ADR 0032)
+    saved = await client.post(
+        "/recipes/imported", json=mystery, headers=fake_issuer.headers("ana") | idem()
+    )
+    assert saved.status_code == 201, saved.text
     assert "Mystery stew" in await titles(client, fake_issuer)
     await put(client, fake_issuer, RULES, {"diets": ["vegan"]})
     assert await titles(client, fake_issuer) == ["Chickpea salad"]

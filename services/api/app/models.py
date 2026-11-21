@@ -532,15 +532,20 @@ class RecipeIngredient(Base):
     """One ingredient line of a recipe: what was written, and what we understood."""
 
     __tablename__ = "recipe_ingredients"
-    __table_args__ = (UniqueConstraint("recipe_id", "position"),)
+    __table_args__ = (
+        UniqueConstraint("recipe_id", "position"),
+        # Every line you'd shop for has an Ingredient (ADR 0032); only water, ice... don't.
+        CheckConstraint("ingredient_id IS NOT NULL OR NOT needs_review", name="linked"),
+    )
+    __allow_unmapped__ = True  # for new_ingredient, which is never stored
 
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
     recipe_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("recipes.id", ondelete="CASCADE"))
     position: Mapped[int] = mapped_column(SmallInteger)
     raw_text: Mapped[str] = mapped_column(String(300))
-    # SET NULL: deleting an Ingredient leaves the line, just unlinked.
+    # No ON DELETE: an Ingredient a line uses can't be deleted (the merge repoints first).
     ingredient_id: Mapped[uuid.UUID | None] = mapped_column(
-        ForeignKey("ingredients.id", ondelete="SET NULL"), index=True
+        ForeignKey("ingredients.id"), index=True
     )
     ingredient: Mapped[Ingredient | None] = relationship(lazy="joined")
     quantity: Mapped[Decimal | None] = mapped_column(Numeric(10, 3))
@@ -551,9 +556,12 @@ class RecipeIngredient(Base):
     optional: Mapped[bool] = mapped_column(Boolean, default=False)
     parse_method: Mapped[ParseMethod] = mapped_column(str_enum(ParseMethod, "parse_method"))
     # Set when nothing could match the line to an Ingredient (and it isn't just water).
+    # Only on the review screen: a saved line always has one (see the CHECK above).
     needs_review: Mapped[bool] = mapped_column(Boolean, default=False)
     # Adaptations only: the parent's line this one swapped out. Set = this line is a Swap.
     replaces: Mapped[str | None] = mapped_column(String(300))
+    # Review screen only, never stored: the Household Ingredient Save will add for it.
+    new_ingredient: str | None = None
 
 
 class RecipeEmbedding(Base):

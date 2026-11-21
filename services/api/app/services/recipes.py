@@ -13,7 +13,7 @@ import logging
 import re
 import uuid
 from collections.abc import Hashable, Sequence
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any
 
 import anyio
@@ -53,7 +53,15 @@ class SeedReport:
     loaded: int = 0
     removed: int = 0
     lines: int = 0
-    needs_review: list[str] = field(default_factory=list)  # "slug: raw line"
+
+
+class UnmatchedSeedLines(ValueError):
+    """Seed Recipes may only use starters (ADR 0012), and every line you'd shop for needs
+    an Ingredient (ADR 0032): a line no rule matches is a mistake in our files."""
+
+    def __init__(self, lines: list[str]) -> None:
+        super().__init__("Seed Recipe lines no rule matches: " + "; ".join(lines))
+        self.lines = lines
 
 
 async def upsert_seed_recipes(
@@ -62,7 +70,16 @@ async def upsert_seed_recipes(
     index: IngredientIndex,
     images: Sequence[RecipeImage] = (),
 ) -> SeedReport:
-    """Make the Seed Recipes in the database match `seeds`. Safe to run any number of times."""
+    """Make the Seed Recipes in the database match `seeds`. Safe to run any number of times.
+    Checks every line first, so a bad one changes nothing."""
+    unmatched = [
+        f"{seed.slug}: {line.raw_text}"
+        for seed in seeds
+        for line in await normalise_lines(seed.ingredients, index)
+        if line.needs_review
+    ]
+    if unmatched:
+        raise UnmatchedSeedLines(unmatched)
     report = SeedReport()
     photos = {image.slug: as_stored(image) for image in images}
     ingredient_ids = dict(
@@ -116,8 +133,6 @@ async def upsert_seed_recipes(
                 )
             )
             report.lines += 1
-            if line.needs_review:
-                report.needs_review.append(f"{seed.slug}: {line.raw_text}")
         report.loaded += 1
 
     for gone in existing.values():  # removed from the seed files
