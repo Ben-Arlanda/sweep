@@ -2,7 +2,6 @@ import { Image } from 'expo-image';
 import {
   ArrowLeftRight,
   Calendar,
-  Camera,
   Check,
   Clipboard,
   Clock,
@@ -55,8 +54,6 @@ const MOCKS: Record<StoryKey, (props: { p: Loop }) => ReactNode> = {
   sync: SyncMock,
 };
 
-const FRIDGE = '#1f2a40';
-const SHELF = '#3a4865';
 const ROW_LINE = '#edf0f5';
 
 // ---------- building blocks ----------
@@ -256,63 +253,70 @@ function Photo({ uri, height, width }: { uri: string; height: number; width?: Di
 
 // ---------- 1 · Snap your Kitchen ----------
 
+// What's in the fridge photo, so the list matches the picture.
 const SEEN = [
-  { name: 'Milk', qty: '2 L' },
+  { name: 'Milk', qty: '1 L' },
   { name: 'Eggs', qty: '6' },
-  { name: 'Baby spinach', qty: 'Some' },
-  { name: 'Chicken thighs', qty: '500 g' },
+  { name: 'Chicken breasts', qty: '500 g' },
+  { name: 'Carrots', qty: '4' },
 ];
+
+// Where the photo's own scan line and camera button sit, as fractions of its size.
+const FRIDGE_RATIO = 1448 / 1086;
+const SCAN_LINE_Y = 0.425;
+const CAMERA = { x: 0.5, y: 0.882, size: 0.12 };
 
 function SnapMock({ p }: { p: Loop }) {
   const t = useTheme();
-  const FRIDGE_H = 170;
-  // The scan line sweeps down and back up twice a loop.
-  const scan = useAnimatedStyle(() => {
-    const y = 0.5 - 0.5 * Math.cos(p.get() * Math.PI * 4);
-    return { transform: [{ translateY: 14 + y * (FRIDGE_H - 34) }] };
+  // The photo's scan line glows brighter and softer, as if it's reading the shelves.
+  const glow = useAnimatedStyle(() => ({
+    opacity: 0.35 + 0.65 * (0.5 - 0.5 * Math.cos(p.get() * Math.PI * 6)),
+  }));
+  // A ring pulses out from the camera button.
+  const ring = useAnimatedStyle(() => {
+    const r = (p.get() * 3) % 1;
+    return { opacity: 1 - r, transform: [{ scale: 1 + r * 0.6 }] };
   });
   return (
     <View style={{ gap: t.space.md }}>
-      <View
-        style={{ height: FRIDGE_H, borderRadius: 20, backgroundColor: FRIDGE, overflow: 'hidden' }}
-      >
-        <Shelf top="36%" />
-        <Shelf top="72%" />
-        <Block left="10%" top="5%" w="9%" h="29%" color="#f4f6fb" />
-        <Block left="25%" top="17%" w="22%" h="16%" color="#e9dcc4" />
-        <Block left="11%" top="45%" w="28%" h="24%" color="#4f8a3c" />
-        <Block left="50%" top="49%" w="34%" h="20%" color="#e7a59a" />
-        <Block left="60%" top="8%" w="22%" h="26%" color="#c9d4e6" />
+      <View style={{ borderRadius: 20, overflow: 'hidden', backgroundColor: t.colors.fill }}>
+        <Image
+          source={require('../../../assets/images/onboarding-fridge.webp')}
+          style={{ width: '100%', aspectRatio: FRIDGE_RATIO }}
+          contentFit="cover"
+        />
         <Animated.View
           style={[
             {
               position: 'absolute',
-              left: 20,
-              right: 20,
-              top: 0,
+              left: '8%',
+              right: '8%',
+              top: `${SCAN_LINE_Y * 100}%`,
               height: 3,
+              marginTop: -1.5,
               borderRadius: 2,
-              backgroundColor: t.colors.action,
-              boxShadow: '0px 0px 16px 3px rgba(216, 242, 60, 0.7)',
+              backgroundColor: '#9dffb8',
+              boxShadow: '0px 0px 14px 5px rgba(80, 230, 130, 0.75)',
             },
-            scan,
+            glow,
           ]}
         />
-        <View
-          style={{
-            position: 'absolute',
-            right: 12,
-            bottom: 12,
-            width: 40,
-            height: 40,
-            borderRadius: 20,
-            backgroundColor: t.colors.surface,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Icon icon={Camera} size={20} color={t.colors.text} />
-        </View>
+        <Animated.View
+          style={[
+            {
+              position: 'absolute',
+              left: `${(CAMERA.x - CAMERA.size / 2) * 100}%`,
+              top: `${CAMERA.y * 100}%`,
+              width: `${CAMERA.size * 100}%`,
+              aspectRatio: 1,
+              marginTop: `${(-CAMERA.size / 2) * 100}%`,
+              borderRadius: 999,
+              borderWidth: 2,
+              borderColor: 'rgba(80, 230, 130, 0.9)',
+            },
+            ring,
+          ]}
+        />
       </View>
       <Card style={{ paddingHorizontal: 14, paddingVertical: 4 }}>
         <View style={{ paddingTop: 8, paddingBottom: 2 }}>
@@ -335,36 +339,6 @@ function SnapMock({ p }: { p: Loop }) {
         ))}
       </Card>
     </View>
-  );
-}
-
-function Shelf({ top }: { top: DimensionValue }) {
-  return (
-    <View
-      style={{ position: 'absolute', left: 0, right: 0, top, height: 2, backgroundColor: SHELF }}
-    />
-  );
-}
-
-function Block(b: {
-  left: DimensionValue;
-  top: DimensionValue;
-  w: DimensionValue;
-  h: DimensionValue;
-  color: string;
-}) {
-  return (
-    <View
-      style={{
-        position: 'absolute',
-        left: b.left,
-        top: b.top,
-        width: b.w,
-        height: b.h,
-        borderRadius: 7,
-        backgroundColor: b.color,
-      }}
-    />
   );
 }
 
