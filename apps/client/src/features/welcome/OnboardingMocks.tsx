@@ -369,7 +369,6 @@ function IdeasMock({ p }: { p: Loop }) {
   return (
     <View style={{ gap: t.space.md }}>
       <View style={{ flexDirection: 'row', gap: 8, overflow: 'hidden' }}>
-        <Chip title="All" />
         <Chip title="Under 30 min" />
         <Animated.View
           style={[
