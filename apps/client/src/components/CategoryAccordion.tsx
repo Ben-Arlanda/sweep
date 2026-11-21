@@ -13,19 +13,27 @@ import { useTheme } from '@/theme/useTheme';
 export function CategoryAccordion({
   label,
   count,
+  first,
   open,
   onToggle,
   children,
 }: {
   label: string;
   count: number;
+  /** The first category has no line above it; the others are split by one. */
+  first: boolean;
   open: boolean;
   onToggle: () => void;
   children: ReactNode;
 }) {
   const t = useTheme();
   return (
-    <View style={{ gap: t.space.sm }}>
+    <View
+      style={[
+        { gap: t.space.sm },
+        first ? null : { borderTopWidth: 1, borderTopColor: t.colors.border, paddingTop: 10 },
+      ]}
+    >
       <Pressable
         accessibilityRole="button"
         accessibilityState={{ expanded: open }}
@@ -45,7 +53,8 @@ export function CategoryAccordion({
           accessibilityRole="header"
           style={{
             fontFamily: t.fonts.bold,
-            fontSize: 12,
+            fontSize: 13,
+            lineHeight: 18,
             letterSpacing: 0.7,
             textTransform: 'uppercase',
           }}
@@ -53,7 +62,7 @@ export function CategoryAccordion({
           {label}
         </Text>
         <View style={{ transform: [{ rotate: open ? '0deg' : '180deg' }] }}>
-          <Icon icon={ChevronUp} size={14} color={t.colors.textMuted} strong />
+          <Icon icon={ChevronUp} size={16} color={t.colors.textMuted} strong />
         </View>
       </Pressable>
       {open ? (

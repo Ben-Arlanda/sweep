@@ -171,7 +171,7 @@ function ListContent({ list }: { list: ListDetail }) {
       <ErrorText message={actions.error?.message} />
 
       <LayoutAnimationConfig skipEntering>
-        {listSections(toBuy).map((section) => (
+        {listSections(toBuy).map((section, index) => (
           <Animated.View
             key={section.category}
             entering={rowEntering}
@@ -181,6 +181,7 @@ function ListContent({ list }: { list: ListDetail }) {
             <CategoryAccordion
               label={section.label}
               count={section.items.length}
+              first={index === 0}
               open={!closed.has(section.category)}
               onToggle={() => setClosed((now) => toggled(now, section.category))}
             >

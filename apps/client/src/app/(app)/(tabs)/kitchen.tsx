@@ -369,13 +369,14 @@ function KitchenScreenContent() {
       ) : null}
 
       <LayoutAnimationConfig skipEntering>
-        {shown.map((section) => {
+        {shown.map((section, index) => {
           const open = !closed.has(section.category);
           return (
             <CategoryAccordion
               key={section.category}
               label={section.label}
               count={section.rows.length}
+              first={index === 0}
               open={open}
               onToggle={() => setClosed((now) => toggled(now, section.category))}
             >
