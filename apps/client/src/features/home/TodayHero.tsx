@@ -127,7 +127,7 @@ export function TodayHero({ me, flow }: { me: MeOut; flow: PlanFlow }) {
       <AskSweep />
       {/* Edit plan lives on the meal plan card; this button is for planning a week. */}
       {cta && cta.label !== 'Edit plan' ? (
-        <Button title={cta.label} icon={CalendarDays} onPress={flow.plan} />
+        <Button title={cta.label} icon={CalendarDays} bordered onPress={flow.plan} />
       ) : null}
       <ErrorText message={flow.error} />
       {flow.sheets}
