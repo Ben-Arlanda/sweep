@@ -683,7 +683,7 @@ function ListMock({ p }: { p: Loop }) {
     <View style={{ gap: 10 }}>
       <View style={{ flexDirection: 'row', gap: 8 }}>
         <Chip title="All" selected />
-        <Chip title="Aisle" />
+        <Chip title="Aldi" />
         <Chip title="Coles" />
         <Chip title="Woolies" />
       </View>
