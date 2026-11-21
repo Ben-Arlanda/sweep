@@ -846,7 +846,7 @@ function PartTile({
           width: '47%',
           flexGrow: 1,
           height: 148,
-          padding: 14,
+          padding: 12,
           borderRadius: 20,
           borderWidth: 2,
           backgroundColor: t.colors.surface,
@@ -857,7 +857,9 @@ function PartTile({
       ]}
     >
       <Icon icon={icon} size={20} color={t.colors.text} />
-      <Label>{title}</Label>
+      <Label size={14} lines={2}>
+        {title}
+      </Label>
       <Label muted size={12} lines={2}>
         {caption}
       </Label>
