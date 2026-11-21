@@ -56,7 +56,11 @@ export default function WelcomeScreen() {
             </Rise>
           </View>
 
-          <Rise delay={150} index={2} style={{ flex: 1, justifyContent: 'center' }}>
+          <Rise
+            delay={150}
+            index={2}
+            style={{ flex: 1, justifyContent: 'center', marginHorizontal: -t.space.xl }}
+          >
             <ChefWithRecipe />
           </Rise>
 
@@ -85,12 +89,12 @@ function ChefWithRecipe() {
     <View
       aria-hidden
       importantForAccessibility="no-hide-descendants"
-      style={{ width: '100%', aspectRatio: 1.45 }}
+      style={{ width: '100%', aspectRatio: 1.3 }}
     >
       <View
         style={{
           position: 'absolute',
-          right: 0,
+          right: '5%',
           top: '6%',
           width: '58%',
           padding: 8,
@@ -129,7 +133,7 @@ function ChefWithRecipe() {
         source={require('../../../assets/images/welcome-chef.webp')}
         style={{
           position: 'absolute',
-          left: '4%',
+          left: '6%',
           bottom: '2%',
           width: '55%',
           aspectRatio: 640 / 622,
