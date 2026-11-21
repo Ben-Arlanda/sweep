@@ -5271,7 +5271,7 @@
           "rule_breaks"
         ],
         "title": "ImportedRecipeOut",
-        "description": "One of \"Your recipes\". `rule_breaks` empty = plannable; otherwise why the Dietary\nRules hide it from search and plans: \"satay sauce (couldn't check)\"."
+        "description": "One of \"Your recipes\". `rule_breaks` empty = plannable; otherwise why the Dietary\nRules hide it from search and plans: \"andouille sausage (vegetarian)\"."
       },
       "InKitchenStapleOut": {
         "properties": {

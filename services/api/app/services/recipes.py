@@ -323,9 +323,6 @@ class RecipeFilters:
     cuisine: str | None = None
     course: Course | None = None  # None: every Course
     exclude_ingredient_ids: Sequence[uuid.UUID] = ()
-    # Set when Dietary Rules apply: a line we can't check might break them (fail closed).
-    # Same lines as diet.check_recipe: unmatched, or linked to a Household Ingredient.
-    exclude_uncheckable: bool = False
     only_kind: RecipeKind | None = None  # e.g. IMPORTED: the agent's flagged imports
     favourites_of: uuid.UUID | None = None  # only this Household's Favourites
 
@@ -373,17 +370,6 @@ def _filtered(query: Select[Recipe], filters: RecipeFilters) -> Select[Recipe]:
             ~exists().where(
                 RecipeIngredient.recipe_id == Recipe.id,
                 RecipeIngredient.ingredient_id.in_(filters.exclude_ingredient_ids),
-            )
-        )
-    if filters.exclude_uncheckable:
-        household_made = select(Ingredient.id).where(Ingredient.household_id.is_not(None))
-        query = query.where(
-            ~exists().where(
-                RecipeIngredient.recipe_id == Recipe.id,
-                or_(
-                    RecipeIngredient.needs_review.is_(True),
-                    RecipeIngredient.ingredient_id.in_(household_made),
-                ),
             )
         )
     return query
@@ -562,13 +548,12 @@ async def filters_for(
     here, so no caller can forget the Rules.
     """
     rules = await diet.get_rules(session, household_id)
-    banned = await diet.banned_ingredient_ids(session, rules)
+    banned = await diet.banned_ingredient_ids(session, household_id, rules)
     return RecipeFilters(
         max_minutes=max_minutes,
         cuisine=cuisine,
         course=course,
         exclude_ingredient_ids=sorted(set(exclude_ingredient_ids) | banned),
-        exclude_uncheckable=rules.active,
     )
 
 

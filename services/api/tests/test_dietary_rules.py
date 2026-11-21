@@ -10,7 +10,7 @@ from sqlalchemy import Engine, text
 from app.data.diet import CHECK_LABEL, CONTAINS, Diet
 from app.data.ingredients import INGREDIENTS
 from app.models import Ingredient, Recipe, RecipeIngredient
-from app.services.diet import DietaryRules, check_recipe
+from app.services.diet import DietaryRules, RuleCheck, check_recipe
 from tests.conftest import FakeIssuer, Loader
 from tests.helpers import create_household, idem, invite, join
 from tests.test_recipes import CURRY, PASTA, STIR_FRY, seed
@@ -79,8 +79,12 @@ def recipe(*lines: tuple[str | None, str]) -> Recipe:
     )
 
 
-def rules(*diets: Diet, excluded: frozenset[uuid.UUID] = frozenset()) -> DietaryRules:
-    return DietaryRules(frozenset(diets), excluded)
+def rules(
+    *diets: Diet,
+    excluded: frozenset[uuid.UUID] = frozenset(),
+    excluded_names: frozenset[str] = frozenset(),
+) -> DietaryRules:
+    return DietaryRules(frozenset(diets), excluded, excluded_names)
 
 
 def test_a_recipe_with_chicken_breaks_vegetarian() -> None:
@@ -127,9 +131,27 @@ def with_household_ingredient(name: str) -> Recipe:
     return Recipe(title="Test", ingredients=[line])
 
 
-def test_a_household_ingredient_cant_be_checked_so_the_recipe_fails_closed() -> None:
-    check = check_recipe(with_household_ingredient("satay sauce"), rules(Diet.VEGETARIAN))
-    assert check.breaks == ["satay sauce (couldn't check)"]
+# ADR 0032: a food Sweep doesn't know is judged by its words, not held back for being new
+def test_a_household_ingredient_whose_words_break_a_rule_is_held_back() -> None:
+    check = check_recipe(with_household_ingredient("andouille sausage"), rules(Diet.VEGETARIAN))
+    assert check.breaks == ["andouille sausage (vegetarian)"]
+
+
+def test_a_household_ingredient_that_depends_on_the_brand_is_check_the_label() -> None:
+    dish = with_household_ingredient("satay sauce")
+    assert check_recipe(dish, rules(Diet.VEGETARIAN)) == RuleCheck()
+    check = check_recipe(dish, rules(Diet.GLUTEN_FREE))
+    assert (check.breaks, check.check_label) == ([], ["satay sauce (gluten free)"])
+
+
+def test_a_household_ingredient_naming_nothing_risky_passes() -> None:
+    assert check_recipe(with_household_ingredient("finger limes"), rules(Diet.VEGAN)).ok
+
+
+def test_an_excluded_food_catches_names_that_contain_it() -> None:
+    dish = recipe(("shiitake mushrooms", "100 g shiitake mushrooms"), ("coconut milk", "1 can"))
+    check = check_recipe(dish, rules(excluded_names=frozenset({"mushrooms", "milk"})))
+    assert check.breaks == ["shiitake mushrooms (excluded)"]  # coconut milk isn't milk
 
 
 def test_household_ingredients_dont_matter_without_rules() -> None:
@@ -266,23 +288,40 @@ async def test_rules_filter_browsing_and_search(
     assert "Quick tomato pasta" not in await titles(client, fake_issuer)
 
 
-async def test_a_recipe_with_a_household_ingredient_is_hidden_when_rules_are_set(
+async def save_imported(
+    client: httpx.AsyncClient, issuer: FakeIssuer, title: str, lines: list[str]
+) -> None:
+    body = {
+        "title": title,
+        "servings": 4,
+        "course": "main",
+        "lines": [{"raw_text": t} for t in lines],
+    }  # Save makes foods Sweep doesn't know Household Ingredients (ADR 0032)
+    saved = await client.post(
+        "/recipes/imported", json=body, headers=issuer.headers("ana") | idem()
+    )
+    assert saved.status_code == 201, saved.text
+
+
+async def test_household_ingredients_are_judged_by_their_words_in_search(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer, load: Loader
 ) -> None:
     await load([SALAD])
     await create_household(client, fake_issuer, "ana")
-    mystery = {
-        "title": "Mystery stew",
-        "servings": 4,
-        "course": "main",
-        "lines": [{"raw_text": "1 jar zorblax relish"}, {"raw_text": "1 onion"}],
-    }  # Save makes "zorblax relish" a Household Ingredient (ADR 0032)
-    saved = await client.post(
-        "/recipes/imported", json=mystery, headers=fake_issuer.headers("ana") | idem()
-    )
-    assert saved.status_code == 201, saved.text
-    assert "Mystery stew" in await titles(client, fake_issuer)
-    await put(client, fake_issuer, RULES, {"diets": ["vegan"]})
+    await save_imported(client, fake_issuer, "Mystery stew", ["1 jar zorblax relish", "1 onion"])
+    await save_imported(client, fake_issuer, "Gumbo", ["200 g andouille sausage", "1 onion"])
+    await put(client, fake_issuer, RULES, {"diets": ["vegetarian"]})
+    assert await titles(client, fake_issuer) == ["Chickpea salad", "Mystery stew"]
+
+
+async def test_an_excluded_food_hides_recipes_naming_it(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, load: Loader, db: Engine
+) -> None:
+    await load([SALAD])
+    await create_household(client, fake_issuer, "ana")
+    await save_imported(client, fake_issuer, "Risotto", ["200 g porcini mushrooms", "1 onion"])
+    mushrooms = await ingredient_id(db, "mushrooms")
+    await put(client, fake_issuer, RULES, {"diets": [], "excluded_ingredient_ids": [mushrooms]})
     assert await titles(client, fake_issuer) == ["Chickpea salad"]
 
 
@@ -330,16 +369,17 @@ async def make_satay_household(client: httpx.AsyncClient, issuer: FakeIssuer, db
     insert_imported(db, hh, "Onion soup", [await ingredient_id(db, "onion")])
 
 
-async def test_a_household_ingredient_hides_the_recipe_once_rules_are_set(
+async def test_a_household_ingredient_is_held_back_only_when_its_words_break_a_rule(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer, load: Loader, db: Engine
 ) -> None:
     await load([SALAD])
     await make_satay_household(client, fake_issuer, db)
-    assert await titles(client, fake_issuer) == ["Chickpea salad", "Onion soup", "Satay noodles"]
+    everything = ["Chickpea salad", "Onion soup", "Satay noodles"]
+    assert await titles(client, fake_issuer) == everything
 
+    # "satay sauce" names no meat (ADR 0032: it used to fail closed)
     await put(client, fake_issuer, RULES, {"diets": ["vegetarian"]})
-    # Search runs through the same filter (_filtered); these rows have no embeddings.
-    assert await titles(client, fake_issuer) == ["Chickpea salad", "Onion soup"]
+    assert await titles(client, fake_issuer) == everything
 
 
 async def test_your_recipes_lists_every_imported_recipe_with_why_its_hidden(
@@ -347,13 +387,14 @@ async def test_your_recipes_lists_every_imported_recipe_with_why_its_hidden(
 ) -> None:
     await load([SALAD])
     await make_satay_household(client, fake_issuer, db)
-    await put(client, fake_issuer, RULES, {"diets": ["vegetarian"]})
+    satay = await ingredient_id(db, "satay sauce")
+    await put(client, fake_issuer, RULES, {"diets": [], "excluded_ingredient_ids": [satay]})
 
     response = await client.get("/recipes/imported", headers=fake_issuer.headers("ana"))
     assert response.status_code == 200, response.text
     found = {r["title"]: r["rule_breaks"] for r in response.json()}
     # Seed Recipes aren't "yours"; hidden ones are still listed, with the reason.
-    assert found == {"Satay noodles": ["satay sauce (couldn't check)"], "Onion soup": []}
+    assert found == {"Satay noodles": ["satay sauce (excluded)"], "Onion soup": []}
 
     # Another Household sees none of them.
     await create_household(client, fake_issuer, "ben", name="Ben's")

@@ -389,7 +389,7 @@ class RecipeSummaryOut(BaseModel):
 
 class ImportedRecipeOut(RecipeSummaryOut):
     """One of "Your recipes". `rule_breaks` empty = plannable; otherwise why the Dietary
-    Rules hide it from search and plans: "satay sauce (couldn't check)"."""
+    Rules hide it from search and plans: "andouille sausage (vegetarian)"."""
 
     rule_breaks: list[str]
 
