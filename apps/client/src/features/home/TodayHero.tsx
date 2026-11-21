@@ -1,6 +1,6 @@
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
-import { CalendarDays, User, type LucideIcon } from 'lucide-react-native';
+import { CalendarDays, User } from 'lucide-react-native';
 import { useState } from 'react';
 import { View } from 'react-native';
 
@@ -8,12 +8,11 @@ import { Hero } from '@/components/Hero';
 import { Icon } from '@/components/Icon';
 import { PressableScale } from '@/components/PressableScale';
 import { ConfirmDialog } from '@/components/ConfirmDialog';
-import { ErrorText, Text } from '@/components/ui';
+import { Button, ErrorText, Text } from '@/components/ui';
 import { PlanSheet, startPlan } from '@/features/mealPlan/PlanSheet';
 import { addDays, mondayOf } from '@/features/mealPlan/week';
 import type { MeOut } from '@/lib/api/client';
 import { mealTap, useMealPlan, useMealPlanActions } from '@/lib/api/mealPlan';
-import { sectionTints } from '@/theme/tokens';
 import { useTheme } from '@/theme/useTheme';
 
 import { AskSweep } from './AskSweep';
@@ -128,61 +127,11 @@ export function TodayHero({ me, flow }: { me: MeOut; flow: PlanFlow }) {
       <AskSweep />
       {/* Edit plan lives on the meal plan card; this button is for planning a week. */}
       {cta && cta.label !== 'Edit plan' ? (
-        <View style={{ flexDirection: 'row' }}>
-          <QuickAction icon={CalendarDays} tint="plan" label={cta.label} onPress={flow.plan} />
-        </View>
+        <Button title={cta.label} icon={CalendarDays} onPress={flow.plan} />
       ) : null}
       <ErrorText message={flow.error} />
       {flow.sheets}
     </Hero>
-  );
-}
-
-/** A big quick action under Ask Sweep: a white card with a tinted icon tile, never lime. */
-function QuickAction({
-  icon,
-  tint,
-  label,
-  onPress,
-}: {
-  icon: LucideIcon;
-  tint: keyof typeof sectionTints;
-  label: string;
-  onPress: () => void;
-}) {
-  const t = useTheme();
-  return (
-    <PressableScale
-      accessibilityRole="button"
-      onPress={onPress}
-      style={{
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 8,
-        minHeight: 52,
-        paddingHorizontal: 8,
-        borderRadius: t.radius.lg,
-        backgroundColor: t.colors.surface,
-        boxShadow: t.shadow.card,
-      }}
-    >
-      <View
-        style={{
-          width: 32,
-          height: 32,
-          borderRadius: 9,
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: sectionTints[tint].bg,
-        }}
-      >
-        <Icon icon={icon} size={18} color={sectionTints[tint].fg} />
-      </View>
-      <Text variant="label" style={{ flexShrink: 1, fontSize: 14, lineHeight: 18 }}>
-        {label}
-      </Text>
-    </PressableScale>
   );
 }
 
