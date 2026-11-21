@@ -86,7 +86,14 @@ export function FloatingTabBar({
             <GlassView
               glassEffectStyle="regular"
               colorScheme="light"
-              style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                borderRadius: BAR_RADIUS,
+              }}
             />
           ) : Platform.OS === 'android' ? null : ( // Android's blur needs a target view
             <BlurView
