@@ -208,8 +208,8 @@ export function TonightScreen() {
       {planning ? (
         <PlanSheet
           onClose={() => setPlanning(false)}
-          onPick={(mode, days, tweaks) => {
-            requestPlan(mode, days, tweaks);
+          onPick={(mode, days) => {
+            requestPlan(mode, days);
             router.replace('/plan-week');
           }}
         />

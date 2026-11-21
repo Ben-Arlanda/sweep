@@ -26,16 +26,6 @@ test('the "Plan my week" sheet hands over the mode and days with its message', (
   });
 });
 
-test("the sheet's This week chips go with the plan, not the message", () => {
-  requestPlan('kitchen', ['2026-11-18'], ['quick', 'healthy']);
-
-  expect(takeStart()?.plan).toEqual({
-    mode: 'kitchen',
-    days: ['2026-11-18'],
-    tweaks: ['quick', 'healthy'],
-  });
-});
-
 test.each([
   ['kitchen', ['2026-11-18'], "Plan dinner from what's in my Kitchen, for Wed 18 Nov."],
   [
