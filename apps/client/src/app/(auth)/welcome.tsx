@@ -1,7 +1,8 @@
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { Heart } from 'lucide-react-native';
-import { ScrollView, Text, View } from 'react-native';
+import { useState } from 'react';
+import { ScrollView, Text, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Icon } from '@/components/Icon';
@@ -15,8 +16,14 @@ import { useTheme } from '@/theme/useTheme';
  * The first thing a signed-out person sees: logo, the promise, Sweep's chef, and two ways
  * in. "Get started" tells the story first; people with an account go straight to sign-in.
  */
+const SCENE_RATIO = 1.3; // width : height of the chef-and-card scene
+
 export default function WelcomeScreen() {
   const t = useTheme();
+  // Short phones get smaller type so everything, buttons included, fits without scrolling.
+  const short = useWindowDimensions().height < 700;
+  const [space, setSpace] = useState({ width: 0, height: 0 });
+  const sceneWidth = Math.min(space.width, space.height * SCENE_RATIO);
   return (
     <View style={{ flex: 1, backgroundColor: hero.background, backgroundImage: hero.glow }}>
       <SafeAreaView style={{ flex: 1 }}>
@@ -25,7 +32,7 @@ export default function WelcomeScreen() {
             flexGrow: 1,
             paddingHorizontal: t.space.xl,
             paddingVertical: t.space.lg,
-            gap: t.space.lg,
+            gap: short ? t.space.md : t.space.lg,
             width: '100%',
             maxWidth: 560,
             alignSelf: 'center',
@@ -33,13 +40,18 @@ export default function WelcomeScreen() {
         >
           <Wordmark />
 
-          <View style={{ gap: t.space.md, marginTop: t.space.md }}>
+          <View style={{ gap: t.space.md, marginTop: short ? 0 : t.space.md }}>
             <Rise delay={150}>
               <Text
                 accessibilityRole="header"
                 style={[
                   t.type.display,
-                  { color: hero.text, fontSize: 40, lineHeight: 48, letterSpacing: -1 },
+                  {
+                    color: hero.text,
+                    fontSize: short ? 34 : 40,
+                    lineHeight: short ? 40 : 48,
+                    letterSpacing: -1,
+                  },
                 ]}
               >
                 {LANDING.title}
@@ -50,7 +62,12 @@ export default function WelcomeScreen() {
               </Text>
             </Rise>
             <Rise delay={150} index={1}>
-              <Text style={[t.type.body, { color: hero.textMuted, fontSize: 17, lineHeight: 25 }]}>
+              <Text
+                style={[
+                  t.type.body,
+                  { color: hero.textMuted, fontSize: short ? 16 : 17, lineHeight: short ? 23 : 25 },
+                ]}
+              >
                 {LANDING.lede}
               </Text>
             </Rise>
@@ -59,9 +76,15 @@ export default function WelcomeScreen() {
           <Rise
             delay={150}
             index={2}
-            style={{ flex: 1, justifyContent: 'center', marginHorizontal: -t.space.xl }}
+            style={{ flex: 1, minHeight: 120, marginHorizontal: -t.space.xl }}
           >
-            <ChefWithRecipe />
+            {/* Takes whatever height is left; the scene shrinks to fit it. */}
+            <View
+              style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+              onLayout={(e) => setSpace(e.nativeEvent.layout)}
+            >
+              {sceneWidth > 0 && <ChefWithRecipe width={sceneWidth} />}
+            </View>
           </Rise>
 
           <Rise delay={150} index={3} style={{ gap: t.space.sm }}>
@@ -83,13 +106,13 @@ const RECIPE_PHOTO =
   'https://images.unsplash.com/photo-1617355057919-2aa713486c9c?ixid=M3wxMTM5MTAxfDB8MXxzZWFyY2h8Mnx8Q2hhbmElMjBtYXNhbGF8ZW58MXwwfHx8MTc5NTE0NTY1NHww&ixlib=rb-4.1.0&w=720&h=540&fit=crop&crop=entropy&fm=webp&q=55';
 
 /** Sweep's chef beside a tilted recipe card, like the Recipes tab. Decorative. */
-function ChefWithRecipe() {
+function ChefWithRecipe({ width }: { width: number }) {
   const t = useTheme();
   return (
     <View
       aria-hidden
       importantForAccessibility="no-hide-descendants"
-      style={{ width: '100%', aspectRatio: 1.3 }}
+      style={{ width, aspectRatio: SCENE_RATIO }}
     >
       <View
         style={{
