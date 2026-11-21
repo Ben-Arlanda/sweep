@@ -7,7 +7,13 @@ import { AccessibilityInfo, Platform, Text, View } from 'react-native';
 
 import { Icon } from '@/components/Icon';
 import { PressableScale } from '@/components/PressableScale';
-import { palette, TAB_BAR_FROST, TAB_LABEL, TAB_GLASS_TINT, tabBarHeight } from '@/theme/tokens';
+import {
+  palette,
+  TAB_BAR_FROST,
+  TAB_GLASS_TINT,
+  TAB_PILL_SHADE,
+  tabBarHeight,
+} from '@/theme/tokens';
 
 import { useTheme } from '@/theme/useTheme';
 
@@ -31,9 +37,9 @@ function useGlass(): boolean {
 export type TabItem = { name: string; title: string; icon: LucideIcon };
 
 /**
- * The tab bar: a navy pill floating over the page (Liquid Glass on iOS 26+, a dark frost
- * elsewhere). The selected tab is shown three ways, never colour alone (WCAG 1.4.1): a
- * lime pill, a heavier icon line and a bold label.
+ * The tab bar floating over the page: Liquid Glass on iOS 26+, a frosted bar elsewhere;
+ * the screen scrolls underneath it. The selected tab is shown three ways, never colour alone (WCAG 1.4.1): a soft navy
+ * pill, a heavier icon line and a bold label.
  */
 export function FloatingTabBar({
   state,
@@ -46,64 +52,6 @@ export function FloatingTabBar({
   // Tells each screen how much room the bar takes, so <Screen> can leave space for it.
   const reportHeight = use(BottomTabBarHeightCallbackContext);
   const glass = useGlass();
-
-  const row = (
-    <View
-      style={{
-        flex: 1,
-        flexDirection: 'row',
-        padding: 6,
-        gap: 2,
-        backgroundColor: glass ? 'transparent' : `rgba(18, 26, 46, ${TAB_BAR_FROST})`,
-      }}
-    >
-      {state.routes.map((route, index) => {
-        const tab = tabs.find((x) => x.name === route.name);
-        if (!tab) return null;
-        const focused = index === state.index;
-        const colour = focused ? palette.ink : TAB_LABEL;
-        return (
-          <PressableScale
-            key={route.key}
-            accessibilityRole="tab"
-            accessibilityLabel={tab.title}
-            accessibilityState={{ selected: focused }}
-            onPress={() => {
-              const event = emitter.emit({
-                type: 'tabPress',
-                target: route.key,
-                canPreventDefault: true,
-              });
-              if (!focused && !event.defaultPrevented) navigateToTab(route.key);
-            }}
-            style={{
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 3,
-              paddingVertical: 4,
-              paddingHorizontal: 2, // room for "Recipes" on a 320pt-wide phone
-              borderRadius: BAR_RADIUS - 6,
-              backgroundColor: focused ? palette.lime : 'transparent',
-            }}
-          >
-            <Icon icon={tab.icon} color={colour} strong={focused} />
-            <Text
-              numberOfLines={1}
-              style={{
-                fontFamily: focused ? t.fonts.bold : t.fonts.medium,
-                fontSize: 11,
-                lineHeight: 16,
-                color: colour,
-              }}
-            >
-              {tab.title}
-            </Text>
-          </PressableScale>
-        );
-      })}
-    </View>
-  );
 
   return (
     <View
@@ -136,7 +84,7 @@ export function FloatingTabBar({
             flex: 1,
             borderRadius: BAR_RADIUS,
             borderWidth: 1,
-            borderColor: 'rgba(255, 255, 255, 0.12)', // a faint light rim on the navy
+            borderColor: 'rgba(18, 26, 46, 0.08)',
             overflow: glass ? 'visible' : 'hidden', // pressed glass swells past its edge
           }}
         >
@@ -145,22 +93,134 @@ export function FloatingTabBar({
             <GlassView
               isInteractive
               glassEffectStyle="regular"
-              tintColor={`rgba(18, 26, 46, ${TAB_GLASS_TINT})`}
-              colorScheme="dark"
+              tintColor={`rgba(27, 42, 78, ${TAB_GLASS_TINT})`} // a cool grey body on white pages
+              colorScheme="light"
               style={{ flex: 1, borderRadius: BAR_RADIUS }}
             >
-              {row}
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  padding: 6,
+                  gap: 2,
+                  backgroundColor: glass ? 'transparent' : `rgba(255, 255, 255, ${TAB_BAR_FROST})`,
+                }}
+              >
+                {state.routes.map((route, index) => {
+                  const tab = tabs.find((x) => x.name === route.name);
+                  if (!tab) return null;
+                  const focused = index === state.index;
+                  const colour = focused ? palette.ink : palette.ink700;
+                  return (
+                    <PressableScale
+                      key={route.key}
+                      accessibilityRole="tab"
+                      accessibilityLabel={tab.title}
+                      accessibilityState={{ selected: focused }}
+                      onPress={() => {
+                        const event = emitter.emit({
+                          type: 'tabPress',
+                          target: route.key,
+                          canPreventDefault: true,
+                        });
+                        if (!focused && !event.defaultPrevented) navigateToTab(route.key);
+                      }}
+                      style={{
+                        flex: 1,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: 3,
+                        paddingVertical: 4,
+                        paddingHorizontal: 2, // room for "Recipes" on a 320pt-wide phone
+                        borderRadius: BAR_RADIUS - 6,
+                        backgroundColor: focused
+                          ? `rgba(27, 42, 78, ${TAB_PILL_SHADE})`
+                          : 'transparent',
+                      }}
+                    >
+                      <Icon icon={tab.icon} color={colour} strong={focused} />
+                      <Text
+                        numberOfLines={1}
+                        style={{
+                          fontFamily: focused ? t.fonts.bold : t.fonts.medium,
+                          fontSize: 11,
+                          lineHeight: 16,
+                          color: colour,
+                        }}
+                      >
+                        {tab.title}
+                      </Text>
+                    </PressableScale>
+                  );
+                })}
+              </View>
             </GlassView>
           ) : (
             <>
               {Platform.OS === 'android' ? null : ( // Android's blur needs a target view
                 <BlurView
                   intensity={60}
-                  tint="dark"
+                  tint="light"
                   style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
                 />
               )}
-              {row}
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  padding: 6,
+                  gap: 2,
+                  backgroundColor: glass ? 'transparent' : `rgba(255, 255, 255, ${TAB_BAR_FROST})`,
+                }}
+              >
+                {state.routes.map((route, index) => {
+                  const tab = tabs.find((x) => x.name === route.name);
+                  if (!tab) return null;
+                  const focused = index === state.index;
+                  const colour = focused ? palette.ink : palette.ink700;
+                  return (
+                    <PressableScale
+                      key={route.key}
+                      accessibilityRole="tab"
+                      accessibilityLabel={tab.title}
+                      accessibilityState={{ selected: focused }}
+                      onPress={() => {
+                        const event = emitter.emit({
+                          type: 'tabPress',
+                          target: route.key,
+                          canPreventDefault: true,
+                        });
+                        if (!focused && !event.defaultPrevented) navigateToTab(route.key);
+                      }}
+                      style={{
+                        flex: 1,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: 3,
+                        paddingVertical: 4,
+                        paddingHorizontal: 2, // room for "Recipes" on a 320pt-wide phone
+                        borderRadius: BAR_RADIUS - 6,
+                        backgroundColor: focused
+                          ? `rgba(27, 42, 78, ${TAB_PILL_SHADE})`
+                          : 'transparent',
+                      }}
+                    >
+                      <Icon icon={tab.icon} color={colour} strong={focused} />
+                      <Text
+                        numberOfLines={1}
+                        style={{
+                          fontFamily: focused ? t.fonts.bold : t.fonts.medium,
+                          fontSize: 11,
+                          lineHeight: 16,
+                          color: colour,
+                        }}
+                      >
+                        {tab.title}
+                      </Text>
+                    </PressableScale>
+                  );
+                })}
+              </View>
             </>
           )}
         </View>
