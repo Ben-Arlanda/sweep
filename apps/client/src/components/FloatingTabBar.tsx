@@ -123,20 +123,20 @@ export function FloatingTabBar({
                         flex: 1,
                         alignItems: 'center',
                         justifyContent: 'center',
-                        gap: 3,
+                        gap: 2,
                         paddingVertical: 4,
                         paddingHorizontal: 2, // room for "Recipes" on a 320pt-wide phone
                         borderRadius: BAR_RADIUS - 6,
                         backgroundColor: focused ? palette.navy : 'transparent',
                       }}
                     >
-                      <Icon icon={tab.icon} color={colour} strong={focused} />
+                      <Icon icon={tab.icon} size={20} color={colour} strong={focused} />
                       <Text
                         numberOfLines={1}
                         style={{
                           fontFamily: focused ? t.fonts.bold : t.fonts.medium,
-                          fontSize: 11,
-                          lineHeight: 16,
+                          fontSize: 10,
+                          lineHeight: 13,
                           color: colour,
                         }}
                       >
@@ -188,20 +188,20 @@ export function FloatingTabBar({
                         flex: 1,
                         alignItems: 'center',
                         justifyContent: 'center',
-                        gap: 3,
+                        gap: 2,
                         paddingVertical: 4,
                         paddingHorizontal: 2, // room for "Recipes" on a 320pt-wide phone
                         borderRadius: BAR_RADIUS - 6,
                         backgroundColor: focused ? palette.navy : 'transparent',
                       }}
                     >
-                      <Icon icon={tab.icon} color={colour} strong={focused} />
+                      <Icon icon={tab.icon} size={20} color={colour} strong={focused} />
                       <Text
                         numberOfLines={1}
                         style={{
                           fontFamily: focused ? t.fonts.bold : t.fonts.medium,
-                          fontSize: 11,
-                          lineHeight: 16,
+                          fontSize: 10,
+                          lineHeight: 13,
                           color: colour,
                         }}
                       >
