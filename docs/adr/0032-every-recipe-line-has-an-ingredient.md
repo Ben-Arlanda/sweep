@@ -23,7 +23,7 @@ Separately, the Dietary Rules failed closed: any line Sweep couldn't check count
 3. The review screen shows such a line as **"New: andouille sausage"** before saving. The server works the name out (one shared function for the preview and the save) and never accepts a name from the client. Save creates it inside the same transaction; the unique `(household_id, name)` constraint means repeats reuse one Ingredient.
 4. A line naming two known foods with "and" ("salt and pepper") is saved as two lines, both keeping the original text. Otherwise it takes the normal path.
 5. The database enforces it: a recipe line's Ingredient may be empty only for things nobody shops for, and an Ingredient a recipe line uses can't be deleted (the foreign key has no ON DELETE, so Postgres's default NO ACTION; the merge repoints lines first). Not RESTRICT: it checks mid-cascade, so deleting a Household (its recipes and its Ingredients cascade together) could fail depending on order. Seed Recipe lines must all match a starter; the loader refuses the whole load otherwise. The migration stops with a clear message if unlinked lines exist (test data was deleted by hand, not backfilled).
-6. The recipe screen and Cook Mode show the note under the name ("Andouille sausage · 200 g · or smoked sausage · sliced 0.5 cm thick"). The Shopping List gets the amount and name only.
+6. The recipe screen shows the note under the name (Cook Mode lists steps only, so it has no line to show it on) ("Andouille sausage · 200 g · or smoked sausage · sliced 0.5 cm thick"). The Shopping List gets the amount and name only.
 
 **Healing and growth: rules only, no AI.**
 
