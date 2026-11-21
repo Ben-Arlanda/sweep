@@ -74,9 +74,9 @@ export default function WelcomeScreen() {
   );
 }
 
-/** A real library photo (Beef pho), hotlinked like every recipe photo (ADR 0029). */
-const PHO_PHOTO =
-  'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?ixid=M3wxMTM5MTAxfDB8MXxzZWFyY2h8Mnx8QmVlZiUyMHBoJUUxJUJCJTlGfGVufDF8MHx8fDE3OTUxNDI3MDd8MA&ixlib=rb-4.1.0&w=720&h=540&fit=crop&crop=entropy&fm=webp&q=55';
+/** A real library photo (Chana masala), hotlinked like every recipe photo (ADR 0029). */
+const RECIPE_PHOTO =
+  'https://images.unsplash.com/photo-1617355057919-2aa713486c9c?ixid=M3wxMTM5MTAxfDB8MXxzZWFyY2h8Mnx8Q2hhbmElMjBtYXNhbGF8ZW58MXwwfHx8MTc5NTE0NTY1NHww&ixlib=rb-4.1.0&w=720&h=540&fit=crop&crop=entropy&fm=webp&q=55';
 
 /** Sweep's chef beside a tilted recipe card, like the Recipes tab. Decorative. */
 function ChefWithRecipe() {
@@ -103,7 +103,7 @@ function ChefWithRecipe() {
         }}
       >
         <Image
-          source={{ uri: PHO_PHOTO }}
+          source={{ uri: RECIPE_PHOTO }}
           style={{ width: '100%', aspectRatio: 4 / 3, borderRadius: t.radius.lg }}
           contentFit="cover"
           transition={200}
