@@ -479,7 +479,7 @@ function Review({
       <View style={{ gap: 10 }}>
         <Button title="Refine with Sweep" icon={Sparkles} variant="secondary" onPress={onRefine} />
         <Button title="Add to my week" loading={approving} onPress={onApprove} />
-        <Button title="Start a new plan" variant="outline" onPress={onStartOver} />
+        <Button title="Start a new plan" variant="secondary" onPress={onStartOver} />
       </View>
     </ScrollView>
   );
