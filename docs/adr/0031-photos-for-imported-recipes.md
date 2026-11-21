@@ -9,7 +9,7 @@ Every Seed Recipe now has a stock photo. A Member's own recipes showed a guessed
 ## Decision
 
 1. **Where:** a photo slot at the top of the review screen (every import door ends there, and Edit uses it too), and Add / Change / Remove photo on the recipe page of the Member's own recipe. Not in the Add menu: that picks where the recipe comes from.
-2. **What:** one photo per Imported Recipe. Seed Recipes keep their Unsplash photo; Adaptations show no photo (their dish changed); with no photo, a plain food icon (`UtensilsCrossed`) on the recipe's pastel.
+2. **What:** one photo per Imported Recipe. Seed Recipes keep their Unsplash photo; Adaptations show no photo (their dish changed); with no photo, a plain food icon (`Utensils`, knife and fork) on the recipe's pastel.
 3. **Upload:** the phone shrinks the photo to JPEG first (as the import doors do, which also turns HEIC into JPEG). The server takes JPEG, PNG or WebP, up to 5 MB, the type read from the file's first bytes.
 4. **Stored clean:** the server decodes the image (refusing very large pixel counts), turns it upright, crops it to 4:3 and saves two new WebP files, 960 and 360 px wide. Re-encoding keeps only the pixels, so GPS location and camera details are gone. The original is never stored.
 5. **Private:** files sit under the Household's own folder. The API returns short-lived signed links (an HMAC of the recipe, photo and an expiry, valid about an hour, rounded so a link stays the same for caching). The photo route checks the signature, not a sign-in header, so it works in `<img>` and expo-image on every platform, the way S3 presigned links will.
