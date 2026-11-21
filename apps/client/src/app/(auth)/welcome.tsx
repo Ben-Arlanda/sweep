@@ -1,4 +1,3 @@
-import { Image } from 'expo-image';
 import { router, useIsFocused } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { Text, useWindowDimensions, View } from 'react-native';
@@ -11,6 +10,7 @@ import { INTRO_MS, Intro } from '@/features/welcome/Intro';
 import { WELCOME_SCENE_WIDTH, WelcomeScene } from '@/features/welcome/OnboardingMocks';
 import { Rise } from '@/features/welcome/Rise';
 import { LANDING, MAX_TEXT_SCALE } from '@/features/welcome/story';
+import { Wordmark } from '@/features/welcome/Wordmark';
 import { hero } from '@/theme/tokens';
 import { useTheme } from '@/theme/useTheme';
 
@@ -109,33 +109,6 @@ export default function WelcomeScreen() {
         </View>
       </SafeAreaView>
       {intro ? <Intro onDone={endIntro} /> : null}
-    </View>
-  );
-}
-
-function Wordmark() {
-  const t = useTheme();
-  return (
-    <View
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: t.space.sm,
-        paddingHorizontal: t.space.sm,
-      }}
-    >
-      <Image
-        aria-hidden
-        source={require('../../../assets/images/sweep-logo.png')}
-        style={{ width: 34, height: 34 }}
-        contentFit="contain"
-      />
-      <Text
-        maxFontSizeMultiplier={MAX_TEXT_SCALE}
-        style={[t.type.heading, { color: hero.text, fontSize: 21, lineHeight: 28 }]}
-      >
-        Sweep
-      </Text>
     </View>
   );
 }

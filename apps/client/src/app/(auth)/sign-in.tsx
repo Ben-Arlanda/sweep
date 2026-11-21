@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { View } from 'react-native';
 
 import { Button, Card, ErrorText, Field, Highlight, Screen, Text } from '@/components/ui';
+import { Wordmark } from '@/features/welcome/Wordmark';
 import { clerkErrorCodes, clerkErrorMessage } from '@/lib/clerkErrors';
 import { useTheme } from '@/theme/useTheme';
 
@@ -84,14 +85,7 @@ export default function SignInScreen() {
   return (
     <Screen edges={['top', 'bottom', 'left', 'right']}>
       <View style={{ gap: t.space.md, marginTop: t.space.xl }}>
-        {/* Wordmark: a lime dot, then the name. */}
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.sm }}>
-          <View
-            aria-hidden
-            style={{ width: 14, height: 14, borderRadius: 7, backgroundColor: t.colors.action }}
-          />
-          <Text variant="heading">Sweep</Text>
-        </View>
+        <Wordmark inset={false} />
         <Text variant="title" accessibilityRole="header">
           Let&apos;s get your kitchen <Highlight>sorted</Highlight>
         </Text>
