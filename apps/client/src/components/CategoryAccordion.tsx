@@ -42,6 +42,7 @@ export function CategoryAccordion({
           gap: t.space.sm,
           paddingHorizontal: 14,
           minHeight: 48,
+          backgroundColor: t.colors.fill, // a tinted header sets the category apart from its items
         }}
       >
         <Text variant="label" accessibilityRole="header" style={{ flex: 1 }}>
