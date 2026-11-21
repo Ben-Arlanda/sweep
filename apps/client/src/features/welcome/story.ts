@@ -8,7 +8,7 @@
 export const LANDING = {
   title: "Cook what you've got.",
   highlight: "Buy only what's missing.",
-  lede: "Turn what's in your Kitchen into great dinners, a weekly plan, and a smart shopping list.",
+  lede: 'Sweep tracks your Kitchen, suggests dinners from what you have, plans your week and writes the shopping list for you.',
 } as const;
 
 export type StoryKey = 'shop' | 'kitchen' | 'ask' | 'plan';
