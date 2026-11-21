@@ -1,13 +1,5 @@
-import {
-  ChevronUp,
-  Ellipsis,
-  Link2,
-  Plus,
-  ShoppingBasket,
-  Store,
-  Trash2,
-} from 'lucide-react-native';
-import { useCallback, useEffect, useRef, useState, type ReactNode, type Ref } from 'react';
+import { Ellipsis, Link2, Plus, ShoppingBasket, Store, Trash2 } from 'lucide-react-native';
+import { useCallback, useEffect, useRef, useState, type Ref } from 'react';
 import Animated, { LayoutAnimationConfig } from 'react-native-reanimated';
 import {
   Keyboard,
@@ -20,7 +12,7 @@ import {
   type TextInputInstance,
 } from 'react-native';
 
-import { toggled } from '@/components/CategoryAccordion';
+import { CategoryAccordion, toggled } from '@/components/CategoryAccordion';
 import { Checkbox } from '@/components/Checkbox';
 import { ChoiceChips } from '@/components/ChoiceChips';
 import { Icon } from '@/components/Icon';
@@ -186,14 +178,14 @@ function ListContent({ list }: { list: ListDetail }) {
             exiting={rowExiting}
             layout={rowLayout}
           >
-            <ListGroup
+            <CategoryAccordion
               label={section.label}
               count={section.items.length}
               open={!closed.has(section.category)}
               onToggle={() => setClosed((now) => toggled(now, section.category))}
             >
               {section.items.map(row)}
-            </ListGroup>
+            </CategoryAccordion>
           </Animated.View>
         ))}
       </LayoutAnimationConfig>
@@ -363,61 +355,6 @@ function cardStyle(t: Theme) {
     boxShadow: t.shadow.card,
     overflow: 'hidden',
   } as const;
-}
-
-/**
- * A food category: a small uppercase heading over a card of rows. The heading folds the
- * card away (open by default), so a long list stays easy to scan in the shop.
- */
-function ListGroup({
-  label,
-  count,
-  open,
-  onToggle,
-  children,
-}: {
-  label: string;
-  count: number;
-  open: boolean;
-  onToggle: () => void;
-  children: ReactNode;
-}) {
-  const t = useTheme();
-  return (
-    <View style={{ gap: t.space.sm }}>
-      <Pressable
-        accessibilityRole="button"
-        accessibilityState={{ expanded: open }}
-        accessibilityLabel={`${label}, ${count} ${count === 1 ? 'item' : 'items'}`}
-        onPress={onToggle}
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: 6,
-          minHeight: 32,
-          paddingLeft: 2,
-        }}
-      >
-        <Text
-          variant="caption"
-          muted
-          accessibilityRole="header"
-          style={{
-            fontFamily: t.fonts.bold,
-            fontSize: 12,
-            letterSpacing: 0.7,
-            textTransform: 'uppercase',
-          }}
-        >
-          {label}
-        </Text>
-        <View style={{ transform: [{ rotate: open ? '0deg' : '180deg' }] }}>
-          <Icon icon={ChevronUp} size={14} color={t.colors.textMuted} strong />
-        </View>
-      </Pressable>
-      {open ? <View style={cardStyle(t)}>{children}</View> : null}
-    </View>
-  );
 }
 
 /**
