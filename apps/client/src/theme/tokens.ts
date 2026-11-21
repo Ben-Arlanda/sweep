@@ -357,8 +357,6 @@ export const tabBarHeight = 68;
  * its labels pass AA even over black content (tested in tokens.test.ts).
  */
 export const TAB_BAR_FROST = 0.86;
-/** The selected tab's pill: navy at this opacity over the frost. */
-export const TAB_PILL_SHADE = 0.09;
 /** Navy tint on the tab bar's Liquid Glass, so it stands out on a light page. */
 export const TAB_GLASS_TINT = 0.12;
 

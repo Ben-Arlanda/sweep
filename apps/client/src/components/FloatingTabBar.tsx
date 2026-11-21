@@ -7,13 +7,7 @@ import { AccessibilityInfo, Platform, Text, View } from 'react-native';
 
 import { Icon } from '@/components/Icon';
 import { PressableScale } from '@/components/PressableScale';
-import {
-  palette,
-  TAB_BAR_FROST,
-  TAB_GLASS_TINT,
-  TAB_PILL_SHADE,
-  tabBarHeight,
-} from '@/theme/tokens';
+import { palette, TAB_BAR_FROST, TAB_GLASS_TINT, tabBarHeight } from '@/theme/tokens';
 
 import { useTheme } from '@/theme/useTheme';
 
@@ -38,8 +32,8 @@ export type TabItem = { name: string; title: string; icon: LucideIcon };
 
 /**
  * The tab bar floating over the page: Liquid Glass on iOS 26+, a frosted bar elsewhere;
- * the screen scrolls underneath it. The selected tab is shown three ways, never colour alone (WCAG 1.4.1): a soft navy
- * pill, a heavier icon line and a bold label.
+ * the screen scrolls underneath it. The selected tab is shown three ways, never colour alone (WCAG 1.4.1): a navy
+ * pill with lime icon and label, a heavier icon line and a bold label.
  */
 export function FloatingTabBar({
   state,
@@ -110,7 +104,7 @@ export function FloatingTabBar({
                   const tab = tabs.find((x) => x.name === route.name);
                   if (!tab) return null;
                   const focused = index === state.index;
-                  const colour = focused ? palette.ink : palette.ink700;
+                  const colour = focused ? palette.lime : t.colors.text;
                   return (
                     <PressableScale
                       key={route.key}
@@ -133,9 +127,7 @@ export function FloatingTabBar({
                         paddingVertical: 4,
                         paddingHorizontal: 2, // room for "Recipes" on a 320pt-wide phone
                         borderRadius: BAR_RADIUS - 6,
-                        backgroundColor: focused
-                          ? `rgba(27, 42, 78, ${TAB_PILL_SHADE})`
-                          : 'transparent',
+                        backgroundColor: focused ? palette.navy : 'transparent',
                       }}
                     >
                       <Icon icon={tab.icon} color={colour} strong={focused} />
@@ -177,7 +169,7 @@ export function FloatingTabBar({
                   const tab = tabs.find((x) => x.name === route.name);
                   if (!tab) return null;
                   const focused = index === state.index;
-                  const colour = focused ? palette.ink : palette.ink700;
+                  const colour = focused ? palette.lime : t.colors.text;
                   return (
                     <PressableScale
                       key={route.key}
@@ -200,9 +192,7 @@ export function FloatingTabBar({
                         paddingVertical: 4,
                         paddingHorizontal: 2, // room for "Recipes" on a 320pt-wide phone
                         borderRadius: BAR_RADIUS - 6,
-                        backgroundColor: focused
-                          ? `rgba(27, 42, 78, ${TAB_PILL_SHADE})`
-                          : 'transparent',
+                        backgroundColor: focused ? palette.navy : 'transparent',
                       }}
                     >
                       <Icon icon={tab.icon} color={colour} strong={focused} />

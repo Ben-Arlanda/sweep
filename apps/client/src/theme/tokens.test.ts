@@ -9,7 +9,6 @@ import {
   palette,
   statusColors,
   TAB_BAR_FROST,
-  TAB_PILL_SHADE,
   stockColors,
   TINT_NAMES,
   tints,
@@ -158,14 +157,13 @@ describe.each(Object.keys(PAGE_COLORS) as (keyof typeof PAGE_COLORS)[])(
 describe('floating tab bar meets WCAG AA', () => {
   it('labels on the frost, even over black content', () => {
     const worst = mix(palette.paper, palette.ink, TAB_BAR_FROST);
-    expect(contrastRatio(palette.ink700, worst)).toBeGreaterThanOrEqual(AA);
+    expect(contrastRatio(palette.ink, worst)).toBeGreaterThanOrEqual(AA);
   });
-  it('a selected chip stands out from the page (3:1, WCAG 1.4.11)', () => {
+  it('the navy pill stands out from the page (3:1, WCAG 1.4.11)', () => {
     expect(contrastRatio(palette.navy, palette.page)).toBeGreaterThanOrEqual(3);
   });
-  it('selected label on its navy pill, even over black content', () => {
-    const pill = mix(palette.navy, mix(palette.paper, palette.ink, TAB_BAR_FROST), TAB_PILL_SHADE);
-    expect(contrastRatio(palette.ink, pill)).toBeGreaterThanOrEqual(AA);
+  it('lime label on the navy pill', () => {
+    expect(contrastRatio(palette.lime, palette.navy)).toBeGreaterThanOrEqual(AA);
   });
 });
 
