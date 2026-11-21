@@ -187,6 +187,8 @@ function LogoRow() {
             borderRadius: 20,
             alignItems: 'center',
             justifyContent: 'center',
+            borderWidth: 1,
+            borderColor: t.colors.border,
             backgroundColor: t.colors.fill,
           }}
         >
