@@ -350,7 +350,7 @@ export const motion = {
 } as const;
 
 /** Height of the bottom tab bar, above the phone's home-bar area. Toasts sit above it. */
-export const tabBarHeight = 68;
+export const tabBarHeight = 72;
 
 /**
  * The floating tab bar's frosting: white at this opacity over the blur. High enough that

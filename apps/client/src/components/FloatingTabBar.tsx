@@ -12,6 +12,8 @@ import { palette, TAB_BAR_FROST, TAB_GLASS_TINT, tabBarHeight } from '@/theme/to
 import { useTheme } from '@/theme/useTheme';
 
 const BAR_RADIUS = tabBarHeight / 2; // a full pill, like the iOS 26 tab bar
+/** Space between the bar's edge and the selected pill; the pill's curve follows the bar's. */
+const BAR_INSET = 4;
 
 // Apple's Liquid Glass (iOS 26+), the same material as the native header buttons.
 const GLASS_OS = Platform.OS === 'ios' && isLiquidGlassAvailable() && isGlassEffectAPIAvailable();
@@ -95,7 +97,7 @@ export function FloatingTabBar({
                 style={{
                   flex: 1,
                   flexDirection: 'row',
-                  padding: 6,
+                  padding: BAR_INSET,
                   gap: 2,
                   backgroundColor: glass ? 'transparent' : `rgba(255, 255, 255, ${TAB_BAR_FROST})`,
                 }}
@@ -126,7 +128,7 @@ export function FloatingTabBar({
                         gap: 3,
                         paddingVertical: 4,
                         paddingHorizontal: 2, // room for "Recipes" on a 320pt-wide phone
-                        borderRadius: BAR_RADIUS - 6,
+                        borderRadius: BAR_RADIUS - BAR_INSET,
                         backgroundColor: focused ? palette.navy : 'transparent',
                       }}
                     >
@@ -160,7 +162,7 @@ export function FloatingTabBar({
                 style={{
                   flex: 1,
                   flexDirection: 'row',
-                  padding: 6,
+                  padding: BAR_INSET,
                   gap: 2,
                   backgroundColor: glass ? 'transparent' : `rgba(255, 255, 255, ${TAB_BAR_FROST})`,
                 }}
@@ -191,7 +193,7 @@ export function FloatingTabBar({
                         gap: 3,
                         paddingVertical: 4,
                         paddingHorizontal: 2, // room for "Recipes" on a 320pt-wide phone
-                        borderRadius: BAR_RADIUS - 6,
+                        borderRadius: BAR_RADIUS - BAR_INSET,
                         backgroundColor: focused ? palette.navy : 'transparent',
                       }}
                     >
