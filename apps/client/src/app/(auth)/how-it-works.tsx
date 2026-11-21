@@ -14,6 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Icon } from '@/components/Icon';
 import { PressableScale } from '@/components/PressableScale';
 import { Button } from '@/components/ui';
+import { FitStage } from '@/features/welcome/FitStage';
 import { OnboardingMock } from '@/features/welcome/OnboardingMocks';
 import { STORY } from '@/features/welcome/story';
 import { hero } from '@/theme/tokens';
@@ -30,7 +31,8 @@ import { useTheme } from '@/theme/useTheme';
 export default function HowItWorksScreen() {
   const t = useTheme();
   const scroller = useRef<ScrollViewInstance>(null);
-  const [width, setWidth] = useState(0);
+  const [size, setSize] = useState({ width: 0, height: 0 });
+  const width = size.width;
   const [page, setPage] = useState(0);
   const last = page === STORY.length - 1;
 
@@ -82,7 +84,7 @@ export default function HowItWorksScreen() {
         showsHorizontalScrollIndicator={false}
         onScroll={onScroll}
         scrollEventThrottle={16}
-        onLayout={(e) => setWidth(e.nativeEvent.layout.width)}
+        onLayout={(e) => setSize(e.nativeEvent.layout)}
         style={{ flex: 1 }}
       >
         {width
@@ -94,31 +96,25 @@ export default function HowItWorksScreen() {
                   // Only the page on screen is read out; the others are off to the side.
                   aria-hidden={!active}
                   importantForAccessibility={active ? 'auto' : 'no-hide-descendants'}
-                  style={{ width }}
+                  // A sideways pager doesn't stretch its pages, so each gets the full height.
+                  style={{ width, height: size.height }}
                 >
                   <ScrollView
+                    // Grows to the page; the picture shrinks so the words always fit.
                     contentContainerStyle={{
+                      flexGrow: 1,
                       paddingHorizontal: t.space.lg,
                       paddingTop: t.space.xs,
+                      paddingBottom: t.space.md,
                       gap: t.space.xl,
                       width: '100%',
                       maxWidth: 520,
                       alignSelf: 'center',
                     }}
                   >
-                    <View
-                      aria-hidden
-                      importantForAccessibility="no-hide-descendants"
-                      style={{
-                        backgroundColor: t.colors.background,
-                        borderRadius: 32,
-                        padding: t.space.lg,
-                        minHeight: 360,
-                        justifyContent: 'center',
-                      }}
-                    >
+                    <FitStage>
                       <OnboardingMock story={story.key} active={active} />
-                    </View>
+                    </FitStage>
                     <View style={{ gap: t.space.sm, paddingHorizontal: t.space.md }}>
                       <Text
                         accessibilityRole="header"

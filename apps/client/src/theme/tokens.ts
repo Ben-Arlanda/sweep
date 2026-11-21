@@ -272,13 +272,11 @@ export const stockColors: Record<'light' | 'dark', Record<StockName, StockColors
 };
 
 /**
- * The welcome screen: the app's own light page with a soft lime glow in the top corner,
- * navy ink text and the lime highlight on the promise.
+ * The welcome screen (onboarding direction A, "Clean Slate"): a plain white page, navy
+ * ink text and the lime highlight on the promise.
  */
 export const hero = {
-  background: palette.page,
-  /** A pale lime light, top right. Text sits below it on the plain page. */
-  glow: 'radial-gradient(circle at 95% 8%, rgba(216, 242, 60, 0.45) 0%, rgba(216, 242, 60, 0) 38%)',
+  background: palette.white,
   text: palette.ink,
   textMuted: palette.ink,
   highlight: palette.lime,

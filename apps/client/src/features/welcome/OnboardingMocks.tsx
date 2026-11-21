@@ -482,13 +482,16 @@ const SOURCES: { icon: LucideIcon; title: string; caption: string }[] = [
   { icon: Pencil, title: 'Type it in', caption: 'Start from a blank recipe' },
 ];
 
+// About the width of "quick vegetarian dinner", so the cursor sits right after it.
+const TYPED_WIDTH = 172;
+
 function RecipesMock({ p }: { p: Loop }) {
   const t = useTheme();
   // The search types itself out, holds, then clears.
   const typed = useAnimatedStyle(() => {
     const v = p.get();
     const r = v < 0.08 ? 0 : v < 0.48 ? (v - 0.08) / 0.4 : v < 0.9 ? 1 : 0;
-    return { maxWidth: r * 200 };
+    return { maxWidth: r * TYPED_WIDTH };
   });
   const caret = useAnimatedStyle(() => ({ opacity: Math.floor(p.get() * 12) % 2 === 0 ? 1 : 0 }));
   return (
@@ -507,7 +510,12 @@ function RecipesMock({ p }: { p: Loop }) {
         <Animated.View style={[{ overflow: 'hidden' }, typed]}>
           <Text
             numberOfLines={1}
-            style={{ fontFamily: t.fonts.body, fontSize: 15, color: t.colors.text, width: 200 }}
+            style={{
+              fontFamily: t.fonts.body,
+              fontSize: 15,
+              color: t.colors.text,
+              width: TYPED_WIDTH,
+            }}
           >
             quick vegetarian dinner
           </Text>
@@ -882,5 +890,57 @@ function PartTile({
         {caption}
       </Label>
     </Animated.View>
+  );
+}
+
+// ---------- Welcome ----------
+
+/** The welcome picture is drawn at this width; the panel scales it to the phone. */
+export const WELCOME_SCENE_WIDTH = 330;
+
+/** The welcome picture: tonight's idea on a tilted card, with Sweep's chef beside it. */
+export function WelcomeScene({ active }: { active: boolean }) {
+  const p = useLoop(active);
+  const cardFloat = useAnimatedStyle(() => ({
+    transform: [{ translateY: Math.sin(p.get() * Math.PI * 2) * 6 }, { rotate: '4deg' }],
+  }));
+  const chefFloat = useAnimatedStyle(() => ({
+    transform: [{ translateY: Math.sin(p.get() * Math.PI * 2 + Math.PI) * 6 }],
+  }));
+  return (
+    <View aria-hidden style={{ width: WELCOME_SCENE_WIDTH, height: 330 }}>
+      <Animated.View style={[{ position: 'absolute', right: 6, top: 14, width: 220 }, cardFloat]}>
+        <Card style={{ padding: 10, gap: 8 }}>
+          <Photo uri={PHOTOS.dhalCurry} height={132} />
+          <View style={{ paddingHorizontal: 4, gap: 7 }}>
+            <SuggestedPill />
+            <Label>Sri Lankan dhal curry</Label>
+            <Show p={p} start={0.12}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                <Tick size={20} />
+                <Label muted size={13}>
+                  Uses 7 kitchen items
+                </Label>
+              </View>
+            </Show>
+            <Show p={p} start={0.22}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                <Tick size={20} />
+                <Label muted size={13}>
+                  Nothing to buy
+                </Label>
+              </View>
+            </Show>
+          </View>
+        </Card>
+      </Animated.View>
+      <Animated.View style={[{ position: 'absolute', left: 0, bottom: 0 }, chefFloat]}>
+        <Image
+          source={require('../../../assets/images/welcome-chef.webp')}
+          style={{ width: 150, height: 146 }}
+          contentFit="contain"
+        />
+      </Animated.View>
+    </View>
   );
 }
