@@ -1,7 +1,7 @@
 /**
  * Why Sweep won't plan one of "Your recipes". The server sends each reason as
- * "soy sauce (gluten free)" or "satay sauce (couldn't check)": the line, then which
- * Dietary Rule it breaks, or that Sweep can't tell (Rules fail closed).
+ * "andouille sausage (vegetarian)" or "mushrooms (excluded)": the food, then which
+ * Dietary Rule it breaks. A new food is judged by its words (ADR 0032).
  */
 export function ruleBreakText(breaks: string[]): string | null {
   if (breaks.length === 0) return null;

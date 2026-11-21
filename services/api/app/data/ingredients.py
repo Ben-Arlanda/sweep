@@ -101,7 +101,7 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
     SeedIngredient("ground cinnamon", "spices", "g", None, True, ("cinnamon",)),
     # Found by the Kitchen Photo eval (ADR 0023): Staples, so they don't go Unknown.
     SeedIngredient("celery salt", "spices", "g", None, True, ()),
-    SeedIngredient("cayenne pepper", "spices", "g", None, True, ("cayenne",)),
+    SeedIngredient("cayenne pepper", "spices", "g", None, True, ("cayenne", "cayenne powder")),
     SeedIngredient("dried sage", "spices", "g", None, True, ("ground sage", "rubbed sage")),
     SeedIngredient("stock cubes", "pantry", "count", None, True, ("bouillon cubes", "stock cube")),
     # Pantry, tracked: decides whether a meal is possible.
@@ -125,7 +125,12 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
         ),
     ),
     SeedIngredient(
-        "rice", "pantry", "g", D("0.85"), False, ("white rice", "jasmine rice", "basmati rice")
+        "rice",
+        "pantry",
+        "g",
+        D("0.85"),
+        False,
+        ("white rice", "jasmine rice", "basmati rice", "long grain rice", "long-grain rice"),
     ),
     SeedIngredient("rolled oats", "pantry", "g", D("0.41"), False, ("oats", "porridge oats")),
     SeedIngredient(

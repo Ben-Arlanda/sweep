@@ -1326,6 +1326,8 @@ export interface components {
             parse_method: components["schemas"]["ParseMethod"];
             /** Replaces */
             replaces?: string | null;
+            /** New Ingredient */
+            new_ingredient?: string | null;
             /** Check */
             check: boolean;
         };
@@ -1473,7 +1475,7 @@ export interface components {
         /**
          * ImportedRecipeOut
          * @description One of "Your recipes". `rule_breaks` empty = plannable; otherwise why the Dietary
-         *     Rules hide it from search and plans: "satay sauce (couldn't check)".
+         *     Rules hide it from search and plans: "andouille sausage (vegetarian)".
          */
         ImportedRecipeOut: {
             /**
@@ -1990,6 +1992,8 @@ export interface components {
             parse_method: components["schemas"]["ParseMethod"];
             /** Replaces */
             replaces?: string | null;
+            /** New Ingredient */
+            new_ingredient?: string | null;
         };
         /**
          * RecipeKind

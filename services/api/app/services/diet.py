@@ -4,9 +4,11 @@ Two places use them (CONTEXT.md, plan §7):
 - search: recipes that break a Rule are filtered out in SQL, so the agent never sees them
 - validate: every Planned Meal is checked again here before a Proposal is shown
 
-Fails closed: when any Rule is set, a line we can't check counts as breaking it. That's
-a line we couldn't match ("1 jar mystery sauce"), or one linked to a Household
-Ingredient: a Member made "satay sauce", and Sweep has no idea what's in it.
+Starters are checked against their recorded contents (data/diet.py). A Household
+Ingredient is judged by the words in its name (data/diet_words.py, ADR 0032): held back
+when it likely breaks a Rule ("andouille sausage"), "check the label" when it depends on
+the brand ("satay sauce"), otherwise it passes. An excluded food also catches names that
+contain it ("no mushrooms": shiitake mushrooms).
 """
 
 import uuid
@@ -18,6 +20,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import errors
 from app.data.diet import CHECK_LABEL, CONTAINS, DIET_EXCLUDES, Contains, Diet
+from app.data.diet_words import judge, names_food
 from app.models import (
     HouseholdDietaryRules,
     HouseholdExcludedIngredient,
@@ -33,10 +36,11 @@ from app.services import ingredients
 class DietaryRules:
     diets: frozenset[Diet] = frozenset()
     excluded_ingredient_ids: frozenset[uuid.UUID] = frozenset()
+    excluded_names: frozenset[str] = frozenset()  # their names, to catch "shiitake mushrooms"
 
     @property
     def active(self) -> bool:
-        return bool(self.diets or self.excluded_ingredient_ids)
+        return bool(self.diets or self.excluded_ingredient_ids or self.excluded_names)
 
 
 @dataclass(frozen=True)
@@ -73,35 +77,44 @@ def check_lines(lines: Iterable[RecipeIngredient], rules: DietaryRules) -> RuleC
             if line.needs_review:  # unlinked but not flagged = water, which is fine
                 check.breaks.append(f"{line.raw_text} (couldn't check)")
             continue
-        if ingredient.id in rules.excluded_ingredient_ids:
+        if is_excluded(ingredient, rules):
             check.breaks.append(f"{ingredient.name} (excluded)")
             continue
-        if ingredient.is_household_ingredient:  # only Imported Recipes link to these
-            check.breaks.append(f"{ingredient.name} (couldn't check)")
-            continue
-        broken = _diets_broken(CONTAINS.get(ingredient.name, frozenset()), rules.diets)
+        likely, label = contents(ingredient)
+        broken = _diets_broken(likely, rules.diets)
         check.breaks.extend(f"{ingredient.name} ({_label(d)})" for d in broken)
-        maybe = _diets_broken(CHECK_LABEL.get(ingredient.name, frozenset()), rules.diets)
+        maybe = _diets_broken(label, rules.diets)
         check.check_label.extend(f"{ingredient.name} ({_label(d)})" for d in maybe)
     return check
 
 
-def banned_names(diets: Iterable[Diet]) -> set[str]:
-    """Ingredient names that break at least one of these diets."""
-    excluded: set[Contains] = set().union(*(DIET_EXCLUDES[d] for d in diets))
-    return {name for name, flags in CONTAINS.items() if flags & excluded}
+def contents(ingredient: Ingredient) -> tuple[frozenset[Contains], frozenset[Contains]]:
+    """(what it contains, what depends on the brand): recorded for starters, read from
+    the name for Household Ingredients (only Imported Recipes link to those)."""
+    if ingredient.is_household_ingredient:
+        return judge(ingredient.name)
+    return CONTAINS.get(ingredient.name, frozenset()), CHECK_LABEL.get(ingredient.name, frozenset())
 
 
-async def banned_ingredient_ids(session: AsyncSession, rules: DietaryRules) -> set[uuid.UUID]:
-    """Every Ingredient a recipe must not use under these Rules (for the SQL filter)."""
-    ids = set(rules.excluded_ingredient_ids)
-    names = banned_names(rules.diets)
-    if names:
-        found = await session.execute(
-            select(Ingredient.id).where(Ingredient.name.in_(names), ingredients.STARTERS)
-        )
-        ids.update(found.scalars())
-    return ids
+def is_excluded(ingredient: Ingredient, rules: DietaryRules) -> bool:
+    return ingredient.id in rules.excluded_ingredient_ids or any(
+        names_food(ingredient.name, food) for food in rules.excluded_names
+    )
+
+
+async def banned_ingredient_ids(
+    session: AsyncSession, household_id: uuid.UUID, rules: DietaryRules
+) -> set[uuid.UUID]:
+    """Every Ingredient this Household's recipes must not use under these Rules (for the
+    SQL filter): the same answer check_lines gives, worked out over the whole list."""
+    if not rules.active:
+        return set()
+    visible = await session.execute(select(Ingredient).where(ingredients.visible_to(household_id)))
+    return {
+        i.id
+        for i in visible.scalars()
+        if is_excluded(i, rules) or _diets_broken(contents(i)[0], rules.diets)
+    }
 
 
 # --- Storage ------------------------------------------------------------------------
@@ -115,7 +128,9 @@ async def get_rules(session: AsyncSession, household_id: uuid.UUID) -> DietaryRu
         )
     )
     diets = frozenset(Diet(d) for d in row.diets) if row else frozenset()
-    return DietaryRules(diets, frozenset(excluded.scalars()))
+    ids = frozenset(excluded.scalars())
+    names = await session.execute(select(Ingredient.name).where(Ingredient.id.in_(ids)))
+    return DietaryRules(diets, ids, frozenset(names.scalars()))
 
 
 async def set_rules(

@@ -43,8 +43,8 @@ const MARK_TEXT = { check: 'Check', not_linked: 'Not linked' } as const;
 /**
  * Where every new recipe is checked before it's saved, and where a saved one is edited.
  * The marks say where to look ("Check": Sweep read it from a photo, or couldn't find it
- * word for word in the text; "Not linked": Sweep doesn't know the Ingredient yet). They
- * never block Save: a person decides.
+ * word for word in the text; "Not linked": a line too long to be one food). A food Sweep
+ * doesn't know shows "New: …" and is added on Save (ADR 0032). Marks never block Save.
  */
 export function ReviewScreen({
   start,
@@ -299,7 +299,10 @@ function LineRow({
 }) {
   const t = useTheme();
   const marks = lineMarks(line);
-  const linked = line.ingredient ? displayName(line.ingredient.name) : null;
+  const linked = line.ingredient
+    ? [line.ingredient, ...line.alsoIngredients].map((i) => displayName(i.name)).join(' + ')
+    : null;
+  const added = line.newIngredient ? `New: ${displayName(line.newIngredient)}` : null;
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.sm }}>
       <Pressable
@@ -308,6 +311,7 @@ function LineRow({
           line.rawText,
           ...marks.map((m) => MARK_TEXT[m]),
           linked ? `linked to ${linked}` : null,
+          added,
           'Change the Ingredient',
         ]
           .filter(Boolean)
@@ -329,9 +333,9 @@ function LineRow({
               Reading…
             </Text>
           ) : null}
-          {linked ? (
+          {linked || added ? (
             <Text variant="caption" muted>
-              {linked}
+              {linked ?? added}
             </Text>
           ) : null}
           {marks.map((m) => (

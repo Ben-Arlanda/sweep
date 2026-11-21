@@ -12,6 +12,7 @@ from app.services.ingredient_lines import (
     LineReading,
     normalise_lines,
     parse_line,
+    parse_lines,
 )
 
 D = Decimal
@@ -141,8 +142,8 @@ def test_converts_to_the_ingredients_own_unit_only_when_honest(
         # Hyphens, frozen, "X or Y", loose measures
         ("60 ml extra-virgin olive oil", "olive oil", D("60"), "ml", None),
         ("½ frozen banana", "bananas", D("0.5"), None, None),
-        ("1 cup frozen spinach or kale", "baby spinach", D("1"), "cup", None),
-        ("3 cups chicken or vegetable stock", "chicken stock", D("3"), "cup", None),
+        ("1 cup frozen spinach or kale", "baby spinach", D("1"), "cup", "or kale"),
+        ("3 cups chicken or vegetable stock", "chicken stock", D("3"), "cup", "or vegetable stock"),
         ("large handful parsley leaves chopped", "parsley", None, None, "chopped"),
         ("2 tbsp basil leaves", "basil", D("2"), "tbsp", None),
         # New starters and aliases (2026-11-16)
@@ -196,6 +197,62 @@ def test_reads_lines_the_way_recipe_websites_write_them(
     assert not line.needs_review
 
 
+# An imported Jambalaya (RecipeTin Eats, 2026-11-21): 7 of 22 lines were Not linked.
+@pytest.mark.parametrize(
+    ("text", "ingredient", "quantity", "unit", "note"),
+    [
+        # Nested notes left a stray ")" in the name; "or" names the other choice
+        (
+            '200g (7oz) andouille or smoked sausage (, sliced 0.5cm / 1/5" thick (Note 1))',
+            "smoked sausage",
+            D("200"),
+            "g",
+            'or andouille sausage; 7oz; sliced 0.5cm / 1/5" thick; Note 1',
+        ),
+        (
+            '2 celery ribs (, cut into 1.5 cm / 0.5" pieces)',
+            "celery",
+            D("2"),
+            "stalk",
+            'cut into 1.5 cm / 0.5" pieces',
+        ),
+        (
+            "1.25 cups long grain rice (, uncooked (Note 2))",
+            "rice",
+            D("1.25"),
+            "cup",
+            "uncooked; Note 2",
+        ),
+        # "broth / stock" are both chicken stock, so no "or"; "low-sodium" is worth keeping
+        (
+            "2.5 cups (625ml) low-sodium chicken broth / stock ((Note 3))",
+            "chicken stock",
+            D("2.5"),
+            "cup",
+            "low-sodium; 625ml; Note 3",
+        ),
+        ("4 tsp sweet paprika", "paprika", D("4"), "tsp", None),
+        ("1 tsp onion powder", "onion powder", D("1"), "tsp", None),
+        (
+            "1/2 tsp cayenne powder ((adjust spice to taste))",
+            "cayenne pepper",
+            D("0.5"),
+            "tsp",
+            "adjust spice to taste",
+        ),
+        # Brackets someone forgot to close
+        ("1 cup rice (Note 1", "rice", D("1"), "cup", "Note 1"),
+    ],
+)
+def test_reads_the_jambalaya_lines_it_used_to_miss(
+    text: str, ingredient: str, quantity: Decimal, unit: str, note: str
+) -> None:
+    line = parse_line(text, INDEX)
+    assert line.ingredient is not None and line.ingredient.name == ingredient, text
+    assert (line.quantity, line.unit, line.note) == (quantity, unit, note)
+    assert "(" not in line.name and ")" not in line.name
+
+
 def test_the_new_rules_only_run_when_the_old_ones_found_nothing() -> None:
     # "frozen peas" is a starter: stripping "frozen" first would have lost it.
     assert parse_line("1 cup frozen peas", INDEX).ingredient.name == "frozen peas"  # type: ignore[union-attr]
@@ -211,6 +268,65 @@ def test_the_new_rules_only_run_when_the_old_ones_found_nothing() -> None:
     assert steamed.prepared
     # Still no guessing: an unknown thing stays unknown.
     assert parse_line("2 tbsp finely chopped unobtainium", INDEX).needs_review
+
+
+@pytest.mark.parametrize(
+    ("text", "name", "note"),
+    [
+        ("200 g andouille sausage, sliced", "andouille sausage", "sliced"),
+        ("2 tbsp finely chopped zorblax", "zorblax", "finely chopped"),
+        ("1 cup low-sodium glorp stock (Note 1)", "glorp stock", "low-sodium; Note 1"),
+        ("1 zorblax finely sliced", "zorblax", "finely sliced"),
+        ("1 cup zorblax or glorp", "zorblax", "or glorp"),
+    ],
+)
+def test_a_line_it_cannot_match_still_gets_a_clean_name(text: str, name: str, note: str) -> None:
+    # The name a new Household Ingredient will get (ADR 0032), so no "finely chopped zorblax"
+    line = parse_line(text, INDEX)
+    assert (line.ingredient, line.needs_review) == (None, True)
+    assert (line.name, line.note) == (name, note)
+
+
+# ADR 0032: "salt and pepper" is two things to have, not one new food
+@pytest.mark.parametrize(
+    ("text", "expected"),
+    [
+        ("salt and pepper", [("salt", None, None, None), ("black pepper", None, None, None)]),
+        (
+            "Salt and pepper, to taste",
+            [("salt", None, None, "to taste"), ("black pepper", None, None, "to taste")],
+        ),
+        # One amount for both: it can't be given to either
+        (
+            "2 tbsp salt and pepper",
+            [("salt", None, None, None), ("black pepper", None, None, None)],
+        ),
+        # Each has its own amount
+        (
+            "1 onion and 2 carrots, diced",
+            [("onion", D("1"), None, "diced"), ("carrots", D("2"), None, "diced")],
+        ),
+        (
+            "salt and freshly ground black pepper",
+            [("salt", None, None, None), ("black pepper", None, None, "freshly")],
+        ),
+    ],
+)
+def test_two_known_foods_joined_by_and_are_two_lines(
+    text: str, expected: list[tuple[str, Decimal | None, str | None, str | None]]
+) -> None:
+    lines = parse_lines(text, INDEX)
+    got = [(x.ingredient.name if x.ingredient else None, x.quantity, x.unit, x.note) for x in lines]
+    assert got == expected
+    assert all(x.raw_text == text for x in lines)  # both keep what was written
+
+
+@pytest.mark.parametrize(
+    "text",
+    ["salt and vinegar chips", "2 eggs", "1 zorblax and 1 onion", "salt (and pepper)"],
+)
+def test_and_only_splits_when_both_sides_are_known(text: str) -> None:
+    assert parse_lines(text, INDEX) == [parse_line(text, INDEX)]
 
 
 def test_flags_lines_it_cannot_match_instead_of_guessing() -> None:

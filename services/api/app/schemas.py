@@ -389,7 +389,7 @@ class RecipeSummaryOut(BaseModel):
 
 class ImportedRecipeOut(RecipeSummaryOut):
     """One of "Your recipes". `rule_breaks` empty = plannable; otherwise why the Dietary
-    Rules hide it from search and plans: "satay sauce (couldn't check)"."""
+    Rules hide it from search and plans: "andouille sausage (vegetarian)"."""
 
     rule_breaks: list[str]
 
@@ -421,6 +421,7 @@ class RecipeIngredientOut(BaseModel):
     needs_review: bool
     parse_method: ParseMethod  # "llm" = the review screen's "Check" mark
     replaces: str | None = None  # Adaptations: the parent's line this Swap replaced
+    new_ingredient: str | None = None  # review screen: "New: andouille sausage" on Save
 
 
 class RecipeStageOut(BaseModel):

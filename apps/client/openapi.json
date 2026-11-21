@@ -4692,6 +4692,17 @@
             ],
             "title": "Replaces"
           },
+          "new_ingredient": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "New Ingredient"
+          },
           "check": {
             "type": "boolean",
             "title": "Check"
@@ -5260,7 +5271,7 @@
           "rule_breaks"
         ],
         "title": "ImportedRecipeOut",
-        "description": "One of \"Your recipes\". `rule_breaks` empty = plannable; otherwise why the Dietary\nRules hide it from search and plans: \"satay sauce (couldn't check)\"."
+        "description": "One of \"Your recipes\". `rule_breaks` empty = plannable; otherwise why the Dietary\nRules hide it from search and plans: \"andouille sausage (vegetarian)\"."
       },
       "InKitchenStapleOut": {
         "properties": {
@@ -6631,6 +6642,17 @@
               }
             ],
             "title": "Replaces"
+          },
+          "new_ingredient": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "New Ingredient"
           }
         },
         "type": "object",

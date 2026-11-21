@@ -219,8 +219,11 @@ async def _metered_reader(
 
 def _draft_out(draft: Draft) -> ImportDraftOut:
     lines = [
-        DraftLineOut(**RecipeIngredientOut.model_validate(line).model_dump(), check=check)
-        for line, check in zip(draft.lines, draft.check, strict=True)
+        DraftLineOut(
+            **RecipeIngredientOut.model_validate(line).model_dump(),
+            check=draft.check[line.from_line],  # per line as written
+        )
+        for line in draft.lines
     ]
     return ImportDraftOut(
         title=draft.title,

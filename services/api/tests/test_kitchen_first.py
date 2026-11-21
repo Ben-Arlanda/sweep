@@ -17,17 +17,24 @@ from tests.helpers import context_json, create_household, idem
 from tests.test_agent import say, start
 from tests.test_dietary_rules import SALAD
 from tests.test_household_ingredients import add, tick
-from tests.test_recipes import CURRY, PASTA, PAVLOVA, STIR_FRY, seed
+from tests.test_recipes import CURRY, PASTA, PAVLOVA, STIR_FRY
 
 pytestmark = pytest.mark.anyio
 
-FINGER_LIME_CHICKEN = seed(
-    "finger-lime-chicken",
-    "Finger lime chicken",
-    25,
-    "australian",
-    ["500 g chicken thigh", "2 finger limes", "1 onion, diced"],
-)
+# Imported: Save makes "finger lime" a Household Ingredient (ADR 0032)
+FINGER_LIME_CHICKEN = {
+    "title": "Finger lime chicken",
+    "servings": 4,
+    "course": "main",
+    "lines": [{"raw_text": t} for t in ("500 g chicken thigh", "2 finger limes", "1 onion, diced")],
+}
+
+
+async def import_finger_lime_chicken(client: httpx.AsyncClient, issuer: FakeIssuer) -> None:
+    saved = await client.post(
+        "/recipes/imported", json=FINGER_LIME_CHICKEN, headers=issuer.headers("ana") | idem()
+    )
+    assert saved.status_code == 201, saved.text
 
 
 async def ingredient_ids(db: Engine, slug: str) -> list[str]:
@@ -154,23 +161,25 @@ async def test_a_taste_query_finds_candidates_then_the_kitchen_orders_them(
 async def test_a_household_ingredient_in_the_kitchen_counts(
     client_for: ClientFor, fake_issuer: FakeIssuer, load: Loader
 ) -> None:
-    await load([CURRY, FINGER_LIME_CHICKEN])
+    await load([CURRY])
 
     async def arrange(client: httpx.AsyncClient) -> None:
+        await import_finger_lime_chicken(client, fake_issuer)
         await tick(client, fake_issuer, "ana", await add(client, fake_issuer, "ana", "Finger lime"))
 
     found = await run(client_for, fake_issuer, "recipes_from_kitchen", {}, arrange)
 
     lime = next(r for r in found if r["title"] == "Finger lime chicken")
-    assert "finger lime" in lime["have"]
+    assert "finger limes" in lime["have"]  # the recipe's spelling; Kitchen's "Finger lime" found it
 
 
 async def test_must_use_finds_recipes_naming_a_household_ingredient(
     client_for: ClientFor, fake_issuer: FakeIssuer, load: Loader
 ) -> None:
-    await load([CURRY, FINGER_LIME_CHICKEN])
+    await load([CURRY])
 
     async def arrange(client: httpx.AsyncClient) -> None:
+        await import_finger_lime_chicken(client, fake_issuer)
         await add(client, fake_issuer, "ana", "Finger lime")  # now a Household Ingredient
 
     found = await run(

@@ -7,7 +7,7 @@ import {
   formFromRecipe,
   hasChanges,
   lineMarks,
-  linkLine,
+  linkLine, readLines,
   removeLine,
   saveProblems,
   searchGuess,
@@ -128,6 +128,26 @@ describe('lineMarks', () => {
 
   it('linking a line by hand clears both marks: a person has looked at it', () => {
     expect(lineMarks(linkLine(saffron, SHALLOT))).toEqual([]);
+  });
+  // ADR 0032: Save adds a food Sweep doesn't know, so it's "New", not Not linked
+  const [andouille] = formFromDraft({
+    ...DRAFT,
+    lines: [
+      line('200 g andouille sausage', {
+        ingredient: null,
+        needs_review: true,
+        new_ingredient: 'andouille sausage',
+      }),
+    ],
+  }).lines;
+
+  it('a food Save will add is New, not Not linked', () => {
+    expect(andouille.newIngredient).toBe('andouille sausage');
+    expect(lineMarks(andouille)).toEqual([]);
+  });
+
+  it('linking a New line by hand means nothing new is added', () => {
+    expect(linkLine(andouille, ONION).newIngredient).toBeNull();
   });
 });
 
@@ -265,5 +285,55 @@ describe('searchGuess', () => {
     ['3', '3'], // nothing left: keep what was written
   ])('%j → %j', (line, guess) => {
     expect(searchGuess(line)).toBe(guess);
+  });
+});
+
+// ADR 0032: the server reads "salt and pepper" as two rows; the screen shows the one line
+// the Member wrote, so saving sends it once and it isn't split twice.
+describe('a line Sweep read as two foods', () => {
+  const SALT = { id: 'i-salt', name: 'salt' } as Ingredient;
+  const PEPPER = { id: 'i-pepper', name: 'black pepper' } as Ingredient;
+  const split = [
+    line('salt and pepper', { ingredient: SALT }),
+    line('salt and pepper', { ingredient: PEPPER, check: true }),
+    line('1 egg'),
+    line('1 egg'), // written twice: two lines, not one
+  ];
+
+  it('is one line on the review screen, showing both', () => {
+    const form = formFromDraft({ ...DRAFT, lines: split });
+    expect(form.lines.map((l) => l.rawText)).toEqual(['salt and pepper', '1 egg', '1 egg']);
+    expect(form.lines[0].alsoIngredients).toEqual([PEPPER]);
+    expect(form.lines[0].check).toBe(true);
+    expect(toImportedRecipe({ ...form, course: 'main' }).lines).toHaveLength(3);
+  });
+
+  it('is one line when editing a saved recipe too', () => {
+    const recipe = {
+      title: 'Eggs',
+      summary: '',
+      course: 'main',
+      servings: 1,
+      total_minutes: null,
+      cuisine: null,
+      method: null,
+      source_url: null,
+      ingredients: split.slice(0, 2),
+    } as unknown as Recipe;
+    expect(formFromRecipe(recipe).lines).toHaveLength(1);
+  });
+
+  it('a line just added comes back as one line', () => {
+    const form = addLine(addLine(emptyForm(), 'salt and pepper'), '1 onion');
+    const read = readLines(form, [...split.slice(0, 2), line('1 onion')]);
+    expect(read.lines.map((l) => [l.rawText, l.alsoIngredients.length])).toEqual([
+      ['salt and pepper', 1],
+      ['1 onion', 0],
+    ]);
+  });
+
+  it('linking it by hand makes it one food', () => {
+    const [both] = formFromDraft({ ...DRAFT, lines: split }).lines;
+    expect(linkLine(both, ONION).alsoIngredients).toEqual([]);
   });
 });

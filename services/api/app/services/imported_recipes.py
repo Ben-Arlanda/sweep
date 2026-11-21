@@ -6,8 +6,8 @@ hand over plain lines and fields, and they're checked and stored the same way.
 
 Lines are matched with the Household's view of the Ingredients (its links, then the
 starters, then its own), not the starters-only index Seed Recipes use (ADR 0012). A
-line is never given a new Ingredient here: an unmatched line stays "Not linked", and
-the Dietary Rules treat it as "couldn't check" (fail closed).
+line nothing matches gets a new Household Ingredient on Save, named by the parser's
+cleaned name; the review screen shows it first as "New: andouille sausage" (ADR 0032).
 """
 
 import uuid
@@ -29,6 +29,7 @@ from app.services.ingredient_lines import (
     ParsedLine,
     index_from_db,
     parse_line,
+    parse_lines,
 )
 from app.services.recipe_photos import PhotoStore
 
@@ -77,22 +78,58 @@ async def read_lines(
     household_id: uuid.UUID,
     lines: Sequence[ImportedLineIn],
     index: IngredientIndex | None = None,
+    *,
+    create: bool = False,
 ) -> list[RecipeIngredient]:
     """Each line read and matched, as unsaved rows: the review screen shows them, Save
-    stores them. A Member's own choice of Ingredient is kept as theirs."""
+    stores them. A Member's own choice of Ingredient is kept as theirs.
+
+    A line nothing matches: with `create` (Save), a new Household Ingredient, in the
+    caller's transaction; without (the review screen), just the name it would get."""
     index = index or await index_from_db(session)
-    out = []
-    for position, line in enumerate(lines):
-        parsed = parse_line(line.raw_text, index)
+    out: list[RecipeIngredient] = []
+    for written, line in enumerate(lines):
         if line.ingredient_id is not None:
             chosen = await ingredients.get(session, household_id, line.ingredient_id)
             if chosen is None:
                 raise errors.NotFound("Ingredient not found")
-            out.append(_line(position, parsed, chosen, ParseMethod.MEMBER))
+            rows = [_line(len(out), parse_line(line.raw_text, index), chosen, ParseMethod.MEMBER)]
         else:
-            found = await _match(session, household_id, parsed)
-            out.append(_line(position, parsed, found, ParseMethod.RULE))
+            rows = []
+            for parsed in parse_lines(line.raw_text, index):
+                position = len(out) + len(rows)
+                found = await _match(session, household_id, parsed)
+                row = _line(position, parsed, found, ParseMethod.RULE)
+                if row.needs_review:
+                    row = await _new_food(session, household_id, position, parsed, row, create)
+                rows.append(row)
+        for row in rows:
+            row.from_line = written
+        out += rows
     return out
+
+
+async def _new_food(
+    session: AsyncSession,
+    household_id: uuid.UUID,
+    position: int,
+    parsed: ParsedLine,
+    row: RecipeIngredient,
+    create: bool,
+) -> RecipeIngredient:
+    name = ingredients.normalise(parsed.name)
+    if len(name) > ingredients.NAME_MAX:  # a sentence, not a food: the Member splits it
+        if create:
+            raise errors.InvalidInput(
+                f'"{parsed.raw_text[:40]}…" is too long to be one ingredient.'
+                " Shorten it, or split it into two lines."
+            )
+        return row
+    if not create:
+        row.new_ingredient = name
+        return row
+    added = await ingredients.resolve(session, household_id, name, create=True)
+    return _line(position, parsed, added, ParseMethod.RULE)
 
 
 def _fill(recipe: Recipe, body: ImportedRecipeIn) -> None:
@@ -106,7 +143,7 @@ def _fill(recipe: Recipe, body: ImportedRecipeIn) -> None:
 async def save(
     session: AsyncSession, ctx: MemberContext, body: ImportedRecipeIn, embedder: Embedder | None
 ) -> Recipe:
-    lines = await read_lines(session, ctx.household.id, body.lines)
+    lines = await read_lines(session, ctx.household.id, body.lines, create=True)
     recipe = Recipe(
         kind=RecipeKind.IMPORTED,
         household_id=ctx.household.id,
@@ -152,7 +189,7 @@ async def update(
 ) -> Recipe:
     """Replace the whole recipe (the review screen sends everything). Any Member may."""
     recipe = await _own(session, ctx.household.id, recipe_id)
-    lines = await read_lines(session, ctx.household.id, body.lines)
+    lines = await read_lines(session, ctx.household.id, body.lines, create=True)
     recipe.ingredients.clear()
     await session.flush()  # delete the old lines first: (recipe, position) is unique
     recipe.ingredients.extend(lines)

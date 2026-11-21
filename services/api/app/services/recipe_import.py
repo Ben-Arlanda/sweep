@@ -106,7 +106,7 @@ class Draft:
     course: Course
     cuisine: str | None
     lines: list[RecipeIngredient]  # read and matched, not saved
-    check: list[bool]  # per line: True = not found word for word in the text
+    check: list[bool]  # per line as written: True = not found word for word in the text
     method: list[str] | None
     more_recipes: bool
     usage: Usage | None  # for the daily token budget (step 7); None: no model was used
@@ -297,7 +297,7 @@ async def from_link(
         course=found.course,
         cuisine=found.cuisine,
         lines=lines,
-        check=[False] * len(lines),  # the site's own data, copied by code: nothing to check
+        check=[False] * len(found.ingredient_lines),  # the site's data, copied by code
         method=None,
         more_recipes=found.more_recipes,
         usage=None,

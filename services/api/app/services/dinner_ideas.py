@@ -102,18 +102,16 @@ async def by_taste(
 async def _filters(
     session: AsyncSession, hid: uuid.UUID, max_minutes: int | None, vegetarian: bool
 ) -> recipes.RecipeFilters:
-    """Mains within the Rules; `vegetarian` adds the diet for this search only, failing
-    closed like a Rule (a line we can't check leaves the recipe out)."""
+    """Mains within the Rules; `vegetarian` adds the diet for this search only, judged
+    the same way as a Rule (a new food by its words)."""
     filters = await recipes.filters_for(session, hid, max_minutes, course=Course.MAIN)
     if not vegetarian:
         return filters
     meat = await diet.banned_ingredient_ids(
-        session, diet.DietaryRules(frozenset({Diet.VEGETARIAN}))
+        session, hid, diet.DietaryRules(frozenset({Diet.VEGETARIAN}))
     )
     return replace(
-        filters,
-        exclude_ingredient_ids=sorted(set(filters.exclude_ingredient_ids) | meat),
-        exclude_uncheckable=True,
+        filters, exclude_ingredient_ids=sorted(set(filters.exclude_ingredient_ids) | meat)
     )
 
 

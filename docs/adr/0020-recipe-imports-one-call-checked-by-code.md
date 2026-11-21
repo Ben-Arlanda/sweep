@@ -1,6 +1,6 @@
 # 0020: Recipe imports: one Haiku call, checked by code
 
-Date: 2026-11-17. Status: accepted.
+Date: 2026-11-17. Status: accepted; unmatched lines amended by ADR 0032 (every line gets an Ingredient).
 
 ## Context
 

@@ -98,7 +98,7 @@ UNIT_WORDS: dict[str, str] = {
     **dict.fromkeys(("handful", "handfuls"), "handful"),
     **dict.fromkeys(("slice", "slices"), "slice"),
     **dict.fromkeys(("sprig", "sprigs", "strand", "strands"), "sprig"),  # "4 strands of coriander"
-    **dict.fromkeys(("stalk", "stalks"), "stalk"),
+    **dict.fromkeys(("stalk", "stalks", "rib", "ribs"), "stalk"),  # "2 ribs celery"
     **dict.fromkeys(("sheet", "sheets"), "sheet"),
     **dict.fromkeys(("rasher", "rashers"), "rasher"),
     **dict.fromkeys(("can", "cans", "tin", "tins"), "can"),
@@ -111,6 +111,7 @@ UNIT_WORDS: dict[str, str] = {
 TRAILING_MEASURES = {"clove": "clove", "cloves": "clove", "leaf": "leaf", "leaves": "leaf"}
 TRAILING_MEASURES |= {"sprig": "sprig", "sprigs": "sprig", "stalk": "stalk", "stalks": "stalk"}
 TRAILING_MEASURES |= {"sheet": "sheet", "sheets": "sheet"}  # "4 celery stalks", "6 nori sheets"
+TRAILING_MEASURES |= {"rib": "stalk", "ribs": "stalk"}  # "2 celery ribs"
 STORED_UNITS = sorted({*UNIT_WORDS.values(), *TRAILING_MEASURES.values()})
 # Words that describe the thing but aren't part of its name.
 DESCRIPTORS = {"large", "small", "medium", "fresh", "ripe", "boiling", "cold", "warm", "hot"}
@@ -137,6 +138,8 @@ LOOSE_WORDS |= {"frozen", "chilled", "mixed"}  # "mixed herbs" is found by the f
 # Describing words: "boneless chicken thighs", "toasted sesame seeds", "firm pears".
 LOOSE_WORDS |= {"boneless", "bone-in", "skinless", "raw", "toasted", "firm", "fine", "flaky"}
 LOOSE_WORDS |= {"thick", "stale", "day-old", "extra", "very", "plain", "dry"}
+# Like LOOSE_WORDS, but they change what you buy, so they go into the note.
+KEPT_WORDS = {"low-sodium", "reduced-sodium", "salt-reduced", "reduced-salt", "uncooked"}
 
 
 def core_name(text: str) -> str:
@@ -202,6 +205,29 @@ def _number(text: str) -> Decimal:
     return value.quantize(Decimal("0.001")).normalize() + 0
 
 
+def _take_brackets(text: str) -> tuple[str, list[str]]:
+    """Text outside brackets, and each bracket's text as a note, nested ones too:
+    "rice (, uncooked (Note 2))" → ("rice  ", ["uncooked", "Note 2"]). An unclosed
+    bracket runs to the end."""
+    outside: list[str] = []
+    notes: list[str] = []
+    open_: list[tuple[int, list[str]]] = []  # (its place in notes, its text so far)
+    for char in text:
+        if char == "(":
+            (open_[-1][1] if open_ else outside).append(" ")
+            notes.append("")  # keep its place, so notes stay in reading order
+            open_.append((len(notes) - 1, []))
+        elif char == ")" and open_:
+            place, chars = open_.pop()
+            notes[place] = "".join(chars)
+        else:
+            (open_[-1][1] if open_ else outside).append(char)
+    for place, chars in open_:
+        notes[place] = "".join(chars)
+    cleaned = (" ".join(n.split()).strip(" ,;") for n in notes)
+    return "".join(outside), [n for n in cleaned if n]
+
+
 def parse_line(text: str, index: IngredientIndex) -> ParsedLine:
     raw = text.strip()
     work = raw
@@ -209,8 +235,7 @@ def parse_line(text: str, index: IngredientIndex) -> ParsedLine:
         work = re.sub(rf"(\d){symbol}", rf"\1 {fraction}", work).replace(symbol, fraction)
     work = _IMPERIAL_TWIN.sub(r"\g<metric>", work)
 
-    notes = [n.strip() for n in re.findall(r"\(([^)]*)\)", work)]
-    work = re.sub(r"\([^)]*\)", " ", work)
+    work, notes = _take_brackets(work)
     head, _, after_comma = work.partition(",")
     if after_comma.strip():
         notes.insert(0, after_comma.strip())
@@ -252,13 +277,13 @@ def parse_line(text: str, index: IngredientIndex) -> ParsedLine:
         if len(words) > 1 and words[0] in PREPARED:
             ingredient = index.lookup(" ".join(words[1:]))
             prepared = ingredient is not None
-    if ingredient is None:
-        second = _second_look(head, index, can_take_unit=quantity is not None and unit is None)
-        if second is not None:
-            head, ingredient, extra_note, trailing_unit = second
-            unit = trailing_unit or unit
-            if extra_note:
-                notes.insert(0, extra_note)
+    if ingredient is None:  # matched or not, the name comes back cleaned (ADR 0032)
+        head, ingredient, extra_note, trailing_unit = _second_look(
+            head, index, can_take_unit=quantity is not None and unit is None
+        )
+        unit = trailing_unit or unit
+        if extra_note:
+            notes.insert(0, extra_note)
 
     return ParsedLine(
         raw_text=raw,
@@ -273,19 +298,56 @@ def parse_line(text: str, index: IngredientIndex) -> ParsedLine:
     )
 
 
+_AND = re.compile(r"\s+and\s+", re.IGNORECASE)
+
+
+def parse_lines(text: str, index: IngredientIndex) -> list[ParsedLine]:
+    """Like parse_line, but "salt and pepper" (two known foods, nothing matching the
+    whole) is two lines, both keeping what was written (ADR 0032). An amount before both
+    ("2 tbsp salt and pepper") is for the pair, so neither side gets it."""
+    whole = parse_line(text, index)
+    if not whole.needs_review:
+        return [whole]
+    raw = whole.raw_text
+    head = re.split(r"[,(]", raw, maxsplit=1)[0]
+    parts = _AND.split(head)
+    if len(parts) != 2:
+        return [whole]
+    left, right = (parse_line(part, index) for part in parts)
+    if left.ingredient is None or right.ingredient is None:
+        return [whole]
+    rest, tail_notes = _take_brackets(raw[len(head) :])
+    after_comma = rest.partition(",")[2].strip()
+    tail_notes = [n for n in [after_comma, *tail_notes] if n and n.lower() != "optional"]
+    shared = right.quantity is None
+    return [
+        replace(
+            side,
+            raw_text=raw,
+            quantity=None if shared else side.quantity,
+            unit=None if shared else side.unit,
+            note="; ".join(n for n in (side.note, *tail_notes) if n) or None,
+            optional=whole.optional,
+            prepared=side.prepared and not shared,
+        )
+        for side in (left, right)
+    ]
+
+
 def _clean_word(word: str) -> str:
     return word.lower().strip(".;:")
 
 
 def _second_look(
     head: str, index: IngredientIndex, *, can_take_unit: bool
-) -> tuple[str, KnownIngredient | None, str | None, str | None] | None:
+) -> tuple[str, KnownIngredient | None, str | None, str | None]:
     """Only for a line the first look couldn't match. Recipe websites write lines our
     rules never saw ("2 garlic cloves crushed", "1 cup frozen spinach or kale"), so try
     simpler readings of the name, still only exact names and aliases: no guessing.
 
-    Returns (name, Ingredient or None for something nobody shops for, note, unit from a
-    trailing measure), or None if nothing matched.
+    Returns (name, Ingredient or None, note, unit from a trailing measure). With no
+    Ingredient, the name is the cleaned first choice: what a new Household Ingredient
+    would be called.
     """
     words = head.split()
     leading: list[str] = []  # "finely grated parmesan": the preparation goes to the note
@@ -293,9 +355,10 @@ def _second_look(
         _clean_word(words[0]) in PREP_WORDS
         or _clean_word(words[0]) in LOOSE_WORDS
         or _clean_word(words[0]) in DESCRIPTORS
+        or _clean_word(words[0]) in KEPT_WORDS
     ):
         word = words.pop(0)
-        if _clean_word(word) in PREP_WORDS:
+        if _clean_word(word) in PREP_WORDS or _clean_word(word) in KEPT_WORDS:
             leading.append(word)
     unit = None  # "4 thick slices sourdough": the unit comes after a describing word
     if can_take_unit and len(words) > 1 and _clean_word(words[0]) in UNIT_WORDS:
@@ -310,28 +373,43 @@ def _second_look(
     name = " ".join(words).replace("-", " ")  # "extra-virgin" → "extra virgin"
     # "cooking salt / kosher salt" is a choice, like "or" (but never "1/2": letters only)
     name = re.sub(r"(?<=[^\W\d])\s*/\s*(?=[^\W\d])", " or ", name)
-    candidates = [name]
+    candidates: list[tuple[str, str | None]] = [(name, None)]  # (reading, the other choice)
     if " or " in name:  # "spinach or kale"; "chicken or vegetable stock" → chicken stock
         first, second = name.split(" or ", 1)
-        rest = second.split()
-        if len(first.split()) == 1 and len(rest) > 1:
-            candidates += [f"{first} {' '.join(rest[1:])}", second, first]
+        head_words, rest = first.split(), second.split()
+        if len(head_words) == 1 and len(rest) > 1:
+            shared = f"{first} {' '.join(rest[1:])}"
+            candidates += [(shared, second), (second, shared), (first, second)]
+        elif len(head_words) > 1 and len(rest) == 1:  # "broth or stock": one food, so no note
+            shared = " ".join([*head_words[:-1], second])
+            candidates += [(first, None), (shared, None), (second, None)]
         else:
-            candidates += [first, second]
+            candidates += [(first, second), (second, first)]
 
-    for candidate in candidates:
-        parts = candidate.split()
-        measure = TRAILING_MEASURES.get(_clean_word(parts[-1])) if len(parts) > 1 else None
-        if measure is not None:  # "garlic cloves" → garlic, in cloves (not bulbs)
-            found = index.lookup(" ".join(parts[:-1]))
-            if found is not None:
-                return " ".join(parts[:-1]), found, note, measure if can_take_unit else unit
-        found = index.lookup(candidate)
-        if found is not None:
-            return candidate, found, note, unit
-        if core_name(candidate) in NOT_SHOPPED:
+    for candidate, other in candidates:
+        found, cut, measure = _find(candidate, index)
+        if found is None and core_name(candidate) in NOT_SHOPPED:
             return candidate, None, note, unit
-    return None
+        if found is not None:
+            if other is not None and _find(other, index)[0] != found:
+                note = "; ".join(part for part in (f"or {other}", note) if part)
+            return cut, found, note, measure if (measure and can_take_unit) else unit
+    fallback, other = candidates[1] if len(candidates) > 1 else candidates[0]
+    if other is not None:
+        note = "; ".join(part for part in (f"or {other}", note) if part)
+    return fallback.strip(" ,;.") or head, None, note, unit
+
+
+def _find(name: str, index: IngredientIndex) -> tuple[KnownIngredient | None, str, str | None]:
+    """(Ingredient, its name without a trailing measure, that measure): "garlic cloves" →
+    garlic, in cloves (not bulbs)."""
+    parts = name.split()
+    measure = TRAILING_MEASURES.get(_clean_word(parts[-1])) if len(parts) > 1 else None
+    if measure is not None:
+        found = index.lookup(" ".join(parts[:-1]))
+        if found is not None:
+            return found, " ".join(parts[:-1]), measure
+    return index.lookup(name), name, None
 
 
 # --- LLM fallback ---------------------------------------------------------------------

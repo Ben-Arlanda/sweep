@@ -29,6 +29,7 @@ import {
 } from '@/features/recipes/kitchenMatch';
 import { swapLine, swapsOf } from '@/features/recipes/adaptations';
 import { cookSteps, metaParts, viewsOf, type MethodView } from '@/features/recipes/method';
+import { lineCaption, lineName } from '@/features/recipes/lines';
 import { useMethodView } from '@/features/recipes/methodView';
 import { PickDaySheet } from '@/features/mealPlan/PickDaySheet';
 import { RecipeRow } from '@/features/recipes/RecipeRow';
@@ -742,19 +743,6 @@ function YoursActions({ id, title }: { id: string; title: string }) {
   );
 }
 
-/** "Chicken breast": the Ingredient's name, capitalised; the line as written if unlinked. */
-function lineName(line: Line) {
-  const name = line.ingredient?.name;
-  return name ? name.charAt(0).toUpperCase() + name.slice(1) : line.raw_text;
-}
-
-/** "600 g", or the whole line when it has no amount we understood. */
-function lineAmount(line: Line) {
-  if (!line.ingredient) return null;
-  if (line.quantity === null) return line.raw_text;
-  return [line.quantity, line.unit].filter(Boolean).join(' ');
-}
-
 /**
  * One ingredient as a card: what it is, how much, and where it stands. "Add to list"
  * is the only one you can tap; the others just say how things are.
@@ -796,7 +784,7 @@ function IngredientRow({
       >
         <Text style={{ fontFamily: t.fonts.medium }}>{lineName(line)}</Text>
         <Text variant="caption" muted style={{ fontVariant: ['tabular-nums'] }}>
-          {[lineAmount(line), line.optional ? 'optional' : null].filter(Boolean).join(' · ')}
+          {lineCaption(line)}
         </Text>
       </View>
       <View accessibilityLiveRegion="polite">
