@@ -272,19 +272,15 @@ export const stockColors: Record<'light' | 'dark', Record<StockName, StockColors
 };
 
 /**
- * The welcome hero: always ink with a lime glow, in light and dark mode alike, like the
- * website hero. It's the one place the brand is shown "full volume".
+ * The welcome screen: the app's own light page with a soft lime glow in the top corner,
+ * navy ink text and the lime highlight on the promise.
  */
 export const hero = {
-  background: palette.ink,
-  /**
-   * A soft lime light behind the floating cards (a CSS radial gradient). It stays in the
-   * top half on purpose: text sits on plain ink, so its contrast is the tested value.
-   */
-  glow: 'radial-gradient(circle at 70% 25%, rgba(216, 242, 60, 0.4) 0%, rgba(216, 242, 60, 0) 55%)',
-  text: palette.white,
-  textMuted: '#c8ccbd',
-  border: '#3b3f35',
+  background: palette.page,
+  /** A pale lime light, top right. Text sits below it on the plain page. */
+  glow: 'radial-gradient(circle at 95% 8%, rgba(216, 242, 60, 0.45) 0%, rgba(216, 242, 60, 0) 38%)',
+  text: palette.ink,
+  textMuted: palette.ink,
   highlight: palette.lime,
   onHighlight: palette.ink,
 } as const;
