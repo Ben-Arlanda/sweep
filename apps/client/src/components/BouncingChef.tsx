@@ -76,8 +76,8 @@ export function BouncingChef({ size = 180 }: { size?: number }) {
         style={[
           {
             width: size * 0.6,
-            height: 14,
-            marginTop: 6,
+            height: Math.round(size * 0.08), // 14 at the full 180
+            marginTop: Math.round(size * 0.033),
             borderRadius: 999,
             backgroundColor: '#5d6155', // a soft grey: reads as a shadow under the lime chef
           },
