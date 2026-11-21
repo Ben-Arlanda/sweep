@@ -16,7 +16,7 @@ import { PressableScale } from '@/components/PressableScale';
 import { Button } from '@/components/ui';
 import { FitStage } from '@/features/welcome/FitStage';
 import { OnboardingMock } from '@/features/welcome/OnboardingMocks';
-import { STORY } from '@/features/welcome/story';
+import { MAX_TEXT_SCALE, STORY } from '@/features/welcome/story';
 import { hero } from '@/theme/tokens';
 import { useTheme } from '@/theme/useTheme';
 
@@ -99,31 +99,32 @@ export default function HowItWorksScreen() {
                   // A sideways pager doesn't stretch its pages, so each gets the full height.
                   style={{ width, height: size.height }}
                 >
-                  <ScrollView
-                    // Grows to the page; the picture shrinks so the words always fit.
-                    contentContainerStyle={{
-                      flexGrow: 1,
+                  {/* No scrolling: the picture shrinks so the words always fit on screen. */}
+                  <View
+                    style={{
+                      flex: 1,
                       paddingHorizontal: t.space.lg,
                       paddingTop: t.space.xs,
                       paddingBottom: t.space.md,
-                      gap: t.space.xl,
+                      gap: t.space.lg,
                       width: '100%',
                       maxWidth: 520,
                       alignSelf: 'center',
                     }}
                   >
-                    <FitStage>
+                    <FitStage minHeight={0}>
                       <OnboardingMock story={story.key} active={active} />
                     </FitStage>
                     <View style={{ gap: t.space.sm, paddingHorizontal: t.space.md }}>
                       <Text
                         accessibilityRole="header"
+                        maxFontSizeMultiplier={MAX_TEXT_SCALE}
                         style={[
                           t.type.display,
                           {
                             color: t.colors.text,
-                            fontSize: 32,
-                            lineHeight: 37,
+                            fontSize: 28,
+                            lineHeight: 33,
                             letterSpacing: -0.8,
                           },
                         ]}
@@ -141,15 +142,16 @@ export default function HowItWorksScreen() {
                         ) : null}
                       </Text>
                       <Text
+                        maxFontSizeMultiplier={MAX_TEXT_SCALE}
                         style={[
                           t.type.body,
-                          { color: t.colors.textMuted, fontSize: 16, lineHeight: 24 },
+                          { color: t.colors.textMuted, fontSize: 15, lineHeight: 22 },
                         ]}
                       >
                         {story.body}
                       </Text>
                     </View>
-                  </ScrollView>
+                  </View>
                 </View>
               );
             })

@@ -1,13 +1,13 @@
 import { Image } from 'expo-image';
 import { router, useIsFocused } from 'expo-router';
-import { ScrollView, Text, useWindowDimensions, View } from 'react-native';
+import { Text, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button } from '@/components/ui';
 import { FitStage } from '@/features/welcome/FitStage';
 import { WELCOME_SCENE_WIDTH, WelcomeScene } from '@/features/welcome/OnboardingMocks';
 import { Rise } from '@/features/welcome/Rise';
-import { LANDING } from '@/features/welcome/story';
+import { LANDING, MAX_TEXT_SCALE } from '@/features/welcome/story';
 import { hero } from '@/theme/tokens';
 import { useTheme } from '@/theme/useTheme';
 
@@ -23,13 +23,14 @@ export default function WelcomeScreen() {
   const short = useWindowDimensions().height < 700;
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: t.colors.surface }}>
-      <ScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
+      {/* No scrolling: the picture shrinks so everything else fits on screen. */}
+      <View
+        style={{
+          flex: 1,
           paddingHorizontal: t.space.lg,
           paddingTop: t.space.sm,
-          paddingBottom: t.space.xl,
-          gap: short ? t.space.md : t.space.xl,
+          paddingBottom: short ? t.space.md : t.space.xl,
+          gap: short ? t.space.md : t.space.lg,
           width: '100%',
           maxWidth: 520,
           alignSelf: 'center',
@@ -37,7 +38,7 @@ export default function WelcomeScreen() {
       >
         <Wordmark />
 
-        <FitStage contentWidth={WELCOME_SCENE_WIDTH}>
+        <FitStage contentWidth={WELCOME_SCENE_WIDTH} minHeight={0}>
           <WelcomeScene active={focused} />
         </FitStage>
 
@@ -45,12 +46,13 @@ export default function WelcomeScreen() {
           <Rise delay={150}>
             <Text
               accessibilityRole="header"
+              maxFontSizeMultiplier={MAX_TEXT_SCALE}
               style={[
                 t.type.display,
                 {
                   color: hero.text,
-                  fontSize: short ? 28 : 32,
-                  lineHeight: short ? 33 : 37,
+                  fontSize: short ? 26 : 30,
+                  lineHeight: short ? 31 : 35,
                   letterSpacing: -0.8,
                 },
               ]}
@@ -63,12 +65,13 @@ export default function WelcomeScreen() {
           </Rise>
           <Rise delay={150} index={1}>
             <Text
+              maxFontSizeMultiplier={MAX_TEXT_SCALE}
               style={[
                 t.type.body,
                 {
                   color: t.colors.textMuted,
-                  fontSize: short ? 15 : 16,
-                  lineHeight: short ? 22 : 24,
+                  fontSize: 15,
+                  lineHeight: short ? 21 : 22,
                 },
               ]}
             >
@@ -85,7 +88,7 @@ export default function WelcomeScreen() {
             onPress={() => router.push('/sign-in')}
           />
         </Rise>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }
@@ -107,7 +110,10 @@ function Wordmark() {
         style={{ width: 34, height: 34 }}
         contentFit="contain"
       />
-      <Text style={[t.type.heading, { color: hero.text, fontSize: 21, lineHeight: 28 }]}>
+      <Text
+        maxFontSizeMultiplier={MAX_TEXT_SCALE}
+        style={[t.type.heading, { color: hero.text, fontSize: 21, lineHeight: 28 }]}
+      >
         Sweep
       </Text>
     </View>

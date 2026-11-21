@@ -9,6 +9,12 @@ export const LANDING = {
   lede: 'Sweep tracks your Kitchen, suggests dinners from what you have, plans your week and writes the shopping list for you.',
 } as const;
 
+/**
+ * How far the phone's text-size setting may enlarge the onboarding words. Past this the
+ * pages couldn't fit on one screen without scrolling.
+ */
+export const MAX_TEXT_SCALE = 1.2;
+
 export type StoryKey = 'snap' | 'ideas' | 'recipes' | 'plan' | 'list' | 'sync';
 
 export type StoryPage = {
