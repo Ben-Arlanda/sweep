@@ -19,6 +19,7 @@ export type FormLine = {
   key: string; // stable across edits, for React lists ("1 egg" can be there twice)
   rawText: string;
   ingredient: Ingredient | null;
+  alsoIngredients: Ingredient[]; // "salt and pepper": Sweep read one line as two foods
   needsReview: boolean; // unmatched, and something people shop for
   newIngredient: string | null; // unmatched: the Household Ingredient Save will add (ADR 0032)
   check: boolean; // Sweep wants a person to look: from a photo, or not found in the text
@@ -45,11 +46,33 @@ export type Mark = 'check' | 'not_linked';
 let nextKey = 0;
 const key = () => `line-${++nextKey}`;
 
-function fromLine(line: DraftLine | SavedLine, check: boolean): FormLine {
+/**
+ * Rows the server made from one written line ("salt and pepper" → salt, pepper): next to
+ * each other, same text, different foods. "1 egg" written twice stays two lines.
+ */
+function asWritten<T extends SavedLine>(rows: T[]): T[][] {
+  const groups: T[][] = [];
+  for (const row of rows) {
+    const last = groups.at(-1);
+    const prev = last?.at(-1);
+    const sameLine =
+      prev?.raw_text === row.raw_text &&
+      !!prev.ingredient &&
+      !!row.ingredient &&
+      last!.every((r) => r.ingredient?.id !== row.ingredient?.id);
+    if (sameLine) last!.push(row);
+    else groups.push([row]);
+  }
+  return groups;
+}
+
+function fromRows(rows: (DraftLine | SavedLine)[], check: boolean): FormLine {
+  const [line, ...also] = rows;
   return {
     key: key(),
     rawText: line.raw_text,
     ingredient: line.ingredient,
+    alsoIngredients: also.map((r) => r.ingredient as Ingredient),
     needsReview: line.needs_review,
     newIngredient: line.new_ingredient ?? null,
     check,
@@ -69,7 +92,12 @@ export function formFromDraft(draft: Draft): ReviewForm {
     course: draft.course,
     courseGuess: draft.course,
     cuisine: draft.cuisine,
-    lines: draft.lines.map((l) => fromLine(l, l.check)),
+    lines: asWritten(draft.lines).map((rows) =>
+      fromRows(
+        rows,
+        rows.some((r) => r.check),
+      ),
+    ),
     method: draft.method,
     sourceUrl: draft.source_url,
     moreRecipes: draft.more_recipes,
@@ -86,7 +114,7 @@ export function formFromRecipe(recipe: Recipe): ReviewForm {
     course: recipe.course,
     courseGuess: null,
     cuisine: recipe.cuisine,
-    lines: recipe.ingredients.map((l) => fromLine(l, false)),
+    lines: asWritten(recipe.ingredients).map((rows) => fromRows(rows, false)),
     method: recipe.method,
     sourceUrl: recipe.source_url,
     moreRecipes: false,
@@ -122,6 +150,7 @@ export function linkLine(line: FormLine, ingredient: Ingredient): FormLine {
   return {
     ...line,
     ingredient,
+    alsoIngredients: [],
     needsReview: false,
     newIngredient: null,
     check: false,
@@ -136,6 +165,7 @@ export function addLine(form: ReviewForm, text: string): ReviewForm {
     key: key(),
     rawText,
     ingredient: null,
+    alsoIngredients: [],
     needsReview: false,
     newIngredient: null,
     check: false,
@@ -147,13 +177,13 @@ export function addLine(form: ReviewForm, text: string): ReviewForm {
 
 /** The server's reading of lines that were `pending`, in the same order. */
 export function readLines(form: ReviewForm, read: SavedLine[]): ReviewForm {
-  const queue = [...read];
+  const queue = asWritten(read);
   return {
     ...form,
     lines: form.lines.map((l) => {
       if (!l.pending) return l;
       const r = queue.shift();
-      return r ? { ...fromLine(r, false), key: l.key } : l;
+      return r ? { ...fromRows(r, false), key: l.key } : l;
     }),
   };
 }

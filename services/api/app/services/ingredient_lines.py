@@ -298,6 +298,42 @@ def parse_line(text: str, index: IngredientIndex) -> ParsedLine:
     )
 
 
+_AND = re.compile(r"\s+and\s+", re.IGNORECASE)
+
+
+def parse_lines(text: str, index: IngredientIndex) -> list[ParsedLine]:
+    """Like parse_line, but "salt and pepper" (two known foods, nothing matching the
+    whole) is two lines, both keeping what was written (ADR 0032). An amount before both
+    ("2 tbsp salt and pepper") is for the pair, so neither side gets it."""
+    whole = parse_line(text, index)
+    if not whole.needs_review:
+        return [whole]
+    raw = whole.raw_text
+    head = re.split(r"[,(]", raw, maxsplit=1)[0]
+    parts = _AND.split(head)
+    if len(parts) != 2:
+        return [whole]
+    left, right = (parse_line(part, index) for part in parts)
+    if left.ingredient is None or right.ingredient is None:
+        return [whole]
+    rest, tail_notes = _take_brackets(raw[len(head) :])
+    after_comma = rest.partition(",")[2].strip()
+    tail_notes = [n for n in [after_comma, *tail_notes] if n and n.lower() != "optional"]
+    shared = right.quantity is None
+    return [
+        replace(
+            side,
+            raw_text=raw,
+            quantity=None if shared else side.quantity,
+            unit=None if shared else side.unit,
+            note="; ".join(n for n in (side.note, *tail_notes) if n) or None,
+            optional=whole.optional,
+            prepared=side.prepared and not shared,
+        )
+        for side in (left, right)
+    ]
+
+
 def _clean_word(word: str) -> str:
     return word.lower().strip(".;:")
 

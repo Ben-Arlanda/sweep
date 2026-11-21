@@ -562,6 +562,8 @@ class RecipeIngredient(Base):
     replaces: Mapped[str | None] = mapped_column(String(300))
     # Review screen only, never stored: the Household Ingredient Save will add for it.
     new_ingredient: str | None = None
+    # Never stored: which line the Member wrote ("salt and pepper" makes two rows).
+    from_line: int = 0
 
 
 class RecipeEmbedding(Base):

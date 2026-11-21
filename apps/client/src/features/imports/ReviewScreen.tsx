@@ -299,7 +299,9 @@ function LineRow({
 }) {
   const t = useTheme();
   const marks = lineMarks(line);
-  const linked = line.ingredient ? displayName(line.ingredient.name) : null;
+  const linked = line.ingredient
+    ? [line.ingredient, ...line.alsoIngredients].map((i) => displayName(i.name)).join(' + ')
+    : null;
   const added = line.newIngredient ? `New: ${displayName(line.newIngredient)}` : null;
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.sm }}>

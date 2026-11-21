@@ -12,6 +12,7 @@ from app.services.ingredient_lines import (
     LineReading,
     normalise_lines,
     parse_line,
+    parse_lines,
 )
 
 D = Decimal
@@ -284,6 +285,48 @@ def test_a_line_it_cannot_match_still_gets_a_clean_name(text: str, name: str, no
     line = parse_line(text, INDEX)
     assert (line.ingredient, line.needs_review) == (None, True)
     assert (line.name, line.note) == (name, note)
+
+
+# ADR 0032: "salt and pepper" is two things to have, not one new food
+@pytest.mark.parametrize(
+    ("text", "expected"),
+    [
+        ("salt and pepper", [("salt", None, None, None), ("black pepper", None, None, None)]),
+        (
+            "Salt and pepper, to taste",
+            [("salt", None, None, "to taste"), ("black pepper", None, None, "to taste")],
+        ),
+        # One amount for both: it can't be given to either
+        (
+            "2 tbsp salt and pepper",
+            [("salt", None, None, None), ("black pepper", None, None, None)],
+        ),
+        # Each has its own amount
+        (
+            "1 onion and 2 carrots, diced",
+            [("onion", D("1"), None, "diced"), ("carrots", D("2"), None, "diced")],
+        ),
+        (
+            "salt and freshly ground black pepper",
+            [("salt", None, None, None), ("black pepper", None, None, "freshly")],
+        ),
+    ],
+)
+def test_two_known_foods_joined_by_and_are_two_lines(
+    text: str, expected: list[tuple[str, Decimal | None, str | None, str | None]]
+) -> None:
+    lines = parse_lines(text, INDEX)
+    got = [(x.ingredient.name if x.ingredient else None, x.quantity, x.unit, x.note) for x in lines]
+    assert got == expected
+    assert all(x.raw_text == text for x in lines)  # both keep what was written
+
+
+@pytest.mark.parametrize(
+    "text",
+    ["salt and vinegar chips", "2 eggs", "1 zorblax and 1 onion", "salt (and pepper)"],
+)
+def test_and_only_splits_when_both_sides_are_known(text: str) -> None:
+    assert parse_lines(text, INDEX) == [parse_line(text, INDEX)]
 
 
 def test_flags_lines_it_cannot_match_instead_of_guessing() -> None:

@@ -232,6 +232,26 @@ async def test_saving_adds_each_new_food_once_for_this_household(
     assert theirs["ingredients"][0]["ingredient"]["id"] != first["ingredient"]["id"]
 
 
+async def test_salt_and_pepper_is_two_lines_and_saving_again_keeps_two(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer
+) -> None:
+    await create_household(client, fake_issuer, "ana")
+    salt, pepper, onion = await read_lines(client, fake_issuer, ["salt and pepper", "1 onion"])
+    assert [x["ingredient"]["name"] for x in (salt, pepper, onion)] == [
+        "salt",
+        "black pepper",
+        "onion",
+    ]
+    body = nonna(lines=[{"raw_text": "salt and pepper"}, {"raw_text": "1 onion"}])
+    recipe = (await save(client, fake_issuer, body)).json()
+    assert [x["raw_text"] for x in recipe["ingredients"]] == ["salt and pepper"] * 2 + ["1 onion"]
+    # The review screen sends the line once, as the Member wrote it: still two
+    edited = await client.put(
+        f"{IMPORTED}/{recipe['id']}", json=body, headers=fake_issuer.headers("ana") | idem()
+    )
+    assert len(edited.json()["ingredients"]) == 3
+
+
 async def test_a_line_too_long_to_be_one_food_is_refused_at_save(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer
 ) -> None:

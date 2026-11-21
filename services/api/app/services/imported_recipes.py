@@ -29,6 +29,7 @@ from app.services.ingredient_lines import (
     ParsedLine,
     index_from_db,
     parse_line,
+    parse_lines,
 )
 from app.services.recipe_photos import PhotoStore
 
@@ -86,20 +87,25 @@ async def read_lines(
     A line nothing matches: with `create` (Save), a new Household Ingredient, in the
     caller's transaction; without (the review screen), just the name it would get."""
     index = index or await index_from_db(session)
-    out = []
-    for position, line in enumerate(lines):
-        parsed = parse_line(line.raw_text, index)
+    out: list[RecipeIngredient] = []
+    for written, line in enumerate(lines):
         if line.ingredient_id is not None:
             chosen = await ingredients.get(session, household_id, line.ingredient_id)
             if chosen is None:
                 raise errors.NotFound("Ingredient not found")
-            out.append(_line(position, parsed, chosen, ParseMethod.MEMBER))
+            rows = [_line(len(out), parse_line(line.raw_text, index), chosen, ParseMethod.MEMBER)]
         else:
-            found = await _match(session, household_id, parsed)
-            row = _line(position, parsed, found, ParseMethod.RULE)
-            if row.needs_review:
-                row = await _new_food(session, household_id, position, parsed, row, create)
-            out.append(row)
+            rows = []
+            for parsed in parse_lines(line.raw_text, index):
+                position = len(out) + len(rows)
+                found = await _match(session, household_id, parsed)
+                row = _line(position, parsed, found, ParseMethod.RULE)
+                if row.needs_review:
+                    row = await _new_food(session, household_id, position, parsed, row, create)
+                rows.append(row)
+        for row in rows:
+            row.from_line = written
+        out += rows
     return out
 
 
