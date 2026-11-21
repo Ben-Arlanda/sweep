@@ -54,17 +54,30 @@ export default function WelcomeScreen() {
             </Rise>
           </View>
 
+          {/* The food strip has a gap in the middle; the chef stands in it. Bleeds to the edges. */}
           <Rise
             delay={150}
             index={2}
-            style={{ flex: 1, alignItems: 'center', justifyContent: 'center', minHeight: 200 }}
+            style={{ flex: 1, justifyContent: 'flex-end', marginHorizontal: -t.space.xl }}
           >
-            <Image
-              aria-hidden
-              source={require('../../../assets/images/chef-blink.webp')}
-              style={{ width: 200, height: 200 }}
-              contentFit="contain"
-            />
+            <View aria-hidden style={{ width: '100%', aspectRatio: 1400 / 466 }}>
+              <Image
+                source={require('../../../assets/images/welcome-food.webp')}
+                style={{ position: 'absolute', inset: 0 }}
+                contentFit="contain"
+              />
+              <Image
+                source={require('../../../assets/images/chef-blink.webp')}
+                style={{
+                  position: 'absolute',
+                  bottom: '6%',
+                  alignSelf: 'center',
+                  width: '42%',
+                  aspectRatio: 1,
+                }}
+                contentFit="contain"
+              />
+            </View>
           </Rise>
 
           <Rise delay={150} index={3} style={{ gap: t.space.sm }}>
