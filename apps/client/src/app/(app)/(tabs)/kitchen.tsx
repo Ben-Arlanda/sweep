@@ -308,6 +308,8 @@ function KitchenScreenContent() {
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: t.radius.md,
+            borderWidth: 1,
+            borderColor: t.colors.border,
             backgroundColor: pressed ? t.colors.actionPressed : t.colors.action,
           })}
         >
