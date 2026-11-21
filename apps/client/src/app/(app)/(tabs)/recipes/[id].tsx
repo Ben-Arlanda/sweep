@@ -199,6 +199,8 @@ function RecipeContent() {
             paddingLeft: t.space.md,
             paddingRight: 4,
             borderRadius: 10,
+            borderWidth: 1,
+            borderColor: t.colors.border,
             backgroundColor: t.colors.fill,
           }}
         >
