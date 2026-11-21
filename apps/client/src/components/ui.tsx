@@ -221,7 +221,6 @@ export function Button({
   loading,
   compact,
   tight,
-  bordered,
   accessibilityLabel,
   icon,
 }: {
@@ -238,8 +237,6 @@ export function Button({
   compact?: boolean;
   /** Less side padding, for two buttons sharing a row ("View recipe | Mark as cooked"). */
   tight?: boolean;
-  /** A dark ink edge, for a key call to action (Home's Plan my week, Find dinner ideas). */
-  bordered?: boolean;
 }) {
   const t = useTheme();
   const [pressed, setPressed] = useState(false);
@@ -284,8 +281,8 @@ export function Button({
         justifyContent: 'center',
         alignSelf: compact ? 'flex-start' : 'stretch',
         backgroundColor: bg,
-        borderWidth: bordered ? 1.5 : border === 'transparent' ? 0 : 1,
-        borderColor: bordered ? t.colors.text : border,
+        borderWidth: border === 'transparent' ? 0 : 1,
+        borderColor: border,
         opacity: inactive ? 0.45 : 1,
       }}
     >

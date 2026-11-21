@@ -127,7 +127,6 @@ function TonightCard({ today, meals }: { today: string; meals: PlannedMeal[] }) 
           <Button
             title="Find dinner ideas"
             icon={Sparkles}
-            bordered
             onPress={() => router.push('/dinner-ideas')} // the mood step, as on Recipes
           />
         </View>
