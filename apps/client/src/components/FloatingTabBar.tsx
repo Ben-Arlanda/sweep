@@ -69,7 +69,7 @@ export function FloatingTabBar({
           alignSelf: 'center',
           height: tabBarHeight,
           borderRadius: BAR_RADIUS,
-          boxShadow: glass ? undefined : '0 10px 28px -12px rgba(18, 26, 46, 0.4)',
+          boxShadow: '0 10px 28px -12px rgba(18, 26, 46, 0.4)', // lifts the bar off a light page
         }}
       >
         <View
@@ -77,7 +77,7 @@ export function FloatingTabBar({
           style={{
             flex: 1,
             borderRadius: BAR_RADIUS,
-            borderWidth: glass ? 0 : 1, // the glass draws its own edge
+            borderWidth: 1,
             borderColor: 'rgba(18, 26, 46, 0.08)',
             overflow: glass ? 'visible' : 'hidden', // pressed glass swells past its edge
           }}
