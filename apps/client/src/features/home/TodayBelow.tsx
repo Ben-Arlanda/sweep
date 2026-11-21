@@ -3,6 +3,7 @@ import {
   Bookmark,
   ChevronRight,
   Clock,
+  Pencil,
   Refrigerator,
   ShoppingBasket,
   Sparkles,
@@ -247,10 +248,30 @@ function MealPlanCard({
         </PressableScale>
         <PressableScale
           accessibilityRole="button"
+          accessibilityLabel="Edit plan"
           onPress={onEdit}
-          style={{ minHeight: t.touchTarget, justifyContent: 'center', paddingLeft: t.space.md }}
+          style={{
+            width: t.touchTarget,
+            height: t.touchTarget,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
         >
-          <Text variant="label">Edit plan</Text>
+          {/* A circle like Home's profile button, inside the full 44pt tap area. */}
+          <View
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: 20,
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderWidth: 1,
+              borderColor: t.colors.border,
+              backgroundColor: t.colors.surface,
+            }}
+          >
+            <Icon icon={Pencil} size={18} color={t.colors.text} />
+          </View>
         </PressableScale>
       </View>
 
