@@ -54,13 +54,13 @@ export default function WelcomeScreen() {
             </Rise>
           </View>
 
-          {/* The food strip has a gap in the middle; the chef stands in it. Bleeds to the edges. */}
+          {/* The food strip has a gap in the middle; the chef stands in it. */}
           <Rise
             delay={150}
             index={2}
-            style={{ flex: 1, justifyContent: 'flex-end', marginHorizontal: -t.space.xl }}
+            style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}
           >
-            <View aria-hidden style={{ width: '100%', aspectRatio: 1400 / 466 }}>
+            <View aria-hidden style={{ width: '88%', aspectRatio: 1400 / 466 }}>
               <Image
                 source={require('../../../assets/images/welcome-food.webp')}
                 style={{ position: 'absolute', inset: 0 }}
@@ -72,7 +72,7 @@ export default function WelcomeScreen() {
                   position: 'absolute',
                   bottom: '6%',
                   alignSelf: 'center',
-                  width: '42%',
+                  width: '46%',
                   aspectRatio: 1,
                 }}
                 contentFit="contain"
