@@ -228,6 +228,19 @@ def _take_brackets(text: str) -> tuple[str, list[str]]:
     return "".join(outside), [n for n in cleaned if n]
 
 
+def _take_optional(notes: list[str]) -> tuple[list[str], bool]:
+    """Notes without "optional", and whether it was there, on its own or among commas
+    ("finely chopped, optional")."""
+    kept, optional = [], False
+    for note in notes:
+        parts = [p.strip() for p in note.split(",")]
+        optional = optional or any(p.lower() == "optional" for p in parts)
+        rest = ", ".join(p for p in parts if p and p.lower() != "optional")
+        if rest:
+            kept.append(rest)
+    return kept, optional
+
+
 def parse_line(text: str, index: IngredientIndex) -> ParsedLine:
     raw = text.strip()
     work = raw
@@ -239,8 +252,7 @@ def parse_line(text: str, index: IngredientIndex) -> ParsedLine:
     head, _, after_comma = work.partition(",")
     if after_comma.strip():
         notes.insert(0, after_comma.strip())
-    optional = any(n.lower() == "optional" for n in notes)
-    notes = [n for n in notes if n and n.lower() != "optional"]
+    notes, optional = _take_optional(notes)
 
     quantity, unit = None, None
     head = head.strip()
@@ -304,13 +316,15 @@ _AND = re.compile(r"\s+and\s+", re.IGNORECASE)
 def parse_lines(text: str, index: IngredientIndex) -> list[ParsedLine]:
     """Like parse_line, but "salt and pepper" (two known foods, nothing matching the
     whole) is two lines, both keeping what was written (ADR 0032). An amount before both
-    ("2 tbsp salt and pepper") is for the pair, so neither side gets it."""
+    ("2 tbsp salt and pepper") is for the pair, so neither side gets it; "each" gives it to
+    both ("1/4 tsp each salt and pepper")."""
     whole = parse_line(text, index)
     if not whole.needs_review:
         return [whole]
     raw = whole.raw_text
     head = re.split(r"[,(]", raw, maxsplit=1)[0]
-    parts = _AND.split(head)
+    each = re.search(r"\beach\s+", head, re.IGNORECASE)  # "1/4 tsp each salt and pepper"
+    parts = _AND.split(head[: each.start()] + head[each.end() :] if each else head)
     if len(parts) != 2:
         return [whole]
     left, right = (parse_line(part, index) for part in parts)
@@ -318,7 +332,9 @@ def parse_lines(text: str, index: IngredientIndex) -> list[ParsedLine]:
         return [whole]
     rest, tail_notes = _take_brackets(raw[len(head) :])
     after_comma = rest.partition(",")[2].strip()
-    tail_notes = [n for n in [after_comma, *tail_notes] if n and n.lower() != "optional"]
+    tail_notes, _ = _take_optional([after_comma, *tail_notes])
+    if each:  # the amount is for each of them
+        right = replace(right, quantity=left.quantity, unit=left.unit)
     shared = right.quantity is None
     return [
         replace(
