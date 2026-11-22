@@ -8,7 +8,7 @@ TestFlight ships only the app. The API ran on the product owner's Mac at a home 
 
 ## Decision
 
-1. **The API runs as one Docker container on Railway** (`services/api/Dockerfile`, `railway.json`), with Railway's Postgres (pgvector) in the same project. One copy only (`numReplicas: 1`).
+1. **The API runs as one Docker container on Railway** (`services/api/Dockerfile`), with Railway's Postgres (pgvector) in the same project, both in **Singapore** (closest region to Australia). One copy only. Settings live in `services/api/.railway/railway.py` (Railway's Infrastructure as Code; `railway.json` stops being read on 2026-12-01). It manages the API service only; the database and all variables stay in the dashboard. Deploys wait for GitHub checks (`checkSuites`).
 2. **Migrations run when the container starts** (`alembic upgrade head && fastapi run`, in the Dockerfile), not as a Railway pre-deploy step: on the first deploy that step reported success without migrating. A failed migration stops the start, the `/health` check fails, and the old version keeps serving.
 3. **Secrets are Railway variables**, never files in the image (`.dockerignore` drops `.env`).
 4. **Member photos live on a Railway volume** at `/data` (`PHOTO_DIR=/data/photos`, ADR 0031's folder store), so redeploys keep them. The container runs as root because the volume is root-owned.
