@@ -24,9 +24,10 @@ class Base(DeclarativeBase):
 
 
 def sqlalchemy_url(url: str) -> str:
-    """Point plain `postgresql://` URLs at the psycopg 3 driver (works sync and async)."""
-    if url.startswith("postgresql://"):
-        return "postgresql+psycopg://" + url.removeprefix("postgresql://")
+    """Point plain `postgresql://` (or `postgres://`) URLs at the psycopg 3 driver."""
+    for prefix in ("postgresql://", "postgres://"):
+        if url.startswith(prefix):
+            return "postgresql+psycopg://" + url.removeprefix(prefix)
     return url
 
 
