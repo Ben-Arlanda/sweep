@@ -1328,6 +1328,8 @@ export interface components {
             replaces?: string | null;
             /** New Ingredient */
             new_ingredient?: string | null;
+            /** Group Name */
+            group_name?: string | null;
             /** Check */
             check: boolean;
         };
@@ -1447,6 +1449,8 @@ export interface components {
             raw_text: string;
             /** Ingredient Id */
             ingredient_id?: string | null;
+            /** Group Name */
+            group_name?: string | null;
         };
         /**
          * ImportedRecipeIn
@@ -1994,6 +1998,8 @@ export interface components {
             replaces?: string | null;
             /** New Ingredient */
             new_ingredient?: string | null;
+            /** Group Name */
+            group_name?: string | null;
         };
         /**
          * RecipeKind

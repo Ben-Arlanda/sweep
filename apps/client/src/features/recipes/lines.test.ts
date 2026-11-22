@@ -1,4 +1,4 @@
-import { lineCaption } from './lines';
+import { groupHeading, lineCaption } from './lines';
 
 const sausage = {
   raw_text: '200 g andouille or smoked sausage (sliced)',
@@ -23,5 +23,24 @@ describe('lineCaption', () => {
 
   it('a line with no Ingredient (water) shows just its note', () => {
     expect(lineCaption({ ...sausage, ingredient: null, note: 'boiling' })).toBe('boiling');
+  });
+});
+
+describe('groupHeading (ADR 0033)', () => {
+  const lines = [
+    { group: null },
+    { group: 'Marinade slather' },
+    { group: 'Marinade slather' },
+    { group: 'To serve' },
+  ];
+  const group = (l: { group: string | null }) => l.group;
+
+  it('names a group above its first line only', () => {
+    expect(lines.map((_, i) => groupHeading(lines, i, group))).toEqual([
+      null,
+      'Marinade slather',
+      null,
+      'To serve',
+    ]);
   });
 });

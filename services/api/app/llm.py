@@ -199,6 +199,12 @@ screen before anything is saved.
   against the pasted text, and any line it can't find is flagged for the person to check.
   In a photo, copy what you can read. If a word or amount can't be read, leave it out
   of the line rather than guess: a person checks every line from a photo.
+- ingredient_headings: the headings that split the ingredient list into groups
+  ("Marinade slather:", "To serve"), each copied exactly as written, with before_line:
+  the position in ingredient_lines (from 0) of the first line under it. Empty if the
+  list has no headings. Never make up a heading. A PDF also comes as <layout>: the same
+  text placed where it sits on the page, but light-grey notes can be missing. Copy
+  every field from <pasted>; use <layout> only to see which heading each line is under.
 - method: the steps, in order, as written. Split one long paragraph into its steps if
   needed, but don't reword them. Leave out headings ("On to the sauce:"): they aren't
   steps.
@@ -216,8 +222,12 @@ class ClaudeRecipeReader:
         # Low effort: copying and sorting text, not reasoning (the eval checks this).
         self._call = ClaudeStructured(api_key, model, effort="low")
 
-    async def read(self, text: str, cuisines: Sequence[str]) -> tuple[RecipeReading | None, Usage]:
+    async def read(
+        self, text: str, cuisines: Sequence[str], layout: str | None = None
+    ) -> tuple[RecipeReading | None, Usage]:
         prompt = f"Cuisines: {', '.join(cuisines)}\n\n<pasted>\n{text}\n</pasted>"
+        if layout:  # a PDF: the same pages placed by position (ADR 0033)
+            prompt += f"\n\n<layout>\n{layout}\n</layout>"
         return await self._parse(prompt)
 
     async def read_photos(

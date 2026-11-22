@@ -422,6 +422,7 @@ class RecipeIngredientOut(BaseModel):
     parse_method: ParseMethod  # "llm" = the review screen's "Check" mark
     replaces: str | None = None  # Adaptations: the parent's line this Swap replaced
     new_ingredient: str | None = None  # review screen: "New: andouille sausage" on Save
+    group_name: str | None = None  # its Ingredient Group's heading (ADR 0033)
 
 
 class RecipeStageOut(BaseModel):
@@ -744,6 +745,8 @@ class SendMessageIn(BaseModel):
 # --- Imported Recipes (slice 4d) --------------------------------------------------------
 
 RecipeLine = Annotated[str, _name(300), ONE_LINE]  # an ingredient line, as written
+GROUP_NAME_MAX = 80  # an Ingredient Group's heading ("Marinade slather"), ADR 0033
+GroupName = Annotated[str, _name(GROUP_NAME_MAX), ONE_LINE]
 MAX_RECIPE_LINES, MAX_METHOD_STEPS = 60, 40
 MAX_SUMMARY = 500  # an Imported Recipe's description, as the column allows
 MAX_PASTE_CHARS = 20_000  # about 5 long recipes; text pulled from a PDF is cut to this too
@@ -763,6 +766,7 @@ class ImportedLineIn(BaseModel):
     raw_text: RecipeLine
     # Set when a Member chose the Ingredient in the Link sheet; otherwise Sweep matches it.
     ingredient_id: uuid.UUID | None = None
+    group_name: GroupName | None = None  # its Ingredient Group, if the recipe has them
 
 
 class ImportedRecipeIn(BaseModel):

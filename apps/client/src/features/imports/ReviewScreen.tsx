@@ -17,6 +17,7 @@ import { COURSES } from '@/features/recipes/courses';
 import { PhotoButton } from '@/features/recipes/OwnPhoto';
 import type { RecipeImage } from '@/features/recipes/photo';
 import { cuisineName } from '@/features/recipes/kitchenMatch';
+import { groupHeading } from '@/features/recipes/lines';
 import { photoTap, saveTap, useImportedRecipeActions, useReadLines } from '@/lib/api/imports';
 import type { PickedFile } from '@/lib/api/upload';
 import { useTheme } from '@/theme/useTheme';
@@ -212,14 +213,26 @@ export function ReviewScreen({
 
       <View style={{ gap: t.space.sm }}>
         <SectionLabel>Ingredients</SectionLabel>
-        {form.lines.map((line) => (
-          <LineRow
-            key={line.key}
-            line={line}
-            onLink={() => setLinking(line)}
-            onRemove={() => setForm((f) => removeLine(f, line.key))}
-          />
-        ))}
+        {form.lines.map((line, i) => {
+          const heading = groupHeading(form.lines, i, (l) => l.groupName);
+          return (
+            <View key={line.key} style={{ gap: t.space.xs }}>
+              {heading ? (
+                <Text
+                  accessibilityRole="header"
+                  style={{ fontFamily: t.fonts.bold, fontSize: 13, marginTop: t.space.sm }}
+                >
+                  {heading}
+                </Text>
+              ) : null}
+              <LineRow
+                line={line}
+                onLink={() => setLinking(line)}
+                onRemove={() => setForm((f) => removeLine(f, line.key))}
+              />
+            </View>
+          );
+        })}
         <ErrorText message={problems.lines} />
         <Field
           label="Add an ingredient"

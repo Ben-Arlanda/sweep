@@ -10,7 +10,7 @@ import httpx
 import pytest
 
 from app.models import Course
-from app.services.recipe_import import RecipeReading, appears_in
+from app.services.recipe_import import IngredientHeading, RecipeReading, appears_in, line_groups
 from tests.conftest import FakeIssuer, Loader
 from tests.fake_model import ScriptedFetcher, ScriptedReader
 from tests.helpers import create_household, idem
@@ -341,3 +341,108 @@ async def test_a_photo_that_isnt_a_recipe_is_refused(
     response = await photos(client, fake_issuer, ("cat.jpg", JPEG))
     assert response.status_code == 422
     assert "recipe" in response.json()["detail"]
+
+
+# --- Ingredient Groups (ADR 0033) ----------------------------------------------------------
+
+GROUPED = """Lemon garlic salmon
+Ingredients
+4 salmon fillets
+Marinade slather:
+1 tbsp lemon juice
+2 tbsp olive oil
+Vegetables (optional):
+3 bunches asparagus
+Method
+1. Slather and bake.
+"""
+
+
+async def test_paste_keeps_the_recipes_ingredient_headings(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, reader: ScriptedReader
+) -> None:
+    await create_household(client, fake_issuer, "ana")
+    reader.answers.append(
+        reading(
+            ingredient_lines=[
+                "4 salmon fillets",
+                "1 tbsp lemon juice",
+                "2 tbsp olive oil",
+                "3 bunches asparagus",
+            ],
+            ingredient_headings=[
+                {"before_line": 1, "heading": "Marinade slather:"},  # the ":" goes
+                {"before_line": 3, "heading": "Vegetables (optional)"},
+                {"before_line": 9, "heading": "Sauce"},  # no such line: dropped
+                {"before_line": 0, "heading": "For the glaze"},  # not in the text: dropped
+            ],
+            method=["Slather and bake."],
+        )
+    )
+    response = await paste(client, fake_issuer, GROUPED)
+    assert response.status_code == 200, response.text
+    groups = [line["group_name"] for line in response.json()["lines"]]
+    assert groups == [None, "Marinade slather", "Marinade slather", "Vegetables (optional)"]
+
+
+async def test_a_reading_without_headings_is_one_flat_list(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, reader: ScriptedReader
+) -> None:
+    await create_household(client, fake_issuer, "ana")
+    reader.answers.append(reading())
+    response = await paste(client, fake_issuer, PASTED)
+    assert {line["group_name"] for line in response.json()["lines"]} == {None}
+
+
+H = IngredientHeading
+SALMON = ["4 x 180g salmon fillets, skin on (Note 1)", "1 tsp lemon zest (1 lemon)"]
+SALMON += ["3 bunches asparagus", "Olive oil spray", "Parmesan, finely grated"]
+# pypdf's layout text for the salmon tray bake: right order, light-grey notes missing
+LAYOUT = """Servings: 4 Calories: 364cal Author: Nagi
+Ingredients
+4 x 180g salmon fillets
+Marinade slather:
+1 tsp lemon zest
+Vegetables (optional):
+3 bunches asparagus
+Cooking & serving:
+Olive oil spray
+Parmesan"""
+
+
+def test_code_places_each_heading_where_the_text_puts_it() -> None:
+    # The model said line 0 for "Marinade slather" (2026-11-22, run 2 of 3): code knows
+    # better, because the text has it right before the lemon zest
+    said = [H(before_line=0, heading="Marinade slather:"), H(before_line=2, heading="Vegetables")]
+    assert line_groups(said, SALMON, LAYOUT) == [
+        None,
+        "Marinade slather",
+        "Vegetables (optional)",  # found by code; the model's shorter name isn't in the text
+        "Cooking & serving",  # left out by the model (run 1 of 3): found by code
+        "Cooking & serving",
+    ]
+
+
+def test_a_heading_the_text_doesnt_put_before_a_line_is_dropped() -> None:
+    # A print-to-PDF's plain text bunches the headings above the list (no layout text)
+    jumbled = "Ingredients\nMarinade slather:\nVegetables:\n"
+    jumbled += "4 x 180g salmon fillets\n1 tsp lemon zest"
+    said = [H(before_line=1, heading="Marinade slather")]
+    assert line_groups(said, SALMON[:2], jumbled) == [None, None]
+
+
+def test_a_colon_line_above_the_first_ingredient_isnt_a_heading_code_found() -> None:
+    # "Author:" right above the list in a PDF's plain text; a heading needs the model too
+    text = "Servings: Calories: Author:\n4 x 180g salmon fillets\n1 tsp lemon zest"
+    assert line_groups([], SALMON[:2], text) == [None, None]
+    said = [H(before_line=0, heading="For the fish")]
+    assert line_groups(said, SALMON[:2], "For the fish\n4 x 180g salmon fillets") == [
+        "For the fish",
+        "For the fish",
+    ]
+
+
+def test_from_a_photo_the_models_positions_are_used() -> None:
+    # No text to search: a person checks every line read from a photo anyway
+    said = [H(before_line=1, heading="Marinade slather:")]
+    assert line_groups(said, SALMON[:2], None) == [None, "Marinade slather"]

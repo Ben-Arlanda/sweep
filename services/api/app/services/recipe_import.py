@@ -16,6 +16,7 @@ Nothing is stored. The Member fixes the draft on the review screen and saves it 
 app.services.imported_recipes, the same as a typed recipe.
 """
 
+import re
 import unicodedata
 import uuid
 from collections.abc import Callable, Sequence
@@ -29,6 +30,7 @@ from app import errors, pdf_text
 from app.llm_costs import Usage
 from app.models import Course, RecipeIngredient
 from app.schemas import (
+    GROUP_NAME_MAX,
     MAX_METHOD_STEPS,
     MAX_PASTE_CHARS,
     MAX_RECIPE_LINES,
@@ -38,6 +40,13 @@ from app.schemas import (
 from app.services import imported_recipes, recipe_jsonld, recipes
 from app.text import clean_line
 from app.web_fetch import Page, check_url
+
+
+class IngredientHeading(BaseModel):
+    """An Ingredient Group's heading, by the line it comes before (ADR 0033)."""
+
+    before_line: int  # position in ingredient_lines
+    heading: str  # copied as written
 
 
 class RecipeReading(BaseModel):
@@ -52,6 +61,7 @@ class RecipeReading(BaseModel):
     course: Course  # a guess: the review screen pre-selects it and says so
     cuisine: str | None  # one of the cuisines it was given, or null
     ingredient_lines: list[str]  # copied exactly as written
+    ingredient_headings: list[IngredientHeading] = []  # "Marinade slather:" before line 1
     method: list[str]
 
 
@@ -85,7 +95,7 @@ class PageFetcher(Protocol):
 
 class RecipeReader(Protocol):
     async def read(
-        self, text: str, cuisines: Sequence[str]
+        self, text: str, cuisines: Sequence[str], layout: str | None = None
     ) -> tuple[RecipeReading | None, Usage]: ...
 
     async def read_photos(
@@ -139,6 +149,65 @@ def _in_range(value: int | None, high: int) -> int | None:
     return value if value is not None and 0 < value <= high else None
 
 
+def _bare(text: str) -> str:
+    """Letters and digits only: "Marinade slather: ▢ 1 tbsp" → "marinadeslather1tbsp"."""
+    return "".join(c for c in _comparable(text) if c.isalnum())
+
+
+# Labels, not Ingredient Groups, even when they end in ":" right above a line.
+NOT_HEADINGS = {"ingredients", "ingredient", "method", "instructions", "directions", "notes"}
+
+
+def line_groups(
+    headings: Sequence[IngredientHeading], lines: Sequence[str], text: str | None
+) -> list[str | None]:
+    """Each line's Ingredient Group (ADR 0033).
+
+    With text (a paste, or a PDF's layout text), code places every heading: it starts
+    the line that comes right after it in the text (only that line's start is compared:
+    a PDF's layout text can miss light-grey notes like "(1 lemon)"). The model names
+    headings, but its positions vary run to run, and a heading it leaves out would fold
+    its lines into the group above. So code also takes any text line ending in ":" that
+    sits between two ingredient lines. With no text (a photo), the model's positions are
+    used: a person checks every line read from a photo.
+    """
+    starts: dict[int, str] = {}
+
+    def add(at: int, heading: str) -> None:
+        name = clean_line(heading, GROUP_NAME_MAX).rstrip(":").strip()
+        if 0 <= at < len(lines) and name and name.lower() not in NOT_HEADINGS:
+            starts.setdefault(at, name)
+
+    if text is None:
+        for h in headings:
+            add(h.before_line, h.heading)
+    else:
+        bare = _bare(text)
+        begins = [_bare(re.split(r"[,(]", line, maxsplit=1)[0]) for line in lines]
+
+        def place(name: str, first: int = 0) -> int | None:
+            found = _bare(name)
+            return next(
+                (i for i in range(first, len(lines)) if begins[i] and found + begins[i] in bare),
+                None,
+            )
+
+        for h in headings:
+            at = place(h.heading)
+            if at is not None:
+                add(at, h.heading)
+        for row in text.splitlines():
+            row = " ".join(row.split())
+            if row.endswith(":") and len(row) <= GROUP_NAME_MAX:
+                at = place(row, first=1)  # between lines: not a label above the list
+                if at is not None:
+                    add(at, row)
+    out: list[str | None] = []
+    for i in range(len(lines)):
+        out.append(starts.get(i, out[-1] if out else None))
+    return out
+
+
 # --- The pipeline ----------------------------------------------------------------------
 
 
@@ -147,10 +216,11 @@ async def from_paste(
     household_id: uuid.UUID,
     reader: RecipeReader,
     text: str,
+    layout: str | None = None,  # a PDF's text placed by position, for headings
 ) -> Draft:
     text = text.strip()
     known = await recipes.cuisines(session, household_id)
-    reading, usage = await reader.read(text, known)
+    reading, usage = await reader.read(text, known, layout)
     # A line not in the text word for word: the model reworded it, or made it up.
     return await _finish(
         session,
@@ -160,6 +230,7 @@ async def from_paste(
         check=lambda line: not appears_in(line, text),
         not_a_recipe="That doesn't look like a recipe. Paste the title, ingredients and method.",
         source_text=text,
+        heading_text=layout,
     )
 
 
@@ -208,7 +279,8 @@ async def from_pdf(
     contents = await pdf_text.read_pdf(data)
     text = paste_text_from_pdf(contents)
     if text is not None:
-        return await from_paste(session, household_id, reader, text)
+        layout = contents.layout_text[:MAX_PASTE_CHARS]
+        return await from_paste(session, household_id, reader, text, layout)
     known = await recipes.cuisines(session, household_id)
     reading, usage = await reader.read_document(contents.first_pages, known)
     return await _finish(
@@ -230,6 +302,7 @@ async def _finish(
     check: Callable[[str], bool],  # per line: True = mark it "Check"
     not_a_recipe: str,
     source_text: str | None = None,  # pasted text; None for images
+    heading_text: str | None = None,  # where headings are checked, if not source_text
 ) -> Draft:
     """What every door that uses the model shares, once it has answered."""
     reading, usage = answer
@@ -238,13 +311,18 @@ async def _finish(
             "Sweep couldn't read that recipe just now. Try again, or type it in."
         )
     title = clean_line(reading.title, 200)
-    lines = [clean_line(line, 300) for line in reading.ingredient_lines]
-    lines = [line for line in lines if line][:MAX_RECIPE_LINES]
+    read = [clean_line(line, 300) for line in reading.ingredient_lines]
+    groups = line_groups(reading.ingredient_headings, read, heading_text or source_text)
+    kept = [(line, group) for line, group in zip(read, groups, strict=True) if line]
+    kept = kept[:MAX_RECIPE_LINES]
+    lines = [line for line, _ in kept]
     if not reading.found_recipe or not title or not lines:
         raise errors.InvalidInput(not_a_recipe)
 
     matched = await imported_recipes.read_lines(
-        session, household_id, [ImportedLineIn(raw_text=line) for line in lines]
+        session,
+        household_id,
+        [ImportedLineIn(raw_text=line, group_name=group) for line, group in kept],
     )
     method = [step.strip()[:2000] for step in reading.method if step.strip()][:MAX_METHOD_STEPS]
     cuisine = reading.cuisine.strip().lower() if reading.cuisine else None

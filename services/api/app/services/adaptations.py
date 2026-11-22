@@ -79,6 +79,7 @@ def _copy(line: RecipeIngredient) -> RecipeIngredient:
         optional=line.optional,
         parse_method=line.parse_method,
         needs_review=line.needs_review,
+        group_name=line.group_name,
     )
 
 

@@ -105,6 +105,7 @@ async def read_lines(
                 rows.append(row)
         for row in rows:
             row.from_line = written
+            row.group_name = line.group_name
         out += rows
     return out
 

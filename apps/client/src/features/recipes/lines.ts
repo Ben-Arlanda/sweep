@@ -25,3 +25,9 @@ export function lineCaption(line: Line) {
     .filter(Boolean)
     .join(' · ');
 }
+
+/** An Ingredient Group's name above its first line, else null (ADR 0033). */
+export function groupHeading<T>(lines: T[], i: number, group: (line: T) => string | null) {
+  const name = group(lines[i]);
+  return name && (i === 0 || group(lines[i - 1]) !== name) ? name : null;
+}

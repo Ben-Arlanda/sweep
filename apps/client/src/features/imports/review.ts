@@ -20,6 +20,7 @@ export type FormLine = {
   rawText: string;
   ingredient: Ingredient | null;
   alsoIngredients: Ingredient[]; // "salt and pepper": Sweep read one line as two foods
+  groupName: string | null; // its Ingredient Group's heading ("Marinade slather")
   needsReview: boolean; // unmatched, and something people shop for
   newIngredient: string | null; // unmatched: the Household Ingredient Save will add (ADR 0032)
   check: boolean; // Sweep wants a person to look: from a photo, or not found in the text
@@ -73,6 +74,7 @@ function fromRows(rows: (DraftLine | SavedLine)[], check: boolean): FormLine {
     rawText: line.raw_text,
     ingredient: line.ingredient,
     alsoIngredients: also.map((r) => r.ingredient as Ingredient),
+    groupName: line.group_name ?? null,
     needsReview: line.needs_review,
     newIngredient: line.new_ingredient ?? null,
     check,
@@ -166,6 +168,7 @@ export function addLine(form: ReviewForm, text: string): ReviewForm {
     rawText,
     ingredient: null,
     alsoIngredients: [],
+    groupName: form.lines.at(-1)?.groupName ?? null, // joins the last group
     needsReview: false,
     newIngredient: null,
     check: false,
@@ -183,7 +186,7 @@ export function readLines(form: ReviewForm, read: SavedLine[]): ReviewForm {
     lines: form.lines.map((l) => {
       if (!l.pending) return l;
       const r = queue.shift();
-      return r ? { ...fromRows(r, false), key: l.key } : l;
+      return r ? { ...fromRows(r, false), key: l.key, groupName: l.groupName } : l;
     }),
   };
 }
@@ -238,6 +241,7 @@ export function toImportedRecipe(form: ReviewForm): ImportedRecipeIn {
       raw_text: l.rawText,
       // Only a Member's own choice: the server matches the rest the same way it did.
       ingredient_id: l.memberLinked && l.ingredient ? l.ingredient.id : null,
+      group_name: l.groupName,
     })),
     method: method.length ? method : null,
     source_url: form.sourceUrl,
@@ -250,7 +254,7 @@ export function hasChanges(start: ReviewForm, now: ReviewForm): boolean {
     JSON.stringify({
       ...f,
       courseGuess: null,
-      lines: f.lines.map((l) => [l.rawText, l.ingredient?.id ?? null, l.memberLinked]),
+      lines: f.lines.map((l) => [l.rawText, l.ingredient?.id ?? null, l.memberLinked, l.groupName]),
     });
   return comparable(start) !== comparable(now);
 }

@@ -33,6 +33,9 @@ UNREADABLE = "That PDF couldn't be read. Try another copy, or paste the recipe t
 @dataclass(frozen=True)
 class PdfContents:
     text: str  # from the first MAX_PAGES pages; empty for a scan
+    # The same pages placed by position: headings where they sit, but light-grey notes can
+    # be missing. Only for placing Ingredient Group headings (ADR 0033).
+    layout_text: str
     pages: int  # how many were read
     first_pages: bytes  # those pages as their own PDF
 
@@ -120,12 +123,16 @@ def _read(data: bytes, max_pages: int) -> PdfContents:
         raise _Locked
     pages = reader.pages[:max_pages]
     text = "\n".join(page.extract_text() or "" for page in pages)
+    layout = "\n".join(page.extract_text(extraction_mode="layout") or "" for page in pages)
+    layout_text = "\n".join(" ".join(line.split()) for line in layout.splitlines() if line.strip())
     writer = pypdf.PdfWriter()
     for page in pages:
         writer.add_page(page)
     out = io.BytesIO()
     writer.write(out)
-    return PdfContents(text=text, pages=len(pages), first_pages=out.getvalue())
+    return PdfContents(
+        text=text, layout_text=layout_text, pages=len(pages), first_pages=out.getvalue()
+    )
 
 
 async def read_pdf(data: bytes) -> PdfContents:

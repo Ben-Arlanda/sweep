@@ -7,7 +7,8 @@ import {
   formFromRecipe,
   hasChanges,
   lineMarks,
-  linkLine, readLines,
+  linkLine,
+  readLines,
   removeLine,
   saveProblems,
   searchGuess,
@@ -197,10 +198,10 @@ describe('toImportedRecipe', () => {
       lines: form.lines.map((l, i) => (i === 1 ? linkLine(l, SHALLOT) : l)),
     };
     expect(toImportedRecipe(linked).lines).toEqual([
-      { raw_text: '1 onion', ingredient_id: null },
-      { raw_text: '2 shallots', ingredient_id: 'i-shallot' },
-      { raw_text: '50 saffron threads', ingredient_id: null },
-      { raw_text: 'water', ingredient_id: null },
+      { raw_text: '1 onion', ingredient_id: null, group_name: null },
+      { raw_text: '2 shallots', ingredient_id: 'i-shallot', group_name: null },
+      { raw_text: '50 saffron threads', ingredient_id: null, group_name: null },
+      { raw_text: 'water', ingredient_id: null, group_name: null },
     ]);
   });
 
@@ -236,6 +237,7 @@ describe('editing a saved Imported Recipe', () => {
     expect(toImportedRecipe(form).lines[0]).toEqual({
       raw_text: '1 onion',
       ingredient_id: 'i-onion',
+      group_name: null,
     });
     expect(form.sourceUrl).toBe('https://example.com/ragu');
     expect(form.summary).toBe('Slow and rich.');
@@ -335,5 +337,30 @@ describe('a line Sweep read as two foods', () => {
   it('linking it by hand makes it one food', () => {
     const [both] = formFromDraft({ ...DRAFT, lines: split }).lines;
     expect(linkLine(both, ONION).alsoIngredients).toEqual([]);
+  });
+});
+
+describe('Ingredient Groups (ADR 0033)', () => {
+  const grouped = [
+    line('4 salmon fillets'),
+    line('1 tbsp lemon juice', { group_name: 'Marinade slather' }),
+  ];
+
+  it('keeps each line’s group and sends it back on Save', () => {
+    const form = formFromDraft({ ...DRAFT, lines: grouped });
+    expect(form.lines.map((l) => l.groupName)).toEqual([null, 'Marinade slather']);
+    const sent = toImportedRecipe({ ...form, course: 'main' }).lines;
+    expect(sent.map((l) => l.group_name)).toEqual([null, 'Marinade slather']);
+  });
+
+  it('keeps the group when the server reads a typed line', () => {
+    const form = addLine(formFromDraft({ ...DRAFT, lines: grouped }), '1 tsp dijon');
+    const read = readLines(form, [line('1 tsp dijon')]); // /recipes/lines knows no groups
+    expect(read.lines.at(-1)?.groupName).toBe('Marinade slather');
+  });
+
+  it('a line typed on the review screen joins the last group', () => {
+    const form = addLine(formFromDraft({ ...DRAFT, lines: grouped }), '1 tsp dijon');
+    expect(form.lines.at(-1)?.groupName).toBe('Marinade slather');
   });
 });

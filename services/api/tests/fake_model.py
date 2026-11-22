@@ -79,12 +79,16 @@ class ScriptedReader:
     def __init__(self) -> None:
         self.answers: list[Any] = []  # RecipeReading | None, in call order
         self.calls: list[tuple[str, list[str]]] = []  # (text, cuisines) per call
+        self.layouts: list[str | None] = []  # per read call: a PDF's layout text, or None
         self.photo_calls: list[list[tuple[str, int]]] = []  # per call: (type, bytes) each
         self.document_calls: list[int] = []  # per call: how many PDF pages it was sent
         self.kitchen_calls: list[list[tuple[str, int]]] = []  # Kitchen Photos, like photo_calls
 
-    async def read(self, text: str, cuisines: Sequence[str]) -> tuple[Any, Usage]:
+    async def read(
+        self, text: str, cuisines: Sequence[str], layout: str | None = None
+    ) -> tuple[Any, Usage]:
         self.calls.append((text, list(cuisines)))
+        self.layouts.append(layout)
         return self._next()
 
     async def read_photos(

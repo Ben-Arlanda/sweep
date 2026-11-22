@@ -560,6 +560,8 @@ class RecipeIngredient(Base):
     needs_review: Mapped[bool] = mapped_column(Boolean, default=False)
     # Adaptations only: the parent's line this one swapped out. Set = this line is a Swap.
     replaces: Mapped[str | None] = mapped_column(String(300))
+    # Its Ingredient Group's heading ("Marinade slather"); consecutive lines share it.
+    group_name: Mapped[str | None] = mapped_column(String(80))
     # Review screen only, never stored: the Household Ingredient Save will add for it.
     new_ingredient: str | None = None
     # Never stored: which line the Member wrote ("salt and pepper" makes two rows).

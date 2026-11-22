@@ -93,6 +93,10 @@ _Avoid_: full recipe, detailed method
 A named part of a Seed Recipe's method ("Make the ragù") with its own minutes and steps. A recipe's stages add up to its total time.
 _Avoid_: section, phase
 
+**Ingredient Group**:
+A named part of a recipe's ingredient list ("Marinade slather", "To serve"), copied from the recipe's own headings. Only for showing the recipe the way it was written; shopping and the Dietary Rules ignore it.
+_Avoid_: section (that's for Recipe Stages), sub-recipe
+
 **Quick View** / **Detailed View**:
 Two ways to read the same method. The Detailed View shows the Recipe Stages in full, with tips, variations and storage; the Quick View shows a few short steps for someone who has cooked the dish before. Both describe the same cooking (same heats, times and order) and both must be a Cookable Method. A recipe with no stages (an Imported Recipe) has only one view.
 _Avoid_: short/long method, summary steps
