@@ -2340,6 +2340,7 @@ dependencies = [
     { name = "langgraph" },
     { name = "langgraph-checkpoint-postgres" },
     { name = "pgvector" },
+    { name = "pillow" },
     { name = "psycopg", extra = ["binary"] },
     { name = "pydantic-settings" },
     { name = "pyjwt", extra = ["crypto"] },
@@ -2351,7 +2352,6 @@ dependencies = [
 dev = [
     { name = "httpx" },
     { name = "mypy" },
-    { name = "pillow" },
     { name = "pytest" },
     { name = "pytest-timeout" },
     { name = "ruff" },
@@ -2367,6 +2367,7 @@ requires-dist = [
     { name = "langgraph", specifier = ">=1.2.22" },
     { name = "langgraph-checkpoint-postgres", specifier = ">=3.2.1" },
     { name = "pgvector", specifier = ">=0.5.1" },
+    { name = "pillow", specifier = ">=13.0.0" },
     { name = "psycopg", extras = ["binary"], specifier = ">=3.2" },
     { name = "pydantic-settings", specifier = ">=2.16.2" },
     { name = "pyjwt", extras = ["crypto"], specifier = ">=2.10" },
@@ -2378,7 +2379,6 @@ requires-dist = [
 dev = [
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "mypy", specifier = ">=2.4.1" },
-    { name = "pillow", specifier = ">=13.0.0" },
     { name = "pytest", specifier = ">=9.2.0" },
     { name = "pytest-timeout", specifier = ">=2.4.0" },
     { name = "ruff", specifier = ">=0.17.4" },
