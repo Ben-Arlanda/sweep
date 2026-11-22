@@ -98,8 +98,10 @@ class MeteredReader:
     ) -> None:
         self._inner, self._sessionmaker, self._household_id = inner, sessionmaker, household_id
 
-    async def read(self, text: str, cuisines: Sequence[str]) -> tuple[RecipeReading | None, Usage]:
-        return await self._count(await self._inner.read(text, cuisines))
+    async def read(
+        self, text: str, cuisines: Sequence[str], layout: str | None = None
+    ) -> tuple[RecipeReading | None, Usage]:
+        return await self._count(await self._inner.read(text, cuisines, layout))
 
     async def read_photos(
         self, photos: Sequence[Photo], cuisines: Sequence[str]

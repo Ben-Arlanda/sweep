@@ -47,6 +47,13 @@ async def test_a_pdf_with_text_gives_its_text() -> None:
     assert contents.pages == 1
 
 
+async def test_a_pdf_with_text_gives_its_layout_too() -> None:
+    # Placed by position: a print-to-PDF's plain text can put headings above the list
+    contents = await read_pdf(make_pdf(["Marinade slather:", "1 tbsp lemon juice"]))
+    lines = [line.strip() for line in contents.layout_text.splitlines() if line.strip()]
+    assert lines == ["Marinade slather:", "1 tbsp lemon juice"]
+
+
 async def test_only_the_first_pages_are_read() -> None:
     pages = [[f"Page {n} line"] for n in range(1, MAX_PAGES + 3)]
     contents = await read_pdf(make_pdf(*pages))
@@ -121,6 +128,8 @@ async def test_a_text_pdf_takes_the_paste_path(
     assert [line["check"] for line in draft["lines"]] == [False, False, True]
     [(text, _)] = reader.calls
     assert "500g beef mince" in text
+    [layout] = reader.layouts  # to place headings (ADR 0033)
+    assert layout is not None and "500g beef mince" in layout
     assert reader.document_calls == []
 
 

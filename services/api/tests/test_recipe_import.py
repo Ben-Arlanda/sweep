@@ -405,3 +405,11 @@ def test_a_heading_must_sit_right_before_its_first_line_in_the_text() -> None:
     tidy = "Ingredients\n4 salmon fillets\nMarinade slather:\n  ▢ 1 tbsp lemon juice"
     marinade = [IngredientHeading(before_line=1, heading="Marinade slather")]
     assert line_groups(marinade, lines, tidy) == [None, "Marinade slather"]
+
+
+def test_a_pdfs_layout_places_a_heading_even_without_the_grey_notes() -> None:
+    # pypdf's layout text has the order right but drops RecipeTin's light-grey notes
+    layout = "Ingredients\n   4 x 180g salmon fillets\nMarinade slather:\n   1 tsp lemon zest"
+    lines = ["4 x 180g salmon fillets, skin on (Note 1)", "1 tsp lemon zest (1 lemon)"]
+    marinade = [IngredientHeading(before_line=1, heading="Marinade slather:")]
+    assert line_groups(marinade, lines, layout) == [None, "Marinade slather"]

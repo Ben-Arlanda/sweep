@@ -16,6 +16,7 @@ Nothing is stored. The Member fixes the draft on the review screen and saves it 
 app.services.imported_recipes, the same as a typed recipe.
 """
 
+import re
 import unicodedata
 import uuid
 from collections.abc import Callable, Sequence
@@ -94,7 +95,7 @@ class PageFetcher(Protocol):
 
 class RecipeReader(Protocol):
     async def read(
-        self, text: str, cuisines: Sequence[str]
+        self, text: str, cuisines: Sequence[str], layout: str | None = None
     ) -> tuple[RecipeReading | None, Usage]: ...
 
     async def read_photos(
@@ -158,14 +159,17 @@ def line_groups(
 ) -> list[str | None]:
     """Each line's Ingredient Group (ADR 0033). A heading is kept only if it points at a
     line and, for pasted text, sits right before that line in it: a print-to-PDF's text
-    can put every heading above the list, and a wrong group is worse than none."""
+    can put every heading above the list, and a wrong group is worse than none. Only
+    the start of the line counts ("1 tsp lemon zest"): a PDF's layout text, which has
+    the order right, can be missing its light-grey notes ("(1 lemon)")."""
     bare = _bare(source_text) if source_text is not None else None
     starts: dict[int, str] = {}
     for h in headings:
         name = clean_line(h.heading, GROUP_NAME_MAX).rstrip(":").strip()
         if not 0 <= h.before_line < len(lines) or not name or h.before_line in starts:
             continue
-        if bare is not None and _bare(name + lines[h.before_line]) not in bare:
+        start = re.split(r"[,(]", lines[h.before_line], maxsplit=1)[0]
+        if bare is not None and _bare(name + start) not in bare:
             continue
         starts[h.before_line] = name
     out: list[str | None] = []
@@ -182,10 +186,11 @@ async def from_paste(
     household_id: uuid.UUID,
     reader: RecipeReader,
     text: str,
+    layout: str | None = None,  # a PDF's text placed by position, for headings
 ) -> Draft:
     text = text.strip()
     known = await recipes.cuisines(session, household_id)
-    reading, usage = await reader.read(text, known)
+    reading, usage = await reader.read(text, known, layout)
     # A line not in the text word for word: the model reworded it, or made it up.
     return await _finish(
         session,
@@ -195,6 +200,7 @@ async def from_paste(
         check=lambda line: not appears_in(line, text),
         not_a_recipe="That doesn't look like a recipe. Paste the title, ingredients and method.",
         source_text=text,
+        heading_text=layout,
     )
 
 
@@ -243,7 +249,8 @@ async def from_pdf(
     contents = await pdf_text.read_pdf(data)
     text = paste_text_from_pdf(contents)
     if text is not None:
-        return await from_paste(session, household_id, reader, text)
+        layout = contents.layout_text[:MAX_PASTE_CHARS]
+        return await from_paste(session, household_id, reader, text, layout)
     known = await recipes.cuisines(session, household_id)
     reading, usage = await reader.read_document(contents.first_pages, known)
     return await _finish(
@@ -265,6 +272,7 @@ async def _finish(
     check: Callable[[str], bool],  # per line: True = mark it "Check"
     not_a_recipe: str,
     source_text: str | None = None,  # pasted text; None for images
+    heading_text: str | None = None,  # where headings are checked, if not source_text
 ) -> Draft:
     """What every door that uses the model shares, once it has answered."""
     reading, usage = answer
@@ -274,7 +282,7 @@ async def _finish(
         )
     title = clean_line(reading.title, 200)
     read = [clean_line(line, 300) for line in reading.ingredient_lines]
-    groups = line_groups(reading.ingredient_headings, read, source_text)
+    groups = line_groups(reading.ingredient_headings, read, heading_text or source_text)
     kept = [(line, group) for line, group in zip(read, groups, strict=True) if line]
     kept = kept[:MAX_RECIPE_LINES]
     lines = [line for line, _ in kept]
