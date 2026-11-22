@@ -52,6 +52,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ce8334d1-76a8-4a43-9fb9-d02fa8a7d681"
+      }
+    },
+    "owner": "benarlanda"
   }
 }
