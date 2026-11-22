@@ -154,24 +154,54 @@ def _bare(text: str) -> str:
     return "".join(c for c in _comparable(text) if c.isalnum())
 
 
+# Labels, not Ingredient Groups, even when they end in ":" right above a line.
+NOT_HEADINGS = {"ingredients", "ingredient", "method", "instructions", "directions", "notes"}
+
+
 def line_groups(
-    headings: Sequence[IngredientHeading], lines: Sequence[str], source_text: str | None
+    headings: Sequence[IngredientHeading], lines: Sequence[str], text: str | None
 ) -> list[str | None]:
-    """Each line's Ingredient Group (ADR 0033). A heading is kept only if it points at a
-    line and, for pasted text, sits right before that line in it: a print-to-PDF's text
-    can put every heading above the list, and a wrong group is worse than none. Only
-    the start of the line counts ("1 tsp lemon zest"): a PDF's layout text, which has
-    the order right, can be missing its light-grey notes ("(1 lemon)")."""
-    bare = _bare(source_text) if source_text is not None else None
+    """Each line's Ingredient Group (ADR 0033).
+
+    With text (a paste, or a PDF's layout text), code places every heading: it starts
+    the line that comes right after it in the text (only that line's start is compared:
+    a PDF's layout text can miss light-grey notes like "(1 lemon)"). The model names
+    headings, but its positions vary run to run, and a heading it leaves out would fold
+    its lines into the group above. So code also takes any text line ending in ":" that
+    sits between two ingredient lines. With no text (a photo), the model's positions are
+    used: a person checks every line read from a photo.
+    """
     starts: dict[int, str] = {}
-    for h in headings:
-        name = clean_line(h.heading, GROUP_NAME_MAX).rstrip(":").strip()
-        if not 0 <= h.before_line < len(lines) or not name or h.before_line in starts:
-            continue
-        start = re.split(r"[,(]", lines[h.before_line], maxsplit=1)[0]
-        if bare is not None and _bare(name + start) not in bare:
-            continue
-        starts[h.before_line] = name
+
+    def add(at: int, heading: str) -> None:
+        name = clean_line(heading, GROUP_NAME_MAX).rstrip(":").strip()
+        if 0 <= at < len(lines) and name and name.lower() not in NOT_HEADINGS:
+            starts.setdefault(at, name)
+
+    if text is None:
+        for h in headings:
+            add(h.before_line, h.heading)
+    else:
+        bare = _bare(text)
+        begins = [_bare(re.split(r"[,(]", line, maxsplit=1)[0]) for line in lines]
+
+        def place(name: str, first: int = 0) -> int | None:
+            found = _bare(name)
+            return next(
+                (i for i in range(first, len(lines)) if begins[i] and found + begins[i] in bare),
+                None,
+            )
+
+        for h in headings:
+            at = place(h.heading)
+            if at is not None:
+                add(at, h.heading)
+        for row in text.splitlines():
+            row = " ".join(row.split())
+            if row.endswith(":") and len(row) <= GROUP_NAME_MAX:
+                at = place(row, first=1)  # between lines: not a label above the list
+                if at is not None:
+                    add(at, row)
     out: list[str | None] = []
     for i in range(len(lines)):
         out.append(starts.get(i, out[-1] if out else None))

@@ -394,22 +394,55 @@ async def test_a_reading_without_headings_is_one_flat_list(
     assert {line["group_name"] for line in response.json()["lines"]} == {None}
 
 
-def test_a_heading_must_sit_right_before_its_first_line_in_the_text() -> None:
-    # A print-to-PDF's text puts every heading above the list (the salmon tray bake,
-    # 2026-11-22): the model guessed, and "Marinade slather" landed on the salmon.
-    jumbled = "Ingredients\nMarinade slather:\nVegetables:\n4 salmon fillets\n1 tbsp lemon juice"
-    lines = ["4 salmon fillets", "1 tbsp lemon juice"]
-    marinade = [IngredientHeading(before_line=0, heading="Marinade slather:")]
-    assert line_groups(marinade, lines, jumbled) == [None, None]
-    # Bullets, colons and spacing between them don't matter
-    tidy = "Ingredients\n4 salmon fillets\nMarinade slather:\n  ▢ 1 tbsp lemon juice"
-    marinade = [IngredientHeading(before_line=1, heading="Marinade slather")]
-    assert line_groups(marinade, lines, tidy) == [None, "Marinade slather"]
+H = IngredientHeading
+SALMON = ["4 x 180g salmon fillets, skin on (Note 1)", "1 tsp lemon zest (1 lemon)"]
+SALMON += ["3 bunches asparagus", "Olive oil spray", "Parmesan, finely grated"]
+# pypdf's layout text for the salmon tray bake: right order, light-grey notes missing
+LAYOUT = """Servings: 4 Calories: 364cal Author: Nagi
+Ingredients
+4 x 180g salmon fillets
+Marinade slather:
+1 tsp lemon zest
+Vegetables (optional):
+3 bunches asparagus
+Cooking & serving:
+Olive oil spray
+Parmesan"""
 
 
-def test_a_pdfs_layout_places_a_heading_even_without_the_grey_notes() -> None:
-    # pypdf's layout text has the order right but drops RecipeTin's light-grey notes
-    layout = "Ingredients\n   4 x 180g salmon fillets\nMarinade slather:\n   1 tsp lemon zest"
-    lines = ["4 x 180g salmon fillets, skin on (Note 1)", "1 tsp lemon zest (1 lemon)"]
-    marinade = [IngredientHeading(before_line=1, heading="Marinade slather:")]
-    assert line_groups(marinade, lines, layout) == [None, "Marinade slather"]
+def test_code_places_each_heading_where_the_text_puts_it() -> None:
+    # The model said line 0 for "Marinade slather" (2026-11-22, run 2 of 3): code knows
+    # better, because the text has it right before the lemon zest
+    said = [H(before_line=0, heading="Marinade slather:"), H(before_line=2, heading="Vegetables")]
+    assert line_groups(said, SALMON, LAYOUT) == [
+        None,
+        "Marinade slather",
+        "Vegetables (optional)",  # found by code; the model's shorter name isn't in the text
+        "Cooking & serving",  # left out by the model (run 1 of 3): found by code
+        "Cooking & serving",
+    ]
+
+
+def test_a_heading_the_text_doesnt_put_before_a_line_is_dropped() -> None:
+    # A print-to-PDF's plain text bunches the headings above the list (no layout text)
+    jumbled = "Ingredients\nMarinade slather:\nVegetables:\n"
+    jumbled += "4 x 180g salmon fillets\n1 tsp lemon zest"
+    said = [H(before_line=1, heading="Marinade slather")]
+    assert line_groups(said, SALMON[:2], jumbled) == [None, None]
+
+
+def test_a_colon_line_above_the_first_ingredient_isnt_a_heading_code_found() -> None:
+    # "Author:" right above the list in a PDF's plain text; a heading needs the model too
+    text = "Servings: Calories: Author:\n4 x 180g salmon fillets\n1 tsp lemon zest"
+    assert line_groups([], SALMON[:2], text) == [None, None]
+    said = [H(before_line=0, heading="For the fish")]
+    assert line_groups(said, SALMON[:2], "For the fish\n4 x 180g salmon fillets") == [
+        "For the fish",
+        "For the fish",
+    ]
+
+
+def test_from_a_photo_the_models_positions_are_used() -> None:
+    # No text to search: a person checks every line read from a photo anyway
+    said = [H(before_line=1, heading="Marinade slather:")]
+    assert line_groups(said, SALMON[:2], None) == [None, "Marinade slather"]
