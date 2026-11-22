@@ -25,8 +25,9 @@ conversation state lives in LangGraph's checkpoint tables, created at app startu
 
 ## Deploying (beta, ADR 0034)
 
-Railway builds `Dockerfile` (config in `railway.json`); the container runs `alembic upgrade head`
-before starting the server, then Railway checks `/health`. Test the image as Railway runs it (amd64):
+Railway builds `Dockerfile` (settings in `.railway/railway.py`; preview changes with
+`uv run railway config plan`, then `railway config apply`). The container runs
+`alembic upgrade head` before starting the server, then Railway checks `/health`. Test the image as Railway runs it (amd64):
 
 ```bash
 docker build --platform linux/amd64 -t sweep-api .
