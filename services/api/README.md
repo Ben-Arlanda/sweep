@@ -23,6 +23,17 @@ The agent (`AGENT_MODEL`, default `claude-sonnet-5-5`) is limited to
 `AGENT_DAILY_TOKEN_BUDGET` tokens per Household per day (default 300,000). Its
 conversation state lives in LangGraph's checkpoint tables, created at app startup.
 
+## Deploying (beta, ADR 0034)
+
+Railway builds `Dockerfile` (config in `railway.json`), runs `alembic upgrade head` before each
+deploy, then checks `/health`. Test the image as Railway runs it (amd64):
+
+```bash
+docker build --platform linux/amd64 -t sweep-api .
+docker run --rm --platform linux/amd64 -p 8000:8000 \
+  -e DATABASE_URL=postgresql://sweep:sweep@host.docker.internal:5433/sweep sweep-api
+```
+
 ## Layout
 
 ```

@@ -345,7 +345,8 @@ Each slice is a feature branch and a focused PR that works end to end.
 | 4e | `feature/recipe-audit` | Every Seed Recipe has a Cookable Method: new `unused` and no-heat-or-time checks (CI), the LLM reviewer re-aimed at the bar and measured on planted vague methods, then run on all 500 (Haiku); fixes drafted in session, deletions and fixes approved by the product owner | Evaluation (LLM-as-judge vs deterministic checks) |
 | 4f | `feature/recipe-images`, `-client` | Recipe Images for Seed Recipes: openly licensed photos from Openverse + Wikimedia, a measured Haiku vision check, a contact-sheet sign-off, WebP 960/360 under size limits, credits; shown with `expo-image` where `RecipeArt` is today (ADR 0027) | Multimodal (vision), evaluation |
 | 4g | `feature/recipe-library`, `-client` | The Seed Recipe library replaced by the product owner's 500 richer recipes (Recipe Stages, tips, variations, storage); generated Quick View steps checked against the stages; duplicates and ingredient names resolved; evals relabelled; Quick View / Detailed View toggle and Cook Mode (`expo-keep-awake`) in the client (ADR 0028) | Evaluation (generated content gated by checks), data migration |
-| 11 | `feature/aws-deployment` | ECS, RDS, Secrets Manager, IAM, Bedrock as second LLM provider, web hosting (TestFlight optional) | Cloud (Bedrock + IAM, deployment) |
+| 11a | `feature/beta-hosting`, `feature/testflight` | Beta hosting: the API in one Docker container on Railway with Railway Postgres, migrations before each deploy, photos on a volume; EAS Build + Submit to TestFlight (ADR 0034) | Deployment |
+| 11b | `feature/aws-deployment` | ECS, RDS, Secrets Manager, IAM, S3, Bedrock as second LLM provider, web hosting | Cloud (Bedrock + IAM, deployment) |
 
 **Slice 5b steps** (built 2026-11-15; decided: chat opens from a "Plan my week" button on Home, not a 6th tab; the chat reopens the Member's latest Conversation on any device, with a "New plan" button):
 
