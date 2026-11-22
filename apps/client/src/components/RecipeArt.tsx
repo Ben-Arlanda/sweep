@@ -1,5 +1,5 @@
 import { Image } from 'expo-image';
-import { UtensilsCrossed } from 'lucide-react-native';
+import { Utensils } from 'lucide-react-native';
 import { useState } from 'react';
 import { View, type DimensionValue } from 'react-native';
 
@@ -66,7 +66,7 @@ export function RecipeArt({
           style={{ width: '100%', height: '100%' }}
         />
       ) : (
-        <Icon icon={UtensilsCrossed} size={size} color={tint.onPill} />
+        <Icon icon={Utensils} size={size} color={tint.onPill} />
       )}
     </View>
   );

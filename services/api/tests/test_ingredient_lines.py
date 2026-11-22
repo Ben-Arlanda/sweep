@@ -306,6 +306,11 @@ def test_a_line_it_cannot_match_still_gets_a_clean_name(text: str, name: str, no
             "1 onion and 2 carrots, diced",
             [("onion", D("1"), None, "diced"), ("carrots", D("2"), None, "diced")],
         ),
+        # "each": the amount is for both (RecipeTin Eats salmon tray bake, 2026-11-22)
+        (
+            "1/4 tsp each salt and pepper",
+            [("salt", D("0.25"), "tsp", None), ("black pepper", D("0.25"), "tsp", None)],
+        ),
         (
             "salt and freshly ground black pepper",
             [("salt", None, None, None), ("black pepper", None, None, "freshly")],
@@ -345,6 +350,9 @@ def test_water_is_not_something_you_shop_for() -> None:
 def test_marks_optional_lines() -> None:
     assert parse_line("1 tsp chilli flakes (optional)", INDEX).optional
     assert not parse_line("1 tsp chilli flakes", INDEX).optional
+    # "optional" among other notes (RecipeTin Eats salmon tray bake, 2026-11-22)
+    parsley = parse_line("Parsley, finely chopped, optional", INDEX)
+    assert (parsley.optional, parsley.note) == (True, "finely chopped")
 
 
 class ScriptedParser:
