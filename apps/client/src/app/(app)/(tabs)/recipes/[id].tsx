@@ -283,17 +283,22 @@ function RecipeContent() {
             </Text>
           ) : null}
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.md }}>
-            <View style={{ flex: 1, flexDirection: 'row' }}>
-              {views.length > 1 ? <MethodViewPicker value={view} onChange={setView} /> : null}
-            </View>
+            {views.length > 1 ? (
+              <View style={{ flex: 1, flexDirection: 'row' }}>
+                <MethodViewPicker value={view} onChange={setView} />
+              </View>
+            ) : null}
             {steps.length > 0 ? (
               <PressableScale
                 accessibilityRole="button"
                 accessibilityLabel={`Cook Mode: ${r.title}, one step at a time`}
                 onPress={() => setCooking(true)}
                 style={{
+                  // No Quick / Detailed menu (an added recipe): the button takes the row
+                  flex: views.length > 1 ? undefined : 1,
                   flexDirection: 'row',
                   alignItems: 'center',
+                  justifyContent: 'center',
                   gap: t.space.sm,
                   minHeight: t.touchTarget,
                   paddingHorizontal: t.space.lg,
