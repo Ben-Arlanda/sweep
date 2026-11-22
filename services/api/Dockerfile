@@ -16,5 +16,6 @@ RUN uv sync --locked
 ENV PATH="/app/.venv/bin:$PATH"
 # Runs as root: Railway volumes (Member photos) are root-owned, so a non-root user can't write.
 
-# Railway sets PORT; 8000 locally.
-CMD ["sh", "-c", "fastapi run app/main.py --host 0.0.0.0 --port ${PORT:-8000}"]
+# Migrate, then serve. A failed migration stops the start, so the health check fails and
+# Railway keeps the old version. Railway sets PORT; 8000 locally.
+CMD ["sh", "-c", "alembic upgrade head && exec fastapi run app/main.py --host 0.0.0.0 --port ${PORT:-8000}"]
