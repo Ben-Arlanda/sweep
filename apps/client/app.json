@@ -6,11 +6,16 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "sweep",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "bundleIdentifier": "com.benarlanda.sweep",
+      "icon": "./assets/expo.icon",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
+      "package": "com.benarlanda.sweep",
       "adaptiveIcon": {
         "backgroundColor": "#D8F23C",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -34,11 +39,25 @@
         }
       ],
       "@clerk/expo",
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Sweep uses your photos to read recipes and stock your Kitchen.",
+          "cameraPermission": "Sweep uses the camera to photograph recipes and your Kitchen.",
+          "microphonePermission": false
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ce8334d1-76a8-4a43-9fb9-d02fa8a7d681"
+      }
+    },
+    "owner": "benarlanda"
   }
 }
