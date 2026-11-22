@@ -199,6 +199,10 @@ screen before anything is saved.
   against the pasted text, and any line it can't find is flagged for the person to check.
   In a photo, copy what you can read. If a word or amount can't be read, leave it out
   of the line rather than guess: a person checks every line from a photo.
+- ingredient_headings: the headings that split the ingredient list into groups
+  ("Marinade slather:", "To serve"), each copied exactly as written, with before_line:
+  the position in ingredient_lines (from 0) of the first line under it. Empty if the
+  list has no headings. Never make up a heading.
 - method: the steps, in order, as written. Split one long paragraph into its steps if
   needed, but don't reword them. Leave out headings ("On to the sauce:"): they aren't
   steps.

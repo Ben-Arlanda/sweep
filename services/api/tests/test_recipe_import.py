@@ -10,7 +10,7 @@ import httpx
 import pytest
 
 from app.models import Course
-from app.services.recipe_import import RecipeReading, appears_in
+from app.services.recipe_import import IngredientHeading, RecipeReading, appears_in, line_groups
 from tests.conftest import FakeIssuer, Loader
 from tests.fake_model import ScriptedFetcher, ScriptedReader
 from tests.helpers import create_household, idem
@@ -341,3 +341,67 @@ async def test_a_photo_that_isnt_a_recipe_is_refused(
     response = await photos(client, fake_issuer, ("cat.jpg", JPEG))
     assert response.status_code == 422
     assert "recipe" in response.json()["detail"]
+
+
+# --- Ingredient Groups (ADR 0033) ----------------------------------------------------------
+
+GROUPED = """Lemon garlic salmon
+Ingredients
+4 salmon fillets
+Marinade slather:
+1 tbsp lemon juice
+2 tbsp olive oil
+Vegetables (optional):
+3 bunches asparagus
+Method
+1. Slather and bake.
+"""
+
+
+async def test_paste_keeps_the_recipes_ingredient_headings(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, reader: ScriptedReader
+) -> None:
+    await create_household(client, fake_issuer, "ana")
+    reader.answers.append(
+        reading(
+            ingredient_lines=[
+                "4 salmon fillets",
+                "1 tbsp lemon juice",
+                "2 tbsp olive oil",
+                "3 bunches asparagus",
+            ],
+            ingredient_headings=[
+                {"before_line": 1, "heading": "Marinade slather:"},  # the ":" goes
+                {"before_line": 3, "heading": "Vegetables (optional)"},
+                {"before_line": 9, "heading": "Sauce"},  # no such line: dropped
+                {"before_line": 0, "heading": "For the glaze"},  # not in the text: dropped
+            ],
+            method=["Slather and bake."],
+        )
+    )
+    response = await paste(client, fake_issuer, GROUPED)
+    assert response.status_code == 200, response.text
+    groups = [line["group_name"] for line in response.json()["lines"]]
+    assert groups == [None, "Marinade slather", "Marinade slather", "Vegetables (optional)"]
+
+
+async def test_a_reading_without_headings_is_one_flat_list(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, reader: ScriptedReader
+) -> None:
+    await create_household(client, fake_issuer, "ana")
+    reader.answers.append(reading())
+    response = await paste(client, fake_issuer, PASTED)
+    assert {line["group_name"] for line in response.json()["lines"]} == {None}
+
+
+def test_a_heading_must_sit_right_before_its_first_line_in_the_text() -> None:
+    # A print-to-PDF's text puts every heading above the list (the salmon tray bake,
+    # 2026-11-22): the model guessed, and "Marinade slather" landed on the salmon.
+    jumbled = "Ingredients\nMarinade slather:\nVegetables:\n4 salmon fillets\n1 tbsp lemon juice"
+    lines = ["4 salmon fillets", "1 tbsp lemon juice"]
+    marinade = [IngredientHeading(before_line=0, heading="Marinade slather:")]
+    assert line_groups(marinade, lines, jumbled) == [None, None]
+    # Bullets, colons and spacing between them don't matter
+    tidy = "Ingredients\n4 salmon fillets\nMarinade slather:\n  ▢ 1 tbsp lemon juice"
+    marinade = [IngredientHeading(before_line=1, heading="Marinade slather")]
+    assert line_groups(marinade, lines, tidy) == [None, "Marinade slather"]

@@ -9,7 +9,7 @@ import {
   Plus,
 } from 'lucide-react-native';
 import { randomUUID } from 'expo-crypto';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { Linking, Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -37,7 +37,7 @@ import {
 } from '@/features/recipes/kitchenMatch';
 import { swapLine, swapsOf } from '@/features/recipes/adaptations';
 import { cookSteps, metaParts, viewsOf, type MethodView } from '@/features/recipes/method';
-import { lineCaption, lineName } from '@/features/recipes/lines';
+import { groupHeading, lineCaption, lineName } from '@/features/recipes/lines';
 import { useMethodView } from '@/features/recipes/methodView';
 import { PickDaySheet } from '@/features/mealPlan/PickDaySheet';
 import { RecipeRow } from '@/features/recipes/RecipeRow';
@@ -251,15 +251,20 @@ function RecipeContent() {
               overflow: 'hidden',
             }}
           >
-            {r.ingredients.map((line, i) => (
-              <IngredientRow
-                key={i}
-                first={i === 0}
-                line={line}
-                have={statusOf(line, i)}
-                onAdd={list.data ? () => need.add([{ line, i }]) : undefined}
-              />
-            ))}
+            {r.ingredients.map((line, i) => {
+              const heading = groupHeading(r.ingredients, i, (l) => l.group_name ?? null);
+              return (
+                <Fragment key={i}>
+                  {heading ? <GroupHeading name={heading} first={i === 0} /> : null}
+                  <IngredientRow
+                    first={i === 0 || heading !== null}
+                    line={line}
+                    have={statusOf(line, i)}
+                    onAdd={list.data ? () => need.add([{ line, i }]) : undefined}
+                  />
+                </Fragment>
+              );
+            })}
           </View>
           {kitchen.isError ? (
             <Text variant="caption" muted>
@@ -749,6 +754,27 @@ function YoursActions({ id, title }: { id: string; title: string }) {
       ) : null}
       <ErrorText message={remove.error?.message} />
     </View>
+  );
+}
+
+/** An Ingredient Group's name ("Marinade slather") above its lines, inside the card. */
+function GroupHeading({ name, first }: { name: string; first: boolean }) {
+  const t = useTheme();
+  return (
+    <Text
+      accessibilityRole="header"
+      style={{
+        fontFamily: t.fonts.bold,
+        fontSize: 13,
+        paddingHorizontal: 14,
+        paddingTop: t.space.md,
+        paddingBottom: t.space.xs,
+        borderTopWidth: first ? 0 : 1,
+        borderTopColor: t.colors.border,
+      }}
+    >
+      {name}
+    </Text>
   );
 }
 

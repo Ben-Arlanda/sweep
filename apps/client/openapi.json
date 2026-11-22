@@ -4703,6 +4703,17 @@
             ],
             "title": "New Ingredient"
           },
+          "group_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Group Name"
+          },
           "check": {
             "type": "boolean",
             "title": "Check"
@@ -5064,6 +5075,19 @@
               }
             ],
             "title": "Ingredient Id"
+          },
+          "group_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 80,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Group Name"
           }
         },
         "type": "object",
@@ -6653,6 +6677,17 @@
               }
             ],
             "title": "New Ingredient"
+          },
+          "group_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Group Name"
           }
         },
         "type": "object",

@@ -252,6 +252,25 @@ async def test_salt_and_pepper_is_two_lines_and_saving_again_keeps_two(
     assert len(edited.json()["ingredients"]) == 3
 
 
+async def test_a_lines_ingredient_group_is_saved_and_shown(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer
+) -> None:
+    await create_household(client, fake_issuer, "ana")
+    lines = [
+        {"raw_text": "4 salmon fillets"},
+        {"raw_text": "1/4 tsp each salt and pepper", "group_name": "Marinade slather"},
+        {"raw_text": "1 tbsp lemon juice", "group_name": "Marinade slather"},
+    ]
+    recipe = (await save(client, fake_issuer, nonna(lines=lines))).json()
+    got = [(x["ingredient"]["name"], x["group_name"]) for x in recipe["ingredients"]]
+    assert got == [
+        ("salmon fillet", None),
+        ("salt", "Marinade slather"),  # both halves of "salt and pepper" keep the group
+        ("black pepper", "Marinade slather"),
+        ("lemons", "Marinade slather"),
+    ]
+
+
 async def test_a_line_too_long_to_be_one_food_is_refused_at_save(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer
 ) -> None:

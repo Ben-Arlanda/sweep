@@ -29,6 +29,7 @@ from app import errors, pdf_text
 from app.llm_costs import Usage
 from app.models import Course, RecipeIngredient
 from app.schemas import (
+    GROUP_NAME_MAX,
     MAX_METHOD_STEPS,
     MAX_PASTE_CHARS,
     MAX_RECIPE_LINES,
@@ -38,6 +39,13 @@ from app.schemas import (
 from app.services import imported_recipes, recipe_jsonld, recipes
 from app.text import clean_line
 from app.web_fetch import Page, check_url
+
+
+class IngredientHeading(BaseModel):
+    """An Ingredient Group's heading, by the line it comes before (ADR 0033)."""
+
+    before_line: int  # position in ingredient_lines
+    heading: str  # copied as written
 
 
 class RecipeReading(BaseModel):
@@ -52,6 +60,7 @@ class RecipeReading(BaseModel):
     course: Course  # a guess: the review screen pre-selects it and says so
     cuisine: str | None  # one of the cuisines it was given, or null
     ingredient_lines: list[str]  # copied exactly as written
+    ingredient_headings: list[IngredientHeading] = []  # "Marinade slather:" before line 1
     method: list[str]
 
 
@@ -137,6 +146,32 @@ def appears_in(line: str, text: str) -> bool:
 
 def _in_range(value: int | None, high: int) -> int | None:
     return value if value is not None and 0 < value <= high else None
+
+
+def _bare(text: str) -> str:
+    """Letters and digits only: "Marinade slather: ▢ 1 tbsp" → "marinadeslather1tbsp"."""
+    return "".join(c for c in _comparable(text) if c.isalnum())
+
+
+def line_groups(
+    headings: Sequence[IngredientHeading], lines: Sequence[str], source_text: str | None
+) -> list[str | None]:
+    """Each line's Ingredient Group (ADR 0033). A heading is kept only if it points at a
+    line and, for pasted text, sits right before that line in it: a print-to-PDF's text
+    can put every heading above the list, and a wrong group is worse than none."""
+    bare = _bare(source_text) if source_text is not None else None
+    starts: dict[int, str] = {}
+    for h in headings:
+        name = clean_line(h.heading, GROUP_NAME_MAX).rstrip(":").strip()
+        if not 0 <= h.before_line < len(lines) or not name or h.before_line in starts:
+            continue
+        if bare is not None and _bare(name + lines[h.before_line]) not in bare:
+            continue
+        starts[h.before_line] = name
+    out: list[str | None] = []
+    for i in range(len(lines)):
+        out.append(starts.get(i, out[-1] if out else None))
+    return out
 
 
 # --- The pipeline ----------------------------------------------------------------------
@@ -238,13 +273,18 @@ async def _finish(
             "Sweep couldn't read that recipe just now. Try again, or type it in."
         )
     title = clean_line(reading.title, 200)
-    lines = [clean_line(line, 300) for line in reading.ingredient_lines]
-    lines = [line for line in lines if line][:MAX_RECIPE_LINES]
+    read = [clean_line(line, 300) for line in reading.ingredient_lines]
+    groups = line_groups(reading.ingredient_headings, read, source_text)
+    kept = [(line, group) for line, group in zip(read, groups, strict=True) if line]
+    kept = kept[:MAX_RECIPE_LINES]
+    lines = [line for line, _ in kept]
     if not reading.found_recipe or not title or not lines:
         raise errors.InvalidInput(not_a_recipe)
 
     matched = await imported_recipes.read_lines(
-        session, household_id, [ImportedLineIn(raw_text=line) for line in lines]
+        session,
+        household_id,
+        [ImportedLineIn(raw_text=line, group_name=group) for line, group in kept],
     )
     method = [step.strip()[:2000] for step in reading.method if step.strip()][:MAX_METHOD_STEPS]
     cuisine = reading.cuisine.strip().lower() if reading.cuisine else None
