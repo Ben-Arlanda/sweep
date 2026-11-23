@@ -253,3 +253,57 @@ async def test_a_planned_meal_says_how_long_it_takes(
         await client.get("/meal-plan", params={"start": MON}, headers=fake_issuer.headers("ana"))
     ).json()
     assert body["meals"][0]["total_minutes"] == 35
+
+
+async def servings(
+    client: httpx.AsyncClient, issuer: FakeIssuer, mid: str, n: int, who: str = "ana"
+) -> httpx.Response:
+    return await client.patch(
+        f"/planned-meals/{mid}", json={"servings": n}, headers=issuer.headers(who) | idem()
+    )
+
+
+async def test_changing_a_planned_meals_servings(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, load: Loader, db: Engine
+) -> None:
+    await load([CURRY])
+    await create_household(client, fake_issuer, "ana")
+    mid = plan(db, MON, "chicken-curry", 4)
+
+    response = await servings(client, fake_issuer, mid, 6)
+    assert response.status_code == 200, response.text
+    assert response.json()["servings"] == 6
+    assert rows(db, "SELECT servings FROM planned_meals")[0].servings == 6
+
+
+async def test_servings_stay_between_1_and_20(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, load: Loader, db: Engine
+) -> None:
+    await load([CURRY])
+    await create_household(client, fake_issuer, "ana")
+    mid = plan(db, MON, "chicken-curry", 4)
+    for n in (0, 21):
+        assert (await servings(client, fake_issuer, mid, n)).status_code == 422
+    assert rows(db, "SELECT servings FROM planned_meals")[0].servings == 4
+
+
+async def test_a_cooked_meals_servings_cant_change(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, load: Loader, db: Engine
+) -> None:
+    # Cooked took amounts for its servings out of the Kitchen; undo Cooked first.
+    await load([CURRY])
+    await create_household(client, fake_issuer, "ana")
+    mid = plan(db, MON, "chicken-curry", 4)
+    await cooked(client, fake_issuer, mid)
+    assert (await servings(client, fake_issuer, mid, 6)).status_code == 409
+    assert rows(db, "SELECT servings FROM planned_meals")[0].servings == 4
+
+
+async def test_another_households_servings_cant_change(
+    client: httpx.AsyncClient, fake_issuer: FakeIssuer, load: Loader, db: Engine
+) -> None:
+    await load([CURRY])
+    await create_household(client, fake_issuer, "ana")
+    await create_household(client, fake_issuer, "eve")
+    mid = plan(db, MON, "chicken-curry", 4)
+    assert (await servings(client, fake_issuer, mid, 6, who="eve")).status_code == 404

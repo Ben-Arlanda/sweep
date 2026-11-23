@@ -3441,6 +3441,73 @@
             }
           }
         }
+      },
+      "patch": {
+        "tags": [
+          "meal-plan"
+        ],
+        "summary": "Change",
+        "operationId": "change_planned_meals__meal_id__patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "meal_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Meal Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlannedMealIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlannedMealOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/planned-meals/{meal_id}/cooked": {
@@ -6028,7 +6095,7 @@
             "anyOf": [
               {
                 "type": "integer",
-                "maximum": 24.0,
+                "maximum": 20.0,
                 "minimum": 1.0
               },
               {
@@ -6100,6 +6167,22 @@
           "weekdays"
         ],
         "title": "PlanWeekdaysOut"
+      },
+      "PlannedMealIn": {
+        "properties": {
+          "servings": {
+            "type": "integer",
+            "maximum": 20.0,
+            "minimum": 1.0,
+            "title": "Servings"
+          }
+        },
+        "type": "object",
+        "required": [
+          "servings"
+        ],
+        "title": "PlannedMealIn",
+        "description": "Change a Planned Meal's servings (the recipe page's Serves). The database allows 1\u201320."
       },
       "PlannedMealOut": {
         "properties": {

@@ -132,7 +132,7 @@ The Household's Planned Meals for a given week. Weeks run Monday to Sunday. One 
 _Avoid_: menu, schedule
 
 **Planned Meal**:
-One recipe (or Recipe Adaptation) assigned to a day, with a number of servings.
+One recipe (or Recipe Adaptation) assigned to a day, with a number of servings. The recipe page scales its amounts to them (plain maths, rounded the way a cook measures), and changing Serves there changes the Planned Meal, until it's Cooked.
 _Avoid_: meal slot, dinner
 
 **Cooked**:

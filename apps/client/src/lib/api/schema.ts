@@ -925,7 +925,8 @@ export interface paths {
         delete: operations["remove_planned_meals__meal_id__delete"];
         options?: never;
         head?: never;
-        patch?: never;
+        /** Change */
+        patch: operations["change_planned_meals__meal_id__patch"];
         trace?: never;
     };
     "/planned-meals/{meal_id}/cooked": {
@@ -1813,6 +1814,14 @@ export interface components {
         PlanWeekdaysOut: {
             /** Weekdays */
             weekdays: number[];
+        };
+        /**
+         * PlannedMealIn
+         * @description Change a Planned Meal's servings (the recipe page's Serves). The database allows 1–20.
+         */
+        PlannedMealIn: {
+            /** Servings */
+            servings: number;
         };
         /** PlannedMealOut */
         PlannedMealOut: {
@@ -4202,6 +4211,43 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    change_planned_meals__meal_id__patch: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                meal_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PlannedMealIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlannedMealOut"];
+                };
             };
             /** @description Validation Error */
             422: {

@@ -22,6 +22,7 @@ from app.schemas import (
     DinnerIdeaOut,
     MealPlanOut,
     PlanDayIn,
+    PlannedMealIn,
     PlannedMealOut,
     RecipeSummaryOut,
     image_out,
@@ -150,6 +151,23 @@ async def remove(
         await meal_plan.remove(session, ctx, meal_id)
 
     return await idempotent(request, session, ctx, key, work, status.HTTP_204_NO_CONTENT)
+
+
+@router.patch("/planned-meals/{meal_id}", response_model=PlannedMealOut)
+async def change(
+    meal_id: uuid.UUID,
+    body: PlannedMealIn,
+    request: Request,
+    ctx: MemberDep,
+    session: SessionDep,
+    key: IdempotencyKeyHeader,
+) -> Response:
+    async def work() -> PlannedMealOut:
+        meal = await meal_plan.set_servings(session, ctx, meal_id, body.servings)
+        [out] = await meals_out(session, ctx, [meal])
+        return out
+
+    return await idempotent(request, session, ctx, key, work)
 
 
 @router.post("/planned-meals/{meal_id}/cooked", response_model=PlannedMealOut)
