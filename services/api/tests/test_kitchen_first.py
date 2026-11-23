@@ -52,7 +52,11 @@ async def ingredient_ids(db: Engine, slug: str) -> list[str]:
 
 
 async def stock(client: httpx.AsyncClient, issuer: FakeIssuer, ids: list[str]) -> None:
+    view = (await client.get("/kitchen", headers=issuer.headers("ana"))).json()
+    staples = {s["ingredient"]["id"] for s in view["staples"]}  # already at home
     for ingredient_id in ids:
+        if ingredient_id in staples:
+            continue
         response = await client.put(
             f"/kitchen/items/{ingredient_id}",
             json={"quantity": None},

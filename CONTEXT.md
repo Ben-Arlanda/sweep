@@ -63,7 +63,7 @@ A Household's choice that a name means a particular Ingredient ("chocolate" → 
 _Avoid_: alias (aliases are shared reference data)
 
 **Staple**:
-An Ingredient the Household is assumed to have until a Member marks it as run out (salt, oil, common spices). No quantity is tracked.
+An Ingredient the Household is assumed to have until a Member marks it as run out (salt, oil, milk, bread, eggs): everyday basics used outside planned meals. No quantity is tracked.
 _Avoid_: pantry item, basic
 
 **Tracked Ingredient**:

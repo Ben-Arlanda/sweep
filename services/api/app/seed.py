@@ -182,6 +182,26 @@ def regroup_household_ingredients(conn: Connection) -> int:
     return moved
 
 
+def add_default_staples(conn: Connection, names: Sequence[str]) -> int:
+    """Give existing Households these new default Staples. Skips any a Household already has
+    as a Staple, Tracks (it chose to count it) or never eats. Run once by a migration."""
+    return conn.execute(
+        sa.text(
+            """INSERT INTO household_staples (household_id, ingredient_id)
+            SELECT h.id, i.id FROM households h
+            JOIN ingredients i ON i.household_id IS NULL AND i.is_default_staple
+                AND i.name = ANY(:names)
+            WHERE NOT EXISTS (SELECT 1 FROM household_staples s
+                    WHERE s.household_id = h.id AND s.ingredient_id = i.id)
+                AND NOT EXISTS (SELECT 1 FROM kitchen_items k
+                    WHERE k.household_id = h.id AND k.ingredient_id = i.id)
+                AND NOT EXISTS (SELECT 1 FROM household_excluded_ingredients x
+                    WHERE x.household_id = h.id AND x.ingredient_id = i.id)"""
+        ),
+        {"names": list(names)},
+    ).rowcount
+
+
 if __name__ == "__main__":
     engine = create_engine(sqlalchemy_url(settings.database_url))
     with engine.begin() as conn:

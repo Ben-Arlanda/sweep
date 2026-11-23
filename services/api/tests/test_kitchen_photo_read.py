@@ -52,15 +52,15 @@ async def test_rows_are_matched_and_ticked_and_nothing_is_written(
 ) -> None:
     await create_household(client, fake_issuer, "ana")
     before = await kitchen(client, fake_issuer, "ana")
-    reader.answers.append(seen(("eggs", 6), ("chicken thighs", None)))
+    reader.answers.append(seen(("tomatoes", 6), ("chicken thighs", None)))
 
     response = await send(client, fake_issuer, ("a.jpg", JPEG), ("b.png", PNG))
 
     assert response.status_code == 200, response.text
     got = rows(response.json())
-    assert got["eggs"]["ingredient"]["name"] == "eggs"
-    assert got["eggs"]["quantity"] == "6"
-    assert got["eggs"]["ticked"] is True
+    assert got["tomatoes"]["ingredient"]["name"] == "tomatoes"
+    assert got["tomatoes"]["quantity"] == "6"
+    assert got["tomatoes"]["ticked"] is True
     assert got["chicken thighs"]["ingredient"]["name"] == "chicken thigh"
     assert got["chicken thighs"]["quantity"] is None
     assert reader.kitchen_calls == [[("image/jpeg", len(JPEG)), ("image/png", len(PNG))]]
@@ -109,9 +109,9 @@ async def test_rows_say_what_the_kitchen_has_now(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer, reader: ScriptedReader, db: Engine
 ) -> None:
     await create_household(client, fake_issuer, "ana")
-    eggs = await ingredient_id(client, fake_issuer, "ana", "eggs")
+    tomatoes = await ingredient_id(client, fake_issuer, "ana", "tomatoes")
     cream = await ingredient_id(client, fake_issuer, "ana", "thickened cream")
-    for iid, quantity in ((eggs, "4"), (cream, "1000")):
+    for iid, quantity in ((tomatoes, "4"), (cream, "1000")):
         response = await client.put(
             f"/kitchen/items/{iid}",
             json={"quantity": quantity},
@@ -123,29 +123,36 @@ async def test_rows_say_what_the_kitchen_has_now(
             text("UPDATE kitchen_items SET last_confirmed_at = :t WHERE ingredient_id = :i"),
             {"t": utcnow() - timedelta(days=20), "i": cream},
         )
-    reader.answers.append(seen(("eggs", 6), ("thickened cream", None), ("butter", None)))
+    reader.answers.append(seen(("tomatoes", 6), ("thickened cream", None), ("sour cream", None)))
 
     got = rows((await send(client, fake_issuer, ("a.jpg", JPEG))).json())
 
-    assert got["eggs"]["in_kitchen"] == {"quantity": "4", "unit": "count", "status": "confirmed"}
+    assert got["tomatoes"]["in_kitchen"] == {
+        "quantity": "4",
+        "unit": "count",
+        "status": "confirmed",
+    }
     assert got["thickened cream"]["in_kitchen"] == {
         "quantity": "1000",
         "unit": "ml",
         "status": "unknown",
     }
-    assert got["butter"]["in_kitchen"] is None  # new
+    assert got["sour cream"]["in_kitchen"] is None  # new
 
 
 async def test_two_names_for_one_ingredient_become_one_row(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer, reader: ScriptedReader
 ) -> None:
-    # Two cartons named differently ("eggs", "free range eggs"): both are what we have.
+    # Two labels for one food ("tomatoes", "truss tomatoes"): both are what we have.
     await create_household(client, fake_issuer, "ana")
-    reader.answers.append(seen(("eggs", 6), ("free range eggs", 12), ("milk", None)))
+    reader.answers.append(seen(("tomatoes", 6), ("truss tomatoes", 12), ("milk", None)))
 
     body = (await send(client, fake_issuer, ("a.jpg", JPEG))).json()
 
-    assert [(r["name"], r["quantity"]) for r in body["rows"]] == [("eggs", "18"), ("milk", None)]
+    assert [(r["name"], r["quantity"]) for r in body["rows"]] == [
+        ("tomatoes", "18"),
+        ("milk", None),
+    ]
 
 
 async def test_names_are_cleaned_to_one_line(
@@ -163,11 +170,11 @@ async def test_silly_counts_are_dropped(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer, reader: ScriptedReader
 ) -> None:
     await create_household(client, fake_issuer, "ana")
-    reader.answers.append(seen(("eggs", 0)))
+    reader.answers.append(seen(("tomatoes", 0)))
 
     got = rows((await send(client, fake_issuer, ("a.jpg", JPEG))).json())
 
-    assert got["eggs"]["quantity"] is None
+    assert got["tomatoes"]["quantity"] is None
 
 
 async def test_no_food_is_a_clear_422(
@@ -238,7 +245,7 @@ async def test_the_photo_attempt_counts_toward_recipe_imports(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer, reader: ScriptedReader, db: Engine
 ) -> None:
     await create_household(client, fake_issuer, "ana")
-    reader.answers.append(seen(("eggs", 6)))
+    reader.answers.append(seen(("tomatoes", 6)))
     await send(client, fake_issuer, ("a.jpg", JPEG))
 
     with db.connect() as conn:
