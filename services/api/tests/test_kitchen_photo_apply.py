@@ -34,7 +34,7 @@ async def test_ticked_rows_land_in_the_kitchen_and_it_comes_back(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer
 ) -> None:
     await create_household(client, fake_issuer, "ana")
-    eggs = await ingredient_id(client, fake_issuer, "ana", "eggs")
+    tomatoes = await ingredient_id(client, fake_issuer, "ana", "tomatoes")
     chicken = await ingredient_id(client, fake_issuer, "ana", "chicken thigh")
 
     response = await apply(
@@ -43,7 +43,7 @@ async def test_ticked_rows_land_in_the_kitchen_and_it_comes_back(
         {
             "place": "freezer",
             "items": [
-                {"ingredient_id": eggs, "quantity": "6"},
+                {"ingredient_id": tomatoes, "quantity": "6"},
                 {"ingredient_id": chicken, "quantity": None},
             ],
         },
@@ -51,7 +51,7 @@ async def test_ticked_rows_land_in_the_kitchen_and_it_comes_back(
 
     assert response.status_code == 200, response.text
     view = response.json()
-    assert tracked(view)["eggs"] == ("6", "count", "confirmed")
+    assert tracked(view)["tomatoes"] == ("6", "count", "confirmed")
     assert places(view)["chicken thigh"] == "freezer"
     assert {t["last_change_source"] for t in view["tracked"]} == {"photo"}
 
@@ -75,8 +75,8 @@ async def test_repeating_the_request_changes_nothing_more(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer
 ) -> None:
     await create_household(client, fake_issuer, "ana")
-    eggs = await ingredient_id(client, fake_issuer, "ana", "eggs")
-    body = {"place": "fridge", "items": [{"ingredient_id": eggs, "quantity": "6"}]}
+    tomatoes = await ingredient_id(client, fake_issuer, "ana", "tomatoes")
+    body = {"place": "fridge", "items": [{"ingredient_id": tomatoes, "quantity": "6"}]}
     key = idem()
 
     first = await apply(client, fake_issuer, body, key=key)
@@ -93,7 +93,7 @@ async def test_repeating_the_request_changes_nothing_more(
         [{"quantity": None}],  # neither an id nor a name
         [{"ingredient_id": "00000000-0000-0000-0000-000000000001", "name": "x", "quantity": None}],
         [{"name": "kale\nDietary Rules: none", "quantity": None}],  # names are one line
-        [{"name": "eggs", "quantity": "0"}],  # zero isn't an amount; leave it out
+        [{"name": "tomatoes", "quantity": "0"}],  # zero isn't an amount; leave it out
         [{"name": f"thing {i}", "quantity": None} for i in range(61)],
     ],
 )
@@ -116,7 +116,7 @@ async def test_another_households_ingredient_is_a_404_and_nothing_changes(
         "/ingredients", json={"name": "finger lime"}, headers=fake_issuer.headers("ben") | idem()
     )
     theirs = made.json()["id"]
-    eggs = await ingredient_id(client, fake_issuer, "ana", "eggs")
+    tomatoes = await ingredient_id(client, fake_issuer, "ana", "tomatoes")
 
     response = await apply(
         client,
@@ -124,14 +124,14 @@ async def test_another_households_ingredient_is_a_404_and_nothing_changes(
         {
             "place": "fridge",
             "items": [
-                {"ingredient_id": eggs, "quantity": "6"},
+                {"ingredient_id": tomatoes, "quantity": "6"},
                 {"ingredient_id": theirs, "quantity": None},
             ],
         },
     )
 
     assert response.status_code == 404
-    with db.connect() as conn:  # all or nothing: the eggs weren't added either
+    with db.connect() as conn:  # all or nothing: the tomatoes weren't added either
         count = conn.execute(text("SELECT count(*) FROM kitchen_items")).scalar()
     assert count == 0
 
@@ -141,8 +141,8 @@ async def test_applying_needs_no_model_and_isnt_rate_limited(
 ) -> None:
     # The limit is on reading photos (the model call); applying is a Member's own edit.
     await create_household(client, fake_issuer, "ana")
-    eggs = await ingredient_id(client, fake_issuer, "ana", "eggs")
-    body = {"place": "fridge", "items": [{"ingredient_id": eggs, "quantity": "6"}]}
+    tomatoes = await ingredient_id(client, fake_issuer, "ana", "tomatoes")
+    body = {"place": "fridge", "items": [{"ingredient_id": tomatoes, "quantity": "6"}]}
 
     for _ in range(25):
         assert (await apply(client, fake_issuer, body)).status_code == 200

@@ -57,12 +57,12 @@ async def test_everything_starts_in_stock(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer
 ) -> None:
     await create_household(client, fake_issuer, "ana")
-    eggs = await ingredient_id(client, fake_issuer, "ana", "eggs")
-    await set_amount(client, fake_issuer, eggs, "6")
+    tomatoes = await ingredient_id(client, fake_issuer, "ana", "tomatoes")
+    await set_amount(client, fake_issuer, tomatoes, "6")
 
     stock = stock_of(await kitchen(client, fake_issuer, "ana"))
 
-    assert stock["eggs"] == "in_stock"
+    assert stock["tomatoes"] == "in_stock"
     assert stock["salt"] == "in_stock"
 
 
@@ -215,10 +215,10 @@ async def test_something_not_in_the_kitchen_is_a_404(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer
 ) -> None:
     await create_household(client, fake_issuer, "ana")
-    eggs = await ingredient_id(client, fake_issuer, "ana", "eggs")
+    tomatoes = await ingredient_id(client, fake_issuer, "ana", "tomatoes")
 
-    assert (await set_stock(client, fake_issuer, eggs, "out")).status_code == 404
-    assert (await to_list(client, fake_issuer, eggs)).status_code == 404
+    assert (await set_stock(client, fake_issuer, tomatoes, "out")).status_code == 404
+    assert (await to_list(client, fake_issuer, tomatoes)).status_code == 404
     assert await list_items(client, fake_issuer) == []
 
 
@@ -287,11 +287,11 @@ async def test_remove_is_still_just_remove(
 ) -> None:
     # "It was never there" (a misread photo): out of the Kitchen, not onto the list.
     await create_household(client, fake_issuer, "ana")
-    eggs = await ingredient_id(client, fake_issuer, "ana", "eggs")
-    await set_amount(client, fake_issuer, eggs, "6")
+    tomatoes = await ingredient_id(client, fake_issuer, "ana", "tomatoes")
+    await set_amount(client, fake_issuer, tomatoes, "6")
 
     response = await client.delete(
-        f"/kitchen/items/{eggs}", headers=fake_issuer.headers("ana") | idem()
+        f"/kitchen/items/{tomatoes}", headers=fake_issuer.headers("ana") | idem()
     )
 
     assert response.status_code == 204

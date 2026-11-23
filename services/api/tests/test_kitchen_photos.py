@@ -93,13 +93,13 @@ async def test_new_items_are_added_confirmed_with_their_amount(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer, apply: Apply
 ) -> None:
     household = await home(client, fake_issuer)
-    eggs = await ingredient_id(client, fake_issuer, "alice", "eggs")
+    tomatoes = await ingredient_id(client, fake_issuer, "alice", "tomatoes")
     chicken = await ingredient_id(client, fake_issuer, "alice", "chicken thigh")
 
-    await apply(household, Place.FRIDGE, [(eggs, "6"), (chicken, None)])
+    await apply(household, Place.FRIDGE, [(tomatoes, "6"), (chicken, None)])
 
     got = tracked(await kitchen(client, fake_issuer, "alice"))
-    assert got["eggs"] == ("6", "count", "confirmed")
+    assert got["tomatoes"] == ("6", "count", "confirmed")
     assert got["chicken thigh"] == (None, "g", "confirmed")  # "have some"
 
 
@@ -121,12 +121,12 @@ async def test_a_photo_amount_replaces_never_adds(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer, apply: Apply
 ) -> None:
     household = await home(client, fake_issuer)
-    eggs = await ingredient_id(client, fake_issuer, "alice", "eggs")
-    await set_amount(client, fake_issuer, eggs, "4")
+    tomatoes = await ingredient_id(client, fake_issuer, "alice", "tomatoes")
+    await set_amount(client, fake_issuer, tomatoes, "4")
 
-    await apply(household, Place.FRIDGE, [(eggs, "6")])
+    await apply(household, Place.FRIDGE, [(tomatoes, "6")])
 
-    assert tracked(await kitchen(client, fake_issuer, "alice"))["eggs"][0] == "6"
+    assert tracked(await kitchen(client, fake_issuer, "alice"))["tomatoes"][0] == "6"
 
 
 async def test_no_amount_keeps_a_trusted_amount_and_reconfirms_it(
@@ -198,11 +198,11 @@ async def test_nothing_missing_from_the_photo_is_removed(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer, apply: Apply
 ) -> None:
     household = await home(client, fake_issuer)
-    eggs = await ingredient_id(client, fake_issuer, "alice", "eggs")
+    tomatoes = await ingredient_id(client, fake_issuer, "alice", "tomatoes")
     cream = await ingredient_id(client, fake_issuer, "alice", "thickened cream")
     await set_amount(client, fake_issuer, cream, "1000")
 
-    await apply(household, Place.FRIDGE, [(eggs, "6")])
+    await apply(household, Place.FRIDGE, [(tomatoes, "6")])
 
     assert tracked(await kitchen(client, fake_issuer, "alice"))["thickened cream"][0] == "1000"
 
@@ -211,11 +211,11 @@ async def test_one_photo_bumps_the_kitchen_version_once(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer, apply: Apply
 ) -> None:
     household = await home(client, fake_issuer)
-    eggs = await ingredient_id(client, fake_issuer, "alice", "eggs")
+    tomatoes = await ingredient_id(client, fake_issuer, "alice", "tomatoes")
     cream = await ingredient_id(client, fake_issuer, "alice", "thickened cream")
     before = (await kitchen(client, fake_issuer, "alice"))["version"]
 
-    await apply(household, Place.FRIDGE, [(eggs, "6"), (cream, None)])
+    await apply(household, Place.FRIDGE, [(tomatoes, "6"), (cream, None)])
 
     assert (await kitchen(client, fake_issuer, "alice"))["version"] == before + 1
 
@@ -224,20 +224,20 @@ async def test_the_same_ingredient_twice_is_refused(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer, apply: Apply
 ) -> None:
     household = await home(client, fake_issuer)
-    eggs = await ingredient_id(client, fake_issuer, "alice", "eggs")
+    tomatoes = await ingredient_id(client, fake_issuer, "alice", "tomatoes")
 
     with pytest.raises(errors.InvalidInput):
-        await apply(household, Place.FRIDGE, [(eggs, "6"), (eggs, "12")])
+        await apply(household, Place.FRIDGE, [(tomatoes, "6"), (tomatoes, "12")])
 
 
 async def test_a_negative_amount_is_refused(
     client: httpx.AsyncClient, fake_issuer: FakeIssuer, apply: Apply
 ) -> None:
     household = await home(client, fake_issuer)
-    eggs = await ingredient_id(client, fake_issuer, "alice", "eggs")
+    tomatoes = await ingredient_id(client, fake_issuer, "alice", "tomatoes")
 
     with pytest.raises(errors.InvalidInput):
-        await apply(household, Place.FRIDGE, [(eggs, "-1")])
+        await apply(household, Place.FRIDGE, [(tomatoes, "-1")])
 
 
 async def test_another_households_ingredient_is_not_found(

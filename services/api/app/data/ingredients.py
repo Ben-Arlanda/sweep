@@ -71,7 +71,7 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
     SeedIngredient(
         "white sugar", "pantry", "g", D("0.85"), True, ("sugar", "granulated sugar", "rock sugar")
     ),
-    SeedIngredient("brown sugar", "pantry", "g", D("0.83"), False, ()),
+    SeedIngredient("brown sugar", "pantry", "g", D("0.83"), True, ()),
     SeedIngredient("caster sugar", "pantry", "g", D("0.85"), False, ("superfine sugar",)),
     SeedIngredient("icing sugar", "pantry", "g", D("0.56"), False, ("powdered sugar",)),
     SeedIngredient(
@@ -79,17 +79,17 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
         "pantry",
         "g",
         D("0.92"),
-        True,
+        False,
         ("bicarb soda", "baking soda", "bicarbonate of soda"),
     ),
-    SeedIngredient("baking powder", "pantry", "g", D("0.9"), True, ()),
+    SeedIngredient("baking powder", "pantry", "g", D("0.9"), False, ()),
     SeedIngredient("cornflour", "pantry", "g", D("0.54"), False, ("cornstarch",)),
     SeedIngredient("soy sauce", "pantry", "ml", D("1.1"), True, ("light soy sauce",)),
-    SeedIngredient("white vinegar", "pantry", "ml", D("1.0"), True, ("vinegar", "cane vinegar")),
+    SeedIngredient("white vinegar", "pantry", "ml", D("1.0"), False, ("vinegar", "cane vinegar")),
     SeedIngredient("garlic powder", "spices", "g", None, True, ()),
-    SeedIngredient("ground cumin", "spices", "g", None, True, ("cumin", "roasted ground cumin")),
+    SeedIngredient("ground cumin", "spices", "g", None, False, ("cumin", "roasted ground cumin")),
     SeedIngredient("paprika", "spices", "g", None, True, ("smoked paprika", "sweet paprika")),
-    SeedIngredient("dried oregano", "spices", "g", None, True, ("oregano",)),
+    SeedIngredient("dried oregano", "spices", "g", None, False, ("oregano",)),
     SeedIngredient(
         "chilli flakes",
         "spices",
@@ -100,9 +100,9 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
     ),
     SeedIngredient("ground cinnamon", "spices", "g", None, True, ("cinnamon",)),
     # Found by the Kitchen Photo eval (ADR 0023): Staples, so they don't go Unknown.
-    SeedIngredient("celery salt", "spices", "g", None, True, ()),
-    SeedIngredient("cayenne pepper", "spices", "g", None, True, ("cayenne", "cayenne powder")),
-    SeedIngredient("dried sage", "spices", "g", None, True, ("ground sage", "rubbed sage")),
+    SeedIngredient("celery salt", "spices", "g", None, False, ()),
+    SeedIngredient("cayenne pepper", "spices", "g", None, False, ("cayenne", "cayenne powder")),
+    SeedIngredient("dried sage", "spices", "g", None, False, ("ground sage", "rubbed sage")),
     SeedIngredient("stock cubes", "pantry", "count", None, True, ("bouillon cubes", "stock cube")),
     # Pantry, tracked: decides whether a meal is possible.
     SeedIngredient(
@@ -167,7 +167,7 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
         "bakery",
         "count",
         None,
-        False,
+        True,
         (
             "loaf of bread",
             "sourdough",
@@ -186,11 +186,11 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
     ),
     SeedIngredient("tortillas", "bakery", "count", None, False, ("wraps", "flour tortillas")),
     SeedIngredient("peanut butter", "pantry", "g", None, False, ()),
-    SeedIngredient("honey", "pantry", "g", D("1.42"), False, ()),
+    SeedIngredient("honey", "pantry", "g", D("1.42"), True, ()),
     # Dairy and eggs
     # A Staple: used a little at a time in meals nobody plans (breakfast, coffee).
     SeedIngredient("milk", "dairy", "ml", D("1.03"), True, ("full cream milk", "whole milk")),
-    SeedIngredient("butter", "dairy", "g", D("0.96"), False, ("unsalted butter", "salted butter")),
+    SeedIngredient("butter", "dairy", "g", D("0.96"), True, ("unsalted butter", "salted butter")),
     # Its own starter, never an alias of butter: butter is flagged dairy (ADR 0023).
     SeedIngredient(
         "dairy free spread",
@@ -213,7 +213,7 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
         "dairy",
         "count",
         None,
-        False,
+        True,
         (
             "egg",
             "free range eggs",
@@ -519,10 +519,10 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
     SeedIngredient("pickled ginger", "pantry", "g", None, False, ("sushi ginger",)),
     SeedIngredient("dried wakame", "pantry", "g", None, False, ("wakame",)),
     # Pantry: sauces, condiments, pastes
-    SeedIngredient("tomato sauce", "pantry", "ml", D("1.1"), False, ("ketchup",)),
+    SeedIngredient("tomato sauce", "pantry", "ml", D("1.1"), True, ("ketchup",)),
     SeedIngredient("barbecue sauce", "pantry", "ml", D("1.1"), False, ("bbq sauce",)),
     SeedIngredient("worcestershire sauce", "pantry", "ml", D("1.1"), False, ("worcestershire",)),
-    SeedIngredient("mayonnaise", "pantry", "g", D("0.95"), False, ("mayo", "whole egg mayonnaise")),
+    SeedIngredient("mayonnaise", "pantry", "g", D("0.95"), True, ("mayo", "whole egg mayonnaise")),
     SeedIngredient(
         "dijon mustard",
         "pantry",
@@ -577,7 +577,7 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
         "sponge finger biscuits", "pantry", "g", None, False, ("savoiardi", "savoiardi biscuits")
     ),
     SeedIngredient("granola", "pantry", "g", None, False, ()),
-    SeedIngredient("coffee", "pantry", "g", None, False, ("strong coffee", "espresso")),
+    SeedIngredient("coffee", "pantry", "g", None, True, ("strong coffee", "espresso")),
     # Pantry: nuts, seeds, dried fruit
     SeedIngredient("almonds", "pantry", "g", None, False, ("almond", "flaked almonds")),
     SeedIngredient("cashews", "pantry", "g", None, False, ("cashew nuts",)),
