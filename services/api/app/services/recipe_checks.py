@@ -51,6 +51,7 @@ VAGUE |= {"cloves", "ice cream", "berries", "fennel"}  # "garlic cloves", "fenne
 # "apple juices bubble", "very long beans", "the chicken pieces", the Spanish tortilla (an omelette)
 VAGUE |= {"apple juice", "cherry juice", "long beans", "chicken pieces", "pork strips", "chutney"}
 VAGUE |= {"tortilla"}
+VAGUE |= {"salsa", "pickle", "tzatziki", "hummus"}  # often made in the recipe; "pickle" a verb
 # A method's "the beef" means whichever cut the list names (ADR 0030).
 VAGUE |= {"chicken", "beef", "lamb", "pork"}
 
@@ -244,7 +245,8 @@ _EGG_PARTS = re.compile(r"\b(?:yolks?|whites?)\b")
 
 def _used(text: str, name: str, method: str) -> bool:
     forms = {f for t in (name, *_ALIASES.get(name, ())) for f in variants(normalise(t))}
-    head = normalise(re.split(r"[,(]", text)[0])
+    # Brackets are dropped, not cut at: "1 cup (200 g) dried brown lentils" is lentils.
+    head = normalise(re.sub(r"\([^)]*\)", " ", text).split(",")[0])
     words = {w for w in re.findall(r"[a-z-]+", head) if len(w) >= 3 and w not in _FILLER}
     forms |= {f for w in words for f in variants(w)}
     forms |= {g for g, members in _GROUPS.items() if name in members}

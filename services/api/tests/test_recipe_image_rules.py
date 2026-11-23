@@ -3,7 +3,7 @@
 from typing import Any
 
 from app.data.recipe_images import sized, with_utm
-from app.services.recipe_image_check import ImageCheck, passes, title_clash
+from app.services.recipe_image_check import ImageCheck, not_food, passes, title_clash
 from scripts.recipe_images import option, picked, queries
 from tests.test_recipes import PASTA
 
@@ -109,3 +109,27 @@ def test_the_first_option_is_picked_unless_the_product_owner_changed_it() -> Non
     assert picked("a", found, {"a": "p2"}) == "p2"
     assert picked("a", found, {"a": None}) is None  # "No photo"
     assert picked("b", found, {}) is None
+
+
+def test_a_photo_must_say_it_is_food() -> None:
+    for words in ("a bowl of soup with bread", "falafel on a white plate", "plate of cooked food"):
+        assert not_food(FALAFEL, words) is None, words
+    assert (
+        not_food(FALAFEL, "stainless steel fork beside a glass")
+        == "the photo's words don't say food"
+    )
+    assert not_food(FALAFEL, "") == "the photo's words don't say food"
+
+
+def test_a_photo_of_a_scene_animal_or_drawing_is_not_food() -> None:
+    lamb = PASTA.model_copy(update={"title": "Roast lamb with rosemary"})
+    assert not_food(lamb, "a lamb standing in a grassy field") == "the photo shows a field"
+    assert not_food(FALAFEL, "a stone castle with a plate of food") == "the photo shows a castle"
+    assert not_food(FALAFEL, "illustration of a falafel wrap") == "the photo shows an illustration"
+    assert not_food(FALAFEL, "woman eating a falafel wrap") == "the photo shows a woman"
+    # Photographers' words, not scenes: "depth of field", "farm fresh".
+    assert not_food(FALAFEL, "falafel plate, shallow depth of field") is None
+
+
+def test_an_option_that_is_not_food_is_dropped() -> None:
+    assert option(unsplash(alt_description="a stone castle with two windows"), FALAFEL) is None

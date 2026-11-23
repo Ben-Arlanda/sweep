@@ -5,6 +5,7 @@ LLM-as-judge, measured before it's trusted (ADR 0028):
     uv run python -m evals.quick_view_drift --build             # free: make the eval set
     uv run python -m evals.quick_view_drift --llm               # judge the eval set (~24 calls)
     uv run python -m evals.quick_view_drift --library           # judge every recipe (~430)
+    uv run python -m evals.quick_view_drift --new               # judge the new drafts
 
 The eval set is real recipes from the new library: half as they are, half with one
 mismatch planted in the quick steps by plain code (a wrong time or temperature, a step
@@ -31,6 +32,7 @@ from app.llm_costs import cost_usd
 
 DATASET = Path(__file__).with_name("quick_view_drift.jsonl")
 LIBRARY_REPORT = Path(__file__).with_name("results") / "quick_view_drift_library.json"
+NEW_REPORT = LIBRARY_REPORT.with_name("quick_view_drift_new.json")
 CLEAN = Path(__file__).parents[1] / "data" / "recipe-batches" / "clean"
 
 
@@ -190,6 +192,18 @@ def build_dataset(per_side: int = 12) -> list[dict[str, Any]]:
     return rows
 
 
+def new_drafts() -> list[dict[str, Any]]:
+    """The drafts from scripts/draft_recipes.py, in the same shape as `library`."""
+    drafts = json.loads((CLEAN.parent / "new" / "drafts.json").read_text())
+    rows = []
+    for title, d in drafts.items():
+        r = d.get("recipe") or d["draft"]
+        quick = r.get("method") or r["quick_steps"]
+        rows.append({"key": title, "title": r["title"], "ingredients": r["ingredients"]})
+        rows[-1] |= {"stages": r["stages"], "quick_steps": quick}
+    return rows
+
+
 def as_text(row: dict[str, Any]) -> str:
     stages = "\n".join(
         f"{s['title']} ({s['minutes']} min):\n" + "\n".join(f"- {step}" for step in s["steps"])
@@ -223,6 +237,7 @@ async def main() -> None:
     parser.add_argument("--build", action="store_true", help="make the eval set (free)")
     parser.add_argument("--llm", action="store_true", help="judge the eval set (costs money)")
     parser.add_argument("--library", action="store_true", help="judge every recipe")
+    parser.add_argument("--new", action="store_true", help="judge the new drafts")
     parser.add_argument("--model", default=settings.review_model)
     args = parser.parse_args()
     if args.build:
@@ -233,17 +248,15 @@ async def main() -> None:
     if settings.anthropic_api_key is None:
         raise SystemExit("ANTHROPIC_API_KEY is not set")
     model = ClaudeStructured(settings.anthropic_api_key.get_secret_value(), args.model, "medium")
-    if args.library:
-        rows = library()
+    if args.library or args.new:
+        rows = new_drafts() if args.new else library()
+        out = NEW_REPORT if args.new else LIBRARY_REPORT
         verdicts, spent = await judge(model, rows)
         report = {k: None if v is None else v.model_dump() for k, v in verdicts.items()}
-        LIBRARY_REPORT.parent.mkdir(exist_ok=True)
-        LIBRARY_REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=1))
+        out.parent.mkdir(exist_ok=True)
+        out.write_text(json.dumps(report, ensure_ascii=False, indent=1))
         flagged = sum(bool(v and not v["same_cooking"]) for v in report.values())
-        print(
-            f"{len(rows)} judged with {args.model}: {flagged} flagged; ${spent:.3f}"
-            f" → {LIBRARY_REPORT}"
-        )
+        print(f"{len(rows)} judged with {args.model}: {flagged} flagged; ${spent:.3f} → {out}")
         return
     if args.llm:
         rows = [json.loads(line) for line in DATASET.read_text().splitlines() if line]

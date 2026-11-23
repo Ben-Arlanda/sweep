@@ -49,6 +49,37 @@ def title_clash(recipe: SeedRecipe, photo_title: str) -> str | None:
     return None
 
 
+# Words that say a photo is of food. Plain code only: Unsplash's terms rule out AI checks.
+_FOOD = set(
+    "food dish meal plate plated bowl soup curry salad stew pasta noodle rice sandwich "
+    "burger taco pizza pie roast grilled fried baked cooked served dinner lunch breakfast "
+    "delicious tasty homemade recipe sauce meat chicken beef pork lamb fish salmon prawn "
+    "shrimp seafood vegetable tofu wrap bread cake dessert breakfast steak sausage egg "
+    "cuisine snack platter skewer kebab dumpling".split()
+)
+# Words for what isn't a dish: a place, an animal, a person or a drawing.
+_NOT_FOOD = (
+    "building castle house street city landscape mountain sky field pasture meadow farm "
+    "garden forest beach ocean underwater aquarium sheep cow cattle piglet rooster goat "
+    "horse dog cat puppy kitten duckling person people woman man girl boy child portrait "
+    "illustration vector drawing cartoon logo icon poster render"
+).split()
+# A photographer's words, not the scene: "depth of field", "farm fresh".
+_NOT_SCENE = re.compile(r"depth of field|farm[- ]fresh|field greens|street food")
+
+
+def not_food(recipe: SeedRecipe, photo_words: str) -> str | None:
+    """Why the photo's own words say it isn't a dish, or None if they say it is."""
+    text = _NOT_SCENE.sub(" ", photo_words.lower().replace("_", " "))
+    for word in _NOT_FOOD:
+        if re.search(_WORD.format(word), text):
+            return f"the photo shows {'an' if word[0] in 'aeiou' else 'a'} {word}"
+    named = {w for w in re.findall(r"[a-z]{4,}", recipe.title.lower())} | _FOOD
+    if not any(re.search(_WORD.format(re.escape(w)), text) for w in named):
+        return "the photo's words don't say food"
+    return None
+
+
 def passes(check: ImageCheck) -> bool:
     """ "Close" passes (a similar dish); anything that could mislead fails."""
     return (

@@ -28,3 +28,4 @@ Unsplash's API terms (read 2026-11-20) differ from Creative Commons in ways that
 - Picking is human work: about 430 choices, one sitting or a few.
 - The search runs about 9 hours in demo mode. Production approval needs the app to meet Unsplash's guidelines (credits shown), so apply after 4f-b.
 - A smaller library (130): fewer dishes for plans and search; gaps get added later through the same checks, with a photo picked first.
+- Second batch (2026-11-24): 105 drafted (ADR 0028), one photo searched each; 54 kept, the rest dropped (no photo, rejected, or a photo another recipe already uses). Library now 184. AI-made images stay parked.

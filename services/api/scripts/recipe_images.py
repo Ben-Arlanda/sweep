@@ -4,6 +4,7 @@
     uv run python -m scripts.recipe_images review   # http://127.0.0.1:8765, pick by eye
     uv run python -m scripts.recipe_images apply    # free; writes the credits file
     uv run python -m scripts.recipe_images notify   # Unsplash download notices (slow)
+    uv run python -m scripts.recipe_images search --drafts  # the new drafts, before they join
 
 search keeps up to four options per recipe, dropping any whose description names a meat
 or fish the recipe doesn't have. No model looks at Unsplash photos: their API terms send
@@ -31,14 +32,14 @@ from pydantic import BaseModel
 from app.config import settings
 from app.data.recipe_images import RECORDS, RecipeImage, sized
 from app.data.recipes import SeedRecipe, load_seed_recipes
-from app.services.recipe_image_check import title_clash
+from app.services.recipe_image_check import not_food, title_clash
 
 WORK = Path(__file__).parents[1] / "data" / "recipe-images"
 OPTIONS = WORK / "unsplash.json"  # slug -> {"queries": [...], "options": [...]}
 CHOICES = WORK / "choices.json"  # slug -> photo id, or null for no photo
 NOTIFIED = WORK / "notified.json"  # photo ids Unsplash was told about
 API = "https://api.unsplash.com"
-MOST = 4
+MOST = 1  # one good option is enough, and stops the search early (fewer calls)
 PACE = 75  # seconds between requests: demo mode allows 50 an hour
 
 
@@ -72,7 +73,9 @@ def queries(title: str) -> list[str]:
 def option(result: dict[str, Any], recipe: SeedRecipe) -> Option | None:
     """An Unsplash search result as an option, or None if code rules it out."""
     words = " ".join(filter(None, [result.get("description"), result.get("alt_description")]))
-    if title_clash(recipe, words) or min(result["width"], result["height"]) < 1200:
+    if title_clash(recipe, words) or not_food(recipe, words):
+        return None
+    if min(result["width"], result["height"]) < 1200:
         return None
     user = result["user"]
     return Option(
@@ -206,8 +209,8 @@ def review_page(recipes: Sequence[SeedRecipe]) -> str:
     found, chosen = _load(OPTIONS), _load(CHOICES)
     sections = []
     for recipe in sorted(recipes, key=lambda r: r.title.lower()):
-        if recipe.slug not in found:
-            continue  # not searched yet: reload the page later
+        if not found.get(recipe.slug, {}).get("options"):
+            continue  # not searched yet (reload later), or nothing found: no photo to pick
         rows = found[recipe.slug]["options"]
         pick = picked(recipe.slug, found, chosen)
         buttons = [
@@ -309,12 +312,20 @@ def notify(recipes: Sequence[SeedRecipe]) -> None:
     print(f"{len(notified)} photos notified")
 
 
+def drafts() -> list[SeedRecipe]:
+    """Drafts that passed the gate: photos are found before they become Seed Recipes."""
+    saved = json.loads((WORK.parent / "recipe-batches" / "new" / "drafts.json").read_text())
+    return [SeedRecipe.model_validate(d["recipe"]) for d in saved.values() if d["ok"]]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("step", choices=["search", "review", "apply", "notify"])
     parser.add_argument("--only", nargs="*", help="these slugs only")
+    parser.add_argument("--drafts", action="store_true", help="the new drafts (draft_recipes)")
     args = parser.parse_args()
-    recipes = [r for r in load_seed_recipes() if not args.only or r.slug in args.only]
+    recipes = drafts() if args.drafts else load_seed_recipes()
+    recipes = [r for r in recipes if not args.only or r.slug in args.only]
     {"search": search, "review": review, "apply": apply, "notify": notify}[args.step](recipes)
     return 0
 

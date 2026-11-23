@@ -1,0 +1,737 @@
+[
+ {
+  "title": "Chicken schnitzel with slaw",
+  "cuisine": "australian",
+  "course": "main",
+  "minutes": 35,
+  "notes": "The pub and family classic: crumbed chicken breast pan-fried until golden, with a crunchy cabbage slaw and lemon."
+ },
+ {
+  "title": "Chicken fried rice",
+  "cuisine": "chinese",
+  "course": "main",
+  "minutes": 20,
+  "notes": "Weeknight fried rice with chicken thigh, egg, peas and spring onion, made with cold cooked rice."
+ },
+ {
+  "title": "Chicken laksa",
+  "cuisine": "malaysian",
+  "course": "main",
+  "minutes": 35,
+  "notes": "Curry laksa with a store-bought laksa paste, coconut milk, chicken, rice noodles, tofu puffs and bean sprouts."
+ },
+ {
+  "title": "Chicken satay stir-fry",
+  "cuisine": "indonesian",
+  "course": "main",
+  "minutes": 25,
+  "notes": "Chicken and vegetables in a peanut butter, soy and coconut satay sauce, served with rice."
+ },
+ {
+  "title": "Honey soy chicken stir-fry",
+  "cuisine": "australian",
+  "course": "main",
+  "minutes": 25,
+  "notes": "The Aussie family favourite: chicken thigh, broccoli and capsicum in a sticky honey soy garlic sauce with rice."
+ },
+ {
+  "title": "Chicken korma",
+  "cuisine": "indian",
+  "course": "main",
+  "minutes": 40,
+  "notes": "Mild, creamy chicken curry with cashews and yoghurt that kids like, served with rice."
+ },
+ {
+  "title": "Japanese chicken curry",
+  "cuisine": "japanese",
+  "course": "main",
+  "minutes": 40,
+  "notes": "Chicken, potato and carrot in a thick Japanese curry made with curry roux blocks, served with rice."
+ },
+ {
+  "title": "Apricot chicken",
+  "cuisine": "australian",
+  "course": "main",
+  "minutes": 45,
+  "notes": "The retro Aussie classic: chicken thighs baked in apricot nectar with French onion soup mix, served with rice."
+ },
+ {
+  "title": "Lemon and garlic chicken tray bake",
+  "cuisine": "australian",
+  "course": "main",
+  "minutes": 45,
+  "notes": "Chicken thighs, potatoes, red onion and zucchini roasted on one tray with lemon, garlic and oregano."
+ },
+ {
+  "title": "Chicken Kiev",
+  "cuisine": "russian",
+  "course": "main",
+  "minutes": 45,
+  "notes": "Crumbed chicken breast filled with garlic herb butter, pan-fried then baked until crisp."
+ },
+ {
+  "title": "Massaman chicken curry",
+  "cuisine": "thai",
+  "course": "main",
+  "minutes": 45,
+  "notes": "Rich, mild Thai curry with chicken, potato, peanuts and coconut milk from massaman paste."
+ },
+ {
+  "title": "Chicken and leek pie",
+  "cuisine": "british",
+  "course": "main",
+  "minutes": 75,
+  "notes": "Creamy chicken, leek and mushroom filling under a puff pastry lid."
+ },
+ {
+  "title": "Chicken adobo",
+  "cuisine": "filipino",
+  "course": "main",
+  "minutes": 50,
+  "notes": "Filipino chicken braised in soy sauce, vinegar, garlic, bay leaves and black pepper until sticky."
+ },
+ {
+  "title": "Korean fried chicken",
+  "cuisine": "korean",
+  "course": "main",
+  "minutes": 50,
+  "notes": "Double-fried crunchy chicken wings or thigh pieces tossed in sweet, spicy gochujang glaze."
+ },
+ {
+  "title": "Pollo a la brasa",
+  "cuisine": "peruvian",
+  "course": "main",
+  "minutes": 75,
+  "notes": "Peruvian roast chicken marinated in garlic, cumin, paprika, soy and lime, with a green chilli sauce."
+ },
+ {
+  "title": "Vietnamese lemongrass chicken",
+  "cuisine": "vietnamese",
+  "course": "main",
+  "minutes": 30,
+  "notes": "Caramelised lemongrass, garlic and fish sauce chicken thigh with rice, herbs and pickled carrot."
+ },
+ {
+  "title": "Chicken burrito bowls",
+  "cuisine": "mexican",
+  "course": "main",
+  "minutes": 30,
+  "notes": "Healthy. Spiced chicken breast with brown rice, black beans, corn, tomato salsa, lettuce and a little avocado."
+ },
+ {
+  "title": "Chicken and vegetable stir-fry with brown rice",
+  "cuisine": "chinese",
+  "course": "main",
+  "minutes": 30,
+  "notes": "Healthy. Lean chicken breast with lots of greens in a light ginger, garlic and soy sauce, on brown rice."
+ },
+ {
+  "title": "Greek chicken tray bake",
+  "cuisine": "greek",
+  "course": "main",
+  "minutes": 45,
+  "notes": "Healthy. Chicken breast, capsicum, zucchini, red onion and chickpeas roasted with lemon and oregano, with tzatziki."
+ },
+ {
+  "title": "Beef tacos",
+  "cuisine": "mexican",
+  "course": "main",
+  "minutes": 20,
+  "notes": "Spiced beef mince in crunchy taco shells or soft tortillas with lettuce, tomato, cheese and sour cream."
+ },
+ {
+  "title": "Steak sandwich",
+  "cuisine": "australian",
+  "course": "main",
+  "minutes": 20,
+  "notes": "Thin-cut steak on toasted Turkish bread with caramelised onion, beetroot, lettuce, tomato and barbecue sauce."
+ },
+ {
+  "title": "Beef nachos",
+  "cuisine": "mexican",
+  "course": "main",
+  "minutes": 30,
+  "notes": "Corn chips layered with chilli beef mince and kidney beans, cheese, then guacamole and sour cream."
+ },
+ {
+  "title": "Homemade beef burgers",
+  "cuisine": "australian",
+  "course": "main",
+  "minutes": 30,
+  "notes": "Juicy beef patties with cheese, lettuce, tomato, beetroot and pickles on toasted buns."
+ },
+ {
+  "title": "Mongolian beef",
+  "cuisine": "chinese",
+  "course": "main",
+  "minutes": 25,
+  "notes": "Thinly sliced beef stir-fried with spring onions in a sweet soy and garlic sauce, with rice."
+ },
+ {
+  "title": "Chilli con carne",
+  "cuisine": "mexican",
+  "course": "main",
+  "minutes": 50,
+  "notes": "Beef mince and kidney beans simmered with tomatoes, cumin and chilli, served with rice and sour cream."
+ },
+ {
+  "title": "Rissoles with gravy",
+  "cuisine": "australian",
+  "course": "main",
+  "minutes": 40,
+  "notes": "Mum's beef rissoles with onion and breadcrumbs, pan-fried and served with gravy, mash and peas."
+ },
+ {
+  "title": "Cottage pie",
+  "cuisine": "british",
+  "course": "main",
+  "minutes": 75,
+  "notes": "Beef mince and vegetables in rich gravy under a cheesy mashed potato top."
+ },
+ {
+  "title": "Beef and Guinness stew",
+  "cuisine": "irish",
+  "course": "main",
+  "minutes": 165,
+  "notes": "Chuck steak slow-braised with Guinness, onions, carrots and thyme until tender."
+ },
+ {
+  "title": "Picadillo",
+  "cuisine": "cuban",
+  "course": "main",
+  "minutes": 40,
+  "notes": "Cuban beef mince with tomato, olives, raisins and cumin, served with rice and black beans."
+ },
+ {
+  "title": "Beef and black bean stir-fry",
+  "cuisine": "chinese",
+  "course": "main",
+  "minutes": 25,
+  "notes": "Beef strips, capsicum and onion in black bean sauce, with rice."
+ },
+ {
+  "title": "Steak with salsa verde and sweet potato",
+  "cuisine": "australian",
+  "course": "main",
+  "minutes": 40,
+  "notes": "Healthy. Lean rump steak with roasted sweet potato wedges, green beans and a fresh herb salsa verde."
+ },
+ {
+  "title": "Thai beef salad",
+  "cuisine": "thai",
+  "course": "main",
+  "minutes": 25,
+  "notes": "Healthy. Seared lean steak sliced over a crunchy salad with herbs, cucumber, tomato and a lime, fish sauce and chilli dressing."
+ },
+ {
+  "title": "Lean beef burrito bowls",
+  "cuisine": "mexican",
+  "course": "main",
+  "minutes": 30,
+  "notes": "Healthy. Lean beef mince with taco spices, brown rice, black beans, corn, salsa and lettuce."
+ },
+ {
+  "title": "Lamb cutlets with minted peas",
+  "cuisine": "australian",
+  "course": "main",
+  "minutes": 20,
+  "notes": "Pan-fried lamb cutlets with crushed minted peas and a squeeze of lemon."
+ },
+ {
+  "title": "Roast lamb with rosemary",
+  "cuisine": "australian",
+  "course": "main",
+  "minutes": 120,
+  "notes": "The Sunday roast: leg of lamb with garlic and rosemary, roast potatoes, pumpkin and gravy."
+ },
+ {
+  "title": "Lamb shanks",
+  "cuisine": "australian",
+  "course": "main",
+  "minutes": 165,
+  "notes": "Lamb shanks braised in red wine and tomato until falling off the bone, with mash."
+ },
+ {
+  "title": "Lamb rogan josh",
+  "cuisine": "indian",
+  "course": "main",
+  "minutes": 90,
+  "notes": "Kashmiri-style lamb curry with yoghurt, paprika and warm spices."
+ },
+ {
+  "title": "Lamb souvlaki",
+  "cuisine": "greek",
+  "course": "main",
+  "minutes": 40,
+  "notes": "Marinated lamb skewers in pita with tzatziki, tomato, onion and chips or salad."
+ },
+ {
+  "title": "Harissa lamb meatballs",
+  "cuisine": "moroccan",
+  "course": "main",
+  "minutes": 40,
+  "notes": "Lamb mince meatballs simmered in a harissa tomato sauce, with couscous and yoghurt."
+ },
+ {
+  "title": "Lamb backstrap with Greek salad",
+  "cuisine": "greek",
+  "course": "main",
+  "minutes": 25,
+  "notes": "Healthy. Seared lean lamb backstrap sliced over a Greek salad with feta, olives and cucumber."
+ },
+ {
+  "title": "Sausages with mash and onion gravy",
+  "cuisine": "australian",
+  "course": "main",
+  "minutes": 35,
+  "notes": "Beef or pork sausages with creamy mashed potato, peas and an onion gravy."
+ },
+ {
+  "title": "Sweet and sour pork",
+  "cuisine": "chinese",
+  "course": "main",
+  "minutes": 35,
+  "notes": "Crisp pork pieces with pineapple, capsicum and onion in sweet and sour sauce."
+ },
+ {
+  "title": "Pork chops with apple",
+  "cuisine": "british",
+  "course": "main",
+  "minutes": 30,
+  "notes": "Pan-fried pork chops with caramelised apple, a mustard pan sauce and greens."
+ },
+ {
+  "title": "Curried sausages",
+  "cuisine": "australian",
+  "course": "main",
+  "minutes": 45,
+  "notes": "The Aussie classic: sausages simmered in a mild curry gravy with potato, carrot and peas, with rice or mash."
+ },
+ {
+  "title": "San choy bow",
+  "cuisine": "chinese",
+  "course": "main",
+  "minutes": 20,
+  "notes": "Pork mince stir-fried with water chestnuts, ginger and oyster sauce, served in lettuce cups."
+ },
+ {
+  "title": "Singapore noodles",
+  "cuisine": "singaporean",
+  "course": "main",
+  "minutes": 25,
+  "notes": "Curry-spiced rice vermicelli with prawns, char siu or pork, egg and vegetables."
+ },
+ {
+  "title": "Pork and fennel sausage pasta",
+  "cuisine": "italian",
+  "course": "main",
+  "minutes": 30,
+  "notes": "Sausage meat squeezed from pork and fennel sausages, cooked with chilli, tomato and spinach through pasta."
+ },
+ {
+  "title": "Honey mustard pork fillet with roast vegetables",
+  "cuisine": "australian",
+  "course": "main",
+  "minutes": 45,
+  "notes": "Healthy. Lean pork fillet glazed with honey and wholegrain mustard, with roast pumpkin, carrots and broccolini."
+ },
+ {
+  "title": "Oven-baked fish and chips",
+  "cuisine": "australian",
+  "course": "main",
+  "minutes": 45,
+  "notes": "Crumbed basa fillets and potato chips baked crisp in the oven, with tartare sauce and lemon."
+ },
+ {
+  "title": "Lemon herb crumbed basa",
+  "cuisine": "australian",
+  "course": "main",
+  "minutes": 25,
+  "notes": "Healthy. Basa fillets with a lemon, parsley and panko crust, baked, with steamed greens and baby potatoes."
+ },
+ {
+  "title": "Cajun basa with corn salsa",
+  "cuisine": "american",
+  "course": "main",
+  "minutes": 25,
+  "notes": "Healthy. Cajun-spiced basa fillets pan-fried, with a fresh corn, tomato and avocado salsa and rice."
+ },
+ {
+  "title": "Goan fish curry",
+  "cuisine": "indian",
+  "course": "main",
+  "minutes": 35,
+  "notes": "Basa or other white fish in a tangy coconut, tomato and tamarind curry."
+ },
+ {
+  "title": "Crispy skin barramundi with greens",
+  "cuisine": "australian",
+  "course": "main",
+  "minutes": 25,
+  "notes": "Healthy. Pan-fried skin-on barramundi fillets with crispy skin, on garlicky greens with lemon."
+ },
+ {
+  "title": "Barramundi with Thai herb salad",
+  "cuisine": "thai",
+  "course": "main",
+  "minutes": 25,
+  "notes": "Healthy. Grilled barramundi with a crunchy salad of herbs, cucumber, carrot and a lime chilli dressing."
+ },
+ {
+  "title": "Lemon butter salmon with greens",
+  "cuisine": "australian",
+  "course": "main",
+  "minutes": 20,
+  "notes": "Healthy. Pan-seared salmon with a light lemon butter sauce, green beans and broccolini."
+ },
+ {
+  "title": "Miso salmon tray bake",
+  "cuisine": "japanese",
+  "course": "main",
+  "minutes": 30,
+  "notes": "Healthy. Salmon fillets glazed with miso, roasted with broccoli, edamame and brown rice."
+ },
+ {
+  "title": "Garlic prawn linguine",
+  "cuisine": "italian",
+  "course": "main",
+  "minutes": 20,
+  "notes": "Prawns with garlic, chilli, white wine, lemon and parsley tossed through linguine."
+ },
+ {
+  "title": "Thai red prawn curry",
+  "cuisine": "thai",
+  "course": "main",
+  "minutes": 25,
+  "notes": "Prawns, capsicum and green beans in a red curry paste and coconut milk sauce, with jasmine rice."
+ },
+ {
+  "title": "Prawn and chorizo pasta",
+  "cuisine": "spanish",
+  "course": "main",
+  "minutes": 25,
+  "notes": "Chorizo, prawns, cherry tomatoes, garlic and smoked paprika through pasta."
+ },
+ {
+  "title": "Prawn zucchini noodles",
+  "cuisine": "italian",
+  "course": "main",
+  "minutes": 20,
+  "notes": "Healthy. Garlic chilli prawns with spiralised zucchini noodles, cherry tomatoes and basil."
+ },
+ {
+  "title": "Tuna and tomato spaghetti",
+  "cuisine": "italian",
+  "course": "main",
+  "minutes": 20,
+  "notes": "Pantry pasta with canned tuna, tomatoes, capers, garlic and chilli."
+ },
+ {
+  "title": "Tuna pasta bake",
+  "cuisine": "australian",
+  "course": "main",
+  "minutes": 40,
+  "notes": "Pasta, canned tuna, corn and peas in a cheesy white sauce, baked until golden."
+ },
+ {
+  "title": "Poke bowls",
+  "cuisine": "hawaiian",
+  "course": "main",
+  "minutes": 25,
+  "notes": "Healthy. Sashimi-grade salmon or tuna on rice with edamame, cucumber, avocado, pickled ginger and a soy sesame dressing."
+ },
+ {
+  "title": "Turkey lettuce cups",
+  "cuisine": "asian",
+  "course": "main",
+  "minutes": 20,
+  "notes": "Healthy. Lean turkey mince stir-fried with ginger, garlic, carrot and water chestnuts, in lettuce cups."
+ },
+ {
+  "title": "Turkey meatballs with zucchini noodles",
+  "cuisine": "italian",
+  "course": "main",
+  "minutes": 35,
+  "notes": "Healthy. Lean turkey mince meatballs baked and served in a herby tomato sauce over zucchini noodles."
+ },
+ {
+  "title": "Pesto pasta with peas",
+  "cuisine": "italian",
+  "course": "main",
+  "minutes": 15,
+  "notes": "Pasta tossed with basil pesto, peas, spinach and parmesan."
+ },
+ {
+  "title": "Bean quesadillas",
+  "cuisine": "mexican",
+  "course": "main",
+  "minutes": 20,
+  "notes": "Tortillas filled with spiced black beans, corn and cheese, toasted until crisp, with salsa."
+ },
+ {
+  "title": "Flatbread pizzas",
+  "cuisine": "italian",
+  "course": "main",
+  "minutes": 20,
+  "notes": "Quick pizzas on wraps or flatbreads with tomato, mozzarella and toppings."
+ },
+ {
+  "title": "Homemade pizza",
+  "cuisine": "italian",
+  "course": "main",
+  "minutes": 120,
+  "notes": "Pizza from scratch: a simple yeast dough, tomato sauce and mozzarella with basil."
+ },
+ {
+  "title": "Pumpkin soup",
+  "cuisine": "australian",
+  "course": "main",
+  "minutes": 40,
+  "notes": "Smooth roast-pumpkin soup with onion and a little cream, with crusty bread."
+ },
+ {
+  "title": "Minestrone",
+  "cuisine": "italian",
+  "course": "main",
+  "minutes": 50,
+  "notes": "Hearty Italian vegetable soup with cannellini beans, small pasta and parmesan."
+ },
+ {
+  "title": "Zucchini slice",
+  "cuisine": "australian",
+  "course": "main",
+  "minutes": 50,
+  "notes": "The lunchbox classic: baked zucchini, carrot, onion, cheese and egg slice (vegetarian, no bacon)."
+ },
+ {
+  "title": "Okonomiyaki",
+  "cuisine": "japanese",
+  "course": "main",
+  "minutes": 30,
+  "notes": "Japanese savoury cabbage pancakes with Kewpie mayonnaise and okonomiyaki sauce."
+ },
+ {
+  "title": "Tteokbokki",
+  "cuisine": "korean",
+  "course": "main",
+  "minutes": 25,
+  "notes": "Chewy Korean rice cakes in a spicy-sweet gochujang sauce with fish cakes or egg."
+ },
+ {
+  "title": "Misir wot",
+  "cuisine": "ethiopian",
+  "course": "main",
+  "minutes": 50,
+  "notes": "Ethiopian red lentil stew with berbere spice, onion and garlic."
+ },
+ {
+  "title": "Mujadara",
+  "cuisine": "lebanese",
+  "course": "main",
+  "minutes": 50,
+  "notes": "Lebanese lentils and rice with deeply caramelised onions and yoghurt."
+ },
+ {
+  "title": "Jollof rice",
+  "cuisine": "nigerian",
+  "course": "main",
+  "minutes": 60,
+  "notes": "West African rice cooked in a smoky tomato, capsicum and chilli sauce."
+ },
+ {
+  "title": "Nasi goreng",
+  "cuisine": "indonesian",
+  "course": "main",
+  "minutes": 25,
+  "notes": "Indonesian fried rice with kecap manis, chilli and a fried egg on top."
+ },
+ {
+  "title": "Eggplant parmigiana",
+  "cuisine": "italian",
+  "course": "main",
+  "minutes": 75,
+  "notes": "Layers of fried eggplant, tomato sauce, mozzarella and parmesan, baked."
+ },
+ {
+  "title": "Black bean burgers",
+  "cuisine": "american",
+  "course": "main",
+  "minutes": 35,
+  "notes": "Black bean and oat patties in buns with avocado, lettuce and tomato."
+ },
+ {
+  "title": "Buddha bowl",
+  "cuisine": "australian",
+  "course": "main",
+  "minutes": 35,
+  "notes": "Healthy. Roasted sweet potato and chickpeas with quinoa, greens, avocado and a tahini dressing."
+ },
+ {
+  "title": "Tofu and greens red curry",
+  "cuisine": "thai",
+  "course": "main",
+  "minutes": 30,
+  "notes": "Healthy. Firm tofu with broccoli, green beans and bok choy in a light red curry, with brown rice."
+ },
+ {
+  "title": "Mushroom and lentil bolognese",
+  "cuisine": "italian",
+  "course": "main",
+  "minutes": 45,
+  "notes": "Healthy. A meat-free bolognese of mushrooms and brown lentils in tomato sauce over wholemeal spaghetti."
+ },
+ {
+  "title": "Sweet potato and black bean chilli",
+  "cuisine": "mexican",
+  "course": "main",
+  "minutes": 45,
+  "notes": "Healthy. Smoky chilli of sweet potato, black beans and tomatoes, with yoghurt and coriander."
+ },
+ {
+  "title": "Chickpea and spinach curry",
+  "cuisine": "indian",
+  "course": "main",
+  "minutes": 30,
+  "notes": "Healthy. Quick chickpea curry with tomato, spinach and spices, with brown rice."
+ },
+ {
+  "title": "Tofu stir-fry with brown rice",
+  "cuisine": "chinese",
+  "course": "main",
+  "minutes": 25,
+  "notes": "Healthy. Crisp tofu and vegetables in a ginger soy sauce over brown rice."
+ },
+ {
+  "title": "Chicken and quinoa salad",
+  "cuisine": "australian",
+  "course": "lunch",
+  "minutes": 30,
+  "notes": "Healthy. Grilled chicken breast with quinoa, spinach, cherry tomatoes, cucumber and a lemon dressing."
+ },
+ {
+  "title": "Greek chicken salad",
+  "cuisine": "greek",
+  "course": "lunch",
+  "minutes": 25,
+  "notes": "Healthy. Oregano chicken breast over a Greek salad with feta, olives, cucumber and tomato."
+ },
+ {
+  "title": "Tuna Niçoise salad",
+  "cuisine": "french",
+  "course": "lunch",
+  "minutes": 25,
+  "notes": "Healthy. Canned tuna, green beans, baby potatoes, eggs, olives and tomato with a mustard vinaigrette."
+ },
+ {
+  "title": "Salmon soba noodle salad",
+  "cuisine": "japanese",
+  "course": "lunch",
+  "minutes": 25,
+  "notes": "Healthy. Flaked salmon with soba noodles, edamame, cucumber and a sesame ginger dressing."
+ },
+ {
+  "title": "Haloumi and chickpea salad",
+  "cuisine": "middle-eastern",
+  "course": "lunch",
+  "minutes": 20,
+  "notes": "Healthy. Grilled haloumi with chickpeas, rocket, cucumber, tomato and a lemon herb dressing."
+ },
+ {
+  "title": "Prawn and mango salad",
+  "cuisine": "australian",
+  "course": "lunch",
+  "minutes": 20,
+  "notes": "Healthy. Cooked prawns with mango, avocado, mixed leaves and a lime chilli dressing."
+ },
+ {
+  "title": "Roast pumpkin, feta and quinoa salad",
+  "cuisine": "australian",
+  "course": "lunch",
+  "minutes": 40,
+  "notes": "Healthy. Roast pumpkin with quinoa, baby spinach, feta and pepitas."
+ },
+ {
+  "title": "High-protein chicken pasta salad",
+  "cuisine": "australian",
+  "course": "lunch",
+  "minutes": 25,
+  "notes": "Healthy. Wholemeal pasta, chicken breast, Greek yoghurt dressing, spinach, corn and cherry tomatoes."
+ },
+ {
+  "title": "Chicken and avocado wraps",
+  "cuisine": "australian",
+  "course": "lunch",
+  "minutes": 15,
+  "notes": "Healthy. Wholemeal wraps with chicken breast, avocado, lettuce, tomato and a yoghurt dressing."
+ },
+ {
+  "title": "Turkey and hummus wraps",
+  "cuisine": "middle-eastern",
+  "course": "lunch",
+  "minutes": 10,
+  "notes": "Healthy. Wholemeal wraps with sliced turkey, hummus, spinach, cucumber and grated carrot."
+ },
+ {
+  "title": "Prawn rice paper rolls",
+  "cuisine": "vietnamese",
+  "course": "lunch",
+  "minutes": 30,
+  "notes": "Healthy. Fresh rice paper rolls with prawns, vermicelli, herbs and vegetables, with a peanut dipping sauce."
+ },
+ {
+  "title": "Lentil and vegetable soup",
+  "cuisine": "australian",
+  "course": "lunch",
+  "minutes": 45,
+  "notes": "Healthy. Hearty red lentil soup with carrot, celery, tomato and cumin."
+ },
+ {
+  "title": "Chicken and corn soup",
+  "cuisine": "chinese",
+  "course": "lunch",
+  "minutes": 30,
+  "notes": "Chinese-style chicken and creamed corn soup with egg ribbons."
+ },
+ {
+  "title": "Miso soup with tofu and noodles",
+  "cuisine": "japanese",
+  "course": "lunch",
+  "minutes": 15,
+  "notes": "Healthy. Miso broth with silken tofu, soba noodles, spinach and spring onion."
+ },
+ {
+  "title": "Chicken burrito lunch bowl",
+  "cuisine": "mexican",
+  "course": "lunch",
+  "minutes": 25,
+  "notes": "Healthy. A meal-prep bowl of spiced chicken, brown rice, black beans, corn salsa and lettuce."
+ },
+ {
+  "title": "Tofu poke bowl",
+  "cuisine": "hawaiian",
+  "course": "lunch",
+  "minutes": 25,
+  "notes": "Healthy. Marinated tofu with rice, edamame, cucumber, carrot, avocado and a soy sesame dressing."
+ },
+ {
+  "title": "Sushi bowl",
+  "cuisine": "japanese",
+  "course": "lunch",
+  "minutes": 25,
+  "notes": "Healthy. Seasoned sushi rice with salmon or tuna, avocado, cucumber, nori and pickled ginger."
+ },
+ {
+  "title": "Egg and avocado rice bowl",
+  "cuisine": "korean",
+  "course": "lunch",
+  "minutes": 20,
+  "notes": "Healthy. Brown rice with soft-boiled eggs, avocado, kimchi, spinach and sesame."
+ },
+ {
+  "title": "Mediterranean chicken bowl",
+  "cuisine": "mediterranean",
+  "course": "lunch",
+  "minutes": 30,
+  "notes": "Healthy. Lemon chicken with couscous, hummus, cucumber, tomato and tabbouleh-style herbs."
+ }
+]

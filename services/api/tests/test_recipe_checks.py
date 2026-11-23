@@ -417,6 +417,14 @@ def test_words_used_another_way_are_not_unlisted_ingredients() -> None:
             "Rub the butter into the flour until it resembles coarse breadcrumbs.",
         ),
         (
+            ["1 carrot, cut into matchsticks", "2 tbsp rice vinegar"],
+            "Pickle the carrot in the rice vinegar for 10 minutes until it softens.",
+        ),
+        (
+            ["1 cup parsley leaves", "2 tbsp olive oil"],
+            "Chop the parsley and stir in the olive oil to make the salsa verde.",
+        ),
+        (
             ["6 eggs", "2 potatoes", "1 tbsp olive oil"],
             "Fry the potatoes in the olive oil over low heat for 20 minutes until"
             " tender, add the eggs and invert the tortilla after 5 minutes.",
@@ -473,3 +481,12 @@ def test_a_packet_step_never_hides_another_cooking_step() -> None:
         "Toss with the soy sauce.",
     ]
     assert "no_heat" in kinds([recipe(ingredients=lines, method=method, minutes=20)])
+
+
+def test_an_amount_in_brackets_before_the_name_still_names_the_line() -> None:
+    lines = ["1 cup (200 g) dried brown lentils, rinsed", "1 tbsp olive oil"]
+    method = [
+        "Simmer the lentils in the olive oil and water over low heat for 20 minutes until tender."
+    ]
+    problems = check_recipes([recipe(ingredients=lines, method=method, minutes=25)])
+    assert not [p for p in problems if p.check == "unused"], problems
