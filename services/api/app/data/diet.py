@@ -86,6 +86,14 @@ _GLUTEN = (
 )
 _ANIMAL = "honey, gelatine leaves"
 
+# New Seed Recipes (2026-11-23).
+_MEAT += ", lamb backstrap, lamb shanks, pork chops, char siu pork, salami"
+_SEAFOOD += ", basa, barramundi, bonito flakes, fish cakes"
+_DAIRY += ", tzatziki"
+_GLUTEN += (
+    ", stout, french onion soup mix, turkish bread, black bean sauce, fish cakes, okonomiyaki sauce"
+)
+
 
 def _names(text: str) -> list[str]:
     return [n.strip() for n in text.split(",")]
@@ -112,7 +120,10 @@ CHECK_LABEL: dict[str, frozenset[Contains]] = _invert(
             "stock cubes, vegetable stock, parmesan, gruyere, basil pesto, pecorino, "
             "japanese curry roux"
         ),
-        S: "kimchi, green curry paste, red curry paste, laksa paste, tom yum paste",
+        S: (
+            "kimchi, green curry paste, red curry paste, laksa paste, tom yum paste, furikake, "
+            "massaman curry paste"
+        ),
         # Many gluten-free breads use milk or egg.
         D: (
             "dark chocolate, chocolate chips, puff pastry, shortcrust pastry, "
@@ -127,7 +138,7 @@ CHECK_LABEL: dict[str, frozenset[Contains]] = _invert(
             "biryani curry paste, tandoori paste, tomato sauce, taco seasoning, taco shells, "
             "sausage mince, smoked sausage, barbecue chicken, bolognese sauce, black vinegar, "
             "fruit chutney, enchilada sauce, cajun seasoning, jerk seasoning, frozen chips, "
-            "amaretti biscuits, vanilla ice cream"
+            "amaretti biscuits, vanilla ice cream, fried shallots, korma curry paste"
         ),
     }
 )

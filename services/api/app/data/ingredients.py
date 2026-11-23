@@ -40,7 +40,13 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
         "g",
         None,
         True,
-        ("pepper", "ground pepper", "ground black pepper", "black peppercorns"),
+        (
+            "pepper",
+            "ground pepper",
+            "ground black pepper",
+            "black peppercorns",
+            "whole black peppercorns",
+        ),
     ),
     SeedIngredient(
         "olive oil",
@@ -65,6 +71,7 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
             "oil",
             "neutral oil",
             "frying oil",
+            "rice bran oil",
         ),
     ),
     SeedIngredient("plain flour", "pantry", "g", D("0.53"), True, ("all-purpose flour", "flour")),
@@ -88,7 +95,9 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
     SeedIngredient("white vinegar", "pantry", "ml", D("1.0"), False, ("vinegar", "cane vinegar")),
     SeedIngredient("garlic powder", "spices", "g", None, True, ()),
     SeedIngredient("ground cumin", "spices", "g", None, False, ("cumin", "roasted ground cumin")),
-    SeedIngredient("paprika", "spices", "g", None, True, ("smoked paprika", "sweet paprika")),
+    SeedIngredient(
+        "paprika", "spices", "g", None, True, ("smoked paprika", "sweet paprika", "ground paprika")
+    ),
     SeedIngredient("dried oregano", "spices", "g", None, False, ("oregano",)),
     SeedIngredient(
         "chilli flakes",
@@ -96,14 +105,21 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
         "g",
         None,
         True,
-        ("red pepper flakes", "chili flakes", "aleppo pepper"),
+        ("red pepper flakes", "chili flakes", "aleppo pepper", "dried chilli flakes"),
     ),
     SeedIngredient("ground cinnamon", "spices", "g", None, True, ("cinnamon",)),
     # Found by the Kitchen Photo eval (ADR 0023): Staples, so they don't go Unknown.
     SeedIngredient("celery salt", "spices", "g", None, False, ()),
     SeedIngredient("cayenne pepper", "spices", "g", None, False, ("cayenne", "cayenne powder")),
     SeedIngredient("dried sage", "spices", "g", None, False, ("ground sage", "rubbed sage")),
-    SeedIngredient("stock cubes", "pantry", "count", None, True, ("bouillon cubes", "stock cube")),
+    SeedIngredient(
+        "stock cubes",
+        "pantry",
+        "count",
+        None,
+        True,
+        ("bouillon cubes", "stock cube", "chicken stock cubes"),
+    ),
     # Pantry, tracked: decides whether a meal is possible.
     SeedIngredient(
         "pasta",
@@ -122,6 +138,9 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
             "macaroni",
             "orzo",
             "tubular pasta",
+            "penne pasta",
+            "wholemeal penne",
+            "wholemeal spaghetti",
         ),
     ),
     SeedIngredient(
@@ -130,7 +149,15 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
         "g",
         D("0.85"),
         False,
-        ("white rice", "jasmine rice", "basmati rice", "long grain rice", "long-grain rice"),
+        (
+            "white rice",
+            "jasmine rice",
+            "basmati rice",
+            "long grain rice",
+            "long-grain rice",
+            "long grain white rice",
+            "long grain parboiled rice",
+        ),
     ),
     SeedIngredient("rolled oats", "pantry", "g", D("0.41"), False, ("oats", "porridge oats")),
     SeedIngredient(
@@ -160,7 +187,7 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
         ("garbanzo beans", "dried chickpeas", "canned chickpeas"),
     ),
     SeedIngredient("red lentils", "pantry", "g", None, False, ("lentils",)),
-    SeedIngredient("coconut milk", "pantry", "ml", D("0.97"), False, ()),
+    SeedIngredient("coconut milk", "pantry", "ml", D("0.97"), False, ("light coconut milk",)),
     SeedIngredient("chicken stock", "pantry", "ml", D("1.0"), False, ("chicken broth",)),
     SeedIngredient(
         "bread",
@@ -178,14 +205,17 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
             "wholemeal bread",
             "rye bread",
             "dense rye bread",
+            "crusty sourdough loaf",
         ),
     ),
     # Its own starter, never an alias of bread: bread is flagged gluten (ADR 0023).
     SeedIngredient(
         "gluten free bread", "bakery", "count", None, False, ("gf bread", "gluten-free bread")
     ),
-    SeedIngredient("tortillas", "bakery", "count", None, False, ("wraps", "flour tortillas")),
-    SeedIngredient("peanut butter", "pantry", "g", None, False, ()),
+    SeedIngredient(
+        "tortillas", "bakery", "count", None, False, ("wraps", "flour tortillas", "wholemeal wraps")
+    ),
+    SeedIngredient("peanut butter", "pantry", "g", None, False, ("smooth peanut butter",)),
     SeedIngredient("honey", "pantry", "g", D("1.42"), True, ()),
     # Dairy and eggs
     # A Staple: used a little at a time in meals nobody plans (breakfast, coffee).
@@ -246,7 +276,7 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
         "g",
         None,
         False,
-        ("parmesan cheese", "parmigiano", "parmigiano reggiano"),
+        ("parmesan cheese", "parmigiano", "parmigiano reggiano", "parmesan rind"),
     ),
     SeedIngredient(
         "mozzarella",
@@ -271,7 +301,15 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
         "g",
         D("1.03"),
         False,
-        ("yoghurt", "yogurt", "greek yogurt", "greek style yoghurt"),
+        (
+            "yoghurt",
+            "yogurt",
+            "greek yogurt",
+            "greek style yoghurt",
+            "natural greek yoghurt",
+            "reduced fat greek yoghurt",
+            "full fat yoghurt",
+        ),
     ),
     SeedIngredient("thickened cream", "dairy", "ml", D("1.0"), False, ("cream", "heavy cream")),
     SeedIngredient("sour cream", "dairy", "g", D("1.0"), False, ("crema", "mexican crema")),
@@ -298,7 +336,7 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
         "g",
         None,
         False,
-        ("ground beef", "mince", "minced beef", "mince beef"),
+        ("ground beef", "mince", "minced beef", "mince beef", "lean beef mince"),
     ),
     SeedIngredient("pork mince", "meat", "g", None, False, ("ground pork", "mince pork")),
     SeedIngredient("lamb chops", "meat", "g", None, False, ("lamb cutlets",)),
@@ -318,6 +356,9 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
             "sirloin",
             "beef strips",
             "beef sirloin strips",
+            "beef rump steak",
+            "lean rump steak",
+            "thin cut beef minute steaks",
         ),
     ),
     SeedIngredient(
@@ -334,12 +375,32 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
         "count",
         None,
         False,
-        ("snags", "sausage", "pork sausages", "italian sausage", "italian sausages"),
+        (
+            "snags",
+            "sausage",
+            "pork sausages",
+            "italian sausage",
+            "italian sausages",
+            "beef sausages",
+            "pork and fennel sausages",
+        ),
     ),
-    SeedIngredient("salmon fillet", "seafood", "g", None, False, ("salmon", "salmon fillets")),
+    SeedIngredient(
+        "salmon fillet",
+        "seafood",
+        "g",
+        None,
+        False,
+        ("salmon", "salmon fillets", "skin on salmon fillets", "sashimi grade salmon"),
+    ),
     SeedIngredient("prawns", "seafood", "g", None, False, ("shrimp", "king prawns")),
     SeedIngredient(
-        "canned tuna", "seafood", "g", None, False, ("tinned tuna", "tuna", "tuna in olive oil")
+        "canned tuna",
+        "seafood",
+        "g",
+        None,
+        False,
+        ("tinned tuna", "tuna", "tuna in olive oil", "tuna in springwater"),
     ),
     SeedIngredient("tofu", "meat", "g", None, False, ("firm tofu",)),
     # Fruit and vegetables
@@ -362,6 +423,7 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
             "baby potatoes",
             "yellow potatoes",
             "new potatoes",
+            "desiree potatoes",
         ),
     ),
     SeedIngredient("sweet potato", "produce", "g", None, False, ("kumara", "sweet potatoes")),
@@ -412,13 +474,26 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
             "romaine",
             "lettuce heart",
             "lettuce hearts",
+            "baby cos lettuce",
         ),
     ),
     SeedIngredient("baby spinach", "produce", "g", None, False, ("spinach", "english spinach")),
-    SeedIngredient("rocket", "produce", "g", None, False, ("arugula",)),
+    SeedIngredient("rocket", "produce", "g", None, False, ("arugula", "baby rocket")),
     SeedIngredient("mushrooms", "produce", "g", None, False, ("mushroom", "button mushrooms")),
     SeedIngredient("spring onions", "produce", "count", None, False, ("scallions", "green onions")),
-    SeedIngredient("coriander", "produce", "count", None, False, ("cilantro", "fresh coriander")),
+    SeedIngredient(
+        "coriander",
+        "produce",
+        "count",
+        None,
+        False,
+        (
+            "cilantro",
+            "fresh coriander",
+            "coriander leaves and stems",
+            "coriander leaves and soft stems",
+        ),
+    ),
     SeedIngredient("parsley", "produce", "count", None, False, ("flat leaf parsley",)),
     SeedIngredient("basil", "produce", "count", None, False, ("fresh basil",)),
     SeedIngredient("ginger", "produce", "g", None, False, ("fresh ginger",)),
@@ -443,14 +518,21 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
     ),
     SeedIngredient("avocado", "produce", "count", None, False, ("avocados",)),
     SeedIngredient("bananas", "produce", "count", None, False, ("banana",)),
-    SeedIngredient("apples", "produce", "count", None, False, ("apple", "cooking apples")),
+    SeedIngredient(
+        "apples",
+        "produce",
+        "count",
+        None,
+        False,
+        ("apple", "cooking apples", "granny smith apples"),
+    ),
     SeedIngredient("frozen peas", "frozen", "g", None, False, ("peas",)),
     # Added in slice 4 so the Seed Recipes' lines have something to match.
     # Pantry: grains, pasta, noodles
     SeedIngredient("self-raising flour", "pantry", "g", D("0.53"), False, ("self raising flour",)),
     SeedIngredient("arborio rice", "pantry", "g", D("0.85"), False, ("risotto rice",)),
-    SeedIngredient("couscous", "pantry", "g", D("0.7"), False, ()),
-    SeedIngredient("quinoa", "pantry", "g", D("0.75"), False, ()),
+    SeedIngredient("couscous", "pantry", "g", D("0.7"), False, ("wholemeal couscous",)),
+    SeedIngredient("quinoa", "pantry", "g", D("0.75"), False, ("white quinoa",)),
     SeedIngredient(
         "polenta",
         "pantry",
@@ -461,7 +543,14 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
     ),
     SeedIngredient("pearl barley", "pantry", "g", D("0.8"), False, ("barley",)),
     SeedIngredient("bulgur", "pantry", "g", None, False, ("burghul", "bulgur wheat")),
-    SeedIngredient("breadcrumbs", "pantry", "g", D("0.45"), False, ("dried breadcrumbs",)),
+    SeedIngredient(
+        "breadcrumbs",
+        "pantry",
+        "g",
+        D("0.45"),
+        False,
+        ("dried breadcrumbs", "wholemeal breadcrumbs"),
+    ),
     SeedIngredient("panko breadcrumbs", "pantry", "g", None, False, ("panko",)),
     SeedIngredient(
         "lasagne sheets", "pantry", "g", None, False, ("lasagna sheets", "dried lasagne sheets")
@@ -483,11 +572,23 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
         "g",
         None,
         False,
-        ("vermicelli", "vermicelli noodles", "thin vermicelli noodles"),
+        (
+            "vermicelli",
+            "vermicelli noodles",
+            "thin vermicelli noodles",
+            "dried rice vermicelli",
+            "dried rice vermicelli noodles",
+            "rice vermicelli noodles",
+        ),
     ),
     SeedIngredient("udon noodles", "pantry", "g", None, False, ("udon",)),
     SeedIngredient(
-        "rice paper sheets", "pantry", "count", None, False, ("rice paper", "rice paper wrappers")
+        "rice paper sheets",
+        "pantry",
+        "count",
+        None,
+        False,
+        ("rice paper", "rice paper wrappers", "rice paper rounds"),
     ),
     SeedIngredient("dumpling wrappers", "chilled", "count", None, False, ("gow gee wrappers",)),
     # Pantry: cans and jars
@@ -497,21 +598,37 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
     SeedIngredient(
         "cannellini beans", "pantry", "g", None, False, ("white beans", "canned cannellini beans")
     ),
-    SeedIngredient("brown lentils", "pantry", "g", None, False, ("canned lentils",)),
+    SeedIngredient(
+        "brown lentils", "pantry", "g", None, False, ("canned lentils", "dried brown lentils")
+    ),
     SeedIngredient("refried beans", "pantry", "g", None, False, ()),
     SeedIngredient("corn kernels", "pantry", "g", None, False, ("canned corn", "sweetcorn")),
     SeedIngredient("creamed corn", "pantry", "g", None, False, ()),
-    SeedIngredient("canned beetroot", "pantry", "g", None, False, ("sliced beetroot",)),
-    SeedIngredient("canned pineapple", "pantry", "g", None, False, ("pineapple pieces",)),
+    SeedIngredient(
+        "canned beetroot", "pantry", "g", None, False, ("sliced beetroot", "canned beetroot slices")
+    ),
+    SeedIngredient(
+        "canned pineapple",
+        "pantry",
+        "g",
+        None,
+        False,
+        ("pineapple pieces", "pineapple pieces in juice", "pineapple juice"),
+    ),
     SeedIngredient("water chestnuts", "pantry", "g", None, False, ()),
     SeedIngredient("coconut cream", "pantry", "ml", D("1.0"), False, ()),
     SeedIngredient("beef stock", "pantry", "ml", D("1.0"), False, ("beef broth",)),
     SeedIngredient("vegetable stock", "pantry", "ml", D("1.0"), False, ("vegetable broth",)),
-    SeedIngredient("dashi stock", "pantry", "ml", D("1.0"), False, ("dashi",)),
+    SeedIngredient("dashi stock", "pantry", "ml", D("1.0"), False, ("dashi", "dashi granules")),
     SeedIngredient(
-        "kalamata olives", "pantry", "g", None, False, ("olives", "black olives", "greek olives")
+        "kalamata olives",
+        "pantry",
+        "g",
+        None,
+        False,
+        ("olives", "black olives", "greek olives", "pitted kalamata olives"),
     ),
-    SeedIngredient("tomato salsa", "pantry", "g", None, False, ("salsa",)),
+    SeedIngredient("tomato salsa", "pantry", "g", None, False, ("salsa", "chunky tomato salsa")),
     SeedIngredient("basil pesto", "pantry", "g", None, False, ("pesto",)),
     SeedIngredient(
         "corn chips", "pantry", "g", None, False, ("tortilla chips", "corn tortilla chips")
@@ -537,7 +654,7 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
     SeedIngredient("sweet chilli sauce", "pantry", "ml", D("1.3"), False, ("sweet chili sauce",)),
     SeedIngredient("kecap manis", "pantry", "ml", D("1.3"), False, ("sweet soy sauce",)),
     SeedIngredient("sesame oil", "pantry", "ml", D("0.92"), False, ()),
-    SeedIngredient("rice vinegar", "pantry", "ml", D("1.0"), False, ()),
+    SeedIngredient("rice vinegar", "pantry", "ml", D("1.0"), False, ("rice wine vinegar",)),
     SeedIngredient("red wine vinegar", "pantry", "ml", D("1.0"), False, ()),
     SeedIngredient(
         "balsamic vinegar", "pantry", "ml", D("1.0"), False, ("balsamic", "balsamic glaze")
@@ -549,7 +666,7 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
     ),
     SeedIngredient("chilli bean paste", "pantry", "g", None, False, ("doubanjiang",)),
     SeedIngredient("tahini", "pantry", "g", D("0.95"), False, ("chinese sesame paste",)),
-    SeedIngredient("tamarind paste", "pantry", "g", None, False, ("tamarind",)),
+    SeedIngredient("tamarind paste", "pantry", "g", None, False, ("tamarind", "tamarind puree")),
     SeedIngredient("green curry paste", "pantry", "g", None, False, ("thai green curry paste",)),
     SeedIngredient("red curry paste", "pantry", "g", None, False, ()),
     SeedIngredient("madras curry paste", "pantry", "g", None, False, ("madras paste",)),
@@ -581,7 +698,9 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
     # Pantry: nuts, seeds, dried fruit
     SeedIngredient("almonds", "pantry", "g", None, False, ("almond", "flaked almonds")),
     SeedIngredient("cashews", "pantry", "g", None, False, ("cashew nuts",)),
-    SeedIngredient("peanuts", "pantry", "g", None, False, ("roasted peanuts",)),
+    SeedIngredient(
+        "peanuts", "pantry", "g", None, False, ("roasted peanuts", "roasted unsalted peanuts")
+    ),
     SeedIngredient("pine nuts", "pantry", "g", None, False, ()),
     SeedIngredient("walnuts", "pantry", "g", None, False, ()),
     SeedIngredient("pepitas", "pantry", "g", None, False, ("pumpkin seeds",)),
@@ -636,7 +755,7 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
         "count",
         None,
         False,
-        ("pita", "lebanese bread", "flatbreads", "flatbread"),
+        ("pita", "lebanese bread", "flatbreads", "flatbread", "greek style pita breads"),
     ),
     SeedIngredient(
         "puff pastry", "frozen", "count", None, False, ("all-butter puff pastry",)
@@ -678,7 +797,7 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
     ),
     SeedIngredient("pork shoulder", "meat", "g", None, False, ("pork scotch",)),
     SeedIngredient("veal shanks", "meat", "count", None, False, ("osso buco",)),
-    SeedIngredient("chorizo", "meat", "g", None, False, ("cooking chorizo",)),
+    SeedIngredient("chorizo", "meat", "g", None, False, ("cooking chorizo", "chorizo sausages")),
     SeedIngredient("ham", "meat", "g", None, False, ("sliced ham", "leg ham")),
     SeedIngredient("silken tofu", "meat", "g", None, False, ("soft tofu",)),
     SeedIngredient("tofu puffs", "meat", "g", None, False, ()),
@@ -715,11 +834,15 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
     ),
     SeedIngredient("silverbeet", "produce", "count", None, False, ("swiss chard", "chard")),
     SeedIngredient("asparagus", "produce", "count", None, False, ()),  # counted in bunches
-    SeedIngredient("celery", "produce", "count", None, False, ()),  # counted in bunches
+    SeedIngredient(
+        "celery", "produce", "count", None, False, ("celery sticks",)
+    ),  # counted in bunches
     SeedIngredient("green beans", "produce", "g", None, False, ("string beans",)),
     SeedIngredient("snow peas", "produce", "g", None, False, ("mangetout",)),
     SeedIngredient("bean sprouts", "produce", "g", None, False, ("beansprouts", "soybean sprouts")),
-    SeedIngredient("corn cobs", "produce", "count", None, False, ("corn on the cob", "corn cob")),
+    SeedIngredient(
+        "corn cobs", "produce", "count", None, False, ("corn on the cob", "corn cob", "cob corn")
+    ),
     SeedIngredient("radishes", "produce", "count", None, False, ("radish",)),
     # In Australia "shallots" can also mean spring onions; this is the small onion.
     SeedIngredient("shallots", "produce", "count", None, False, ("eschalots", "french shallots")),
@@ -729,7 +852,14 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
         "count",
         None,
         False,
-        ("red chilli", "chilli", "fresh chilli", "scotch bonnet chilli"),
+        (
+            "red chilli",
+            "chilli",
+            "fresh chilli",
+            "scotch bonnet chilli",
+            "long red chilli",
+            "long red chillies",
+        ),
     ),
     SeedIngredient("lemongrass", "produce", "count", None, False, ("lemon grass",)),
     SeedIngredient(
@@ -757,7 +887,7 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
         False,
         ("mixed berries", "frozen berries", "berries", "fresh berries"),
     ),
-    SeedIngredient("edamame", "frozen", "g", None, False, ()),
+    SeedIngredient("edamame", "frozen", "g", None, False, ("shelled edamame",)),
     # Drinks (for cooking)
     SeedIngredient("red wine", "drinks", "ml", D("0.99"), False, ()),
     SeedIngredient("white wine", "drinks", "ml", D("0.99"), False, ("dry white wine",)),
@@ -791,11 +921,18 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
     SeedIngredient("pork ribs", "meat", "g", None, False, ("pork spare ribs", "spare ribs")),
     SeedIngredient("apple cider vinegar", "pantry", "ml", D("1.0"), False, ("cider vinegar",)),
     SeedIngredient("taco seasoning", "spices", "g", None, False, ("taco spice mix",)),
-    SeedIngredient("taco shells", "pantry", "count", None, False, ("taco shell",)),
+    SeedIngredient(
+        "taco shells", "pantry", "count", None, False, ("taco shell", "hard taco shells")
+    ),
     # The richer Seed Recipe library (slice 4g, ADR 0028): what its recipes use that the
     # starters didn't have. Diet flags for these are in app/data/diet.py.
     SeedIngredient(
-        "green chillies", "produce", "count", None, False, ("green chilli", "green chilies")
+        "green chillies",
+        "produce",
+        "count",
+        None,
+        False,
+        ("green chilli", "green chilies", "long green chillies"),
     ),
     SeedIngredient("leeks", "produce", "count", None, False, ("leek",)),
     SeedIngredient("daikon", "produce", "count", None, False, ("daikon radish", "mooli")),
@@ -928,7 +1065,14 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
     SeedIngredient(
         "red pepper paste", "pantry", "g", None, False, ("pepper paste", "biber salcasi")
     ),
-    SeedIngredient("japanese curry roux", "pantry", "g", None, False, ("curry roux",)),
+    SeedIngredient(
+        "japanese curry roux",
+        "pantry",
+        "g",
+        None,
+        False,
+        ("curry roux", "japanese curry roux blocks"),
+    ),
     SeedIngredient("wasabi", "pantry", "g", None, False, ("wasabi paste",)),
     SeedIngredient("orange blossom water", "pantry", "ml", D("1.0"), False, ()),
     SeedIngredient("rosewater", "pantry", "ml", D("1.0"), False, ("rose water",)),
@@ -938,7 +1082,7 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
     SeedIngredient("bolognese sauce", "pantry", "g", None, False, ("beef ragù", "beef ragu")),
     SeedIngredient("anchovies", "pantry", "g", None, False, ("anchovy fillets", "anchovy")),
     SeedIngredient("capers", "pantry", "g", None, False, ()),
-    SeedIngredient("green olives", "pantry", "g", None, False, ()),
+    SeedIngredient("green olives", "pantry", "g", None, False, ("pimiento stuffed green olives",)),
     SeedIngredient(
         "artichoke hearts",
         "pantry",
@@ -1042,8 +1186,8 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
     SeedIngredient("sichuan peppercorns", "spices", "g", None, False, ("sichuan pepper",)),
     SeedIngredient("caraway seeds", "spices", "g", None, False, ()),
     SeedIngredient("za'atar", "spices", "g", None, False, ("zaatar",)),
-    SeedIngredient("berbere", "spices", "g", None, False, ("berbere spice",)),
-    SeedIngredient("cajun seasoning", "spices", "g", None, False, ()),
+    SeedIngredient("berbere", "spices", "g", None, False, ("berbere spice", "berbere spice mix")),
+    SeedIngredient("cajun seasoning", "spices", "g", None, False, ("cajun spice mix",)),
     SeedIngredient("jerk seasoning", "spices", "g", None, False, ()),
     SeedIngredient("biryani masala", "spices", "g", None, False, ()),
     SeedIngredient(
@@ -1085,7 +1229,12 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
         ("cooked chicken", "roast chicken", "cooked shredded chicken", "shredded cooked chicken"),
     ),
     SeedIngredient(
-        "sliced turkey", "meat", "g", None, False, ("sliced cooked turkey", "deli turkey")
+        "sliced turkey",
+        "meat",
+        "g",
+        None,
+        False,
+        ("sliced cooked turkey", "deli turkey", "turkey breast", "sliced turkey breast"),
     ),
     SeedIngredient("mussels", "seafood", "g", None, False, ()),
     SeedIngredient("smoked haddock", "seafood", "g", None, False, ("smoked haddock fillets",)),
@@ -1105,4 +1254,67 @@ INGREDIENTS: tuple[SeedIngredient, ...] = (
     SeedIngredient("cherry juice", "drinks", "ml", D("1.0"), False, ()),
     SeedIngredient("beer", "drinks", "ml", D("1.0"), False, ("ale", "lager")),
     SeedIngredient("marsala", "drinks", "ml", D("1.0"), False, ("marsala wine",)),
+    # New Seed Recipes (2026-11-23): everyday Australian dinners and healthy lunches.
+    SeedIngredient("basa", "seafood", "g", None, False, ("basa fillets",)),
+    SeedIngredient(
+        "barramundi",
+        "seafood",
+        "g",
+        None,
+        False,
+        ("barramundi fillets", "skin on barramundi fillets"),
+    ),
+    SeedIngredient(
+        "brown rice",
+        "pantry",
+        "g",
+        D("0.85"),
+        False,
+        ("microwave brown rice", "microwave brown rice pouches", "pouches microwave brown rice"),
+    ),
+    SeedIngredient("hummus", "chilled", "g", None, False, ("houmous",)),
+    SeedIngredient("tzatziki", "chilled", "g", None, False, ()),
+    SeedIngredient("lamb backstrap", "meat", "g", None, False, ("lamb backstraps", "lamb fillet")),
+    SeedIngredient("lamb shanks", "meat", "count", None, False, ("lamb shank",)),
+    SeedIngredient("pork chops", "meat", "count", None, False, ("pork loin chops", "pork chop")),
+    SeedIngredient("stout", "drinks", "ml", D("1.0"), False, ("guinness",)),
+    SeedIngredient("french onion soup mix", "pantry", "g", None, False, ()),
+    SeedIngredient("apricot nectar", "drinks", "ml", D("1.05"), False, ()),
+    SeedIngredient("canned apricots", "pantry", "g", None, False, ("apricot halves in juice",)),
+    SeedIngredient("turkish bread", "bakery", "count", None, False, ("turkish pide",)),
+    SeedIngredient("black bean sauce", "pantry", "ml", D("1.1"), False, ()),
+    SeedIngredient("bonito flakes", "pantry", "g", None, False, ()),
+    SeedIngredient(
+        "fried shallots", "pantry", "g", None, False, ("crispy fried shallots", "crispy shallots")
+    ),
+    SeedIngredient("char siu pork", "meat", "g", None, False, ("char siu",)),
+    SeedIngredient(
+        "korean rice cakes",
+        "chilled",
+        "g",
+        None,
+        False,
+        ("cylinder rice cakes", "tteok", "rice cakes"),
+    ),
+    SeedIngredient("fish cakes", "chilled", "g", None, False, ("fish cake sheets",)),
+    SeedIngredient(
+        "pickles", "pantry", "g", None, False, ("dill pickle slices", "dill pickles", "gherkins")
+    ),
+    SeedIngredient("furikake", "pantry", "g", None, False, ()),
+    SeedIngredient("okonomiyaki sauce", "pantry", "ml", D("1.1"), False, ()),
+    SeedIngredient("redcurrant jelly", "pantry", "g", None, False, ()),
+    SeedIngredient("salami", "meat", "g", None, False, ("sliced salami",)),
+    SeedIngredient("sambal oelek", "pantry", "g", None, False, ()),
+    SeedIngredient("sriracha", "pantry", "ml", D("1.1"), False, ("sriracha sauce",)),
+    SeedIngredient("tomato relish", "pantry", "g", None, False, ()),
+    SeedIngredient("plantains", "produce", "count", None, False, ("plantain", "fried plantain")),
+    SeedIngredient("massaman curry paste", "pantry", "g", None, False, ("massaman paste",)),
+    SeedIngredient(
+        "korma curry paste", "pantry", "g", None, False, ("mild korma curry paste", "korma paste")
+    ),
+    SeedIngredient("peanut oil", "pantry", "ml", D("0.92"), False, ()),
+    SeedIngredient(
+        "mixed salad leaves", "produce", "g", None, False, ("salad leaves", "mixed leaves")
+    ),
+    SeedIngredient("pasta sauce", "pantry", "ml", D("1.05"), False, ("tomato pasta sauce",)),
 )
