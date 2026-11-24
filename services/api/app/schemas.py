@@ -35,6 +35,7 @@ from app.models import (
 )
 from app.services import recipe_photos
 from app.services.ingredients import normalise
+from app.services.nutrition import Nutrition, nutrition_per_serve
 from app.text import ONE_LINE
 from app.web_fetch import check_url
 
@@ -452,6 +453,12 @@ class RecipeOut(RecipeSummaryOut):
     source_url: str | None
     licence: str
     attribution: str
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def nutrition(self) -> Nutrition:
+        """Per serve, added up from the lines (ADR 0035), so it never goes stale."""
+        return nutrition_per_serve(self.ingredients, self.servings)
 
 
 # --- Dietary Rules and Preferences ----------------------------------------------------

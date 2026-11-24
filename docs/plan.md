@@ -683,6 +683,23 @@ Parked: AI-generated images for recipes with no licensed photo (decide once 4f-a
 
 Parked: timers inside Cook Mode; Quick View for Imported Recipes. Library gaps the Retrieval Set showed (laksa, carbonara, sweet potato, halloumi, burgers, pizza): add with 4f or later, through the same gate.
 
+**Slice 4h: Nutrition** (ADR 0035, grilled 2026-11-24; build test-first):
+
+1. **Data (4h-a):**
+   - Download AUSNUT 2023 into `data/ausnut/` (spreadsheets not in git; `foods.json` is).
+   - A script has Claude match each of the 478 starter Ingredients to an AUSNUT food ID, plus grams per item (106 count Ingredients) and density (57 ml Ingredients).
+   - Code copies the eight nutrients per 100 g from the file.
+   - A local review page lets the product owner fix matches, and the result is committed as a data file.
+   - A test fails when a starter has no match.
+2. **API (4h-a):** `RecipeOut` gains `nutrition` per serve: the eight values, the lines left out, and `available`. It's worked out from the recipe's lines and follows the missing-line rule in ADR 0035.
+3. **Client (4h-b):**
+   - Tabs become `Ingredients | Method | Nutrition`, each with a big number on top (line count, total time, Calories per serve or "–"). Ingredients opens first.
+   - The Overview tab is removed. The summary moves under the title (3 lines, "See more"). Tips, variations and storage move to the bottom of Method.
+   - The Nutrition tab shows a "Nutrition per serve" table: amount and % Daily Intake, energy as kJ (Cal), a "Doesn't include" note, a "Nutrition data: FSANZ" credit and an estimate note.
+   - Bump `CACHE_BUSTER`.
+
+Parked: Nutrition in planning (Calorie or protein filters for the planner and search, weekly totals).
+
 Experiments (`experiments/`, any time after slice 4):
 
 - **E1** MCP server: `services/mcp` exposes read + draft tools over the same services. Start with stdio (Claude Desktop/Code), then streamable HTTP protected by **OAuth 2.1** (authorisation code + PKCE, token checking, scopes mapped to read vs draft tools). This is the main OAuth learning exercise. Write up how it differs from native tool calling. *(MCP & tool calling)*

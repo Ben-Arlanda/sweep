@@ -1,0 +1,2249 @@
+{
+ "salt": {
+  "food": "F007878",
+  "measures": {
+   "pinch": null
+  }
+ },
+ "black pepper": {
+  "food": "F006618",
+  "measures": {
+   "tsp": null
+  }
+ },
+ "olive oil": {
+  "food": "F006177",
+  "measures": {}
+ },
+ "vegetable oil": {
+  "food": "F006191",
+  "measures": {}
+ },
+ "plain flour": {
+  "food": "F004007",
+  "measures": {}
+ },
+ "white sugar": {
+  "food": "F008976",
+  "measures": {}
+ },
+ "brown sugar": {
+  "food": "F008969",
+  "measures": {}
+ },
+ "caster sugar": {
+  "food": "F008976",
+  "measures": {}
+ },
+ "icing sugar": {
+  "food": "F008980",
+  "measures": {}
+ },
+ "bicarbonate soda": {
+  "food": "F000248",
+  "measures": {}
+ },
+ "baking powder": {
+  "food": "F000247",
+  "measures": {}
+ },
+ "cornflour": {
+  "food": "F003988",
+  "measures": {}
+ },
+ "soy sauce": {
+  "food": "F008065",
+  "measures": {}
+ },
+ "white vinegar": {
+  "food": "F009498",
+  "measures": {}
+ },
+ "garlic powder": {
+  "food": null,
+  "measures": {}
+ },
+ "ground cumin": {
+  "food": "F003327",
+  "measures": {
+   "tsp": null
+  }
+ },
+ "paprika": {
+  "food": "F006316",
+  "measures": {
+   "tbsp": null,
+   "tsp": null
+  }
+ },
+ "dried oregano": {
+  "food": "F006281",
+  "measures": {
+   "tbsp": null,
+   "tsp": null
+  }
+ },
+ "chilli flakes": {
+  "food": "F002893",
+  "measures": {
+   "pinch": null,
+   "tsp": null
+  }
+ },
+ "ground cinnamon": {
+  "food": "F002963",
+  "measures": {
+   "tbsp": null,
+   "tsp": null
+  }
+ },
+ "celery salt": {
+  "food": "F007878",
+  "measures": {}
+ },
+ "cayenne pepper": {
+  "food": "F002893",
+  "measures": {
+   "pinch": null
+  }
+ },
+ "dried sage": {
+  "food": "F007726",
+  "measures": {}
+ },
+ "stock cubes": {
+  "food": "F008933",
+  "measures": {}
+ },
+ "pasta": {
+  "food": "F006458",
+  "measures": {}
+ },
+ "rice": {
+  "food": "F007682",
+  "measures": {}
+ },
+ "rolled oats": {
+  "food": "F006143",
+  "measures": {}
+ },
+ "canned tomatoes": {
+  "food": "F009222",
+  "measures": {}
+ },
+ "tomato paste": {
+  "food": "F009206",
+  "measures": {
+   "tbsp": null
+  }
+ },
+ "chickpeas": {
+  "food": "F002880",
+  "measures": {}
+ },
+ "red lentils": {
+  "food": "F005184",
+  "measures": {}
+ },
+ "coconut milk": {
+  "food": "F002991",
+  "measures": {}
+ },
+ "chicken stock": {
+  "food": "F008936",
+  "measures": {}
+ },
+ "bread": {
+  "food": "F001463",
+  "measures": {
+   "slice": "41483",
+   "g": null
+  }
+ },
+ "gluten free bread": {
+  "food": "F001603",
+  "measures": {}
+ },
+ "tortillas": {
+  "food": "F001669",
+  "measures": {
+   "each": "41459"
+  }
+ },
+ "peanut butter": {
+  "food": "F006578",
+  "measures": {
+   "tbsp": "46886"
+  }
+ },
+ "honey": {
+  "food": "F004380",
+  "measures": {}
+ },
+ "milk": {
+  "food": "F005634",
+  "measures": {}
+ },
+ "butter": {
+  "food": "F001973",
+  "measures": {}
+ },
+ "dairy free spread": {
+  "food": "F005312",
+  "measures": {}
+ },
+ "eggs": {
+  "food": "F003729",
+  "measures": {
+   "each": "44616"
+  }
+ },
+ "cheddar cheese": {
+  "food": "F002414",
+  "measures": {
+   "cup": "46004",
+   "slice": "46007"
+  }
+ },
+ "parmesan": {
+  "food": "F002479",
+  "measures": {
+   "cup": "46148"
+  }
+ },
+ "mozzarella": {
+  "food": "F002472",
+  "measures": {
+   "cup": "46130"
+  }
+ },
+ "feta": {
+  "food": "F002452",
+  "measures": {}
+ },
+ "goat cheese": {
+  "food": "F002463",
+  "measures": {}
+ },
+ "greek yoghurt": {
+  "food": "F009655",
+  "measures": {}
+ },
+ "thickened cream": {
+  "food": "F003270",
+  "measures": {}
+ },
+ "sour cream": {
+  "food": "F003269",
+  "measures": {}
+ },
+ "chicken thigh": {
+  "food": "F002806",
+  "measures": {
+   "each": "45194"
+  }
+ },
+ "chicken breast": {
+  "food": "F002594",
+  "measures": {
+   "each": "45134"
+  }
+ },
+ "beef mince": {
+  "food": "F000677",
+  "measures": {}
+ },
+ "pork mince": {
+  "food": "F007057",
+  "measures": {}
+ },
+ "lamb chops": {
+  "food": "F004866",
+  "measures": {
+   "each": "44860"
+  }
+ },
+ "beef steak": {
+  "food": "F000862",
+  "measures": {
+   "each": "44730"
+  }
+ },
+ "bacon": {
+  "food": "F000192",
+  "measures": {}
+ },
+ "sausages": {
+  "food": "F008112",
+  "measures": {}
+ },
+ "salmon fillet": {
+  "food": "F007857",
+  "measures": {
+   "each": "43675"
+  }
+ },
+ "prawns": {
+  "food": "F007433",
+  "measures": {}
+ },
+ "canned tuna": {
+  "food": "F009289",
+  "measures": {}
+ },
+ "tofu": {
+  "food": "F009176",
+  "measures": {}
+ },
+ "onion": {
+  "food": "F006225",
+  "measures": {
+   "each": "47622"
+  }
+ },
+ "red onion": {
+  "food": "F009800",
+  "measures": {
+   "each": "47632"
+  }
+ },
+ "garlic": {
+  "food": "F004193",
+  "measures": {
+   "clove": "47500",
+   "each": "47500"
+  }
+ },
+ "potatoes": {
+  "food": "F007356",
+  "measures": {
+   "each": "47701"
+  }
+ },
+ "sweet potato": {
+  "food": "F009035",
+  "measures": {
+   "each": "47931"
+  }
+ },
+ "carrots": {
+  "food": "F002276",
+  "measures": {
+   "each": "47356",
+   "g": null
+  }
+ },
+ "broccoli": {
+  "food": "F001905",
+  "measures": {
+   "each": "47249"
+  }
+ },
+ "capsicum": {
+  "food": "F002234",
+  "measures": {
+   "each": "47333"
+  }
+ },
+ "zucchini": {
+  "food": "F009775",
+  "measures": {
+   "each": "48038"
+  }
+ },
+ "eggplant": {
+  "food": "F003761",
+  "measures": {
+   "each": "47465"
+  }
+ },
+ "tomatoes": {
+  "food": "F009193",
+  "measures": {
+   "each": null,
+   "g": null
+  }
+ },
+ "cherry tomatoes": {
+  "food": "F009190",
+  "measures": {}
+ },
+ "cucumber": {
+  "food": "F003323",
+  "measures": {
+   "each": "47453"
+  }
+ },
+ "lettuce": {
+  "food": "F005194",
+  "measures": {
+   "each": "47538",
+   "leaf": "47540",
+   "cup": null,
+   "g": null
+  }
+ },
+ "baby spinach": {
+  "food": "F008749",
+  "measures": {
+   "cup": "47864"
+  }
+ },
+ "rocket": {
+  "food": "F007712",
+  "measures": {}
+ },
+ "mushrooms": {
+  "food": "F005946",
+  "measures": {}
+ },
+ "spring onions": {
+  "food": "F006250",
+  "measures": {
+   "each": "47656"
+  }
+ },
+ "coriander": {
+  "food": "F003192",
+  "measures": {
+   "each": "47447",
+   "cup": null,
+   "handful": null,
+   "tbsp": null
+  }
+ },
+ "parsley": {
+  "food": "F006321",
+  "measures": {
+   "cup": "47660",
+   "tbsp": "47660",
+   "handful": null
+  }
+ },
+ "basil": {
+  "food": "F000396",
+  "measures": {
+   "cup": null,
+   "tbsp": null
+  }
+ },
+ "ginger": {
+  "food": "F004213",
+  "measures": {
+   "cm": null,
+   "tbsp": null,
+   "tsp": null
+  }
+ },
+ "lemons": {
+  "food": "F005174",
+  "measures": {
+   "each": "44307",
+   "ml": null,
+   "tbsp": null,
+   "tsp": null
+  }
+ },
+ "limes": {
+  "food": "F005199",
+  "measures": {
+   "each": "44319",
+   "ml": null,
+   "tbsp": null
+  }
+ },
+ "avocado": {
+  "food": "F000162",
+  "measures": {
+   "each": "47187"
+  }
+ },
+ "bananas": {
+  "food": "F000262",
+  "measures": {
+   "each": "44188"
+  }
+ },
+ "apples": {
+  "food": "F000106",
+  "measures": {
+   "each": "44149",
+   "g": null
+  }
+ },
+ "frozen peas": {
+  "food": "F006536",
+  "measures": {
+   "cup": null
+  }
+ },
+ "self-raising flour": {
+  "food": "F004009",
+  "measures": {}
+ },
+ "arborio rice": {
+  "food": "F007682",
+  "measures": {}
+ },
+ "couscous": {
+  "food": "F003239",
+  "measures": {}
+ },
+ "quinoa": {
+  "food": "F007598",
+  "measures": {}
+ },
+ "polenta": {
+  "food": "F003230",
+  "measures": {}
+ },
+ "pearl barley": {
+  "food": "F000379",
+  "measures": {}
+ },
+ "bulgur": {
+  "food": "F001929",
+  "measures": {}
+ },
+ "breadcrumbs": {
+  "food": "F001683",
+  "measures": {}
+ },
+ "panko breadcrumbs": {
+  "food": "F010047",
+  "measures": {
+   "cup": null
+  }
+ },
+ "lasagne sheets": {
+  "food": "F006458",
+  "measures": {
+   "each": null
+  }
+ },
+ "cannelloni tubes": {
+  "food": "F006458",
+  "measures": {
+   "each": null
+  }
+ },
+ "egg noodles": {
+  "food": "F006445",
+  "measures": {}
+ },
+ "hokkien noodles": {
+  "food": "F006048",
+  "measures": {}
+ },
+ "rice noodles": {
+  "food": "F006038",
+  "measures": {}
+ },
+ "rice vermicelli": {
+  "food": "F006038",
+  "measures": {}
+ },
+ "udon noodles": {
+  "food": "F006048",
+  "measures": {}
+ },
+ "rice paper sheets": {
+  "food": "F007639",
+  "measures": {
+   "each": "41326"
+  }
+ },
+ "dumpling wrappers": {
+  "food": "F006489",
+  "measures": {}
+ },
+ "passata": {
+  "food": "F009209",
+  "measures": {}
+ },
+ "black beans": {
+  "food": "F010188",
+  "measures": {}
+ },
+ "kidney beans": {
+  "food": "F000448",
+  "measures": {}
+ },
+ "cannellini beans": {
+  "food": "F000423",
+  "measures": {}
+ },
+ "brown lentils": {
+  "food": "F010192",
+  "measures": {
+   "can": "50385",
+   "cup": null
+  }
+ },
+ "refried beans": {
+  "food": "F000454",
+  "measures": {}
+ },
+ "corn kernels": {
+  "food": "F003220",
+  "measures": {
+   "can": "50357",
+   "cup": null
+  }
+ },
+ "creamed corn": {
+  "food": "F003207",
+  "measures": {}
+ },
+ "canned beetroot": {
+  "food": "F001010",
+  "measures": {
+   "each": "47238",
+   "slice": "47237"
+  }
+ },
+ "canned pineapple": {
+  "food": "F006708",
+  "measures": {}
+ },
+ "water chestnuts": {
+  "food": "F009514",
+  "measures": {}
+ },
+ "coconut cream": {
+  "food": "F002982",
+  "measures": {}
+ },
+ "beef stock": {
+  "food": "F008936",
+  "measures": {}
+ },
+ "vegetable stock": {
+  "food": "F008936",
+  "measures": {}
+ },
+ "dashi stock": {
+  "food": "F008936",
+  "measures": {}
+ },
+ "kalamata olives": {
+  "food": "F006198",
+  "measures": {
+   "cup": null
+  }
+ },
+ "tomato salsa": {
+  "food": "F008056",
+  "measures": {
+   "cup": "47027",
+   "tbsp": "47026"
+  }
+ },
+ "basil pesto": {
+  "food": "F008029",
+  "measures": {}
+ },
+ "corn chips": {
+  "food": "F003198",
+  "measures": {}
+ },
+ "pickled ginger": {
+  "food": "F004216",
+  "measures": {
+   "tbsp": null
+  }
+ },
+ "dried wakame": {
+  "food": "F008204",
+  "measures": {}
+ },
+ "tomato sauce": {
+  "food": "F008083",
+  "measures": {}
+ },
+ "barbecue sauce": {
+  "food": "F007987",
+  "measures": {}
+ },
+ "worcestershire sauce": {
+  "food": "F008094",
+  "measures": {}
+ },
+ "mayonnaise": {
+  "food": "F005441",
+  "measures": {}
+ },
+ "dijon mustard": {
+  "food": "F005973",
+  "measures": {
+   "tbsp": "50249",
+   "tsp": null
+  }
+ },
+ "fish sauce": {
+  "food": "F008004",
+  "measures": {}
+ },
+ "oyster sauce": {
+  "food": "F008026",
+  "measures": {}
+ },
+ "hoisin sauce": {
+  "food": "F008008",
+  "measures": {}
+ },
+ "sweet chilli sauce": {
+  "food": "F008071",
+  "measures": {}
+ },
+ "kecap manis": {
+  "food": "F008010",
+  "measures": {}
+ },
+ "sesame oil": {
+  "food": "F006187",
+  "measures": {}
+ },
+ "rice vinegar": {
+  "food": "F009498",
+  "measures": {}
+ },
+ "red wine vinegar": {
+  "food": "F009498",
+  "measures": {}
+ },
+ "balsamic vinegar": {
+  "food": "F009499",
+  "measures": {}
+ },
+ "mirin": {
+  "food": "F005701",
+  "measures": {}
+ },
+ "gochujang": {
+  "food": "F006471",
+  "measures": {
+   "tbsp": null,
+   "tsp": null
+  }
+ },
+ "miso paste": {
+  "food": "F005702",
+  "measures": {
+   "tbsp": null
+  }
+ },
+ "chilli bean paste": {
+  "food": "F007991",
+  "measures": {}
+ },
+ "tahini": {
+  "food": "F009076",
+  "measures": {}
+ },
+ "tamarind paste": {
+  "food": "F009081",
+  "measures": {
+   "tbsp": null
+  }
+ },
+ "green curry paste": {
+  "food": "F006471",
+  "measures": {
+   "tbsp": null
+  }
+ },
+ "red curry paste": {
+  "food": "F006471",
+  "measures": {
+   "tbsp": null
+  }
+ },
+ "madras curry paste": {
+  "food": "F006471",
+  "measures": {}
+ },
+ "rogan josh curry paste": {
+  "food": "F006471",
+  "measures": {}
+ },
+ "biryani curry paste": {
+  "food": "F006471",
+  "measures": {}
+ },
+ "tandoori paste": {
+  "food": "F006471",
+  "measures": {}
+ },
+ "laksa paste": {
+  "food": "F006471",
+  "measures": {
+   "cup": null
+  }
+ },
+ "tom yum paste": {
+  "food": "F006471",
+  "measures": {}
+ },
+ "kimchi": {
+  "food": "F010255",
+  "measures": {
+   "cup": null,
+   "tbsp": null
+  }
+ },
+ "dried yeast": {
+  "food": "F009606",
+  "measures": {}
+ },
+ "cocoa powder": {
+  "food": "F002980",
+  "measures": {}
+ },
+ "dark chocolate": {
+  "food": "F002921",
+  "measures": {}
+ },
+ "chocolate chips": {
+  "food": "F002929",
+  "measures": {}
+ },
+ "vanilla extract": {
+  "food": "F009351",
+  "measures": {}
+ },
+ "golden syrup": {
+  "food": "F009049",
+  "measures": {}
+ },
+ "maple syrup": {
+  "food": "F009052",
+  "measures": {}
+ },
+ "strawberry jam": {
+  "food": "F010050",
+  "measures": {}
+ },
+ "desiccated coconut": {
+  "food": "F002987",
+  "measures": {}
+ },
+ "sponge finger biscuits": {
+  "food": "F001225",
+  "measures": {}
+ },
+ "granola": {
+  "food": "F009807",
+  "measures": {}
+ },
+ "coffee": {
+  "food": "F003060",
+  "measures": {
+   "ml": null,
+   "shot": null
+  }
+ },
+ "almonds": {
+  "food": "F006081",
+  "measures": {}
+ },
+ "cashews": {
+  "food": "F006088",
+  "measures": {}
+ },
+ "peanuts": {
+  "food": "F006110",
+  "measures": {
+   "cup": null,
+   "tbsp": null
+  }
+ },
+ "pine nuts": {
+  "food": "F006112",
+  "measures": {}
+ },
+ "walnuts": {
+  "food": "F006116",
+  "measures": {}
+ },
+ "pepitas": {
+  "food": "F008212",
+  "measures": {
+   "cup": null
+  }
+ },
+ "sesame seeds": {
+  "food": "F008214",
+  "measures": {
+   "tbsp": null,
+   "tsp": null
+  }
+ },
+ "sultanas": {
+  "food": "F008983",
+  "measures": {}
+ },
+ "dates": {
+  "food": "F003496",
+  "measures": {}
+ },
+ "dried apricots": {
+  "food": "F000130",
+  "measures": {}
+ },
+ "curry powder": {
+  "food": "F003337",
+  "measures": {}
+ },
+ "garam masala": {
+  "food": "F008746",
+  "measures": {
+   "tsp": null
+  }
+ },
+ "ground turmeric": {
+  "food": "F009335",
+  "measures": {
+   "tsp": null
+  }
+ },
+ "chilli powder": {
+  "food": "F002893",
+  "measures": {
+   "tsp": null
+  }
+ },
+ "cumin seeds": {
+  "food": "F003327",
+  "measures": {
+   "tsp": null
+  }
+ },
+ "ground nutmeg": {
+  "food": "F006118",
+  "measures": {
+   "pinch": null,
+   "tsp": null
+  }
+ },
+ "star anise": {
+  "food": "F008746",
+  "measures": {
+   "each": null
+  }
+ },
+ "cinnamon sticks": {
+  "food": "F002963",
+  "measures": {
+   "each": null
+  }
+ },
+ "ras el hanout": {
+  "food": "F008746",
+  "measures": {}
+ },
+ "sumac": {
+  "food": "F008746",
+  "measures": {
+   "tsp": null
+  }
+ },
+ "saffron threads": {
+  "food": "F008746",
+  "measures": {
+   "pinch": null
+  }
+ },
+ "dried chillies": {
+  "food": "F002893",
+  "measures": {
+   "each": "49450"
+  }
+ },
+ "bay leaves": {
+  "food": "F004365",
+  "measures": {
+   "each": null
+  }
+ },
+ "baguette": {
+  "food": "F001519",
+  "measures": {
+   "each": "41510"
+  }
+ },
+ "bread rolls": {
+  "food": "F001353",
+  "measures": {}
+ },
+ "burger buns": {
+  "food": "F001353",
+  "measures": {
+   "each": "41515"
+  }
+ },
+ "english muffins": {
+  "food": "F005896",
+  "measures": {
+   "each": "41696"
+  }
+ },
+ "pita bread": {
+  "food": "F001401",
+  "measures": {
+   "each": "41417"
+  }
+ },
+ "puff pastry": {
+  "food": "F006505",
+  "measures": {}
+ },
+ "shortcrust pastry": {
+  "food": "F006507",
+  "measures": {}
+ },
+ "filo pastry": {
+  "food": "F006497",
+  "measures": {}
+ },
+ "potato gnocchi": {
+  "food": "F004226",
+  "measures": {}
+ },
+ "ricotta": {
+  "food": "F002488",
+  "measures": {}
+ },
+ "cream cheese": {
+  "food": "F002444",
+  "measures": {}
+ },
+ "mascarpone": {
+  "food": "F010045",
+  "measures": {}
+ },
+ "halloumi": {
+  "food": "F002466",
+  "measures": {}
+ },
+ "paneer": {
+  "food": "F002488",
+  "measures": {}
+ },
+ "gruyere": {
+  "food": "F002496",
+  "measures": {}
+ },
+ "blue cheese": {
+  "food": "F002405",
+  "measures": {}
+ },
+ "beef chuck steak": {
+  "food": "F000504",
+  "measures": {}
+ },
+ "chicken drumsticks": {
+  "food": "F002647",
+  "measures": {}
+ },
+ "chicken wings": {
+  "food": "F002849",
+  "measures": {}
+ },
+ "chicken mince": {
+  "food": "F002739",
+  "measures": {}
+ },
+ "whole chicken": {
+  "food": "F002829",
+  "measures": {
+   "each": "45237"
+  }
+ },
+ "lamb leg": {
+  "food": "F005013",
+  "measures": {}
+ },
+ "lamb shoulder": {
+  "food": "F005074",
+  "measures": {}
+ },
+ "lamb mince": {
+  "food": "F005049",
+  "measures": {}
+ },
+ "chicken": {
+  "food": "F002691",
+  "measures": {}
+ },
+ "beef": {
+  "food": "F000862",
+  "measures": {}
+ },
+ "lamb": {
+  "food": "F005061",
+  "measures": {}
+ },
+ "pork": {
+  "food": "F010360",
+  "measures": {}
+ },
+ "pork loin": {
+  "food": "F007049",
+  "measures": {}
+ },
+ "pork shoulder": {
+  "food": "F006929",
+  "measures": {}
+ },
+ "veal shanks": {
+  "food": "F009360",
+  "measures": {}
+ },
+ "chorizo": {
+  "food": "F008126",
+  "measures": {}
+ },
+ "ham": {
+  "food": "F004300",
+  "measures": {
+   "slice": "45496"
+  }
+ },
+ "silken tofu": {
+  "food": "F009183",
+  "measures": {}
+ },
+ "tofu puffs": {
+  "food": null,
+  "measures": {}
+ },
+ "white fish fillets": {
+  "food": "F003956",
+  "measures": {}
+ },
+ "cooked prawns": {
+  "food": "F007443",
+  "measures": {
+   "each": "43907"
+  }
+ },
+ "pumpkin": {
+  "food": "F007555",
+  "measures": {}
+ },
+ "cauliflower": {
+  "food": "F002378",
+  "measures": {
+   "each": "47394"
+  }
+ },
+ "cabbage": {
+  "food": "F002001",
+  "measures": {}
+ },
+ "red cabbage": {
+  "food": "F002006",
+  "measures": {
+   "g": null
+  }
+ },
+ "wombok": {
+  "food": "F001996",
+  "measures": {}
+ },
+ "bok choy": {
+  "food": "F001301",
+  "measures": {}
+ },
+ "broccolini": {
+  "food": "F001909",
+  "measures": {
+   "g": null
+  }
+ },
+ "kale": {
+  "food": "F004781",
+  "measures": {}
+ },
+ "cavolo nero": {
+  "food": "F004781",
+  "measures": {}
+ },
+ "silverbeet": {
+  "food": "F008267",
+  "measures": {}
+ },
+ "asparagus": {
+  "food": "F000155",
+  "measures": {}
+ },
+ "celery": {
+  "food": "F002390",
+  "measures": {
+   "stalk": "47421"
+  }
+ },
+ "green beans": {
+  "food": "F000431",
+  "measures": {}
+ },
+ "snow peas": {
+  "food": "F008373",
+  "measures": {}
+ },
+ "bean sprouts": {
+  "food": "F008806",
+  "measures": {
+   "cup": null
+  }
+ },
+ "corn cobs": {
+  "food": "F003209",
+  "measures": {}
+ },
+ "radishes": {
+  "food": "F007606",
+  "measures": {}
+ },
+ "shallots": {
+  "food": "F006250",
+  "measures": {
+   "each": null
+  }
+ },
+ "red chillies": {
+  "food": "F002901",
+  "measures": {
+   "each": "47433"
+  }
+ },
+ "lemongrass": {
+  "food": null,
+  "measures": {}
+ },
+ "kaffir lime leaves": {
+  "food": null,
+  "measures": {}
+ },
+ "mint": {
+  "food": "F005700",
+  "measures": {
+   "cup": null,
+   "tbsp": null
+  }
+ },
+ "dill": {
+  "food": "F003509",
+  "measures": {
+   "tbsp": null
+  }
+ },
+ "chives": {
+  "food": "F002907",
+  "measures": {
+   "tbsp": null
+  }
+ },
+ "rosemary": {
+  "food": "F007716",
+  "measures": {
+   "sprig": null,
+   "tsp": null
+  }
+ },
+ "thyme": {
+  "food": "F010466",
+  "measures": {
+   "sprig": null,
+   "tsp": null
+  }
+ },
+ "sage": {
+  "food": "F010439",
+  "measures": {
+   "leaf": null
+  }
+ },
+ "pears": {
+  "food": "F006609",
+  "measures": {
+   "each": "44466"
+  }
+ },
+ "pineapple": {
+  "food": "F006702",
+  "measures": {}
+ },
+ "mangoes": {
+  "food": "F005299",
+  "measures": {
+   "each": "44339"
+  }
+ },
+ "kiwi fruit": {
+  "food": "F004816",
+  "measures": {}
+ },
+ "passionfruit": {
+  "food": "F006333",
+  "measures": {}
+ },
+ "strawberries": {
+  "food": "F008952",
+  "measures": {}
+ },
+ "blueberries": {
+  "food": "F001290",
+  "measures": {}
+ },
+ "frozen mixed berries": {
+  "food": "F009881",
+  "measures": {}
+ },
+ "edamame": {
+  "food": "F010184",
+  "measures": {
+   "cup": null
+  }
+ },
+ "red wine": {
+  "food": "F009571",
+  "measures": {}
+ },
+ "white wine": {
+  "food": "F009588",
+  "measures": {}
+ },
+ "squid": {
+  "food": "F008828",
+  "measures": {}
+ },
+ "fennel seeds": {
+  "food": "F008746",
+  "measures": {}
+ },
+ "chia seeds": {
+  "food": "F008209",
+  "measures": {}
+ },
+ "almond milk": {
+  "food": "F009971",
+  "measures": {}
+ },
+ "almond butter": {
+  "food": "F009996",
+  "measures": {}
+ },
+ "oranges": {
+  "food": "F006277",
+  "measures": {
+   "each": "44390"
+  }
+ },
+ "curry leaves": {
+  "food": null,
+  "measures": {}
+ },
+ "jalapenos": {
+  "food": "F002899",
+  "measures": {}
+ },
+ "pickled jalapenos": {
+  "food": "F002895",
+  "measures": {}
+ },
+ "pork ribs": {
+  "food": null,
+  "measures": {}
+ },
+ "apple cider vinegar": {
+  "food": "F009498",
+  "measures": {}
+ },
+ "taco seasoning": {
+  "food": "F009072",
+  "measures": {
+   "tbsp": null
+  }
+ },
+ "taco shells": {
+  "food": "F009073",
+  "measures": {
+   "each": "48416"
+  }
+ },
+ "green chillies": {
+  "food": "F002896",
+  "measures": {
+   "each": "47431"
+  }
+ },
+ "leeks": {
+  "food": "F005164",
+  "measures": {
+   "each": "47518"
+  }
+ },
+ "daikon": {
+  "food": "F007606",
+  "measures": {}
+ },
+ "okra": {
+  "food": "F006195",
+  "measures": {}
+ },
+ "watercress": {
+  "food": "F009532",
+  "measures": {}
+ },
+ "tarragon": {
+  "food": "F004366",
+  "measures": {
+   "tbsp": null
+  }
+ },
+ "thai basil": {
+  "food": "F000396",
+  "measures": {
+   "cup": null,
+   "handful": null
+  }
+ },
+ "shiitake mushrooms": {
+  "food": "F005956",
+  "measures": {}
+ },
+ "fennel bulb": {
+  "food": "F003820",
+  "measures": {}
+ },
+ "tomatillos": {
+  "food": "F010106",
+  "measures": {}
+ },
+ "poblano peppers": {
+  "food": "F002239",
+  "measures": {}
+ },
+ "snake beans": {
+  "food": "F000431",
+  "measures": {}
+ },
+ "gai lan": {
+  "food": "F010251",
+  "measures": {
+   "g": null
+  }
+ },
+ "burdock root": {
+  "food": null,
+  "measures": {}
+ },
+ "green papaya": {
+  "food": "F006528",
+  "measures": {}
+ },
+ "green mango": {
+  "food": "F005299",
+  "measures": {}
+ },
+ "cherries": {
+  "food": "F002522",
+  "measures": {}
+ },
+ "peaches": {
+  "food": "F006573",
+  "measures": {}
+ },
+ "figs": {
+  "food": "F003834",
+  "measures": {
+   "each": "44260"
+  }
+ },
+ "pomegranate": {
+  "food": "F006842",
+  "measures": {}
+ },
+ "globe artichokes": {
+  "food": "F000144",
+  "measures": {}
+ },
+ "nopales": {
+  "food": null,
+  "measures": {}
+ },
+ "pandan leaves": {
+  "food": null,
+  "measures": {}
+ },
+ "preserved lemons": {
+  "food": "F005175",
+  "measures": {
+   "each": "44310"
+  }
+ },
+ "coleslaw mix": {
+  "food": "F007745",
+  "measures": {}
+ },
+ "pomegranate molasses": {
+  "food": null,
+  "measures": {}
+ },
+ "semolina": {
+  "food": "F008222",
+  "measures": {}
+ },
+ "rice flour": {
+  "food": "F003998",
+  "measures": {}
+ },
+ "glutinous rice flour": {
+  "food": "F003998",
+  "measures": {}
+ },
+ "chickpea flour": {
+  "food": "F003986",
+  "measures": {}
+ },
+ "bread flour": {
+  "food": "F004006",
+  "measures": {}
+ },
+ "buckwheat flour": {
+  "food": null,
+  "measures": {}
+ },
+ "cassava flour": {
+  "food": null,
+  "measures": {}
+ },
+ "atta flour": {
+  "food": "F004014",
+  "measures": {}
+ },
+ "masa harina": {
+  "food": null,
+  "measures": {}
+ },
+ "masarepa": {
+  "food": "F003230",
+  "measures": {}
+ },
+ "tapioca starch": {
+  "food": null,
+  "measures": {}
+ },
+ "short-grain rice": {
+  "food": "F007682",
+  "measures": {}
+ },
+ "glutinous rice": {
+  "food": "F007682",
+  "measures": {}
+ },
+ "paella rice": {
+  "food": "F007682",
+  "measures": {}
+ },
+ "hominy": {
+  "food": null,
+  "measures": {}
+ },
+ "green lentils": {
+  "food": "F005181",
+  "measures": {}
+ },
+ "moong dal": {
+  "food": "F005182",
+  "measures": {}
+ },
+ "mung beans": {
+  "food": null,
+  "measures": {}
+ },
+ "pinto beans": {
+  "food": "F010185",
+  "measures": {}
+ },
+ "butter beans": {
+  "food": "F000441",
+  "measures": {}
+ },
+ "fava beans": {
+  "food": "F000419",
+  "measures": {}
+ },
+ "red bean paste": {
+  "food": "F000409",
+  "measures": {}
+ },
+ "fermented black beans": {
+  "food": "F007991",
+  "measures": {}
+ },
+ "poha": {
+  "food": "F007682",
+  "measures": {}
+ },
+ "sago": {
+  "food": "F007729",
+  "measures": {}
+ },
+ "palm sugar": {
+  "food": "F009935",
+  "measures": {
+   "tsp": null
+  }
+ },
+ "condensed milk": {
+  "food": "F005582",
+  "measures": {}
+ },
+ "evaporated milk": {
+  "food": "F005581",
+  "measures": {}
+ },
+ "milk powder": {
+  "food": "F005648",
+  "measures": {}
+ },
+ "dark soy sauce": {
+  "food": "F008065",
+  "measures": {}
+ },
+ "black vinegar": {
+  "food": "F009498",
+  "measures": {}
+ },
+ "sherry vinegar": {
+  "food": "F009498",
+  "measures": {}
+ },
+ "white wine vinegar": {
+  "food": "F009498",
+  "measures": {}
+ },
+ "shaoxing wine": {
+  "food": "F005701",
+  "measures": {}
+ },
+ "sake": {
+  "food": "F010092",
+  "measures": {}
+ },
+ "chilli oil": {
+  "food": "F006191",
+  "measures": {}
+ },
+ "mango chutney": {
+  "food": "F002953",
+  "measures": {}
+ },
+ "fruit chutney": {
+  "food": "F002953",
+  "measures": {}
+ },
+ "harissa": {
+  "food": "F006471",
+  "measures": {}
+ },
+ "enchilada sauce": {
+  "food": "F008056",
+  "measures": {}
+ },
+ "red pepper paste": {
+  "food": "F006471",
+  "measures": {
+   "tbsp": null
+  }
+ },
+ "japanese curry roux": {
+  "food": "F008063",
+  "measures": {}
+ },
+ "wasabi": {
+  "food": "F006478",
+  "measures": {}
+ },
+ "orange blossom water": {
+  "food": null,
+  "measures": {}
+ },
+ "rosewater": {
+  "food": null,
+  "measures": {}
+ },
+ "grape molasses": {
+  "food": "F009956",
+  "measures": {}
+ },
+ "toasted rice powder": {
+  "food": "F003998",
+  "measures": {}
+ },
+ "ginger-garlic paste": {
+  "food": null,
+  "measures": {}
+ },
+ "bolognese sauce": {
+  "food": "F008030",
+  "measures": {}
+ },
+ "anchovies": {
+  "food": "F000074",
+  "measures": {
+   "each": "43955"
+  }
+ },
+ "capers": {
+  "food": "F002220",
+  "measures": {
+   "tbsp": null
+  }
+ },
+ "green olives": {
+  "food": "F006199",
+  "measures": {}
+ },
+ "artichoke hearts": {
+  "food": "F000141",
+  "measures": {}
+ },
+ "bamboo shoots": {
+  "food": "F000253",
+  "measures": {}
+ },
+ "chipotle chillies in adobo": {
+  "food": null,
+  "measures": {}
+ },
+ "aji amarillo paste": {
+  "food": null,
+  "measures": {}
+ },
+ "sauerkraut": {
+  "food": "F002000",
+  "measures": {}
+ },
+ "pickled onions": {
+  "food": "F006245",
+  "measures": {}
+ },
+ "nori": {
+  "food": "F008204",
+  "measures": {}
+ },
+ "vanilla beans": {
+  "food": null,
+  "measures": {}
+ },
+ "matcha powder": {
+  "food": "F010949",
+  "measures": {}
+ },
+ "green tea": {
+  "food": "F010949",
+  "measures": {}
+ },
+ "gelatine leaves": {
+  "food": "F004196",
+  "measures": {}
+ },
+ "fruit salt": {
+  "food": "F000248",
+  "measures": {
+   "tsp": null
+  }
+ },
+ "digestive biscuits": {
+  "food": "F001251",
+  "measures": {}
+ },
+ "amaretti biscuits": {
+  "food": "F001205",
+  "measures": {
+   "each": "42191"
+  }
+ },
+ "crackers": {
+  "food": "F001133",
+  "measures": {}
+ },
+ "meringue nests": {
+  "food": "F005522",
+  "measures": {}
+ },
+ "chocolate sprinkles": {
+  "food": "F003098",
+  "measures": {}
+ },
+ "apricot jam": {
+  "food": "F004607",
+  "measures": {}
+ },
+ "raspberry jam": {
+  "food": "F004600",
+  "measures": {
+   "cup": null
+  }
+ },
+ "pistachios": {
+  "food": "F006113",
+  "measures": {}
+ },
+ "hazelnuts": {
+  "food": "F006098",
+  "measures": {}
+ },
+ "almond meal": {
+  "food": "F006077",
+  "measures": {}
+ },
+ "barberries": {
+  "food": null,
+  "measures": {}
+ },
+ "prunes": {
+  "food": "F007494",
+  "measures": {}
+ },
+ "dried rose petals": {
+  "food": null,
+  "measures": {}
+ },
+ "kewpie mayonnaise": {
+  "food": "F005441",
+  "measures": {}
+ },
+ "soba noodles": {
+  "food": "F006043",
+  "measures": {}
+ },
+ "glass noodles": {
+  "food": null,
+  "measures": {}
+ },
+ "wheat noodles": {
+  "food": "F006068",
+  "measures": {}
+ },
+ "fish stock": {
+  "food": "F008936",
+  "measures": {}
+ },
+ "ground coriander": {
+  "food": "F003190",
+  "measures": {
+   "tsp": null
+  }
+ },
+ "mustard seeds": {
+  "food": "F008746",
+  "measures": {
+   "tsp": null
+  }
+ },
+ "cardamom pods": {
+  "food": "F002258",
+  "measures": {
+   "each": null
+  }
+ },
+ "ground cardamom": {
+  "food": "F002258",
+  "measures": {
+   "tsp": null
+  }
+ },
+ "ground ginger": {
+  "food": "F004210",
+  "measures": {
+   "tsp": null
+  }
+ },
+ "ground allspice": {
+  "food": "F008746",
+  "measures": {
+   "tsp": null
+  }
+ },
+ "whole cloves": {
+  "food": "F002970",
+  "measures": {
+   "each": null
+  }
+ },
+ "dried thyme": {
+  "food": "F009160",
+  "measures": {
+   "tsp": null
+  }
+ },
+ "dried mint": {
+  "food": "F004365",
+  "measures": {
+   "tsp": null
+  }
+ },
+ "chinese five spice": {
+  "food": "F008746",
+  "measures": {
+   "tsp": null
+  }
+ },
+ "onion powder": {
+  "food": "F008746",
+  "measures": {
+   "tsp": null
+  }
+ },
+ "white pepper": {
+  "food": "F006618",
+  "measures": {
+   "tsp": null
+  }
+ },
+ "sichuan peppercorns": {
+  "food": "F008746",
+  "measures": {
+   "tsp": null
+  }
+ },
+ "caraway seeds": {
+  "food": "F008746",
+  "measures": {}
+ },
+ "za'atar": {
+  "food": "F004365",
+  "measures": {}
+ },
+ "berbere": {
+  "food": "F008746",
+  "measures": {}
+ },
+ "cajun seasoning": {
+  "food": "F008202",
+  "measures": {
+   "tbsp": null
+  }
+ },
+ "jerk seasoning": {
+  "food": "F008202",
+  "measures": {}
+ },
+ "biryani masala": {
+  "food": "F008746",
+  "measures": {
+   "tbsp": null
+  }
+ },
+ "gochugaru": {
+  "food": "F002893",
+  "measures": {
+   "tbsp": null
+  }
+ },
+ "buttermilk": {
+  "food": "F001978",
+  "measures": {}
+ },
+ "ghee": {
+  "food": "F004205",
+  "measures": {}
+ },
+ "crème fraîche": {
+  "food": "F003269",
+  "measures": {}
+ },
+ "cottage cheese": {
+  "food": "F002435",
+  "measures": {}
+ },
+ "queso fresco": {
+  "food": "F002488",
+  "measures": {}
+ },
+ "pecorino": {
+  "food": "F002479",
+  "measures": {}
+ },
+ "dosa batter": {
+  "food": null,
+  "measures": {}
+ },
+ "pandan jelly": {
+  "food": null,
+  "measures": {}
+ },
+ "pancetta": {
+  "food": "F000227",
+  "measures": {}
+ },
+ "prosciutto": {
+  "food": "F007459",
+  "measures": {}
+ },
+ "bresaola": {
+  "food": "F010253",
+  "measures": {}
+ },
+ "pork belly": {
+  "food": "F006862",
+  "measures": {}
+ },
+ "pork fillet": {
+  "food": "F010360",
+  "measures": {}
+ },
+ "turkey mince": {
+  "food": "F010386",
+  "measures": {}
+ },
+ "sausage mince": {
+  "food": "F007057",
+  "measures": {}
+ },
+ "smoked sausage": {
+  "food": "F008134",
+  "measures": {}
+ },
+ "chicken pieces": {
+  "food": "F002691",
+  "measures": {}
+ },
+ "oxtail": {
+  "food": "F000936",
+  "measures": {}
+ },
+ "barbecue chicken": {
+  "food": "F002569",
+  "measures": {
+   "g": null
+  }
+ },
+ "sliced turkey": {
+  "food": "F009328",
+  "measures": {}
+ },
+ "mussels": {
+  "food": "F005968",
+  "measures": {}
+ },
+ "smoked haddock": {
+  "food": "F008314",
+  "measures": {}
+ },
+ "salt cod": {
+  "food": "F003004",
+  "measures": {}
+ },
+ "smoked salmon": {
+  "food": "F007864",
+  "measures": {}
+ },
+ "corn tortillas": {
+  "food": "F009854",
+  "measures": {
+   "each": "41439"
+  }
+ },
+ "tostadas": {
+  "food": "F009073",
+  "measures": {}
+ },
+ "brioche": {
+  "food": "F010407",
+  "measures": {
+   "each": "41653",
+   "slice": "50012"
+  }
+ },
+ "simit": {
+  "food": "F001463",
+  "measures": {}
+ },
+ "spring roll wrappers": {
+  "food": "F006514",
+  "measures": {}
+ },
+ "kataifi pastry": {
+  "food": "F006497",
+  "measures": {}
+ },
+ "vanilla ice cream": {
+  "food": "F004508",
+  "measures": {
+   "scoop": "46235"
+  }
+ },
+ "frozen chips": {
+  "food": "F007242",
+  "measures": {}
+ },
+ "apple juice": {
+  "food": "F004663",
+  "measures": {}
+ },
+ "cherry juice": {
+  "food": null,
+  "measures": {}
+ },
+ "beer": {
+  "food": "F000994",
+  "measures": {}
+ },
+ "marsala": {
+  "food": "F009568",
+  "measures": {}
+ },
+ "basa": {
+  "food": "F000402",
+  "measures": {
+   "each": "43546"
+  }
+ },
+ "barramundi": {
+  "food": "F000386",
+  "measures": {
+   "each": "43529"
+  }
+ },
+ "brown rice": {
+  "food": "F007648",
+  "measures": {}
+ },
+ "hummus": {
+  "food": "F003539",
+  "measures": {
+   "cup": null
+  }
+ },
+ "tzatziki": {
+  "food": "F003535",
+  "measures": {}
+ },
+ "lamb backstrap": {
+  "food": "F005095",
+  "measures": {}
+ },
+ "lamb shanks": {
+  "food": "F005139",
+  "measures": {}
+ },
+ "pork chops": {
+  "food": "F007019",
+  "measures": {
+   "each": "44953"
+  }
+ },
+ "stout": {
+  "food": "F001007",
+  "measures": {}
+ },
+ "french onion soup mix": {
+  "food": "F010519",
+  "measures": {}
+ },
+ "apricot nectar": {
+  "food": "F004100",
+  "measures": {}
+ },
+ "canned apricots": {
+  "food": "F000123",
+  "measures": {}
+ },
+ "turkish bread": {
+  "food": "F001671",
+  "measures": {
+   "loaf": "49814"
+  }
+ },
+ "black bean sauce": {
+  "food": "F007991",
+  "measures": {}
+ },
+ "bonito flakes": {
+  "food": null,
+  "measures": {}
+ },
+ "fried shallots": {
+  "food": null,
+  "measures": {}
+ },
+ "char siu pork": {
+  "food": null,
+  "measures": {}
+ },
+ "korean rice cakes": {
+  "food": null,
+  "measures": {}
+ },
+ "fish cakes": {
+  "food": "F003901",
+  "measures": {}
+ },
+ "pickles": {
+  "food": "F004206",
+  "measures": {
+   "each": "47116",
+   "tbsp": null
+  }
+ },
+ "furikake": {
+  "food": null,
+  "measures": {}
+ },
+ "okonomiyaki sauce": {
+  "food": "F008012",
+  "measures": {}
+ },
+ "redcurrant jelly": {
+  "food": "F004600",
+  "measures": {}
+ },
+ "salami": {
+  "food": "F007818",
+  "measures": {}
+ },
+ "sambal oelek": {
+  "food": "F007997",
+  "measures": {
+   "tbsp": null
+  }
+ },
+ "sriracha": {
+  "food": "F007997",
+  "measures": {}
+ },
+ "tomato relish": {
+  "food": "F002953",
+  "measures": {}
+ },
+ "plantains": {
+  "food": "F006820",
+  "measures": {}
+ },
+ "massaman curry paste": {
+  "food": "F006471",
+  "measures": {}
+ },
+ "korma curry paste": {
+  "food": "F006471",
+  "measures": {}
+ },
+ "peanut oil": {
+  "food": "F006183",
+  "measures": {}
+ },
+ "mixed salad leaves": {
+  "food": "F009788",
+  "measures": {}
+ },
+ "pasta sauce": {
+  "food": "F008050",
+  "measures": {}
+ }
+}
