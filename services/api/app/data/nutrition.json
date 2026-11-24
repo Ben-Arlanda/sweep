@@ -1,0 +1,7297 @@
+{
+ "almond butter": {
+  "food_key": "F009996",
+  "food": "Almond spread, not further defined",
+  "per_100g": {
+   "energy_kj": 2460.0,
+   "protein_g": 18.3,
+   "fat_g": 51.4,
+   "saturated_fat_g": 4.26,
+   "carbs_g": 9.8,
+   "sugars_g": 7.1,
+   "fibre_g": 10.0,
+   "sodium_mg": 32.0
+  },
+  "grams_per_ml": 1.2,
+  "grams_per": {}
+ },
+ "almond meal": {
+  "food_key": "F006077",
+  "food": "Nut, almond meal",
+  "per_100g": {
+   "energy_kj": 2386.0,
+   "protein_g": 19.7,
+   "fat_g": 50.5,
+   "saturated_fat_g": 3.81,
+   "carbs_g": 5.4,
+   "sugars_g": 5.2,
+   "fibre_g": 11.0,
+   "sodium_mg": 0.0
+  },
+  "grams_per_ml": 0.4,
+  "grams_per": {}
+ },
+ "almond milk": {
+  "food_key": "F009971",
+  "food": "Almond beverage, not further defined",
+  "per_100g": {
+   "energy_kj": 102.0,
+   "protein_g": 0.5,
+   "fat_g": 1.4,
+   "saturated_fat_g": 0.12,
+   "carbs_g": 2.2,
+   "sugars_g": 1.6,
+   "fibre_g": 0.6,
+   "sodium_mg": 46.0
+  },
+  "grams_per_ml": 1.05,
+  "grams_per": {}
+ },
+ "almonds": {
+  "food_key": "F006081",
+  "food": "Nut, almond, raw/natural, unsalted",
+  "per_100g": {
+   "energy_kj": 2386.0,
+   "protein_g": 19.7,
+   "fat_g": 50.5,
+   "saturated_fat_g": 3.81,
+   "carbs_g": 5.4,
+   "sugars_g": 5.2,
+   "fibre_g": 11.0,
+   "sodium_mg": 0.0
+  },
+  "grams_per_ml": 0.58,
+  "grams_per": {}
+ },
+ "amaretti biscuits": {
+  "food_key": "F001205",
+  "food": "Biscuit, sweet, macaron (almond based), filled",
+  "per_100g": {
+   "energy_kj": 1812.0,
+   "protein_g": 6.9,
+   "fat_g": 24.2,
+   "saturated_fat_g": 9.58,
+   "carbs_g": 48.7,
+   "sugars_g": 47.9,
+   "fibre_g": 2.5,
+   "sodium_mg": 84.0
+  },
+  "grams_per_ml": null,
+  "grams_per": {
+   "each": 20.0
+  }
+ },
+ "anchovies": {
+  "food_key": "F000074",
+  "food": "Anchovy, canned",
+  "per_100g": {
+   "energy_kj": 762.0,
+   "protein_g": 25.4,
+   "fat_g": 8.9,
+   "saturated_fat_g": 1.97,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 5480.0
+  },
+  "grams_per_ml": 0.63,
+  "grams_per": {
+   "each": 4.0
+  }
+ },
+ "apple cider vinegar": {
+  "food_key": "F009498",
+  "food": "Vinegar (except balsamic vinegar)",
+  "per_100g": {
+   "energy_kj": 65.0,
+   "protein_g": 0.0,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 5.0
+  },
+  "grams_per_ml": 1.01,
+  "grams_per": {}
+ },
+ "apple juice": {
+  "food_key": "F004663",
+  "food": "Juice, apple, commercial",
+  "per_100g": {
+   "energy_kj": 121.0,
+   "protein_g": 0.2,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 7.0,
+   "sugars_g": 7.0,
+   "fibre_g": 0.2,
+   "sodium_mg": 6.0
+  },
+  "grams_per_ml": 1.05,
+  "grams_per": {}
+ },
+ "apples": {
+  "food_key": "F000106",
+  "food": "Apple, raw, not further defined",
+  "per_100g": {
+   "energy_kj": 227.0,
+   "protein_g": 0.3,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 12.3,
+   "sugars_g": 11.7,
+   "fibre_g": 2.4,
+   "sodium_mg": 1.0
+  },
+  "grams_per_ml": 0.46,
+  "grams_per": {
+   "each": 154.8
+  }
+ },
+ "apricot jam": {
+  "food_key": "F004607",
+  "food": "Jam, stone fruit",
+  "per_100g": {
+   "energy_kj": 1050.0,
+   "protein_g": 0.2,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 64.4,
+   "sugars_g": 64.3,
+   "fibre_g": 0.9,
+   "sodium_mg": 14.0
+  },
+  "grams_per_ml": 1.4,
+  "grams_per": {}
+ },
+ "apricot nectar": {
+  "food_key": "F004100",
+  "food": "Fruit drink, apricot, commercial",
+  "per_100g": {
+   "energy_kj": 244.0,
+   "protein_g": 0.2,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 14.4,
+   "sugars_g": 13.3,
+   "fibre_g": 0.5,
+   "sodium_mg": 1.0
+  },
+  "grams_per_ml": 1.04,
+  "grams_per": {}
+ },
+ "arborio rice": {
+  "food_key": "F007682",
+  "food": "Rice, white, uncooked",
+  "per_100g": {
+   "energy_kj": 1422.0,
+   "protein_g": 7.0,
+   "fat_g": 0.9,
+   "saturated_fat_g": 0.17,
+   "carbs_g": 74.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.8,
+   "sodium_mg": 1.0
+  },
+  "grams_per_ml": 0.87,
+  "grams_per": {}
+ },
+ "artichoke hearts": {
+  "food_key": "F000141",
+  "food": "Artichoke heart, canned in brine, drained",
+  "per_100g": {
+   "energy_kj": 104.0,
+   "protein_g": 1.9,
+   "fat_g": 0.3,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 1.2,
+   "sugars_g": 1.1,
+   "fibre_g": 4.7,
+   "sodium_mg": 280.0
+  },
+  "grams_per_ml": 0.71,
+  "grams_per": {}
+ },
+ "asparagus": {
+  "food_key": "F000155",
+  "food": "Asparagus, green, raw",
+  "per_100g": {
+   "energy_kj": 88.0,
+   "protein_g": 2.5,
+   "fat_g": 0.1,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 1.4,
+   "sugars_g": 1.4,
+   "fibre_g": 2.2,
+   "sodium_mg": 2.0
+  },
+  "grams_per_ml": 0.57,
+  "grams_per": {}
+ },
+ "atta flour": {
+  "food_key": "F004014",
+  "food": "Flour, wheat, wholemeal, plain",
+  "per_100g": {
+   "energy_kj": 1371.0,
+   "protein_g": 11.6,
+   "fat_g": 1.6,
+   "saturated_fat_g": 0.22,
+   "carbs_g": 61.6,
+   "sugars_g": 2.0,
+   "fibre_g": 8.8,
+   "sodium_mg": 2.0
+  },
+  "grams_per_ml": 0.56,
+  "grams_per": {}
+ },
+ "avocado": {
+  "food_key": "F000162",
+  "food": "Avocado, raw",
+  "per_100g": {
+   "energy_kj": 653.0,
+   "protein_g": 1.6,
+   "fat_g": 14.6,
+   "saturated_fat_g": 2.14,
+   "carbs_g": 2.2,
+   "sugars_g": 0.0,
+   "fibre_g": 5.9,
+   "sodium_mg": 8.0
+  },
+  "grams_per_ml": 0.98,
+  "grams_per": {
+   "each": 159.0
+  }
+ },
+ "baby spinach": {
+  "food_key": "F008749",
+  "food": "Spinach, baby, fresh, raw",
+  "per_100g": {
+   "energy_kj": 68.0,
+   "protein_g": 2.8,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 2.5,
+   "sodium_mg": 86.0
+  },
+  "grams_per_ml": 0.17,
+  "grams_per": {}
+ },
+ "bacon": {
+  "food_key": "F000192",
+  "food": "Bacon, middle rasher, lean, raw",
+  "per_100g": {
+   "energy_kj": 572.0,
+   "protein_g": 21.3,
+   "fat_g": 5.5,
+   "saturated_fat_g": 2.04,
+   "carbs_g": 0.4,
+   "sugars_g": 0.4,
+   "fibre_g": 0.0,
+   "sodium_mg": 1450.0
+  },
+  "grams_per_ml": 0.37,
+  "grams_per": {}
+ },
+ "baguette": {
+  "food_key": "F001519",
+  "food": "Bread, white, French stick or baguette, commercial",
+  "per_100g": {
+   "energy_kj": 1166.0,
+   "protein_g": 10.5,
+   "fat_g": 2.2,
+   "saturated_fat_g": 0.31,
+   "carbs_g": 51.4,
+   "sugars_g": 3.5,
+   "fibre_g": 3.6,
+   "sodium_mg": 488.0
+  },
+  "grams_per_ml": 0.2,
+  "grams_per": {
+   "each": 310.0
+  }
+ },
+ "baking powder": {
+  "food_key": "F000247",
+  "food": "Baking powder, dry powder",
+  "per_100g": {
+   "energy_kj": 363.0,
+   "protein_g": 0.8,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.03,
+   "carbs_g": 20.1,
+   "sugars_g": 0.0,
+   "fibre_g": 0.2,
+   "sodium_mg": 6868.0
+  },
+  "grams_per_ml": 0.91,
+  "grams_per": {}
+ },
+ "balsamic vinegar": {
+  "food_key": "F009499",
+  "food": "Vinegar, balsamic",
+  "per_100g": {
+   "energy_kj": 330.0,
+   "protein_g": 0.5,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 15.0,
+   "sugars_g": 15.0,
+   "fibre_g": 2.1,
+   "sodium_mg": 23.0
+  },
+  "grams_per_ml": 1.01,
+  "grams_per": {}
+ },
+ "bamboo shoots": {
+  "food_key": "F000253",
+  "food": "Bamboo shoot, canned in water, heated, drained",
+  "per_100g": {
+   "energy_kj": 57.0,
+   "protein_g": 0.8,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 1.3,
+   "sugars_g": 0.8,
+   "fibre_g": 2.8,
+   "sodium_mg": 10.0
+  },
+  "grams_per_ml": 0.55,
+  "grams_per": {}
+ },
+ "bananas": {
+  "food_key": "F000262",
+  "food": "Banana, cavendish, peeled, raw",
+  "per_100g": {
+   "energy_kj": 399.0,
+   "protein_g": 1.4,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 19.9,
+   "sugars_g": 13.4,
+   "fibre_g": 2.2,
+   "sodium_mg": 0.0
+  },
+  "grams_per_ml": 0.63,
+  "grams_per": {
+   "each": 127.4
+  }
+ },
+ "barbecue chicken": {
+  "food_key": "F002569",
+  "food": "Chicken, barbecued, without skin, commercial",
+  "per_100g": {
+   "energy_kj": 616.0,
+   "protein_g": 26.7,
+   "fat_g": 4.4,
+   "saturated_fat_g": 1.16,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 253.0
+  },
+  "grams_per_ml": 0.57,
+  "grams_per": {}
+ },
+ "barbecue sauce": {
+  "food_key": "F007987",
+  "food": "Sauce, barbecue, commercial",
+  "per_100g": {
+   "energy_kj": 725.0,
+   "protein_g": 0.8,
+   "fat_g": 0.1,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 42.2,
+   "sugars_g": 38.4,
+   "fibre_g": 0.9,
+   "sodium_mg": 710.0
+  },
+  "grams_per_ml": 1.13,
+  "grams_per": {}
+ },
+ "barramundi": {
+  "food_key": "F000386",
+  "food": "Barramundi, raw",
+  "per_100g": {
+   "energy_kj": 523.0,
+   "protein_g": 19.2,
+   "fat_g": 5.3,
+   "saturated_fat_g": 1.19,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 56.0
+  },
+  "grams_per_ml": 1.0,
+  "grams_per": {
+   "each": 125.0
+  }
+ },
+ "basa": {
+  "food_key": "F000402",
+  "food": "Bassa (basa), raw",
+  "per_100g": {
+   "energy_kj": 332.0,
+   "protein_g": 15.7,
+   "fat_g": 1.8,
+   "saturated_fat_g": 0.5,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 84.0
+  },
+  "grams_per_ml": 1.0,
+  "grams_per": {
+   "each": 150.0
+  }
+ },
+ "basil": {
+  "food_key": "F000396",
+  "food": "Basil, green, fresh, raw",
+  "per_100g": {
+   "energy_kj": 94.0,
+   "protein_g": 2.6,
+   "fat_g": 0.5,
+   "saturated_fat_g": 0.03,
+   "carbs_g": 0.2,
+   "sugars_g": 0.0,
+   "fibre_g": 3.3,
+   "sodium_mg": 10.0
+  },
+  "grams_per_ml": 0.25,
+  "grams_per": {}
+ },
+ "basil pesto": {
+  "food_key": "F008029",
+  "food": "Sauce, basil pesto, commercial",
+  "per_100g": {
+   "energy_kj": 1598.0,
+   "protein_g": 5.3,
+   "fat_g": 37.1,
+   "saturated_fat_g": 6.93,
+   "carbs_g": 7.4,
+   "sugars_g": 2.1,
+   "fibre_g": 1.5,
+   "sodium_mg": 1251.0
+  },
+  "grams_per_ml": 1.15,
+  "grams_per": {}
+ },
+ "bay leaves": {
+  "food_key": "F004365",
+  "food": "Herbs, dried, all types",
+  "per_100g": {
+   "energy_kj": 1228.0,
+   "protein_g": 8.4,
+   "fat_g": 9.9,
+   "saturated_fat_g": 4.81,
+   "carbs_g": 23.5,
+   "sugars_g": 6.8,
+   "fibre_g": 40.6,
+   "sodium_mg": 35.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "bean sprouts": {
+  "food_key": "F008806",
+  "food": "Sprout, bean, raw",
+  "per_100g": {
+   "energy_kj": 94.0,
+   "protein_g": 3.1,
+   "fat_g": 0.1,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 1.6,
+   "sugars_g": 1.0,
+   "fibre_g": 1.3,
+   "sodium_mg": 1.0
+  },
+  "grams_per_ml": 0.14,
+  "grams_per": {}
+ },
+ "beef": {
+  "food_key": "F000862",
+  "food": "Beef, steak, lean, raw",
+  "per_100g": {
+   "energy_kj": 472.0,
+   "protein_g": 22.2,
+   "fat_g": 2.6,
+   "saturated_fat_g": 0.94,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 54.0
+  },
+  "grams_per_ml": 0.57,
+  "grams_per": {}
+ },
+ "beef chuck steak": {
+  "food_key": "F000504",
+  "food": "Beef, diced/stir-fry strips, lean, raw",
+  "per_100g": {
+   "energy_kj": 555.0,
+   "protein_g": 27.6,
+   "fat_g": 2.4,
+   "saturated_fat_g": 0.84,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 38.0
+  },
+  "grams_per_ml": 0.86,
+  "grams_per": {}
+ },
+ "beef mince": {
+  "food_key": "F000677",
+  "food": "Beef, mince, raw",
+  "per_100g": {
+   "energy_kj": 614.0,
+   "protein_g": 22.7,
+   "fat_g": 6.2,
+   "saturated_fat_g": 2.65,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 67.0
+  },
+  "grams_per_ml": 0.94,
+  "grams_per": {}
+ },
+ "beef steak": {
+  "food_key": "F000862",
+  "food": "Beef, steak, lean, raw",
+  "per_100g": {
+   "energy_kj": 472.0,
+   "protein_g": 22.2,
+   "fat_g": 2.6,
+   "saturated_fat_g": 0.94,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 54.0
+  },
+  "grams_per_ml": 0.57,
+  "grams_per": {
+   "each": 249.69
+  }
+ },
+ "beef stock": {
+  "food_key": "F008936",
+  "food": "Stock, liquid, all flavours, prepared ",
+  "per_100g": {
+   "energy_kj": 18.0,
+   "protein_g": 0.2,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.08,
+   "carbs_g": 0.4,
+   "sugars_g": 0.1,
+   "fibre_g": 0.0,
+   "sodium_mg": 362.0
+  },
+  "grams_per_ml": 1.02,
+  "grams_per": {}
+ },
+ "beer": {
+  "food_key": "F000994",
+  "food": "Beer, full strength (alcohol 4-4.9% v/v)",
+  "per_100g": {
+   "energy_kj": 152.0,
+   "protein_g": 0.4,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 2.3,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 4.0
+  },
+  "grams_per_ml": 1.005,
+  "grams_per": {}
+ },
+ "berbere": {
+  "food_key": "F008746",
+  "food": "Spices, dried, all types (except chilli & paprika)",
+  "per_100g": {
+   "energy_kj": 1463.0,
+   "protein_g": 9.4,
+   "fat_g": 14.5,
+   "saturated_fat_g": 6.25,
+   "carbs_g": 31.7,
+   "sugars_g": 2.8,
+   "fibre_g": 28.9,
+   "sodium_mg": 79.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "bicarbonate soda": {
+  "food_key": "F000248",
+  "food": "Baking soda (bicarbonate), dry powder",
+  "per_100g": {
+   "energy_kj": 0.0,
+   "protein_g": 0.0,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 27360.0
+  },
+  "grams_per_ml": 0.91,
+  "grams_per": {}
+ },
+ "biryani curry paste": {
+  "food_key": "F006471",
+  "food": "Paste, curry style",
+  "per_100g": {
+   "energy_kj": 864.0,
+   "protein_g": 2.9,
+   "fat_g": 14.1,
+   "saturated_fat_g": 1.46,
+   "carbs_g": 14.2,
+   "sugars_g": 7.3,
+   "fibre_g": 5.4,
+   "sodium_mg": 1802.0
+  },
+  "grams_per_ml": 1.4,
+  "grams_per": {}
+ },
+ "biryani masala": {
+  "food_key": "F008746",
+  "food": "Spices, dried, all types (except chilli & paprika)",
+  "per_100g": {
+   "energy_kj": 1463.0,
+   "protein_g": 9.4,
+   "fat_g": 14.5,
+   "saturated_fat_g": 6.25,
+   "carbs_g": 31.7,
+   "sugars_g": 2.8,
+   "fibre_g": 28.9,
+   "sodium_mg": 79.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "black bean sauce": {
+  "food_key": "F007991",
+  "food": "Sauce, black bean, commercial",
+  "per_100g": {
+   "energy_kj": 391.0,
+   "protein_g": 3.2,
+   "fat_g": 1.0,
+   "saturated_fat_g": 0.21,
+   "carbs_g": 16.0,
+   "sugars_g": 12.8,
+   "fibre_g": 3.1,
+   "sodium_mg": 3330.0
+  },
+  "grams_per_ml": 1.29,
+  "grams_per": {}
+ },
+ "black beans": {
+  "food_key": "F010188",
+  "food": "Bean, black, canned, drained",
+  "per_100g": {
+   "energy_kj": 585.0,
+   "protein_g": 8.8,
+   "fat_g": 0.7,
+   "saturated_fat_g": 0.09,
+   "carbs_g": 20.0,
+   "sugars_g": 0.0,
+   "fibre_g": 8.7,
+   "sodium_mg": 222.0
+  },
+  "grams_per_ml": 0.76,
+  "grams_per": {}
+ },
+ "black pepper": {
+  "food_key": "F006618",
+  "food": "Pepper, black or white, ground",
+  "per_100g": {
+   "energy_kj": 1156.0,
+   "protein_g": 10.4,
+   "fat_g": 3.3,
+   "saturated_fat_g": 1.39,
+   "carbs_g": 38.6,
+   "sugars_g": 0.6,
+   "fibre_g": 25.3,
+   "sodium_mg": 20.0
+  },
+  "grams_per_ml": 0.34,
+  "grams_per": {}
+ },
+ "black vinegar": {
+  "food_key": "F009498",
+  "food": "Vinegar (except balsamic vinegar)",
+  "per_100g": {
+   "energy_kj": 65.0,
+   "protein_g": 0.0,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 5.0
+  },
+  "grams_per_ml": 1.01,
+  "grams_per": {}
+ },
+ "blue cheese": {
+  "food_key": "F002405",
+  "food": "Cheese, blue vein",
+  "per_100g": {
+   "energy_kj": 1552.0,
+   "protein_g": 19.1,
+   "fat_g": 32.9,
+   "saturated_fat_g": 21.94,
+   "carbs_g": 0.3,
+   "sugars_g": 0.3,
+   "fibre_g": 0.0,
+   "sodium_mg": 780.0
+  },
+  "grams_per_ml": 1.06,
+  "grams_per": {}
+ },
+ "blueberries": {
+  "food_key": "F001290",
+  "food": "Blueberry, raw",
+  "per_100g": {
+   "energy_kj": 203.0,
+   "protein_g": 0.5,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 10.4,
+   "sugars_g": 10.0,
+   "fibre_g": 3.0,
+   "sodium_mg": 2.0
+  },
+  "grams_per_ml": 0.63,
+  "grams_per": {}
+ },
+ "bok choy": {
+  "food_key": "F001301",
+  "food": "Bok choy or pak choy, raw",
+  "per_100g": {
+   "energy_kj": 79.0,
+   "protein_g": 2.5,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 0.6,
+   "sugars_g": 0.6,
+   "fibre_g": 2.4,
+   "sodium_mg": 57.0
+  },
+  "grams_per_ml": 0.31,
+  "grams_per": {}
+ },
+ "bolognese sauce": {
+  "food_key": "F008030",
+  "food": "Sauce, pasta, beef bolognese, commercial",
+  "per_100g": {
+   "energy_kj": 371.0,
+   "protein_g": 5.4,
+   "fat_g": 4.4,
+   "saturated_fat_g": 1.4,
+   "carbs_g": 6.7,
+   "sugars_g": 4.2,
+   "fibre_g": 1.2,
+   "sodium_mg": 355.0
+  },
+  "grams_per_ml": 1.1,
+  "grams_per": {}
+ },
+ "bread": {
+  "food_key": "F001463",
+  "food": "Bread, white, commercial",
+  "per_100g": {
+   "energy_kj": 1050.0,
+   "protein_g": 9.5,
+   "fat_g": 2.0,
+   "saturated_fat_g": 0.28,
+   "carbs_g": 46.2,
+   "sugars_g": 3.1,
+   "fibre_g": 3.2,
+   "sodium_mg": 439.0
+  },
+  "grams_per_ml": 0.2,
+  "grams_per": {
+   "slice": 33.0
+  }
+ },
+ "bread flour": {
+  "food_key": "F004006",
+  "food": "Flour, wheat, white, high protein or bread making flour",
+  "per_100g": {
+   "energy_kj": 1464.0,
+   "protein_g": 11.7,
+   "fat_g": 1.7,
+   "saturated_fat_g": 0.23,
+   "carbs_g": 69.6,
+   "sugars_g": 1.8,
+   "fibre_g": 2.5,
+   "sodium_mg": 3.0
+  },
+  "grams_per_ml": 0.54,
+  "grams_per": {}
+ },
+ "bread rolls": {
+  "food_key": "F001353",
+  "food": "Bread roll, white, commercial",
+  "per_100g": {
+   "energy_kj": 1044.0,
+   "protein_g": 9.3,
+   "fat_g": 2.9,
+   "saturated_fat_g": 0.47,
+   "carbs_g": 44.6,
+   "sugars_g": 3.4,
+   "fibre_g": 3.0,
+   "sodium_mg": 380.0
+  },
+  "grams_per_ml": 0.2,
+  "grams_per": {}
+ },
+ "breadcrumbs": {
+  "food_key": "F001683",
+  "food": "Breadcrumbs, white",
+  "per_100g": {
+   "energy_kj": 1598.0,
+   "protein_g": 14.0,
+   "fat_g": 4.1,
+   "saturated_fat_g": 0.5,
+   "carbs_g": 68.5,
+   "sugars_g": 4.6,
+   "fibre_g": 4.7,
+   "sodium_mg": 650.0
+  },
+  "grams_per_ml": 0.6,
+  "grams_per": {}
+ },
+ "bresaola": {
+  "food_key": "F010253",
+  "food": "Pastrami",
+  "per_100g": {
+   "energy_kj": 409.0,
+   "protein_g": 16.3,
+   "fat_g": 2.4,
+   "saturated_fat_g": 1.04,
+   "carbs_g": 2.6,
+   "sugars_g": 0.9,
+   "fibre_g": 0.0,
+   "sodium_mg": 1022.0
+  },
+  "grams_per_ml": 1.2,
+  "grams_per": {}
+ },
+ "brioche": {
+  "food_key": "F010407",
+  "food": "Bread, brioche",
+  "per_100g": {
+   "energy_kj": 1353.0,
+   "protein_g": 9.5,
+   "fat_g": 10.6,
+   "saturated_fat_g": 3.62,
+   "carbs_g": 46.5,
+   "sugars_g": 11.8,
+   "fibre_g": 2.4,
+   "sodium_mg": 400.0
+  },
+  "grams_per_ml": 0.2,
+  "grams_per": {
+   "each": 60.0,
+   "slice": 106.4
+  }
+ },
+ "broccoli": {
+  "food_key": "F001905",
+  "food": "Broccoli, fresh or frozen, raw",
+  "per_100g": {
+   "energy_kj": 134.0,
+   "protein_g": 4.0,
+   "fat_g": 0.4,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 1.2,
+   "sugars_g": 1.2,
+   "fibre_g": 3.5,
+   "sodium_mg": 20.0
+  },
+  "grams_per_ml": 0.37,
+  "grams_per": {
+   "each": 25.0
+  }
+ },
+ "broccolini": {
+  "food_key": "F001909",
+  "food": "Broccolini, raw",
+  "per_100g": {
+   "energy_kj": 122.0,
+   "protein_g": 3.2,
+   "fat_g": 0.4,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 2.0,
+   "sugars_g": 1.3,
+   "fibre_g": 2.5,
+   "sodium_mg": 16.0
+  },
+  "grams_per_ml": 0.37,
+  "grams_per": {}
+ },
+ "brown lentils": {
+  "food_key": "F010192",
+  "food": "Lentil, canned",
+  "per_100g": {
+   "energy_kj": 385.0,
+   "protein_g": 7.3,
+   "fat_g": 0.5,
+   "saturated_fat_g": 0.06,
+   "carbs_g": 11.9,
+   "sugars_g": 0.5,
+   "fibre_g": 4.1,
+   "sodium_mg": 175.0
+  },
+  "grams_per_ml": 0.82,
+  "grams_per": {
+   "can": 420.0
+  }
+ },
+ "brown rice": {
+  "food_key": "F007648",
+  "food": "Rice, brown, uncooked",
+  "per_100g": {
+   "energy_kj": 1452.0,
+   "protein_g": 7.6,
+   "fat_g": 3.1,
+   "saturated_fat_g": 0.56,
+   "carbs_g": 69.1,
+   "sugars_g": 1.1,
+   "fibre_g": 3.5,
+   "sodium_mg": 2.0
+  },
+  "grams_per_ml": 0.87,
+  "grams_per": {}
+ },
+ "brown sugar": {
+  "food_key": "F008969",
+  "food": "Sugar, brown",
+  "per_100g": {
+   "energy_kj": 1552.0,
+   "protein_g": 0.2,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 96.8,
+   "sugars_g": 96.8,
+   "fibre_g": 0.0,
+   "sodium_mg": 21.0
+  },
+  "grams_per_ml": 0.62,
+  "grams_per": {}
+ },
+ "bulgur": {
+  "food_key": "F001929",
+  "food": "Bulgur (burghul, burgaul), uncooked",
+  "per_100g": {
+   "energy_kj": 1434.0,
+   "protein_g": 10.3,
+   "fat_g": 2.0,
+   "saturated_fat_g": 0.29,
+   "carbs_g": 66.1,
+   "sugars_g": 1.0,
+   "fibre_g": 7.8,
+   "sodium_mg": 3.0
+  },
+  "grams_per_ml": 0.72,
+  "grams_per": {}
+ },
+ "burger buns": {
+  "food_key": "F001353",
+  "food": "Bread roll, white, commercial",
+  "per_100g": {
+   "energy_kj": 1044.0,
+   "protein_g": 9.3,
+   "fat_g": 2.9,
+   "saturated_fat_g": 0.47,
+   "carbs_g": 44.6,
+   "sugars_g": 3.4,
+   "fibre_g": 3.0,
+   "sodium_mg": 380.0
+  },
+  "grams_per_ml": 0.2,
+  "grams_per": {
+   "each": 70.0
+  }
+ },
+ "butter": {
+  "food_key": "F001973",
+  "food": "Butter, plain, salted",
+  "per_100g": {
+   "energy_kj": 3069.0,
+   "protein_g": 1.1,
+   "fat_g": 82.2,
+   "saturated_fat_g": 56.91,
+   "carbs_g": 0.6,
+   "sugars_g": 0.6,
+   "fibre_g": 0.0,
+   "sodium_mg": 776.0
+  },
+  "grams_per_ml": 0.96,
+  "grams_per": {}
+ },
+ "butter beans": {
+  "food_key": "F000440",
+  "food": "Bean, lima or butter, canned, drained",
+  "per_100g": {
+   "energy_kj": 355.0,
+   "protein_g": 6.4,
+   "fat_g": 0.3,
+   "saturated_fat_g": 0.07,
+   "carbs_g": 10.2,
+   "sugars_g": 0.6,
+   "fibre_g": 5.3,
+   "sodium_mg": 176.0
+  },
+  "grams_per_ml": 0.76,
+  "grams_per": {}
+ },
+ "buttermilk": {
+  "food_key": "F001978",
+  "food": "Buttermilk",
+  "per_100g": {
+   "energy_kj": 242.0,
+   "protein_g": 4.2,
+   "fat_g": 2.0,
+   "saturated_fat_g": 1.36,
+   "carbs_g": 5.4,
+   "sugars_g": 5.4,
+   "fibre_g": 0.0,
+   "sodium_mg": 57.0
+  },
+  "grams_per_ml": 1.04,
+  "grams_per": {}
+ },
+ "cabbage": {
+  "food_key": "F002001",
+  "food": "Cabbage, raw",
+  "per_100g": {
+   "energy_kj": 84.0,
+   "protein_g": 1.5,
+   "fat_g": 0.1,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 2.3,
+   "sugars_g": 2.3,
+   "fibre_g": 2.0,
+   "sodium_mg": 11.0
+  },
+  "grams_per_ml": 0.34,
+  "grams_per": {}
+ },
+ "cajun seasoning": {
+  "food_key": "F008202",
+  "food": "Seasoning, all purpose, dry powder",
+  "per_100g": {
+   "energy_kj": 1130.0,
+   "protein_g": 6.4,
+   "fat_g": 4.1,
+   "saturated_fat_g": 1.09,
+   "carbs_g": 34.6,
+   "sugars_g": 11.0,
+   "fibre_g": 33.8,
+   "sodium_mg": 15458.0
+  },
+  "grams_per_ml": 1.2,
+  "grams_per": {}
+ },
+ "canned apricots": {
+  "food_key": "F000123",
+  "food": "Apricot, canned in pear juice, drained",
+  "per_100g": {
+   "energy_kj": 196.0,
+   "protein_g": 1.0,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 8.9,
+   "sugars_g": 7.8,
+   "fibre_g": 3.1,
+   "sodium_mg": 3.0
+  },
+  "grams_per_ml": 0.92,
+  "grams_per": {}
+ },
+ "canned beetroot": {
+  "food_key": "F001010",
+  "food": "Beetroot, canned, drained",
+  "per_100g": {
+   "energy_kj": 184.0,
+   "protein_g": 1.2,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 8.7,
+   "sugars_g": 8.7,
+   "fibre_g": 2.0,
+   "sodium_mg": 220.0
+  },
+  "grams_per_ml": 0.72,
+  "grams_per": {
+   "each": 33.0,
+   "slice": 19.0
+  }
+ },
+ "canned pineapple": {
+  "food_key": "F006708",
+  "food": "Pineapple, canned in pineapple juice, drained",
+  "per_100g": {
+   "energy_kj": 190.0,
+   "protein_g": 0.0,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 10.9,
+   "sugars_g": 10.9,
+   "fibre_g": 1.1,
+   "sodium_mg": 1.0
+  },
+  "grams_per_ml": 0.65,
+  "grams_per": {}
+ },
+ "canned tomatoes": {
+  "food_key": "F009222",
+  "food": "Tomato, whole, canned in tomato juice, undrained",
+  "per_100g": {
+   "energy_kj": 79.0,
+   "protein_g": 0.9,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.01,
+   "carbs_g": 3.0,
+   "sugars_g": 3.0,
+   "fibre_g": 1.0,
+   "sodium_mg": 52.0
+  },
+  "grams_per_ml": 1.0,
+  "grams_per": {}
+ },
+ "canned tuna": {
+  "food_key": "F009289",
+  "food": "Tuna, canned, not further defined",
+  "per_100g": {
+   "energy_kj": 743.0,
+   "protein_g": 22.8,
+   "fat_g": 9.2,
+   "saturated_fat_g": 1.65,
+   "carbs_g": 0.8,
+   "sugars_g": 0.6,
+   "fibre_g": 0.1,
+   "sodium_mg": 430.0
+  },
+  "grams_per_ml": 0.8,
+  "grams_per": {}
+ },
+ "cannellini beans": {
+  "food_key": "F000423",
+  "food": "Bean, haricot or cannellini, canned, drained",
+  "per_100g": {
+   "energy_kj": 404.0,
+   "protein_g": 6.2,
+   "fat_g": 0.6,
+   "saturated_fat_g": 0.19,
+   "carbs_g": 12.2,
+   "sugars_g": 2.1,
+   "fibre_g": 6.4,
+   "sodium_mg": 270.0
+  },
+  "grams_per_ml": 0.76,
+  "grams_per": {}
+ },
+ "cannelloni tubes": {
+  "food_key": "F006458",
+  "food": "Pasta, white, plain, dry, uncooked",
+  "per_100g": {
+   "energy_kj": 1458.0,
+   "protein_g": 12.7,
+   "fat_g": 1.4,
+   "saturated_fat_g": 0.24,
+   "carbs_g": 68.5,
+   "sugars_g": 0.0,
+   "fibre_g": 3.2,
+   "sodium_mg": 5.0
+  },
+  "grams_per_ml": 0.45,
+  "grams_per": {}
+ },
+ "capers": {
+  "food_key": "F002220",
+  "food": "Capers, pickled, canned, drained",
+  "per_100g": {
+   "energy_kj": 126.0,
+   "protein_g": 2.4,
+   "fat_g": 0.9,
+   "saturated_fat_g": 0.27,
+   "carbs_g": 1.7,
+   "sugars_g": 0.4,
+   "fibre_g": 3.2,
+   "sodium_mg": 2348.0
+  },
+  "grams_per_ml": 0.57,
+  "grams_per": {}
+ },
+ "capsicum": {
+  "food_key": "F002234",
+  "food": "Capsicum, raw",
+  "per_100g": {
+   "energy_kj": 102.0,
+   "protein_g": 1.0,
+   "fat_g": 0.3,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 3.8,
+   "sugars_g": 3.8,
+   "fibre_g": 1.2,
+   "sodium_mg": 2.0
+  },
+  "grams_per_ml": 0.49,
+  "grams_per": {
+   "each": 261.0
+  }
+ },
+ "caraway seeds": {
+  "food_key": "F008746",
+  "food": "Spices, dried, all types (except chilli & paprika)",
+  "per_100g": {
+   "energy_kj": 1463.0,
+   "protein_g": 9.4,
+   "fat_g": 14.5,
+   "saturated_fat_g": 6.25,
+   "carbs_g": 31.7,
+   "sugars_g": 2.8,
+   "fibre_g": 28.9,
+   "sodium_mg": 79.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "cardamom pods": {
+  "food_key": "F002258",
+  "food": "Cardamom seed, dried, ground",
+  "per_100g": {
+   "energy_kj": 1236.0,
+   "protein_g": 10.8,
+   "fat_g": 6.7,
+   "saturated_fat_g": 2.2,
+   "carbs_g": 34.4,
+   "sugars_g": 4.4,
+   "fibre_g": 28.0,
+   "sodium_mg": 18.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "carrots": {
+  "food_key": "F002276",
+  "food": "Carrot, raw",
+  "per_100g": {
+   "energy_kj": 145.0,
+   "protein_g": 0.6,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 6.6,
+   "sugars_g": 6.2,
+   "fibre_g": 3.2,
+   "sodium_mg": 51.0
+  },
+  "grams_per_ml": 0.38,
+  "grams_per": {
+   "each": 129.0
+  }
+ },
+ "cashews": {
+  "food_key": "F006088",
+  "food": "Nut, cashew, raw/natural, unsalted",
+  "per_100g": {
+   "energy_kj": 2540.0,
+   "protein_g": 17.0,
+   "fat_g": 49.2,
+   "saturated_fat_g": 8.37,
+   "carbs_g": 22.9,
+   "sugars_g": 5.5,
+   "fibre_g": 5.9,
+   "sodium_mg": 11.0
+  },
+  "grams_per_ml": 0.58,
+  "grams_per": {}
+ },
+ "caster sugar": {
+  "food_key": "F008976",
+  "food": "Sugar, white, granulated or lump",
+  "per_100g": {
+   "energy_kj": 1600.0,
+   "protein_g": 0.0,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 100.0,
+   "sugars_g": 100.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 0.0
+  },
+  "grams_per_ml": 0.84,
+  "grams_per": {}
+ },
+ "cauliflower": {
+  "food_key": "F002378",
+  "food": "Cauliflower, raw",
+  "per_100g": {
+   "energy_kj": 102.0,
+   "protein_g": 1.9,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 3.3,
+   "sugars_g": 2.8,
+   "fibre_g": 1.2,
+   "sodium_mg": 40.0
+  },
+  "grams_per_ml": 0.51,
+  "grams_per": {
+   "each": 46.0
+  }
+ },
+ "cavolo nero": {
+  "food_key": "F004781",
+  "food": "Kale, raw",
+  "per_100g": {
+   "energy_kj": 107.0,
+   "protein_g": 3.3,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 0.3,
+   "sugars_g": 0.3,
+   "fibre_g": 5.2,
+   "sodium_mg": 86.0
+  },
+  "grams_per_ml": 0.42,
+  "grams_per": {}
+ },
+ "cayenne pepper": {
+  "food_key": "F002893",
+  "food": "Chilli (chili), dried, ground",
+  "per_100g": {
+   "energy_kj": 1224.0,
+   "protein_g": 12.3,
+   "fat_g": 14.3,
+   "saturated_fat_g": 2.06,
+   "carbs_g": 12.9,
+   "sugars_g": 7.2,
+   "fibre_g": 34.2,
+   "sodium_mg": 68.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "celery": {
+  "food_key": "F002390",
+  "food": "Celery, raw",
+  "per_100g": {
+   "energy_kj": 74.0,
+   "protein_g": 0.6,
+   "fat_g": 0.1,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 2.8,
+   "sugars_g": 1.8,
+   "fibre_g": 1.6,
+   "sodium_mg": 90.0
+  },
+  "grams_per_ml": 0.51,
+  "grams_per": {
+   "stalk": 30.0
+  }
+ },
+ "celery salt": {
+  "food_key": "F007878",
+  "food": "Salt, table, iodised",
+  "per_100g": {
+   "energy_kj": 0.0,
+   "protein_g": 0.0,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 38168.0
+  },
+  "grams_per_ml": 1.2,
+  "grams_per": {}
+ },
+ "cheddar cheese": {
+  "food_key": "F002414",
+  "food": "Cheese, cheddar, natural, plain",
+  "per_100g": {
+   "energy_kj": 1686.0,
+   "protein_g": 24.6,
+   "fat_g": 33.4,
+   "saturated_fat_g": 22.65,
+   "carbs_g": 0.3,
+   "sugars_g": 0.3,
+   "fibre_g": 0.0,
+   "sodium_mg": 686.0
+  },
+  "grams_per_ml": 1.0,
+  "grams_per": {
+   "slice": 21.0
+  }
+ },
+ "cherries": {
+  "food_key": "F002522",
+  "food": "Cherry, raw",
+  "per_100g": {
+   "energy_kj": 308.0,
+   "protein_g": 1.1,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 16.9,
+   "sugars_g": 15.2,
+   "fibre_g": 1.4,
+   "sodium_mg": 0.0
+  },
+  "grams_per_ml": 0.51,
+  "grams_per": {}
+ },
+ "cherry tomatoes": {
+  "food_key": "F009190",
+  "food": "Tomato, cherry or grape, raw",
+  "per_100g": {
+   "energy_kj": 90.0,
+   "protein_g": 0.9,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 3.5,
+   "sugars_g": 3.5,
+   "fibre_g": 1.7,
+   "sodium_mg": 6.0
+  },
+  "grams_per_ml": 0.63,
+  "grams_per": {}
+ },
+ "chia seeds": {
+  "food_key": "F008209",
+  "food": "Seed, chia, dried",
+  "per_100g": {
+   "energy_kj": 1825.0,
+   "protein_g": 23.8,
+   "fat_g": 29.8,
+   "saturated_fat_g": 2.54,
+   "carbs_g": 3.1,
+   "sugars_g": 0.7,
+   "fibre_g": 33.2,
+   "sodium_mg": 0.0
+  },
+  "grams_per_ml": 0.71,
+  "grams_per": {}
+ },
+ "chicken": {
+  "food_key": "F002691",
+  "food": "Chicken, lean, raw",
+  "per_100g": {
+   "energy_kj": 441.0,
+   "protein_g": 20.3,
+   "fat_g": 2.6,
+   "saturated_fat_g": 0.76,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 59.0
+  },
+  "grams_per_ml": 1.06,
+  "grams_per": {}
+ },
+ "chicken breast": {
+  "food_key": "F002594",
+  "food": "Chicken, breast, lean, raw",
+  "per_100g": {
+   "energy_kj": 412.0,
+   "protein_g": 22.5,
+   "fat_g": 0.8,
+   "saturated_fat_g": 0.25,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 48.0
+  },
+  "grams_per_ml": 1.06,
+  "grams_per": {
+   "each": 280.0
+  }
+ },
+ "chicken drumsticks": {
+  "food_key": "F002647",
+  "food": "Chicken, drumstick, lean, raw",
+  "per_100g": {
+   "energy_kj": 492.0,
+   "protein_g": 18.5,
+   "fat_g": 4.8,
+   "saturated_fat_g": 1.4,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 71.0
+  },
+  "grams_per_ml": 1.06,
+  "grams_per": {}
+ },
+ "chicken mince": {
+  "food_key": "F002739",
+  "food": "Chicken, mince, raw",
+  "per_100g": {
+   "energy_kj": 404.0,
+   "protein_g": 21.4,
+   "fat_g": 1.1,
+   "saturated_fat_g": 0.31,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 49.0
+  },
+  "grams_per_ml": 0.94,
+  "grams_per": {}
+ },
+ "chicken pieces": {
+  "food_key": "F002691",
+  "food": "Chicken, lean, raw",
+  "per_100g": {
+   "energy_kj": 441.0,
+   "protein_g": 20.3,
+   "fat_g": 2.6,
+   "saturated_fat_g": 0.76,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 59.0
+  },
+  "grams_per_ml": 1.06,
+  "grams_per": {}
+ },
+ "chicken stock": {
+  "food_key": "F008936",
+  "food": "Stock, liquid, all flavours, prepared ",
+  "per_100g": {
+   "energy_kj": 18.0,
+   "protein_g": 0.2,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.08,
+   "carbs_g": 0.4,
+   "sugars_g": 0.1,
+   "fibre_g": 0.0,
+   "sodium_mg": 362.0
+  },
+  "grams_per_ml": 1.02,
+  "grams_per": {}
+ },
+ "chicken thigh": {
+  "food_key": "F002806",
+  "food": "Chicken, thigh, lean, raw",
+  "per_100g": {
+   "energy_kj": 436.0,
+   "protein_g": 19.1,
+   "fat_g": 3.0,
+   "saturated_fat_g": 0.86,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 64.0
+  },
+  "grams_per_ml": 1.06,
+  "grams_per": {
+   "each": 148.0
+  }
+ },
+ "chicken wings": {
+  "food_key": "F002849",
+  "food": "Chicken, wing, lean, raw",
+  "per_100g": {
+   "energy_kj": 470.0,
+   "protein_g": 18.7,
+   "fat_g": 4.1,
+   "saturated_fat_g": 1.24,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 66.0
+  },
+  "grams_per_ml": 0.44,
+  "grams_per": {}
+ },
+ "chickpea flour": {
+  "food_key": "F003986",
+  "food": "Flour, chickpea (besan)",
+  "per_100g": {
+   "energy_kj": 1373.0,
+   "protein_g": 19.7,
+   "fat_g": 5.5,
+   "saturated_fat_g": 0.56,
+   "carbs_g": 38.5,
+   "sugars_g": 2.2,
+   "fibre_g": 20.8,
+   "sodium_mg": 11.0
+  },
+  "grams_per_ml": 0.37,
+  "grams_per": {}
+ },
+ "chickpeas": {
+  "food_key": "F002880",
+  "food": "Chickpea, canned, drained",
+  "per_100g": {
+   "energy_kj": 474.0,
+   "protein_g": 6.3,
+   "fat_g": 2.1,
+   "saturated_fat_g": 0.21,
+   "carbs_g": 13.3,
+   "sugars_g": 0.6,
+   "fibre_g": 5.7,
+   "sodium_mg": 250.0
+  },
+  "grams_per_ml": 0.69,
+  "grams_per": {}
+ },
+ "chilli bean paste": {
+  "food_key": "F007991",
+  "food": "Sauce, black bean, commercial",
+  "per_100g": {
+   "energy_kj": 391.0,
+   "protein_g": 3.2,
+   "fat_g": 1.0,
+   "saturated_fat_g": 0.21,
+   "carbs_g": 16.0,
+   "sugars_g": 12.8,
+   "fibre_g": 3.1,
+   "sodium_mg": 3330.0
+  },
+  "grams_per_ml": 1.29,
+  "grams_per": {}
+ },
+ "chilli flakes": {
+  "food_key": "F002893",
+  "food": "Chilli (chili), dried, ground",
+  "per_100g": {
+   "energy_kj": 1224.0,
+   "protein_g": 12.3,
+   "fat_g": 14.3,
+   "saturated_fat_g": 2.06,
+   "carbs_g": 12.9,
+   "sugars_g": 7.2,
+   "fibre_g": 34.2,
+   "sodium_mg": 68.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "chilli oil": {
+  "food_key": "F006191",
+  "food": "Oil, vegetable",
+  "per_100g": {
+   "energy_kj": 3700.0,
+   "protein_g": 0.0,
+   "fat_g": 100.0,
+   "saturated_fat_g": 9.99,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 0.0
+  },
+  "grams_per_ml": 0.92,
+  "grams_per": {}
+ },
+ "chilli powder": {
+  "food_key": "F002893",
+  "food": "Chilli (chili), dried, ground",
+  "per_100g": {
+   "energy_kj": 1224.0,
+   "protein_g": 12.3,
+   "fat_g": 14.3,
+   "saturated_fat_g": 2.06,
+   "carbs_g": 12.9,
+   "sugars_g": 7.2,
+   "fibre_g": 34.2,
+   "sodium_mg": 68.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "chinese five spice": {
+  "food_key": "F008746",
+  "food": "Spices, dried, all types (except chilli & paprika)",
+  "per_100g": {
+   "energy_kj": 1463.0,
+   "protein_g": 9.4,
+   "fat_g": 14.5,
+   "saturated_fat_g": 6.25,
+   "carbs_g": 31.7,
+   "sugars_g": 2.8,
+   "fibre_g": 28.9,
+   "sodium_mg": 79.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "chives": {
+  "food_key": "F002907",
+  "food": "Chives, fresh, raw",
+  "per_100g": {
+   "energy_kj": 120.0,
+   "protein_g": 1.5,
+   "fat_g": 0.3,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 2.6,
+   "sugars_g": 2.6,
+   "fibre_g": 4.7,
+   "sodium_mg": 7.0
+  },
+  "grams_per_ml": 0.2,
+  "grams_per": {}
+ },
+ "chocolate chips": {
+  "food_key": "F002929",
+  "food": "Chocolate, milk",
+  "per_100g": {
+   "energy_kj": 2179.0,
+   "protein_g": 7.6,
+   "fat_g": 30.6,
+   "saturated_fat_g": 18.77,
+   "carbs_g": 56.0,
+   "sugars_g": 54.6,
+   "fibre_g": 2.3,
+   "sodium_mg": 68.0
+  },
+  "grams_per_ml": 0.63,
+  "grams_per": {}
+ },
+ "chocolate sprinkles": {
+  "food_key": "F003098",
+  "food": "Confectionery, cake decoration, sugar based (hundreds & thousands)",
+  "per_100g": {
+   "energy_kj": 1533.0,
+   "protein_g": 0.1,
+   "fat_g": 0.1,
+   "saturated_fat_g": 0.02,
+   "carbs_g": 95.4,
+   "sugars_g": 72.0,
+   "fibre_g": 0.1,
+   "sodium_mg": 20.0
+  },
+  "grams_per_ml": 0.75,
+  "grams_per": {}
+ },
+ "chorizo": {
+  "food_key": "F008126",
+  "food": "Sausage, chorizo, raw",
+  "per_100g": {
+   "energy_kj": 1183.0,
+   "protein_g": 20.1,
+   "fat_g": 22.1,
+   "saturated_fat_g": 8.0,
+   "carbs_g": 1.2,
+   "sugars_g": 0.8,
+   "fibre_g": 0.5,
+   "sodium_mg": 1100.0
+  },
+  "grams_per_ml": 1.0,
+  "grams_per": {}
+ },
+ "cinnamon sticks": {
+  "food_key": "F002963",
+  "food": "Cinnamon, dried, ground",
+  "per_100g": {
+   "energy_kj": 1004.0,
+   "protein_g": 4.0,
+   "fat_g": 1.2,
+   "saturated_fat_g": 0.62,
+   "carbs_g": 27.5,
+   "sugars_g": 2.2,
+   "fibre_g": 53.1,
+   "sodium_mg": 10.0
+  },
+  "grams_per_ml": 0.51,
+  "grams_per": {}
+ },
+ "cocoa powder": {
+  "food_key": "F002980",
+  "food": "Cocoa powder",
+  "per_100g": {
+   "energy_kj": 1335.0,
+   "protein_g": 22.1,
+   "fat_g": 15.2,
+   "saturated_fat_g": 9.17,
+   "carbs_g": 10.5,
+   "sugars_g": 1.5,
+   "fibre_g": 27.7,
+   "sodium_mg": 81.0
+  },
+  "grams_per_ml": 0.36,
+  "grams_per": {}
+ },
+ "coconut cream": {
+  "food_key": "F002982",
+  "food": "Coconut, cream",
+  "per_100g": {
+   "energy_kj": 908.0,
+   "protein_g": 1.6,
+   "fat_g": 23.2,
+   "saturated_fat_g": 18.82,
+   "carbs_g": 1.4,
+   "sugars_g": 1.4,
+   "fibre_g": 0.0,
+   "sodium_mg": 16.0
+  },
+  "grams_per_ml": 1.02,
+  "grams_per": {}
+ },
+ "coconut milk": {
+  "food_key": "F002991",
+  "food": "Coconut, milk, canned",
+  "per_100g": {
+   "energy_kj": 620.0,
+   "protein_g": 1.4,
+   "fat_g": 15.4,
+   "saturated_fat_g": 12.49,
+   "carbs_g": 1.7,
+   "sugars_g": 1.7,
+   "fibre_g": 0.0,
+   "sodium_mg": 26.0
+  },
+  "grams_per_ml": 1.02,
+  "grams_per": {}
+ },
+ "coffee": {
+  "food_key": "F003041",
+  "food": "Coffee, espresso",
+  "per_100g": {
+   "energy_kj": 40.0,
+   "protein_g": 1.7,
+   "fat_g": 0.3,
+   "saturated_fat_g": 0.11,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 2.0
+  },
+  "grams_per_ml": 1.0,
+  "grams_per": {
+   "shot": 50.0
+  }
+ },
+ "coleslaw mix": {
+  "food_key": "F007745",
+  "food": "Salad, coleslaw, no added dressing",
+  "per_100g": {
+   "energy_kj": 92.0,
+   "protein_g": 1.4,
+   "fat_g": 0.1,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 2.8,
+   "sugars_g": 2.7,
+   "fibre_g": 2.2,
+   "sodium_mg": 25.0
+  },
+  "grams_per_ml": 0.58,
+  "grams_per": {}
+ },
+ "condensed milk": {
+  "food_key": "F005582",
+  "food": "Milk, canned, sweetened, condensed",
+  "per_100g": {
+   "energy_kj": 1362.0,
+   "protein_g": 8.3,
+   "fat_g": 9.2,
+   "saturated_fat_g": 6.03,
+   "carbs_g": 55.0,
+   "sugars_g": 55.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 106.0
+  },
+  "grams_per_ml": 1.29,
+  "grams_per": {}
+ },
+ "cooked prawns": {
+  "food_key": "F007443",
+  "food": "Prawn, king or medium, flesh, boiled, microwaved, steamed or poached",
+  "per_100g": {
+   "energy_kj": 438.0,
+   "protein_g": 23.7,
+   "fat_g": 1.0,
+   "saturated_fat_g": 0.21,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 552.0
+  },
+  "grams_per_ml": 0.54,
+  "grams_per": {
+   "each": 11.2
+  }
+ },
+ "coriander": {
+  "food_key": "F003192",
+  "food": "Coriander, fresh, leaves & stems, raw",
+  "per_100g": {
+   "energy_kj": 132.0,
+   "protein_g": 3.1,
+   "fat_g": 0.6,
+   "saturated_fat_g": 0.02,
+   "carbs_g": 1.9,
+   "sugars_g": 1.2,
+   "fibre_g": 3.2,
+   "sodium_mg": 45.0
+  },
+  "grams_per_ml": 0.25,
+  "grams_per": {
+   "each": 40.0
+  }
+ },
+ "corn chips": {
+  "food_key": "F003198",
+  "food": "Corn chips, plain, salted",
+  "per_100g": {
+   "energy_kj": 2053.0,
+   "protein_g": 7.5,
+   "fat_g": 25.0,
+   "saturated_fat_g": 5.81,
+   "carbs_g": 56.0,
+   "sugars_g": 0.6,
+   "fibre_g": 5.2,
+   "sodium_mg": 420.0
+  },
+  "grams_per_ml": 0.1,
+  "grams_per": {}
+ },
+ "corn cobs": {
+  "food_key": "F003209",
+  "food": "Corn, raw",
+  "per_100g": {
+   "energy_kj": 369.0,
+   "protein_g": 3.6,
+   "fat_g": 1.8,
+   "saturated_fat_g": 0.43,
+   "carbs_g": 12.5,
+   "sugars_g": 5.4,
+   "fibre_g": 4.2,
+   "sodium_mg": 19.0
+  },
+  "grams_per_ml": 0.7,
+  "grams_per": {}
+ },
+ "corn kernels": {
+  "food_key": "F003220",
+  "food": "Corn, canned, kernels, drained",
+  "per_100g": {
+   "energy_kj": 391.0,
+   "protein_g": 2.9,
+   "fat_g": 1.0,
+   "saturated_fat_g": 0.25,
+   "carbs_g": 16.8,
+   "sugars_g": 3.5,
+   "fibre_g": 2.7,
+   "sodium_mg": 170.0
+  },
+  "grams_per_ml": 0.71,
+  "grams_per": {
+   "can": 185.0
+  }
+ },
+ "corn tortillas": {
+  "food_key": "F009854",
+  "food": "Bread, flat wrap or tortilla, corn, commercial",
+  "per_100g": {
+   "energy_kj": 999.0,
+   "protein_g": 4.8,
+   "fat_g": 3.2,
+   "saturated_fat_g": 0.43,
+   "carbs_g": 44.8,
+   "sugars_g": 4.5,
+   "fibre_g": 5.0,
+   "sodium_mg": 370.0
+  },
+  "grams_per_ml": 0.15,
+  "grams_per": {
+   "each": 28.0
+  }
+ },
+ "cornflour": {
+  "food_key": "F003988",
+  "food": "Flour, cornflour, from maize starch",
+  "per_100g": {
+   "energy_kj": 1458.0,
+   "protein_g": 0.4,
+   "fat_g": 0.6,
+   "saturated_fat_g": 0.11,
+   "carbs_g": 84.1,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 16.0
+  },
+  "grams_per_ml": 0.4,
+  "grams_per": {}
+ },
+ "cottage cheese": {
+  "food_key": "F002435",
+  "food": "Cheese, cottage",
+  "per_100g": {
+   "energy_kj": 556.0,
+   "protein_g": 17.0,
+   "fat_g": 5.7,
+   "saturated_fat_g": 3.47,
+   "carbs_g": 1.8,
+   "sugars_g": 1.8,
+   "fibre_g": 0.0,
+   "sodium_mg": 277.0
+  },
+  "grams_per_ml": 1.01,
+  "grams_per": {}
+ },
+ "couscous": {
+  "food_key": "F003239",
+  "food": "Couscous, uncooked",
+  "per_100g": {
+   "energy_kj": 1523.0,
+   "protein_g": 13.8,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.03,
+   "carbs_g": 73.6,
+   "sugars_g": 3.4,
+   "fibre_g": 4.2,
+   "sodium_mg": 2.0
+  },
+  "grams_per_ml": 0.74,
+  "grams_per": {}
+ },
+ "crackers": {
+  "food_key": "F001133",
+  "food": "Biscuit, savoury, wheat, water cracker style",
+  "per_100g": {
+   "energy_kj": 1650.0,
+   "protein_g": 10.4,
+   "fat_g": 7.2,
+   "saturated_fat_g": 3.12,
+   "carbs_g": 69.4,
+   "sugars_g": 2.0,
+   "fibre_g": 3.7,
+   "sodium_mg": 560.0
+  },
+  "grams_per_ml": 0.25,
+  "grams_per": {}
+ },
+ "cream cheese": {
+  "food_key": "F002444",
+  "food": "Cheese, cream, plain",
+  "per_100g": {
+   "energy_kj": 1420.0,
+   "protein_g": 8.5,
+   "fat_g": 34.2,
+   "saturated_fat_g": 22.07,
+   "carbs_g": 0.2,
+   "sugars_g": 0.2,
+   "fibre_g": 0.0,
+   "sodium_mg": 320.0
+  },
+  "grams_per_ml": 1.01,
+  "grams_per": {}
+ },
+ "creamed corn": {
+  "food_key": "F003207",
+  "food": "Corn, canned, creamed, heated",
+  "per_100g": {
+   "energy_kj": 290.0,
+   "protein_g": 2.0,
+   "fat_g": 1.1,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 11.2,
+   "sugars_g": 5.1,
+   "fibre_g": 3.4,
+   "sodium_mg": 218.0
+  },
+  "grams_per_ml": 1.08,
+  "grams_per": {}
+ },
+ "crème fraîche": {
+  "food_key": "F003269",
+  "food": "Cream, sour",
+  "per_100g": {
+   "energy_kj": 1414.0,
+   "protein_g": 1.9,
+   "fat_g": 36.3,
+   "saturated_fat_g": 23.46,
+   "carbs_g": 2.0,
+   "sugars_g": 2.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 19.0
+  },
+  "grams_per_ml": 0.98,
+  "grams_per": {}
+ },
+ "cucumber": {
+  "food_key": "F003323",
+  "food": "Cucumber, raw",
+  "per_100g": {
+   "energy_kj": 49.0,
+   "protein_g": 0.7,
+   "fat_g": 0.1,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 1.5,
+   "sugars_g": 1.5,
+   "fibre_g": 1.1,
+   "sodium_mg": 11.0
+  },
+  "grams_per_ml": 1.04,
+  "grams_per": {
+   "each": 213.0
+  }
+ },
+ "cumin seeds": {
+  "food_key": "F003327",
+  "food": "Cumin (cummin) seed, dried, ground",
+  "per_100g": {
+   "energy_kj": 1782.0,
+   "protein_g": 17.8,
+   "fat_g": 22.3,
+   "saturated_fat_g": 1.73,
+   "carbs_g": 33.7,
+   "sugars_g": 2.2,
+   "fibre_g": 10.5,
+   "sodium_mg": 168.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "curry powder": {
+  "food_key": "F003337",
+  "food": "Curry powder",
+  "per_100g": {
+   "energy_kj": 1231.0,
+   "protein_g": 14.3,
+   "fat_g": 14.0,
+   "saturated_fat_g": 1.64,
+   "carbs_g": 2.8,
+   "sugars_g": 2.8,
+   "fibre_g": 53.2,
+   "sodium_mg": 52.0
+  },
+  "grams_per_ml": 0.39,
+  "grams_per": {}
+ },
+ "daikon": {
+  "food_key": "F007606",
+  "food": "Radish, raw",
+  "per_100g": {
+   "energy_kj": 62.0,
+   "protein_g": 0.8,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 1.9,
+   "sugars_g": 1.9,
+   "fibre_g": 1.1,
+   "sodium_mg": 20.0
+  },
+  "grams_per_ml": 0.49,
+  "grams_per": {}
+ },
+ "dairy free spread": {
+  "food_key": "F005312",
+  "food": "Margarine spread, monounsaturated, dairy free",
+  "per_100g": {
+   "energy_kj": 2351.0,
+   "protein_g": 0.5,
+   "fat_g": 63.3,
+   "saturated_fat_g": 13.98,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 367.0
+  },
+  "grams_per_ml": 0.95,
+  "grams_per": {}
+ },
+ "dark chocolate": {
+  "food_key": "F002921",
+  "food": "Chocolate, dark, high cocoa solids, <60% cocoa solids",
+  "per_100g": {
+   "energy_kj": 2210.0,
+   "protein_g": 3.9,
+   "fat_g": 30.3,
+   "saturated_fat_g": 18.35,
+   "carbs_g": 62.6,
+   "sugars_g": 52.0,
+   "fibre_g": 1.2,
+   "sodium_mg": 55.0
+  },
+  "grams_per_ml": 0.63,
+  "grams_per": {}
+ },
+ "dark soy sauce": {
+  "food_key": "F008065",
+  "food": "Sauce, soy, commercial",
+  "per_100g": {
+   "energy_kj": 209.0,
+   "protein_g": 6.8,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 3.2,
+   "sugars_g": 2.2,
+   "fibre_g": 0.0,
+   "sodium_mg": 5600.0
+  },
+  "grams_per_ml": 1.05,
+  "grams_per": {}
+ },
+ "dashi stock": {
+  "food_key": "F008936",
+  "food": "Stock, liquid, all flavours, prepared ",
+  "per_100g": {
+   "energy_kj": 18.0,
+   "protein_g": 0.2,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.08,
+   "carbs_g": 0.4,
+   "sugars_g": 0.1,
+   "fibre_g": 0.0,
+   "sodium_mg": 362.0
+  },
+  "grams_per_ml": 1.02,
+  "grams_per": {}
+ },
+ "dates": {
+  "food_key": "F003496",
+  "food": "Date, dried",
+  "per_100g": {
+   "energy_kj": 1212.0,
+   "protein_g": 2.0,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 67.2,
+   "sugars_g": 65.9,
+   "fibre_g": 9.7,
+   "sodium_mg": 14.0
+  },
+  "grams_per_ml": 0.64,
+  "grams_per": {}
+ },
+ "desiccated coconut": {
+  "food_key": "F002987",
+  "food": "Coconut, grated & desiccated",
+  "per_100g": {
+   "energy_kj": 2777.0,
+   "protein_g": 6.9,
+   "fat_g": 65.4,
+   "saturated_fat_g": 57.72,
+   "carbs_g": 7.3,
+   "sugars_g": 6.6,
+   "fibre_g": 15.4,
+   "sodium_mg": 15.0
+  },
+  "grams_per_ml": 0.36,
+  "grams_per": {}
+ },
+ "digestive biscuits": {
+  "food_key": "F001251",
+  "food": "Biscuit, sweet, wheatmeal, commercial",
+  "per_100g": {
+   "energy_kj": 1728.0,
+   "protein_g": 7.8,
+   "fat_g": 11.7,
+   "saturated_fat_g": 1.28,
+   "carbs_g": 67.0,
+   "sugars_g": 21.6,
+   "fibre_g": 5.6,
+   "sodium_mg": 423.0
+  },
+  "grams_per_ml": null,
+  "grams_per": {}
+ },
+ "dijon mustard": {
+  "food_key": "F005973",
+  "food": "Mustard, cream style",
+  "per_100g": {
+   "energy_kj": 348.0,
+   "protein_g": 5.8,
+   "fat_g": 3.1,
+   "saturated_fat_g": 0.14,
+   "carbs_g": 6.2,
+   "sugars_g": 3.6,
+   "fibre_g": 4.1,
+   "sodium_mg": 1420.0
+  },
+  "grams_per_ml": 1.05,
+  "grams_per": {
+   "tbsp": 21.0
+  }
+ },
+ "dill": {
+  "food_key": "F003509",
+  "food": "Dill, fresh, raw",
+  "per_100g": {
+   "energy_kj": 170.0,
+   "protein_g": 3.4,
+   "fat_g": 1.2,
+   "saturated_fat_g": 0.06,
+   "carbs_g": 2.5,
+   "sugars_g": 1.2,
+   "fibre_g": 3.3,
+   "sodium_mg": 42.0
+  },
+  "grams_per_ml": 0.25,
+  "grams_per": {}
+ },
+ "dried apricots": {
+  "food_key": "F000130",
+  "food": "Apricot, dried",
+  "per_100g": {
+   "energy_kj": 972.0,
+   "protein_g": 4.2,
+   "fat_g": 0.4,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 48.4,
+   "sugars_g": 42.3,
+   "fibre_g": 8.3,
+   "sodium_mg": 22.0
+  },
+  "grams_per_ml": 0.76,
+  "grams_per": {}
+ },
+ "dried chillies": {
+  "food_key": "F002893",
+  "food": "Chilli (chili), dried, ground",
+  "per_100g": {
+   "energy_kj": 1224.0,
+   "protein_g": 12.3,
+   "fat_g": 14.3,
+   "saturated_fat_g": 2.06,
+   "carbs_g": 12.9,
+   "sugars_g": 7.2,
+   "fibre_g": 34.2,
+   "sodium_mg": 68.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {
+   "each": 3.0
+  }
+ },
+ "dried mint": {
+  "food_key": "F004365",
+  "food": "Herbs, dried, all types",
+  "per_100g": {
+   "energy_kj": 1228.0,
+   "protein_g": 8.4,
+   "fat_g": 9.9,
+   "saturated_fat_g": 4.81,
+   "carbs_g": 23.5,
+   "sugars_g": 6.8,
+   "fibre_g": 40.6,
+   "sodium_mg": 35.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "dried oregano": {
+  "food_key": "F006281",
+  "food": "Oregano, dried",
+  "per_100g": {
+   "energy_kj": 1096.0,
+   "protein_g": 9.0,
+   "fat_g": 4.3,
+   "saturated_fat_g": 1.46,
+   "carbs_g": 26.4,
+   "sugars_g": 4.1,
+   "fibre_g": 42.5,
+   "sodium_mg": 25.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "dried sage": {
+  "food_key": "F007726",
+  "food": "Sage, dried",
+  "per_100g": {
+   "energy_kj": 1320.0,
+   "protein_g": 10.6,
+   "fat_g": 12.8,
+   "saturated_fat_g": 7.03,
+   "carbs_g": 20.4,
+   "sugars_g": 1.7,
+   "fibre_g": 40.3,
+   "sodium_mg": 11.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "dried thyme": {
+  "food_key": "F009160",
+  "food": "Thyme, dried",
+  "per_100g": {
+   "energy_kj": 1182.0,
+   "protein_g": 9.1,
+   "fat_g": 7.4,
+   "saturated_fat_g": 3.7,
+   "carbs_g": 26.9,
+   "sugars_g": 1.7,
+   "fibre_g": 37.0,
+   "sodium_mg": 55.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "dried wakame": {
+  "food_key": "F008204",
+  "food": "Seaweed, nori, dried",
+  "per_100g": {
+   "energy_kj": 1266.0,
+   "protein_g": 46.7,
+   "fat_g": 4.3,
+   "saturated_fat_g": 0.88,
+   "carbs_g": 2.3,
+   "sugars_g": 0.3,
+   "fibre_g": 34.3,
+   "sodium_mg": 470.0
+  },
+  "grams_per_ml": null,
+  "grams_per": {}
+ },
+ "dried yeast": {
+  "food_key": "F009606",
+  "food": "Yeast, dry powder",
+  "per_100g": {
+   "energy_kj": 1126.0,
+   "protein_g": 36.4,
+   "fat_g": 5.0,
+   "saturated_fat_g": 0.75,
+   "carbs_g": 6.3,
+   "sugars_g": 0.0,
+   "fibre_g": 26.9,
+   "sodium_mg": 170.0
+  },
+  "grams_per_ml": 0.8,
+  "grams_per": {}
+ },
+ "dumpling wrappers": {
+  "food_key": "F006489",
+  "food": "Pastry, dumpling wrapper, raw",
+  "per_100g": {
+   "energy_kj": 955.0,
+   "protein_g": 7.4,
+   "fat_g": 1.6,
+   "saturated_fat_g": 0.34,
+   "carbs_g": 44.7,
+   "sugars_g": 1.2,
+   "fibre_g": 1.3,
+   "sodium_mg": 345.0
+  },
+  "grams_per_ml": 0.43,
+  "grams_per": {}
+ },
+ "edamame": {
+  "food_key": "F010184",
+  "food": "Bean, edamame, canned, drained",
+  "per_100g": {
+   "energy_kj": 565.0,
+   "protein_g": 11.6,
+   "fat_g": 6.4,
+   "saturated_fat_g": 0.83,
+   "carbs_g": 5.3,
+   "sugars_g": 3.8,
+   "fibre_g": 5.6,
+   "sodium_mg": 187.0
+  },
+  "grams_per_ml": 0.76,
+  "grams_per": {}
+ },
+ "egg noodles": {
+  "food_key": "F006445",
+  "food": "Pasta, egg, plain, uncooked",
+  "per_100g": {
+   "energy_kj": 1517.0,
+   "protein_g": 13.5,
+   "fat_g": 1.8,
+   "saturated_fat_g": 0.33,
+   "carbs_g": 70.3,
+   "sugars_g": 0.0,
+   "fibre_g": 3.3,
+   "sodium_mg": 11.0
+  },
+  "grams_per_ml": 0.45,
+  "grams_per": {}
+ },
+ "eggplant": {
+  "food_key": "F003761",
+  "food": "Eggplant, raw",
+  "per_100g": {
+   "energy_kj": 85.0,
+   "protein_g": 1.0,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 2.6,
+   "sugars_g": 2.6,
+   "fibre_g": 2.6,
+   "sodium_mg": 7.0
+  },
+  "grams_per_ml": 0.35,
+  "grams_per": {
+   "each": 376.0
+  }
+ },
+ "eggs": {
+  "food_key": "F003729",
+  "food": "Egg, chicken, whole, raw",
+  "per_100g": {
+   "energy_kj": 533.0,
+   "protein_g": 12.6,
+   "fat_g": 8.5,
+   "saturated_fat_g": 2.3,
+   "carbs_g": 0.3,
+   "sugars_g": 0.3,
+   "fibre_g": 0.0,
+   "sodium_mg": 150.0
+  },
+  "grams_per_ml": 1.02,
+  "grams_per": {
+   "each": 51.0
+  }
+ },
+ "enchilada sauce": {
+  "food_key": "F008056",
+  "food": "Sauce, mexican, tomato based, salsa, commercial",
+  "per_100g": {
+   "energy_kj": 146.0,
+   "protein_g": 1.3,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 6.3,
+   "sugars_g": 4.9,
+   "fibre_g": 1.6,
+   "sodium_mg": 480.0
+  },
+  "grams_per_ml": 1.1,
+  "grams_per": {}
+ },
+ "english muffins": {
+  "food_key": "F005896",
+  "food": "Muffin, English style, white, commercial",
+  "per_100g": {
+   "energy_kj": 938.0,
+   "protein_g": 10.1,
+   "fat_g": 2.1,
+   "saturated_fat_g": 0.34,
+   "carbs_g": 38.7,
+   "sugars_g": 1.7,
+   "fibre_g": 3.2,
+   "sodium_mg": 418.0
+  },
+  "grams_per_ml": 0.2,
+  "grams_per": {
+   "each": 76.0
+  }
+ },
+ "evaporated milk": {
+  "food_key": "F005581",
+  "food": "Milk, canned, evaporated",
+  "per_100g": {
+   "energy_kj": 588.0,
+   "protein_g": 7.5,
+   "fat_g": 8.2,
+   "saturated_fat_g": 5.23,
+   "carbs_g": 10.0,
+   "sugars_g": 10.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 104.0
+  },
+  "grams_per_ml": 1.08,
+  "grams_per": {}
+ },
+ "fava beans": {
+  "food_key": "F000419",
+  "food": "Bean, broad, raw",
+  "per_100g": {
+   "energy_kj": 235.0,
+   "protein_g": 6.9,
+   "fat_g": 0.5,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 2.2,
+   "sugars_g": 0.7,
+   "fibre_g": 7.1,
+   "sodium_mg": 4.0
+  },
+  "grams_per_ml": 0.68,
+  "grams_per": {}
+ },
+ "fennel bulb": {
+  "food_key": "F003820",
+  "food": "Fennel, raw",
+  "per_100g": {
+   "energy_kj": 92.0,
+   "protein_g": 1.0,
+   "fat_g": 0.1,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 3.3,
+   "sugars_g": 3.3,
+   "fibre_g": 1.8,
+   "sodium_mg": 38.0
+  },
+  "grams_per_ml": 0.39,
+  "grams_per": {}
+ },
+ "fennel seeds": {
+  "food_key": "F008746",
+  "food": "Spices, dried, all types (except chilli & paprika)",
+  "per_100g": {
+   "energy_kj": 1463.0,
+   "protein_g": 9.4,
+   "fat_g": 14.5,
+   "saturated_fat_g": 6.25,
+   "carbs_g": 31.7,
+   "sugars_g": 2.8,
+   "fibre_g": 28.9,
+   "sodium_mg": 79.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "fermented black beans": {
+  "food_key": "F007991",
+  "food": "Sauce, black bean, commercial",
+  "per_100g": {
+   "energy_kj": 391.0,
+   "protein_g": 3.2,
+   "fat_g": 1.0,
+   "saturated_fat_g": 0.21,
+   "carbs_g": 16.0,
+   "sugars_g": 12.8,
+   "fibre_g": 3.1,
+   "sodium_mg": 3330.0
+  },
+  "grams_per_ml": 1.29,
+  "grams_per": {}
+ },
+ "feta": {
+  "food_key": "F002452",
+  "food": "Cheese, fetta (feta)",
+  "per_100g": {
+   "energy_kj": 1073.0,
+   "protein_g": 16.6,
+   "fat_g": 20.6,
+   "saturated_fat_g": 13.08,
+   "carbs_g": 0.4,
+   "sugars_g": 0.4,
+   "fibre_g": 0.0,
+   "sodium_mg": 1100.0
+  },
+  "grams_per_ml": 0.63,
+  "grams_per": {}
+ },
+ "figs": {
+  "food_key": "F003834",
+  "food": "Fig, fresh, raw",
+  "per_100g": {
+   "energy_kj": 195.0,
+   "protein_g": 1.4,
+   "fat_g": 0.3,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 8.1,
+   "sugars_g": 8.1,
+   "fibre_g": 3.3,
+   "sodium_mg": 3.0
+  },
+  "grams_per_ml": 0.32,
+  "grams_per": {
+   "each": 50.0
+  }
+ },
+ "filo pastry": {
+  "food_key": "F006497",
+  "food": "Pastry, filo (fillo), commercial, raw",
+  "per_100g": {
+   "energy_kj": 1283.0,
+   "protein_g": 10.2,
+   "fat_g": 3.8,
+   "saturated_fat_g": 0.53,
+   "carbs_g": 55.8,
+   "sugars_g": 1.3,
+   "fibre_g": 2.5,
+   "sodium_mg": 581.0
+  },
+  "grams_per_ml": 0.43,
+  "grams_per": {}
+ },
+ "fish cakes": {
+  "food_key": "F003901",
+  "food": "Fish patty or cake, purchased frozen, cooked",
+  "per_100g": {
+   "energy_kj": 971.0,
+   "protein_g": 12.2,
+   "fat_g": 13.1,
+   "saturated_fat_g": 3.54,
+   "carbs_g": 15.7,
+   "sugars_g": 1.3,
+   "fibre_g": 1.7,
+   "sodium_mg": 462.0
+  },
+  "grams_per_ml": 1.0,
+  "grams_per": {}
+ },
+ "fish sauce": {
+  "food_key": "F008004",
+  "food": "Sauce, fish, commercial",
+  "per_100g": {
+   "energy_kj": 213.0,
+   "protein_g": 6.8,
+   "fat_g": 0.3,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 4.4,
+   "sugars_g": 4.4,
+   "fibre_g": 1.2,
+   "sodium_mg": 8255.0
+  },
+  "grams_per_ml": 1.22,
+  "grams_per": {}
+ },
+ "fish stock": {
+  "food_key": "F008936",
+  "food": "Stock, liquid, all flavours, prepared ",
+  "per_100g": {
+   "energy_kj": 18.0,
+   "protein_g": 0.2,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.08,
+   "carbs_g": 0.4,
+   "sugars_g": 0.1,
+   "fibre_g": 0.0,
+   "sodium_mg": 362.0
+  },
+  "grams_per_ml": 1.02,
+  "grams_per": {}
+ },
+ "french onion soup mix": {
+  "food_key": "F010519",
+  "food": "Soup, instant dry mix, all flavours",
+  "per_100g": {
+   "energy_kj": 1532.0,
+   "protein_g": 5.0,
+   "fat_g": 6.1,
+   "saturated_fat_g": 2.72,
+   "carbs_g": 71.2,
+   "sugars_g": 16.3,
+   "fibre_g": 3.3,
+   "sodium_mg": 5100.0
+  },
+  "grams_per_ml": 0.48,
+  "grams_per": {}
+ },
+ "frozen chips": {
+  "food_key": "F007242",
+  "food": "Potato, chips, purchased frozen, baked or roasted, no added fat",
+  "per_100g": {
+   "energy_kj": 733.0,
+   "protein_g": 3.8,
+   "fat_g": 5.9,
+   "saturated_fat_g": 0.5,
+   "carbs_g": 24.1,
+   "sugars_g": 0.0,
+   "fibre_g": 3.8,
+   "sodium_mg": 148.0
+  },
+  "grams_per_ml": 0.38,
+  "grams_per": {}
+ },
+ "frozen mixed berries": {
+  "food_key": "F009881",
+  "food": "Mixed berry, frozen",
+  "per_100g": {
+   "energy_kj": 201.0,
+   "protein_g": 0.6,
+   "fat_g": 0.1,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 9.6,
+   "sugars_g": 9.3,
+   "fibre_g": 3.3,
+   "sodium_mg": 2.0
+  },
+  "grams_per_ml": 0.62,
+  "grams_per": {}
+ },
+ "frozen peas": {
+  "food_key": "F006536",
+  "food": "Pea, green, raw",
+  "per_100g": {
+   "energy_kj": 311.0,
+   "protein_g": 6.5,
+   "fat_g": 0.5,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 7.7,
+   "sugars_g": 3.4,
+   "fibre_g": 6.6,
+   "sodium_mg": 1.0
+  },
+  "grams_per_ml": 0.58,
+  "grams_per": {}
+ },
+ "fruit chutney": {
+  "food_key": "F002953",
+  "food": "Chutney or relish, commercial",
+  "per_100g": {
+   "energy_kj": 752.0,
+   "protein_g": 0.5,
+   "fat_g": 0.3,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 43.1,
+   "sugars_g": 41.5,
+   "fibre_g": 2.2,
+   "sodium_mg": 690.0
+  },
+  "grams_per_ml": 1.25,
+  "grams_per": {}
+ },
+ "fruit salt": {
+  "food_key": "F000248",
+  "food": "Baking soda (bicarbonate), dry powder",
+  "per_100g": {
+   "energy_kj": 0.0,
+   "protein_g": 0.0,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 27360.0
+  },
+  "grams_per_ml": 0.91,
+  "grams_per": {}
+ },
+ "gai lan": {
+  "food_key": "F010251",
+  "food": "Broccoli, chinese (gai lan), raw",
+  "per_100g": {
+   "energy_kj": 148.0,
+   "protein_g": 1.2,
+   "fat_g": 0.8,
+   "saturated_fat_g": 0.14,
+   "carbs_g": 4.7,
+   "sugars_g": 0.9,
+   "fibre_g": 2.6,
+   "sodium_mg": 7.0
+  },
+  "grams_per_ml": 0.37,
+  "grams_per": {}
+ },
+ "garam masala": {
+  "food_key": "F008746",
+  "food": "Spices, dried, all types (except chilli & paprika)",
+  "per_100g": {
+   "energy_kj": 1463.0,
+   "protein_g": 9.4,
+   "fat_g": 14.5,
+   "saturated_fat_g": 6.25,
+   "carbs_g": 31.7,
+   "sugars_g": 2.8,
+   "fibre_g": 28.9,
+   "sodium_mg": 79.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "garlic": {
+  "food_key": "F004193",
+  "food": "Garlic, peeled, raw",
+  "per_100g": {
+   "energy_kj": 522.0,
+   "protein_g": 6.1,
+   "fat_g": 2.8,
+   "saturated_fat_g": 0.78,
+   "carbs_g": 10.2,
+   "sugars_g": 1.5,
+   "fibre_g": 16.9,
+   "sodium_mg": 8.0
+  },
+  "grams_per_ml": 0.58,
+  "grams_per": {
+   "clove": 3.0,
+   "each": 3.0
+  }
+ },
+ "gelatine leaves": {
+  "food_key": "F004196",
+  "food": "Gelatine, all types",
+  "per_100g": {
+   "energy_kj": 1449.0,
+   "protein_g": 84.4,
+   "fat_g": 0.4,
+   "saturated_fat_g": 0.19,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 330.0
+  },
+  "grams_per_ml": 0.65,
+  "grams_per": {}
+ },
+ "ghee": {
+  "food_key": "F004205",
+  "food": "Ghee, clarified butter",
+  "per_100g": {
+   "energy_kj": 3701.0,
+   "protein_g": 0.3,
+   "fat_g": 99.9,
+   "saturated_fat_g": 65.69,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 2.0
+  },
+  "grams_per_ml": 0.85,
+  "grams_per": {}
+ },
+ "ginger": {
+  "food_key": "F004213",
+  "food": "Ginger, peeled, raw",
+  "per_100g": {
+   "energy_kj": 132.0,
+   "protein_g": 0.8,
+   "fat_g": 0.4,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 4.8,
+   "sugars_g": 1.7,
+   "fibre_g": 2.8,
+   "sodium_mg": 11.0
+  },
+  "grams_per_ml": 0.6,
+  "grams_per": {}
+ },
+ "globe artichokes": {
+  "food_key": "F000144",
+  "food": "Artichoke, globe, raw",
+  "per_100g": {
+   "energy_kj": 145.0,
+   "protein_g": 2.8,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 1.3,
+   "sugars_g": 0.9,
+   "fibre_g": 8.1,
+   "sodium_mg": 6.0
+  },
+  "grams_per_ml": 0.71,
+  "grams_per": {}
+ },
+ "gluten free bread": {
+  "food_key": "F001603",
+  "food": "Bread, gluten free, commercial",
+  "per_100g": {
+   "energy_kj": 888.0,
+   "protein_g": 5.5,
+   "fat_g": 3.9,
+   "saturated_fat_g": 0.51,
+   "carbs_g": 36.6,
+   "sugars_g": 2.6,
+   "fibre_g": 3.9,
+   "sodium_mg": 526.0
+  },
+  "grams_per_ml": 0.56,
+  "grams_per": {}
+ },
+ "glutinous rice": {
+  "food_key": "F007682",
+  "food": "Rice, white, uncooked",
+  "per_100g": {
+   "energy_kj": 1422.0,
+   "protein_g": 7.0,
+   "fat_g": 0.9,
+   "saturated_fat_g": 0.17,
+   "carbs_g": 74.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.8,
+   "sodium_mg": 1.0
+  },
+  "grams_per_ml": 0.87,
+  "grams_per": {}
+ },
+ "glutinous rice flour": {
+  "food_key": "F003998",
+  "food": "Flour, rice",
+  "per_100g": {
+   "energy_kj": 1422.0,
+   "protein_g": 7.0,
+   "fat_g": 0.9,
+   "saturated_fat_g": 0.17,
+   "carbs_g": 74.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.8,
+   "sodium_mg": 1.0
+  },
+  "grams_per_ml": 0.67,
+  "grams_per": {}
+ },
+ "goat cheese": {
+  "food_key": "F002463",
+  "food": "Cheese, goat, soft",
+  "per_100g": {
+   "energy_kj": 1194.0,
+   "protein_g": 21.2,
+   "fat_g": 21.7,
+   "saturated_fat_g": 14.38,
+   "carbs_g": 0.9,
+   "sugars_g": 0.9,
+   "fibre_g": 0.0,
+   "sodium_mg": 430.0
+  },
+  "grams_per_ml": 0.63,
+  "grams_per": {}
+ },
+ "gochugaru": {
+  "food_key": "F002893",
+  "food": "Chilli (chili), dried, ground",
+  "per_100g": {
+   "energy_kj": 1224.0,
+   "protein_g": 12.3,
+   "fat_g": 14.3,
+   "saturated_fat_g": 2.06,
+   "carbs_g": 12.9,
+   "sugars_g": 7.2,
+   "fibre_g": 34.2,
+   "sodium_mg": 68.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "gochujang": {
+  "food_key": "F006471",
+  "food": "Paste, curry style",
+  "per_100g": {
+   "energy_kj": 864.0,
+   "protein_g": 2.9,
+   "fat_g": 14.1,
+   "saturated_fat_g": 1.46,
+   "carbs_g": 14.2,
+   "sugars_g": 7.3,
+   "fibre_g": 5.4,
+   "sodium_mg": 1802.0
+  },
+  "grams_per_ml": 1.4,
+  "grams_per": {}
+ },
+ "golden syrup": {
+  "food_key": "F009049",
+  "food": "Syrup, golden",
+  "per_100g": {
+   "energy_kj": 1203.0,
+   "protein_g": 0.2,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 74.9,
+   "sugars_g": 74.9,
+   "fibre_g": 0.0,
+   "sodium_mg": 130.0
+  },
+  "grams_per_ml": 1.44,
+  "grams_per": {}
+ },
+ "granola": {
+  "food_key": "F009807",
+  "food": "Granola, commercial",
+  "per_100g": {
+   "energy_kj": 1776.0,
+   "protein_g": 11.2,
+   "fat_g": 17.6,
+   "saturated_fat_g": 2.93,
+   "carbs_g": 52.3,
+   "sugars_g": 16.3,
+   "fibre_g": 7.6,
+   "sodium_mg": 68.0
+  },
+  "grams_per_ml": 0.47,
+  "grams_per": {}
+ },
+ "grape molasses": {
+  "food_key": "F009956",
+  "food": "Treacle or molasses",
+  "per_100g": {
+   "energy_kj": 1122.0,
+   "protein_g": 0.6,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 69.2,
+   "sugars_g": 69.2,
+   "fibre_g": 0.4,
+   "sodium_mg": 66.0
+  },
+  "grams_per_ml": 1.42,
+  "grams_per": {}
+ },
+ "greek yoghurt": {
+  "food_key": "F009655",
+  "food": "Yoghurt, natural, greek style (~10% fat)",
+  "per_100g": {
+   "energy_kj": 550.0,
+   "protein_g": 4.6,
+   "fat_g": 9.8,
+   "saturated_fat_g": 6.66,
+   "carbs_g": 5.5,
+   "sugars_g": 5.1,
+   "fibre_g": 0.1,
+   "sodium_mg": 64.0
+  },
+  "grams_per_ml": 1.04,
+  "grams_per": {}
+ },
+ "green beans": {
+  "food_key": "F000431",
+  "food": "Bean, green, raw",
+  "per_100g": {
+   "energy_kj": 106.0,
+   "protein_g": 1.8,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 3.3,
+   "sugars_g": 2.6,
+   "fibre_g": 2.8,
+   "sodium_mg": 0.0
+  },
+  "grams_per_ml": 0.48,
+  "grams_per": {}
+ },
+ "green chillies": {
+  "food_key": "F002896",
+  "food": "Chilli (chili), green, raw",
+  "per_100g": {
+   "energy_kj": 181.0,
+   "protein_g": 2.8,
+   "fat_g": 0.3,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 1.0,
+   "sugars_g": 1.0,
+   "fibre_g": 12.9,
+   "sodium_mg": 4.0
+  },
+  "grams_per_ml": 0.64,
+  "grams_per": {
+   "each": 12.25
+  }
+ },
+ "green curry paste": {
+  "food_key": "F006471",
+  "food": "Paste, curry style",
+  "per_100g": {
+   "energy_kj": 864.0,
+   "protein_g": 2.9,
+   "fat_g": 14.1,
+   "saturated_fat_g": 1.46,
+   "carbs_g": 14.2,
+   "sugars_g": 7.3,
+   "fibre_g": 5.4,
+   "sodium_mg": 1802.0
+  },
+  "grams_per_ml": 1.4,
+  "grams_per": {}
+ },
+ "green lentils": {
+  "food_key": "F005181",
+  "food": "Lentil, green, hulled, dry",
+  "per_100g": {
+   "energy_kj": 1330.0,
+   "protein_g": 25.3,
+   "fat_g": 1.7,
+   "saturated_fat_g": 0.24,
+   "carbs_g": 40.9,
+   "sugars_g": 1.5,
+   "fibre_g": 14.6,
+   "sodium_mg": 13.0
+  },
+  "grams_per_ml": 0.76,
+  "grams_per": {}
+ },
+ "green mango": {
+  "food_key": "F005299",
+  "food": "Mango, peeled, raw",
+  "per_100g": {
+   "energy_kj": 224.0,
+   "protein_g": 0.4,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 12.6,
+   "sugars_g": 12.1,
+   "fibre_g": 1.3,
+   "sodium_mg": 0.0
+  },
+  "grams_per_ml": 0.7,
+  "grams_per": {}
+ },
+ "green olives": {
+  "food_key": "F006199",
+  "food": "Olive, green, pimento stuffed, drained",
+  "per_100g": {
+   "energy_kj": 471.0,
+   "protein_g": 0.5,
+   "fat_g": 10.5,
+   "saturated_fat_g": 1.48,
+   "carbs_g": 2.1,
+   "sugars_g": 0.0,
+   "fibre_g": 3.0,
+   "sodium_mg": 1263.0
+  },
+  "grams_per_ml": 0.42,
+  "grams_per": {}
+ },
+ "green papaya": {
+  "food_key": "F006528",
+  "food": "Pawpaw (papaya), peeled, raw",
+  "per_100g": {
+   "energy_kj": 167.0,
+   "protein_g": 0.4,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 8.4,
+   "sugars_g": 8.4,
+   "fibre_g": 2.1,
+   "sodium_mg": 4.0
+  },
+  "grams_per_ml": 0.61,
+  "grams_per": {}
+ },
+ "green tea": {
+  "food_key": "F010949",
+  "food": "Tea, green, dry",
+  "per_100g": {
+   "energy_kj": 1010.0,
+   "protein_g": 29.1,
+   "fat_g": 4.1,
+   "saturated_fat_g": 1.4,
+   "carbs_g": 0.8,
+   "sugars_g": 0.8,
+   "fibre_g": 43.9,
+   "sodium_mg": 11.0
+  },
+  "grams_per_ml": 0.14,
+  "grams_per": {}
+ },
+ "ground allspice": {
+  "food_key": "F008746",
+  "food": "Spices, dried, all types (except chilli & paprika)",
+  "per_100g": {
+   "energy_kj": 1463.0,
+   "protein_g": 9.4,
+   "fat_g": 14.5,
+   "saturated_fat_g": 6.25,
+   "carbs_g": 31.7,
+   "sugars_g": 2.8,
+   "fibre_g": 28.9,
+   "sodium_mg": 79.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "ground cardamom": {
+  "food_key": "F002258",
+  "food": "Cardamom seed, dried, ground",
+  "per_100g": {
+   "energy_kj": 1236.0,
+   "protein_g": 10.8,
+   "fat_g": 6.7,
+   "saturated_fat_g": 2.2,
+   "carbs_g": 34.4,
+   "sugars_g": 4.4,
+   "fibre_g": 28.0,
+   "sodium_mg": 18.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "ground cinnamon": {
+  "food_key": "F002963",
+  "food": "Cinnamon, dried, ground",
+  "per_100g": {
+   "energy_kj": 1004.0,
+   "protein_g": 4.0,
+   "fat_g": 1.2,
+   "saturated_fat_g": 0.62,
+   "carbs_g": 27.5,
+   "sugars_g": 2.2,
+   "fibre_g": 53.1,
+   "sodium_mg": 10.0
+  },
+  "grams_per_ml": 0.51,
+  "grams_per": {}
+ },
+ "ground coriander": {
+  "food_key": "F003190",
+  "food": "Coriander seed, dried, ground",
+  "per_100g": {
+   "energy_kj": 1344.0,
+   "protein_g": 12.4,
+   "fat_g": 17.8,
+   "saturated_fat_g": 1.03,
+   "carbs_g": 8.4,
+   "sugars_g": 2.4,
+   "fibre_g": 41.9,
+   "sodium_mg": 35.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "ground cumin": {
+  "food_key": "F003327",
+  "food": "Cumin (cummin) seed, dried, ground",
+  "per_100g": {
+   "energy_kj": 1782.0,
+   "protein_g": 17.8,
+   "fat_g": 22.3,
+   "saturated_fat_g": 1.73,
+   "carbs_g": 33.7,
+   "sugars_g": 2.2,
+   "fibre_g": 10.5,
+   "sodium_mg": 168.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "ground ginger": {
+  "food_key": "F004210",
+  "food": "Ginger, dried, ground",
+  "per_100g": {
+   "energy_kj": 1397.0,
+   "protein_g": 9.0,
+   "fat_g": 4.2,
+   "saturated_fat_g": 2.2,
+   "carbs_g": 57.5,
+   "sugars_g": 3.4,
+   "fibre_g": 14.1,
+   "sodium_mg": 27.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "ground nutmeg": {
+  "food_key": "F006118",
+  "food": "Nutmeg, dried, ground",
+  "per_100g": {
+   "energy_kj": 2090.0,
+   "protein_g": 5.8,
+   "fat_g": 36.3,
+   "saturated_fat_g": 30.51,
+   "carbs_g": 28.5,
+   "sugars_g": 3.0,
+   "fibre_g": 20.8,
+   "sodium_mg": 16.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "ground turmeric": {
+  "food_key": "F009335",
+  "food": "Turmeric, dried, ground",
+  "per_100g": {
+   "energy_kj": 1219.0,
+   "protein_g": 9.7,
+   "fat_g": 3.2,
+   "saturated_fat_g": 1.88,
+   "carbs_g": 44.4,
+   "sugars_g": 3.2,
+   "fibre_g": 22.7,
+   "sodium_mg": 27.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "gruyere": {
+  "food_key": "F002496",
+  "food": "Cheese, swiss or jarlsberg",
+  "per_100g": {
+   "energy_kj": 1615.0,
+   "protein_g": 28.2,
+   "fat_g": 30.0,
+   "saturated_fat_g": 20.91,
+   "carbs_g": 0.1,
+   "sugars_g": 0.1,
+   "fibre_g": 0.0,
+   "sodium_mg": 425.0
+  },
+  "grams_per_ml": 0.48,
+  "grams_per": {}
+ },
+ "halloumi": {
+  "food_key": "F002466",
+  "food": "Cheese, haloumi (halloumi)",
+  "per_100g": {
+   "energy_kj": 1277.0,
+   "protein_g": 20.5,
+   "fat_g": 24.6,
+   "saturated_fat_g": 17.16,
+   "carbs_g": 1.0,
+   "sugars_g": 1.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 1100.0
+  },
+  "grams_per_ml": 1.0,
+  "grams_per": {}
+ },
+ "ham": {
+  "food_key": "F004300",
+  "food": "Ham, lean & fat, off the bone",
+  "per_100g": {
+   "energy_kj": 598.0,
+   "protein_g": 17.9,
+   "fat_g": 7.6,
+   "saturated_fat_g": 2.73,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 1.7,
+   "sodium_mg": 1302.0
+  },
+  "grams_per_ml": 0.98,
+  "grams_per": {
+   "slice": 40.0
+  }
+ },
+ "harissa": {
+  "food_key": "F006471",
+  "food": "Paste, curry style",
+  "per_100g": {
+   "energy_kj": 864.0,
+   "protein_g": 2.9,
+   "fat_g": 14.1,
+   "saturated_fat_g": 1.46,
+   "carbs_g": 14.2,
+   "sugars_g": 7.3,
+   "fibre_g": 5.4,
+   "sodium_mg": 1802.0
+  },
+  "grams_per_ml": 1.4,
+  "grams_per": {}
+ },
+ "hazelnuts": {
+  "food_key": "F006098",
+  "food": "Nut, hazelnut, raw/natural, unsalted",
+  "per_100g": {
+   "energy_kj": 2689.0,
+   "protein_g": 14.8,
+   "fat_g": 61.4,
+   "saturated_fat_g": 2.7,
+   "carbs_g": 5.1,
+   "sugars_g": 4.4,
+   "fibre_g": 10.4,
+   "sodium_mg": 3.0
+  },
+  "grams_per_ml": 0.52,
+  "grams_per": {}
+ },
+ "hoisin sauce": {
+  "food_key": "F008008",
+  "food": "Sauce, hoi sin, commercial",
+  "per_100g": {
+   "energy_kj": 922.0,
+   "protein_g": 1.6,
+   "fat_g": 5.4,
+   "saturated_fat_g": 0.82,
+   "carbs_g": 37.2,
+   "sugars_g": 33.5,
+   "fibre_g": 10.4,
+   "sodium_mg": 1550.0
+  },
+  "grams_per_ml": 1.08,
+  "grams_per": {}
+ },
+ "hokkien noodles": {
+  "food_key": "F006048",
+  "food": "Noodle, wheat, Asian style, cooked",
+  "per_100g": {
+   "energy_kj": 608.0,
+   "protein_g": 6.3,
+   "fat_g": 1.0,
+   "saturated_fat_g": 0.44,
+   "carbs_g": 26.5,
+   "sugars_g": 0.0,
+   "fibre_g": 1.7,
+   "sodium_mg": 100.0
+  },
+  "grams_per_ml": 0.68,
+  "grams_per": {}
+ },
+ "honey": {
+  "food_key": "F004380",
+  "food": "Honey",
+  "per_100g": {
+   "energy_kj": 1162.0,
+   "protein_g": 0.3,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 72.3,
+   "sugars_g": 72.3,
+   "fibre_g": 0.0,
+   "sodium_mg": 8.0
+  },
+  "grams_per_ml": 1.43,
+  "grams_per": {}
+ },
+ "hummus": {
+  "food_key": "F003539",
+  "food": "Dip, hummus (hommus), commercial",
+  "per_100g": {
+   "energy_kj": 1039.0,
+   "protein_g": 6.9,
+   "fat_g": 19.5,
+   "saturated_fat_g": 1.83,
+   "carbs_g": 9.4,
+   "sugars_g": 0.8,
+   "fibre_g": 3.9,
+   "sodium_mg": 410.0
+  },
+  "grams_per_ml": 1.0,
+  "grams_per": {}
+ },
+ "icing sugar": {
+  "food_key": "F008980",
+  "food": "Sugar, white, icing",
+  "per_100g": {
+   "energy_kj": 1600.0,
+   "protein_g": 0.0,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 100.0,
+   "sugars_g": 100.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 0.0
+  },
+  "grams_per_ml": 0.56,
+  "grams_per": {}
+ },
+ "jalapenos": {
+  "food_key": "F002899",
+  "food": "Chilli (chili), raw",
+  "per_100g": {
+   "energy_kj": 189.0,
+   "protein_g": 1.8,
+   "fat_g": 0.6,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 3.7,
+   "sugars_g": 3.7,
+   "fibre_g": 8.9,
+   "sodium_mg": 3.0
+  },
+  "grams_per_ml": 0.64,
+  "grams_per": {}
+ },
+ "japanese curry roux": {
+  "food_key": "F008063",
+  "food": "Sauce, simmer, curry style, commercial",
+  "per_100g": {
+   "energy_kj": 494.0,
+   "protein_g": 2.1,
+   "fat_g": 6.9,
+   "saturated_fat_g": 3.12,
+   "carbs_g": 10.7,
+   "sugars_g": 7.1,
+   "fibre_g": 2.3,
+   "sodium_mg": 510.0
+  },
+  "grams_per_ml": 1.13,
+  "grams_per": {}
+ },
+ "jerk seasoning": {
+  "food_key": "F008202",
+  "food": "Seasoning, all purpose, dry powder",
+  "per_100g": {
+   "energy_kj": 1130.0,
+   "protein_g": 6.4,
+   "fat_g": 4.1,
+   "saturated_fat_g": 1.09,
+   "carbs_g": 34.6,
+   "sugars_g": 11.0,
+   "fibre_g": 33.8,
+   "sodium_mg": 15458.0
+  },
+  "grams_per_ml": 1.2,
+  "grams_per": {}
+ },
+ "kalamata olives": {
+  "food_key": "F006198",
+  "food": "Olive, green or black, drained",
+  "per_100g": {
+   "energy_kj": 868.0,
+   "protein_g": 2.2,
+   "fat_g": 21.7,
+   "saturated_fat_g": 2.71,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 3.2,
+   "sodium_mg": 1460.0
+  },
+  "grams_per_ml": 0.42,
+  "grams_per": {}
+ },
+ "kale": {
+  "food_key": "F004781",
+  "food": "Kale, raw",
+  "per_100g": {
+   "energy_kj": 107.0,
+   "protein_g": 3.3,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 0.3,
+   "sugars_g": 0.3,
+   "fibre_g": 5.2,
+   "sodium_mg": 86.0
+  },
+  "grams_per_ml": 0.42,
+  "grams_per": {}
+ },
+ "kataifi pastry": {
+  "food_key": "F006497",
+  "food": "Pastry, filo (fillo), commercial, raw",
+  "per_100g": {
+   "energy_kj": 1283.0,
+   "protein_g": 10.2,
+   "fat_g": 3.8,
+   "saturated_fat_g": 0.53,
+   "carbs_g": 55.8,
+   "sugars_g": 1.3,
+   "fibre_g": 2.5,
+   "sodium_mg": 581.0
+  },
+  "grams_per_ml": 0.43,
+  "grams_per": {}
+ },
+ "kecap manis": {
+  "food_key": "F008010",
+  "food": "Sauce, honey soy, commercial",
+  "per_100g": {
+   "energy_kj": 662.0,
+   "protein_g": 2.1,
+   "fat_g": 1.1,
+   "saturated_fat_g": 0.18,
+   "carbs_g": 35.4,
+   "sugars_g": 29.9,
+   "fibre_g": 0.5,
+   "sodium_mg": 3007.0
+  },
+  "grams_per_ml": 1.13,
+  "grams_per": {}
+ },
+ "kewpie mayonnaise": {
+  "food_key": "F005441",
+  "food": "Mayonnaise, regular fat, commercial",
+  "per_100g": {
+   "energy_kj": 2651.0,
+   "protein_g": 0.8,
+   "fat_g": 67.2,
+   "saturated_fat_g": 8.28,
+   "carbs_g": 8.7,
+   "sugars_g": 7.9,
+   "fibre_g": 0.5,
+   "sodium_mg": 480.0
+  },
+  "grams_per_ml": 0.99,
+  "grams_per": {}
+ },
+ "kidney beans": {
+  "food_key": "F000448",
+  "food": "Bean, red kidney, canned, drained",
+  "per_100g": {
+   "energy_kj": 441.0,
+   "protein_g": 6.6,
+   "fat_g": 0.6,
+   "saturated_fat_g": 0.22,
+   "carbs_g": 14.0,
+   "sugars_g": 2.4,
+   "fibre_g": 6.5,
+   "sodium_mg": 320.0
+  },
+  "grams_per_ml": 0.76,
+  "grams_per": {}
+ },
+ "kimchi": {
+  "food_key": "F010255",
+  "food": "Kim chi (kimchi)",
+  "per_100g": {
+   "energy_kj": 134.0,
+   "protein_g": 2.4,
+   "fat_g": 0.5,
+   "saturated_fat_g": 0.08,
+   "carbs_g": 4.2,
+   "sugars_g": 3.4,
+   "fibre_g": 0.8,
+   "sodium_mg": 520.0
+  },
+  "grams_per_ml": 0.6,
+  "grams_per": {}
+ },
+ "kiwi fruit": {
+  "food_key": "F004816",
+  "food": "Kiwifruit, green (hayward), peeled, raw",
+  "per_100g": {
+   "energy_kj": 230.0,
+   "protein_g": 1.2,
+   "fat_g": 0.7,
+   "saturated_fat_g": 0.17,
+   "carbs_g": 9.1,
+   "sugars_g": 8.8,
+   "fibre_g": 3.0,
+   "sodium_mg": 2.0
+  },
+  "grams_per_ml": 0.79,
+  "grams_per": {}
+ },
+ "korma curry paste": {
+  "food_key": "F006471",
+  "food": "Paste, curry style",
+  "per_100g": {
+   "energy_kj": 864.0,
+   "protein_g": 2.9,
+   "fat_g": 14.1,
+   "saturated_fat_g": 1.46,
+   "carbs_g": 14.2,
+   "sugars_g": 7.3,
+   "fibre_g": 5.4,
+   "sodium_mg": 1802.0
+  },
+  "grams_per_ml": 1.4,
+  "grams_per": {}
+ },
+ "laksa paste": {
+  "food_key": "F006471",
+  "food": "Paste, curry style",
+  "per_100g": {
+   "energy_kj": 864.0,
+   "protein_g": 2.9,
+   "fat_g": 14.1,
+   "saturated_fat_g": 1.46,
+   "carbs_g": 14.2,
+   "sugars_g": 7.3,
+   "fibre_g": 5.4,
+   "sodium_mg": 1802.0
+  },
+  "grams_per_ml": 1.4,
+  "grams_per": {}
+ },
+ "lamb": {
+  "food_key": "F005061",
+  "food": "Lamb, roast, lean, raw",
+  "per_100g": {
+   "energy_kj": 489.0,
+   "protein_g": 20.7,
+   "fat_g": 3.7,
+   "saturated_fat_g": 1.23,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 64.0
+  },
+  "grams_per_ml": 1.06,
+  "grams_per": {}
+ },
+ "lamb backstrap": {
+  "food_key": "F005095",
+  "food": "Lamb, steak, boneless, lean, raw",
+  "per_100g": {
+   "energy_kj": 546.0,
+   "protein_g": 21.9,
+   "fat_g": 4.7,
+   "saturated_fat_g": 1.52,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 63.0
+  },
+  "grams_per_ml": 1.06,
+  "grams_per": {}
+ },
+ "lamb chops": {
+  "food_key": "F004866",
+  "food": "Lamb, chop, lean, raw",
+  "per_100g": {
+   "energy_kj": 583.0,
+   "protein_g": 23.0,
+   "fat_g": 5.2,
+   "saturated_fat_g": 1.8,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 70.0
+  },
+  "grams_per_ml": 1.06,
+  "grams_per": {
+   "each": 51.23
+  }
+ },
+ "lamb leg": {
+  "food_key": "F005013",
+  "food": "Lamb, roast, leg, lean, raw",
+  "per_100g": {
+   "energy_kj": 477.0,
+   "protein_g": 21.1,
+   "fat_g": 3.2,
+   "saturated_fat_g": 1.04,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 68.0
+  },
+  "grams_per_ml": 1.06,
+  "grams_per": {}
+ },
+ "lamb mince": {
+  "food_key": "F005049",
+  "food": "Lamb, mince, raw",
+  "per_100g": {
+   "energy_kj": 602.0,
+   "protein_g": 20.4,
+   "fat_g": 6.9,
+   "saturated_fat_g": 2.32,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 57.0
+  },
+  "grams_per_ml": 0.94,
+  "grams_per": {}
+ },
+ "lamb shanks": {
+  "food_key": "F005139",
+  "food": "Lamb, shank/drumstick, lean, raw",
+  "per_100g": {
+   "energy_kj": 477.0,
+   "protein_g": 23.9,
+   "fat_g": 1.9,
+   "saturated_fat_g": 0.82,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 110.0
+  },
+  "grams_per_ml": 1.06,
+  "grams_per": {}
+ },
+ "lamb shoulder": {
+  "food_key": "F005074",
+  "food": "Lamb, roast, shoulder, lean, raw",
+  "per_100g": {
+   "energy_kj": 468.0,
+   "protein_g": 18.2,
+   "fat_g": 4.3,
+   "saturated_fat_g": 1.5,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 53.0
+  },
+  "grams_per_ml": 1.06,
+  "grams_per": {}
+ },
+ "lasagne sheets": {
+  "food_key": "F006458",
+  "food": "Pasta, white, plain, dry, uncooked",
+  "per_100g": {
+   "energy_kj": 1458.0,
+   "protein_g": 12.7,
+   "fat_g": 1.4,
+   "saturated_fat_g": 0.24,
+   "carbs_g": 68.5,
+   "sugars_g": 0.0,
+   "fibre_g": 3.2,
+   "sodium_mg": 5.0
+  },
+  "grams_per_ml": 0.45,
+  "grams_per": {}
+ },
+ "leeks": {
+  "food_key": "F005164",
+  "food": "Leek, raw",
+  "per_100g": {
+   "energy_kj": 128.0,
+   "protein_g": 1.6,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 4.1,
+   "sugars_g": 4.1,
+   "fibre_g": 3.1,
+   "sodium_mg": 12.0
+  },
+  "grams_per_ml": 0.38,
+  "grams_per": {
+   "each": 153.0
+  }
+ },
+ "lemons": {
+  "food_key": "F005174",
+  "food": "Lemon, peeled, raw",
+  "per_100g": {
+   "energy_kj": 111.0,
+   "protein_g": 0.6,
+   "fat_g": 0.1,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 1.8,
+   "sugars_g": 1.8,
+   "fibre_g": 2.0,
+   "sodium_mg": 3.0
+  },
+  "grams_per_ml": 0.89,
+  "grams_per": {
+   "each": 99.0
+  }
+ },
+ "lettuce": {
+  "food_key": "F005194",
+  "food": "Lettuce, raw",
+  "per_100g": {
+   "energy_kj": 65.0,
+   "protein_g": 1.1,
+   "fat_g": 0.1,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 1.8,
+   "sugars_g": 1.8,
+   "fibre_g": 1.4,
+   "sodium_mg": 15.0
+  },
+  "grams_per_ml": 0.27,
+  "grams_per": {
+   "each": 300.0,
+   "leaf": 8.0
+  }
+ },
+ "limes": {
+  "food_key": "F005199",
+  "food": "Lime, peeled, raw",
+  "per_100g": {
+   "energy_kj": 117.0,
+   "protein_g": 0.8,
+   "fat_g": 0.1,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 1.2,
+   "sugars_g": 1.2,
+   "fibre_g": 3.6,
+   "sodium_mg": 2.0
+  },
+  "grams_per_ml": 0.89,
+  "grams_per": {
+   "each": 71.0
+  }
+ },
+ "madras curry paste": {
+  "food_key": "F006471",
+  "food": "Paste, curry style",
+  "per_100g": {
+   "energy_kj": 864.0,
+   "protein_g": 2.9,
+   "fat_g": 14.1,
+   "saturated_fat_g": 1.46,
+   "carbs_g": 14.2,
+   "sugars_g": 7.3,
+   "fibre_g": 5.4,
+   "sodium_mg": 1802.0
+  },
+  "grams_per_ml": 1.4,
+  "grams_per": {}
+ },
+ "mango chutney": {
+  "food_key": "F002953",
+  "food": "Chutney or relish, commercial",
+  "per_100g": {
+   "energy_kj": 752.0,
+   "protein_g": 0.5,
+   "fat_g": 0.3,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 43.1,
+   "sugars_g": 41.5,
+   "fibre_g": 2.2,
+   "sodium_mg": 690.0
+  },
+  "grams_per_ml": 1.25,
+  "grams_per": {}
+ },
+ "mangoes": {
+  "food_key": "F005299",
+  "food": "Mango, peeled, raw",
+  "per_100g": {
+   "energy_kj": 224.0,
+   "protein_g": 0.4,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 12.6,
+   "sugars_g": 12.1,
+   "fibre_g": 1.3,
+   "sodium_mg": 0.0
+  },
+  "grams_per_ml": 0.7,
+  "grams_per": {
+   "each": 294.0
+  }
+ },
+ "maple syrup": {
+  "food_key": "F009052",
+  "food": "Syrup, maple, pure (100% maple)",
+  "per_100g": {
+   "energy_kj": 1082.0,
+   "protein_g": 0.0,
+   "fat_g": 0.1,
+   "saturated_fat_g": 0.01,
+   "carbs_g": 67.0,
+   "sugars_g": 60.4,
+   "fibre_g": 0.0,
+   "sodium_mg": 12.0
+  },
+  "grams_per_ml": 1.33,
+  "grams_per": {}
+ },
+ "marsala": {
+  "food_key": "F009568",
+  "food": "Sherry",
+  "per_100g": {
+   "energy_kj": 577.0,
+   "protein_g": 0.2,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 11.1,
+   "sugars_g": 11.1,
+   "fibre_g": 0.0,
+   "sodium_mg": 18.0
+  },
+  "grams_per_ml": 1.01,
+  "grams_per": {}
+ },
+ "masa harina": {
+  "food_key": "F003230",
+  "food": "Cornmeal (polenta), uncooked",
+  "per_100g": {
+   "energy_kj": 1421.0,
+   "protein_g": 8.5,
+   "fat_g": 1.7,
+   "saturated_fat_g": 0.23,
+   "carbs_g": 70.0,
+   "sugars_g": 0.7,
+   "fibre_g": 3.0,
+   "sodium_mg": 0.0
+  },
+  "grams_per_ml": 0.76,
+  "grams_per": {}
+ },
+ "masarepa": {
+  "food_key": "F003230",
+  "food": "Cornmeal (polenta), uncooked",
+  "per_100g": {
+   "energy_kj": 1421.0,
+   "protein_g": 8.5,
+   "fat_g": 1.7,
+   "saturated_fat_g": 0.23,
+   "carbs_g": 70.0,
+   "sugars_g": 0.7,
+   "fibre_g": 3.0,
+   "sodium_mg": 0.0
+  },
+  "grams_per_ml": 0.76,
+  "grams_per": {}
+ },
+ "mascarpone": {
+  "food_key": "F010045",
+  "food": "Cheese, mascarpone",
+  "per_100g": {
+   "energy_kj": 1688.0,
+   "protein_g": 2.0,
+   "fat_g": 42.8,
+   "saturated_fat_g": 27.62,
+   "carbs_g": 3.9,
+   "sugars_g": 2.6,
+   "fibre_g": 0.0,
+   "sodium_mg": 24.0
+  },
+  "grams_per_ml": 1.01,
+  "grams_per": {}
+ },
+ "massaman curry paste": {
+  "food_key": "F006471",
+  "food": "Paste, curry style",
+  "per_100g": {
+   "energy_kj": 864.0,
+   "protein_g": 2.9,
+   "fat_g": 14.1,
+   "saturated_fat_g": 1.46,
+   "carbs_g": 14.2,
+   "sugars_g": 7.3,
+   "fibre_g": 5.4,
+   "sodium_mg": 1802.0
+  },
+  "grams_per_ml": 1.4,
+  "grams_per": {}
+ },
+ "matcha powder": {
+  "food_key": "F010949",
+  "food": "Tea, green, dry",
+  "per_100g": {
+   "energy_kj": 1010.0,
+   "protein_g": 29.1,
+   "fat_g": 4.1,
+   "saturated_fat_g": 1.4,
+   "carbs_g": 0.8,
+   "sugars_g": 0.8,
+   "fibre_g": 43.9,
+   "sodium_mg": 11.0
+  },
+  "grams_per_ml": 0.14,
+  "grams_per": {}
+ },
+ "mayonnaise": {
+  "food_key": "F005441",
+  "food": "Mayonnaise, regular fat, commercial",
+  "per_100g": {
+   "energy_kj": 2651.0,
+   "protein_g": 0.8,
+   "fat_g": 67.2,
+   "saturated_fat_g": 8.28,
+   "carbs_g": 8.7,
+   "sugars_g": 7.9,
+   "fibre_g": 0.5,
+   "sodium_mg": 480.0
+  },
+  "grams_per_ml": 0.99,
+  "grams_per": {}
+ },
+ "meringue nests": {
+  "food_key": "F005522",
+  "food": "Meringue, commercial",
+  "per_100g": {
+   "energy_kj": 1538.0,
+   "protein_g": 2.6,
+   "fat_g": 1.4,
+   "saturated_fat_g": 0.13,
+   "carbs_g": 90.1,
+   "sugars_g": 89.4,
+   "fibre_g": 0.0,
+   "sodium_mg": 40.0
+  },
+  "grams_per_ml": 0.15,
+  "grams_per": {}
+ },
+ "milk": {
+  "food_key": "F005634",
+  "food": "Milk, cow, fluid, regular fat (~3.5%)",
+  "per_100g": {
+   "energy_kj": 270.0,
+   "protein_g": 3.3,
+   "fat_g": 3.4,
+   "saturated_fat_g": 2.28,
+   "carbs_g": 5.4,
+   "sugars_g": 5.4,
+   "fibre_g": 0.0,
+   "sodium_mg": 35.0
+  },
+  "grams_per_ml": 1.03,
+  "grams_per": {}
+ },
+ "milk powder": {
+  "food_key": "F005648",
+  "food": "Milk, powder, cow, regular fat",
+  "per_100g": {
+   "energy_kj": 2064.0,
+   "protein_g": 25.3,
+   "fat_g": 25.6,
+   "saturated_fat_g": 17.11,
+   "carbs_g": 43.0,
+   "sugars_g": 43.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 310.0
+  },
+  "grams_per_ml": 0.52,
+  "grams_per": {}
+ },
+ "mint": {
+  "food_key": "F005700",
+  "food": "Mint, fresh, raw",
+  "per_100g": {
+   "energy_kj": 225.0,
+   "protein_g": 3.1,
+   "fat_g": 1.1,
+   "saturated_fat_g": 0.26,
+   "carbs_g": 4.4,
+   "sugars_g": 0.9,
+   "fibre_g": 7.2,
+   "sodium_mg": 28.0
+  },
+  "grams_per_ml": 0.25,
+  "grams_per": {}
+ },
+ "mirin": {
+  "food_key": "F005701",
+  "food": "Mirin",
+  "per_100g": {
+   "energy_kj": 706.0,
+   "protein_g": 0.3,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 26.6,
+   "sugars_g": 26.6,
+   "fibre_g": 0.0,
+   "sodium_mg": 3.0
+  },
+  "grams_per_ml": 1.0,
+  "grams_per": {}
+ },
+ "miso paste": {
+  "food_key": "F005702",
+  "food": "Miso, soya (soy) bean paste",
+  "per_100g": {
+   "energy_kj": 766.0,
+   "protein_g": 12.9,
+   "fat_g": 5.1,
+   "saturated_fat_g": 0.74,
+   "carbs_g": 19.7,
+   "sugars_g": 10.4,
+   "fibre_g": 4.3,
+   "sodium_mg": 3800.0
+  },
+  "grams_per_ml": 1.16,
+  "grams_per": {}
+ },
+ "mixed salad leaves": {
+  "food_key": "F009788",
+  "food": "Mixed leafy greens, packaged, all types",
+  "per_100g": {
+   "energy_kj": 54.0,
+   "protein_g": 2.2,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 2.0,
+   "sodium_mg": 91.0
+  },
+  "grams_per_ml": 0.27,
+  "grams_per": {}
+ },
+ "moong dal": {
+  "food_key": "F005182",
+  "food": "Lentil, dried",
+  "per_100g": {
+   "energy_kj": 1349.0,
+   "protein_g": 25.5,
+   "fat_g": 1.9,
+   "saturated_fat_g": 0.24,
+   "carbs_g": 41.8,
+   "sugars_g": 1.7,
+   "fibre_g": 14.4,
+   "sodium_mg": 6.0
+  },
+  "grams_per_ml": 0.76,
+  "grams_per": {}
+ },
+ "mozzarella": {
+  "food_key": "F002472",
+  "food": "Cheese, mozzarella",
+  "per_100g": {
+   "energy_kj": 1212.0,
+   "protein_g": 22.2,
+   "fat_g": 22.1,
+   "saturated_fat_g": 14.35,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 522.0
+  },
+  "grams_per_ml": 0.48,
+  "grams_per": {
+   "cup": 282.5
+  }
+ },
+ "mushrooms": {
+  "food_key": "F005946",
+  "food": "Mushroom, common, raw",
+  "per_100g": {
+   "energy_kj": 114.0,
+   "protein_g": 2.2,
+   "fat_g": 0.8,
+   "saturated_fat_g": 0.16,
+   "carbs_g": 2.0,
+   "sugars_g": 0.8,
+   "fibre_g": 1.4,
+   "sodium_mg": 7.0
+  },
+  "grams_per_ml": 0.34,
+  "grams_per": {}
+ },
+ "mussels": {
+  "food_key": "F005968",
+  "food": "Mussel, cooked",
+  "per_100g": {
+   "energy_kj": 438.0,
+   "protein_g": 16.0,
+   "fat_g": 2.3,
+   "saturated_fat_g": 0.37,
+   "carbs_g": 4.7,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 353.0
+  },
+  "grams_per_ml": 0.99,
+  "grams_per": {}
+ },
+ "mustard seeds": {
+  "food_key": "F008746",
+  "food": "Spices, dried, all types (except chilli & paprika)",
+  "per_100g": {
+   "energy_kj": 1463.0,
+   "protein_g": 9.4,
+   "fat_g": 14.5,
+   "saturated_fat_g": 6.25,
+   "carbs_g": 31.7,
+   "sugars_g": 2.8,
+   "fibre_g": 28.9,
+   "sodium_mg": 79.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "nori": {
+  "food_key": "F008204",
+  "food": "Seaweed, nori, dried",
+  "per_100g": {
+   "energy_kj": 1266.0,
+   "protein_g": 46.7,
+   "fat_g": 4.3,
+   "saturated_fat_g": 0.88,
+   "carbs_g": 2.3,
+   "sugars_g": 0.3,
+   "fibre_g": 34.3,
+   "sodium_mg": 470.0
+  },
+  "grams_per_ml": null,
+  "grams_per": {}
+ },
+ "okonomiyaki sauce": {
+  "food_key": "F008012",
+  "food": "Sauce, HP (brown), commercial",
+  "per_100g": {
+   "energy_kj": 580.0,
+   "protein_g": 0.6,
+   "fat_g": 0.1,
+   "saturated_fat_g": 0.01,
+   "carbs_g": 34.8,
+   "sugars_g": 23.0,
+   "fibre_g": 1.0,
+   "sodium_mg": 534.0
+  },
+  "grams_per_ml": 1.04,
+  "grams_per": {}
+ },
+ "okra": {
+  "food_key": "F006195",
+  "food": "Okra, raw",
+  "per_100g": {
+   "energy_kj": 112.0,
+   "protein_g": 3.1,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.06,
+   "carbs_g": 1.4,
+   "sugars_g": 1.4,
+   "fibre_g": 3.7,
+   "sodium_mg": 2.0
+  },
+  "grams_per_ml": 0.78,
+  "grams_per": {}
+ },
+ "olive oil": {
+  "food_key": "F006177",
+  "food": "Oil, olive",
+  "per_100g": {
+   "energy_kj": 3695.0,
+   "protein_g": 0.0,
+   "fat_g": 99.9,
+   "saturated_fat_g": 15.52,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 0.0
+  },
+  "grams_per_ml": 0.92,
+  "grams_per": {}
+ },
+ "onion": {
+  "food_key": "F006225",
+  "food": "Onion, mature, brown skinned, peeled, raw",
+  "per_100g": {
+   "energy_kj": 136.0,
+   "protein_g": 1.3,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 5.8,
+   "sugars_g": 5.8,
+   "fibre_g": 2.3,
+   "sodium_mg": 8.0
+  },
+  "grams_per_ml": 0.56,
+  "grams_per": {
+   "each": 142.0
+  }
+ },
+ "onion powder": {
+  "food_key": "F008746",
+  "food": "Spices, dried, all types (except chilli & paprika)",
+  "per_100g": {
+   "energy_kj": 1463.0,
+   "protein_g": 9.4,
+   "fat_g": 14.5,
+   "saturated_fat_g": 6.25,
+   "carbs_g": 31.7,
+   "sugars_g": 2.8,
+   "fibre_g": 28.9,
+   "sodium_mg": 79.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "oranges": {
+  "food_key": "F006277",
+  "food": "Orange, peeled, raw",
+  "per_100g": {
+   "energy_kj": 174.0,
+   "protein_g": 1.0,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 8.2,
+   "sugars_g": 8.2,
+   "fibre_g": 2.3,
+   "sodium_mg": 0.0
+  },
+  "grams_per_ml": 0.76,
+  "grams_per": {
+   "each": 123.2
+  }
+ },
+ "oxtail": {
+  "food_key": "F000936",
+  "food": "Beef, tail, raw",
+  "per_100g": {
+   "energy_kj": 1287.0,
+   "protein_g": 17.4,
+   "fat_g": 26.8,
+   "saturated_fat_g": 10.27,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 82.0
+  },
+  "grams_per_ml": 0.3,
+  "grams_per": {}
+ },
+ "oyster sauce": {
+  "food_key": "F008026",
+  "food": "Sauce, oyster, commercial",
+  "per_100g": {
+   "energy_kj": 471.0,
+   "protein_g": 2.8,
+   "fat_g": 1.0,
+   "saturated_fat_g": 0.16,
+   "carbs_g": 21.0,
+   "sugars_g": 15.6,
+   "fibre_g": 0.3,
+   "sodium_mg": 3790.0
+  },
+  "grams_per_ml": 1.22,
+  "grams_per": {}
+ },
+ "paella rice": {
+  "food_key": "F007682",
+  "food": "Rice, white, uncooked",
+  "per_100g": {
+   "energy_kj": 1422.0,
+   "protein_g": 7.0,
+   "fat_g": 0.9,
+   "saturated_fat_g": 0.17,
+   "carbs_g": 74.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.8,
+   "sodium_mg": 1.0
+  },
+  "grams_per_ml": 0.87,
+  "grams_per": {}
+ },
+ "palm sugar": {
+  "food_key": "F009935",
+  "food": "Sugar, palm",
+  "per_100g": {
+   "energy_kj": 1625.0,
+   "protein_g": 0.0,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 100.0,
+   "sugars_g": 75.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 45.0
+  },
+  "grams_per_ml": 0.83,
+  "grams_per": {}
+ },
+ "pancetta": {
+  "food_key": "F000227",
+  "food": "Bacon, middle rasher, no fat removed, cooked",
+  "per_100g": {
+   "energy_kj": 1747.0,
+   "protein_g": 20.6,
+   "fat_g": 37.6,
+   "saturated_fat_g": 14.6,
+   "carbs_g": 0.3,
+   "sugars_g": 0.3,
+   "fibre_g": 0.0,
+   "sodium_mg": 1528.0
+  },
+  "grams_per_ml": 0.48,
+  "grams_per": {}
+ },
+ "paneer": {
+  "food_key": "F002472",
+  "food": "Cheese, mozzarella",
+  "per_100g": {
+   "energy_kj": 1212.0,
+   "protein_g": 22.2,
+   "fat_g": 22.1,
+   "saturated_fat_g": 14.35,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 522.0
+  },
+  "grams_per_ml": 0.48,
+  "grams_per": {}
+ },
+ "panko breadcrumbs": {
+  "food_key": "F001683",
+  "food": "Breadcrumbs, white",
+  "per_100g": {
+   "energy_kj": 1598.0,
+   "protein_g": 14.0,
+   "fat_g": 4.1,
+   "saturated_fat_g": 0.5,
+   "carbs_g": 68.5,
+   "sugars_g": 4.6,
+   "fibre_g": 4.7,
+   "sodium_mg": 650.0
+  },
+  "grams_per_ml": 0.6,
+  "grams_per": {
+   "cup": 150.0
+  }
+ },
+ "paprika": {
+  "food_key": "F006316",
+  "food": "Paprika, dried, ground",
+  "per_100g": {
+   "energy_kj": 1311.0,
+   "protein_g": 14.1,
+   "fat_g": 12.9,
+   "saturated_fat_g": 1.9,
+   "carbs_g": 19.1,
+   "sugars_g": 10.3,
+   "fibre_g": 34.9,
+   "sodium_mg": 68.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "parmesan": {
+  "food_key": "F002479",
+  "food": "Cheese, parmesan, fresh",
+  "per_100g": {
+   "energy_kj": 1565.0,
+   "protein_g": 32.0,
+   "fat_g": 27.0,
+   "saturated_fat_g": 18.73,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 1000.0
+  },
+  "grams_per_ml": 0.5,
+  "grams_per": {}
+ },
+ "parsley": {
+  "food_key": "F006321",
+  "food": "Parsley, fresh, raw",
+  "per_100g": {
+   "energy_kj": 150.0,
+   "protein_g": 3.9,
+   "fat_g": 0.7,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 1.1,
+   "sugars_g": 1.0,
+   "fibre_g": 5.0,
+   "sodium_mg": 150.0
+  },
+  "grams_per_ml": 0.25,
+  "grams_per": {}
+ },
+ "passata": {
+  "food_key": "F009209",
+  "food": "Tomato, puree, commercial",
+  "per_100g": {
+   "energy_kj": 98.0,
+   "protein_g": 1.2,
+   "fat_g": 0.1,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 3.8,
+   "sugars_g": 3.8,
+   "fibre_g": 1.5,
+   "sodium_mg": 249.0
+  },
+  "grams_per_ml": 1.0,
+  "grams_per": {}
+ },
+ "passionfruit": {
+  "food_key": "F006333",
+  "food": "Passionfruit, raw",
+  "per_100g": {
+   "energy_kj": 331.0,
+   "protein_g": 2.8,
+   "fat_g": 1.4,
+   "saturated_fat_g": 0.13,
+   "carbs_g": 6.9,
+   "sugars_g": 6.9,
+   "fibre_g": 11.0,
+   "sodium_mg": 13.0
+  },
+  "grams_per_ml": 0.9,
+  "grams_per": {}
+ },
+ "pasta": {
+  "food_key": "F006458",
+  "food": "Pasta, white, plain, dry, uncooked",
+  "per_100g": {
+   "energy_kj": 1458.0,
+   "protein_g": 12.7,
+   "fat_g": 1.4,
+   "saturated_fat_g": 0.24,
+   "carbs_g": 68.5,
+   "sugars_g": 0.0,
+   "fibre_g": 3.2,
+   "sodium_mg": 5.0
+  },
+  "grams_per_ml": 0.45,
+  "grams_per": {}
+ },
+ "pasta sauce": {
+  "food_key": "F008050",
+  "food": "Sauce, pasta, tomato based, commercial",
+  "per_100g": {
+   "energy_kj": 226.0,
+   "protein_g": 1.6,
+   "fat_g": 1.5,
+   "saturated_fat_g": 0.17,
+   "carbs_g": 7.5,
+   "sugars_g": 6.2,
+   "fibre_g": 1.8,
+   "sodium_mg": 375.0
+  },
+  "grams_per_ml": 1.1,
+  "grams_per": {}
+ },
+ "peaches": {
+  "food_key": "F006573",
+  "food": "Peach, yellow, unpeeled, raw",
+  "per_100g": {
+   "energy_kj": 161.0,
+   "protein_g": 0.7,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 8.0,
+   "sugars_g": 7.4,
+   "fibre_g": 1.6,
+   "sodium_mg": 0.0
+  },
+  "grams_per_ml": 0.65,
+  "grams_per": {}
+ },
+ "peanut butter": {
+  "food_key": "F006578",
+  "food": "Peanut butter, added sugar, no added salt",
+  "per_100g": {
+   "energy_kj": 2486.0,
+   "protein_g": 22.2,
+   "fat_g": 50.4,
+   "saturated_fat_g": 8.77,
+   "carbs_g": 12.0,
+   "sugars_g": 8.6,
+   "fibre_g": 5.8,
+   "sodium_mg": 15.0
+  },
+  "grams_per_ml": 1.2,
+  "grams_per": {
+   "tbsp": 24.0
+  }
+ },
+ "peanut oil": {
+  "food_key": "F006183",
+  "food": "Oil, peanut",
+  "per_100g": {
+   "energy_kj": 3700.0,
+   "protein_g": 0.0,
+   "fat_g": 100.0,
+   "saturated_fat_g": 17.36,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 0.0
+  },
+  "grams_per_ml": 0.92,
+  "grams_per": {}
+ },
+ "peanuts": {
+  "food_key": "F006110",
+  "food": "Nut, peanut, roasted, unsalted",
+  "per_100g": {
+   "energy_kj": 2667.0,
+   "protein_g": 25.1,
+   "fat_g": 52.8,
+   "saturated_fat_g": 9.18,
+   "carbs_g": 14.1,
+   "sugars_g": 4.4,
+   "fibre_g": 6.2,
+   "sodium_mg": 1.0
+  },
+  "grams_per_ml": 0.56,
+  "grams_per": {}
+ },
+ "pearl barley": {
+  "food_key": "F000379",
+  "food": "Barley, pearl, uncooked",
+  "per_100g": {
+   "energy_kj": 1424.0,
+   "protein_g": 9.9,
+   "fat_g": 3.1,
+   "saturated_fat_g": 0.5,
+   "carbs_g": 60.6,
+   "sugars_g": 1.0,
+   "fibre_g": 13.1,
+   "sodium_mg": 10.0
+  },
+  "grams_per_ml": 0.78,
+  "grams_per": {}
+ },
+ "pears": {
+  "food_key": "F006609",
+  "food": "Pear, raw, not further defined",
+  "per_100g": {
+   "energy_kj": 253.0,
+   "protein_g": 0.4,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 13.6,
+   "sugars_g": 11.0,
+   "fibre_g": 3.0,
+   "sodium_mg": 0.0
+  },
+  "grams_per_ml": 0.7,
+  "grams_per": {
+   "each": 176.0
+  }
+ },
+ "pecorino": {
+  "food_key": "F002479",
+  "food": "Cheese, parmesan, fresh",
+  "per_100g": {
+   "energy_kj": 1565.0,
+   "protein_g": 32.0,
+   "fat_g": 27.0,
+   "saturated_fat_g": 18.73,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 1000.0
+  },
+  "grams_per_ml": 0.5,
+  "grams_per": {}
+ },
+ "pepitas": {
+  "food_key": "F008212",
+  "food": "Seed, pumpkin, hulled & dried, unsalted",
+  "per_100g": {
+   "energy_kj": 2249.0,
+   "protein_g": 30.2,
+   "fat_g": 45.0,
+   "saturated_fat_g": 7.31,
+   "carbs_g": 2.1,
+   "sugars_g": 1.3,
+   "fibre_g": 4.6,
+   "sodium_mg": 1.0
+  },
+  "grams_per_ml": 0.58,
+  "grams_per": {}
+ },
+ "pickled ginger": {
+  "food_key": "F004216",
+  "food": "Ginger, pickled, drained",
+  "per_100g": {
+   "energy_kj": 75.0,
+   "protein_g": 0.4,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 2.8,
+   "sugars_g": 1.0,
+   "fibre_g": 1.6,
+   "sodium_mg": 1000.0
+  },
+  "grams_per_ml": 0.65,
+  "grams_per": {}
+ },
+ "pickled jalapenos": {
+  "food_key": "F002895",
+  "food": "Chilli (chili), green, pickled",
+  "per_100g": {
+   "energy_kj": 112.0,
+   "protein_g": 0.6,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 4.5,
+   "sugars_g": 1.9,
+   "fibre_g": 2.0,
+   "sodium_mg": 890.0
+  },
+  "grams_per_ml": 0.86,
+  "grams_per": {}
+ },
+ "pickled onions": {
+  "food_key": "F006245",
+  "food": "Onion, pickled, drained, commercial",
+  "per_100g": {
+   "energy_kj": 260.0,
+   "protein_g": 0.5,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 13.0,
+   "sugars_g": 12.3,
+   "fibre_g": 1.5,
+   "sodium_mg": 790.0
+  },
+  "grams_per_ml": 0.65,
+  "grams_per": {}
+ },
+ "pickles": {
+  "food_key": "F004206",
+  "food": "Gherkin, pickled, drained",
+  "per_100g": {
+   "energy_kj": 441.0,
+   "protein_g": 0.4,
+   "fat_g": 0.3,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 24.4,
+   "sugars_g": 23.6,
+   "fibre_g": 0.9,
+   "sodium_mg": 520.0
+  },
+  "grams_per_ml": 0.65,
+  "grams_per": {
+   "each": 25.0
+  }
+ },
+ "pine nuts": {
+  "food_key": "F006112",
+  "food": "Nut, pine, raw/natural, unsalted",
+  "per_100g": {
+   "energy_kj": 2925.0,
+   "protein_g": 13.0,
+   "fat_g": 70.0,
+   "saturated_fat_g": 4.22,
+   "carbs_g": 4.5,
+   "sugars_g": 3.4,
+   "fibre_g": 5.1,
+   "sodium_mg": 3.0
+  },
+  "grams_per_ml": 0.72,
+  "grams_per": {}
+ },
+ "pineapple": {
+  "food_key": "F006702",
+  "food": "Pineapple, peeled, raw",
+  "per_100g": {
+   "energy_kj": 165.0,
+   "protein_g": 0.5,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 8.6,
+   "sugars_g": 8.6,
+   "fibre_g": 1.3,
+   "sodium_mg": 0.0
+  },
+  "grams_per_ml": 0.75,
+  "grams_per": {}
+ },
+ "pinto beans": {
+  "food_key": "F010185",
+  "food": "Bean, pinto, canned, drained",
+  "per_100g": {
+   "energy_kj": 387.0,
+   "protein_g": 7.0,
+   "fat_g": 0.9,
+   "saturated_fat_g": 0.19,
+   "carbs_g": 11.3,
+   "sugars_g": 1.1,
+   "fibre_g": 5.5,
+   "sodium_mg": 239.0
+  },
+  "grams_per_ml": 0.76,
+  "grams_per": {}
+ },
+ "pistachios": {
+  "food_key": "F006113",
+  "food": "Nut, pistachio, raw/natural, unsalted",
+  "per_100g": {
+   "energy_kj": 2283.0,
+   "protein_g": 17.0,
+   "fat_g": 48.6,
+   "saturated_fat_g": 5.67,
+   "carbs_g": 7.8,
+   "sugars_g": 7.1,
+   "fibre_g": 7.7,
+   "sodium_mg": 0.0
+  },
+  "grams_per_ml": 0.5,
+  "grams_per": {}
+ },
+ "pita bread": {
+  "food_key": "F001401",
+  "food": "Bread, flat (pita or Lebanese), white, commercial",
+  "per_100g": {
+   "energy_kj": 1102.0,
+   "protein_g": 9.5,
+   "fat_g": 2.1,
+   "saturated_fat_g": 0.62,
+   "carbs_g": 49.1,
+   "sugars_g": 3.1,
+   "fibre_g": 3.7,
+   "sodium_mg": 498.0
+  },
+  "grams_per_ml": 0.15,
+  "grams_per": {
+   "each": 66.0
+  }
+ },
+ "plain flour": {
+  "food_key": "F004007",
+  "food": "Flour, wheat, white, plain",
+  "per_100g": {
+   "energy_kj": 1479.0,
+   "protein_g": 10.0,
+   "fat_g": 1.3,
+   "saturated_fat_g": 0.18,
+   "carbs_g": 73.2,
+   "sugars_g": 1.9,
+   "fibre_g": 2.2,
+   "sodium_mg": 3.0
+  },
+  "grams_per_ml": 0.54,
+  "grams_per": {}
+ },
+ "plantains": {
+  "food_key": "F006820",
+  "food": "Plantain, peeled, raw",
+  "per_100g": {
+   "energy_kj": 577.0,
+   "protein_g": 1.3,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 31.9,
+   "sugars_g": 9.9,
+   "fibre_g": 2.0,
+   "sodium_mg": 3.0
+  },
+  "grams_per_ml": 0.62,
+  "grams_per": {}
+ },
+ "poblano peppers": {
+  "food_key": "F002239",
+  "food": "Capsicum, green, raw",
+  "per_100g": {
+   "energy_kj": 69.0,
+   "protein_g": 0.9,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 2.5,
+   "sugars_g": 2.5,
+   "fibre_g": 1.5,
+   "sodium_mg": 1.0
+  },
+  "grams_per_ml": 0.52,
+  "grams_per": {}
+ },
+ "poha": {
+  "food_key": "F007682",
+  "food": "Rice, white, uncooked",
+  "per_100g": {
+   "energy_kj": 1422.0,
+   "protein_g": 7.0,
+   "fat_g": 0.9,
+   "saturated_fat_g": 0.17,
+   "carbs_g": 74.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.8,
+   "sodium_mg": 1.0
+  },
+  "grams_per_ml": 0.87,
+  "grams_per": {}
+ },
+ "polenta": {
+  "food_key": "F003230",
+  "food": "Cornmeal (polenta), uncooked",
+  "per_100g": {
+   "energy_kj": 1421.0,
+   "protein_g": 8.5,
+   "fat_g": 1.7,
+   "saturated_fat_g": 0.23,
+   "carbs_g": 70.0,
+   "sugars_g": 0.7,
+   "fibre_g": 3.0,
+   "sodium_mg": 0.0
+  },
+  "grams_per_ml": 0.76,
+  "grams_per": {}
+ },
+ "pomegranate": {
+  "food_key": "F006842",
+  "food": "Pomegranate, peeled, raw",
+  "per_100g": {
+   "energy_kj": 329.0,
+   "protein_g": 1.9,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 13.5,
+   "sugars_g": 13.5,
+   "fibre_g": 6.4,
+   "sodium_mg": 4.0
+  },
+  "grams_per_ml": 0.73,
+  "grams_per": {}
+ },
+ "pork": {
+  "food_key": "F010360",
+  "food": "Pork, steak, lean, raw",
+  "per_100g": {
+   "energy_kj": 462.0,
+   "protein_g": 23.7,
+   "fat_g": 1.6,
+   "saturated_fat_g": 0.52,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 49.0
+  },
+  "grams_per_ml": 0.57,
+  "grams_per": {}
+ },
+ "pork belly": {
+  "food_key": "F006862",
+  "food": "Pork, belly, raw",
+  "per_100g": {
+   "energy_kj": 1286.0,
+   "protein_g": 18.6,
+   "fat_g": 26.2,
+   "saturated_fat_g": 9.51,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 58.0
+  },
+  "grams_per_ml": 0.69,
+  "grams_per": {}
+ },
+ "pork chops": {
+  "food_key": "F007019",
+  "food": "Pork, chop, lean, raw",
+  "per_100g": {
+   "energy_kj": 461.0,
+   "protein_g": 23.2,
+   "fat_g": 1.8,
+   "saturated_fat_g": 0.62,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 52.0
+  },
+  "grams_per_ml": 1.06,
+  "grams_per": {
+   "each": 125.0
+  }
+ },
+ "pork fillet": {
+  "food_key": "F010360",
+  "food": "Pork, steak, lean, raw",
+  "per_100g": {
+   "energy_kj": 462.0,
+   "protein_g": 23.7,
+   "fat_g": 1.6,
+   "saturated_fat_g": 0.52,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 49.0
+  },
+  "grams_per_ml": 0.57,
+  "grams_per": {}
+ },
+ "pork loin": {
+  "food_key": "F007049",
+  "food": "Pork, steak, medallion or loin, lean, raw",
+  "per_100g": {
+   "energy_kj": 469.0,
+   "protein_g": 24.1,
+   "fat_g": 1.6,
+   "saturated_fat_g": 0.54,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 46.0
+  },
+  "grams_per_ml": 0.57,
+  "grams_per": {}
+ },
+ "pork mince": {
+  "food_key": "F007057",
+  "food": "Pork, mince, raw",
+  "per_100g": {
+   "energy_kj": 748.0,
+   "protein_g": 20.9,
+   "fat_g": 10.6,
+   "saturated_fat_g": 4.0,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 58.0
+  },
+  "grams_per_ml": 0.94,
+  "grams_per": {}
+ },
+ "pork shoulder": {
+  "food_key": "F006929",
+  "food": "Pork, roast, forequarter shoulder, no fat removed, raw",
+  "per_100g": {
+   "energy_kj": 762.0,
+   "protein_g": 17.6,
+   "fat_g": 12.5,
+   "saturated_fat_g": 4.76,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 69.0
+  },
+  "grams_per_ml": 1.06,
+  "grams_per": {}
+ },
+ "potato gnocchi": {
+  "food_key": "F004226",
+  "food": "Gnocchi, boiled, not further defined",
+  "per_100g": {
+   "energy_kj": 591.0,
+   "protein_g": 3.4,
+   "fat_g": 0.6,
+   "saturated_fat_g": 0.12,
+   "carbs_g": 29.0,
+   "sugars_g": 0.5,
+   "fibre_g": 2.0,
+   "sodium_mg": 346.0
+  },
+  "grams_per_ml": 0.78,
+  "grams_per": {}
+ },
+ "potatoes": {
+  "food_key": "F007356",
+  "food": "Potato, peeled, raw",
+  "per_100g": {
+   "energy_kj": 242.0,
+   "protein_g": 2.0,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 11.4,
+   "sugars_g": 1.1,
+   "fibre_g": 1.2,
+   "sodium_mg": 4.0
+  },
+  "grams_per_ml": 0.63,
+  "grams_per": {
+   "each": 226.1
+  }
+ },
+ "prawns": {
+  "food_key": "F007433",
+  "food": "Prawn, king or medium, flesh, raw (green)",
+  "per_100g": {
+   "energy_kj": 381.0,
+   "protein_g": 20.7,
+   "fat_g": 0.8,
+   "saturated_fat_g": 0.15,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 345.0
+  },
+  "grams_per_ml": 0.54,
+  "grams_per": {}
+ },
+ "preserved lemons": {
+  "food_key": "F005175",
+  "food": "Lemon, preserved",
+  "per_100g": {
+   "energy_kj": 99.0,
+   "protein_g": 0.7,
+   "fat_g": 0.1,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 1.3,
+   "sugars_g": 1.3,
+   "fibre_g": 3.2,
+   "sodium_mg": 4449.0
+  },
+  "grams_per_ml": 0.85,
+  "grams_per": {
+   "each": 99.0
+  }
+ },
+ "prosciutto": {
+  "food_key": "F007459",
+  "food": "Prosciutto",
+  "per_100g": {
+   "energy_kj": 1224.0,
+   "protein_g": 30.8,
+   "fat_g": 18.8,
+   "saturated_fat_g": 6.68,
+   "carbs_g": 0.3,
+   "sugars_g": 0.3,
+   "fibre_g": 0.0,
+   "sodium_mg": 1700.0
+  },
+  "grams_per_ml": 1.0,
+  "grams_per": {}
+ },
+ "prunes": {
+  "food_key": "F007494",
+  "food": "Prune (dried plum)",
+  "per_100g": {
+   "energy_kj": 865.0,
+   "protein_g": 2.6,
+   "fat_g": 0.4,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 45.0,
+   "sugars_g": 31.0,
+   "fibre_g": 7.7,
+   "sodium_mg": 4.0
+  },
+  "grams_per_ml": 0.8,
+  "grams_per": {}
+ },
+ "puff pastry": {
+  "food_key": "F006505",
+  "food": "Pastry, puff, butter, commercial, raw",
+  "per_100g": {
+   "energy_kj": 1383.0,
+   "protein_g": 5.5,
+   "fat_g": 19.0,
+   "saturated_fat_g": 11.9,
+   "carbs_g": 32.9,
+   "sugars_g": 1.0,
+   "fibre_g": 3.4,
+   "sodium_mg": 160.0
+  },
+  "grams_per_ml": 0.5,
+  "grams_per": {}
+ },
+ "pumpkin": {
+  "food_key": "F007555",
+  "food": "Pumpkin, peeled, raw",
+  "per_100g": {
+   "energy_kj": 144.0,
+   "protein_g": 1.2,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 6.7,
+   "sugars_g": 6.0,
+   "fibre_g": 1.9,
+   "sodium_mg": 0.0
+  },
+  "grams_per_ml": 0.88,
+  "grams_per": {}
+ },
+ "queso fresco": {
+  "food_key": "F002488",
+  "food": "Cheese, ricotta",
+  "per_100g": {
+   "energy_kj": 636.0,
+   "protein_g": 10.4,
+   "fat_g": 11.0,
+   "saturated_fat_g": 7.2,
+   "carbs_g": 2.7,
+   "sugars_g": 2.7,
+   "fibre_g": 0.0,
+   "sodium_mg": 170.0
+  },
+  "grams_per_ml": 1.04,
+  "grams_per": {}
+ },
+ "quinoa": {
+  "food_key": "F007598",
+  "food": "Quinoa, uncooked",
+  "per_100g": {
+   "energy_kj": 1550.0,
+   "protein_g": 12.9,
+   "fat_g": 6.5,
+   "saturated_fat_g": 0.76,
+   "carbs_g": 58.6,
+   "sugars_g": 4.7,
+   "fibre_g": 12.0,
+   "sodium_mg": 7.0
+  },
+  "grams_per_ml": 0.72,
+  "grams_per": {}
+ },
+ "radishes": {
+  "food_key": "F007606",
+  "food": "Radish, raw",
+  "per_100g": {
+   "energy_kj": 62.0,
+   "protein_g": 0.8,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 1.9,
+   "sugars_g": 1.9,
+   "fibre_g": 1.1,
+   "sodium_mg": 20.0
+  },
+  "grams_per_ml": 0.49,
+  "grams_per": {}
+ },
+ "ras el hanout": {
+  "food_key": "F008746",
+  "food": "Spices, dried, all types (except chilli & paprika)",
+  "per_100g": {
+   "energy_kj": 1463.0,
+   "protein_g": 9.4,
+   "fat_g": 14.5,
+   "saturated_fat_g": 6.25,
+   "carbs_g": 31.7,
+   "sugars_g": 2.8,
+   "fibre_g": 28.9,
+   "sodium_mg": 79.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "raspberry jam": {
+  "food_key": "F004600",
+  "food": "Jam, berry",
+  "per_100g": {
+   "energy_kj": 1100.0,
+   "protein_g": 0.3,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 67.3,
+   "sugars_g": 67.2,
+   "fibre_g": 1.6,
+   "sodium_mg": 12.0
+  },
+  "grams_per_ml": 1.4,
+  "grams_per": {}
+ },
+ "red bean paste": {
+  "food_key": "F000409",
+  "food": "Bean, paste, sweet",
+  "per_100g": {
+   "energy_kj": 823.0,
+   "protein_g": 6.9,
+   "fat_g": 0.4,
+   "saturated_fat_g": 0.06,
+   "carbs_g": 38.5,
+   "sugars_g": 31.0,
+   "fibre_g": 6.3,
+   "sodium_mg": 19.0
+  },
+  "grams_per_ml": 1.4,
+  "grams_per": {}
+ },
+ "red cabbage": {
+  "food_key": "F002006",
+  "food": "Cabbage, red, raw",
+  "per_100g": {
+   "energy_kj": 128.0,
+   "protein_g": 2.2,
+   "fat_g": 0.3,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 3.2,
+   "sugars_g": 3.2,
+   "fibre_g": 3.1,
+   "sodium_mg": 16.0
+  },
+  "grams_per_ml": 0.38,
+  "grams_per": {}
+ },
+ "red chillies": {
+  "food_key": "F002901",
+  "food": "Chilli (chili), red, raw",
+  "per_100g": {
+   "energy_kj": 193.0,
+   "protein_g": 1.4,
+   "fat_g": 0.7,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 4.8,
+   "sugars_g": 4.8,
+   "fibre_g": 7.2,
+   "sodium_mg": 3.0
+  },
+  "grams_per_ml": 0.64,
+  "grams_per": {
+   "each": 12.25
+  }
+ },
+ "red curry paste": {
+  "food_key": "F006471",
+  "food": "Paste, curry style",
+  "per_100g": {
+   "energy_kj": 864.0,
+   "protein_g": 2.9,
+   "fat_g": 14.1,
+   "saturated_fat_g": 1.46,
+   "carbs_g": 14.2,
+   "sugars_g": 7.3,
+   "fibre_g": 5.4,
+   "sodium_mg": 1802.0
+  },
+  "grams_per_ml": 1.4,
+  "grams_per": {}
+ },
+ "red lentils": {
+  "food_key": "F005184",
+  "food": "Lentil, red, hulled, dry",
+  "per_100g": {
+   "energy_kj": 1364.0,
+   "protein_g": 23.0,
+   "fat_g": 1.9,
+   "saturated_fat_g": 0.24,
+   "carbs_g": 45.7,
+   "sugars_g": 2.7,
+   "fibre_g": 13.7,
+   "sodium_mg": 2.0
+  },
+  "grams_per_ml": 0.76,
+  "grams_per": {}
+ },
+ "red onion": {
+  "food_key": "F009800",
+  "food": "Onion, mature, red skinned, peeled, raw",
+  "per_100g": {
+   "energy_kj": 116.0,
+   "protein_g": 0.8,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 5.5,
+   "sugars_g": 5.5,
+   "fibre_g": 1.8,
+   "sodium_mg": 5.0
+  },
+  "grams_per_ml": 0.56,
+  "grams_per": {
+   "each": 151.0
+  }
+ },
+ "red pepper paste": {
+  "food_key": "F006471",
+  "food": "Paste, curry style",
+  "per_100g": {
+   "energy_kj": 864.0,
+   "protein_g": 2.9,
+   "fat_g": 14.1,
+   "saturated_fat_g": 1.46,
+   "carbs_g": 14.2,
+   "sugars_g": 7.3,
+   "fibre_g": 5.4,
+   "sodium_mg": 1802.0
+  },
+  "grams_per_ml": 1.4,
+  "grams_per": {}
+ },
+ "red wine": {
+  "food_key": "F009571",
+  "food": "Wine, red",
+  "per_100g": {
+   "energy_kj": 332.0,
+   "protein_g": 0.3,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 0.2,
+   "sugars_g": 0.2,
+   "fibre_g": 0.0,
+   "sodium_mg": 4.0
+  },
+  "grams_per_ml": 0.995,
+  "grams_per": {}
+ },
+ "red wine vinegar": {
+  "food_key": "F009498",
+  "food": "Vinegar (except balsamic vinegar)",
+  "per_100g": {
+   "energy_kj": 65.0,
+   "protein_g": 0.0,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 5.0
+  },
+  "grams_per_ml": 1.01,
+  "grams_per": {}
+ },
+ "redcurrant jelly": {
+  "food_key": "F004600",
+  "food": "Jam, berry",
+  "per_100g": {
+   "energy_kj": 1100.0,
+   "protein_g": 0.3,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 67.3,
+   "sugars_g": 67.2,
+   "fibre_g": 1.6,
+   "sodium_mg": 12.0
+  },
+  "grams_per_ml": 1.4,
+  "grams_per": {}
+ },
+ "refried beans": {
+  "food_key": "F000454",
+  "food": "Bean, refried, canned",
+  "per_100g": {
+   "energy_kj": 374.0,
+   "protein_g": 5.0,
+   "fat_g": 2.0,
+   "saturated_fat_g": 0.64,
+   "carbs_g": 10.9,
+   "sugars_g": 0.5,
+   "fibre_g": 3.7,
+   "sodium_mg": 370.0
+  },
+  "grams_per_ml": 1.07,
+  "grams_per": {}
+ },
+ "rice": {
+  "food_key": "F007682",
+  "food": "Rice, white, uncooked",
+  "per_100g": {
+   "energy_kj": 1422.0,
+   "protein_g": 7.0,
+   "fat_g": 0.9,
+   "saturated_fat_g": 0.17,
+   "carbs_g": 74.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.8,
+   "sodium_mg": 1.0
+  },
+  "grams_per_ml": 0.87,
+  "grams_per": {}
+ },
+ "rice flour": {
+  "food_key": "F003998",
+  "food": "Flour, rice",
+  "per_100g": {
+   "energy_kj": 1422.0,
+   "protein_g": 7.0,
+   "fat_g": 0.9,
+   "saturated_fat_g": 0.17,
+   "carbs_g": 74.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.8,
+   "sodium_mg": 1.0
+  },
+  "grams_per_ml": 0.67,
+  "grams_per": {}
+ },
+ "rice noodles": {
+  "food_key": "F006038",
+  "food": "Noodle, rice stick, boiled, drained",
+  "per_100g": {
+   "energy_kj": 498.0,
+   "protein_g": 2.5,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 26.1,
+   "sugars_g": 0.0,
+   "fibre_g": 0.7,
+   "sodium_mg": 3.0
+  },
+  "grams_per_ml": 0.68,
+  "grams_per": {}
+ },
+ "rice paper sheets": {
+  "food_key": "F007639",
+  "food": "Rice paper wrapper, soaked in water",
+  "per_100g": {
+   "energy_kj": 640.0,
+   "protein_g": 3.2,
+   "fat_g": 0.4,
+   "saturated_fat_g": 0.08,
+   "carbs_g": 33.3,
+   "sugars_g": 0.0,
+   "fibre_g": 0.4,
+   "sodium_mg": 765.0
+  },
+  "grams_per_ml": null,
+  "grams_per": {
+   "each": 8.0
+  }
+ },
+ "rice vermicelli": {
+  "food_key": "F006038",
+  "food": "Noodle, rice stick, boiled, drained",
+  "per_100g": {
+   "energy_kj": 498.0,
+   "protein_g": 2.5,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 26.1,
+   "sugars_g": 0.0,
+   "fibre_g": 0.7,
+   "sodium_mg": 3.0
+  },
+  "grams_per_ml": 0.68,
+  "grams_per": {}
+ },
+ "rice vinegar": {
+  "food_key": "F009498",
+  "food": "Vinegar (except balsamic vinegar)",
+  "per_100g": {
+   "energy_kj": 65.0,
+   "protein_g": 0.0,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 5.0
+  },
+  "grams_per_ml": 1.01,
+  "grams_per": {}
+ },
+ "ricotta": {
+  "food_key": "F002488",
+  "food": "Cheese, ricotta",
+  "per_100g": {
+   "energy_kj": 636.0,
+   "protein_g": 10.4,
+   "fat_g": 11.0,
+   "saturated_fat_g": 7.2,
+   "carbs_g": 2.7,
+   "sugars_g": 2.7,
+   "fibre_g": 0.0,
+   "sodium_mg": 170.0
+  },
+  "grams_per_ml": 1.04,
+  "grams_per": {}
+ },
+ "rocket": {
+  "food_key": "F007712",
+  "food": "Rocket, fresh, raw",
+  "per_100g": {
+   "energy_kj": 91.0,
+   "protein_g": 3.3,
+   "fat_g": 0.3,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 0.3,
+   "sugars_g": 0.3,
+   "fibre_g": 2.4,
+   "sodium_mg": 47.0
+  },
+  "grams_per_ml": 0.15,
+  "grams_per": {}
+ },
+ "rogan josh curry paste": {
+  "food_key": "F006471",
+  "food": "Paste, curry style",
+  "per_100g": {
+   "energy_kj": 864.0,
+   "protein_g": 2.9,
+   "fat_g": 14.1,
+   "saturated_fat_g": 1.46,
+   "carbs_g": 14.2,
+   "sugars_g": 7.3,
+   "fibre_g": 5.4,
+   "sodium_mg": 1802.0
+  },
+  "grams_per_ml": 1.4,
+  "grams_per": {}
+ },
+ "rolled oats": {
+  "food_key": "F006143",
+  "food": "Oats, rolled, uncooked",
+  "per_100g": {
+   "energy_kj": 1564.0,
+   "protein_g": 12.2,
+   "fat_g": 9.5,
+   "saturated_fat_g": 1.73,
+   "carbs_g": 54.5,
+   "sugars_g": 1.0,
+   "fibre_g": 9.5,
+   "sodium_mg": 2.0
+  },
+  "grams_per_ml": 0.33,
+  "grams_per": {}
+ },
+ "rosemary": {
+  "food_key": "F007716",
+  "food": "Rosemary, fresh, raw",
+  "per_100g": {
+   "energy_kj": 396.0,
+   "protein_g": 3.3,
+   "fat_g": 5.9,
+   "saturated_fat_g": 2.72,
+   "carbs_g": 0.6,
+   "sugars_g": 0.4,
+   "fibre_g": 14.1,
+   "sodium_mg": 26.0
+  },
+  "grams_per_ml": 0.14,
+  "grams_per": {}
+ },
+ "saffron threads": {
+  "food_key": "F008746",
+  "food": "Spices, dried, all types (except chilli & paprika)",
+  "per_100g": {
+   "energy_kj": 1463.0,
+   "protein_g": 9.4,
+   "fat_g": 14.5,
+   "saturated_fat_g": 6.25,
+   "carbs_g": 31.7,
+   "sugars_g": 2.8,
+   "fibre_g": 28.9,
+   "sodium_mg": 79.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "sage": {
+  "food_key": "F010439",
+  "food": "Sage, fresh, raw",
+  "per_100g": {
+   "energy_kj": 396.0,
+   "protein_g": 3.3,
+   "fat_g": 5.9,
+   "saturated_fat_g": 2.72,
+   "carbs_g": 0.6,
+   "sugars_g": 0.4,
+   "fibre_g": 14.1,
+   "sodium_mg": 26.0
+  },
+  "grams_per_ml": 0.25,
+  "grams_per": {}
+ },
+ "sago": {
+  "food_key": "F007729",
+  "food": "Sago, uncooked",
+  "per_100g": {
+   "energy_kj": 1468.0,
+   "protein_g": 0.2,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.07,
+   "carbs_g": 85.5,
+   "sugars_g": 0.0,
+   "fibre_g": 0.4,
+   "sodium_mg": 3.0
+  },
+  "grams_per_ml": 0.66,
+  "grams_per": {}
+ },
+ "sake": {
+  "food_key": "F010092",
+  "food": "Sake",
+  "per_100g": {
+   "energy_kj": 493.0,
+   "protein_g": 0.1,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 5.5,
+   "sugars_g": 5.5,
+   "fibre_g": 0.0,
+   "sodium_mg": 17.0
+  },
+  "grams_per_ml": 0.96,
+  "grams_per": {}
+ },
+ "salami": {
+  "food_key": "F007818",
+  "food": "Salami",
+  "per_100g": {
+   "energy_kj": 1445.0,
+   "protein_g": 21.9,
+   "fat_g": 28.3,
+   "saturated_fat_g": 9.22,
+   "carbs_g": 0.4,
+   "sugars_g": 0.0,
+   "fibre_g": 0.5,
+   "sodium_mg": 1500.0
+  },
+  "grams_per_ml": 1.0,
+  "grams_per": {}
+ },
+ "salmon fillet": {
+  "food_key": "F007857",
+  "food": "Salmon, raw",
+  "per_100g": {
+   "energy_kj": 974.0,
+   "protein_g": 20.4,
+   "fat_g": 17.0,
+   "saturated_fat_g": 3.86,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 32.0
+  },
+  "grams_per_ml": 1.0,
+  "grams_per": {
+   "each": 147.0
+  }
+ },
+ "salt": {
+  "food_key": "F007878",
+  "food": "Salt, table, iodised",
+  "per_100g": {
+   "energy_kj": 0.0,
+   "protein_g": 0.0,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 38168.0
+  },
+  "grams_per_ml": 1.2,
+  "grams_per": {}
+ },
+ "salt cod": {
+  "food_key": "F003004",
+  "food": "Cod, Atlantic, dried, salted",
+  "per_100g": {
+   "energy_kj": 1157.0,
+   "protein_g": 62.8,
+   "fat_g": 2.4,
+   "saturated_fat_g": 0.62,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 7030.0
+  },
+  "grams_per_ml": 0.18,
+  "grams_per": {}
+ },
+ "sambal oelek": {
+  "food_key": "F007997",
+  "food": "Sauce, chilli (chili), commercial",
+  "per_100g": {
+   "energy_kj": 472.0,
+   "protein_g": 0.9,
+   "fat_g": 2.6,
+   "saturated_fat_g": 0.51,
+   "carbs_g": 18.9,
+   "sugars_g": 15.0,
+   "fibre_g": 4.4,
+   "sodium_mg": 1340.0
+  },
+  "grams_per_ml": 1.4,
+  "grams_per": {}
+ },
+ "sauerkraut": {
+  "food_key": "F002000",
+  "food": "Cabbage, pickled (sauerkraut)",
+  "per_100g": {
+   "energy_kj": 102.0,
+   "protein_g": 1.2,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 3.3,
+   "sugars_g": 1.1,
+   "fibre_g": 2.7,
+   "sodium_mg": 549.0
+  },
+  "grams_per_ml": 0.6,
+  "grams_per": {}
+ },
+ "sausage mince": {
+  "food_key": "F007057",
+  "food": "Pork, mince, raw",
+  "per_100g": {
+   "energy_kj": 748.0,
+   "protein_g": 20.9,
+   "fat_g": 10.6,
+   "saturated_fat_g": 4.0,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 58.0
+  },
+  "grams_per_ml": 0.94,
+  "grams_per": {}
+ },
+ "sausages": {
+  "food_key": "F008112",
+  "food": "Sausage, beef, raw",
+  "per_100g": {
+   "energy_kj": 987.0,
+   "protein_g": 14.5,
+   "fat_g": 18.7,
+   "saturated_fat_g": 8.67,
+   "carbs_g": 2.9,
+   "sugars_g": 0.4,
+   "fibre_g": 0.0,
+   "sodium_mg": 740.0
+  },
+  "grams_per_ml": 0.96,
+  "grams_per": {}
+ },
+ "self-raising flour": {
+  "food_key": "F004009",
+  "food": "Flour, wheat, white, self-raising",
+  "per_100g": {
+   "energy_kj": 1479.0,
+   "protein_g": 10.0,
+   "fat_g": 1.3,
+   "saturated_fat_g": 0.18,
+   "carbs_g": 73.2,
+   "sugars_g": 1.9,
+   "fibre_g": 2.2,
+   "sodium_mg": 740.0
+  },
+  "grams_per_ml": 0.54,
+  "grams_per": {}
+ },
+ "semolina": {
+  "food_key": "F008222",
+  "food": "Semolina, uncooked",
+  "per_100g": {
+   "energy_kj": 1298.0,
+   "protein_g": 10.7,
+   "fat_g": 1.2,
+   "saturated_fat_g": 0.17,
+   "carbs_g": 61.6,
+   "sugars_g": 0.0,
+   "fibre_g": 3.2,
+   "sodium_mg": 3.0
+  },
+  "grams_per_ml": 0.64,
+  "grams_per": {}
+ },
+ "sesame oil": {
+  "food_key": "F006187",
+  "food": "Oil, sesame",
+  "per_100g": {
+   "energy_kj": 3700.0,
+   "protein_g": 0.0,
+   "fat_g": 100.0,
+   "saturated_fat_g": 15.2,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 0.0
+  },
+  "grams_per_ml": 0.92,
+  "grams_per": {}
+ },
+ "sesame seeds": {
+  "food_key": "F008214",
+  "food": "Seed, sesame, unsalted",
+  "per_100g": {
+   "energy_kj": 2620.0,
+   "protein_g": 22.2,
+   "fat_g": 55.6,
+   "saturated_fat_g": 6.8,
+   "carbs_g": 6.2,
+   "sugars_g": 0.6,
+   "fibre_g": 10.1,
+   "sodium_mg": 24.0
+  },
+  "grams_per_ml": 0.56,
+  "grams_per": {}
+ },
+ "shallots": {
+  "food_key": "F008227",
+  "food": "Shallot, peeled, raw",
+  "per_100g": {
+   "energy_kj": 107.0,
+   "protein_g": 1.5,
+   "fat_g": 0.1,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 3.1,
+   "sugars_g": 3.1,
+   "fibre_g": 2.9,
+   "sodium_mg": 6.0
+  },
+  "grams_per_ml": 0.42,
+  "grams_per": {
+   "each": 5.5
+  }
+ },
+ "shaoxing wine": {
+  "food_key": "F005701",
+  "food": "Mirin",
+  "per_100g": {
+   "energy_kj": 706.0,
+   "protein_g": 0.3,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 26.6,
+   "sugars_g": 26.6,
+   "fibre_g": 0.0,
+   "sodium_mg": 3.0
+  },
+  "grams_per_ml": 1.0,
+  "grams_per": {}
+ },
+ "sherry vinegar": {
+  "food_key": "F009498",
+  "food": "Vinegar (except balsamic vinegar)",
+  "per_100g": {
+   "energy_kj": 65.0,
+   "protein_g": 0.0,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 5.0
+  },
+  "grams_per_ml": 1.01,
+  "grams_per": {}
+ },
+ "shiitake mushrooms": {
+  "food_key": "F005956",
+  "food": "Mushroom, oriental, raw",
+  "per_100g": {
+   "energy_kj": 114.0,
+   "protein_g": 2.2,
+   "fat_g": 0.8,
+   "saturated_fat_g": 0.16,
+   "carbs_g": 2.0,
+   "sugars_g": 0.8,
+   "fibre_g": 1.4,
+   "sodium_mg": 7.0
+  },
+  "grams_per_ml": 0.34,
+  "grams_per": {}
+ },
+ "short-grain rice": {
+  "food_key": "F007682",
+  "food": "Rice, white, uncooked",
+  "per_100g": {
+   "energy_kj": 1422.0,
+   "protein_g": 7.0,
+   "fat_g": 0.9,
+   "saturated_fat_g": 0.17,
+   "carbs_g": 74.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.8,
+   "sodium_mg": 1.0
+  },
+  "grams_per_ml": 0.87,
+  "grams_per": {}
+ },
+ "shortcrust pastry": {
+  "food_key": "F006507",
+  "food": "Pastry, shortcrust, commercial, raw",
+  "per_100g": {
+   "energy_kj": 1653.0,
+   "protein_g": 6.4,
+   "fat_g": 21.4,
+   "saturated_fat_g": 9.37,
+   "carbs_g": 41.3,
+   "sugars_g": 1.2,
+   "fibre_g": 6.4,
+   "sodium_mg": 446.0
+  },
+  "grams_per_ml": 0.5,
+  "grams_per": {}
+ },
+ "sichuan peppercorns": {
+  "food_key": "F008746",
+  "food": "Spices, dried, all types (except chilli & paprika)",
+  "per_100g": {
+   "energy_kj": 1463.0,
+   "protein_g": 9.4,
+   "fat_g": 14.5,
+   "saturated_fat_g": 6.25,
+   "carbs_g": 31.7,
+   "sugars_g": 2.8,
+   "fibre_g": 28.9,
+   "sodium_mg": 79.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "silken tofu": {
+  "food_key": "F009183",
+  "food": "Tofu (soy bean curd), silken or soft, as purchased",
+  "per_100g": {
+   "energy_kj": 225.0,
+   "protein_g": 4.7,
+   "fat_g": 2.6,
+   "saturated_fat_g": 0.35,
+   "carbs_g": 1.8,
+   "sugars_g": 1.0,
+   "fibre_g": 2.3,
+   "sodium_mg": 18.0
+  },
+  "grams_per_ml": 1.1,
+  "grams_per": {}
+ },
+ "silverbeet": {
+  "food_key": "F008267",
+  "food": "Silverbeet, raw",
+  "per_100g": {
+   "energy_kj": 87.0,
+   "protein_g": 2.1,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 1.4,
+   "sugars_g": 1.4,
+   "fibre_g": 2.3,
+   "sodium_mg": 158.0
+  },
+  "grams_per_ml": 0.18,
+  "grams_per": {}
+ },
+ "simit": {
+  "food_key": "F001463",
+  "food": "Bread, white, commercial",
+  "per_100g": {
+   "energy_kj": 1050.0,
+   "protein_g": 9.5,
+   "fat_g": 2.0,
+   "saturated_fat_g": 0.28,
+   "carbs_g": 46.2,
+   "sugars_g": 3.1,
+   "fibre_g": 3.2,
+   "sodium_mg": 439.0
+  },
+  "grams_per_ml": 0.2,
+  "grams_per": {}
+ },
+ "sliced turkey": {
+  "food_key": "F009328",
+  "food": "Turkey, roast, deli-sliced",
+  "per_100g": {
+   "energy_kj": 608.0,
+   "protein_g": 15.5,
+   "fat_g": 8.7,
+   "saturated_fat_g": 2.88,
+   "carbs_g": 0.7,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 820.0
+  },
+  "grams_per_ml": 1.22,
+  "grams_per": {}
+ },
+ "smoked haddock": {
+  "food_key": "F008314",
+  "food": "Fish (including eel & trout), smoked",
+  "per_100g": {
+   "energy_kj": 631.0,
+   "protein_g": 27.8,
+   "fat_g": 4.3,
+   "saturated_fat_g": 1.42,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 1509.0
+  },
+  "grams_per_ml": 1.1,
+  "grams_per": {}
+ },
+ "smoked salmon": {
+  "food_key": "F007864",
+  "food": "Salmon, smoked, sliced",
+  "per_100g": {
+   "energy_kj": 787.0,
+   "protein_g": 24.3,
+   "fat_g": 10.1,
+   "saturated_fat_g": 1.74,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 1015.0
+  },
+  "grams_per_ml": 1.1,
+  "grams_per": {}
+ },
+ "smoked sausage": {
+  "food_key": "F008134",
+  "food": "Sausage, cooked, not further defined",
+  "per_100g": {
+   "energy_kj": 1029.0,
+   "protein_g": 16.6,
+   "fat_g": 18.2,
+   "saturated_fat_g": 8.14,
+   "carbs_g": 4.1,
+   "sugars_g": 0.5,
+   "fibre_g": 0.6,
+   "sodium_mg": 777.0
+  },
+  "grams_per_ml": 0.8,
+  "grams_per": {}
+ },
+ "snake beans": {
+  "food_key": "F000431",
+  "food": "Bean, green, raw",
+  "per_100g": {
+   "energy_kj": 106.0,
+   "protein_g": 1.8,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 3.3,
+   "sugars_g": 2.6,
+   "fibre_g": 2.8,
+   "sodium_mg": 0.0
+  },
+  "grams_per_ml": 0.48,
+  "grams_per": {}
+ },
+ "snow peas": {
+  "food_key": "F008373",
+  "food": "Snow pea, raw",
+  "per_100g": {
+   "energy_kj": 163.0,
+   "protein_g": 3.0,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 5.6,
+   "sugars_g": 4.0,
+   "fibre_g": 2.6,
+   "sodium_mg": 1.0
+  },
+  "grams_per_ml": 0.42,
+  "grams_per": {}
+ },
+ "soba noodles": {
+  "food_key": "F006043",
+  "food": "Noodle, buckwheat or soba, uncooked",
+  "per_100g": {
+   "energy_kj": 1503.0,
+   "protein_g": 11.9,
+   "fat_g": 1.3,
+   "saturated_fat_g": 0.22,
+   "carbs_g": 71.2,
+   "sugars_g": 0.0,
+   "fibre_g": 5.3,
+   "sodium_mg": 563.0
+  },
+  "grams_per_ml": 0.45,
+  "grams_per": {}
+ },
+ "sour cream": {
+  "food_key": "F003269",
+  "food": "Cream, sour",
+  "per_100g": {
+   "energy_kj": 1414.0,
+   "protein_g": 1.9,
+   "fat_g": 36.3,
+   "saturated_fat_g": 23.46,
+   "carbs_g": 2.0,
+   "sugars_g": 2.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 19.0
+  },
+  "grams_per_ml": 0.98,
+  "grams_per": {}
+ },
+ "soy sauce": {
+  "food_key": "F008065",
+  "food": "Sauce, soy, commercial",
+  "per_100g": {
+   "energy_kj": 209.0,
+   "protein_g": 6.8,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 3.2,
+   "sugars_g": 2.2,
+   "fibre_g": 0.0,
+   "sodium_mg": 5600.0
+  },
+  "grams_per_ml": 1.05,
+  "grams_per": {}
+ },
+ "sponge finger biscuits": {
+  "food_key": "F001225",
+  "food": "Biscuit, sweet, plain, sponge finger, commercial",
+  "per_100g": {
+   "energy_kj": 1603.0,
+   "protein_g": 7.0,
+   "fat_g": 4.3,
+   "saturated_fat_g": 2.06,
+   "carbs_g": 78.7,
+   "sugars_g": 34.0,
+   "fibre_g": 2.1,
+   "sodium_mg": 75.0
+  },
+  "grams_per_ml": null,
+  "grams_per": {}
+ },
+ "spring onions": {
+  "food_key": "F006250",
+  "food": "Onion, spring, raw",
+  "per_100g": {
+   "energy_kj": 127.0,
+   "protein_g": 1.7,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 4.6,
+   "sugars_g": 4.5,
+   "fibre_g": 1.9,
+   "sodium_mg": 13.0
+  },
+  "grams_per_ml": 0.42,
+  "grams_per": {
+   "each": 15.0
+  }
+ },
+ "spring roll wrappers": {
+  "food_key": "F006514",
+  "food": "Pastry, spring roll, homemade, raw",
+  "per_100g": {
+   "energy_kj": 968.0,
+   "protein_g": 5.2,
+   "fat_g": 5.9,
+   "saturated_fat_g": 0.62,
+   "carbs_g": 38.3,
+   "sugars_g": 1.0,
+   "fibre_g": 1.2,
+   "sodium_mg": 203.0
+  },
+  "grams_per_ml": 0.3,
+  "grams_per": {}
+ },
+ "squid": {
+  "food_key": "F008828",
+  "food": "Squid or calamari, raw",
+  "per_100g": {
+   "energy_kj": 328.0,
+   "protein_g": 16.7,
+   "fat_g": 1.2,
+   "saturated_fat_g": 0.31,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 284.0
+  },
+  "grams_per_ml": 0.38,
+  "grams_per": {}
+ },
+ "sriracha": {
+  "food_key": "F007997",
+  "food": "Sauce, chilli (chili), commercial",
+  "per_100g": {
+   "energy_kj": 472.0,
+   "protein_g": 0.9,
+   "fat_g": 2.6,
+   "saturated_fat_g": 0.51,
+   "carbs_g": 18.9,
+   "sugars_g": 15.0,
+   "fibre_g": 4.4,
+   "sodium_mg": 1340.0
+  },
+  "grams_per_ml": 1.4,
+  "grams_per": {}
+ },
+ "star anise": {
+  "food_key": "F008746",
+  "food": "Spices, dried, all types (except chilli & paprika)",
+  "per_100g": {
+   "energy_kj": 1463.0,
+   "protein_g": 9.4,
+   "fat_g": 14.5,
+   "saturated_fat_g": 6.25,
+   "carbs_g": 31.7,
+   "sugars_g": 2.8,
+   "fibre_g": 28.9,
+   "sodium_mg": 79.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "stock cubes": {
+  "food_key": "F008933",
+  "food": "Stock, dry powder or cube",
+  "per_100g": {
+   "energy_kj": 900.0,
+   "protein_g": 11.3,
+   "fat_g": 8.9,
+   "saturated_fat_g": 4.38,
+   "carbs_g": 22.5,
+   "sugars_g": 4.3,
+   "fibre_g": 0.0,
+   "sodium_mg": 18400.0
+  },
+  "grams_per_ml": 0.8,
+  "grams_per": {}
+ },
+ "stout": {
+  "food_key": "F001007",
+  "food": "Beer, not further defined",
+  "per_100g": {
+   "energy_kj": 142.0,
+   "protein_g": 0.4,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 2.1,
+   "sugars_g": 0.1,
+   "fibre_g": 0.0,
+   "sodium_mg": 4.0
+  },
+  "grams_per_ml": 1.005,
+  "grams_per": {}
+ },
+ "strawberries": {
+  "food_key": "F008952",
+  "food": "Strawberry, raw",
+  "per_100g": {
+   "energy_kj": 132.0,
+   "protein_g": 0.7,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 5.6,
+   "sugars_g": 5.5,
+   "fibre_g": 2.1,
+   "sodium_mg": 0.0
+  },
+  "grams_per_ml": 0.6,
+  "grams_per": {}
+ },
+ "strawberry jam": {
+  "food_key": "F010050",
+  "food": "Jam, other fruit",
+  "per_100g": {
+   "energy_kj": 1050.0,
+   "protein_g": 0.2,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 64.4,
+   "sugars_g": 64.3,
+   "fibre_g": 0.9,
+   "sodium_mg": 14.0
+  },
+  "grams_per_ml": 1.4,
+  "grams_per": {}
+ },
+ "sultanas": {
+  "food_key": "F008983",
+  "food": "Sultana",
+  "per_100g": {
+   "energy_kj": 1308.0,
+   "protein_g": 2.6,
+   "fat_g": 0.3,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 75.8,
+   "sugars_g": 74.0,
+   "fibre_g": 3.3,
+   "sodium_mg": 6.0
+  },
+  "grams_per_ml": 0.8,
+  "grams_per": {}
+ },
+ "sumac": {
+  "food_key": "F008746",
+  "food": "Spices, dried, all types (except chilli & paprika)",
+  "per_100g": {
+   "energy_kj": 1463.0,
+   "protein_g": 9.4,
+   "fat_g": 14.5,
+   "saturated_fat_g": 6.25,
+   "carbs_g": 31.7,
+   "sugars_g": 2.8,
+   "fibre_g": 28.9,
+   "sodium_mg": 79.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "sweet chilli sauce": {
+  "food_key": "F008071",
+  "food": "Sauce, sweet chilli (chili), commercial",
+  "per_100g": {
+   "energy_kj": 942.0,
+   "protein_g": 0.4,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.01,
+   "carbs_g": 56.9,
+   "sugars_g": 53.0,
+   "fibre_g": 1.6,
+   "sodium_mg": 1314.0
+  },
+  "grams_per_ml": 1.4,
+  "grams_per": {}
+ },
+ "sweet potato": {
+  "food_key": "F009035",
+  "food": "Sweet potato, orange flesh, peeled, raw",
+  "per_100g": {
+   "energy_kj": 273.0,
+   "protein_g": 1.4,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 13.2,
+   "sugars_g": 5.8,
+   "fibre_g": 2.6,
+   "sodium_mg": 6.0
+  },
+  "grams_per_ml": 0.56,
+  "grams_per": {
+   "each": 420.0
+  }
+ },
+ "taco seasoning": {
+  "food_key": "F009072",
+  "food": "Seasoning mix, chilli based, for tacos",
+  "per_100g": {
+   "energy_kj": 1335.0,
+   "protein_g": 6.2,
+   "fat_g": 4.8,
+   "saturated_fat_g": 1.28,
+   "carbs_g": 58.1,
+   "sugars_g": 28.5,
+   "fibre_g": 8.7,
+   "sodium_mg": 6238.0
+  },
+  "grams_per_ml": 1.2,
+  "grams_per": {}
+ },
+ "taco shells": {
+  "food_key": "F009073",
+  "food": "Taco shell, from corn flour, plain",
+  "per_100g": {
+   "energy_kj": 1948.0,
+   "protein_g": 6.8,
+   "fat_g": 21.8,
+   "saturated_fat_g": 1.81,
+   "carbs_g": 56.3,
+   "sugars_g": 1.1,
+   "fibre_g": 7.3,
+   "sodium_mg": 80.0
+  },
+  "grams_per_ml": null,
+  "grams_per": {
+   "each": 15.0
+  }
+ },
+ "tahini": {
+  "food_key": "F009076",
+  "food": "Tahini",
+  "per_100g": {
+   "energy_kj": 2717.0,
+   "protein_g": 20.4,
+   "fat_g": 60.7,
+   "saturated_fat_g": 7.54,
+   "carbs_g": 1.0,
+   "sugars_g": 0.7,
+   "fibre_g": 13.5,
+   "sodium_mg": 79.0
+  },
+  "grams_per_ml": 1.0,
+  "grams_per": {}
+ },
+ "tamarind paste": {
+  "food_key": "F009081",
+  "food": "Tamarind, paste or puree, raw",
+  "per_100g": {
+   "energy_kj": 1048.0,
+   "protein_g": 2.8,
+   "fat_g": 0.6,
+   "saturated_fat_g": 0.26,
+   "carbs_g": 57.4,
+   "sugars_g": 38.8,
+   "fibre_g": 5.1,
+   "sodium_mg": 28.0
+  },
+  "grams_per_ml": 1.4,
+  "grams_per": {}
+ },
+ "tandoori paste": {
+  "food_key": "F006471",
+  "food": "Paste, curry style",
+  "per_100g": {
+   "energy_kj": 864.0,
+   "protein_g": 2.9,
+   "fat_g": 14.1,
+   "saturated_fat_g": 1.46,
+   "carbs_g": 14.2,
+   "sugars_g": 7.3,
+   "fibre_g": 5.4,
+   "sodium_mg": 1802.0
+  },
+  "grams_per_ml": 1.4,
+  "grams_per": {}
+ },
+ "tapioca starch": {
+  "food_key": "F009090",
+  "food": "Tapioca, uncooked",
+  "per_100g": {
+   "energy_kj": 1359.0,
+   "protein_g": 0.2,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.08,
+   "carbs_g": 79.3,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 1.0
+  },
+  "grams_per_ml": 0.66,
+  "grams_per": {}
+ },
+ "tarragon": {
+  "food_key": "F004366",
+  "food": "Herbs, mixed, raw",
+  "per_100g": {
+   "energy_kj": 131.0,
+   "protein_g": 3.4,
+   "fat_g": 0.6,
+   "saturated_fat_g": 0.01,
+   "carbs_g": 1.1,
+   "sugars_g": 0.8,
+   "fibre_g": 4.0,
+   "sodium_mg": 84.0
+  },
+  "grams_per_ml": 0.25,
+  "grams_per": {}
+ },
+ "thai basil": {
+  "food_key": "F000396",
+  "food": "Basil, green, fresh, raw",
+  "per_100g": {
+   "energy_kj": 94.0,
+   "protein_g": 2.6,
+   "fat_g": 0.5,
+   "saturated_fat_g": 0.03,
+   "carbs_g": 0.2,
+   "sugars_g": 0.0,
+   "fibre_g": 3.3,
+   "sodium_mg": 10.0
+  },
+  "grams_per_ml": 0.25,
+  "grams_per": {}
+ },
+ "thickened cream": {
+  "food_key": "F003270",
+  "food": "Cream, thickened",
+  "per_100g": {
+   "energy_kj": 1422.0,
+   "protein_g": 2.0,
+   "fat_g": 36.5,
+   "saturated_fat_g": 23.52,
+   "carbs_g": 2.4,
+   "sugars_g": 2.4,
+   "fibre_g": 0.0,
+   "sodium_mg": 27.0
+  },
+  "grams_per_ml": 1.03,
+  "grams_per": {}
+ },
+ "thyme": {
+  "food_key": "F010466",
+  "food": "Thyme, fresh, raw",
+  "per_100g": {
+   "energy_kj": 287.0,
+   "protein_g": 5.6,
+   "fat_g": 1.7,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 1.1,
+   "sugars_g": 1.0,
+   "fibre_g": 14.0,
+   "sodium_mg": 150.0
+  },
+  "grams_per_ml": 0.25,
+  "grams_per": {}
+ },
+ "toasted rice powder": {
+  "food_key": "F003998",
+  "food": "Flour, rice",
+  "per_100g": {
+   "energy_kj": 1422.0,
+   "protein_g": 7.0,
+   "fat_g": 0.9,
+   "saturated_fat_g": 0.17,
+   "carbs_g": 74.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.8,
+   "sodium_mg": 1.0
+  },
+  "grams_per_ml": 0.67,
+  "grams_per": {}
+ },
+ "tofu": {
+  "food_key": "F009176",
+  "food": "Tofu (soy bean curd), firm, as purchased",
+  "per_100g": {
+   "energy_kj": 543.0,
+   "protein_g": 12.8,
+   "fat_g": 8.3,
+   "saturated_fat_g": 1.16,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 1.0,
+   "sodium_mg": 22.0
+  },
+  "grams_per_ml": 1.1,
+  "grams_per": {}
+ },
+ "tom yum paste": {
+  "food_key": "F006471",
+  "food": "Paste, curry style",
+  "per_100g": {
+   "energy_kj": 864.0,
+   "protein_g": 2.9,
+   "fat_g": 14.1,
+   "saturated_fat_g": 1.46,
+   "carbs_g": 14.2,
+   "sugars_g": 7.3,
+   "fibre_g": 5.4,
+   "sodium_mg": 1802.0
+  },
+  "grams_per_ml": 1.4,
+  "grams_per": {}
+ },
+ "tomatillos": {
+  "food_key": "F010106",
+  "food": "Tomato, green, raw",
+  "per_100g": {
+   "energy_kj": 73.0,
+   "protein_g": 0.6,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 3.0,
+   "sugars_g": 2.5,
+   "fibre_g": 1.1,
+   "sodium_mg": 4.0
+  },
+  "grams_per_ml": 0.76,
+  "grams_per": {}
+ },
+ "tomato paste": {
+  "food_key": "F009206",
+  "food": "Tomato, paste, no added salt",
+  "per_100g": {
+   "energy_kj": 266.0,
+   "protein_g": 3.4,
+   "fat_g": 0.5,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 10.1,
+   "sugars_g": 9.6,
+   "fibre_g": 3.6,
+   "sodium_mg": 36.0
+  },
+  "grams_per_ml": 1.11,
+  "grams_per": {}
+ },
+ "tomato relish": {
+  "food_key": "F002953",
+  "food": "Chutney or relish, commercial",
+  "per_100g": {
+   "energy_kj": 752.0,
+   "protein_g": 0.5,
+   "fat_g": 0.3,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 43.1,
+   "sugars_g": 41.5,
+   "fibre_g": 2.2,
+   "sodium_mg": 690.0
+  },
+  "grams_per_ml": 1.25,
+  "grams_per": {}
+ },
+ "tomato salsa": {
+  "food_key": "F008056",
+  "food": "Sauce, mexican, tomato based, salsa, commercial",
+  "per_100g": {
+   "energy_kj": 146.0,
+   "protein_g": 1.3,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 6.3,
+   "sugars_g": 4.9,
+   "fibre_g": 1.6,
+   "sodium_mg": 480.0
+  },
+  "grams_per_ml": 1.1,
+  "grams_per": {
+   "cup": 275.0,
+   "tbsp": 22.0
+  }
+ },
+ "tomato sauce": {
+  "food_key": "F008083",
+  "food": "Sauce, tomato, commercial, regular",
+  "per_100g": {
+   "energy_kj": 437.0,
+   "protein_g": 1.3,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 24.1,
+   "sugars_g": 23.7,
+   "fibre_g": 1.3,
+   "sodium_mg": 870.0
+  },
+  "grams_per_ml": 1.04,
+  "grams_per": {}
+ },
+ "tomatoes": {
+  "food_key": "F009210",
+  "food": "Tomato, raw, not further defined",
+  "per_100g": {
+   "energy_kj": 76.0,
+   "protein_g": 0.7,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 2.9,
+   "sugars_g": 2.6,
+   "fibre_g": 1.2,
+   "sodium_mg": 5.0
+  },
+  "grams_per_ml": 0.76,
+  "grams_per": {
+   "each": 116.0
+  }
+ },
+ "tortillas": {
+  "food_key": "F001669",
+  "food": "Bread, flat, tortilla, white, commercial",
+  "per_100g": {
+   "energy_kj": 1263.0,
+   "protein_g": 7.3,
+   "fat_g": 9.0,
+   "saturated_fat_g": 3.97,
+   "carbs_g": 46.3,
+   "sugars_g": 4.3,
+   "fibre_g": 2.0,
+   "sodium_mg": 750.0
+  },
+  "grams_per_ml": 0.15,
+  "grams_per": {
+   "each": 44.0
+  }
+ },
+ "tostadas": {
+  "food_key": "F009073",
+  "food": "Taco shell, from corn flour, plain",
+  "per_100g": {
+   "energy_kj": 1948.0,
+   "protein_g": 6.8,
+   "fat_g": 21.8,
+   "saturated_fat_g": 1.81,
+   "carbs_g": 56.3,
+   "sugars_g": 1.1,
+   "fibre_g": 7.3,
+   "sodium_mg": 80.0
+  },
+  "grams_per_ml": null,
+  "grams_per": {}
+ },
+ "turkey mince": {
+  "food_key": "F010386",
+  "food": "Turkey, mince, raw",
+  "per_100g": {
+   "energy_kj": 618.0,
+   "protein_g": 19.7,
+   "fat_g": 7.7,
+   "saturated_fat_g": 2.13,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 58.0
+  },
+  "grams_per_ml": 0.94,
+  "grams_per": {}
+ },
+ "turkish bread": {
+  "food_key": "F001671",
+  "food": "Bread, Turkish, plain, commercial",
+  "per_100g": {
+   "energy_kj": 1035.0,
+   "protein_g": 7.8,
+   "fat_g": 2.8,
+   "saturated_fat_g": 0.36,
+   "carbs_g": 45.5,
+   "sugars_g": 2.2,
+   "fibre_g": 3.6,
+   "sodium_mg": 530.0
+  },
+  "grams_per_ml": 0.22,
+  "grams_per": {
+   "loaf": 216.6
+  }
+ },
+ "tzatziki": {
+  "food_key": "F003535",
+  "food": "Dip, cucumber & yoghurt, commercial",
+  "per_100g": {
+   "energy_kj": 490.0,
+   "protein_g": 3.6,
+   "fat_g": 8.2,
+   "saturated_fat_g": 4.61,
+   "carbs_g": 6.6,
+   "sugars_g": 6.0,
+   "fibre_g": 0.7,
+   "sodium_mg": 353.0
+  },
+  "grams_per_ml": 1.04,
+  "grams_per": {}
+ },
+ "udon noodles": {
+  "food_key": "F006048",
+  "food": "Noodle, wheat, Asian style, cooked",
+  "per_100g": {
+   "energy_kj": 608.0,
+   "protein_g": 6.3,
+   "fat_g": 1.0,
+   "saturated_fat_g": 0.44,
+   "carbs_g": 26.5,
+   "sugars_g": 0.0,
+   "fibre_g": 1.7,
+   "sodium_mg": 100.0
+  },
+  "grams_per_ml": 0.68,
+  "grams_per": {}
+ },
+ "vanilla extract": {
+  "food_key": "F009351",
+  "food": "Vanilla, artificial",
+  "per_100g": {
+   "energy_kj": 231.0,
+   "protein_g": 0.0,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 14.4,
+   "sugars_g": 14.4,
+   "fibre_g": 0.0,
+   "sodium_mg": 3.0
+  },
+  "grams_per_ml": 1.0,
+  "grams_per": {}
+ },
+ "vanilla ice cream": {
+  "food_key": "F004508",
+  "food": "Ice cream, vanilla flavour",
+  "per_100g": {
+   "energy_kj": 806.0,
+   "protein_g": 3.7,
+   "fat_g": 11.1,
+   "saturated_fat_g": 7.5,
+   "carbs_g": 20.5,
+   "sugars_g": 18.4,
+   "fibre_g": 0.0,
+   "sodium_mg": 48.0
+  },
+  "grams_per_ml": 0.55,
+  "grams_per": {
+   "scoop": 66.0
+  }
+ },
+ "veal shanks": {
+  "food_key": "F009379",
+  "food": "Veal, diced/strips, lean, raw",
+  "per_100g": {
+   "energy_kj": 448.0,
+   "protein_g": 23.1,
+   "fat_g": 1.5,
+   "saturated_fat_g": 0.52,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 46.0
+  },
+  "grams_per_ml": 0.86,
+  "grams_per": {}
+ },
+ "vegetable oil": {
+  "food_key": "F006191",
+  "food": "Oil, vegetable",
+  "per_100g": {
+   "energy_kj": 3700.0,
+   "protein_g": 0.0,
+   "fat_g": 100.0,
+   "saturated_fat_g": 9.99,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 0.0
+  },
+  "grams_per_ml": 0.92,
+  "grams_per": {}
+ },
+ "vegetable stock": {
+  "food_key": "F008936",
+  "food": "Stock, liquid, all flavours, prepared ",
+  "per_100g": {
+   "energy_kj": 18.0,
+   "protein_g": 0.2,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.08,
+   "carbs_g": 0.4,
+   "sugars_g": 0.1,
+   "fibre_g": 0.0,
+   "sodium_mg": 362.0
+  },
+  "grams_per_ml": 1.02,
+  "grams_per": {}
+ },
+ "walnuts": {
+  "food_key": "F006116",
+  "food": "Nut, walnut, raw/natural, unsalted",
+  "per_100g": {
+   "energy_kj": 2904.0,
+   "protein_g": 14.4,
+   "fat_g": 69.2,
+   "saturated_fat_g": 4.43,
+   "carbs_g": 3.0,
+   "sugars_g": 2.7,
+   "fibre_g": 6.4,
+   "sodium_mg": 3.0
+  },
+  "grams_per_ml": 0.56,
+  "grams_per": {}
+ },
+ "wasabi": {
+  "food_key": "F006478",
+  "food": "Paste, wasabi, commercial",
+  "per_100g": {
+   "energy_kj": 1085.0,
+   "protein_g": 0.8,
+   "fat_g": 7.5,
+   "saturated_fat_g": 1.68,
+   "carbs_g": 46.2,
+   "sugars_g": 2.8,
+   "fibre_g": 1.6,
+   "sodium_mg": 2600.0
+  },
+  "grams_per_ml": 1.3,
+  "grams_per": {}
+ },
+ "water chestnuts": {
+  "food_key": "F009514",
+  "food": "Water chestnut, peeled, canned, drained",
+  "per_100g": {
+   "energy_kj": 218.0,
+   "protein_g": 0.6,
+   "fat_g": 0.9,
+   "saturated_fat_g": 0.27,
+   "carbs_g": 9.3,
+   "sugars_g": 5.1,
+   "fibre_g": 2.7,
+   "sodium_mg": 10.0
+  },
+  "grams_per_ml": 0.59,
+  "grams_per": {}
+ },
+ "watercress": {
+  "food_key": "F009532",
+  "food": "Watercress, raw",
+  "per_100g": {
+   "energy_kj": 110.0,
+   "protein_g": 2.9,
+   "fat_g": 0.4,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 0.8,
+   "sugars_g": 0.7,
+   "fibre_g": 3.8,
+   "sodium_mg": 48.0
+  },
+  "grams_per_ml": 0.14,
+  "grams_per": {}
+ },
+ "wheat noodles": {
+  "food_key": "F006068",
+  "food": "Noodle, wheat, instant, unflavoured, uncooked",
+  "per_100g": {
+   "energy_kj": 1842.0,
+   "protein_g": 11.0,
+   "fat_g": 19.1,
+   "saturated_fat_g": 8.35,
+   "carbs_g": 54.0,
+   "sugars_g": 0.9,
+   "fibre_g": 3.7,
+   "sodium_mg": 572.0
+  },
+  "grams_per_ml": 0.26,
+  "grams_per": {}
+ },
+ "white fish fillets": {
+  "food_key": "F003956",
+  "food": "Fish, white flesh, raw, not further defined",
+  "per_100g": {
+   "energy_kj": 451.0,
+   "protein_g": 19.2,
+   "fat_g": 3.3,
+   "saturated_fat_g": 0.81,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 75.0
+  },
+  "grams_per_ml": 1.0,
+  "grams_per": {}
+ },
+ "white pepper": {
+  "food_key": "F006618",
+  "food": "Pepper, black or white, ground",
+  "per_100g": {
+   "energy_kj": 1156.0,
+   "protein_g": 10.4,
+   "fat_g": 3.3,
+   "saturated_fat_g": 1.39,
+   "carbs_g": 38.6,
+   "sugars_g": 0.6,
+   "fibre_g": 25.3,
+   "sodium_mg": 20.0
+  },
+  "grams_per_ml": 0.34,
+  "grams_per": {}
+ },
+ "white sugar": {
+  "food_key": "F008976",
+  "food": "Sugar, white, granulated or lump",
+  "per_100g": {
+   "energy_kj": 1600.0,
+   "protein_g": 0.0,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 100.0,
+   "sugars_g": 100.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 0.0
+  },
+  "grams_per_ml": 0.84,
+  "grams_per": {}
+ },
+ "white vinegar": {
+  "food_key": "F009498",
+  "food": "Vinegar (except balsamic vinegar)",
+  "per_100g": {
+   "energy_kj": 65.0,
+   "protein_g": 0.0,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 5.0
+  },
+  "grams_per_ml": 1.01,
+  "grams_per": {}
+ },
+ "white wine": {
+  "food_key": "F009588",
+  "food": "Wine, white",
+  "per_100g": {
+   "energy_kj": 296.0,
+   "protein_g": 0.2,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 0.1,
+   "sugars_g": 0.1,
+   "fibre_g": 0.0,
+   "sodium_mg": 2.0
+  },
+  "grams_per_ml": 0.992,
+  "grams_per": {}
+ },
+ "white wine vinegar": {
+  "food_key": "F009498",
+  "food": "Vinegar (except balsamic vinegar)",
+  "per_100g": {
+   "energy_kj": 65.0,
+   "protein_g": 0.0,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 5.0
+  },
+  "grams_per_ml": 1.01,
+  "grams_per": {}
+ },
+ "whole chicken": {
+  "food_key": "F002829",
+  "food": "Chicken, whole, lean, skin & fat, raw",
+  "per_100g": {
+   "energy_kj": 757.0,
+   "protein_g": 18.0,
+   "fat_g": 12.2,
+   "saturated_fat_g": 3.69,
+   "carbs_g": 0.0,
+   "sugars_g": 0.0,
+   "fibre_g": 0.0,
+   "sodium_mg": 54.0
+  },
+  "grams_per_ml": 1.06,
+  "grams_per": {
+   "each": 1496.0
+  }
+ },
+ "whole cloves": {
+  "food_key": "F002970",
+  "food": "Cloves, dried, ground",
+  "per_100g": {
+   "energy_kj": 1389.0,
+   "protein_g": 6.0,
+   "fat_g": 13.0,
+   "saturated_fat_g": 5.49,
+   "carbs_g": 31.6,
+   "sugars_g": 2.4,
+   "fibre_g": 33.9,
+   "sodium_mg": 277.0
+  },
+  "grams_per_ml": 0.41,
+  "grams_per": {}
+ },
+ "wombok": {
+  "food_key": "F001996",
+  "food": "Cabbage, Chinese (wombok), raw",
+  "per_100g": {
+   "energy_kj": 44.0,
+   "protein_g": 1.1,
+   "fat_g": 0.0,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 0.9,
+   "sugars_g": 0.9,
+   "fibre_g": 1.1,
+   "sodium_mg": 6.0
+  },
+  "grams_per_ml": 0.32,
+  "grams_per": {}
+ },
+ "worcestershire sauce": {
+  "food_key": "F008094",
+  "food": "Sauce, Worcestershire, commercial",
+  "per_100g": {
+   "energy_kj": 311.0,
+   "protein_g": 1.3,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.04,
+   "carbs_g": 17.6,
+   "sugars_g": 16.9,
+   "fibre_g": 0.0,
+   "sodium_mg": 1060.0
+  },
+  "grams_per_ml": 1.22,
+  "grams_per": {}
+ },
+ "za'atar": {
+  "food_key": "F004365",
+  "food": "Herbs, dried, all types",
+  "per_100g": {
+   "energy_kj": 1228.0,
+   "protein_g": 8.4,
+   "fat_g": 9.9,
+   "saturated_fat_g": 4.81,
+   "carbs_g": 23.5,
+   "sugars_g": 6.8,
+   "fibre_g": 40.6,
+   "sodium_mg": 35.0
+  },
+  "grams_per_ml": 0.53,
+  "grams_per": {}
+ },
+ "zucchini": {
+  "food_key": "F009775",
+  "food": "Zucchini, green skin, raw",
+  "per_100g": {
+   "energy_kj": 69.0,
+   "protein_g": 1.0,
+   "fat_g": 0.2,
+   "saturated_fat_g": 0.0,
+   "carbs_g": 2.2,
+   "sugars_g": 2.2,
+   "fibre_g": 1.0,
+   "sodium_mg": 0.0
+  },
+  "grams_per_ml": 0.47,
+  "grams_per": {
+   "each": 195.0
+  }
+ }
+}

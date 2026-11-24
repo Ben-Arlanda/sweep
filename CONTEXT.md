@@ -109,6 +109,10 @@ _Avoid_: kitchen mode, step mode
 The picture shown for a recipe. For a Seed Recipe it is an openly licensed photo (credited to its author) or one generated for Sweep, and it must be checked against the recipe before it's shown. For an Imported Recipe it is only ever the Member's own photo.
 _Avoid_: thumbnail, hero image, recipe photo
 
+**Nutrition**:
+A recipe's estimated nutrients per serve: energy, protein, fat, saturated fat, carbs, sugars, sodium and fibre (the eight on an Australian label). Worked out by adding up each Ingredient's values from FSANZ's AUSNUT 2023 data, so it is an estimate, not a lab figure.
+_Avoid_: health score, macros, nutrition facts
+
 **Imported Recipe**:
 A recipe a Member brought in (pasted, photographed, linked, uploaded as a PDF file or typed). It belongs to that Household only and starts as a Favourite.
 _Avoid_: saved recipe, user recipe
