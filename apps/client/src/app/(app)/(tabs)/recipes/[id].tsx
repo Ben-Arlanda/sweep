@@ -39,6 +39,7 @@ import {
 import { swapLine, swapsOf } from '@/features/recipes/adaptations';
 import { cookSteps, metaParts, viewsOf, type MethodView } from '@/features/recipes/method';
 import { groupHeading, lineCaption, lineName } from '@/features/recipes/lines';
+import { leftOutText, needsSeeMore, nutritionRows } from '@/features/recipes/nutrition';
 import { scaleLine } from '@/features/recipes/scale';
 import { useMethodView } from '@/features/recipes/methodView';
 import { PickDaySheet } from '@/features/mealPlan/PickDaySheet';
@@ -68,10 +69,10 @@ type RecipeImage = components['schemas']['RecipeImageOut'];
  * Something you need shows "Add to list": one tap puts it on the Shopping List. Anything
  * already unticked on the list shows "On list", the same rule the planner uses.
  *
- * Laid out as Ingredients | Method tabs (slice 6e, premium redesign). Method shows the
- * Detailed View (Recipe Stages) or the Quick View, remembered on the device, and opens
- * Cook Mode (ADR 0028). Notes sit at the bottom of Method: a Recipe Adaptation's
- * (ADR 0021) Swaps, a parent's Adaptations, and where the recipe came from.
+ * The summary sits under the title, then Ingredients | Method | Nutrition tabs (slice 4h). Method shows the Detailed View (Recipe Stages) or the Quick
+ * View, remembered on the device, and opens Cook Mode (ADR 0028). Tips, variations,
+ * storage and Notes sit at the bottom of Method: a Recipe Adaptation's (ADR 0021) Swaps,
+ * a parent's Adaptations, and where the recipe came from. Nutrition is per serve (ADR 0035).
  */
 function RecipeContent() {
   const t = useTheme();
@@ -93,7 +94,7 @@ function RecipeContent() {
   const kitchen = useKitchen();
   // Optional too: without the list, "Need" is just a label, with no + to add it.
   const list = useList();
-  const [chosen, setTab] = useState<Tab | null>(null);
+  const [tab, setTab] = useState<Tab>('ingredients');
   const [remembered, setView] = useMethodView();
   const [cooking, setCooking] = useState(false);
   const need = useNeedActions(list.data?.id ?? '');
@@ -125,14 +126,6 @@ function RecipeContent() {
   const r = recipe.data;
   const views = viewsOf(r);
   const view: MethodView = views.includes(remembered) ? remembered : views[0];
-  // Overview only when there's something to say: a description, tips, variations or storage.
-  const hasOverview = !!(
-    r.summary ||
-    r.storage ||
-    (r.tips ?? []).length ||
-    (r.variations ?? []).length
-  );
-  const tab: Tab = chosen ?? (hasOverview ? 'overview' : 'ingredients');
   // Detailed: one card per Recipe Stage. Quick: one per step.
   const cards: Card[] =
     view === 'detailed' && r.stages?.length
@@ -193,6 +186,7 @@ function RecipeContent() {
         </Text>
         <MetaRow recipe={{ ...r, servings: servesNow }} />
       </View>
+      {r.summary ? <Summary text={r.summary} /> : null}
       {swap && date ? <SwappingPill proposalId={swap} date={date} /> : null}
       {parentId ? <AdaptedFrom parentId={parentId} /> : null}
 
@@ -231,23 +225,7 @@ function RecipeContent() {
       ) : null}
       {actions}
 
-      <UnderlineTabs
-        label="Recipe"
-        value={tab}
-        onChange={setTab}
-        options={[
-          ...(hasOverview ? [{ value: 'overview' as const, label: 'Overview' }] : []),
-          { value: 'ingredients', label: 'Ingredients' },
-          { value: 'method', label: 'Method' },
-        ]}
-      />
-
-      {tab === 'overview' ? (
-        <View style={{ gap: t.space.lg }}>
-          {r.summary ? <Text>{r.summary}</Text> : null}
-          <Extras recipe={r} />
-        </View>
-      ) : null}
+      <UnderlineTabs label="Recipe" value={tab} onChange={setTab} options={TABS} />
 
       {tab === 'ingredients' ? (
         <View style={{ gap: t.space.sm }}>
@@ -348,6 +326,8 @@ function RecipeContent() {
           )}
         </View>
       ) : null}
+      {tab === 'method' ? <Extras recipe={r} /> : null}
+      {tab === 'nutrition' ? <NutritionPanel nutrition={r.nutrition} /> : null}
       {cooking ? (
         <CookMode title={r.title} steps={steps} onClose={() => setCooking(false)} />
       ) : null}
@@ -394,7 +374,122 @@ function cardStyle(t: Theme) {
   };
 }
 
-type Tab = 'overview' | 'ingredients' | 'method';
+type Tab = 'ingredients' | 'method' | 'nutrition';
+
+const TABS: { value: Tab; label: string }[] = [
+  { value: 'ingredients', label: 'Ingredients' },
+  { value: 'method', label: 'Method' },
+  { value: 'nutrition', label: 'Nutrition' },
+];
+
+/** The recipe's description, folded to three lines when it's long. */
+function Summary({ text }: { text: string }) {
+  const t = useTheme();
+  const long = needsSeeMore(text);
+  const [open, setOpen] = useState(false);
+  return (
+    <View style={{ gap: 2 }}>
+      <Text numberOfLines={long && !open ? 3 : undefined}>{text}</Text>
+      {long ? (
+        <Pressable
+          accessibilityRole="button"
+          accessibilityState={{ expanded: open }}
+          onPress={() => setOpen((o) => !o)}
+          hitSlop={8}
+          style={{ alignSelf: 'flex-start', minHeight: 24, justifyContent: 'center' }}
+        >
+          <Text style={{ fontFamily: t.fonts.bold, textDecorationLine: 'underline' }}>
+            {open ? 'See less' : 'See more'}
+          </Text>
+        </Pressable>
+      ) : null}
+    </View>
+  );
+}
+
+/**
+ * Nutrition per serve, like an Australian label: kJ (Cal) and % Daily Intake. What we
+ * couldn't count is named; when the missing part is too big, no numbers at all (ADR 0035).
+ */
+function NutritionPanel({ nutrition }: { nutrition: Recipe['nutrition'] }) {
+  const t = useTheme();
+  const leftOut = leftOutText(nutrition.left_out);
+  if (!nutrition.available || !nutrition.per_serve) {
+    return (
+      <View style={cardStyle(t)}>
+        <Text variant="heading" role="heading" aria-level={2}>
+          Nutrition isn&apos;t available
+        </Text>
+        <Text muted>
+          {nutrition.left_out.length
+            ? `We don't have nutrition data for ${nutrition.left_out.join(', ')} yet, and it's too big a part of this recipe to leave out.`
+            : "We couldn't work out this recipe's nutrition from its ingredients."}
+        </Text>
+      </View>
+    );
+  }
+  const rows = nutritionRows(nutrition.per_serve);
+  const head = { fontSize: 13, fontFamily: t.fonts.bold, color: t.colors.textMuted };
+  return (
+    <View style={{ gap: t.space.sm }}>
+      <View style={[cardStyle(t), { gap: 0 }]}>
+        <Text variant="heading" role="heading" aria-level={2}>
+          Nutrition per serve
+        </Text>
+        <View
+          aria-hidden
+          style={{ flexDirection: 'row', paddingTop: t.space.md, paddingBottom: t.space.xs }}
+        >
+          <Text style={[head, { flex: 1 }]}> </Text>
+          <Text style={[head, { textAlign: 'right' }]}>Per serve</Text>
+          <Text style={[head, { width: 64, textAlign: 'right' }]}>% DI*</Text>
+        </View>
+        {rows.map((row) => (
+          <View
+            key={row.label}
+            accessible
+            accessibilityLabel={`${row.label}${row.sub ? ' (of which)' : ''}, ${row.spoken}, ${row.percent}% of daily intake`}
+            style={{
+              flexDirection: 'row',
+              alignItems: 'baseline',
+              minHeight: 40,
+              paddingVertical: t.space.sm,
+              borderTopWidth: 1,
+              borderTopColor: t.colors.border,
+            }}
+          >
+            <Text
+              style={{
+                flex: 1,
+                paddingLeft: row.sub ? t.space.lg : 0,
+                fontFamily: row.sub ? t.fonts.body : t.fonts.medium,
+                color: row.sub ? t.colors.textMuted : t.colors.text,
+              }}
+            >
+              {row.label}
+            </Text>
+            <Text style={{ textAlign: 'right', fontVariant: ['tabular-nums'] }}>{row.amount}</Text>
+            <Text
+              style={{
+                width: 64,
+                textAlign: 'right',
+                fontVariant: ['tabular-nums'],
+                color: t.colors.textMuted,
+              }}
+            >
+              {row.percent}%
+            </Text>
+          </View>
+        ))}
+      </View>
+      {leftOut ? <Text variant="caption">{leftOut}</Text> : null}
+      <Text variant="caption" muted>
+        An estimate from the ingredients, so cooking and brands can change it. *Percentage Daily
+        Intake is based on an average adult diet of 8,700 kJ. Nutrition data: FSANZ.
+      </Text>
+    </View>
+  );
+}
 
 /**
  * "Add to list" and "Add 2 missing": onto the Shopping List (queued if offline), then
@@ -508,7 +603,7 @@ function MethodCard({ n, total, card }: { n: number; total: number; card: Card }
   );
 }
 
-/** Tips, variations and storage, after the stages. Each only when the recipe has it. */
+/** Tips, variations and storage, at the bottom of Method. Each only when the recipe has it. */
 function Extras({ recipe }: { recipe: Recipe }) {
   const t = useTheme();
   const lists = [

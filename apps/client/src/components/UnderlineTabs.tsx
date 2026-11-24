@@ -9,7 +9,7 @@ import { useTheme } from '@/theme/useTheme';
 /**
  * Text tabs spread edge to edge (first left, last right, even gaps) over a hairline track;
  * a bar under the chosen one slides to the next. For a
- * page's sections (a recipe's Overview, Ingredients, Method). Screen readers hear a tab
+ * page's sections (a recipe's Ingredients, Method, Nutrition). Screen readers hear a tab
  * list, like Segmented.
  */
 export function UnderlineTabs<T extends string>({

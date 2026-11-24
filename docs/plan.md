@@ -693,12 +693,14 @@ Parked: timers inside Cook Mode; Quick View for Imported Recipes. Library gaps t
    - A test fails when a starter has no match.
 2. **API (4h-a):** `RecipeOut` gains `nutrition` per serve: the eight values, the lines left out, and `available`. It's worked out from the recipe's lines and follows the missing-line rule in ADR 0035.
 3. **Client (4h-b):**
-   - Tabs become `Ingredients | Method | Nutrition`, each with a big number on top (line count, total time, Calories per serve or "–"). Ingredients opens first.
+   - Tabs become `Ingredients | Method | Nutrition` (plain labels; the user dropped the big numbers on top). Ingredients opens first.
    - The Overview tab is removed. The summary moves under the title (3 lines, "See more"). Tips, variations and storage move to the bottom of Method.
    - The Nutrition tab shows a "Nutrition per serve" table: amount and % Daily Intake, energy as kJ (Cal), a "Doesn't include" note, a "Nutrition data: FSANZ" credit and an estimate note.
    - Bump `CACHE_BUSTER`.
 
-Parked: Nutrition in planning (Calorie or protein filters for the planner and search, weekly totals).
+**4h results (2026-11-24):** 447 of 478 starters matched (Claude $0.65, then a full review). 177 of 184 Seed Recipes have nutrition; 7 are honestly unavailable: 4 use cooked rice (an amount of the cooked thing, never weighed as raw), plus laksa (tofu puffs), tteokbokki (rice cakes) and dosa (batter), which AUSNUT doesn't have.
+
+Parked: Nutrition in planning (Calorie or protein filters for the planner and search, weekly totals). Typed weights for lasagne sheets and cannelloni tubes (AUSNUT has none). A cooked amount could use AUSNUT's cooked food instead of being left out.
 
 Experiments (`experiments/`, any time after slice 4):
 
