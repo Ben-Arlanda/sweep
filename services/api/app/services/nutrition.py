@@ -14,6 +14,7 @@ from typing import Any, Protocol
 
 from pydantic import BaseModel
 
+from app.services.ingredient_lines import parse_line
 from app.units import UNITS
 
 TABLE_FILE = Path(__file__).parents[1] / "data" / "nutrition.json"
@@ -75,6 +76,13 @@ def load_table() -> dict[str, Any]:
     return json.loads(TABLE_FILE.read_text()) if TABLE_FILE.exists() else {}
 
 
+def _is_prepared(line: Line) -> bool:
+    """ "4 cups cooked rice": the amount is of the cooked thing. The parser decides, as it did."""
+    from app.services.recipe_checks import INDEX  # the starters' index; imported late (cycle)
+
+    return parse_line(line.raw_text, INDEX).prepared
+
+
 def grams_of(line: Line, entry: dict[str, Any]) -> float | None:
     """The line's weight in grams, from its base amount or the Ingredient's own measures."""
     density = entry["grams_per_ml"]
@@ -121,7 +129,7 @@ def nutrition_per_serve(
         if ing is None and not line.needs_review:
             continue
         entry = values.get(ing.name) if ing else None
-        grams = grams_of(line, entry) if entry else None
+        grams = grams_of(line, entry) if entry and not _is_prepared(line) else None
         if entry is None or grams is None:
             name = ing.name if ing else line.raw_text
             missing.append((name, _rough_grams(line), bool(ing and ing.category in MAIN)))

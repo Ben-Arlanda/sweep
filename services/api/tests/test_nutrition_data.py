@@ -32,6 +32,12 @@ def test_foods_keep_the_eight_values_and_the_measures_per_one() -> None:
     assert "F9" not in foods
 
 
+def test_a_density_with_a_description_is_still_a_density() -> None:
+    chopped = (1, "F1", "Parsley, raw", 10, 1, "density", "chopped", None, None, 0.25, 0)
+    parsley = [MEASURES[0], chopped]
+    assert foods_from([HEADER, ONION], parsley)["F1"]["density"] == 0.25
+
+
 def test_an_entry_has_grams_per_unit_from_the_picked_measures() -> None:
     onion = foods_from([HEADER, ONION], MEASURES)["F1"]
     record = entry("F1", onion, {"each": "11", "slice": None})

@@ -33,7 +33,9 @@ from app.data.recipes import load_seed_recipes
 from app.llm import ClaudeStructured
 from app.llm_costs import cost_usd
 from app.services.ingredient_lines import parse_line
+from app.services.nutrition import QUIET
 from app.services.recipe_checks import INDEX
+from app.units import UNITS
 
 AUSNUT = Path(__file__).parents[1] / "data" / "ausnut"
 FOODS = AUSNUT / "foods.json"  # key -> {"name", "per_100g", "measures"}
@@ -80,7 +82,7 @@ def foods_from(profiles: list[tuple[Any, ...]], measures: list[tuple[Any, ...]])
         if key not in foods or not grams or not qty:
             continue
         words = " ".join(str(w).strip() for w in row[5:9] if w)
-        if words == "density":  # grams per ml, whatever the volume column says
+        if row[5] == "density":  # grams per ml ("density chopped" too), whatever the volume says
             foods[key]["density"] = float(grams)
             continue
         foods[key]["measures"][str(measure_id)] = {
@@ -107,6 +109,8 @@ def units_used() -> dict[str, set[str]]:
         for text in recipe.ingredients:
             line = parse_line(text, INDEX)
             if line.ingredient is None or line.quantity is None or line.prepared:
+                continue
+            if (line.unit or "") in QUIET:
                 continue
             if line.ingredient.default_unit == "count" and line.unit is None:
                 used[line.ingredient.name].add(EACH)
@@ -259,7 +263,13 @@ def review_page(foods: dict[str, Any], done: dict[str, Any], needed: dict[str, s
     """Rows needing a look first: no food, or a unit recipes use with no weight yet."""
 
     def units_of(name: str) -> list[str]:
-        return sorted(needed.get(name, set()) | set(done[name]["measures"]))
+        """Units recipes use that need a measure: not grams, nor a volume with a density."""
+        food = foods.get(done[name]["food"] or "", {})
+        weighs = {
+            u for u, (b, _) in UNITS.items() if b == "g" or (b == "ml" and food.get("density"))
+        }
+        picked = {u for u, mid in done[name]["measures"].items() if mid}
+        return sorted((needed.get(name, set()) - weighs) | picked)
 
     def gaps(name: str) -> bool:
         m = done[name]

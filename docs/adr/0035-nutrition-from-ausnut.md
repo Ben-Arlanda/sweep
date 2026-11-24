@@ -27,9 +27,10 @@ Members want to see what a recipe gives them per serve. Our recipes have no nutr
    - If a missing line is the main protein, or more than about 15% of the recipe's weight, the page shows "Nutrition isn't available" instead of a misleading number.
 6. **Recipe page only for now.** The planner, search and weekly totals don't use it yet.
 
-7. **Two rules from checking every Seed Recipe:**
+7. **Rules from checking every Seed Recipe:**
    - Water counts as nothing.
    - Oil for frying counts at 10%, for what the food soaks up. That's an oil line of 200 ml or more, or one that says "for frying"; no recipe eats that much oil.
+   - A cooked amount ("4 cups cooked rice") is a missing line, never weighed as raw (about 3× too much). The ingredient parser decides what's cooked, as it does for the Shopping List.
 
 ## Consequences
 

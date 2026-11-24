@@ -201,15 +201,12 @@
  "cheddar cheese": {
   "food": "F002414",
   "measures": {
-   "cup": "46004",
    "slice": "46007"
   }
  },
  "parmesan": {
   "food": "F002479",
-  "measures": {
-   "cup": "46148"
-  }
+  "measures": {}
  },
  "mozzarella": {
   "food": "F002472",
@@ -358,10 +355,9 @@
   }
  },
  "tomatoes": {
-  "food": "F009193",
+  "food": "F009210",
   "measures": {
-   "each": null,
-   "g": null
+   "each": "47993"
   }
  },
  "cherry tomatoes": {
@@ -385,9 +381,7 @@
  },
  "baby spinach": {
   "food": "F008749",
-  "measures": {
-   "cup": "47864"
-  }
+  "measures": {}
  },
  "rocket": {
   "food": "F007712",
@@ -415,8 +409,6 @@
  "parsley": {
   "food": "F006321",
   "measures": {
-   "cup": "47660",
-   "tbsp": "47660",
    "handful": null
   }
  },
@@ -510,9 +502,9 @@
   "measures": {}
  },
  "panko breadcrumbs": {
-  "food": "F010047",
+  "food": "F001683",
   "measures": {
-   "cup": null
+   "cup": "41404"
   }
  },
  "lasagne sheets": {
@@ -837,10 +829,9 @@
   "measures": {}
  },
  "coffee": {
-  "food": "F003060",
+  "food": "F003041",
   "measures": {
-   "ml": null,
-   "shot": null
+   "shot": "40546"
   }
  },
  "almonds": {
@@ -1027,7 +1018,7 @@
   "measures": {}
  },
  "paneer": {
-  "food": "F002488",
+  "food": "F002472",
   "measures": {}
  },
  "gruyere": {
@@ -1097,7 +1088,7 @@
   "measures": {}
  },
  "veal shanks": {
-  "food": "F009360",
+  "food": "F009379",
   "measures": {}
  },
  "chorizo": {
@@ -1207,9 +1198,9 @@
   "measures": {}
  },
  "shallots": {
-  "food": "F006250",
+  "food": "F008227",
   "measures": {
-   "each": null
+   "each": "47847"
   }
  },
  "red chillies": {
@@ -1525,7 +1516,7 @@
   "measures": {}
  },
  "masa harina": {
-  "food": null,
+  "food": "F003230",
   "measures": {}
  },
  "masarepa": {
@@ -1533,7 +1524,7 @@
   "measures": {}
  },
  "tapioca starch": {
-  "food": null,
+  "food": "F009090",
   "measures": {}
  },
  "short-grain rice": {
@@ -1569,7 +1560,7 @@
   "measures": {}
  },
  "butter beans": {
-  "food": "F000441",
+  "food": "F000440",
   "measures": {}
  },
  "fava beans": {
@@ -2136,7 +2127,7 @@
  "pork chops": {
   "food": "F007019",
   "measures": {
-   "each": "44953"
+   "each": "g:125"
   }
  },
  "stout": {

@@ -124,3 +124,27 @@ def test_a_spoon_of_oil_is_eaten_whole() -> None:
     oil = line("olive oil", "2", "tbsp", base="ml", base_quantity="40", raw="2 tbsp olive oil")
     n = nutrition_per_serve([line("chicken thigh", "500", "g"), oil], 1, TABLE)
     assert n.per_serve is not None and n.per_serve.fat_g == round(25 + 36.8, 1)
+
+
+def test_a_cooked_amount_is_missing_not_weighed_as_raw() -> None:
+    rice = food(energy_kj=1500) | {"grams_per_ml": 0.8}
+    cooked = line("rice", "4", "cup", base_quantity=None, raw="4 cups cooked rice")
+    n = nutrition_per_serve([line("chicken thigh", "500", "g"), cooked], 2, TABLE | {"rice": rice})
+    assert not n.available and n.left_out == ["rice"]  # 1 litre of it is far over 15%
+
+
+def test_cooked_in_the_note_is_still_what_you_buy() -> None:
+    n = nutrition_per_serve(
+        [line("chicken thigh", "500", "g", raw="500 g chicken thigh, cooked")], 1, TABLE
+    )
+    assert n.available and n.left_out == []
+
+
+def test_an_ingredient_that_is_cooked_already_is_counted() -> None:
+    prawns = food(energy_kj=400) | {"grams_per": {}}
+    n = nutrition_per_serve(
+        [line("cooked prawns", "600", "g", raw="600 g cooked prawns, peeled")],
+        2,
+        {"cooked prawns": prawns},
+    )
+    assert n.available and n.per_serve is not None and n.per_serve.energy_kj == 1200
