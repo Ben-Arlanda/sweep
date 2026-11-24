@@ -1709,6 +1709,33 @@ export interface components {
          * @enum {string}
          */
         Mood: "kitchen" | "surprise" | "specific";
+        /** Nutrients */
+        Nutrients: {
+            /** Energy Kj */
+            energy_kj: number;
+            /** Protein G */
+            protein_g: number;
+            /** Fat G */
+            fat_g: number;
+            /** Saturated Fat G */
+            saturated_fat_g: number;
+            /** Carbs G */
+            carbs_g: number;
+            /** Sugars G */
+            sugars_g: number;
+            /** Fibre G */
+            fibre_g: number;
+            /** Sodium Mg */
+            sodium_mg: number;
+        };
+        /** Nutrition */
+        Nutrition: {
+            /** Available */
+            available: boolean;
+            per_serve: components["schemas"]["Nutrients"] | null;
+            /** Left Out */
+            left_out: string[];
+        };
         /**
          * OnListOut
          * @description Where it went on the Shopping List, so the app can offer Undo.
@@ -2073,6 +2100,8 @@ export interface components {
             licence: string;
             /** Attribution */
             attribution: string;
+            /** @description Per serve, added up from the lines (ADR 0035), so it never goes stale. */
+            readonly nutrition: components["schemas"]["Nutrition"];
         };
         /** RecipeStageOut */
         RecipeStageOut: {

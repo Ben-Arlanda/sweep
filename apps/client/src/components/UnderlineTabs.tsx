@@ -8,9 +8,9 @@ import { useTheme } from '@/theme/useTheme';
 
 /**
  * Text tabs spread edge to edge (first left, last right, even gaps) over a hairline track;
- * a bar under the chosen one slides to the next. For a
- * page's sections (a recipe's Overview, Ingredients, Method). Screen readers hear a tab
- * list, like Segmented.
+ * a bar under the chosen one slides to the next. For a page's sections (a recipe's
+ * Ingredients, Method, Nutrition), each with an optional big figure over its label
+ * ("14" over "Ingredients"). Screen readers hear a tab list, like Segmented.
  */
 export function UnderlineTabs<T extends string>({
   label,
@@ -21,7 +21,8 @@ export function UnderlineTabs<T extends string>({
   label: string;
   value: T;
   onChange: (value: T) => void;
-  options: { value: T; label: string }[];
+  /** `figure`: the big number over the label; null shows a dash. `spoken`: the whole tab read out. */
+  options: { value: T; label: string; figure?: string | null; spoken?: string }[];
 }) {
   const t = useTheme();
   const [boxes, setBoxes] = useState<Partial<Record<T, LayoutRectangle>>>({});
@@ -44,6 +45,7 @@ export function UnderlineTabs<T extends string>({
             <Pressable
               key={o.value}
               accessibilityRole="tab"
+              accessibilityLabel={o.spoken}
               accessibilityState={{ selected: on }}
               aria-selected={on}
               onPress={() => {
@@ -55,12 +57,25 @@ export function UnderlineTabs<T extends string>({
                 const next = e.nativeEvent.layout;
                 setBoxes((now) => ({ ...now, [o.value]: next }));
               }}
-              style={{ minHeight: t.touchTarget, justifyContent: 'center' }}
+              style={{ minHeight: t.touchTarget, justifyContent: 'center', paddingBottom: 6 }}
             >
+              {o.figure !== undefined ? (
+                <Text
+                  style={{
+                    fontSize: 22,
+                    lineHeight: 28,
+                    fontFamily: t.fonts.displayBold,
+                    fontVariant: ['tabular-nums'],
+                    color: on ? t.colors.text : t.colors.onBackgroundMuted,
+                  }}
+                >
+                  {o.figure ?? '–'}
+                </Text>
+              ) : null}
               <Text
                 style={{
-                  fontSize: 17,
-                  lineHeight: 22,
+                  fontSize: o.figure !== undefined ? 15 : 17,
+                  lineHeight: o.figure !== undefined ? 20 : 22,
                   fontFamily: on ? t.fonts.bold : t.fonts.medium,
                   color: on ? t.colors.text : t.colors.onBackgroundMuted,
                 }}

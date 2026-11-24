@@ -5883,6 +5883,86 @@
         "title": "Mood",
         "description": "What the Member is in the mood for on the Dinner ideas setup (slice 6f)."
       },
+      "Nutrients": {
+        "properties": {
+          "energy_kj": {
+            "type": "number",
+            "title": "Energy Kj"
+          },
+          "protein_g": {
+            "type": "number",
+            "title": "Protein G"
+          },
+          "fat_g": {
+            "type": "number",
+            "title": "Fat G"
+          },
+          "saturated_fat_g": {
+            "type": "number",
+            "title": "Saturated Fat G"
+          },
+          "carbs_g": {
+            "type": "number",
+            "title": "Carbs G"
+          },
+          "sugars_g": {
+            "type": "number",
+            "title": "Sugars G"
+          },
+          "fibre_g": {
+            "type": "number",
+            "title": "Fibre G"
+          },
+          "sodium_mg": {
+            "type": "number",
+            "title": "Sodium Mg"
+          }
+        },
+        "type": "object",
+        "required": [
+          "energy_kj",
+          "protein_g",
+          "fat_g",
+          "saturated_fat_g",
+          "carbs_g",
+          "sugars_g",
+          "fibre_g",
+          "sodium_mg"
+        ],
+        "title": "Nutrients"
+      },
+      "Nutrition": {
+        "properties": {
+          "available": {
+            "type": "boolean",
+            "title": "Available"
+          },
+          "per_serve": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Nutrients"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "left_out": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Left Out"
+          }
+        },
+        "type": "object",
+        "required": [
+          "available",
+          "per_serve",
+          "left_out"
+        ],
+        "title": "Nutrition"
+      },
       "OnListOut": {
         "properties": {
           "list_id": {
@@ -6993,6 +7073,11 @@
           "attribution": {
             "type": "string",
             "title": "Attribution"
+          },
+          "nutrition": {
+            "$ref": "#/components/schemas/Nutrition",
+            "description": "Per serve, added up from the lines (ADR 0035), so it never goes stale.",
+            "readOnly": true
           }
         },
         "type": "object",
@@ -7015,7 +7100,8 @@
           "storage",
           "source_url",
           "licence",
-          "attribution"
+          "attribution",
+          "nutrition"
         ],
         "title": "RecipeOut"
       },
