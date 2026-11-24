@@ -1,5 +1,7 @@
 import type { components } from '@/lib/api/schema';
 
+import { formatQuantity, unitText } from './scale';
+
 type Line = Pick<
   components['schemas']['RecipeIngredientOut'],
   'raw_text' | 'quantity' | 'unit' | 'note' | 'optional'
@@ -15,7 +17,8 @@ export function lineName(line: Line) {
 function lineAmount(line: Line) {
   if (!line.ingredient) return null;
   if (line.quantity === null) return line.raw_text;
-  return [line.quantity, line.unit].filter(Boolean).join(' ');
+  const unit = line.unit ? unitText(line.unit, line.quantity) : null;
+  return [formatQuantity(line.quantity, line.unit), unit].filter(Boolean).join(' ');
 }
 
 /** Under the name: "200 g · or andouille sausage · sliced" (the server joins notes with "; "). */

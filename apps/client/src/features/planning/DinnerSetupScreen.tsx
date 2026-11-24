@@ -1,12 +1,12 @@
 import { router } from 'expo-router';
-import { Minus, Plus, Sparkles } from 'lucide-react-native';
+import { Sparkles } from 'lucide-react-native';
 import { useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ChoiceChips } from '@/components/ChoiceChips';
+import { ServesStepper } from '@/components/ServesStepper';
 import { Icon } from '@/components/Icon';
-import { PressableScale } from '@/components/PressableScale';
 import { Button, Field, Text } from '@/components/ui';
 import { usePreferences } from '@/lib/api/diet';
 import { useTheme } from '@/theme/useTheme';
@@ -200,73 +200,11 @@ export function DinnerSetupScreen() {
           <Text variant="label" aria-hidden>
             Serves
           </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              borderRadius: t.radius.pill,
-              borderWidth: 1,
-              borderColor: t.colors.border,
-              backgroundColor: t.colors.surface,
-            }}
-          >
-            <Stepper
-              icon={Minus}
-              label="Fewer people"
-              disabled={people <= 1}
-              onPress={() => setServes(people - 1)}
-            />
-            <Text
-              variant="label"
-              accessibilityLiveRegion="polite"
-              accessibilityLabel={`Serves ${people}`}
-              style={{ minWidth: 28, textAlign: 'center' }}
-            >
-              {people}
-            </Text>
-            <Stepper
-              icon={Plus}
-              label="More people"
-              disabled={people >= 24}
-              onPress={() => setServes(people + 1)}
-            />
-          </View>
+          <ServesStepper value={people} onChange={setServes} />
         </View>
 
         <Button title="Find dinner ideas" icon={Sparkles} disabled={needsWords} onPress={find} />
       </ScrollView>
     </SafeAreaView>
-  );
-}
-
-function Stepper({
-  icon,
-  label,
-  disabled,
-  onPress,
-}: {
-  icon: typeof Plus;
-  label: string;
-  disabled: boolean;
-  onPress: () => void;
-}) {
-  const t = useTheme();
-  return (
-    <PressableScale
-      accessibilityRole="button"
-      accessibilityLabel={label}
-      accessibilityState={{ disabled }}
-      disabled={disabled}
-      onPress={onPress}
-      style={{
-        width: t.touchTarget,
-        height: t.touchTarget,
-        alignItems: 'center',
-        justifyContent: 'center',
-        opacity: disabled ? 0.4 : 1,
-      }}
-    >
-      <Icon icon={icon} size={20} color={t.colors.text} />
-    </PressableScale>
   );
 }

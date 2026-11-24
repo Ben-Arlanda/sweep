@@ -82,3 +82,37 @@ export function useMealPlanActions() {
   });
   return { cooked, undoCooked, remove };
 }
+
+/** A Planned Meal's servings, from the recipe page's Serves. Refused once Cooked. */
+export function useMealServings() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    retry: retryServerErrors,
+    mutationFn: async (v: { mealId: string; servings: number; idempotencyKey: string }) =>
+      unwrap(
+        await api.PATCH('/planned-meals/{meal_id}', {
+          params: { path: { meal_id: v.mealId }, header: { 'Idempotency-Key': v.idempotencyKey } },
+          body: { servings: v.servings },
+        }),
+      ),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: mealPlanKeys.all }),
+  });
+}
+
+/** The recipe page for a Planned Meal: it opens at the meal's servings and saves changes. */
+export function plannedMealPath(meal: {
+  id: string;
+  recipe_id: string;
+  servings: number;
+  cooked_at: string | null;
+}) {
+  return {
+    pathname: '/recipe/[id]' as const,
+    params: {
+      id: meal.recipe_id,
+      meal: meal.id,
+      serves: String(meal.servings),
+      ...(meal.cooked_at ? { cooked: '1' } : {}),
+    },
+  };
+}

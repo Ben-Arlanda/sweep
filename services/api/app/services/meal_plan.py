@@ -115,6 +115,24 @@ async def remove(session: AsyncSession, ctx: MemberContext, meal_id: uuid.UUID) 
     )  # fmt: skip
 
 
+async def set_servings(
+    session: AsyncSession, ctx: MemberContext, meal_id: uuid.UUID, servings: int
+) -> PlannedMeal:
+    """A Cooked meal keeps its servings: they match what Cooked took from the Kitchen."""
+    meal = await _mine(session, ctx, meal_id)
+    if meal.servings == servings:
+        return meal
+    if meal.cooked_at is not None:
+        raise errors.Conflict("This meal was Cooked. Undo Cooked before changing its servings.")
+    meal.servings = servings
+    await bump(session, ctx.household.id)
+    await audit.record(
+        session, ctx.household.id, "meal.servings", "planned_meal", meal.id,
+        member_id=ctx.member.id, detail={"servings": servings},
+    )  # fmt: skip
+    return meal
+
+
 async def mark_cooked(session: AsyncSession, ctx: MemberContext, meal_id: uuid.UUID) -> PlannedMeal:
     """Set, never toggle: Cooked twice deducts once."""
     await kitchen.lock(session, ctx.household.id)  # Kitchen before anything else

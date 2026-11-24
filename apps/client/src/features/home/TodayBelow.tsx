@@ -20,7 +20,7 @@ import { Button, ErrorText, Loading, Text } from '@/components/ui';
 import { canPick, dayParts, weekDays, weekRange, type PlannedMeal } from '@/features/mealPlan/week';
 import { IdeaTile, KITCHEN_FIRST } from '@/features/recipes/IdeaTile';
 import { useList } from '@/lib/api/lists';
-import { mealTap, useMealPlan, useMealPlanActions } from '@/lib/api/mealPlan';
+import { mealTap, plannedMealPath, useMealPlan, useMealPlanActions } from '@/lib/api/mealPlan';
 import { useDinnerIdeas } from '@/lib/api/planning';
 import { sectionTints } from '@/theme/tokens';
 import { useTheme } from '@/theme/useTheme';
@@ -142,7 +142,7 @@ function TonightCard({ today, meals }: { today: string; meals: PlannedMeal[] }) 
       <PressableScale
         accessibilityRole="link"
         accessibilityLabel={`Tonight: ${meal.title}${isCooked ? ', cooked' : ''}. See the recipe`}
-        onPress={() => router.push(`/recipe/${meal.recipe_id}`)}
+        onPress={() => router.push(plannedMealPath(meal))}
       >
         <RecipeArt
           title={meal.title}
@@ -183,11 +183,7 @@ function TonightCard({ today, meals }: { today: string; meals: PlannedMeal[] }) 
       >
         {isCooked ? null : (
           <View style={{ flexGrow: 1, flexBasis: 140 }}>
-            <Button
-              title="View recipe"
-              tight
-              onPress={() => router.push(`/recipe/${meal.recipe_id}`)}
-            />
+            <Button title="View recipe" tight onPress={() => router.push(plannedMealPath(meal))} />
           </View>
         )}
         <View style={{ flexGrow: 1, flexBasis: 140 }}>
@@ -380,7 +376,7 @@ function MealPlanCard({
                     tight
                     // Lime only for tonight's dinner: the one thing to do next.
                     variant={isToday && !day.meal.cooked_at ? 'primary' : 'secondary'}
-                    onPress={() => day.meal && router.push(`/recipe/${day.meal.recipe_id}`)}
+                    onPress={() => day.meal && router.push(plannedMealPath(day.meal))}
                   />
                 </View>
               ) : canPick(day.date, today) ? (

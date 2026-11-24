@@ -11,7 +11,7 @@ import { PressableScale } from '@/components/PressableScale';
 import { Segmented } from '@/components/Segmented';
 import { Sheet } from '@/components/Sheet';
 import { Button, ErrorText, Loading, Screen, Text } from '@/components/ui';
-import { mealTap, useMealPlan, useMealPlanActions } from '@/lib/api/mealPlan';
+import { mealTap, plannedMealPath, useMealPlan, useMealPlanActions } from '@/lib/api/mealPlan';
 import { sectionTints } from '@/theme/tokens';
 import { useTheme } from '@/theme/useTheme';
 
@@ -224,7 +224,7 @@ function DayRow({
           <PressableScale
             accessibilityRole="link"
             accessibilityLabel={`${meal.title}. ${sub}. See the recipe`}
-            onPress={() => router.push(`/recipe/${meal.recipe_id}`)}
+            onPress={() => router.push(plannedMealPath(meal))}
             style={{ flex: 1, gap: 2, minHeight: t.touchTarget, justifyContent: 'center' }}
           >
             <Text variant="label" numberOfLines={2}>
@@ -314,7 +314,7 @@ function MealMenu({
           variant="strong"
           onPress={() => {
             onClose();
-            router.push(`/recipe/${meal.recipe_id}`);
+            router.push(plannedMealPath(meal));
           }}
         />
         {isCooked ? (

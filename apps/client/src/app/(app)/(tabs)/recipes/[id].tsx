@@ -20,6 +20,7 @@ import { Icon } from '@/components/Icon';
 import { PressableScale } from '@/components/PressableScale';
 import { useToast } from '@/components/Toast';
 import { RecipeArt } from '@/components/RecipeArt';
+import { ServesStepper } from '@/components/ServesStepper';
 import { Button, ErrorText, Loading, Screen, SectionLabel, Text } from '@/components/ui';
 import { formatDay } from '@/features/chat/format';
 import { dayParts } from '@/features/mealPlan/week';
@@ -38,6 +39,7 @@ import {
 import { swapLine, swapsOf } from '@/features/recipes/adaptations';
 import { cookSteps, metaParts, viewsOf, type MethodView } from '@/features/recipes/method';
 import { groupHeading, lineCaption, lineName } from '@/features/recipes/lines';
+import { scaleLine } from '@/features/recipes/scale';
 import { useMethodView } from '@/features/recipes/methodView';
 import { PickDaySheet } from '@/features/mealPlan/PickDaySheet';
 import { RecipeRow } from '@/features/recipes/RecipeRow';
@@ -47,7 +49,8 @@ import { photoTap, useImportedRecipeActions, useImportedRecipes } from '@/lib/ap
 import type { PickedFile } from '@/lib/api/upload';
 import { useKitchen } from '@/lib/api/kitchen';
 import { useList, useListActions } from '@/lib/api/lists';
-import { useMealPlan } from '@/lib/api/mealPlan';
+import { usePreferences } from '@/lib/api/diet';
+import { useMealPlan, useMealServings } from '@/lib/api/mealPlan';
 import { planTap, usePlanDay } from '@/lib/api/planning';
 import { isNotFound, useAdaptations, useDeleteAdaptation, useRecipe } from '@/lib/api/recipes';
 import type { components } from '@/lib/api/schema';
@@ -75,12 +78,15 @@ function RecipeContent() {
   // `plan`: opened from Dinner Ideas to plan it for that day (slice 6e).
   // `swap` + `date`: opened from a plan's swap list to swap that day to this (ADR 0025).
   // `serves`: the Dinner ideas setup's Serves, for the Planned Meal (slice 6f).
-  const { id, plan, swap, date, serves } = useLocalSearchParams<{
+  // `meal`: opened from a Planned Meal; changing Serves saves to it (`cooked`: it can't).
+  const { id, plan, swap, date, serves, meal, cooked } = useLocalSearchParams<{
     id: string;
     plan?: string;
     swap?: string;
     date?: string;
     serves?: string;
+    meal?: string;
+    cooked?: string;
   }>();
   const recipe = useRecipe(id);
   // The Kitchen is optional here: if it fails to load, the recipe still shows.
@@ -91,6 +97,9 @@ function RecipeContent() {
   const [remembered, setView] = useMethodView();
   const [cooking, setCooking] = useState(false);
   const need = useNeedActions(list.data?.id ?? '');
+  const household = usePreferences().data?.household_size ?? null;
+  const [chosenServes, setServes] = useState<number | null>(null);
+  const saveServes = useMealServings();
 
   if (recipe.isPending) return <Loading />;
   if (recipe.isError && isNotFound(recipe.error)) {
@@ -130,7 +139,15 @@ function RecipeContent() {
       ? r.stages.map((st) => ({ title: st.title, minutes: st.minutes, body: st.steps }))
       : (r.method ?? []).map((step) => ({ body: [step] }));
   const steps = cookSteps(r, view);
-  const summary = kitchen.data ? haveSummary(r.ingredients, kitchen.data) : null;
+  // Serves: the plan's, else the Household's size, else the recipe's own.
+  const servesNow =
+    chosenServes ?? (Number(serves) > 0 ? Number(serves) : (household ?? r.servings));
+  const lines = r.ingredients.map((line) => scaleLine(line, servesNow / r.servings));
+  const changeServes = (n: number) => {
+    setServes(n);
+    if (meal) saveServes.mutate({ mealId: meal, servings: n, idempotencyKey: randomUUID() });
+  };
+  const summary = kitchen.data ? haveSummary(lines, kitchen.data) : null;
   const parentId = r.kind === 'adaptation' ? r.parent_recipe_id : null;
   const swaps = swapsOf(r.ingredients);
   const statusOf = (line: Line, i: number): Have | null => {
@@ -139,28 +156,19 @@ function RecipeContent() {
     return match?.kind === 'need' && need.added.has(i) ? { kind: 'onList' } : match;
   };
   const missing = list.data
-    ? r.ingredients
+    ? lines
         .map((line, i) => ({ line, i }))
         .filter(({ line, i }) => statusOf(line, i)?.kind === 'need')
     : [];
 
-  const actions = plan ? (
-    <PlanForDay
-      date={plan}
-      recipeId={r.id}
-      title={r.title}
-      servings={Number(serves) > 0 ? Number(serves) : null}
-    />
+  // From a Planned Meal it's already on the plan: Serves is the only thing to change.
+  const actions = meal ? null : plan ? (
+    <PlanForDay date={plan} recipeId={r.id} title={r.title} servings={servesNow} />
   ) : swap && date ? (
     <SwapToThis proposalId={swap} date={date} recipeId={r.id} />
   ) : r.course === 'main' ? (
     // Any main can be tonight's dinner, however you found it.
-    <PlanForDay
-      date={null}
-      recipeId={r.id}
-      title={r.title}
-      servings={Number(serves) > 0 ? Number(serves) : null}
-    />
+    <PlanForDay date={null} recipeId={r.id} title={r.title} servings={servesNow} />
   ) : null;
 
   return (
@@ -183,7 +191,7 @@ function RecipeContent() {
         <Text variant="title" accessibilityRole="header">
           {r.title}
         </Text>
-        <MetaRow recipe={r} />
+        <MetaRow recipe={{ ...r, servings: servesNow }} />
       </View>
       {swap && date ? <SwappingPill proposalId={swap} date={date} /> : null}
       {parentId ? <AdaptedFrom parentId={parentId} /> : null}
@@ -243,6 +251,14 @@ function RecipeContent() {
 
       {tab === 'ingredients' ? (
         <View style={{ gap: t.space.sm }}>
+          <ServesRow
+            value={servesNow}
+            recipeServes={r.servings}
+            cooked={!!meal && cooked === '1'}
+            saved={saveServes.isSuccess}
+            error={saveServes.error?.message}
+            onChange={changeServes}
+          />
           <View
             style={{
               backgroundColor: t.colors.surface,
@@ -251,8 +267,8 @@ function RecipeContent() {
               overflow: 'hidden',
             }}
           >
-            {r.ingredients.map((line, i) => {
-              const heading = groupHeading(r.ingredients, i, (l) => l.group_name ?? null);
+            {lines.map((line, i) => {
+              const heading = groupHeading(lines, i, (l) => l.group_name ?? null);
               return (
                 <Fragment key={i}>
                   {heading ? <GroupHeading name={heading} first={i === 0} /> : null}
@@ -403,6 +419,48 @@ function useNeedActions(listId: string) {
     });
   }
   return { added, add };
+}
+
+/** Serves, above the ingredients. On a Planned Meal it saves; a Cooked one keeps its number. */
+function ServesRow({
+  value,
+  recipeServes,
+  cooked,
+  saved,
+  error,
+  onChange,
+}: {
+  value: number;
+  recipeServes: number;
+  cooked: boolean;
+  saved: boolean;
+  error?: string;
+  onChange: (serves: number) => void;
+}) {
+  const t = useTheme();
+  const hint = cooked
+    ? `Cooked, so this meal keeps ${value} serves.`
+    : value !== recipeServes
+      ? `Amounts changed from the recipe's ${recipeServes} serves${saved ? '. Saved to your plan' : ''}.`
+      : null;
+  return (
+    <View style={{ gap: 4 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Text variant="label" aria-hidden>
+          Serves
+        </Text>
+        <ServesStepper value={value} onChange={onChange} disabled={cooked} />
+      </View>
+      <View accessibilityLiveRegion="polite">
+        {hint ? (
+          <Text variant="caption" style={{ color: t.colors.onBackgroundMuted }}>
+            {hint}
+          </Text>
+        ) : null}
+        <ErrorText message={error} />
+      </View>
+    </View>
+  );
 }
 
 /** "Prep 20 min · Cook 1 h · Easy · Serves 4 · Main"; just the total when that's all we know. */
