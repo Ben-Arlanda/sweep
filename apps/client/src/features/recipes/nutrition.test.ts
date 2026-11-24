@@ -1,11 +1,4 @@
-import {
-  calories,
-  leftOutText,
-  methodTabValue,
-  needsSeeMore,
-  nutritionRows,
-  nutritionTabValue,
-} from './nutrition';
+import { leftOutText, needsSeeMore, nutritionRows } from './nutrition';
 
 const perServe = {
   energy_kj: 2092,
@@ -55,25 +48,6 @@ test('a little that rounds to nothing says less than 1', () => {
   expect(sugars).toMatchObject({ amount: '<1 g', percent: 0, spoken: 'less than 1 gram' });
   const none = nutritionRows({ ...perServe, sugars_g: 0 }).find((r) => r.label === 'Sugars');
   expect(none?.amount).toBe('0 g');
-});
-
-test('the tab shows Cal, or a dash when nutrition is unavailable', () => {
-  expect(calories(2092)).toBe(500);
-  expect(nutritionTabValue({ available: true, per_serve: perServe, left_out: [] })).toBe('500');
-  expect(nutritionTabValue({ available: false, per_serve: null, left_out: ['tofu puffs'] })).toBe(
-    null,
-  );
-});
-
-test('the Method tab shows the total time, short', () => {
-  expect(methodTabValue({ prep_minutes: 15, cook_minutes: 20, total_minutes: 35 })).toBe('35m');
-  expect(methodTabValue({ prep_minutes: 20, cook_minutes: 70, total_minutes: null })).toBe(
-    '1h 30m',
-  );
-  expect(methodTabValue({ prep_minutes: null, cook_minutes: null, total_minutes: 120 })).toBe('2h');
-  expect(methodTabValue({ prep_minutes: null, cook_minutes: null, total_minutes: null })).toBe(
-    null,
-  );
 });
 
 test('lines we could not count are named in a sentence', () => {

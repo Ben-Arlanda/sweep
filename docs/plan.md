@@ -693,7 +693,7 @@ Parked: timers inside Cook Mode; Quick View for Imported Recipes. Library gaps t
    - A test fails when a starter has no match.
 2. **API (4h-a):** `RecipeOut` gains `nutrition` per serve: the eight values, the lines left out, and `available`. It's worked out from the recipe's lines and follows the missing-line rule in ADR 0035.
 3. **Client (4h-b):**
-   - Tabs become `Ingredients | Method | Nutrition`, each with a big number on top (line count, total time, Calories per serve or "–"). Ingredients opens first.
+   - Tabs become `Ingredients | Method | Nutrition` (plain labels; the user dropped the big numbers on top). Ingredients opens first.
    - The Overview tab is removed. The summary moves under the title (3 lines, "See more"). Tips, variations and storage move to the bottom of Method.
    - The Nutrition tab shows a "Nutrition per serve" table: amount and % Daily Intake, energy as kJ (Cal), a "Doesn't include" note, a "Nutrition data: FSANZ" credit and an estimate note.
    - Bump `CACHE_BUSTER`.

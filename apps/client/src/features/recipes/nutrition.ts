@@ -5,7 +5,6 @@
 import type { components } from '@/lib/api/schema';
 
 type Nutrients = components['schemas']['Nutrients'];
-type Nutrition = components['schemas']['Nutrition'];
 
 const KJ_PER_CAL = 4.184;
 
@@ -34,7 +33,7 @@ export type NutritionRow = {
   percent: number;
 };
 
-export function calories(kj: number): number {
+function calories(kj: number): number {
   return Math.round(kj / KJ_PER_CAL);
 }
 
@@ -66,30 +65,6 @@ export function nutritionRows(per: Nutrients): NutritionRow[] {
       };
     }),
   ];
-}
-
-/** The big number on the Nutrition tab ("500", over "Cal Nutrition"); null when unavailable. */
-export function nutritionTabValue(nutrition: Nutrition): string | null {
-  return nutrition.available && nutrition.per_serve
-    ? whole(calories(nutrition.per_serve.energy_kj))
-    : null;
-}
-
-/** The big number on the Method tab: "35m", "1h 30m", "2h". */
-export function methodTabValue(recipe: {
-  prep_minutes: number | null;
-  cook_minutes: number | null;
-  total_minutes: number | null;
-}): string | null {
-  const split =
-    recipe.prep_minutes !== null || recipe.cook_minutes !== null
-      ? (recipe.prep_minutes ?? 0) + (recipe.cook_minutes ?? 0)
-      : null;
-  const minutes = recipe.total_minutes ?? split;
-  if (!minutes) return null;
-  const h = Math.floor(minutes / 60);
-  const m = minutes % 60;
-  return h === 0 ? `${m}m` : m === 0 ? `${h}h` : `${h}h ${m}m`;
 }
 
 /** "Doesn't include ginger and lemongrass.": lines with amounts we couldn't count. */

@@ -39,13 +39,7 @@ import {
 import { swapLine, swapsOf } from '@/features/recipes/adaptations';
 import { cookSteps, metaParts, viewsOf, type MethodView } from '@/features/recipes/method';
 import { groupHeading, lineCaption, lineName } from '@/features/recipes/lines';
-import {
-  leftOutText,
-  methodTabValue,
-  needsSeeMore,
-  nutritionRows,
-  nutritionTabValue,
-} from '@/features/recipes/nutrition';
+import { leftOutText, needsSeeMore, nutritionRows } from '@/features/recipes/nutrition';
 import { scaleLine } from '@/features/recipes/scale';
 import { useMethodView } from '@/features/recipes/methodView';
 import { PickDaySheet } from '@/features/mealPlan/PickDaySheet';
@@ -75,8 +69,7 @@ type RecipeImage = components['schemas']['RecipeImageOut'];
  * Something you need shows "Add to list": one tap puts it on the Shopping List. Anything
  * already unticked on the list shows "On list", the same rule the planner uses.
  *
- * The summary sits under the title, then Ingredients | Method | Nutrition tabs, each with
- * its big figure (slice 4h). Method shows the Detailed View (Recipe Stages) or the Quick
+ * The summary sits under the title, then Ingredients | Method | Nutrition tabs (slice 4h). Method shows the Detailed View (Recipe Stages) or the Quick
  * View, remembered on the device, and opens Cook Mode (ADR 0028). Tips, variations,
  * storage and Notes sit at the bottom of Method: a Recipe Adaptation's (ADR 0021) Swaps,
  * a parent's Adaptations, and where the recipe came from. Nutrition is per serve (ADR 0035).
@@ -232,7 +225,7 @@ function RecipeContent() {
       ) : null}
       {actions}
 
-      <UnderlineTabs label="Recipe" value={tab} onChange={setTab} options={tabOptions(r)} />
+      <UnderlineTabs label="Recipe" value={tab} onChange={setTab} options={TABS} />
 
       {tab === 'ingredients' ? (
         <View style={{ gap: t.space.sm }}>
@@ -383,34 +376,11 @@ function cardStyle(t: Theme) {
 
 type Tab = 'ingredients' | 'method' | 'nutrition';
 
-/** "14 Ingredients", "35m Method", "500 Cal Nutrition": the figures are per recipe, per serve. */
-function tabOptions(
-  r: Recipe,
-): { value: Tab; label: string; figure: string | null; spoken: string }[] {
-  const time = methodTabValue(r);
-  const cal = nutritionTabValue(r.nutrition);
-  const total = r.total_minutes ?? (r.prep_minutes ?? 0) + (r.cook_minutes ?? 0);
-  return [
-    {
-      value: 'ingredients',
-      label: 'Ingredients',
-      figure: String(r.ingredients.length),
-      spoken: `${r.ingredients.length} Ingredients`,
-    },
-    {
-      value: 'method',
-      label: 'Method',
-      figure: time,
-      spoken: time ? `Method, ${minutesText(total)}` : 'Method',
-    },
-    {
-      value: 'nutrition',
-      label: 'Nutrition',
-      figure: cal ? `${cal} Cal` : null,
-      spoken: cal ? `Nutrition, ${cal} calories per serve` : 'Nutrition',
-    },
-  ];
-}
+const TABS: { value: Tab; label: string }[] = [
+  { value: 'ingredients', label: 'Ingredients' },
+  { value: 'method', label: 'Method' },
+  { value: 'nutrition', label: 'Nutrition' },
+];
 
 /** The recipe's description, folded to three lines when it's long. */
 function Summary({ text }: { text: string }) {
